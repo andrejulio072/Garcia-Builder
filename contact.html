@@ -1,62 +1,155 @@
-<!doctype html>
-<html lang="en" data-bs-theme="dark">
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <title>Contact — Garcia Builder</title>
+  
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title data-i18n="meta.title">Garcia Builder — Elite Online Coaching</title>
+  <meta name="theme-color" content="#0a0f1a">
   <link rel="icon" href="assets/logo.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@9/swiper-bundle.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css"/>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/swiper@9/swiper-bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+  <script src="https://kit.fontawesome.com/5f1d6d1a8a.js" crossorigin="anonymous"></script>
   <style>
-    body{background:#0b0f15;color:#e6e9ef} .btn-gold{background:#ffd54a;color:#0b0f15;border:none;font-weight:700}
-    .btn-outline-gold{border:1px solid #ffd54a;color:#ffd54a;font-weight:700}
+    :root {
+      --bg1:#070a12; --bg2:#0b1020; --panel:#0f172a; --panel2:#121a31;
+      --text:#e8edf7; --muted:#b2bdd3; --gold:#ffd54a; --line:#1d2a44;
+      --accent:#5cc8ff; --ok:#22c55e;
+    }
+    html,body { background: radial-gradient(1200px 600px at 10% 0%, #0c1326, #070a12 60%); color: var(--text); }
+    .bg-panel { background: linear-gradient(180deg, var(--panel), var(--panel2)); border: 1px solid var(--line); }
+    .btn-gold { background: var(--gold); color:#0b0f15; font-weight:700; border: none; }
+    .btn-outline-soft { background: transparent; border:1px solid var(--line); color: var(--text); }
+    .title-gradient { background: linear-gradient(90deg, #ffd54a, #f59e0b, #f97316); -webkit-background-clip:text; background-clip:text; color: transparent; }
+    .badge-soft { border:1px solid var(--line); color:#dfe7ff; background:#0f172a80; }
+    .nav-dark { background: rgba(9,14,26,.92); backdrop-filter: blur(8px); border-bottom:1px solid var(--line);}
+    .shadow-soft { box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+    a { color: var(--gold); text-decoration: none; }
+    .hero-overlay { position:absolute; inset:0; background: linear-gradient(180deg, rgba(3,6,12,.55), rgba(4,8,18,.85)); }
+    .section { padding: 56px 0; }
+    .faq details { background:#0f172a; border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:10px }
+    .faq summary { cursor:pointer; font-weight:700 }
   </style>
-  <script defer src="i18n.js"></script>
+  <script>
+    // Simple i18n loader (EN, PT, ES)
+    const I18N = {
+      en: {}, pt: {}, es: {}
+    };
+    function setLang(lang) {
+      localStorage.setItem('lang', lang);
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.getAttribute('data-i18n');
+        el.innerHTML = (I18N[lang] && I18N[lang][key]) || el.innerHTML;
+      });
+      document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
+        const key = el.getAttribute('data-i18n-ph');
+        const v = (I18N[lang] && I18N[lang][key]) || el.placeholder;
+        el.placeholder = v;
+      });
+    }
+    document.addEventListener('DOMContentLoaded', ()=>{ setLang(localStorage.getItem('lang')||'en'); AOS.init({ once:true, duration:700, offset:80 }); GLightbox({ selector: '.glightbox' }); });
+  </script>
+
+  <script src="assets/i18n.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg sticky-top" style="background:rgba(11,15,21,.92)">
-  <div class="container py-2">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-      <img src="assets/logo.png" alt="Garcia Builder logo" width="40" height="40" class="rounded-3 border border-secondary">
-      <strong>Garcia Builder</strong>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
-    <div class="collapse navbar-collapse" id="nav">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="index.html" data-i18n="nav.home">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="about.html" data-i18n="nav.about">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="transformations.html" data-i18n="nav.transformations">Transformations</a></li>
-        <li class="nav-item"><a class="nav-link" href="testimonials.html" data-i18n="nav.testimonials">Testimonials</a></li>
-        <li class="nav-item"><a class="nav-link" href="pricing.html" data-i18n="nav.pricing">Pricing</a></li>
-        <li class="nav-item"><a class="nav-link" href="contact.html" data-i18n="nav.contact">Contact</a></li>
-      </ul>
-      <div class="dropdown me-2">
-        <button class="btn btn-outline-gold dropdown-toggle" data-bs-toggle="dropdown"><span data-i18n="lang.label">Language</span></button>
-        <ul class="dropdown-menu dropdown-menu-dark">
-          <li><a class="dropdown-item" href="#" data-setlang="en">English</a></li>
-          <li><a class="dropdown-item" href="#" data-setlang="pt">Português</a></li>
-          <li><a class="dropdown-item" href="#" data-setlang="es">Español</a></li>
+  
+  <nav class="navbar navbar-expand-lg nav-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <img src="assets/logo.png" alt="logo" width="40" height="40" class="rounded-3 border border-1" style="border-color:var(--line)">
+        <strong>Garcia Builder</strong>
+      </a>
+      <button class="navbar-toggler btn btn-outline-soft" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-2">
+          <li class="nav-item"><a class="btn btn-outline-soft" href="index.html" data-i18n="nav_home">Home</a></li>
+          <li class="nav-item"><a class="btn btn-outline-soft" href="about.html" data-i18n="nav_about">About</a></li>
+          <li class="nav-item"><a class="btn btn-outline-soft" href="transformations.html" data-i18n="nav_trans">Transformations</a></li>
+          <li class="nav-item"><a class="btn btn-outline-soft" href="testimonials.html" data-i18n="nav_testi">Testimonials</a></li>
+          <li class="nav-item"><a class="btn btn-outline-soft" href="pricing.html" data-i18n="nav_pricing">Pricing</a></li>
+          <li class="nav-item"><a class="btn btn-outline-soft" href="faq.html" data-i18n="nav_faq">FAQ</a></li>
+          <li class="nav-item"><a class="btn btn-gold" href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/" target="_blank" rel="noopener">Trainerize</a></li>
+          <li class="nav-item dropdown">
+            <a class="btn btn-outline-soft dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">🌐</a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="#" onclick="setLang('en')">English</a></li>
+              <li><a class="dropdown-item" href="#" onclick="setLang('pt')">Português</a></li>
+              <li><a class="dropdown-item" href="#" onclick="setLang('es')">Español</a></li>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>
+  </nav>
+
+  
+<section class="section" style="background:url('https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;">
+  <div style="background:rgba(0,0,0,.65)">
+    <div class="container py-5">
+      <h1 class="fw-extrabold title-gradient mb-3" data-i18n="contact_title">Contact</h1>
+      <form onsubmit="submitLead(event)" class="bg-panel rounded-4 p-4 row g-3 shadow-soft">
+        <div class="col-md-6"><input id="name" class="form-control bg-panel text-white border-1" placeholder="Name" data-i18n-ph="ph_name" required></div>
+        <div class="col-md-6"><input id="email" type="email" class="form-control bg-panel text-white border-1" placeholder="Email" data-i18n-ph="ph_email" required></div>
+        <div class="col-md-6"><input id="phone" class="form-control bg-panel text-white border-1" placeholder="WhatsApp (optional)" data-i18n-ph="ph_phone"></div>
+        <div class="col-md-6">
+          <select id="goal" class="form-select bg-panel text-white border-1" required>
+            <option value="" data-i18n="ph_goal">Select Goal</option>
+            <option data-i18n="goal_loss">Lose Weight</option>
+            <option data-i18n="goal_gain">Gain Muscle</option>
+            <option data-i18n="goal_perf">Performance</option>
+          </select>
+        </div>
+        <div class="col-12"><textarea id="notes" rows="4" class="form-control bg-panel text-white border-1" placeholder="Tell me about your routine or any injury" data-i18n-ph="ph_notes"></textarea></div>
+        <div class="col-12 form-check">
+          <input class="form-check-input" type="checkbox" id="consent" required>
+          <label class="form-check-label" for="consent" data-i18n="consent">I agree to be contacted and to the Privacy Policy.</label>
+        </div>
+        <div class="col-12"><button class="btn btn-gold" type="submit" data-i18n="cta_send">Send</button></div>
+      </form>
+      <p class="mt-3 text-muted"><a href="https://wa.me/447508497586" target="_blank">WhatsApp</a></p>
+    </div>
   </div>
-</nav>
+</section>
+<script>
+function submitLead(e){
+  e.preventDefault();
+  var name=document.getElementById('name').value||'';
+  var email=document.getElementById('email').value||'';
+  var phone=document.getElementById('phone').value||'';
+  var goal=document.getElementById('goal').value||'';
+  var notes=document.getElementById('notes').value||'';
+  var consent=document.getElementById('consent').checked;
+  if(!consent){ alert('Please accept the policy'); return; }
+  var msg=encodeURIComponent('New Lead — Garcia Builder%0AName: '+name+'%0AEmail: '+email+'%0AWhatsApp: '+phone+'%0AGoal: '+goal+'%0ANotes: '+notes);
+  var wa='https://wa.me/447508497586?text='+msg;
+  var w=window.open(wa,'_blank');
+  if(!w||w.closed||typeof w.closed==='undefined'){ window.location.href='mailto:contact@garciabuilder.com?subject=New Lead — Garcia Builder&body='+msg; }
+}
+</script>
 
-<main class="container py-5">
-  <h1 data-i18n="contact.title">Contact</h1>
-  <form onsubmit="event.preventDefault();alert('Lead sent!')">
-    <input class="form-control mb-2" placeholder="Name" data-i18n-placeholder="contact.name">
-    <input class="form-control mb-2" placeholder="Email" data-i18n-placeholder="contact.email">
-    <button class="btn btn-gold" data-i18n="contact.send">Send</button>
-  </form>
-</main>
+  
+  <footer class="border-top" style="border-color:var(--line)">
+    <div class="container py-4 d-flex flex-wrap gap-2 align-items-center justify-content-between">
+      <p class="m-0">© <span id="year"></span> Garcia Builder — All rights reserved.</p>
+      <div class="d-flex gap-2">
+        <a class="btn btn-outline-soft" href="https://wa.me/447508497586" target="_blank"><i class="fa-brands fa-whatsapp me-2"></i><span data-i18n="cta_whatsapp">WhatsApp</span></a>
+        <a class="btn btn-outline-soft" href="https://calendly.com/andrenjulio072" target="_blank"><i class="fa-regular fa-calendar me-2"></i><span data-i18n="cta_book">Book</span></a>
+        <a class="btn btn-outline-soft" href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/" target="_blank">Trainerize</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 
-<footer class="mt-5 py-4" style="border-top:1px solid #1b2433">
-  <div class="container d-flex justify-content-between">
-    <p>© <span id="year"></span> Garcia Builder</p>
-    <small data-i18n="footer.rights">All rights reserved.</small>
-  </div>
-</footer>
-<script>document.getElementById('year').textContent=new Date().getFullYear();</script>
-</body></html>
-
+</body>
+</html>

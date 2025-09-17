@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Home | Garcia Builder</title>
+  <title>Contact | Garcia Builder</title>
   <meta name="description" content="Garcia Builder — Elite online coaching. Science-based training, simple nutrition, WhatsApp support, Trainerize integration." />
   <link rel="icon" href="assets/logo.png" />
   <style>
@@ -56,21 +56,38 @@
   </div>
 </header>
 
-<section class="hero"><div class="container hero-inner">
-  <h1 style="font-size:clamp(28px,4vw,48px);color:#FFD700;margin:0 0 10px">Online Coaching. Real Results.</h1>
-  <p style="max-width:760px">Science-based training, simple nutrition, and relentless accountability — delivered fully online with Trainerize and WhatsApp.</p>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-    <a class="btn gold" href="pricing.html">Start Today</a>
-    <a class="btn" href="https://trainerize.me/garciabuilder" target="_blank" rel="noopener">Join via Trainerize</a>
-  </div>
-</div></section>
-<div class="container" style="padding:22px 0">
-  <div class="grid grid-3">
-    <div class="card"><h3>Personalized Plans</h3><p>Programs adapted to your schedule, equipment and goal.</p></div>
-    <div class="card"><h3>Nutrition Made Simple</h3><p>Flexible guidance that fits your lifestyle.</p></div>
-    <div class="card"><h3>Accountability</h3><p>Weekly check-ins and WhatsApp support keep you moving.</p></div>
-  </div>
+<div class="container" style="padding:28px 0">
+  <h1>Contact</h1>
+  <p>Send your details and goal. I’ll reply within 24 hours and set you up in Trainerize.</p>
+  <form class="card" onsubmit="submitLead(event)">
+    <div style="display:grid;gap:10px;grid-template-columns:1fr 1fr">
+      <input id="name" placeholder="Name" required />
+      <input id="email" placeholder="Email" type="email" required />
+      <input id="phone" placeholder="WhatsApp (optional)" />
+      <select id="goal" required><option value=''>Select Goal</option><option>Lose Weight</option><option>Gain Muscle</option><option>Performance</option></select>
+    </div>
+    <textarea id="notes" rows="4" placeholder="Tell me about your routine or any injury" style="margin-top:10px"></textarea>
+    <label style="display:flex;gap:8px;align-items:start;margin:10px 0"><input type="checkbox" id="consent" required/><span>I agree to be contacted and to the Privacy Policy.</span></label>
+    <button class="btn gold" type="submit">Send</button>
+  </form>
+  <p style="margin-top:10px">Prefer WhatsApp? <a href="https://wa.me/447508497586" target="_blank" rel="noopener">Click here</a>.</p>
 </div>
+<script>
+function submitLead(e){
+  e.preventDefault();
+  var name=document.getElementById('name').value||'';
+  var email=document.getElementById('email').value||'';
+  var phone=document.getElementById('phone').value||'';
+  var goal=document.getElementById('goal').value||'';
+  var notes=document.getElementById('notes').value||'';
+  var consent=document.getElementById('consent').checked;
+  if(!consent){ alert('Please accept the policy'); return; }
+  var msg=encodeURIComponent('New Lead — Garcia Builder%0AName: '+name+'%0AEmail: '+email+'%0AWhatsApp: '+phone+'%0AGoal: '+goal+'%0ANotes: '+notes);
+  var wa='https://wa.me/447508497586?text='+msg;
+  var w=window.open(wa,'_blank');
+  if(!w||w.closed||typeof w.closed==='undefined'){ window.location.href='mailto:contact@garciabuilder.com?subject=New Lead — Garcia Builder&body='+msg; }
+}
+</script>
 
 <div class="sticky">
   <div class="container">

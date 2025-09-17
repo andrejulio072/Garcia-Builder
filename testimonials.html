@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Contact | Garcia Builder</title>
+<title>Testimonials | Garcia Builder</title>
 <meta name="description" content="Garcia Builder — elite online coaching with Trainerize + WhatsApp. Transformations, personalized programs, and accountability."/>
 <link rel="icon" href="assets/logo.png"/>
 <style>
@@ -91,38 +91,15 @@ header{position:sticky;top:0;z-index:80;background:rgba(8,8,10,.92);backdrop-fil
   </div>
 </header>
 
-<div class="container section">
-  <h1>Contact</h1>
-  <p>Send your details and goal. I’ll reply within 24 hours and set you up in Trainerize.</p>
-  <form class="card" onsubmit="submitLead(event)">
-    <div style="display:grid;gap:10px;grid-template-columns:1fr 1fr">
-      <input id="name" placeholder="Name" required />
-      <input id="email" placeholder="Email" type="email" required />
-      <input id="phone" placeholder="WhatsApp (optional)" />
-      <select id="goal" required><option value=''>Select Goal</option><option>Lose Weight</option><option>Gain Muscle</option><option>Performance</option></select>
-    </div>
-    <textarea id="notes" rows="4" placeholder="Tell me about your routine or any injury" style="margin-top:10px"></textarea>
-    <label style="display:flex;gap:8px;align-items:start;margin:10px 0"><input type="checkbox" id="consent" required/><span>I agree to be contacted and to the Privacy Policy.</span></label>
-    <button class="btn gold" type="submit">Send</button>
-  </form>
-  <p style="margin-top:10px">Prefer WhatsApp? <a href="https://wa.me/447508497586" target="_blank" rel="noopener">Click here</a>.</p>
+<div class="container section" style="max-width:1000px">
+  <h1>Client Stories</h1>
+  <div class="card t"><img src="https://randomuser.me/api/portraits/women/22.jpg" alt="Mariana"/><div><div class="t-name">Mariana, 28 — -12kg in 12 weeks</div><div class="stars">★★★★★</div><p>“Andre simplified my nutrition and taught me how to train with intent. Weekly check-ins kept me sharp.”</p></div></div>
+  <div class="card t"><img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Lucas"/><div><div class="t-name">Lucas, 32 — +6kg lean mass in 5 months</div><div class="stars">★★★★★</div><p>“Every week had a target and feedback. I’m stronger, leaner and finally consistent.”</p></div></div>
+  <div class="card t"><img src="https://randomuser.me/api/portraits/men/11.jpg" alt="Felipe"/><div><div class="t-name">Felipe, 24 — Athletic performance</div><div class="stars">★★★★★</div><p>“Conditioning improved fast without wrecking my joints. Smart programming made all the difference.”</p></div></div>
+  <div class="card t"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Anna"/><div><div class="t-name">Anna, 30 — Recomp & confidence</div><div class="stars">★★★★★</div><p>“I enjoy the mirror again. The plan fits my schedule; I feel in control.”</p></div></div>
+  <div class="card t"><img src="https://randomuser.me/api/portraits/men/72.jpg" alt="David"/><div><div class="t-name">David, 35 — Knee-friendly strength</div><div class="stars">★★★★★</div><p>“Andre rebuilt my lower-body strength around old injuries. Pain down, numbers up.”</p></div></div>
+  <div class="card t"><img src="https://randomuser.me/api/portraits/women/7.jpg" alt="Sarah"/><div><div class="t-name">Sarah, 26 — Habit & lifestyle</div><div class="stars">★★★★★</div><p>“The habits stuck. I hit my goal and kept the results because the system is simple.”</p></div></div>
 </div>
-<script>
-function submitLead(e){
-  e.preventDefault();
-  var name=document.getElementById('name').value||'';
-  var email=document.getElementById('email').value||'';
-  var phone=document.getElementById('phone').value||'';
-  var goal=document.getElementById('goal').value||'';
-  var notes=document.getElementById('notes').value||'';
-  var consent=document.getElementById('consent').checked;
-  if(!consent){ alert('Please accept the policy'); return; }
-  var msg=encodeURIComponent('New Lead — Garcia Builder%0AName: '+name+'%0AEmail: '+email+'%0AWhatsApp: '+phone+'%0AGoal: '+goal+'%0ANotes: '+notes);
-  var wa='https://wa.me/447508497586?text='+msg;
-  var w=window.open(wa,'_blank');
-  if(!w||w.closed||typeof w.closed==='undefined'){ window.location.href='mailto:contact@garciabuilder.com?subject=New Lead — Garcia Builder&body='+msg; }
-}
-</script>
 
 <div class="sticky">
   <div class="container">

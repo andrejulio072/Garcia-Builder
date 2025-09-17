@@ -1,43 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Transformations | Garcia Builder</title>
-  <meta name="description" content="Garcia Builder — Elite online coaching. Science-based training, simple nutrition, WhatsApp support, Trainerize integration." />
-  <link rel="icon" href="assets/logo.png" />
-  <style>
-    :root{--bg:#000;--panel:#0b0b0b;--panel2:#111;--text:#d7d7d7;--muted:#a0a0a0;--gold:#FFD700;--gold2:#e6c200;--line:#2b2b2b;--ok:#25D366;--max:1200px}
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-    a{color:var(--gold);text-decoration:none}
-    img{max-width:100%;height:auto}
-    h1,h2,h3{color:var(--gold);margin:0 0 .6rem}
-    p{line-height:1.7;margin:.4rem 0 1rem;color:var(--text)}
-    .container{max-width:var(--max);margin:auto;padding:0 20px}
-    header{position:sticky;top:0;z-index:50;background:rgba(0,0,0,.9);border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(6px)}
-    .nav{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
-    .brand{display:flex;align-items:center;gap:10px}
-    .brand img{width:44px;height:44px;border-radius:10px;border:1px solid var(--line)}
-    .brand strong{letter-spacing:.5px}
-    .menu{display:flex;flex-wrap:wrap;gap:8px}
-    .menu a{padding:10px 12px;border-radius:10px;border:1px solid transparent}
-    .menu a:hover{background:#121212;border-color:#232323}
-    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:#fff;font-weight:700}
-    .btn.gold{background:var(--gold);color:#000;border-color:var(--gold)}
-    .hero{position:relative;isolation:isolate}
-    .hero::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;filter:grayscale(10%) contrast(110%)}
-    .hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.75),rgba(0,0,0,.8))}
-    .hero-inner{position:relative;z-index:1;padding:48px 0}
-    .grid{display:grid;gap:18px}
-    .grid-3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-    .grid-4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
-    .card{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:18px}
-    footer{border-top:1px solid var(--line);padding:20px 0;margin-top:24px}
-    .sticky{position:sticky;bottom:0;background:rgba(0,0,0,.92);border-top:1px solid var(--line);padding:10px;margin-top:18px}
-    .sticky .container{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-    @media(max-width:860px){.menu{display:none}}
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Transformations | Garcia Builder</title>
+<meta name="description" content="Garcia Builder — elite online coaching with Trainerize + WhatsApp. Transformations, personalized programs, and accountability."/>
+<link rel="icon" href="assets/logo.png"/>
+<style>
+:root{
+  --bg:#0a0a0a; --panel:#0e0e10; --panel2:#111216; --text:#e7e7e7; --muted:#a8abb3;
+  --gold:#FFD700; --gold2:#e6c200; --line:#22242a; --ok:#25D366; --accent:#5cc8ff;
+  --max:1200px
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--gold);text-decoration:none}
+img{max-width:100%;height:auto}
+h1,h2,h3{color:var(--gold);margin:0 0 .6rem}
+p{line-height:1.8;margin:.4rem 0 1rem}
+.container{max-width:var(--max);margin:auto;padding:0 20px}
+/* nav */
+header{position:sticky;top:0;z-index:80;background:rgba(8,8,10,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{width:44px;height:44px;border-radius:12px;border:1px solid var(--line)}
+.menu{display:flex;gap:8px;flex-wrap:wrap}
+.menu a{padding:10px 12px;border-radius:12px;border:1px solid transparent}
+.menu a:hover{background:#12141a;border-color:#1e2128}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);color:#fff;font-weight:700}
+.btn.gold{background:var(--gold);color:#000;border-color:var(--gold)}
+.btn.ghost{background:transparent}
+.cta{display:flex;gap:8px;align-items:center}
+/* hero */
+.hero{position:relative;isolation:isolate}
+.hero::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1514996937319-344454492b37?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;filter:grayscale(8%) contrast(112%)}
+.hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.70),rgba(0,0,0,.84))}
+.hero-inner{position:relative;z-index:1;padding:62px 0}
+.hero-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
+.hero-card{background:rgba(18,18,24,.9);border:1px solid var(--line);border-radius:16px;padding:18px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.badge{padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:#151720;color:#dfe3ea;font-size:12px}
+.kpi{display:flex;gap:10px;margin-top:10px}
+.kpi div{flex:1;text-align:center;background:#0f1016;border:1px solid var(--line);border-radius:12px;padding:10px}
+.kpi .num{font-weight:800;font-size:24px}
+/* grids & cards */
+.grid{display:grid;gap:18px}
+.grid-3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.grid-4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:18px}
+.notice{background:#0f1016;border:1px solid var(--line);border-radius:12px;padding:12px}
+/* testimonials */
+.t{display:flex;gap:14px;align-items:flex-start}
+.t img{width:56px;height:56px;border-radius:50%;border:1px solid var(--line)}
+.stars{color:#ffdd57;font-size:14px;margin:2px 0 6px}
+/* before/after slider */
+.ba{position:relative;overflow:hidden;border-radius:16px;border:1px solid var(--line);height:340px;background:#0f1016}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ba .after{clip-path:inset(0 0 0 50%)}
+.ba input[type=range]{position:absolute;left:0;right:0;bottom:12px;margin:auto;width:60%}
+/* roster */
+.roster{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.roster .card h4{margin:0 0 6px}
+/* sticky */
+.sticky{position:sticky;bottom:0;background:rgba(6,6,8,.95);border-top:1px solid var(--line);padding:10px;margin-top:18px}
+.sticky .container{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+/* sections */
+.section{padding:26px 0}
+/* responsive */
+@media(max-width:900px){.hero-wrap{grid-template-columns:1fr}.menu{display:none}}
+</style>
 </head>
 <body>
 <header>
@@ -48,24 +79,42 @@
       <a href="about.html">About</a>
       <a href="programs.html">Programs</a>
       <a href="transformations.html">Transformations</a>
+      <a href="testimonials.html">Testimonials</a>
       <a href="pricing.html">Pricing</a>
       <a href="faq.html">FAQ</a>
       <a href="contact.html">Contact</a>
     </nav>
-    <div><a class="btn" href="https://calendly.com/andrenjulio072" target="_blank" rel="noopener">Book</a></div>
+    <div class="cta">
+      <a class="btn" href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/" target="_blank" rel="noopener">Trainerize</a>
+      <a class="btn gold" href="contact.html">Get My Plan</a>
+    </div>
   </div>
 </header>
 
-<div class="container" style="padding:28px 0">
+<div class="container section">
   <h1>Transformations</h1>
-  <p class="muted">Placeholders from Unsplash — replace with your real clients for maximum credibility.</p>
+  <p class="muted">Placeholders from Unsplash — replace with real client photos and metrics (kg lost, cm off, PRs) once we have consent.</p>
   <div class="grid grid-3">
-    <img src="https://images.unsplash.com/photo-1598970434795-0c54fe7c0642?q=80&w=900&auto=format&fit=crop" alt="Transformation 1"/>
-    <img src="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=900&auto=format&fit=crop" alt="Transformation 2"/>
-    <img src="https://images.unsplash.com/photo-1517638851339-bd77cb8280d7?q=80&w=900&auto=format&fit=crop" alt="Transformation 3"/>
-    <img src="https://images.unsplash.com/photo-1554344728-77cf90d9ed26?q=80&w=900&auto=format&fit=crop" alt="Transformation 4"/>
-    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=900&auto=format&fit=crop" alt="Transformation 5"/>
-    <img src="https://images.unsplash.com/photo-1571907480495-ae7c7457f055?q=80&w=900&auto=format&fit=crop" alt="Transformation 6"/>
+    <div class="ba">
+      <img class="before" src="https://images.unsplash.com/photo-1554344728-77cf90d9ed26?q=80&w=1200&auto=format&fit=crop" alt="Before">
+      <img class="after" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop" alt="After">
+      <input type="range" min="0" max="50" value="25" aria-label="Compare before/after">
+    </div>
+    <div class="ba">
+      <img class="before" src="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=1200&auto=format&fit=crop" alt="Before">
+      <img class="after" src="https://images.unsplash.com/photo-1598970434795-0c54fe7c0642?q=80&w=1200&auto=format&fit=crop" alt="After">
+      <input type="range" min="0" max="50" value="25" aria-label="Compare before/after">
+    </div>
+    <div class="ba">
+      <img class="before" src="https://images.unsplash.com/photo-1517638851339-bd77cb8280d7?q=80&w=1200&auto=format&fit=crop" alt="Before">
+      <img class="after" src="https://images.unsplash.com/photo-1571907480495-ae7c7457f055?q=80&w=1200&auto=format&fit=crop" alt="After">
+      <input type="range" min="0" max="50" value="25" aria-label="Compare before/after">
+    </div>
+  </div>
+  <div class="grid grid-3" style="margin-top:14px">
+    <img src="https://images.unsplash.com/photo-1534367610401-9f02a2cc5d10?q=80&w=1200&auto=format&fit=crop" alt="Transformation 4"/>
+    <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07f?q=80&w=1200&auto=format&fit=crop" alt="Transformation 5"/>
+    <img src="https://images.unsplash.com/photo-1571907480240-f4b5913d07a0?q=80&w=1200&auto=format&fit=crop" alt="Transformation 6"/>
   </div>
 </div>
 
@@ -73,16 +122,17 @@
   <div class="container">
     <a class="btn" href="https://wa.me/447508497586" target="_blank" rel="noopener">WhatsApp</a>
     <a class="btn" href="https://calendly.com/andrenjulio072" target="_blank" rel="noopener">Book a Session</a>
-    <a class="btn" href="https://trainerize.me/garciabuilder" target="_blank" rel="noopener">Trainerize</a>
+    <a class="btn" href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/" target="_blank" rel="noopener">Trainerize</a>
   </div>
 </div>
-<footer>
-  <div class="container">
-    <p>© <span id="year"></span> Garcia Builder — All rights reserved.</p>
-  </div>
-</footer>
+<footer><div class="container"><p>© <span id="year"></span> Garcia Builder — All rights reserved.</p></div></footer>
 <script>
-  document.addEventListener('DOMContentLoaded',function(){var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();});
+document.addEventListener('DOMContentLoaded',function(){var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();});
+// Before/After slider
+document.querySelectorAll('.ba').forEach(function(el){
+  var after = el.querySelector('.after');
+  var r = el.querySelector('input[type=range]');
+  if(after && r){ r.addEventListener('input', function(){ after.style.clipPath='inset(0 0 0 '+this.value+'%)'; }); }
+});
 </script>
-</body>
-</html>
+</body></html>

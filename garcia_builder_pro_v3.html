@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Garcia Builder — Elite Online Coaching (Trainerize • WhatsApp • Calendly)</title>
+  <meta name="description" content="Elite online coaching by Andre Garcia. Proven transformations, science-based programs, Trainerize integration, WhatsApp support, and easy booking. Weight loss, muscle gain, performance." />
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <link rel="preconnect" href="https://randomuser.me" crossorigin>
+  <meta property="og:title" content="Garcia Builder — Elite Online Coaching" />
+  <meta property="og:description" content="Transform your body with a proven system. Trainerize, WhatsApp, and Calendly built-in for a seamless online experience." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="icon" href="https://i.imgur.com/fj0aQzA.png" />
+  <style>
+    :root{
+      --bg:#000; --panel:#0b0b0b; --panel-2:#111; --text:#cfcfcf; --muted:#9a9a9a;
+      --gold:#FFD700; --gold-2:#e6c200; --line:#2b2b2b; --ok:#25D366; --danger:#ff3b30;
+      --max:1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    a{color:var(--gold);text-decoration:none}
+    img{max-width:100%;height:auto}
+    h1,h2,h3{color:var(--gold);margin:0 0 .6rem}
+    p{line-height:1.6;color:var(--text);margin:.4rem 0 1rem}
+    .container{max-width:var(--max);margin:auto;padding:0 20px}
+    .muted{color:var(--muted)}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    header{position:sticky;top:0;z-index:50;background:rgba(0,0,0,.85);backdrop-filter:saturate(160%) blur(6px);border-bottom:1px solid var(--line)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand img{width:44px;height:44px;border-radius:10px;border:1px solid var(--line)}
+    .brand strong{letter-spacing:.5px}
+    .actions{display:flex;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:10px;border:1px solid var(--line);background:var(--panel-2);color:#fff;font-weight:700;transition:.2s}
+    .btn:hover{transform:translateY(-1px);border-color:#3a3a3a}
+    .btn.gold{background:var(--gold);color:#000;border-color:var(--gold)}
+    .btn.gold:hover{background:var(--gold-2)}
+    .btn.ghost{background:transparent}
+    .btn.small{padding:8px 12px;font-size:14px}
+    .notice{background:#0f0f0f;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px}
+    /* Hero */
+    .hero{position:relative;isolation:isolate}
+    .hero::before{content:"";position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;filter:grayscale(10%) contrast(110%)}
+    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.7),rgba(0,0,0,.6) 40%,rgba(0,0,0,.85))}
+    .hero-inner{position:relative;z-index:1}
+    .hero-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center;padding:56px 0}
+    .hero h1{font-size:clamp(28px,4vw,48px)}
+    .hero p{color:#e8e8e8;max-width:680px}
+    .badges{display:flex;gap:14px;flex-wrap:wrap;margin:16px 0}
+    .badge{padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.04);font-size:14px;color:#e8e8e8}
+    .hero-card{background:rgba(17,17,17,.85);border:1px solid var(--line);border-radius:16px;padding:18px}
+    .hero-card h3{margin-bottom:8px}
+    .hero-card ul{margin:0;padding-left:18px;color:var(--muted)}
+    /* Sections */
+    .grid{display:grid;gap:18px}
+    .grid-3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+    .grid-4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+    .card{background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:18px}
+    .card h3{margin-bottom:6px}
+    .card p{color:var(--muted)}
+    .list-clean{list-style:none;padding-left:0;margin:0}
+    /* Transformations */
+    .trans{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .before-after{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#0e0e0e}
+    .before-after img{display:block;width:100%;height:220px;object-fit:cover}
+    .labels{position:absolute;inset:auto 0 0 0;display:flex}
+    .labels span{flex:1;text-align:center;background:rgba(0,0,0,.7);padding:6px 0;font-size:12px}
+    .labels span:first-child{background:#222}
+    /* Carousel */
+    .carousel{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:var(--panel-2)}
+    .track{display:flex;transition:transform .5s ease}
+    .slide{min-width:100%;padding:18px}
+    .testimonial{display:flex;gap:14px;align-items:flex-start}
+    .testimonial img{width:56px;height:56px;border-radius:50%;border:1px solid var(--line)}
+    .t-name{font-weight:700}
+    .dots{display:flex;gap:8px;justify-content:center;padding:10px 0}
+    .dot{width:8px;height:8px;border-radius:50%;background:#444}
+    .dot.active{background:var(--gold)}
+    /* Pricing */
+    .pricing{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .price{border:2px solid var(--gold);text-align:center}
+    .price h2{margin:8px 0 2px}
+    .price .tag{display:inline-block;margin:6px 0 12px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:#121212;color:#ddd;font-size:12px}
+    /* FAQ */
+    .faq details{background:#0f0f0f;border:1px solid var(--line);border-radius:12px;padding:12px}
+    .faq summary{cursor:pointer;font-weight:700;color:#e8e8e8}
+    .faq p{margin:.5rem 0 0}
+    /* Forms */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:99}
+    .modal{width:min(92vw,560px);background:#111;border:1px solid var(--line);border-radius:16px;padding:18px}
+    .modal h3{margin-bottom:8px}
+    .row{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+    input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #333;background:#0f0f0f;color:#eee}
+    label{font-size:14px;color:#dcdcdc}
+    .modal .btn{width:100%}
+    /* Sticky + float */
+    .sticky{position:sticky;bottom:0;z-index:48;background:rgba(0,0,0,.9);border-top:1px solid var(--line);padding:10px}
+    .sticky .container{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .float-wa{position:fixed;right:16px;bottom:16px;z-index:60;background:var(--ok);color:#fff;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+    /* Cookie banner */
+    .cookie{position:fixed;left:16px;right:16px;bottom:16px;background:#0f0f0f;border:1px solid var(--line);border-radius:12px;padding:12px;display:none;gap:10px;align-items:center;z-index:80}
+    .cookie p{margin:0;color:#ddd;font-size:14px}
+    /* Media logos (placeholders) */
+    .logos{display:flex;gap:22px;flex-wrap:wrap;align-items:center;opacity:.8}
+    .logo-badge{border:1px dashed #333;border-radius:10px;padding:8px 12px;font-size:14px;color:#aaa}
+    @media (max-width:860px){.hero-wrap{grid-template-columns:1fr}.actions{display:none}}
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Garcia Builder",
+    "image": "https://i.imgur.com/fj0aQzA.png",
+    "url": "https://garciabuilder.com",
+    "description": "Online personal training via Trainerize: weight loss, muscle gain, and performance coaching with WhatsApp support and easy booking.",
+    "address": {"@type": "PostalAddress", "addressCountry": "IE"},
+    "telephone": "+44 7508 497586",
+    "sameAs": ["https://instagram.com/garcia.builder"]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Andre Garcia",
+    "jobTitle": "Online Fitness Coach",
+    "worksFor": {"@type":"Organization","name":"Garcia Builder"},
+    "image": "https://i.imgur.com/fj0aQzA.png"
+  }
+  </script>
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <img src="https://i.imgur.com/fj0aQzA.png" alt="Garcia Builder logo" />
+        <strong>Garcia Builder</strong>
+      </div>
+      <div class="actions" aria-label="quick actions">
+        <a class="btn ghost" href="#programs">Programs</a>
+        <a class="btn ghost" href="#transformations">Transformations</a>
+        <a class="btn ghost" href="#faq">FAQ</a>
+        <a class="btn" href="https://calendly.com/andrenjulio072" target="_blank" rel="noopener">Book</a>
+        <a class="btn gold" href="#" onclick="openLead()">Get My Plan</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-wrap">
+          <div>
+            <h1>Online Coaching. Real Results.</h1>
+            <p>More than 10 years transforming bodies and minds. Science-based training, tailored nutrition, and relentless accountability — delivered fully online with Trainerize, WhatsApp, and easy booking.</p>
+            <div class="badges">
+              <span class="badge">10+ years experience</span>
+              <span class="badge">100+ transformations</span>
+              <span class="badge">PureGym leadership</span>
+              <span class="badge">Money-back guarantee</span>
+            </div>
+            <div class="logos" aria-label="as featured in (placeholders)">
+              <span class="logo-badge">Trainerize</span>
+              <span class="logo-badge">PureGym</span>
+              <span class="logo-badge">MyFitnessPal</span>
+              <span class="logo-badge">Apple Health</span>
+              <span class="logo-badge">Google Fit</span>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+              <a class="btn gold" href="#pricing">Start Today</a>
+              <a class="btn" href="https://calendly.com/andrenjulio072" target="_blank" rel="noopener">Free Consultation</a>
+              <a class="btn" href="https://trainerize.me/garciabuilder" target="_blank" rel="noopener">Join via Trainerize</a>
+            </div>
+          </div>
+          <aside class="hero-card" aria-label="what you get">
+            <h3>What you get</h3>
+            <ul>
+              <li>Personalized 4-week plan (updated monthly)</li>
+              <li>Nutrition guidance aligned to your goal</li>
+              <li>Weekly check-ins and progress tracking</li>
+              <li>Direct WhatsApp support</li>
+              <li>Trainerize app access (all in one place)</li>
+            </ul>
+            <div class="notice" style="margin-top:10px">Prefer everything in the app? <a href="https://trainerize.me/garciabuilder" target="_blank" rel="noopener">Join via Trainerize</a> and I’ll set you up in minutes.</div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="container" style="padding:36px 20px">
+      <h2>About Andre Garcia</h2>
+      <p><strong>Coach • Bodybuilder • Gym Leader</strong></p>
+      <p>I'm Andre Garcia, known as <em>Garcia Builder</em>. Over the last decade, I’ve coached people from all backgrounds: beginners, busy professionals, and motivated athletes. Assistant Gym Manager at PureGym, 13+ years of bodybuilding, and 100+ client transformations across fat loss, muscle gain, and performance.</p>
+      <div class="grid grid-4">
+        <div class="card"><h3>Credentials</h3><ul class="list-clean"><li>Level 3 Personal Trainer (UK)</li><li>First Aid/CPR</li><li>Nutrition for Sport & Exercise (cert.)</li><li>Hypertrophy & Strength Programming</li></ul></div>
+        <div class="card"><h3>Method</h3><p>Evidence-based programming, progressive overload, measurable milestones, and habit design. No gimmicks.</p></div>
+        <div class="card"><h3>Tool Stack</h3><ul class="list-clean"><li>Trainerize (plans & tracking)</li><li>WhatsApp (support)</li><li>MyFitnessPal (nutrition)</li><li>Wearables sync (Apple/Google)</li></ul></div>
+        <div class="card"><h3>Results</h3><p>Average 0.5–1.0 kg/month fat loss or 1–2 kg lean gain (individual results vary). Weekly adjustments based on real data.</p></div>
+      </div>
+      <div class="grid grid-3" style="margin-top:16px">
+        <div class="card"><h3>1) Assess</h3><p>Goal clarity, injury screening, schedule, equipment, and baseline metrics.</p></div>
+        <div class="card"><h3>2) Build</h3><p>Customized plan (training + nutrition). Clear targets and coaching cues.</p></div>
+        <div class="card"><h3>3) Execute</h3><p>Weekly check-ins, form reviews, and adjustments in Trainerize + WhatsApp.</p></div>
+      </div>
+    </section>
+
+    <section id="programs" class="container" style="padding:10px 20px 36px">
+      <h2>Programs</h2>
+      <div class="grid grid-3">
+        <div class="card"><h3>Weight Loss & Definition</h3><p>Burn fat while maintaining muscle. Step-by-step nutrition and progressive training that fits your life.</p><a class="btn gold" href="#" onclick="openLead()">Choose this</a></div>
+        <div class="card"><h3>Muscle Gain</h3><p>Hypertrophy methods, progressive overload, and metrics that guarantee steady growth.</p><a class="btn gold" href="#" onclick="openLead()">Choose this</a></div>
+        <div class="card"><h3>Elite Performance</h3><p>Conditioning, strength and speed. Includes Bleep Test prep and athletic circuits.</p><a class="btn gold" href="#" onclick="openLead()">Choose this</a></div>
+      </div>
+    </section>
+
+    <section id="transformations" class="container" style="padding:10px 20px 36px">
+      <h2>Transformations Portfolio</h2>
+      <p class="muted">Real people. Real results. (Replace placeholders with your client photos.)</p>
+      <div class="trans">
+        <figure class="before-after"><img loading="lazy" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1554344728-77cf90d9ed26?q=80&w=1200&auto=format&fit=crop" alt="Before and after transformation 1"><div class="labels"><span>Before</span><span>After</span></div></figure>
+        <figure class="before-after"><img loading="lazy" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1598970434795-0c54fe7c0642?q=80&w=1200&auto=format&fit=crop" alt="Before and after transformation 2"></figure>
+        <figure class="before-after"><img loading="lazy" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=1200&auto=format&fit=crop" alt="Before and after transformation 3"><div class="labels"><span>Before</span><span>After</span></div></figure>
+        <figure class="before-after"><img loading="lazy" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1517638851339-bd77cb8280d7?q=80&w=1200&auto=format&fit=crop" alt="Before and after transformation 4"></figure>
+        <figure class="before-after"><img loading="lazy" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop" alt="Before and after transformation 5"><div class="labels"><span>Before</span><span>After</span></div></figure>
+        <figure class="before-after"><img loading="lazy" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1571907480495-ae7c7457f055?q=80&w=1200&auto=format&fit=crop" alt="Before and after transformation 6"></figure>
+        <figure class="before-after"><img loading="lazy" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=1200&auto=format&fit=crop" alt="Before and after transformation 7"><div class="labels"><span>Before</span><span>After</span></div></figure>
+        <figure class="before-after"><img loading="lazy" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1521805103424-d8f8430e8933?q=80&w=1200&auto=format&fit=crop" alt="Before and after transformation 8"></figure>
+      </div>
+    </section>
+
+    <section id="testimonials" class="container" style="padding:10px 20px 36px">
+      <h2>What Clients Say</h2>
+      <div class="carousel" aria-roledescription="carousel">
+        <div class="track" id="track">
+          <div class="slide"><div class="testimonial"><img loading="lazy" src="https://randomuser.me/api/portraits/women/1.jpg" alt="Mariana"><div><div class="t-name">Mariana, 28</div><p>“12kg down in 3 months. I finally love the mirror again. Andre keeps me accountable — that’s the difference.”</p></div></div></div>
+          <div class="slide"><div class="testimonial"><img loading="lazy" src="https://randomuser.me/api/portraits/men/2.jpg" alt="Lucas"><div><div class="t-name">Lucas, 32</div><p>“I stalled for years. With Andre, I learned to train properly and measure progress. Stronger every week.”</p></div></div></div>
+          <div class="slide"><div class="testimonial"><img loading="lazy" src="https://randomuser.me/api/portraits/men/3.jpg" alt="Felipe"><div><div class="t-name">Felipe, 24</div><p>“Six months, new body. Clear plan, simple app, and real feedback. Best decision I made.”</p></div></div></div>
+          <div class="slide"><div class="testimonial"><img loading="lazy" src="https://randomuser.me/api/portraits/women/4.jpg" alt="Anna"><div><div class="t-name">Anna, 30</div><p>“Lean, strong, confident. The weekly check-ins kept me focused through busy weeks.”</p></div></div></div>
+          <div class="slide"><div class="testimonial"><img loading="lazy" src="https://randomuser.me/api/portraits/men/5.jpg" alt="David"><div><div class="t-name">David, 35</div><p>“He pushed me past my limits safely. My knees feel better than ever and I’m faster.”</p></div></div></div>
+          <div class="slide"><div class="testimonial"><img loading="lazy" src="https://randomuser.me/api/portraits/women/6.jpg" alt="Sarah"><div><div class="t-name">Sarah, 26</div><p>“Best investment in myself. I’ve kept the results because the habits stuck.”</p></div></div></div>
+          <div class="slide"><div class="testimonial"><img loading="lazy" src="https://randomuser.me/api/portraits/men/7.jpg" alt="Tom"><div><div class="t-name">Tom, 41</div><p>“Dropped 9kg and my back pain is gone. The habit-building system works.”</p></div></div></div>
+          <div class="slide"><div class="testimonial"><img loading="lazy" src="https://randomuser.me/api/portraits/women/8.jpg" alt="Elena"><div><div class="t-name">Elena, 33</div><p>“Busy schedule, real progress. Plans adapted around my life — not the other way around.”</p></div></div></div>
+        </div>
+        <div class="dots" id="dots" aria-label="carousel pagination"></div>
+      </div>
+    </section>
+
+    <section id="pricing" class="container" style="padding:10px 20px 36px">
+      <h2>Packages & Pricing</h2>
+      <div class="grid pricing">
+        <div class="card price"><div class="tag">Starter</div><h2>£79/mo</h2><p>Personalized program • WhatsApp support • Monthly update</p><a class="btn gold" href="#" onclick="openLead()">Join Now</a></div>
+        <div class="card price"><div class="tag">Most Popular — Evolution</div><h2>£129/mo</h2><p>Everything in Starter • Nutrition plan • Weekly check-ins • Video guides</p><a class="btn gold" href="#" onclick="openLead()">Secure My Spot</a></div>
+        <div class="card price"><div class="tag">Elite Builder</div><h2>£199/mo</h2><p>Everything in Evolution • 1:1 sessions (in-person/video) • Unlimited adjustments</p><a class="btn gold" href="#" onclick="openLead()">Go Elite</a></div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <a class="btn" href="https://buy.stripe.com/test_XXXXXX" target="_blank" rel="noopener">Pay Deposit (Stripe)</a>
+        <a class="btn" href="https://trainerize.me/garciabuilder" target="_blank" rel="noopener">Join via Trainerize</a>
+      </div>
+      <p class="muted" style="margin-top:8px">30-day results guarantee — follow the plan and see progress, or get your money back.</p>
+    </section>
+
+    <section id="faq" class="container" style="padding:10px 20px 36px">
+      <h2>FAQ</h2>
+      <div class="grid faq">
+        <details><summary>How does the online coaching work?</summary><p>We connect via Trainerize for your plan, check-ins, and tracking. WhatsApp is used for quick support. Book your intro call on Calendly and we start with a clear assessment.</p></details>
+        <details><summary>Do I need a gym?</summary><p>No. I can design home-based programs with minimal equipment. If you have a gym, even better — we’ll use it for faster progress.</p></details>
+        <details><summary>What about nutrition?</summary><p>Simple, flexible guidelines aligned to your goal and lifestyle. No extreme restrictions — sustainable results only.</p></details>
+        <details><summary>Money-back guarantee?</summary><p>If you follow the plan for 30 days and don’t see progress, I’ll refund you.</p></details>
+        <details><summary>How fast can I start?</summary><p>Same day. Fill the form or message on WhatsApp and I’ll set you up in Trainerize.</p></details>
+        <details><summary>Can you work around injuries?</summary><p>Yes. We’ll assess limitations and adapt exercises with safe progressions.</p></details>
+        <details><summary>Do you offer competition prep?</summary><p>Yes — on case-by-case basis. Book a consultation and we’ll discuss timelines and readiness.</p></details>
+      </div>
+    </section>
+  </main>
+
+  <div class="sticky">
+    <div class="container">
+      <a class="btn small" href="https://wa.me/447508497586" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn small" href="https://calendly.com/andrenjulio072" target="_blank" rel="noopener">Book a Session</a>
+      <a class="btn small" href="https://trainerize.me/garciabuilder" target="_blank" rel="noopener">Trainerize</a>
+      <a class="btn gold small" href="#" onclick="openLead()">Get My Plan</a>
+    </div>
+  </div>
+
+  <a class="float-wa" href="https://wa.me/447508497586" aria-label="Chat on WhatsApp">💬</a>
+
+  <!-- Lead Capture Modal (GDPR consent) -->
+  <div id="lead" class="overlay" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3>Get Your Personalized Plan</h3>
+      <div class="row">
+        <label class="sr-only" for="name">Name</label>
+        <input id="name" placeholder="Name" />
+        <label class="sr-only" for="email">Email</label>
+        <input id="email" placeholder="Email" type="email" />
+      </div>
+      <div class="row">
+        <label class="sr-only" for="phone">WhatsApp</label>
+        <input id="phone" placeholder="WhatsApp (optional)" />
+        <label class="sr-only" for="goal">Goal</label>
+        <select id="goal">
+          <option value="">Select Goal</option>
+          <option>Lose Weight</option>
+          <option>Gain Muscle</option>
+          <option>Performance</option>
+        </select>
+      </div>
+      <label for="notes">Notes</label>
+      <textarea id="notes" rows="4" placeholder="Tell me about your current routine or any injury"></textarea>
+      <label style="display:flex;gap:8px;align-items:start;margin:10px 0 0">
+        <input type="checkbox" id="consent" />
+        <span>I agree to be contacted via WhatsApp/email and to the <a href="#privacy">Privacy Policy</a>.</span>
+      </label>
+      <div style="display:flex;gap:10px;margin-top:10px">
+        <button class="btn gold" onclick="submitLead()">Send</button>
+        <button class="btn" onclick="closeLead()">Close</button>
+      </div>
+      <p class="muted" style="margin-top:8px">We do not share your data with third parties.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container foot-cols">
+      <div>
+        <h3>Garcia Builder</h3>
+        <p>Online coaching powered by Trainerize. Direct WhatsApp support. Book your call and start today.</p>
+        <small>© <span id="year"></span> Garcia Builder. All rights reserved.</small>
+      </div>
+      <div>
+        <h3>Quick Links</h3>
+        <p><a href="#programs">Programs</a> • <a href="#transformations">Transformations</a> • <a href="#pricing">Pricing</a> • <a href="#faq">FAQ</a></p>
+        <p><a href="https://trainerize.me/garciabuilder" target="_blank" rel="noopener">Trainerize</a> • <a href="https://calendly.com/andrenjulio072" target="_blank" rel="noopener">Calendly</a></p>
+      </div>
+      <div id="privacy">
+        <h3>Privacy</h3>
+        <p class="muted">Your data is used to provide coaching services. We do not sell or share your data. To request deletion, email <a href="mailto:contact@garciabuilder.com">contact@garciabuilder.com</a>.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cookie" id="cookie">
+    <p>We use cookies to improve your experience. <a href="#privacy">Learn more</a>.</p>
+    <button class="btn gold small" onclick="acceptCookie()">Accept</button>
+  </div>
+
+  <script defer>
+    document.addEventListener('DOMContentLoaded', function(){
+      // Year
+      var yearEl = document.getElementById('year');
+      if(yearEl){ yearEl.textContent = new Date().getFullYear(); }
+
+      // Lead modal
+      window.openLead = function(){ var el=document.getElementById('lead'); if(el) el.style.display='flex'; }
+      window.closeLead = function(){ var el=document.getElementById('lead'); if(el) el.style.display='none'; }
+
+      // Quiz modal (not visible by default on v3; hooks kept for future)
+      window.openQuiz = function(){ var el=document.getElementById('quiz'); if(el) el.style.display='flex'; }
+      window.closeQuiz = function(){ var el=document.getElementById('quiz'); if(el) el.style.display='none'; }
+
+      // Engagement trigger (gentle)
+      setTimeout(function(){ if(window.openLead) window.openLead(); }, 25000);
+
+      // Submit lead → WhatsApp fallback + mailto backup
+      window.submitLead = function(){
+        var name=(document.getElementById('name')||{}).value||'';
+        var email=(document.getElementById('email')||{}).value||'';
+        var phone=(document.getElementById('phone')||{}).value||'';
+        var goal=(document.getElementById('goal')||{}).value||'';
+        var notes=(document.getElementById('notes')||{}).value||'';
+        var consent=(document.getElementById('consent')||{}).checked||false;
+        if(!name.trim()||!email.trim()||!goal){ alert('Please fill name, email, and goal'); return; }
+        if(!consent){ alert('Please accept the Privacy Policy'); return; }
+        var msg=encodeURIComponent('New Lead — Garcia Builder%0AName: '+name+'%0AEmail: '+email+'%0AWhatsApp: '+phone+'%0AGoal: '+goal+'%0ANotes: '+notes);
+        var waUrl='https://wa.me/447508497586?text='+msg;
+        var w = window.open(waUrl,'_blank');
+        if(!w || w.closed || typeof w.closed==='undefined'){
+          // fallback to email
+          window.location.href = 'mailto:contact@garciabuilder.com?subject=New Lead — Garcia Builder&body='+msg;
+        }
+        if(window.closeLead) window.closeLead();
+      };
+
+      // Testimonials carousel (robust guards)
+      var track=document.getElementById('track');
+      var dotsWrap=document.getElementById('dots');
+      if(track && dotsWrap){
+        var slides=[].slice.call(track.children);
+        if(slides.length){
+          slides.forEach(function(_,i){
+            var d=document.createElement('div'); d.className='dot'+(i===0?' active':''); d.onclick=function(){ go(i); }; dotsWrap.appendChild(d);
+          });
+          var index=0;
+          function update(){
+            track.style.transform='translateX(-'+(index*100)+'%)';
+            [].slice.call(dotsWrap.children).forEach(function(d,di){ d.classList.toggle('active',di===index); });
+          }
+          function go(i){ index=i; update(); }
+          setInterval(function(){ index=(index+1)%slides.length; update(); }, 4000);
+          update();
+        }
+      }
+
+      // Cookie banner
+      var cookie=document.getElementById('cookie');
+      window.acceptCookie=function(){ try{ localStorage.setItem('gb_cookie_ok','1'); }catch(e){} if(cookie) cookie.style.display='none'; };
+      try{ if(!localStorage.getItem('gb_cookie_ok') && cookie){ cookie.style.display='flex'; } }catch(e){ if(cookie) cookie.style.display='flex'; }
+    });
+  </script>
+  <noscript>
+    <div style="background:#111;color:#eee;padding:12px;text-align:center;border-top:1px solid #2b2b2b;border-bottom:1px solid #2b2b2b;">
+      This site works best with JavaScript enabled. You can still contact me at
+      <a href="mailto:contact@garciabuilder.com">contact@garciabuilder.com</a> or WhatsApp <a href="https://wa.me/447508497586">+44 7508 497586</a>.
+    </div>
+  </noscript>
+</body>
+</html>

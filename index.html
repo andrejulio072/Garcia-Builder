@@ -1,146 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Home | Garcia Builder</title>
-<meta name="description" content="Garcia Builder — elite online coaching with Trainerize + WhatsApp. Transformations, personalized programs, and accountability."/>
-<link rel="icon" href="assets/logo.png"/>
-<style>
-:root{
-  --bg:#0a0a0a; --panel:#0e0e10; --panel2:#111216; --text:#e7e7e7; --muted:#a8abb3;
-  --gold:#FFD700; --gold2:#e6c200; --line:#22242a; --ok:#25D366; --accent:#5cc8ff;
-  --max:1200px
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-a{color:var(--gold);text-decoration:none}
-img{max-width:100%;height:auto}
-h1,h2,h3{color:var(--gold);margin:0 0 .6rem}
-p{line-height:1.8;margin:.4rem 0 1rem}
-.container{max-width:var(--max);margin:auto;padding:0 20px}
-/* nav */
-header{position:sticky;top:0;z-index:80;background:rgba(8,8,10,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
-.nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
-.brand{display:flex;align-items:center;gap:10px}
-.brand img{width:44px;height:44px;border-radius:12px;border:1px solid var(--line)}
-.menu{display:flex;gap:8px;flex-wrap:wrap}
-.menu a{padding:10px 12px;border-radius:12px;border:1px solid transparent}
-.menu a:hover{background:#12141a;border-color:#1e2128}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);color:#fff;font-weight:700}
-.btn.gold{background:var(--gold);color:#000;border-color:var(--gold)}
-.btn.ghost{background:transparent}
-.cta{display:flex;gap:8px;align-items:center}
-/* hero */
-.hero{position:relative;isolation:isolate}
-.hero::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1514996937319-344454492b37?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;filter:grayscale(8%) contrast(112%)}
-.hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.70),rgba(0,0,0,.84))}
-.hero-inner{position:relative;z-index:1;padding:62px 0}
-.hero-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
-.hero-card{background:rgba(18,18,24,.9);border:1px solid var(--line);border-radius:16px;padding:18px}
-.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.badge{padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:#151720;color:#dfe3ea;font-size:12px}
-.kpi{display:flex;gap:10px;margin-top:10px}
-.kpi div{flex:1;text-align:center;background:#0f1016;border:1px solid var(--line);border-radius:12px;padding:10px}
-.kpi .num{font-weight:800;font-size:24px}
-/* grids & cards */
-.grid{display:grid;gap:18px}
-.grid-3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-.grid-4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
-.card{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:18px}
-.notice{background:#0f1016;border:1px solid var(--line);border-radius:12px;padding:12px}
-/* testimonials */
-.t{display:flex;gap:14px;align-items:flex-start}
-.t img{width:56px;height:56px;border-radius:50%;border:1px solid var(--line)}
-.stars{color:#ffdd57;font-size:14px;margin:2px 0 6px}
-/* before/after slider */
-.ba{position:relative;overflow:hidden;border-radius:16px;border:1px solid var(--line);height:340px;background:#0f1016}
-.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.ba .after{clip-path:inset(0 0 0 50%)}
-.ba input[type=range]{position:absolute;left:0;right:0;bottom:12px;margin:auto;width:60%}
-/* roster */
-.roster{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-.roster .card h4{margin:0 0 6px}
-/* sticky */
-.sticky{position:sticky;bottom:0;background:rgba(6,6,8,.95);border-top:1px solid var(--line);padding:10px;margin-top:18px}
-.sticky .container{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-/* sections */
-.section{padding:26px 0}
-/* responsive */
-@media(max-width:900px){.hero-wrap{grid-template-columns:1fr}.menu{display:none}}
-</style>
+  <title>Garcia Builder — Elite Online Coaching</title>
+  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f0f17" />
+  <link rel="icon" href="assets/logo.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/swiper@9/swiper-bundle.min.css"/>
+  <script src="https://unpkg.com/swiper@9/swiper-bundle.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css"/>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+  <script src="https://kit.fontawesome.com/5f1d6d1a8a.js" crossorigin="anonymous"></script>
+  <style>
+    :root{
+      --bg:#0b0f15; --panel:#0d121b; --panel2:#101726; --line:#1b2433;
+      --text:#e6e9ef; --muted:#a7b0c0; --gold:#ffd54a; --accent:#60a5fa; --ok:#22c55e;
+    }
+    body{background:linear-gradient(180deg,#070b11,#0b0f15); color:var(--text);}
+    .glass{background:rgba(16,23,38,.6); backdrop-filter: blur(10px); border:1px solid var(--line)}
+    .btn{ display:inline-flex; align-items:center; justify-content:center; padding:.6rem 1rem; border-radius: .9rem; font-weight:700; border:1px solid var(--line); background:var(--panel2);}
+    .btn-primary{ background:var(--gold); color:#0b0f15; border-color:var(--gold); }
+    .btn-outline{ background:transparent; }
+    .gradient-title{background:linear-gradient(90deg,#ffd54a,#f59e0b,#f97316);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.75))}
+    .section{padding:48px 0}
+    .nav-shadow{box-shadow:0 6px 24px rgba(0,0,0,.25)}
+    .pattern{background-image: radial-gradient(transparent 1px, rgba(255,255,255,0.03) 1px); background-size: 12px 12px;}
+  </style>
+
 </head>
-<body>
-<header>
-  <div class="container nav">
-    <a class="brand" href="index.html"><img src="assets/logo.png" alt="Garcia Builder logo"/><strong>Garcia Builder</strong></a>
-    <nav class="menu" aria-label="main navigation">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="programs.html">Programs</a>
-      <a href="transformations.html">Transformations</a>
-      <a href="testimonials.html">Testimonials</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="faq.html">FAQ</a>
-      <a href="contact.html">Contact</a>
+<body class="pattern">
+  
+<header class="sticky top-0 z-50 bg-[#0b0f15]/90 nav-shadow">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3">
+      <img src="assets/logo.png" class="w-10 h-10 rounded-lg border border-[var(--line)]" alt="Garcia Builder logo">
+      <span class="font-semibold tracking-wide">Garcia Builder</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-2">
+      <a class="btn btn-outline" href="index.html">Home</a>
+      <a class="btn btn-outline" href="about.html">About</a>
+      <a class="btn btn-outline" href="transformations.html">Transformations</a>
+      <a class="btn btn-outline" href="testimonials.html">Testimonials</a>
+      <a class="btn btn-outline" href="pricing.html">Pricing</a>
+      <a class="btn btn-outline" href="contact.html">Contact</a>
+      <a class="btn btn-primary" href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/" target="_blank" rel="noopener">Trainerize</a>
     </nav>
-    <div class="cta">
-      <a class="btn" href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/" target="_blank" rel="noopener">Trainerize</a>
-      <a class="btn gold" href="contact.html">Get My Plan</a>
-    </div>
+    <a class="md:hidden btn btn-primary" href="contact.html">Get Plan</a>
   </div>
 </header>
 
-<section class="hero">
-  <div class="container hero-inner">
-    <div class="hero-wrap">
-      <div>
-        <h1 style="font-size:clamp(28px,4vw,50px)">Online Coaching. Real Results.</h1>
-        <p style="max-width:760px">Train smart, eat simple and stay accountable — delivered fully online via Trainerize and WhatsApp.</p>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-          <a class="btn gold" href="pricing.html">Start Today</a>
-          <a class="btn" href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/" target="_blank" rel="noopener">Join via Trainerize</a>
+  <!-- HERO -->
+  <section class="relative">
+    <video autoplay muted loop playsinline class="w-full h-[72vh] object-cover">
+      <source src="https://cdn.coverr.co/videos/coverr-man-doing-bicep-curls-3662/1080p.mp4" type="video/mp4"/>
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="absolute inset-0 flex items-center">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="glass rounded-2xl p-6 md:p-8 max-w-2xl" data-aos="fade-up">
+          <h1 class="text-3xl md:text-5xl font-extrabold gradient-title">Online Coaching. Real Results.</h1>
+          <p class="mt-3 text-[var(--muted)]">Science-based training, simple nutrition, and relentless accountability — delivered fully online via Trainerize and WhatsApp.</p>
+          <div class="flex flex-wrap gap-3 mt-4">
+            <a class="btn btn-primary" href="pricing.html">Start Today</a>
+            <a class="btn" href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/" target="_blank">Join via Trainerize</a>
+          </div>
+          <div class="mt-4 flex flex-wrap gap-2 text-sm text-[var(--muted)]">
+            <span class="px-2 py-1 rounded-full border border-[var(--line)]">100+ transformations</span>
+            <span class="px-2 py-1 rounded-full border border-[var(--line)]">10+ years</span>
+            <span class="px-2 py-1 rounded-full border border-[var(--line)]">Evidence-based</span>
+          </div>
         </div>
-        <div class="badges"><span class="badge">100+ transformations</span><span class="badge">10+ years</span><span class="badge">Evidence-based</span><span class="badge">Money-back guarantee</span></div>
-        <div class="kpi"><div><div class="num">98%</div><div class="muted">Satisfaction</div></div><div><div class="num">8–12w</div><div class="muted">Visible change</div></div><div><div class="num">24/7</div><div class="muted">Support</div></div></div>
       </div>
-      <aside class="hero-card">
-        <h3>What You Get</h3>
-        <ul style="margin:0;padding-left:18px;color:#cfd3db">
-          <li>Personal plan (training + nutrition)</li>
-          <li>Weekly check-ins & progress tracking</li>
-          <li>Direct WhatsApp support</li>
-          <li>Trainerize app access</li>
-        </ul>
-        <div class="notice" style="margin-top:12px">Prefer everything in the app? <a href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/" target="_blank">Join via Trainerize</a> and I’ll set you up in minutes.</div>
-      </aside>
+    </div>
+  </section>
+
+  <!-- FEATURE CARDS -->
+  <section class="section">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-4">
+      <div class="glass rounded-2xl p-6" data-tilt data-aos="fade-up">
+        <h3 class="text-xl font-bold text-yellow-300">Personalized Plans</h3>
+        <p class="text-[var(--muted)]">Programs adapted to your schedule, equipment and goal.</p>
+      </div>
+      <div class="glass rounded-2xl p-6" data-tilt data-aos="fade-up" data-aos-delay="100">
+        <h3 class="text-xl font-bold text-yellow-300">Nutrition Made Simple</h3>
+        <p class="text-[var(--muted)]">Flexible guidance that fits your lifestyle. No extreme restrictions.</p>
+      </div>
+      <div class="glass rounded-2xl p-6" data-tilt data-aos="fade-up" data-aos-delay="200">
+        <h3 class="text-xl font-bold text-yellow-300">Accountability</h3>
+        <p class="text-[var(--muted)]">Weekly check-ins and WhatsApp support keep you consistent.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRANSFORMATION SLIDER -->
+  <section class="section bg-[url('https://images.unsplash.com/photo-1519648023493-d82b5f8d7fd9?q=80&w=1920&auto=format&fit=crop')] bg-cover bg-center">
+    <div class="bg-black/70 py-10">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-3xl font-extrabold mb-4">Transformations</h2>
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><a href="assets/client-paulo-beforeafter.png" class="glightbox" data-gallery="t"><img class="rounded-xl border border-[var(--line)]" src="assets/client-paulo-beforeafter.png" alt="Paulo -7kg in 12w"></a></div>
+            <div class="swiper-slide"><a href="assets/client-2.png" class="glightbox" data-gallery="t"><img class="rounded-xl border border-[var(--line)]" src="assets/client-2.png" alt="Client 2"></a></div>
+            <div class="swiper-slide"><a href="assets/client-3.png" class="glightbox" data-gallery="t"><img class="rounded-xl border border-[var(--line)]" src="assets/client-3.png" alt="Client 3"></a></div>
+            <div class="swiper-slide"><a href="assets/client-4.png" class="glightbox" data-gallery="t"><img class="rounded-xl border border-[var(--line)]" src="assets/client-4.png" alt="Client 4"></a></div>
+            <div class="swiper-slide"><a href="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop" class="glightbox" data-gallery="t"><img class="rounded-xl border border-[var(--line)]" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop" alt="Placeholder"></a></div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <section class="section">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-4">
+      <a class="btn btn-primary rounded-2xl text-center" href="contact.html">Get My Plan</a>
+      <a class="btn rounded-2xl text-center" href="pricing.html">See Packages</a>
+      <a class="btn rounded-2xl text-center" href="https://wa.me/447508497586" target="_blank"><i class="fa-brands fa-whatsapp mr-2"></i>WhatsApp Me</a>
+    </div>
+  </section>
+
+  
+<footer class="border-t border-[var(--line)] mt-10">
+  <div class="max-w-6xl mx-auto px-4 py-6 flex flex-wrap gap-3 items-center justify-between">
+    <p>© <span id="year"></span> Garcia Builder — All rights reserved.</p>
+    <div class="flex gap-2">
+      <a class="btn" href="https://wa.me/447508497586" target="_blank"><i class="fa-brands fa-whatsapp mr-2"></i>WhatsApp</a>
+      <a class="btn" href="https://calendly.com/andrenjulio072" target="_blank"><i class="fa-regular fa-calendar mr-2"></i>Book</a>
+      <a class="btn" href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/" target="_blank">Trainerize</a>
     </div>
   </div>
-</section>
-
-<section class="container section">
-  <div class="grid grid-3">
-    <div class="card"><h3>Personalized Plans</h3><p>Programs adapted to your schedule, equipment and goal.</p></div>
-    <div class="card"><h3>Nutrition Made Simple</h3><p>Flexible guidance that fits your lifestyle.</p></div>
-    <div class="card"><h3>Accountability</h3><p>Weekly check-ins and WhatsApp keep you consistent.</p></div>
-  </div>
-</section>
-
-<div class="sticky">
-  <div class="container">
-    <a class="btn" href="https://wa.me/447508497586" target="_blank" rel="noopener">WhatsApp</a>
-    <a class="btn" href="https://calendly.com/andrenjulio072" target="_blank" rel="noopener">Book a Session</a>
-    <a class="btn" href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/" target="_blank" rel="noopener">Trainerize</a>
-  </div>
-</div>
-<footer><div class="container"><p>© <span id="year"></span> Garcia Builder — All rights reserved.</p></div></footer>
+</footer>
 <script>
-document.addEventListener('DOMContentLoaded',function(){var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();});
-// Before/After slider
-document.querySelectorAll('.ba').forEach(function(el){
-  var after = el.querySelector('.after');
-  var r = el.querySelector('input[type=range]');
-  if(after && r){ r.addEventListener('input', function(){ after.style.clipPath='inset(0 0 0 '+this.value+'%)'; }); }
-});
+  document.getElementById('year').textContent = new Date().getFullYear();
+  AOS.init({ once:true, duration:700, offset:80 });
+  GLightbox({ selector: '.glightbox' });
+  document.querySelectorAll('[data-tilt]').forEach(el=>VanillaTilt.init(el,{max:8,scale:1.02,speed:300}));
 </script>
-</body></html>
+
+  <script>
+    new Swiper('.mySwiper', { slidesPerView: 1.2, spaceBetween: 16, centeredSlides: true, loop: true,
+      pagination: { el: '.swiper-pagination', clickable:true },
+      breakpoints: { 768: { slidesPerView: 2.2 }, 1024: { slidesPerView: 3.2 } }
+    });
+  </script>
+</body>
+</html>

@@ -1,59 +1,72 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Garcia Builder</title>
+<title>FAQ – Garcia Builder</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/global.css">
-<link rel="alternate" id="dynamic-lang" href="?lang=en">
 </head><body>
-  <div class="navbar">
-    <div class="container inner">
-      <a class="brand" href="index.html"><img src="assets/logo.png" alt="G"> <span class="text-glow title-gradient">Garcia&nbsp;Builder</span></a>
-      <nav class="nav">
-        <a data-i18n="nav.home" href="index.html">Home</a>
-        <a data-i18n="nav.programs" href="programs.html">Programs</a>
-        <a data-i18n="nav.pricing" href="pricing.html">Pricing</a>
-        <a data-i18n="nav.transformations" href="transformations.html">Transformations</a>
-        <a data-i18n="nav.testimonials" href="testimonials.html">Testimonials</a>
-        <a data-i18n="nav.about" href="about.html">About</a>
-        <a data-i18n="nav.faq" href="faq.html">FAQ</a>
-        <a data-i18n="nav.contact" href="contact.html">Contact</a>
-      </nav>
-      <div class="lang">
-        <span class="small">🌐</span>
-        <select id="lang-select">
-          <option value="en">EN</option>
-          <option value="pt">PT</option>
-          <option value="es">ES</option>
-        </select>
-      </div>
+<nav class="navbar"><div class="container inner">
+  <a class="brand" href="index.html"><img src="assets/logo.png"><span class="title-gradient">Garcia&nbsp;Builder</span></a>
+  <nav class="nav">
+    <a data-i18n="nav.home" href="index.html">Home</a>
+    <a data-i18n="nav.about" href="about.html">About</a>
+    <a data-i18n="nav.trans" href="transformations.html">Transformations</a>
+    <a data-i18n="nav.testi" href="testimonials.html">Testimonials</a>
+    <a data-i18n="nav.pricing" href="pricing.html">Pricing</a>
+    <a data-i18n="nav.faq" href="faq.html">FAQ</a>
+    <a data-i18n="nav.contact" href="contact.html">Contact</a>
+  </nav>
+  <div class="lang"><select id="lang-select"><option value="en">EN</option><option value="pt">PT</option><option value="es">ES</option></select></div>
+</div></nav>
+
+<section class="section" style="background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.85)),url('https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;">
+  <div class="container">
+    <h1 class="title-gradient text-glow" data-i18n="faq.title">Frequently Asked Questions</h1>
+    <input id="faq-search" class="search mt-3" placeholder="Search..." data-i18n-ph="Search">
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="accordion" id="faqAccordion">
+      <!-- JS injeta conteúdo -->
     </div>
   </div>
-
-  <section class="section">
-    <div class="container">
-      <div class="h2 title-gradient text-glow" data-i18n="faq.title">Frequently Asked Questions</div>
-      <div class="grid grid-2 mt-24">
-        <div class="card p-24">
-          <div class="h3">How do check-ins work?</div>
-          <p>Weekly forms + video feedback (as needed). We adjust training and nutrition based on your data.</p>
-        </div>
-        <div class="card p-24">
-          <div class="h3">Do I need a gym?</div>
-          <p>No. I can build a full home plan. Gym plans also available.</p>
-        </div>
-        <div class="card p-24">
-          <div class="h3">Is nutrition included?</div>
-          <p>Yes — targets, templates and simple recipes aligned to your goal.</p>
-        </div>
-        <div class="card p-24">
-          <div class="h3">How fast will I see results?</div>
-          <p>Most clients notice changes within 2–4 weeks; bigger visual changes often appear 8–12 weeks in.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="footer">
-    <div class="container small">© 2025 Garcia Builder — Online Coaching</div>
+</section>
+<script>
+const Q=[
+['How does online coaching work?','Trainerize + WhatsApp. Ajustes semanais.'],
+['Do I need a gym?','Não. Plano completo em casa ou academia.'],
+['Is nutrition included?','Sim. Diretrizes simples e flexíveis.'],
+['Beginner?','Perfeito: base de técnica e hábitos.'],
+['Injuries?','Progredimos com substituições inteligentes.'],
+['How fast results?','2–4 semanas iniciais; 8–12 maiores.'],
+['Countries?','Mundo todo (EN/PT/ES).'],
+['Payments?','Mensal via Trainerize/Stripe.'],
+['Check-in day?','Semanal por padrão.'],
+['Equipment?','De peso corporal a academia completa.']
+];
+const wrap=document.getElementById('faqAccordion');
+wrap.innerHTML=Q.map((qa,i)=>`
+<div class="accordion-item mb-2">
+  <h2 class="accordion-header" id="h${i}">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c${i}">${qa[0]}</button>
+  </h2>
+  <div id="c${i}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+    <div class="accordion-body">${qa[1]}</div>
   </div>
-<script src="js/i18n.js"></script>
+</div>`).join('');
+</script>
+
+<hr class="hr-shine">
+<div class="footer"><div class="container small">© 2025 Garcia Builder — Online Coaching</div></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/i18n.js"></script>
+<script src="js/app.js"></script>
+<script>
+const lb=document.createElement('div'); lb.style.cssText='position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.85);z-index:1000'; lb.innerHTML='<img style="max-width:92vw;max-height:92vh;border-radius:12px"><div style="position:absolute;top:20px;right:30px;font-size:26px;cursor:pointer">✕</div>'; document.body.appendChild(lb);
+const img=lb.querySelector('img'); const close=lb.querySelector('div'); lb.addEventListener('click',()=>lb.style.display='none'); close.addEventListener('click',()=>lb.style.display='none');
+document.querySelectorAll('.gallery a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault(); img.src=a.getAttribute('href'); lb.style.display='grid';}));
+</script>
 </body></html>

@@ -1,59 +1,80 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Garcia Builder</title>
+<title>About – Garcia Builder</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/global.css">
-<link rel="alternate" id="dynamic-lang" href="?lang=en">
 </head><body>
-  <div class="navbar">
-    <div class="container inner">
-      <a class="brand" href="index.html"><img src="assets/logo.png" alt="G"> <span class="text-glow title-gradient">Garcia&nbsp;Builder</span></a>
-      <nav class="nav">
-        <a data-i18n="nav.home" href="index.html">Home</a>
-        <a data-i18n="nav.programs" href="programs.html">Programs</a>
-        <a data-i18n="nav.pricing" href="pricing.html">Pricing</a>
-        <a data-i18n="nav.transformations" href="transformations.html">Transformations</a>
-        <a data-i18n="nav.testimonials" href="testimonials.html">Testimonials</a>
-        <a data-i18n="nav.about" href="about.html">About</a>
-        <a data-i18n="nav.faq" href="faq.html">FAQ</a>
-        <a data-i18n="nav.contact" href="contact.html">Contact</a>
-      </nav>
-      <div class="lang">
-        <span class="small">🌐</span>
-        <select id="lang-select">
-          <option value="en">EN</option>
-          <option value="pt">PT</option>
-          <option value="es">ES</option>
-        </select>
-      </div>
+<nav class="navbar"><div class="container inner">
+  <a class="brand" href="index.html"><img src="assets/logo.png"><span class="title-gradient">Garcia&nbsp;Builder</span></a>
+  <nav class="nav">
+    <a data-i18n="nav.home" href="index.html">Home</a>
+    <a data-i18n="nav.about" href="about.html">About</a>
+    <a data-i18n="nav.trans" href="transformations.html">Transformations</a>
+    <a data-i18n="nav.testi" href="testimonials.html">Testimonials</a>
+    <a data-i18n="nav.pricing" href="pricing.html">Pricing</a>
+    <a data-i18n="nav.faq" href="faq.html">FAQ</a>
+    <a data-i18n="nav.contact" href="contact.html">Contact</a>
+  </nav>
+  <div class="lang"><select id="lang-select"><option value="en">EN</option><option value="pt">PT</option><option value="es">ES</option></select></div>
+</div></nav>
+
+<section class="section" style="background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.85)),url('https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;">
+  <div class="container">
+    <h1 class="title-gradient text-glow" data-i18n="about.title">About Andre Garcia</h1>
+    <p class="lead" data-i18n="about.lead">I’m Andre — Online Coach, Bodybuilder and transformation specialist.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container grid grid-3">
+    <div class="card p-4">
+      <h3 class="text-warning" data-i18n="about.method.title">Method — Assess → Build → Execute</h3>
+      <ul class="mb-0">
+        <li data-i18n="about.method.1">Evidence-based programming with progressive overload.</li>
+        <li data-i18n="about.method.2">Habit coaching and environment design to keep you consistent.</li>
+        <li data-i18n="about.method.3">Weekly reviews: we track, adjust and celebrate every win.</li>
+      </ul>
+    </div>
+    <div class="card p-4">
+      <h3 class="text-warning" data-i18n="about.cred.title">Credentials & Qualifications</h3>
+      <ul data-i18n="about.cred.list"><li>Active IQ Level 2 & 3 (UK)</li><li>12+ years training & coaching</li><li>Specialties: Hypertrophy, Fat Loss, Strength & Conditioning</li><li>Clients across Brazil, Spain, USA, UK, India</li></ul>
+      <div class="badge mt-2">Active IQ</div> <div class="badge">Trainerize</div> <div class="badge">S&C</div>
+    </div>
+    <div class="card p-4">
+      <h3 class="text-warning" data-i18n="about.timeline.title">Journey</h3>
+      <ul class="mb-0">
+        <li><strong data-i18n="about.timeline.1.t">Origins</strong> — <span data-i18n="about.timeline.1.d">Started in Brazil.</span></li>
+        <li><strong data-i18n="about.timeline.2.t">London</strong> — <span data-i18n="about.timeline.2.d">Rebuilt from zero.</span></li>
+        <li><strong data-i18n="about.timeline.3.t">Online Coaching</strong> — <span data-i18n="about.timeline.3.d">Scaled results globally.</span></li>
+      </ul>
     </div>
   </div>
+</section>
 
-  <section class="section">
-    <div class="container grid grid-2">
-      <div class="card p-32">
-        <div class="h2 title-gradient text-glow" data-i18n="about.title">About Andre Garcia</div>
-        <p class="mt-16" data-i18n="about.p1">I'm Andre — Online Coach, Bodybuilder and transformation specialist. I help busy people build strong, athletic bodies with simple nutrition and precise programming.</p>
-        <ul class="clean mt-16" data-i18n="about.bullets">
-          <li><strong>12+ years</strong> training & coaching.</li>
-          <li><strong>Active IQ Level 2 & Level 3</strong> in Fitness Instruction/Personal Training.</li>
-          <li>Specialties: <strong>Hypertrophy, Weight Loss, Strength & Conditioning</strong>.</li>
-          <li>Coached clients in <strong>Brazil, Spain, USA, UK, India</strong>.</li>
-        </ul>
-        <p class="mt-16"><em>“Building a better body is just the beginning.”</em></p>
-      </div>
-      <div class="card p-32">
-        <div class="h3" data-i18n="about.links">Credentials & Links</div>
-        <ul class="clean mt-16">
-          <li><a href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/" target="_blank" rel="noopener">Trainerize</a></li>
-          <li><a href="https://www.instagram.com/garcia.builder/" target="_blank" rel="noopener">Instagram</a></li>
-        </ul>
-        <a class="btn btn-gold mt-16" href="contact.html" data-i18n="about.workwith">Work with me</a>
-      </div>
+<section class="section">
+  <div class="container">
+    <h2 class="title-gradient">Gallery</h2>
+    <div class="gallery mt-16">
+      <a href="assets/about1.jpg"><img src="assets/about1.jpg"></a>
+      <a href="assets/about2.jpg"><img src="assets/about2.jpg"></a>
+      <a href="assets/about3.jpg"><img src="assets/about3.jpg"></a>
+      <a href="assets/about4.jpg"><img src="assets/about4.jpg"></a>
+      <a href="assets/about5.jpg"><img src="assets/about5.jpg"></a>
     </div>
-  </section>
-
-  <div class="footer">
-    <div class="container small">© 2025 Garcia Builder — Online Coaching</div>
   </div>
-<script src="js/i18n.js"></script>
+</section>
+
+<hr class="hr-shine">
+<div class="footer"><div class="container small">© 2025 Garcia Builder — Online Coaching</div></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/i18n.js"></script>
+<script src="js/app.js"></script>
+<script>
+const lb=document.createElement('div'); lb.style.cssText='position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.85);z-index:1000'; lb.innerHTML='<img style="max-width:92vw;max-height:92vh;border-radius:12px"><div style="position:absolute;top:20px;right:30px;font-size:26px;cursor:pointer">✕</div>'; document.body.appendChild(lb);
+const img=lb.querySelector('img'); const close=lb.querySelector('div'); lb.addEventListener('click',()=>lb.style.display='none'); close.addEventListener('click',()=>lb.style.display='none');
+document.querySelectorAll('.gallery a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault(); img.src=a.getAttribute('href'); lb.style.display='grid';}));
+</script>
 </body></html>

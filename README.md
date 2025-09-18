@@ -1,49 +1,25 @@
-# Garcia Builder — Landing Page
 
-🚀 Official landing page for **Garcia Builder Online Coaching**.  
-Built with HTML/CSS/JS and hosted via **GitHub Pages**.
+# Garcia Builder – Multilingual Site (EN/PT/ES)
 
-🔗 **Live Site:** [Garcia Builder Landing Page](https://andrejulio072.github.io/Garcia-Builder/)
+**How it works**
+- Each page includes `js/i18n.js` and pulls a dictionary from `locales/{lang}.json`.
+- Text nodes have `data-i18n` attributes. Placeholders use `data-i18n-placeholder`.
+- The language selector writes to `localStorage` and `?lang=` in the URL.
 
----
+**Deploy**
+1. Upload everything to your GitHub repo root (preserving the folders):
+   - `index.html, about.html, pricing.html, programs.html, transformations.html, testimonials.html, faq.html, contact.html`
+   - `css/global.css`
+   - `js/i18n.js`
+   - `locales/en.json, pt.json, es.json`
+   - `assets/*`
+2. Commit and push. GitHub Pages will update automatically.
 
-## 📋 About
-Garcia Builder is the online coaching brand by **Andre Garcia**, a fitness professional with over 10 years of experience.  
-This landing page presents programs, client transformations, testimonials, and pricing to help clients start their fitness journey.
+**Editing/Translating**
+- To translate new text, add a `data-i18n="key"` and create the same key in all 3 JSONs.
+- If a key is missing, the original HTML text remains as fallback.
 
----
-
-## 🛠️ Tech Stack
-- Pure **HTML5 / CSS3 / JavaScript**
-- Hosted on **GitHub Pages**
-- Responsive design (mobile + desktop)
-- Integrated with:
-  - **WhatsApp**
-  - **Trainerize**
-  - **Calendly**
-
----
-
-## 📂 Structure
-.
-├── index.html # Main landing page
-└── assets/ # Images, logos, future static assets
-
----
-
-## 🚀 Deployment
-1. Push changes to the `main` branch.  
-2. GitHub Pages auto-deploys from `main` → `/ (root)`.  
-3. Access live at:  
-https://andrejulio072.github.io/Garcia-Builder/
-
----
-
-## 📞 Contact
-- WhatsApp: [+44 7508 497586](https://wa.me/447508497586)  
-- Instagram: [@garcia.builder](https://instagram.com/garcia.builder)  
-- Email: [contact@garciabuilder.com](mailto:contact@garciabuilder.com)
-
----
-
-© 2025 Garcia Builder — All rights reserved.
+**Design Fixes**
+- High-contrast titles via `.title-gradient.text-glow`.
+- Solid panels over photos using `.card` or `.panel-on-image`.
+- Elevated transformation images using `.img-elevated`.

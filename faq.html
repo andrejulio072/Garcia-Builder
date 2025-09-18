@@ -1,111 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>FAQ — Garcia Builder</title>
-  
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0a0f1a">
-  <link rel="icon" href="assets/logo.png">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/swiper@9/swiper-bundle.min.css"/>
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css"/>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://unpkg.com/swiper@9/swiper-bundle.min.js"></script>
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
-  <script src="https://kit.fontawesome.com/5f1d6d1a8a.js" crossorigin="anonymous"></script>
-  <style>
-    :root {
-      --bg1:#070a12; --bg2:#0b1020; --panel:#0f172a; --panel2:#121a31;
-      --text:#e8edf7; --muted:#b2bdd3; --gold:#ffd54a; --line:#1d2a44;
-      --accent:#5cc8ff; --ok:#22c55e;
-    }
-    html,body { background: radial-gradient(1200px 600px at 10% 0%, #0c1326, #070a12 60%); color: var(--text); }
-    .bg-panel { background: linear-gradient(180deg, var(--panel), var(--panel2)); border: 1px solid var(--line); }
-    .btn-gold { background: var(--gold); color:#0b0f15; font-weight:700; border: none; }
-    .btn-outline-soft { background: transparent; border:1px solid var(--line); color: var(--text); }
-    .title-gradient { background: linear-gradient(90deg, #ffd54a, #f59e0b, #f97316); -webkit-background-clip:text; background-clip:text; color: transparent; }
-    .badge-soft { border:1px solid var(--line); color:#dfe7ff; background:#0f172a80; }
-    .nav-dark { background: rgba(9,14,26,.92); backdrop-filter: blur(8px); border-bottom:1px solid var(--line);}
-    .shadow-soft { box-shadow: 0 10px 30px rgba(0,0,0,.35); }
-    a { color: var(--gold); text-decoration: none; }
-    .hero-overlay { position:absolute; inset:0; background: linear-gradient(180deg, rgba(3,6,12,.55), rgba(4,8,18,.85)); }
-    .section { padding: 56px 0; }
-    .faq details { background:#0f172a; border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:10px }
-    .faq summary { cursor:pointer; font-weight:700 }
-  </style>
-  <script>
-    // Simple i18n loader (EN, PT, ES)
-    const I18N = {
-      en: {}, pt: {}, es: {}
-    };
-    function setLang(lang) {
-      localStorage.setItem('lang', lang);
-      document.querySelectorAll('[data-i18n]').forEach(el=>{
-        const key = el.getAttribute('data-i18n');
-        el.innerHTML = (I18N[lang] && I18N[lang][key]) || el.innerHTML;
-      });
-      document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
-        const key = el.getAttribute('data-i18n-ph');
-        const v = (I18N[lang] && I18N[lang][key]) || el.placeholder;
-        el.placeholder = v;
-      });
-    }
-    document.addEventListener('DOMContentLoaded', ()=>{ setLang(localStorage.getItem('lang')||'en'); AOS.init({ once:true, duration:700, offset:80 }); GLightbox({ selector: '.glightbox' }); });
-  </script>
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Garcia Builder</title>
+<link rel="stylesheet" href="css/global.css">
+<link rel="alternate" id="dynamic-lang" href="?lang=en">
+</head><body>
+  <div class="navbar">
+    <div class="container inner">
+      <a class="brand" href="index.html"><img src="assets/logo.png" alt="G"> <span class="text-glow title-gradient">Garcia&nbsp;Builder</span></a>
+      <nav class="nav">
+        <a data-i18n="nav.home" href="index.html">Home</a>
+        <a data-i18n="nav.programs" href="programs.html">Programs</a>
+        <a data-i18n="nav.pricing" href="pricing.html">Pricing</a>
+        <a data-i18n="nav.transformations" href="transformations.html">Transformations</a>
+        <a data-i18n="nav.testimonials" href="testimonials.html">Testimonials</a>
+        <a data-i18n="nav.about" href="about.html">About</a>
+        <a data-i18n="nav.faq" href="faq.html">FAQ</a>
+        <a data-i18n="nav.contact" href="contact.html">Contact</a>
+      </nav>
+      <div class="lang">
+        <span class="small">🌐</span>
+        <select id="lang-select">
+          <option value="en">EN</option>
+          <option value="pt">PT</option>
+          <option value="es">ES</option>
+        </select>
+      </div>
+    </div>
+  </div>
 
-  <script src="assets/i18n.js"></script>
-</head>
-<body>
-  
-  <nav class="navbar navbar-expand-lg nav-dark sticky-top">
+  <section class="section">
     <div class="container">
-      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-        <img src="assets/logo.png" alt="logo" width="40" height="40" class="rounded-3 border border-1" style="border-color:var(--line)">
-        <strong>Garcia Builder</strong>
-      </a>
-      <button class="navbar-toggler btn btn-outline-soft" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navMenu">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-2">
-          <li class="nav-item"><a class="btn btn-outline-soft" href="index.html" data-i18n="nav_home">Home</a></li>
-          <li class="nav-item"><a class="btn btn-outline-soft" href="about.html" data-i18n="nav_about">About</a></li>
-          <li class="nav-item"><a class="btn btn-outline-soft" href="transformations.html" data-i18n="nav_trans">Transformations</a></li>
-          <li class="nav-item"><a class="btn btn-outline-soft" href="testimonials.html" data-i18n="nav_testi">Testimonials</a></li>
-          <li class="nav-item"><a class="btn btn-outline-soft" href="pricing.html" data-i18n="nav_pricing">Pricing</a></li>
-          <li class="nav-item"><a class="btn btn-outline-soft" href="faq.html" data-i18n="nav_faq">FAQ</a></li>
-          <li class="nav-item"><a class="btn btn-gold" href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/" target="_blank" rel="noopener">Trainerize</a></li>
-          <li class="nav-item dropdown">
-            <a class="btn btn-outline-soft dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">🌐</a>
-            <ul class="dropdown-menu dropdown-menu-dark">
-              <li><a class="dropdown-item" href="#" onclick="setLang('en')">English</a></li>
-              <li><a class="dropdown-item" href="#" onclick="setLang('pt')">Português</a></li>
-              <li><a class="dropdown-item" href="#" onclick="setLang('es')">Español</a></li>
-            </ul>
-          </li>
-        </ul>
+      <div class="h2 title-gradient text-glow" data-i18n="faq.title">Frequently Asked Questions</div>
+      <div class="grid grid-2 mt-24">
+        <div class="card p-24">
+          <div class="h3">How do check-ins work?</div>
+          <p>Weekly forms + video feedback (as needed). We adjust training and nutrition based on your data.</p>
+        </div>
+        <div class="card p-24">
+          <div class="h3">Do I need a gym?</div>
+          <p>No. I can build a full home plan. Gym plans also available.</p>
+        </div>
+        <div class="card p-24">
+          <div class="h3">Is nutrition included?</div>
+          <p>Yes — targets, templates and simple recipes aligned to your goal.</p>
+        </div>
+        <div class="card p-24">
+          <div class="h3">How fast will I see results?</div>
+          <p>Most clients notice changes within 2–4 weeks; bigger visual changes often appear 8–12 weeks in.</p>
+        </div>
       </div>
     </div>
-  </nav>
+  </section>
 
-  <section class='section'><div class='container'><h1 class='fw-extrabold title-gradient mb-3' data-i18n='faq_title'>Frequently Asked Questions</h1><div class='faq'><details><summary>How does online coaching work?</summary><p class='mt-2'>All plans, tracking and check-ins happen via Trainerize. WhatsApp for quick questions.</p></details><details><summary>Do I need a gym?</summary><p class='mt-2'>No. I can design a home program with minimal equipment.</p></details><details><summary>How often do we check in?</summary><p class='mt-2'>Weekly by default. Higher tiers include more frequent adjustments.</p></details><details><summary>What if I have injuries?</summary><p class='mt-2'>We work around them with smart progressions and technique cues.</p></details><details><summary>Nutrition plan included?</summary><p class='mt-2'>From Evolution tier: flexible guidelines tailored to your lifestyle.</p></details><details><summary>Do you offer refunds?</summary><p class='mt-2'>Follow the plan for 30 days and see progress — or your money back.</p></details><details><summary>How long until I see results?</summary><p class='mt-2'>Most clients notice changes in 4–6 weeks; visible shifts in 8–12.</p></details><details><summary>Will I have to track calories?</summary><p class='mt-2'>If suitable. Otherwise we’ll use simple habits and portion guides.</p></details><details><summary>Can beginners join?</summary><p class='mt-2'>Absolutely. I’ll scale everything to your level.</p></details><details><summary>What about advanced lifters?</summary><p class='mt-2'>We’ll run structured blocks with clear performance targets.</p></details><details><summary>How do payments work?</summary><p class='mt-2'>Monthly. Option to integrate Stripe checkout.</p></details><details><summary>Do you coach for performance?</summary><p class='mt-2'>Yes — strength, conditioning and speed with joint-friendly progressions.</p></details><details><summary>Can I pause my program?</summary><p class='mt-2'>Yes, with notice. We’ll plan deloads or maintenance phases.</p></details><details><summary>What platforms do you use?</summary><p class='mt-2'>Trainerize, WhatsApp, MyFitnessPal and wearable integrations.</p></details><details><summary>Do you offer in-person sessions?</summary><p class='mt-2'>On request/availability — included in Elite Builder tier as hybrid.</p></details></div></div></section>
-  
-  <footer class="border-top" style="border-color:var(--line)">
-    <div class="container py-4 d-flex flex-wrap gap-2 align-items-center justify-content-between">
-      <p class="m-0">© <span id="year"></span> Garcia Builder — All rights reserved.</p>
-      <div class="d-flex gap-2">
-        <a class="btn btn-outline-soft" href="https://wa.me/447508497586" target="_blank"><i class="fa-brands fa-whatsapp me-2"></i><span data-i18n="cta_whatsapp">WhatsApp</span></a>
-        <a class="btn btn-outline-soft" href="https://calendly.com/andrenjulio072" target="_blank"><i class="fa-regular fa-calendar me-2"></i><span data-i18n="cta_book">Book</span></a>
-        <a class="btn btn-outline-soft" href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/" target="_blank">Trainerize</a>
-      </div>
-    </div>
-  </footer>
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-
-</body>
-</html>
+  <div class="footer">
+    <div class="container small">© 2025 Garcia Builder — Online Coaching</div>
+  </div>
+<script src="js/i18n.js"></script>
+</body></html>

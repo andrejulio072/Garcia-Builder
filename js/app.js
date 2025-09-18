@@ -23,3 +23,36 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
   }
 });
+
+// === Stage 10: hero parallax + count-up KPIs ===
+const hero = document.querySelector('.hero');
+if (hero){
+  hero.addEventListener('mousemove',(e)=>{
+    const r = hero.getBoundingClientRect();
+    const mx = (e.clientX - r.left)/r.width - .5;
+    const my = (e.clientY - r.top)/r.height - .5;
+    hero.style.setProperty('--mx', mx.toFixed(3));
+    hero.style.setProperty('--my', my.toFixed(3));
+  });
+}
+// count-up when visible
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      en.target.querySelectorAll('.num[data-target]').forEach(el=>{
+        const target = +el.dataset.target;
+        const start = 0; const dur = 1200; const t0 = performance.now();
+        const step = (t)=>{
+          const k = Math.min(1,(t - t0)/dur);
+          const v = Math.floor(start + (target - start)*k);
+          el.textContent = el.dataset.prefix ? el.dataset.prefix + v : v;
+          if(k<1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        el.removeAttribute('data-target');
+      });
+      io.unobserve(en.target);
+    }
+  });
+}, {threshold:.6});
+document.querySelectorAll('.kpis').forEach(k=>io.observe(k));

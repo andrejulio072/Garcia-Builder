@@ -10,61 +10,61 @@
 <nav class="navbar"><div class="container inner">
   <a class="brand" href="index.html"><img src="assets/logo.png"><span class="title-gradient">Garcia&nbsp;Builder</span></a>
   <nav class="nav">
-    <a data-i18n="nav.home" href="index.html">Home</a>
-    <a data-i18n="nav.about" href="about.html">About</a>
-    <a data-i18n="nav.trans" href="transformations.html">Transformations</a>
-    <a data-i18n="nav.testi" href="testimonials.html">Testimonials</a>
-    <a data-i18n="nav.pricing" href="pricing.html">Pricing</a>
-    <a data-i18n="nav.faq" href="faq.html">FAQ</a>
-    <a data-i18n="nav.contact" href="contact.html">Contact</a>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="transformations.html">Transformations</a>
+    <a href="testimonials.html">Testimonials</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
   </nav>
   <div class="lang"><select id="lang-select"><option value="en">EN</option><option value="pt">PT</option><option value="es">ES</option></select></div>
 </div></nav>
 
-<section class="section" style="background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.85)),url('https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;">
+<section class="section" style="background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.85)),url('https://images.unsplash.com/photo-1526403226603-4aa0a6c63f5f?q=80&w=2400&auto=format&fit=crop') center/cover no-repeat;">
   <div class="container">
-    <h1 class="title-gradient text-glow" data-i18n="faq.title">Frequently Asked Questions</h1>
-    <input id="faq-search" class="search mt-3" placeholder="Search..." data-i18n-ph="Search">
+    <h1 class="title-gradient text-glow">FAQ</h1>
+    <input id="faq-search" class="search mt-3" placeholder="Search question...">
   </div>
 </section>
 <section class="section">
   <div class="container">
-    <div class="accordion" id="faqAccordion">
-      <!-- JS injeta conteúdo -->
-    </div>
+    <div class="accordion" id="faqAccordion"></div>
   </div>
 </section>
 <script>
 const Q=[
-['How does online coaching work?','Trainerize + WhatsApp. Ajustes semanais.'],
-['Do I need a gym?','Não. Plano completo em casa ou academia.'],
-['Is nutrition included?','Sim. Diretrizes simples e flexíveis.'],
-['Beginner?','Perfeito: base de técnica e hábitos.'],
-['Injuries?','Progredimos com substituições inteligentes.'],
-['How fast results?','2–4 semanas iniciais; 8–12 maiores.'],
-['Countries?','Mundo todo (EN/PT/ES).'],
-['Payments?','Mensal via Trainerize/Stripe.'],
-['Check-in day?','Semanal por padrão.'],
-['Equipment?','De peso corporal a academia completa.']
+['How does online coaching work?','Trainerize for plans, check‑ins & tracking; WhatsApp for support.'],
+['Do I need a gym?','No — I can build a complete home plan as well.'],
+['Is nutrition included?','Yes — simple and flexible templates with targets.'],
+['I’m a beginner.','Great — we start with movement quality and habits.'],
+['Injuries?','We work around them with safe progressions.'],
+['Results timeline?','First changes in 2–4 weeks; big visual changes 8–12.'],
+['Payments','Monthly via Trainerize/Stripe. Cancel anytime before next cycle.'],
+['Check‑in day','Weekly by default; higher tiers allow mid‑week updates.'],
+['Countries & languages','Worldwide — EN/PT/ES.'],
+['Equipment','Anything from bodyweight to full gym — I’ll optimize your setup.']
 ];
 const wrap=document.getElementById('faqAccordion');
 wrap.innerHTML=Q.map((qa,i)=>`
-<div class="accordion-item mb-2">
-  <h2 class="accordion-header" id="h${i}">
-    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c${i}">${qa[0]}</button>
-  </h2>
-  <div id="c${i}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-    <div class="accordion-body">${qa[1]}</div>
-  </div>
-</div>`).join('');
+  <div class="accordion-item mb-2">
+    <h2 class="accordion-header" id="h${i}">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c${i}">
+        ${qa[0]}
+      </button>
+    </h2>
+    <div id="c${i}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+      <div class="accordion-body">${qa[1]}</div>
+    </div>
+  </div>`).join('');
 </script>
 
 <hr class="hr-shine">
 <div class="footer"><div class="container small">© 2025 Garcia Builder — Online Coaching</div></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="assets/i18n.js"></script>
 <script src="js/app.js"></script>
 <script>
+// Lightbox
 const lb=document.createElement('div'); lb.style.cssText='position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.85);z-index:1000'; lb.innerHTML='<img style="max-width:92vw;max-height:92vh;border-radius:12px"><div style="position:absolute;top:20px;right:30px;font-size:26px;cursor:pointer">✕</div>'; document.body.appendChild(lb);
 const img=lb.querySelector('img'); const close=lb.querySelector('div'); lb.addEventListener('click',()=>lb.style.display='none'); close.addEventListener('click',()=>lb.style.display='none');
 document.querySelectorAll('.gallery a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault(); img.src=a.getAttribute('href'); lb.style.display='grid';}));

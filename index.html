@@ -10,49 +10,43 @@
 <nav class="navbar"><div class="container inner">
   <a class="brand" href="index.html"><img src="assets/logo.png"><span class="title-gradient">Garcia&nbsp;Builder</span></a>
   <nav class="nav">
-    <a data-i18n="nav.home" href="index.html">Home</a>
-    <a data-i18n="nav.about" href="about.html">About</a>
-    <a data-i18n="nav.trans" href="transformations.html">Transformations</a>
-    <a data-i18n="nav.testi" href="testimonials.html">Testimonials</a>
-    <a data-i18n="nav.pricing" href="pricing.html">Pricing</a>
-    <a data-i18n="nav.faq" href="faq.html">FAQ</a>
-    <a data-i18n="nav.contact" href="contact.html">Contact</a>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="transformations.html">Transformations</a>
+    <a href="testimonials.html">Testimonials</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
   </nav>
   <div class="lang"><select id="lang-select"><option value="en">EN</option><option value="pt">PT</option><option value="es">ES</option></select></div>
 </div></nav>
 
 <section class="hero">
   <div class="content container">
-    <h1 class="title-gradient text-glow" data-i18n="hero.title">Online Coaching. Real Results.</h1>
-    <p class="mt-2" data-i18n="hero.sub">Precision training, simple nutrition and relentless accountability — 100% online via Trainerize and WhatsApp.</p>
+    <h1 class="title-gradient text-glow" style="font-size:56px">Online Coaching. Real Results.</h1>
+    <p class="mt-2">Precision training, simple nutrition and relentless accountability — 100% online via Trainerize and WhatsApp.</p>
     <div class="d-flex gap-2 justify-content-center mt-3">
-      <a class="btn btn-gold" href="contact.html" data-i18n="hero.cta.primary">Start Today</a>
-      <a class="btn" href="pricing.html" data-i18n="hero.cta.secondary">See Plans</a>
+      <a class="btn btn-gold" href="contact.html">Start Today</a>
+      <a class="btn" href="pricing.html">See Plans</a>
     </div>
     <div class="kpis">
-      <div class="kpi"><div class="num">100+</div><div data-i18n="kpi.results">Transformations</div></div>
-      <div class="kpi"><div class="num">12</div><div data-i18n="kpi.experience">Years Coaching</div></div>
-      <div class="kpi"><div class="num">3</div><div data-i18n="kpi.clients">Clients Coached</div></div>
+      <div class="kpi"><div class="num">100+</div><div>Transformations</div></div>
+      <div class="kpi"><div class="num">12</div><div>Years Coaching</div></div>
+      <div class="kpi"><div class="num">3</div><div>Languages</div></div>
     </div>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
-    <h2 class="title-gradient text-glow" data-i18n="features.title">Why Garcia Builder</h2>
-    <div class="grid grid-3 mt-3">
-      <div class="card p-4">
-        <h3 class="text-warning" data-i18n="feat.1.t">Personalized Plans</h3>
-        <p data-i18n="feat.1.d">Programs tailored to your schedule, equipment and goal.</p>
-      </div>
-      <div class="card p-4">
-        <h3 class="text-warning" data-i18n="feat.2.t">Nutrition Made Simple</h3>
-        <p data-i18n="feat.2.d">Flexible guidelines. No extremes. Results you can sustain.</p>
-      </div>
-      <div class="card p-4">
-        <h3 class="text-warning" data-i18n="feat.3.t">Accountability</h3>
-        <p data-i18n="feat.3.d">Weekly check-ins, form feedback and WhatsApp support.</p>
-      </div>
+    <h2 class="title-gradient text-glow">Why Garcia Builder</h2>
+    <div class="grid grid-6 mt-3">
+      <div class="card feature"><div class="icon">🏋️</div><h3>Personalized Plans</h3><p>Designed for your schedule, equipment and goal.</p></div>
+      <div class="card feature"><div class="icon">🥗</div><h3>Simple Nutrition</h3><p>Flexible guidelines. No extremes. Sustainable.</p></div>
+      <div class="card feature"><div class="icon">📈</div><h3>Data‑Driven</h3><p>Progress checks & smart adjustments weekly.</p></div>
+      <div class="card feature"><div class="icon">🎯</div><h3>Accountability</h3><p>WhatsApp support + weekly reviews.</p></div>
+      <div class="card feature"><div class="icon">🛡️</div><h3>Injury‑Smart</h3><p>Technique cues and safe progressions.</p></div>
+      <div class="card feature"><div class="icon">🧠</div><h3>Mindset & Habits</h3><p>Systems that keep you consistent.</p></div>
     </div>
   </div>
 </section>
@@ -60,9 +54,9 @@
 <hr class="hr-shine">
 <div class="footer"><div class="container small">© 2025 Garcia Builder — Online Coaching</div></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="assets/i18n.js"></script>
 <script src="js/app.js"></script>
 <script>
+// Lightbox
 const lb=document.createElement('div'); lb.style.cssText='position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.85);z-index:1000'; lb.innerHTML='<img style="max-width:92vw;max-height:92vh;border-radius:12px"><div style="position:absolute;top:20px;right:30px;font-size:26px;cursor:pointer">✕</div>'; document.body.appendChild(lb);
 const img=lb.querySelector('img'); const close=lb.querySelector('div'); lb.addEventListener('click',()=>lb.style.display='none'); close.addEventListener('click',()=>lb.style.display='none');
 document.querySelectorAll('.gallery a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault(); img.src=a.getAttribute('href'); lb.style.display='grid';}));

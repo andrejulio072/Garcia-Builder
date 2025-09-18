@@ -1,36 +1,39 @@
 
 # Garcia Builder — Online Coaching Website
 
-Site estático premium para o **Andre Garcia (Garcia Builder)** — coaching online em EN/PT/ES — com foco em conversão, design escuro/dourado e alta legibilidade. Publicado via **GitHub Pages**.
+Site estático premium para o **Andre Garcia (Garcia Builder)** — coaching online em **EN/PT/ES** — com foco em conversão, visual profissional e performance. Publicado em **GitHub Pages**.
 
-> **Live (GitHub Pages):** `https://andrejulio072.github.io/Garcia-Builder/`  
-> **Contato rápido (WhatsApp):** `+44 7508497586`
+> 🔗 **Website (Live):** https://andrejulio072.github.io/Garcia-Builder/  
+> 💬 **WhatsApp:** https://wa.me/447508497586  
+> 📅 **Calendly (consulta):** https://calendly.com/andrenjulio072/consultation  
+> 📸 **Instagram:** https://instagram.com/garcia.builder  
+> 🏋️ **Trainerize:** https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/
 
 ---
 
-## ✨ Principais recursos
-- **Design System** alinhado ao logo (preto carvão + dourado `#F6C84E` + cinzas frios), vidro/blur e microinterações.
-- **Hero** com imagem fitness, overlay e títulos com *title‑gradient* + *text‑glow*.
-- **Cards 3×3 com 3D tilt** (VanillaTilt) para “Why Garcia Builder” e seções do About.
-- **About** com texto longo (500+ caracteres), método *Assess → Build → Execute* e **galeria com lightbox**.
-- **Transformations** em grade com lightbox.
-- **Testimonials** (18 itens) com nomes e avatares, copy emotiva (≥150 caracteres).
-- **Pricing** vendedor (4 planos) — CTAs claros.
+## ✨ Destaques do projeto
+- **Design System** alinhado ao logo (carvão + dourado `#F6C84E` + cinzas frios), com **glass/blur** e microinterações.
+- **Hero** com imagem fitness, **overlay** e títulos com *title‑gradient* + *text‑glow* (legibilidade top).
+- **Cards 3×3** com **3D tilt** (VanillaTilt + glare) para seções de valor e *About*.
+- **About** com **texto longo (~500+ caracteres)** contando a história, método *Assess → Build → Execute* e **galeria com lightbox**.
+- **Transformations** em grade consistente (aspect‑ratio fixo) + lightbox.
+- **Testimonials** (18 itens) com nomes, avatares, e copy emotiva (≥150 caracteres).
+- **Pricing** vendedor (4 planos, mínimo £80) com CTAs claros.
 - **FAQ** com **busca instantânea** + accordion (10 perguntas essenciais).
-- **Contato** com formulário (Formspree), **WhatsApp flutuante**, links para **Instagram**, **Trainerize** e **Calendly**.
-- **i18n** simples (EN/PT/ES) via `assets/i18n.js` com `data-i18n` e `data-i18n-ph`.
-- **SEO básico**: `robots.txt` e `sitemap.xml` prontos.
+- **Contato** com formulário (Formspree), **WhatsApp flutuante**, links para **Instagram**, **Calendly** e **Trainerize**.
+- **i18n** (EN/PT/ES) via `assets/i18n.js` com `data-i18n` e `data-i18n-ph` nos HTMLs.
+- **SEO básico**: `robots.txt` e `sitemap.xml` prontos para indexação.
 
 ---
 
-## 🧱 Tech stack
-- HTML5, CSS3, JavaScript (vanilla)
-- [Bootstrap 5](https://getbootstrap.com) (grid/utilitários), [VanillaTilt](https://micku7zu.github.io/vanilla-tilt.js/)
-- GitHub Pages (deploy)
+## 🧱 Stack & libs
+- **HTML5, CSS3, JavaScript (vanilla)** — sem build step.
+- **Bootstrap 5** (grid/utilities) + **VanillaTilt** (efeito 3D).
+- **GitHub Pages** para deploy contínuo (branch `main`).
 
 ---
 
-## 📁 Estrutura do projeto
+## 📁 Estrutura
 ```
 Garcia-Builder/
 ├─ index.html
@@ -56,12 +59,13 @@ Garcia-Builder/
 
 ---
 
-## 🚀 Como rodar localmente
-**Sem terminal (GitHub Desktop):**
-1. Clone o repositório.
-2. Abra `index.html` no navegador para visualizar.
+## 🚀 Como rodar / publicar
 
-**Com terminal (opcional):**
+### Local (sem terminal)
+1. Clone com **GitHub Desktop**.
+2. Abra `index.html` no navegador.
+
+### Local (com terminal, opcional)
 ```bash
 git clone https://github.com/<seu-usuario>/Garcia-Builder.git
 cd Garcia-Builder
@@ -69,71 +73,84 @@ python -m http.server 5173
 # abra http://localhost:5173
 ```
 
+### Deploy (GitHub Pages)
+1. Commit & push na **main**.
+2. **Settings → Pages** → *Deploy from a branch* → `main` / *root*.
+3. Acesse: `https://<seu-usuario>.github.io/Garcia-Builder/`.
+
+> `sitemap.xml` e `robots.txt` já estão no projeto.  
+> Para refinar SEO, personalize `<title>` e meta‑tags em cada página.
+
 ---
 
-## 🛠️ Personalização rápida
+## 🔧 Personalização rápida
 
-### Textos e traduções (i18n)
+### Textos e traduções
 - Edite `assets/i18n.js`.  
-- Use os atributos `data-i18n="chave"` e `data-i18n-ph="chave"` nos HTMLs.
-- Para adicionar um idioma, crie um novo objeto (ex.: `de`, `it`) com as mesmas chaves.
+- Use `data-i18n="chave"` para textos e `data-i18n-ph="chave"` para placeholders.  
+- Para outro idioma (ex.: `it`), replique as chaves com as traduções.
 
 ### Imagens
-- Troque as imagens na pasta `assets/` mantendo os nomes (ou ajuste as URLs no HTML/CSS).
-- **Hero** usa `assets/hero-fitness.jpg` com overlay para legibilidade.
+- Substitua arquivos em `assets/` mantendo os nomes (ou ajuste as URLs).  
+- O **hero** usa `assets/hero-fitness.jpg` com overlay (garante contraste).
 
-### Pricing/planos
-- Edite os cards em `pricing.html` (nomes, bullets, preço e CTA).  
-- Quando tiver **Stripe**: substitua os links dos botões por URLs do *Stripe Checkout* (ou integre com *Elements*).
+### Pricing
+- Edite os cards em `pricing.html` (nomes, bullets, preço, CTAs).  
+- **Stripe (opcional):** ao criar *Products/Prices*, use **Stripe Checkout** e cole as URLs nos botões.
 
 ### Testimonials
-- Edite a grade em `testimonials.html`.  
-- Avatares usam `https://i.pravatar.cc/128?img=ID` (padrão). Substitua por fotos reais quando quiser.
+- Ficam em `testimonials.html`.  
+- Avatares são do `https://i.pravatar.cc/128?img=ID`. Troque por fotos reais quando quiser.
 
 ### FAQ
-- Perguntas/respostas ficam em um array JS dentro de `faq.html`.  
-- A busca filtra os itens em tempo real.
+- Array de perguntas/respostas está embutido em `faq.html`.  
+- A busca filtra os itens conforme você digita.
 
 ### Contato
-- O formulário envia via **Formspree**.  
-  1. Crie um formulário em https://formspree.io  
-  2. Copie o **endpoint** e substitua `YOUR_ENDPOINT` em `contact.html`.  
-- **WhatsApp flutuante** já aponta para `+44 7508497586` (edite no rodapé, se necessário).  
-- Links de **Instagram**, **Calendly** e **Trainerize** já estão configurados.
+- Formulário envia via **Formspree**.  
+  1) Crie um form em https://formspree.io  
+  2) Copie o **endpoint** e substitua `YOUR_ENDPOINT` em `contact.html`.  
+- **WhatsApp flutuante** aponta para `+44 7508497586` (edite no rodapé se mudar).  
+- **Calendly**, **Instagram** e **Trainerize** já estão linkados.
 
 ---
 
-## 🌐 Deploy (GitHub Pages)
-1. Faça *commit* e *push* para a branch `main`.
-2. No repositório, vá em **Settings → Pages**.
-3. Selecione **Deploy from a branch** e escolha `main` / **root**.
-4. Acesse: `https://<seu-usuario>.github.io/Garcia-Builder/`.
+## 🧑‍💻 Qualidade: UX, A11y e Performance
+- **Legibilidade**: contraste alto (escuro + dourado), tamanhos grandes e espaçamento consistente.
+- **Acessibilidade**: navegação por teclado nas seções, estados :focus visíveis, textos sem jargão.  
+- **Performance**: código enxuto, sem frameworks pesados; imagens otimizáveis (troque por WebP quando possível).
+- **Consistência visual**: cards com raio 22px, bordas `var(--line)`, sombras profundas e efeitos sutis.
 
-> **Sitemap** (`/sitemap.xml`) e `robots.txt` já estão prontos.  
-> Edite `<title>` e *meta tags* em cada página se quiser refinar SEO.
+---
+
+## 🔌 Integrações & links oficiais
+- 🌐 **Website:** https://andrejulio072.github.io/Garcia-Builder/  
+- 💬 **WhatsApp:** https://wa.me/447508497586  
+- 📅 **Calendly:** https://calendly.com/andrenjulio072/consultation  
+- 📸 **Instagram:** https://instagram.com/garcia.builder  
+- 🏋️ **Trainerize:** https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/  
+- 💳 **Stripe:** pendente (Checkout/Elements a definir).
 
 ---
 
 ## 🔒 Privacidade & direitos
-- Substitua imagens temporárias por fotos autorizadas/da sua autoria.
-- Se desejar licenciamento aberto, adicione um `LICENSE` (ex.: MIT). Se não, mantenha **Todos os direitos reservados**.
+- Utilize apenas imagens com direito de uso (ou autorais).  
+- Se optar por licenciamento aberto, adicione `LICENSE` (ex.: MIT). Caso contrário, mantenha **Todos os direitos reservados**.
 
 ---
 
-## 🧩 Ideias futuras
-- Stripe Checkout/Elements nos CTAs dos planos.
-- Galeria/lighbox com fotos profissionais no About.
-- Analytics (GA4/umami/plausible) e pixel de anúncios.
-- Tema “Gold mode” alternável e microinterações GSAP.
+## 🗺️ Roadmap (sugestões)
+- Stripe Checkout (botões dos planos).
+- Galeria pro About com fotos profissionais (quando disponíveis).
+- Análises: GA4/Plausible e event tracking de CTA.
+- Tema alternável (dark/gold) com CSS variables.
+- Microinterações adicionais (GSAP/ScrollTrigger).
 
 ---
 
-## 👤 Créditos
-- **Andre Garcia (Garcia Builder)** — Owner & Coach  
-- Design/implementação do site focado em conversão e performance.
+## 👤 Créditos & Contato
+**Andre Garcia (Garcia Builder)** — Coach & Owner  
+**Site:** https://andrejulio072.github.io/Garcia-Builder/  
+**WhatsApp:** https://wa.me/447508497586 | **Instagram:** https://instagram.com/garcia.builder | **Calendly:** https://calendly.com/andrenjulio072/consultation
 
----
-
-## ❓Suporte
-Encontrou algum problema ou quer melhorar algo?  
-Abra uma **Issue** ou me escreva no **WhatsApp**: `+44 7508497586`.
+Se tiver qualquer dúvida, abra uma **Issue** ou entre em contato pelos links acima.

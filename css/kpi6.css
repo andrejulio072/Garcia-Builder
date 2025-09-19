@@ -1,0 +1,26 @@
+
+/* KPI 6-pack (uniform, 3x2) */
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  max-width:1100px;
+  margin:24px auto 0;
+}
+@media (max-width: 992px){
+  .kpis{grid-template-columns:1fr}
+}
+.kpi{
+  background:rgba(255,255,255,.04);
+  border:1px solid #ffffff1a; /* var(--line) fallback */
+  border-radius:18px;
+  padding:22px 16px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+.kpi .num{
+  font-size:32px;font-weight:900;letter-spacing:.5px;color:#f6c84e;display:block;
+}
+.kpi .label{margin-top:6px;font-size:18px;color:#d7e2ff}
+/* Hide old credibility trio if present */
+#credibility{display:none !important}

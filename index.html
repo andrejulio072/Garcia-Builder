@@ -72,4 +72,5 @@ const lb=document.createElement('div'); lb.style.cssText='position:fixed;inset:0
 const img=lb.querySelector('img'); const close=lb.querySelector('div'); lb.addEventListener('click',()=>lb.style.display='none'); close.addEventListener('click',()=>lb.style.display='none');
 document.querySelectorAll('.gallery a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault(); img.src=a.getAttribute('href'); lb.style.display='grid';}));
 </script>
+<script src="js/credibility.inject.js"></script>
 </body></html>

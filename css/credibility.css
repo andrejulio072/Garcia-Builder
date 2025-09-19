@@ -1,0 +1,18 @@
+
+/* Credibility cards (drop‑in) */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width: 992px){.grid-3{grid-template-columns:1fr}}
+
+.card.credcard{
+  position:relative;padding:22px;border-radius:18px;
+  background:rgba(255,255,255,.04);
+  border:1px solid #ffffff1a; /* var(--line) fallback */
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+.card.credcard .ic{
+  width:42px;height:42px;display:grid;place-items:center;margin-bottom:10px;
+  border-radius:12px;border:1px solid #ffffff1a;
+  background: radial-gradient(160% 140% at 20% 10%, #ffffff33 0%, transparent 60%);
+}
+.card.credcard h4{color:#fff;margin:0 0 6px}
+.card.credcard p{color:#cfe2ff;margin:0}

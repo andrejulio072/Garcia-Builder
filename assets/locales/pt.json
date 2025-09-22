@@ -1,0 +1,52 @@
+{
+  "home": {
+    "hero": {
+      "title": "Sobre Andre Garcia",
+      "text": "Eu não cresci com vitórias fáceis. Cresci com peso nas costas e uma escolha: quebrar ou construir. Eu escolhi construir. Há mais de uma década vivo a disciplina do bodybuilding — madrugadas, séries pesadas, comida limpa e uma mente que não desiste. Saí do excesso de peso para padrões mais altos: cargas mais fortes, menos gordura corporal, um físico esculpido pela consistência. A academia virou minha forja, e cada queda virou combustível. Minha missão hoje é simples: ajudar você a transformar com um plano que cabe na vida real — sem mágica, só método. Se você aparecer, eu mostro como transformar esforço em resultado, confiança e um corpo que te orgulha. O que conquistei é só o começo — o seu começa agora.",
+      "cta": {
+        "method": "Ver o Método",
+        "start": "Começar Agora"
+      }
+    },
+    "cards": {
+      "title": "O Método em 9 Pilares",
+      "subtitle": "Estrutura clara, execução potente, resultados reais.",
+      "assessment": {
+        "title": "Avaliação",
+        "text": "Histórico, objetivos, rotina, lesões e estresse. Começamos de onde você está."
+      },
+      "programming": {
+        "title": "Programação",
+        "text": "Blocos progressivos equilibrando intensidade, volume e recuperação."
+      },
+      "nutrition": {
+        "title": "Nutrição",
+        "text": "Refeições sustentáveis com macros flexíveis. Sem firula — só consistência."
+      },
+      "tracking": {
+        "title": "Acompanhamento",
+        "text": "Revisões semanais, métricas objetivas e pequenos ajustes que compõem."
+      },
+      "intensity": {
+        "title": "Intensidade",
+        "text": "Esforço inteligente: técnica primeiro, depois a pressão. Músculo — não ego."
+      },
+      "mindset": {
+        "title": "Mentalidade",
+        "text": "Disciplina acima de motivação. Sistemas que te mantêm treinando no caos."
+      },
+      "adaptation": {
+        "title": "Adaptação",
+        "text": "Viagem, trabalho, lesões — o plano flexiona sem perder o rumo."
+      },
+      "recovery": {
+        "title": "Recuperação",
+        "text": "Sono, passos, mobilidade e deloads: o básico que libera crescimento."
+      },
+      "results": {
+        "title": "Resultados",
+        "text": "Mudança visível: gordura ↓, força ↑, confiança ↑. Prova acima de promessa."
+      }
+    }
+  }
+}

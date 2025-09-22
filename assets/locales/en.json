@@ -1,0 +1,52 @@
+{
+  "home": {
+    "hero": {
+      "title": "About Andre Garcia",
+      "text": "I didn’t grow up with easy wins. I grew up with weight on my back and a choice: break or build. I chose to build. For more than a decade I have lived the discipline of bodybuilding—early mornings, hard reps, clean food, and a mind that refuses to quit. I went from carrying extra weight to carrying standards: stronger lifts, lower body fat, a physique carved by consistency. The gym became my forge, and every setback turned into fuel. Today my mission is simple: help you transform with a plan that fits real life—no magic, only method. If you show up, I’ll show you how to turn effort into results, confidence, and a body that makes you proud. What I’ve achieved is only the beginning—yours starts now.",
+      "cta": {
+        "method": "See the Method",
+        "start": "Start Now"
+      }
+    },
+    "cards": {
+      "title": "The Method in 9 Pillars",
+      "subtitle": "Clear structure, powerful execution, real-life results.",
+      "assessment": {
+        "title": "Assessment",
+        "text": "History, goals, schedule, injuries, and stress load. We start where you are."
+      },
+      "programming": {
+        "title": "Programming",
+        "text": "Progressive blocks balancing intensity, volume and recovery for steady gains."
+      },
+      "nutrition": {
+        "title": "Nutrition",
+        "text": "Sustainable meals with flexible macros. No fluff—just consistency."
+      },
+      "tracking": {
+        "title": "Tracking",
+        "text": "Weekly reviews, objective metrics and small adjustments that compound."
+      },
+      "intensity": {
+        "title": "Intensity",
+        "text": "Smart effort: form first, then push. Muscle—not ego—drives the session."
+      },
+      "mindset": {
+        "title": "Mindset",
+        "text": "Discipline over motivation. Systems that keep you training when life gets loud."
+      },
+      "adaptation": {
+        "title": "Adaptation",
+        "text": "Travel, work, injuries—plans flex without losing momentum or purpose."
+      },
+      "recovery": {
+        "title": "Recovery",
+        "text": "Sleep, steps, mobility and deloads: the basics that unlock growth."
+      },
+      "results": {
+        "title": "Results",
+        "text": "Visible change: fat loss, strength, confidence. Proof over promises."
+      }
+    }
+  }
+}

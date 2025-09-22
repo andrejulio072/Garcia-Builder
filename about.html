@@ -10,11 +10,21 @@
 <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
 <script src="assets/i18n.js"></script>
 <style>
-/* About v5 marker */
-body.about-page{
-  background: radial-gradient(1200px 600px at 0% -10%, rgba(246,200,78,.08), transparent 60%),
-              linear-gradient(180deg,#0b0e13 0%, #0e1218 40%, #0c0f15 100%);
+/* About v6 marker */
+.about-block{
+  color:#fff;
+  padding:72px 0 56px;
+  background:
+    linear-gradient(180deg, rgba(10,12,16,.82), rgba(10,12,16,.62)),
+    url('https://images.pexels.com/photos/1552249/pexels-photo-1552249.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1') center/cover no-repeat;
+  border-bottom:1px solid rgba(255,255,255,.08);
 }
+.about-block .lead{ color:#cfd2d6; max-width:70ch }
+.about-block h1{ margin:0 0 8px; font-size:clamp(34px,6vw,56px) }
+.about-block h2{ margin:22px 0 8px; font-size:clamp(22px,3.2vw,30px) }
+.about-page .card.feature{ transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; cursor:pointer }
+.about-page .card.feature:hover{ transform:translateY(-3px); box-shadow:0 16px 32px rgba(0,0,0,.28), inset 0 1px 0 rgba(246,200,78,.10); border-color:rgba(246,200,78,.28) }
+.about-page .card.feature:active{ transform:translateY(0) scale(.98) }
 </style></head><body class="about-page">
 <nav class="navbar"><div class="container inner">
 <a class="brand" href="index.html"><img src="assets/logo.png"/><span class="title-gradient">Garcia Builder</span></a>
@@ -28,13 +38,8 @@ body.about-page{
 <a data-i18n="nav.contact" href="contact.html">Contact</a>
 </nav>
 <div class="lang"><select id="lang-select"><option value="en">EN</option><option value="pt">PT</option><option value="es">ES</option></select></div>
-</div></nav>
-<section class="section" style="background:linear-gradient(180deg, rgba(10,12,16,.85), rgba(10,12,16,.55)),url('assets/fitness-bg.jpg') center/cover no-repeat;">
-<div class="container">
-<h1 class="title-gradient text-glow" data-i18n="about.title">About Garcia Builder</h1>
-<p class="lead" data-i18n="about.lead">We coach real people to build strong, athletic bodies — with simple nutrition, precise training and accountability that sticks.</p>
-</div>
-</section><section class="section"><div class="container"><h2 class="title-gradient">Mission &amp; Vision</h2><p>Garcia Builder exists to turn discipline into results. Our mission is to coach busy people to build muscle, drop fat and move with confidence — without crash diets or gimmicks. Guided by the GB mark and its gold standard, we keep the process simple: clear training blocks, flexible nutrition and weekly check‑ins that drive consistency. The vision is a community known for strong bodies and stronger habits, where progress survives real life.</p></div></section><section class="section"><div class="container"><h2 class="title-gradient">Andre Garcia — My Journey</h2><p>I began lifting to rebuild more than my body. Over the last twelve years I’ve coached well over a hundred people across different countries and cultures, managed demanding gym floors, and learned to solve problems hands‑on — from fixing equipment that mattered to a 75‑year‑old client, to organizing teams and standards. My background forged a work ethic built on clarity and service. I coach with evidence, not ego: progressive training you can repeat, simple nutrition you can follow, and feedback that keeps you honest. I’m at my best when I’m building systems that make change stick — programs that meet you where you are and move you forward every week. Highlights I’m proud of: guiding 100+ transformations, mentoring newer trainers, and helping members return from pain to performance. The future of Garcia Builder is global and personal at the same time: deeper education content, smarter habit tracking, and coaching in EN/PT/ES that scales without losing the human touch. If you want a stronger body and a clearer process, this is where we start.</p></div></section>
+</div></nav><section class="about-block"><div class="container"><h1 class="title-gradient">About Garcia Builder</h1><p class="lead">We coach real people to build strong, athletic bodies — with simple nutrition, precise training and accountability that sticks.</p><h2 class="title-gradient">Mission &amp; Vision</h2><p>Garcia Builder exists to turn discipline into results. Our mission is to coach busy people to build muscle, drop fat and move with confidence — without crash diets or gimmicks. Guided by the GB mark and its gold standard, we keep the process simple: clear training blocks, flexible nutrition and weekly check‑ins that drive consistency. The vision is a community known for strong bodies and stronger habits, where progress survives real life.</p><h2 class="title-gradient">Andre Garcia — My Journey</h2><p>I began lifting to rebuild more than my body. Over the last twelve years I’ve coached well over a hundred people across different countries and cultures, managed demanding gym floors, and learned to solve problems hands‑on — from fixing equipment that mattered to a 75‑year‑old client, to organizing teams and standards. My background forged a work ethic built on clarity and service. I coach with evidence, not ego: progressive training you can repeat, simple nutrition you can follow, and feedback that keeps you honest. I’m at my best when I’m building systems that make change stick — programs that meet you where you are and move you forward every week. Highlights I’m proud of: guiding 100+ transformations, mentoring newer trainers, and helping members return from pain to performance. The future of Garcia Builder is global and personal at the same time: deeper education content, smarter habit tracking, and coaching in EN/PT/ES that scales without losing the human touch. If you want a stronger body and a clearer process, this is where we start.</p></div></section>
+
 <section class="section">
 <div class="container grid grid-3">
 <div class="card feature p-4"><h3>Assess</h3><p>History, goals, schedule, equipment and injuries — we start where you are.</p></div>

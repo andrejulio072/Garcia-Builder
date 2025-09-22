@@ -10,21 +10,41 @@
 <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
 <script src="js/i18n.js"></script>
 <style>
-/* --- About page hero with fitness background --- */
+/* About page visual refresh */
+body.about-page{ 
+  background: radial-gradient(1200px 600px at 0% -10%, rgba(246,200,78,.08), transparent 60%), 
+              linear-gradient(180deg, #0b0e13 0%, #0e1218 40%, #0c0f15 100%);
+}
 .about-hero{
   position:relative; isolation:isolate;
-  min-height:340px;
-  display:grid; place-items:center;
-  text-align:center; color:#fff;
-  background:
-    linear-gradient(180deg, rgba(10,12,16,.75), rgba(10,12,16,.55)),
-    url('assets/fitness-bg.jpg') center/cover no-repeat,
-    radial-gradient(1000px 400px at 80% -30%, rgba(246,200,78,.18), transparent 60%);
+  min-height:360px; display:grid; place-items:center; text-align:center; color:#fff;
+  background: linear-gradient(180deg, rgba(12,15,20,.72), rgba(12,15,20,.55)),
+              url('assets/fitness-bg.jpg') center/cover no-repeat;
+  border-bottom:1px solid rgba(255,255,255,.06);
 }
-.about-hero .inner{ padding:64px 16px; max-width:980px; margin-inline:auto; }
-.about-hero h1{ margin:0 0 8px; font-size:clamp(28px,5.2vw,44px); letter-spacing:-.02em }
+.about-hero .inner{ padding:72px 16px; max-width:980px; margin-inline:auto; }
+.about-hero h1{ margin:0 0 8px; font-size:clamp(32px,5.6vw,52px); letter-spacing:-.02em }
 .about-hero p{ margin:0; color:#cfd2d6; max-width:72ch; margin-inline:auto }
-</style></head><body>
+
+/* Section spacing */
+.section{ padding:48px 0; }
+.section h2.title-gradient{ margin-bottom:10px; }
+
+/* 9-card grid styling (harmonized with site) */
+.grid.grid-3{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+@media (max-width:900px){ .grid.grid-3{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:640px){ .grid.grid-3{ grid-template-columns:1fr; } }
+.card.feature{ background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)); border:1px solid rgba(246,200,78,.18); border-radius:20px; }
+.card.feature .icon{ font-size:22px; }
+.card.feature:hover{ box-shadow:0 18px 36px rgba(0,0,0,.25), inset 0 1px 0 rgba(246,200,78,.12); }
+
+/* Subtle container glow */
+.container::before{
+  content:''; position:absolute; inset:auto 0 -60px 0; height:120px; pointer-events:none;
+  background: radial-gradient(800px 120px at 50% 0%, rgba(246,200,78,.10), transparent 70%);
+}
+.container{ position:relative; }
+</style></head><body class="about-page">
 <nav class="navbar"><div class="container inner">
 <a class="brand" href="index.html"><img src="assets/logo.png"/><span class="title-gradient">Garcia Builder</span></a>
 <nav class="nav">
@@ -37,22 +57,17 @@
 <a data-i18n="nav.contact" href="contact.html">Contact</a>
 </nav>
 <div class="lang"><select id="lang-select"><option value="en">EN</option><option value="pt">PT</option><option value="es">ES</option></select></div>
-</div></nav><section class="about-hero"><div class="inner container"><h1>About Garcia Builder</h1><p>Evidence-based online coaching to build strong, athletic bodies that last — with simple nutrition and relentless accountability.</p></div></section>
-<section class="section"><div class="container"><h2 class="title-gradient">Mission &amp; Vision</h2><p>Garcia Builder is a coaching company focused on durable, real‑life results.  Our mission is to help busy people build muscle, drop fat and feel confident — without extremes.  We cut the noise, deliver clear weekly plans, and keep you accountable so progress becomes inevitable.</p></div></section><section class="section"><div class="container"><h2 class="title-gradient">Andre Garcia — My Journey</h2><p>I’m Andre Garcia — coach, bodybuilder and builder of systems that make change stick. My journey didn’t start in perfect gyms; it started with discipline forged under pressure and the need to rebuild my life from the ground up. Over the last decade I’ve coached clients in different countries while managing busy gyms, fixing problems others ignored and learning what really sustains progress: clarity, consistency and compassion. I believe in precise programming, simple nutrition and weekly feedback that keeps you honest. No magic, no ego — just work you can repeat. Today I coach online in English, Portuguese and Spanish using Trainerize + WhatsApp. My goal is to help you become the strongest version of yourself — physically and mentally — with results that survive real life.</p></div></section><section class="section" style="background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.85)),url('assets/hero-fitness.jpg') center/cover no-repeat;">
-<div class="container">
-<h1 class="title-gradient text-glow" data-i18n="about.title">About Andre Garcia</h1>
-<p class="lead" data-i18n="about.lead">I’m Andre Garcia — coach, bodybuilder and Assistant Gym Manager at PureGym...</p>
-</div>
-</section>
+</div></nav><section class="about-hero"><div class="inner container"><h1>About Garcia Builder</h1><p>We coach real people to build strong, athletic bodies — with simple nutrition, precise training and accountability that sticks.</p></div></section><section class="section"><div class="container"><h2 class="title-gradient">Mission &amp; Vision</h2><p>Garcia Builder exists to turn discipline into results. Our mission is to coach busy people to build muscle, drop fat and move with confidence — without crash diets or gimmicks. Guided by the GB mark and its gold standard, we keep the process simple: clear training blocks, flexible nutrition and weekly check‑ins that drive consistency. The vision is a community known for strong bodies and stronger habits, where progress survives real life.</p></div></section><section class="section"><div class="container"><h2 class="title-gradient">Andre Garcia — My Journey</h2><p>I began lifting to rebuild more than my body. Over the last twelve years I’ve coached well over a hundred people across different countries and cultures, managed demanding gym floors, and learned to solve problems hands‑on — from fixing equipment that mattered to a 75‑year‑old client, to organizing teams and standards. My background forged a work ethic built on clarity and service. I coach with evidence, not ego: progressive training you can repeat, simple nutrition you can follow, and feedback that keeps you honest. I’m at my best when I’m building systems that make change stick — programs that meet you where you are and move you forward every week. Highlights I’m proud of: guiding 100+ transformations, mentoring newer trainers, and helping members return from pain to performance. The future of Garcia Builder is global and personal at the same time: deeper education content, smarter habit tracking, and coaching in EN/PT/ES that scales without losing the human touch. If you want a stronger body and a clearer process, this is where we start.</p></div></section>
+
 <section class="section">
-<div class="container grid grid-3">
+<div class="container grid grid-3"><h2 class="title-gradient">How I Coach</h2>
 <div class="card feature p-4"><h3>Assess</h3><p>History, goals, schedule, equipment and injuries — we start where you are.</p></div>
 <div class="card feature p-4"><h3>Build</h3><p>Training blocks and simple nutrition tailored to your reality.</p></div>
 <div class="card feature p-4"><h3>Execute</h3><p>Weekly reviews, progress tracking and smart adjustments.</p></div>
 <div class="card feature p-4"><h3>Credentials</h3><p>Active IQ L2/L3 (UK) • 12+ years coaching.</p></div>
 <div class="card feature p-4"><h3>Specialties</h3><p>Hypertrophy • Fat loss • Strength &amp; Conditioning.</p></div>
 <div class="card feature p-4"><h3>Values</h3><p>Clarity, discipline and humanity — results that last in real life.</p></div>
-</div>
+<div class="grid grid-3 mt-3"><div class="card feature p-4"><div class="icon">🧭</div><h3>Assess</h3><p>History, goals, schedule and injuries — we start where you are.</p></div><div class="card feature p-4"><div class="icon">🧱</div><h3>Build</h3><p>Blocks of training and simple nutrition tailored to your reality.</p></div><div class="card feature p-4"><div class="icon">🚀</div><h3>Execute</h3><p>Weekly reviews, progress tracking and smart adjustments.</p></div><div class="card feature p-4"><div class="icon">🎯</div><h3>Accountability</h3><p>Direct check‑ins via WhatsApp to keep you consistent.</p></div><div class="card feature p-4"><div class="icon">📊</div><h3>Evidence‑Based</h3><p>Clear metrics, progressive overload and habit tracking.</p></div><div class="card feature p-4"><div class="icon">🛡️</div><h3>Injury‑Smart</h3><p>Technique cues and safe progressions for long‑term results.</p></div><div class="card feature p-4"><div class="icon">🏋️</div><h3>Strength &amp; Hypertrophy</h3><p>Quality movement patterns and progressive strength.</p></div><div class="card feature p-4"><div class="icon">🔥</div><h3>Fat Loss &amp; Recomp</h3><p>High‑satiety meals, energy balance and daily activity.</p></div><div class="card feature p-4"><div class="icon">🌍</div><h3>Worldwide • EN/PT/ES</h3><p>Online coaching that fits your life and time zone.</p></div></div></div>
 </section>
 <section class="section">
 <div class="container">
@@ -75,15 +90,4 @@ const lb=document.createElement('div'); lb.style.cssText='position:fixed;inset:0
 const img=lb.querySelector('img'); const close=lb.querySelector('div'); lb.addEventListener('click',()=>lb.style.display='none'); close.addEventListener('click',()=>lb.style.display='none');
 document.querySelectorAll('.gallery a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault(); img.src=a.getAttribute('href'); lb.style.display='grid';}));
 </script>
-<script>
-(function(){
-  var test = new Image();
-  test.onload = function(){ /* ok */ };
-  test.onerror = function(){
-    // set CSS var for fallback
-    var el = document.querySelector('.about-hero');
-    if(el){ el.style.backgroundImage = "linear-gradient(180deg, rgba(10,12,16,.75), rgba(10,12,16,.55)), url('https://picsum.photos/id/1067/1600/900?blur=2'), radial-gradient(1000px 400px at 80% -30%, rgba(246,200,78,.18), transparent 60%)"; }
-  };
-  test.src = 'assets/fitness-bg.jpg';
-})();
-</script></body></html>
+</body></html>

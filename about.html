@@ -10,21 +10,47 @@
 <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
 <script src="assets/i18n.js"></script>
 <style>
-/* About v6 marker */
+/* About v7.1 marker */
 .about-block{
+  --gold:#F6C84E; --muted:#cfd2d6;
   color:#fff;
   padding:72px 0 56px;
   background:
-    linear-gradient(180deg, rgba(10,12,16,.82), rgba(10,12,16,.62)),
-    url('https://images.pexels.com/photos/1552249/pexels-photo-1552249.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1') center/cover no-repeat;
+    linear-gradient(180deg, rgba(12,14,18,.88), rgba(12,14,18,.68)),
+    url('https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1') center/cover no-repeat;
   border-bottom:1px solid rgba(255,255,255,.08);
 }
-.about-block .lead{ color:#cfd2d6; max-width:70ch }
-.about-block h1{ margin:0 0 8px; font-size:clamp(34px,6vw,56px) }
-.about-block h2{ margin:22px 0 8px; font-size:clamp(22px,3.2vw,30px) }
-.about-page .card.feature{ transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; cursor:pointer }
-.about-page .card.feature:hover{ transform:translateY(-3px); box-shadow:0 16px 32px rgba(0,0,0,.28), inset 0 1px 0 rgba(246,200,78,.10); border-color:rgba(246,200,78,.28) }
-.about-page .card.feature:active{ transform:translateY(0) scale(.98) }
+.about-title{
+  margin:0 0 10px; font-size:clamp(36px,6.2vw,58px);
+  line-height:1.05; letter-spacing:-.02em;
+  background:linear-gradient(180deg,#fff 0%, #ececec 60%, #d9d9d9 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  text-shadow:0 1px 24px rgba(0,0,0,.35);
+}
+.about-lead{ margin:0 0 18px; color:var(--muted); max-width:72ch; font-size:clamp(16px,2.4vw,19px) }
+.about-subtitle{
+  margin:20px 0 8px; font-size:clamp(22px,3.2vw,30px);
+  background:linear-gradient(180deg,var(--gold), #f2d57f);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.about-text{ margin:0 0 10px; max-width:80ch; color:#e7ebf1; line-height:1.65 }
+@media (min-width: 900px){ .about-text{ font-size:18px } }
+
+/* Card micro-interactions */
+.container.grid.grid-3{ perspective:900px }
+.card.feature{ position:relative; transform-style:preserve-3d;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease; cursor:pointer }
+.card.feature:hover{
+  box-shadow:0 18px 36px rgba(0,0,0,.25), inset 0 1px 0 rgba(246,200,78,.10);
+  border-color:rgba(246,200,78,.24);
+}
+.card.feature .shine{
+  position:absolute; inset:0; pointer-events:none; opacity:0;
+  background: radial-gradient(200px 120px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.18), transparent 60%);
+  transition: opacity .15s ease;
+}
+.card.feature:hover .shine{ opacity:.9 }
+.card.feature h3, .card.feature p{ word-break:normal; overflow-wrap:anywhere; hyphens:manual }
 </style></head><body class="about-page">
 <nav class="navbar"><div class="container inner">
 <a class="brand" href="index.html"><img src="assets/logo.png"/><span class="title-gradient">Garcia Builder</span></a>
@@ -38,7 +64,7 @@
 <a data-i18n="nav.contact" href="contact.html">Contact</a>
 </nav>
 <div class="lang"><select id="lang-select"><option value="en">EN</option><option value="pt">PT</option><option value="es">ES</option></select></div>
-</div></nav><section class="about-block"><div class="container"><h1 class="title-gradient">About Garcia Builder</h1><p class="lead">We coach real people to build strong, athletic bodies — with simple nutrition, precise training and accountability that sticks.</p><h2 class="title-gradient">Mission &amp; Vision</h2><p>Garcia Builder exists to turn discipline into results. Our mission is to coach busy people to build muscle, drop fat and move with confidence — without crash diets or gimmicks. Guided by the GB mark and its gold standard, we keep the process simple: clear training blocks, flexible nutrition and weekly check‑ins that drive consistency. The vision is a community known for strong bodies and stronger habits, where progress survives real life.</p><h2 class="title-gradient">Andre Garcia — My Journey</h2><p>I began lifting to rebuild more than my body. Over the last twelve years I’ve coached well over a hundred people across different countries and cultures, managed demanding gym floors, and learned to solve problems hands‑on — from fixing equipment that mattered to a 75‑year‑old client, to organizing teams and standards. My background forged a work ethic built on clarity and service. I coach with evidence, not ego: progressive training you can repeat, simple nutrition you can follow, and feedback that keeps you honest. I’m at my best when I’m building systems that make change stick — programs that meet you where you are and move you forward every week. Highlights I’m proud of: guiding 100+ transformations, mentoring newer trainers, and helping members return from pain to performance. The future of Garcia Builder is global and personal at the same time: deeper education content, smarter habit tracking, and coaching in EN/PT/ES that scales without losing the human touch. If you want a stronger body and a clearer process, this is where we start.</p></div></section>
+</div></nav><section class="about-block"><div class="container"><h1 class="about-title">About Garcia Builder</h1><p class="about-lead">We coach real people to build strong, athletic bodies — with simple nutrition, precise training and accountability that sticks.</p><h2 class="about-subtitle">Mission &amp; Vision</h2><p class="about-text">Garcia Builder exists to turn discipline into results. Our mission is to coach busy people to build muscle, drop fat and move with confidence — without crash diets or gimmicks. Guided by the GB mark and its gold standard, we keep the process simple: clear training blocks, flexible nutrition and weekly check‑ins that drive consistency. The vision is a community known for strong bodies and stronger habits, where progress survives real life.</p><h2 class="about-subtitle">Andre Garcia — My Journey</h2><p class="about-text">I didn’t find fitness in comfort. I found it in hard seasons where quitting would’ve been easier. Training became the place I chose progress when life felt heavy. It taught me to show up when I was tired, to build structure when nothing felt stable, and to own my day before the day owned me. Those reps turned into a mindset: discipline first, feelings later. I learned that big changes come from small, honest wins — one session, one meal, one decision at a time. That’s how I rebuilt my body and, more importantly, my identity. I stopped chasing perfect plans and started stacking consistent ones. I’ve carried that into coaching. No hype. No shortcuts. Clear training blocks, simple nutrition you can follow, and weekly feedback that keeps you accountable — without shame. My job is to remove confusion, set a pace you can sustain, and guide you through setbacks so momentum never dies. If you’ve tried and stalled, I get it. You don’t need a louder promise — you need a straighter path, a steady hand, and a standard that doesn’t bend to excuses. My promise is simple: I’ll meet you where you are, demand your best, and help you become someone you’re proud to trust. Resilience wins.</p></div></section>
 
 <section class="section">
 <div class="container grid grid-3">
@@ -48,7 +74,7 @@
 <div class="card feature p-4"><h3>Credentials</h3><p>Active IQ L2/L3 (UK) • 12+ years coaching.</p></div>
 <div class="card feature p-4"><h3>Specialties</h3><p>Hypertrophy • Fat loss • Strength &amp; Conditioning.</p></div>
 <div class="card feature p-4"><h3>Values</h3><p>Clarity, discipline and humanity — results that last in real life.</p></div>
-<div class="card feature p-4"><h3>Accountability</h3><p>Direct check-ins via WhatsApp to keep you consistent.</p></div><div class="card feature p-4"><h3>Evidence-Based</h3><p>Clear metrics, progressive overload and habit tracking.</p></div><div class="card feature p-4"><h3>Injury-Smart</h3><p>Technique cues and safe progressions for long-term results.</p></div></div>
+<div class="card feature p-4"><h3>Accountability</h3><p>Direct check-ins via WhatsApp to keep you consistent.</p><span class="shine"></span></div><div class="card feature p-4"><h3>Evidence-Based</h3><p>Clear metrics, progressive overload and habit tracking.</p><span class="shine"></span></div><div class="card feature p-4"><h3>Injury-Smart</h3><p>Technique cues and safe progressions for long-term results.</p><span class="shine"></span></div></div>
 </section>
 <section class="section">
 <div class="container">
@@ -71,4 +97,32 @@ const lb=document.createElement('div'); lb.style.cssText='position:fixed;inset:0
 const img=lb.querySelector('img'); const close=lb.querySelector('div'); lb.addEventListener('click',()=>lb.style.display='none'); close.addEventListener('click',()=>lb.style.display='none');
 document.querySelectorAll('.gallery a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault(); img.src=a.getAttribute('href'); lb.style.display='grid';}));
 </script>
-</body></html>
+<script>
+// about-cards tilt + shine
+(function(){
+  const cards = document.querySelectorAll('.card.feature');
+  if(!cards.length) return;
+  const maxTilt = 10;
+  function onMove(e){
+    const card = e.currentTarget;
+    const r = card.getBoundingClientRect();
+    const cx = r.left + r.width/2;
+    const cy = r.top + r.height/2;
+    const dx = e.clientX - cx;
+    const dy = e.clientY - cy;
+    const rx = (-maxTilt * dy) / (r.height/2);
+    const ry = ( maxTilt * dx) / (r.width/2);
+    card.style.transform = `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+    // shine
+    const mx = ((e.clientX - r.left) / r.width) * 100;
+    const my = ((e.clientY - r.top) / r.height) * 100;
+    card.style.setProperty('--mx', mx+'%');
+    card.style.setProperty('--my', my+'%');
+  }
+  function onLeave(e){ e.currentTarget.style.transform = ''; }
+  cards.forEach(c=>{
+    if(!c.querySelector('.shine')){ const s = document.createElement('span'); s.className='shine'; c.appendChild(s); }
+    c.addEventListener('mousemove', onMove, {passive:true});
+    c.addEventListener('mouseleave', onLeave, {passive:true});
+  });
+})();</script></body></html>

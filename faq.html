@@ -9,24 +9,59 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/global.css">
 <style>
-  /* Minimal dark accordion fix (no white corners) */
-  :root{--gb-bg:#0b1220;--gb-panel:#0f172a;--gb-panel-active:#111827;--gb-txt:#e5e7eb;--gb-muted:#9ca3af;--gb-bor:rgba(255,255,255,.12)}
+  /* ---- Palette ---- */
+  :root{
+    --gb-bg:#0b1220; --gb-panel:#0f172a; --gb-panel-active:#111827;
+    --gb-txt:#e5e7eb; --gb-muted:#9ca3af; --gb-bor:rgba(255,255,255,.12);
+    --gb-gold-1:#f8e08e; --gb-gold-2:#f5b64f; /* brand gold */
+  }
+
   body{background:var(--gb-bg);color:var(--gb-txt)}
+
+  /* ---- Brand & nav (lock colors; no blue) ---- */
+  .title-gradient{
+    background:linear-gradient(90deg,var(--gb-gold-1),var(--gb-gold-2) 80%);
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
+  .nav a{color:#dbe3ee}
+  .nav a:hover{color:#fff}
+  /* Mark the current page (FAQ) in gold */
+  .nav a.is-active{color:var(--gb-gold-1)!important;font-weight:700}
+
+  /* ---- Hero with fitness background ---- */
+  .faq-hero{
+    background:
+      linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.87)),
+      url('assets/faq-hero.jpg') center/cover no-repeat;
+    /* fallback if faq-hero.jpg not present */
+    /* background:
+      linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.87)),
+      url('assets/hero-fitness.jpg') center/cover no-repeat; */
+  }
+
+  /* ---- Big search bar (keep original size) ---- */
+  .search{
+    width:100%; max-width:980px; /* bigger like your original */
+    background:#0b132a; border:1px solid var(--gb-bor); color:#fff;
+    border-radius:14px; padding:18px 18px; font-size:18px
+  }
+
+  /* ---- Dark accordion (no white corners) ---- */
   .accordion{
-    --bs-accordion-bg:transparent;--bs-accordion-color:var(--gb-txt);
-    --bs-accordion-border-color:var(--gb-bor);--bs-accordion-border-radius:12px;
-    --bs-accordion-btn-bg:var(--gb-panel);--bs-accordion-btn-color:var(--gb-txt);
-    --bs-accordion-active-bg:var(--gb-panel-active);--bs-accordion-active-color:#fff;
-    --bs-accordion-btn-focus-box-shadow:none;--bs-accordion-btn-focus-border-color:transparent
+    --bs-accordion-bg:transparent; --bs-accordion-color:var(--gb-txt);
+    --bs-accordion-border-color:var(--gb-bor);
+    --bs-accordion-border-radius:12px; --bs-accordion-inner-border-radius:12px;
+    --bs-accordion-btn-bg:var(--gb-panel); --bs-accordion-btn-color:var(--gb-txt);
+    --bs-accordion-active-bg:var(--gb-panel-active); --bs-accordion-active-color:#fff;
+    --bs-accordion-btn-focus-box-shadow:none; --bs-accordion-btn-focus-border-color:transparent
   }
   .accordion-item{background:transparent;border:1px solid var(--gb-bor);border-radius:12px;overflow:hidden;margin-bottom:12px}
   .accordion-button{background:var(--gb-panel)!important;color:var(--gb-txt)!important;border:1px solid var(--gb-bor)}
   .accordion-button:not(.collapsed){background:var(--gb-panel-active)!important;color:#fff!important;border-bottom:1px solid var(--gb-bor);box-shadow:none}
   .accordion-body{background:var(--gb-panel);color:var(--gb-txt)}
   .accordion-button::after{filter:invert(1) opacity(.85)}
-  .search{width:100%;max-width:520px;background:#0b132a;border:1px solid var(--gb-bor);color:#fff;border-radius:10px;padding:12px 14px}
-  .title-gradient{background:linear-gradient(90deg,#fff,#7dd3fc 60%,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent}
 </style>
+
 <script src="assets/i18n.js"></script>
 </head>
 <body>
@@ -49,8 +84,8 @@
 </div></nav>
 
 <!-- Hero -->
-<section class="section" style="background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.85)),url('assets/hero-fitness.jpg') center/cover no-repeat;">
-  <div class="container">
+<section class="section faq-hero">
+<div class="container">
     <h1 class="title-gradient text-glow">FAQ</h1>
     <input id="faq-search" class="search mt-3" placeholder="Search questions…">
   </div>
@@ -168,6 +203,15 @@ function openFromHash(){
 window.addEventListener('hashchange', openFromHash);
 openFromHash();
 </script>
+<script>
+  // highlight current nav item (FAQ) in gold
+  document.querySelectorAll('.nav a').forEach(a=>{
+    if(a.getAttribute('href') && location.pathname.endsWith(a.getAttribute('href'))) {
+      a.classList.add('is-active');
+    }
+  });
+</script>
+
 
 </body>
 </html>

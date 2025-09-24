@@ -1,6 +1,3 @@
-REMOVE THESE (to avoid conflicts):
-- Root-level `i18n.js` (if present).
-- Root-level `locales/` directory (if present).
-Canonical files are now:
-- assets/i18n.js
-- assets/locales/en.json, pt.json, es.json
+Delete conflicts (keep only assets/i18n.js and assets/locales/*):
+- i18n.js at project root
+- locales/ at project root

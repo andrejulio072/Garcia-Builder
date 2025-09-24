@@ -1,12 +1,29 @@
 {
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "gallery": "Gallery",
+    "contact": "Contact",
+    "book": "Book a Call",
+    "lang": {
+      "en": "EN",
+      "pt": "PT",
+      "es": "ES"
+    }
+  },
   "home": {
     "hero": {
+      "headline": "Online Coaching. Real Results.",
       "title": "About Andre Garcia",
       "text": "I didn’t grow up with easy wins. I grew up with weight on my back and a choice: break or build. I chose to build. For more than a decade I have lived the discipline of bodybuilding—early mornings, hard reps, clean food, and a mind that refuses to quit. I went from carrying extra weight to carrying standards: stronger lifts, lower body fat, a physique carved by consistency. The gym became my forge, and every setback turned into fuel. Today my mission is simple: help you transform with a plan that fits real life—no magic, only method. If you show up, I’ll show you how to turn effort into results, confidence, and a body that makes you proud. What I’ve achieved is only the beginning—yours starts now.",
       "cta": {
-        "method": "See the Method",
-        "start": "Start Now"
+        "start": "Start Now",
+        "method": "See the Method"
       }
+    },
+    "why": {
+      "title": "Why Garcia Builder"
     },
     "cards": {
       "title": "The Method in 9 Pillars",
@@ -48,5 +65,17 @@
         "text": "Visible change: fat loss, strength, confidence. Proof over promises."
       }
     }
+  },
+  "footer": {
+    "title": "Ready to start?",
+    "subtitle": "Book a free 15-minute call. Let’s map your first 6 weeks.",
+    "whatsapp": "WhatsApp",
+    "instagram": "Instagram",
+    "book": "Book a Call"
+  },
+  "generic": {
+    "learn_more": "Learn more",
+    "read_more": "Read more",
+    "get_started": "Get Started"
   }
 }

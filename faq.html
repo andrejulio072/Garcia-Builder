@@ -1,4 +1,6 @@
-<!doctype html><html lang="en"><head>
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>FAQ – Garcia Builder</title>
 <link rel="icon" href="assets/logo.png">
@@ -6,11 +8,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/global.css">
-<script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+<style>
+  /* Minimal dark accordion fix (no white corners) */
+  :root{--gb-bg:#0b1220;--gb-panel:#0f172a;--gb-panel-active:#111827;--gb-txt:#e5e7eb;--gb-muted:#9ca3af;--gb-bor:rgba(255,255,255,.12)}
+  body{background:var(--gb-bg);color:var(--gb-txt)}
+  .accordion{
+    --bs-accordion-bg:transparent;--bs-accordion-color:var(--gb-txt);
+    --bs-accordion-border-color:var(--gb-bor);--bs-accordion-border-radius:12px;
+    --bs-accordion-btn-bg:var(--gb-panel);--bs-accordion-btn-color:var(--gb-txt);
+    --bs-accordion-active-bg:var(--gb-panel-active);--bs-accordion-active-color:#fff;
+    --bs-accordion-btn-focus-box-shadow:none;--bs-accordion-btn-focus-border-color:transparent
+  }
+  .accordion-item{background:transparent;border:1px solid var(--gb-bor);border-radius:12px;overflow:hidden;margin-bottom:12px}
+  .accordion-button{background:var(--gb-panel)!important;color:var(--gb-txt)!important;border:1px solid var(--gb-bor)}
+  .accordion-button:not(.collapsed){background:var(--gb-panel-active)!important;color:#fff!important;border-bottom:1px solid var(--gb-bor);box-shadow:none}
+  .accordion-body{background:var(--gb-panel);color:var(--gb-txt)}
+  .accordion-button::after{filter:invert(1) opacity(.85)}
+  .search{width:100%;max-width:520px;background:#0b132a;border:1px solid var(--gb-bor);color:#fff;border-radius:10px;padding:12px 14px}
+  .title-gradient{background:linear-gradient(90deg,#fff,#7dd3fc 60%,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent}
+</style>
 <script src="assets/i18n.js"></script>
-</head><body>
+</head>
+<body>
+
+<!-- Top nav (unchanged) -->
 <nav class="navbar"><div class="container inner">
-  <a class="brand" href="index.html"><img src="assets/logo.png"><span class="title-gradient">Garcia&nbsp;Builder</span></a>
+  <a class="brand" href="index.html"><img src="assets/logo.png" alt="logo"><span class="title-gradient">Garcia&nbsp;Builder</span></a>
   <nav class="nav">
     <a href="index.html" data-i18n="nav.home">Home</a>
     <a href="about.html" data-i18n="nav.about">About</a>
@@ -20,50 +43,131 @@
     <a href="faq.html" data-i18n="nav.faq">FAQ</a>
     <a href="contact.html" data-i18n="nav.contact">Contact</a>
   </nav>
-  <div class="lang"><select id="lang-select"><option value="en">EN</option><option value="pt">PT</option><option value="es">ES</option></select></div>
+  <div class="lang">
+    <select id="lang-select"><option value="en">EN</option><option value="pt">PT</option><option value="es">ES</option></select>
+  </div>
 </div></nav>
 
+<!-- Hero -->
 <section class="section" style="background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.85)),url('assets/hero-fitness.jpg') center/cover no-repeat;">
   <div class="container">
-    <h1 class="title-gradient text-glow" data-i18n="faq.title">FAQ</h1>
-    <input id="faq-search" class="search mt-3" data-i18n-ph="faq.search" placeholder="Search question...">
+    <h1 class="title-gradient text-glow">FAQ</h1>
+    <input id="faq-search" class="search mt-3" placeholder="Search questions…">
   </div>
 </section>
-<section class="section"><div class="container"><div class="accordion" id="faqAccordion"></div></div></section>
-<script>
-const Q=[
-['How does online coaching work?','Trainerize hosts your plan and tracking. We review progress weekly and adjust training and nutrition. WhatsApp is open for questions, form cues and quick wins.'],
-['Do I need a gym?','Not required. I can build a complete home plan with minimal equipment and progress it effectively until you decide to join a gym.'],
-['Is nutrition included?','Yes. You’ll get simple targets, flexible meals and guidance for social events. No extremes — we focus on habits you can keep.'],
-['I’m a beginner.','Perfect. We start with movement quality, confidence and easy wins so you build momentum quickly.'],
-['Injuries?','We work around them with smart substitutions, safe ranges and communication with your physio if needed.'],
-['Results timeline?','Initial changes often appear within 2–4 weeks. Big visible changes happen in 8–12 weeks with consistency.'],
-['Payments','Monthly subscription via Trainerize/Stripe. Cancel any time before the next cycle — no lock‑in.'],
-['Check‑in day','Weekly by default. Full/Elite can add a mid‑week touchpoint when needed.'],
-['Countries & languages','Worldwide. I coach in English, Portuguese and Spanish.'],
-['Equipment','From bodyweight to full gym — I’ll optimize your setup and progress systematically.']
-];
-document.getElementById('faqAccordion').innerHTML=Q.map((qa,i)=>`
-  <div class="accordion-item mb-2">
-    <h2 class="accordion-header" id="h${i}">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c${i}">
-        ${qa[0]}
-      </button>
-    </h2>
-    <div id="c${i}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-      <div class="accordion-body">${qa[1]}</div>
-    </div>
-  </div>`).join('');
-</script>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="container">
+    <div class="accordion" id="faqAccordion"></div>
+  </div>
+</section>
 
 <hr class="hr-shine">
-<div class="footer"><div class="container small">© 2025 Garcia Builder — Online Coaching • <a href="https://instagram.com/garcia.builder" target="_blank">@garcia.builder</a> • <a href="https://calendly.com/andrenjulio072/consultation" target="_blank">Book a call</a></div></div>
+<div class="footer">
+  <div class="container small">
+    © 2025 Garcia Builder — Online Coaching •
+    <a href="https://instagram.com/garcia.builder" target="_blank">@garcia.builder</a> •
+    <a href="https://calendly.com/andrenjulio072/consultation" target="_blank">Book a call</a>
+  </div>
+</div>
 <a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank">WhatsApp</a>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/app.js"></script>
+
 <script>
-const lb=document.createElement('div'); lb.style.cssText='position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.85);z-index:1000'; lb.innerHTML='<img style="max-width:92vw;max-height:92vh;border-radius:12px"><div style="position:absolute;top:20px;right:30px;font-size:26px;cursor:pointer">✕</div>'; document.body.appendChild(lb);
-const img=lb.querySelector('img'); const close=lb.querySelector('div'); lb.addEventListener('click',()=>lb.style.display='none'); close.addEventListener('click',()=>lb.style.display='none');
-document.querySelectorAll('.gallery a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault(); img.src=a.getAttribute('href'); lb.style.display='grid';}));
+/* ---- 25 precise FAQs (English only) ---- */
+const FAQ = [
+  ["How does online coaching work?",
+   "We start with an intake form and a brief call. Your plan is delivered in Trainerize (training + habits, optional nutrition guidance). Weekly check-ins, in-app chat support, and adjustments based on your data."],
+  ["Do I need a gym membership?",
+   "No. I can program full home training. If you have only bands or a couple of dumbbells, we still progress effectively."],
+  ["Is nutrition included?",
+   "Yes. You get calories/macros and flexible meal frameworks. We align with your culture, budget, and schedule—no rigid templates."],
+  ["I’m a beginner—is this for me?",
+   "Absolutely. We focus on safe form, progressions, and habit building. Every exercise has demo videos and cues."],
+  ["What if I have injuries or pain?",
+   "We adapt exercises, tempo, and range of motion. I can coordinate with physio/GP guidance when needed."],
+  ["How fast will I see results?",
+   "Most feel better in 2–3 weeks, notice visible changes by 6–8 weeks, and strong transformations from 12+ weeks with consistency."],
+  ["How do weekly check-ins work?",
+   "Short form in the app + optional photos/measurements. I review adherence and trends, then update your plan."],
+  ["Which app do you use?",
+   "Trainerize—plans, videos, habits, messages, and progress tracking in one place (iOS/Android)."],
+  ["What equipment do I need?",
+   "None to start. For home, adjustable dumbbells + bands cover almost everything. We scale up as you progress."],
+  ["I travel or work shifts. Can this fit?",
+   "Yes. Flexible splits (3–4 days/week), travel swaps, and short sessions keep momentum during busy weeks."],
+  ["Will I lose muscle while cutting fat?",
+   "The plan prioritizes muscle retention: resistance training, adequate protein, progressive overload, and a sensible deficit."],
+  ["What if I hit a plateau?",
+   "We systematically adjust volume, intensity, steps, calories, or exercise selection—guided by your data."],
+  ["Do you recommend supplements?",
+   "Optional. Evidence-based basics only (e.g., whey, creatine, vitamin D, omega-3) if useful for your goals."],
+  ["How long are sessions?",
+   "Typically 35–50 minutes. Longer options are available if your schedule allows."],
+  ["How many days per week will I train?",
+   "Commonly 3–4 days/week. We can go 2–6 depending on your time, recovery, and goals."],
+  ["What happens on Day 1?",
+   "You get app access, a starter plan, quick tutorials, and a simple setup checklist. We schedule your first check-in right away."],
+  ["Will you review my form?",
+   "Yes. Upload short clips inside the app and I’ll provide cues and corrections in your feedback."],
+  ["Do you offer meal plans or just targets?",
+   "I provide macro targets and practical meal frameworks/recipes. If you need a stricter template, we can discuss options that fit your lifestyle."],
+  ["How are payments handled?",
+   "Monthly subscription via secure card billing (Stripe)."],
+  ["Is there a contract? Can I pause or cancel?",
+   "No long-term lock-ins. Cancel anytime before your next billing date. Pauses are available for travel/illness—just message me."],
+  ["Do you offer refunds?",
+   "Because coaching is a time/service product, fees are generally non-refundable. You can cancel before the next cycle to avoid renewal."],
+  ["How is my data handled? What about privacy?",
+   "Only you and I see your data. Photos are optional. With explicit consent I may use anonymized results for marketing."],
+  ["Are progress photos required?",
+   "No. They help track visual changes, but you can progress using measurements, strength logs, and how clothes fit."],
+  ["Do you coach in English only?",
+   "Primary language is English. I can also coach in Portuguese and Spanish."],
+  ["Can you guarantee results?",
+   "No coach can guarantee outcomes. I guarantee a personalized plan, clarity, accountability, and weekly adjustments—your consistency drives the results."]
+];
+
+/* ---- Render small & fast ---- */
+const acc = document.getElementById('faqAccordion');
+acc.innerHTML = FAQ.map(([,],i)=>`
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="h${i}">
+      <button class="accordion-button ${i? 'collapsed':''}" type="button" data-bs-toggle="collapse" data-bs-target="#c${i}" aria-expanded="${!i}" aria-controls="c${i}">
+        ${FAQ[i][0]}
+      </button>
+    </h2>
+    <div id="c${i}" class="accordion-collapse collapse ${i? '':'show'}" aria-labelledby="h${i}" data-bs-parent="#faqAccordion">
+      <div class="accordion-body">${FAQ[i][1]}</div>
+    </div>
+  </div>
+`).join('');
+
+/* ---- Search filter ---- */
+const search = document.getElementById('faq-search');
+search.addEventListener('input', () => {
+  const q = search.value.trim().toLowerCase();
+  FAQ.forEach((qa,i)=>{
+    const el = document.getElementById(`h${i}`).parentElement;
+    const match = qa[0].toLowerCase().includes(q) || qa[1].toLowerCase().includes(q);
+    el.style.display = match ? '' : 'none';
+  });
+});
+
+/* ---- Hash open (#q12 opens the 12th item) ---- */
+function openFromHash(){
+  const m = location.hash.match(/^#q(\d{1,2})$/i);
+  if(!m) return;
+  const idx = Math.min(Math.max(parseInt(m[1],10)-1,0), FAQ.length-1);
+  const target = document.getElementById('c'+idx);
+  if(target) new bootstrap.Collapse(target, {toggle:true});
+}
+window.addEventListener('hashchange', openFromHash);
+openFromHash();
 </script>
-</body></html>
+
+</body>
+</html>

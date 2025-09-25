@@ -7,10 +7,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/global-optimizations.css">
 </head><body>
 <nav class="navbar"><div class="container inner">
-  <a class="brand" href="index.html"><img loading="lazy" decoding="async" src="assets/logo.png"><span class="title-gradient">Garcia&nbsp;Builder</span></a>
+  <a class="brand" href="index.html"><img src="assets/logo.png"><span class="title-gradient">Garcia&nbsp;Builder</span></a>
   <nav class="nav">
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
@@ -40,14 +39,12 @@
 
 <hr class="hr-shine">
 <div class="footer"><div class="container small">© 2025 Garcia Builder — Online Coaching</div></div>
-<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script defer src="js/app.js"></script>
-<script defer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+<script>
 // Lightbox
-const lb=document.createElement('div'); lb.style.cssText='position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.85);z-index:1000'; lb.innerHTML='<img loading="lazy" decoding="async" style="max-width:92vw;max-height:92vh;border-radius:12px"><div style="position:absolute;top:20px;right:30px;font-size:26px;cursor:pointer">✕</div>'; document.body.appendChild(lb);
+const lb=document.createElement('div'); lb.style.cssText='position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.85);z-index:1000'; lb.innerHTML='<img style="max-width:92vw;max-height:92vh;border-radius:12px"><div style="position:absolute;top:20px;right:30px;font-size:26px;cursor:pointer">✕</div>'; document.body.appendChild(lb);
 const img=lb.querySelector('img'); const close=lb.querySelector('div'); lb.addEventListener('click',()=>lb.style.display='none'); close.addEventListener('click',()=>lb.style.display='none');
 document.querySelectorAll('.gallery a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault(); img.src=a.getAttribute('href'); lb.style.display='grid';}));
 </script>
-
-<script defer src="js/app-optimizations.js"></script>
 </body></html>

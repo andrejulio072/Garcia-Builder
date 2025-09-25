@@ -1,16 +1,13 @@
-<!doctype html><html lang="en"><head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
+<!doctype html><html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Garcia Builder</title>
 <link rel="stylesheet" href="css/global.css">
 <link rel="alternate" id="dynamic-lang" href="?lang=en">
-<link rel="stylesheet" href="css/global-optimizations.css">
 </head><body>
   <div class="navbar">
     <div class="container inner">
-      <a class="brand" href="index.html"><img loading="lazy" decoding="async" src="assets/logo.png" alt="G"> <span class="text-glow title-gradient">Garcia&nbsp;Builder</span></a>
+      <a class="brand" href="index.html"><img src="assets/logo.png" alt="G"> <span class="text-glow title-gradient">Garcia&nbsp;Builder</span></a>
       <nav class="nav">
         <a data-i18n="nav.home" href="index.html">Home</a>
         <a data-i18n="nav.programs" href="programs.html">Programs</a>
@@ -46,7 +43,5 @@
   <div class="footer">
     <div class="container small">© 2025 Garcia Builder — Online Coaching</div>
   </div>
-<script defer src="js/i18n.js"></script>
-
-<script defer src="js/app-optimizations.js"></script>
+<script src="js/i18n.js"></script>
 </body></html>

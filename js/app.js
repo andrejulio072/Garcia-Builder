@@ -1,3 +1,5 @@
+// app.js (no topo, evite global poluído)
+const onIdle = (fn) => ('requestIdleCallback' in window) ? requestIdleCallback(fn) : setTimeout(fn, 1);
 
 document.addEventListener('DOMContentLoaded',()=>{
   const path = location.pathname.split('/').slice(-1)[0] || 'index.html';
@@ -72,4 +74,23 @@ document.querySelectorAll('.kpis').forEach(k=>io.observe(k));
   // 2) Evitar 300ms delay em iOS antigos (opcional leve)
   document.addEventListener('touchstart', ()=>{}, {passive:true});
 })();
+
+// 3D tilt: só desktop (hover) e quando ocioso
+onIdle(() => {
+  if (window.matchMedia('(hover: hover)').matches && window.VanillaTilt) {
+    document.querySelectorAll('[data-tilt]').forEach(el => {
+      window.VanillaTilt.init(el, { glare: true, 'max-glare': .15, speed: 400, scale: 1.02 });
+    });
+  }
+});
+
+// FAQ search: debouce (evita rodar a cada tecla)
+const $q = document.querySelector('#faq-search');
+if ($q) {
+  let t;
+  $q.addEventListener('input', () => {
+    clearTimeout(t);
+    t = setTimeout(runFaqFilter, 150); // 150ms é suave
+  });
+}
 

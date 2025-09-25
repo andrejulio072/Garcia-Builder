@@ -8,7 +8,32 @@
 <link rel="stylesheet" href="css/global.css">
 <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
 <script src="assets/i18n.js"></script>
-</head><body>
+
+<style>
+  /* ===== Background ===== */
+  body.pricing-bg{
+    background:
+      linear-gradient(180deg, rgba(10,12,23,.80), rgba(10,12,23,.88)),
+      url("assets/bg-fitness.jpg") center / cover fixed no-repeat;
+  }
+
+  /* ===== Subtitle ===== */
+  .subtitle{font-size:1.05rem;color:#c9d4ffcc;margin-top:-6px}
+
+  /* ===== Reveal (progressive enhancement) =====
+     Visible by default. When JS runs, <html> gets class "js",
+     then .reveal starts hidden and animates in. */
+  .reveal{opacity:1;transform:none}
+  html.js .reveal{opacity:0;transform:translateY(18px)}
+  .reveal.visible{opacity:1;transform:none;transition:opacity .6s ease, transform .6s ease}
+
+  /* Hover lift + spacing tweak */
+  .price:hover{transform:translateY(-4px);transition:transform .25s ease}
+  @media (min-width:992px){.price-grid{gap:22px}}
+</style>
+</head>
+
+<body class="pricing-bg">
 <nav class="navbar"><div class="container inner">
   <a class="brand" href="index.html"><img src="assets/logo.png"><span class="title-gradient">Garcia&nbsp;Builder</span></a>
   <nav class="nav">
@@ -26,11 +51,12 @@
 <section class="section">
   <div class="container">
     <h1 class="title-gradient text-glow">Pricing</h1>
+    <p class="subtitle">Choose the coaching level that matches your goals today — and scale up as your results grow.</p>
 
     <div class="price-grid mt-3">
 
-      <!-- STARTER (4 items) -->
-      <div class="price" data-tilt data-tilt-max="6" data-tilt-speed="500">
+      <!-- STARTER (4) -->
+      <div class="price reveal" data-tilt data-tilt-max="6" data-tilt-speed="500">
         <span class="save">Quick Start</span>
         <h3>Starter</h3>
         <div class="tag">£75<span style="font-size:16px">/mo</span></div>
@@ -44,8 +70,8 @@
         <a class="btn btn-gold" href="contact.html">Start Now</a>
       </div>
 
-      <!-- BEGINNER (5 items) -->
-      <div class="price" data-tilt data-tilt-max="6" data-tilt-speed="500">
+      <!-- BEGINNER (5) -->
+      <div class="price reveal" data-tilt data-tilt-max="6" data-tilt-speed="500">
         <span class="save">New – Beginners</span>
         <h3>Beginner Progression</h3>
         <div class="tag">£95<span style="font-size:16px">/mo</span></div>
@@ -56,12 +82,12 @@
           <li>Monthly progress review</li>
           <li>Access to Starter resources</li>
         </ul>
-        <p class="muted">Perfect for new lifters who want consistency and guidance.</p>
+        <p class="muted">For new lifters who want consistency and guidance.</p>
         <a class="btn btn-gold" href="contact.html">Join Beginner Plan</a>
       </div>
 
-      <!-- ESSENTIALS (6 items) -->
-      <div class="price" data-tilt data-tilt-max="6" data-tilt-speed="500">
+      <!-- ESSENTIALS (6) -->
+      <div class="price reveal" data-tilt data-tilt-max="6" data-tilt-speed="500">
         <span class="save">Popular</span>
         <h3>Essentials</h3>
         <div class="tag">£115<span style="font-size:16px">/mo</span></div>
@@ -77,8 +103,8 @@
         <a class="btn btn-gold" href="contact.html">Join Essentials</a>
       </div>
 
-      <!-- FULL COACHING (8 items) -->
-      <div class="price" data-tilt data-tilt-max="6" data-tilt-speed="500">
+      <!-- FULL (8) -->
+      <div class="price reveal" data-tilt data-tilt-max="6" data-tilt-speed="500">
         <span class="save">The Best</span>
         <h3>Full Coaching</h3>
         <div class="tag">£155<span style="font-size:16px">/mo</span></div>
@@ -96,9 +122,9 @@
         <a class="btn btn-gold" href="contact.html">Go Full</a>
       </div>
 
-      <!-- ELITE (10 items) -->
-      <div class="price" data-tilt data-tilt-max="6" data-tilt-speed="500">
-        <span class="save">Advanced - Competition</span>
+      <!-- ELITE (10) -->
+      <div class="price reveal" data-tilt data-tilt-max="6" data-tilt-speed="500">
+        <span class="save">Advanced – Competition</span>
         <h3>Elite</h3>
         <div class="tag">£230<span style="font-size:16px">/mo</span></div>
         <ul>
@@ -128,7 +154,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/app.js"></script>
 <script>
-// Simple lightbox for any .gallery anchors (kept from your pattern)
+/* Mark that JS is enabled (enables animated reveal) */
+document.documentElement.classList.add('js');
+
+/* Lightbox (safe if no .gallery links) */
 const lb=document.createElement('div');
 lb.style.cssText='position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.85);z-index:1000';
 lb.innerHTML='<img style="max-width:92vw;max-height:92vh;border-radius:12px"><div style="position:absolute;top:20px;right:30px;font-size:26px;cursor:pointer">✕</div>';
@@ -137,12 +166,22 @@ const img=lb.querySelector('img'); const close=lb.querySelector('div');
 lb.addEventListener('click',()=>lb.style.display='none'); close.addEventListener('click',()=>lb.style.display='none');
 document.querySelectorAll('.gallery a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault(); img.src=a.getAttribute('href'); lb.style.display='grid';}));
 
-// Initialize tilt on pricing cards (optional, safe no-op if lib missing)
+/* Tilt */
 if (window.VanillaTilt) {
   document.querySelectorAll('.price').forEach(el=>{
-    VanillaTilt.init(el, { max: 6, speed: 500, glare: false });
+    VanillaTilt.init(el,{max:6,speed:500,glare:false});
   });
 }
+
+/* Scroll reveal */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+      io.unobserve(entry.target);
+    }
+  });
+},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
 </body></html>
-

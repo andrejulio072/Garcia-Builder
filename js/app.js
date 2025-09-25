@@ -56,3 +56,20 @@ const io = new IntersectionObserver((entries)=>{
   });
 }, {threshold:.6});
 document.querySelectorAll('.kpis').forEach(k=>io.observe(k));
+
+(function(){
+  const isSmall = window.matchMedia('(max-width: 767.98px)').matches;
+
+  // 1) VanillaTilt: remove em telas pequenas
+  if (isSmall && window.VanillaTilt) {
+    document.querySelectorAll('[data-tilt]').forEach(el => {
+      try { el.vanillaTilt?.destroy(); } catch(e){}
+      el.classList.add('no-tilt');
+      el.removeAttribute('data-tilt');
+    });
+  }
+
+  // 2) Evitar 300ms delay em iOS antigos (opcional leve)
+  document.addEventListener('touchstart', ()=>{}, {passive:true});
+})();
+

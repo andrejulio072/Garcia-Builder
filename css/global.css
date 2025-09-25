@@ -142,3 +142,78 @@ a{color:var(--text);text-decoration:none}
 }
 .footer a.secondary{background:rgba(255,255,255,.06);color:#eaf1ff;border:1px solid var(--line)}
 .footer small{opacity:.8}
+/* 1) Reset e contenção de overflow horizontal */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+html, body { width:100%; max-width:100%; overflow-x:hidden; }
+
+/* 2) Tipografia fluida (melhor leitura em telas pequenas) */
+:root{
+  --step--1: clamp(0.9rem, 0.85rem + 0.2vw, 1rem);
+  --step-0:  clamp(1rem, 0.95rem + 0.4vw, 1.125rem);
+  --step-1:  clamp(1.25rem, 1.1rem + 1vw, 1.5rem);
+  --step-2:  clamp(1.5rem, 1.2rem + 1.8vw, 2rem);
+  --gap:  clamp(0.75rem, 0.5rem + 1vw, 1.25rem);
+}
+body { font-size: var(--step-0); line-height: 1.6; }
+
+/* 3) Containers e seções com respiro coerente */
+.section { padding: clamp(2rem, 4vw, 4rem) 0; }
+.container-narrow { max-width: 980px; margin-inline: auto; padding-inline: 1rem; }
+
+/* 4) Imagens 100% e figuras com ratio estável */
+img { max-width: 100%; height: auto; display: block; }
+.figure-ratio { position:relative; width:100%; aspect-ratio: 16/9; overflow:hidden; border-radius: 16px; }
+.figure-ratio > img { width:100%; height:100%; object-fit: cover; }
+
+/* 5) Grid responsivo padrão para cards (1/2/3 col) */
+.grid { display:grid; gap: var(--gap); }
+.grid-tiles { grid-template-columns: 1fr; }
+@media (min-width: 576px){ .grid-tiles { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 992px){ .grid-tiles { grid-template-columns: repeat(3, 1fr); } }
+
+/* 6) Cartões tocáveis e acessíveis */
+.card-touch { padding: 1.25rem; border-radius: 16px; backdrop-filter: blur(6px); }
+.card-touch a.btn, .card-touch button { min-height: 44px; }
+
+/* 7) Botões e inputs “dedo-friendly” */
+.btn, .form-control { min-height: 44px; font-size: 1rem; }
+input, select, textarea { font-size: 1rem; }
+
+/* 8) Hero com overlay (legibilidade no mobile) */
+.hero {
+  position: relative; min-height: clamp(380px, 46vh, 620px);
+  display:flex; align-items:center; justify-content:center; text-align:center;
+  padding: 4rem 1rem;
+  color: #fff;
+}
+.hero::before{
+  content:""; position:absolute; inset:0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.35));
+}
+.hero > * { position: relative; z-index: 1; }
+
+/* 9) Tabelas/FAQs nunca estouram a tela */
+.table-responsive, .overflow-x { overflow-x:auto; -webkit-overflow-scrolling: touch; }
+.break-words { word-wrap: break-word; overflow-wrap: anywhere; }
+
+/* 10) Navbar colapsável – aumenta área de toque */
+.navbar .nav-link { padding: .75rem 1rem; }
+
+/* 11) Pricing – empilha colunas no mobile */
+.pricing-row { display:grid; gap: var(--gap); grid-template-columns: 1fr; }
+@media (min-width: 768px){ .pricing-row { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1200px){ .pricing-row { grid-template-columns: repeat(4, 1fr); } }
+
+/* 12) Testimonials – controla altura de texto */
+.testimonial { display:flex; flex-direction:column; gap:.75rem; }
+.testimonial .content { max-height: none; }
+
+/* 13) Espaçamento de footer e CTAs fixos flutuantes */
+.footer { padding-block: 2rem; }
+.whatsapp-fab { bottom: 1rem; right: 1rem; }
+@media (max-width: 575.98px){ .whatsapp-fab { bottom: .75rem; right: .75rem; } }
+
+/* 14) Evita glare/tilt agressivo no mobile (se classe adicionada via JS) */
+.no-tilt { transform: none !important; box-shadow: none !important; }

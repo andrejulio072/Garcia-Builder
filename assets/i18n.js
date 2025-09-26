@@ -1,56 +1,51 @@
+/*! Garcia Builder – Safe i18n (no DOM wipe, no page freeze) */
+(function () {
+  'use strict';
 
-(function(){
-  const FALLBACK_LANG = 'en';
-  const SUPPORTED = ['en','pt','es'];
-  const LS_KEY = 'gb_lang';
-  const cache = {};
-  function getLang(){
-    const q = new URLSearchParams(location.search).get('lang');
-    if(q && SUPPORTED.includes(q)) return q;
-    const ls = localStorage.getItem(LS_KEY);
-    if(ls && SUPPORTED.includes(ls)) return ls;
-    const nav = (navigator.language||'en').slice(0,2);
-    return SUPPORTED.includes(nav) ? nav : FALLBACK_LANG;
+  const DICTS = {
+    en: { nav: { home:"Home", about:"About", trans:"Transformations", testi:"Testimonials", pricing:"Pricing", faq:"FAQ", contact:"Contact" } },
+    pt: { nav: { home:"Início", about:"Sobre", trans:"Transformações", testi:"Depoimentos", pricing:"Planos", faq:"FAQ", contact:"Contato" } },
+    es: { nav: { home:"Inicio", about:"Sobre mí", trans:"Transformaciones", testi:"Testimonios", pricing:"Precios", faq:"FAQ", contact:"Contacto" } }
+  };
+
+  const KEY = "gb_lang";
+  const clamp = (l) => (l==="en"||l==="pt"||l==="es") ? l : "en";
+
+  function getLang() {
+    try { return clamp(localStorage.getItem(KEY) || "en"); } catch { return "en"; }
   }
-  async function load(lang){
-    if(cache[lang]) return cache[lang];
-    const res = await fetch(`assets/locales/${lang}.json?v=${Date.now()}`, {cache:'no-store'});
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const json = await res.json();
-    cache[lang] = json;
-    return json;
+  function setLang(l) {
+    const lang = clamp(l);
+    try { localStorage.setItem(KEY, lang); } catch {}
+    apply(lang);
   }
-  const get = (obj, path)=> path.split('.').reduce((o,k)=>(o && k in o)?o[k]:null, obj);
-  function apply(dict){
-    document.querySelectorAll('[data-i18n]').forEach(el=>{
-      const key = el.getAttribute('data-i18n');
-      const val = get(dict, key);
-      if(typeof val === 'string') el.textContent = val;
-      else if(val != null) el.textContent = String(val);
+
+  const getByPath = (obj, path) => path.split('.').reduce((o,k)=> (o && o[k] !== undefined) ? o[k] : undefined, obj);
+  const t = (lang, key, fallback) => {
+    const v1 = getByPath(DICTS[lang]||{}, key);
+    if (v1 !== undefined) return v1;
+    const v2 = getByPath(DICTS.en, key);
+    if (v2 !== undefined) return v2;
+    return fallback;
+  };
+
+  function apply(lang) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n'); if (!key) return;
+      const current = (el.textContent || '').trim();
+      const val = t(lang, key, current);
+      if (val !== undefined && val !== null) el.textContent = val;
     });
-    document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
-      const key = el.getAttribute('data-i18n-ph');
-      const val = get(dict, key);
-      if(typeof val === 'string') el.setAttribute('placeholder', val);
-    });
+    const sel = document.getElementById('lang-select');
+    if (sel && sel.value !== lang) sel.value = lang;
   }
-  async function init(){
-    const lang = getLang();
-    localStorage.setItem(LS_KEY, lang);
-    const dict = await load(lang);
-    apply(dict);
-    const mo = new MutationObserver(()=>apply(dict));
-    mo.observe(document.body, {childList:true, subtree:true});
-    window.__i18n = {
-      get: ()=> lang,
-      set: async(next)=>{
-        if(!SUPPORTED.includes(next)) return;
-        localStorage.setItem(LS_KEY, next);
-        const nd = await load(next);
-        apply(nd);
-      }
-    };
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const lang = getLang(); // EN by default
+    apply(lang);
+    const sel = document.getElementById('lang-select');
+    if (sel) sel.addEventListener('change', () => setLang(sel.value));
+  });
+
+  window.GB_I18N = { setLang, getLang, applyTranslations: apply };
 })();

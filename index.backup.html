@@ -77,4 +77,10 @@ document.querySelectorAll('.gallery a').forEach(a=>a.addEventListener('click',e=
 <script defer src="js/credibility.inject.js"></script>
 
 <script defer src="js/app-optimizations.js"></script>
+<!-- shim de compatibilidade (tem que vir ANTES dos injetores kpi6/credibility) -->
+<script defer src="js/i18n-shim.js"></script>
+
+<!-- i18n único, seguro, com cache-buster -->
+<script defer src="assets/i18n.js?v=20250926"></script>
+
 </body></html>

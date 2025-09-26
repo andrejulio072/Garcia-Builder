@@ -287,7 +287,7 @@ input, select, textarea { font-size: 1rem; }
   /* 2 camadas: overlay escuro + imagem */
   background:
     linear-gradient(180deg, rgba(0,0,0,.35), transparent 22%),
-    var(--bg);
+    var(--bg, url('assets/bg-contact.jpg'));
   background-size: cover;
   background-position: var(--bg-pos, center);
   background-repeat: no-repeat;
@@ -316,9 +316,9 @@ input, select, textarea { font-size: 1rem; }
 
 /* Contact page specific background */
 section#contact.section.has-bg.contact-bg {
-  background: linear-gradient(180deg, rgba(0,0,0,.35), transparent 22%), url('assets/faq-bg.jpeg') !important;
+  background: linear-gradient(180deg, rgba(0,0,0,.35), transparent 22%), url('assets/bg-contact.jpg') !important;
   background-size: cover !important;
-  background-position: center 30% !important;
+  background-position: center center !important;
   background-repeat: no-repeat !important;
   min-height: 100vh !important;
 }

@@ -217,3 +217,31 @@ input, select, textarea { font-size: 1rem; }
 
 /* 14) Evita glare/tilt agressivo no mobile (se classe adicionada via JS) */
 .no-tilt { transform: none !important; box-shadow: none !important; }
+
+
+/* Contact form – enhancements (keeps your palette/layout) */
+.visually-hidden{position:absolute!important;clip:rect(1px,1px,1px,1px);padding:0;border:0;height:1px;width:1px;overflow:hidden;white-space:nowrap;}
+.contact-card{background:rgba(16,22,33,.55);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:24px 24px 28px;backdrop-filter:blur(6px);}
+.form-label{font-weight:600;color:#e8edf7;}
+.form-control,.form-select{background:#0f1624;border:1px solid rgba(255,255,255,.08);color:#e8edf7;border-radius:14px;padding:14px 16px;}
+.form-control::placeholder{color:#6c7a92;}
+.form-control:focus,.form-select:focus{outline:0;border-color:#f8b84a;box-shadow:0 0 0 3px rgba(248,184,74,.25);}
+.form-text{font-size:.85rem;}
+.hp{display:none !important;}
+
+.btn-gradient{display:inline-flex;align-items:center;justify-content:center;border:none;border-radius:14px;padding:14px 18px;font-weight:700;background:linear-gradient(90deg,#f6c44f,#f39a3f 60%,#f6c44f);color:#0f1624;transition:transform .06s ease;position:relative}
+.btn-gradient:hover{transform:translateY(-1px)}
+.btn-gradient:disabled{opacity:.65;cursor:not-allowed}
+
+.spinner{width:16px;height:16px;border-radius:50%;border:2px solid rgba(0,0,0,0);border-top-color:#0f1624;margin-left:10px;display:none}
+.is-loading .spinner{display:inline-block;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.input-error{border-color:#ff6b6b!important;box-shadow:0 0 0 3px rgba(255,107,107,.2)!important;}
+.form-footnote{font-size:.85rem;color:#8fa0b8}
+
+/* Smaller screens: tighten spacing */
+@media (max-width: 576px){
+  .contact-card{padding:18px 16px 22px}
+}
+

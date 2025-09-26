@@ -282,21 +282,19 @@ input, select, textarea { font-size: 1rem; }
 }
 
 
-/* ====== Background com imagem + overlay ====== */
-.section.has-bg{ position:relative; isolation:isolate; }
-.section.has-bg::before{
-  content:""; position:absolute; inset:0;
-  background-image: var(--bg);
-  background-size: cover; background-position: var(--bg-pos, center);
-  filter: saturate(.9) contrast(1.05);
-  z-index:-2;
+/* ==== Background com imagem + overlay (sem pseudo-elementos) ==== */
+.section.has-bg{
+  /* 2 camadas: overlay escuro + imagem */
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.35), transparent 22%),
+    var(--bg);
+  background-size: cover;
+  background-position: var(--bg-pos, center);
+  background-repeat: no-repeat;
 }
-.section.has-bg::after{
-  content:""; position:absolute; inset:0;
-  background: linear-gradient(180deg, rgba(0,0,0,.35), transparent 22%),
-              var(--bg-overlay, rgba(6,10,18,.68));
-  z-index:-1;
-}
+.section.has-bg .page-subtitle,
+.section.has-bg .text-muted{ color:#eaf0ff; opacity:.96; } /* legível */
+
 
 /* Texto mais legível sobre imagem */
 .section.has-bg h1,
@@ -315,3 +313,12 @@ input, select, textarea { font-size: 1rem; }
 /* Inputs iguais ao FAQ, mas com melhor contraste do placeholder */
 .form-control,.form-select{ background: rgba(9,14,25,.88); }
 .form-control::placeholder{ color:#aab7d1; }
+
+/* Contact page specific background */
+section#contact.section.has-bg.contact-bg {
+  background: linear-gradient(180deg, rgba(0,0,0,.35), transparent 22%), url('assets/faq-bg.jpeg') !important;
+  background-size: cover !important;
+  background-position: center 30% !important;
+  background-repeat: no-repeat !important;
+  min-height: 100vh !important;
+}

@@ -282,3 +282,36 @@ input, select, textarea { font-size: 1rem; }
 }
 
 
+/* ====== Background com imagem + overlay ====== */
+.section.has-bg{ position:relative; isolation:isolate; }
+.section.has-bg::before{
+  content:""; position:absolute; inset:0;
+  background-image: var(--bg);
+  background-size: cover; background-position: var(--bg-pos, center);
+  filter: saturate(.9) contrast(1.05);
+  z-index:-2;
+}
+.section.has-bg::after{
+  content:""; position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,.35), transparent 22%),
+              var(--bg-overlay, rgba(6,10,18,.68));
+  z-index:-1;
+}
+
+/* Texto mais legível sobre imagem */
+.section.has-bg h1,
+.section.has-bg .page-title{ color: var(--gold); }
+.section.has-bg .page-subtitle,
+.section.has-bg .text-muted{ color:#dbe7ff; opacity:.96; }
+.text-readable{ color:#eaf0ff!important; text-shadow:0 1px 2px rgba(0,0,0,.35); }
+
+/* Card do formulário mais destacado sobre o bg */
+.contact-card{
+  background: rgba(11,18,32,.70);          /* vidro mais escuro */
+  border: 1px solid rgba(255,255,255,.08);
+  backdrop-filter: blur(8px);
+}
+
+/* Inputs iguais ao FAQ, mas com melhor contraste do placeholder */
+.form-control,.form-select{ background: rgba(9,14,25,.88); }
+.form-control::placeholder{ color:#aab7d1; }

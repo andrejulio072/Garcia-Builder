@@ -169,11 +169,16 @@ const FAQ = [
 /* ---- Render FAQ dynamically with translations ---- */
 function renderFAQ() {
   const currentLang = localStorage.getItem('garcia-builder-lang') || 'en';
-  const dict = window.DICTS && window.DICTS[currentLang] && window.DICTS[currentLang].faq;
 
-  if (!dict) return;
+  // Wait for DICTS to be available
+  if (!window.DICTS || !window.DICTS[currentLang] || !window.DICTS[currentLang].faq) {
+    setTimeout(renderFAQ, 50);
+    return;
+  }
 
+  const dict = window.DICTS[currentLang].faq;
   const faqData = [];
+
   for (let i = 1; i <= 25; i++) {
     const key = `q${i}`;
     if (dict[key]) {
@@ -182,24 +187,25 @@ function renderFAQ() {
   }
 
   const acc = document.getElementById('faqAccordion');
+  if (!acc) return;
+
   acc.innerHTML = faqData.map(([q, a], i) => `
     <div class="accordion-item">
       <h2 class="accordion-header" id="h${i}">
-        <button class="accordion-button ${i ? 'collapsed' : ''}" type="button" data-bs-toggle="collapse" data-bs-target="#c${i}" aria-expanded="${!i}" aria-controls="c${i}">
+        <button class="accordion-button ${i === 0 ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#c${i}" aria-expanded="${i === 0}" aria-controls="c${i}">
           ${q}
         </button>
       </h2>
-      <div id="c${i}" class="accordion-collapse collapse ${i ? '' : 'show'}" aria-labelledby="h${i}" data-bs-parent="#faqAccordion">
+      <div id="c${i}" class="accordion-collapse collapse ${i === 0 ? 'show' : ''}" aria-labelledby="h${i}" data-bs-parent="#faqAccordion">
         <div class="accordion-body">${a}</div>
       </div>
     </div>
   `).join('');
 }
 
-// Render FAQ when page loads and when language changes
-document.addEventListener('DOMContentLoaded', () => {
-  // Wait for i18n to load, then render
-  setTimeout(renderFAQ, 100);
+// Render FAQ when page loads
+window.addEventListener('load', () => {
+  setTimeout(renderFAQ, 200);
 });
 
 // Re-render FAQ when language changes
@@ -208,21 +214,27 @@ document.addEventListener('languageChanged', renderFAQ);
 /* ---- Search filter ---- */
 function setupSearch() {
   const search = document.getElementById('faq-search');
+  if (!search) return;
+
   search.addEventListener('input', () => {
     const q = search.value.trim().toLowerCase();
     const items = document.querySelectorAll('.accordion-item');
-    items.forEach((item, i) => {
-      const question = item.querySelector('.accordion-button').textContent.toLowerCase();
-      const answer = item.querySelector('.accordion-body').textContent.toLowerCase();
-      const match = question.includes(q) || answer.includes(q);
-      item.style.display = match ? '' : 'none';
+    items.forEach((item) => {
+      const button = item.querySelector('.accordion-button');
+      const body = item.querySelector('.accordion-body');
+      if (button && body) {
+        const question = button.textContent.toLowerCase();
+        const answer = body.textContent.toLowerCase();
+        const match = question.includes(q) || answer.includes(q);
+        item.style.display = match ? '' : 'none';
+      }
     });
   });
 }
 
 // Setup search after FAQ is rendered
-document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(setupSearch, 150);
+window.addEventListener('load', () => {
+  setTimeout(setupSearch, 300);
 });
 
 /* ---- Hash open (#q12 opens the 12th item) ---- */
@@ -231,11 +243,14 @@ function openFromHash(){
   if(!m) return;
   const idx = Math.min(Math.max(parseInt(m[1],10)-1,0), 24); // max 25 questions
   const target = document.getElementById('c'+idx);
-  if(target) new bootstrap.Collapse(target, {toggle:true});
+  if(target && window.bootstrap) {
+    new bootstrap.Collapse(target, {toggle: true});
+  }
 }
+
 window.addEventListener('hashchange', openFromHash);
-document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(openFromHash, 200);
+window.addEventListener('load', () => {
+  setTimeout(openFromHash, 400);
 });
 </script>
 <script defer>

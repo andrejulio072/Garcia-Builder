@@ -15,6 +15,7 @@
 
   <!-- (Opcional) Tilt usado em outras seções -->
   <script defer src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+  <script defer src="assets/i18n.js"></script>
 
   <!-- Hardening mobile: não altera cores/tema -->
   <style id="mobile-safe-overrides">
@@ -81,30 +82,30 @@ Tell me about your goal. I’ll get back within 24–48h.</p>
         <!-- Row 1 -->
         <div class="row g-3">
           <div class="col-12 col-md-6">
-            <label for="name" class="form-label">Your name</label>
+            <label for="name" class="form-label" data-i18n="contact.form.name">Your name</label>
             <input id="name" name="name" type="text" class="form-control"
-                   placeholder="Your name" required minlength="2" maxlength="80" autocomplete="name">
+                   data-i18n-ph="contact.form.placeholders.name" placeholder="Your name" required minlength="2" maxlength="80" autocomplete="name">
           </div>
           <div class="col-12 col-md-6">
-            <label for="email" class="form-label">Your email</label>
+            <label for="email" class="form-label" data-i18n="contact.form.email">Your email</label>
             <input id="email" name="email" type="email" class="form-control"
-                   placeholder="you@example.com" required maxlength="120" autocomplete="email">
+                   data-i18n-ph="contact.form.placeholders.email" placeholder="you@example.com" required maxlength="120" autocomplete="email">
           </div>
         </div>
 
         <!-- Row 2 -->
         <div class="row g-3 mt-1">
           <div class="col-12 col-md-6">
-            <label for="phone" class="form-label">Phone / WhatsApp (optional)</label>
+            <label for="phone" class="form-label" data-i18n="contact.form.phone">Phone / WhatsApp (optional)</label>
             <input id="phone" name="phone" type="tel" class="form-control"
-                   placeholder="+353 87 123 4567" inputmode="tel" maxlength="24">
+                   data-i18n-ph="contact.form.placeholders.phone" placeholder="+353 87 123 4567" inputmode="tel" maxlength="24">
           </div>
           <div class="col-12 col-md-6">
-            <label for="preferredContact" class="form-label">Preferred contact</label>
+            <label for="preferredContact" class="form-label" data-i18n="contact.form.preferredContact">Preferred contact</label>
             <select id="preferredContact" name="preferredContact" class="form-select">
-              <option value="Email" selected>Email</option>
-              <option value="WhatsApp">WhatsApp</option>
-              <option value="Phone call">Phone call</option>
+              <option value="Email" selected data-i18n="contact.form.options.contact.email">Email</option>
+              <option value="WhatsApp" data-i18n="contact.form.options.contact.whatsapp">WhatsApp</option>
+              <option value="Phone call" data-i18n="contact.form.options.contact.phone">Phone call</option>
             </select>
           </div>
         </div>
@@ -112,25 +113,25 @@ Tell me about your goal. I’ll get back within 24–48h.</p>
         <!-- Row 3 -->
         <div class="row g-3 mt-1">
           <div class="col-12 col-md-6">
-            <label for="goal" class="form-label">Primary goal</label>
+            <label for="goal" class="form-label" data-i18n="contact.form.goal">Primary goal</label>
             <select id="goal" name="goal" class="form-select" required>
-              <option value="" disabled selected>Select your goal</option>
-              <option>Fat loss</option>
-              <option>Muscle gain</option>
-              <option>Recomposition</option>
-              <option>Performance / Bleep test</option>
-              <option>Pain & Rehab (e.g., shoulder, lower back)</option>
-              <option>General health & confidence</option>
+              <option value="" disabled selected data-i18n="contact.form.placeholders.selectGoal">Select your goal</option>
+              <option data-i18n="contact.form.options.goals.fatLoss">Fat loss</option>
+              <option data-i18n="contact.form.options.goals.muscleGain">Muscle gain</option>
+              <option data-i18n="contact.form.options.goals.recomposition">Recomposition</option>
+              <option data-i18n="contact.form.options.goals.performance">Performance / Bleep test</option>
+              <option data-i18n="contact.form.options.goals.rehab">Pain & Rehab (e.g., shoulder, lower back)</option>
+              <option data-i18n="contact.form.options.goals.health">General health & confidence</option>
             </select>
           </div>
           <div class="col-12 col-md-6">
-            <label for="timeline" class="form-label">Target timeline</label>
+            <label for="timeline" class="form-label" data-i18n="contact.form.timeline">Target timeline</label>
             <select id="timeline" name="timeline" class="form-select" required>
-              <option value="" disabled selected>Select</option>
-              <option>4–8 weeks</option>
-              <option>8–12 weeks</option>
-              <option>3–6 months</option>
-              <option>6+ months</option>
+              <option value="" disabled selected data-i18n="contact.form.placeholders.selectTimeline">Select</option>
+              <option data-i18n="contact.form.options.timeline.short">4–8 weeks</option>
+              <option data-i18n="contact.form.options.timeline.medium">8–12 weeks</option>
+              <option data-i18n="contact.form.options.timeline.long">3–6 months</option>
+              <option data-i18n="contact.form.options.timeline.extended">6+ months</option>
             </select>
           </div>
         </div>
@@ -138,39 +139,39 @@ Tell me about your goal. I’ll get back within 24–48h.</p>
         <!-- Row 4 -->
         <div class="row g-3 mt-1">
           <div class="col-12 col-md-6">
-            <label for="experience" class="form-label">Training experience</label>
+            <label for="experience" class="form-label" data-i18n="contact.form.experience">Training experience</label>
             <select id="experience" name="experience" class="form-select" required>
-              <option value="" disabled selected>Select</option>
-              <option>Beginner</option>
-              <option>Intermediate</option>
-              <option>Advanced</option>
+              <option value="" disabled selected data-i18n="contact.form.placeholders.selectExperience">Select</option>
+              <option data-i18n="contact.form.options.experience.beginner">Beginner</option>
+              <option data-i18n="contact.form.options.experience.intermediate">Intermediate</option>
+              <option data-i18n="contact.form.options.experience.advanced">Advanced</option>
             </select>
           </div>
           <div class="col-12 col-md-6">
-            <label for="budget" class="form-label">Monthly budget (optional)</label>
+            <label for="budget" class="form-label" data-i18n="contact.form.budget">Monthly budget (optional)</label>
             <select id="budget" name="budget" class="form-select">
-              <option value="" selected>Prefer not to say</option>
-              <option>€100–€199</option>
-              <option>€200–€299</option>
-              <option>€300–€499</option>
-              <option>€500+</option>
+              <option value="" selected data-i18n="contact.form.options.budget.notSay">Prefer not to say</option>
+              <option data-i18n="contact.form.options.budget.low">€100–€199</option>
+              <option data-i18n="contact.form.options.budget.medium">€200–€299</option>
+              <option data-i18n="contact.form.options.budget.high">€300–€499</option>
+              <option data-i18n="contact.form.options.budget.premium">€500+</option>
             </select>
           </div>
         </div>
 
         <!-- Message -->
         <label class="form-label mt-3 d-flex justify-content-between" for="message">
-          <span>Your message</span>
+          <span data-i18n="contact.form.message">Your message</span>
           <span id="charCount" class="text-muted" aria-live="polite">0/1200</span>
         </label>
         <textarea id="message" name="message" class="form-control" rows="6"
-                  placeholder="Tell me about your current routine, injuries/limitations, availability, and what success looks like for you."
+                  data-i18n-ph="contact.form.placeholders.message" placeholder="Tell me about your current routine, injuries/limitations, availability, and what success looks like for you."
                   required minlength="10" maxlength="1200"></textarea>
 
         <!-- Consent -->
         <div class="form-check mt-3">
           <input class="form-check-input" type="checkbox" id="consent" name="consent" required>
-          <label class="form-check-label" for="consent">
+          <label class="form-check-label" for="consent" data-i18n="contact.form.consent">
             I agree to be contacted about coaching and understand my data will be used only to respond to this inquiry.
           </label>
         </div>
@@ -180,12 +181,12 @@ Tell me about your goal. I’ll get back within 24–48h.</p>
         <input type="hidden" name="source" value="garcia-builder.github.io">
 
         <button id="sendBtn" type="submit" class="btn btn-gradient w-100 mt-4"
-                data-default="Send" data-loading="Sending…">
+                data-default="Send" data-loading="Sending…" data-i18n="contact.form.submit">
           Send
           <span class="spinner" aria-hidden="true"></span>
         </button>
 
-        <p class="form-footnote text-center mt-3">
+        <p class="form-footnote text-center mt-3" data-i18n="contact.form.footnote">
           Average reply time: 24–48h. No spam, ever.
         </p>
       </form>

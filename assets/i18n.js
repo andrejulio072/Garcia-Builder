@@ -197,10 +197,10 @@
             goals: {
               fatLoss: "Fat loss",
               muscleGain: "Muscle gain",
-              recomp: "Recomposition",
+              recomposition: "Recomposition",
               performance: "Performance / Bleep test",
               rehab: "Pain & Rehab (e.g., shoulder, lower back)",
-              general: "General health & confidence"
+              health: "General health & confidence"
             },
             timeline: {
               short: "4–8 weeks",
@@ -212,8 +212,17 @@
               beginner: "Beginner",
               intermediate: "Intermediate",
               advanced: "Advanced"
+            },
+            budget: {
+              notSay: "Prefer not to say",
+              low: "€100–€199",
+              medium: "€200–€299",
+              high: "€300–€499",
+              premium: "€500+"
             }
-          }
+          },
+          consent: "I agree to be contacted about coaching and understand my data will be used only to respond to this inquiry.",
+          footnote: "Average reply time: 24–48h. No spam, ever."
         }
       }
     },

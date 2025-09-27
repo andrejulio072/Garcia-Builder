@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste Final - Stripe</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .btn { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste Final - Sistema Stripe</h1>
+    <div id="status">Testando...</div>
+    <button id="testBtn" class="btn" onclick="testSystem()">Testar Novamente</button>
+
+    <script src="js/stripe-config.js"></script>
+    <script>
+        async function testSystem() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = 'Testando sistema...';
+
+            try {
+                // 1. Testar servidor
+                console.log('Testando servidor...');
+                const healthResponse = await fetch('http://localhost:3001/health');
+                const healthData = await healthResponse.json();
+                console.log('Servidor OK:', healthData);
+
+                // 2. Verificar configurações
+                console.log('Verificando configurações...');
+                if (!window.STRIPE_ENV_CONFIG) {
+                    throw new Error('Configurações não carregadas');
+                }
+                console.log('Configurações OK:', window.STRIPE_ENV_CONFIG);
+
+                // 3. Testar API de checkout
+                console.log('Testando API checkout...');
+                const checkoutResponse = await fetch('http://localhost:3001/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        priceId: window.STRIPE_ENV_CONFIG.priceIds.starter,
+                        planName: 'Starter - Garcia Builder',
+                        userEmail: 'teste@garciabuildre.com'
+                    })
+                });
+
+                if (!checkoutResponse.ok) {
+                    const errorText = await checkoutResponse.text();
+                    console.error('Erro na API:', errorText);
+                    throw new Error(`API Error: ${errorText}`);
+                }
+
+                const checkoutData = await checkoutResponse.json();
+                console.log('Checkout OK:', checkoutData);
+
+                // Sucesso!
+                statusDiv.innerHTML = `
+                    <div class="status success">
+                        <h3>✅ TODOS OS TESTES PASSARAM!</h3>
+                        <p><strong>Servidor:</strong> OK (${healthData.status})</p>
+                        <p><strong>Configurações:</strong> OK</p>
+                        <p><strong>Checkout:</strong> OK (Session: ${checkoutData.sessionId})</p>
+                        <p><strong>URL do Checkout:</strong> <a href="${checkoutData.url}" target="_blank">Testar Pagamento</a></p>
+                        <br>
+                        <p>🎉 <strong>Seu sistema está funcionando perfeitamente!</strong></p>
+                        <p>Use cartão de teste: <code>4242 4242 4242 4242</code></p>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('Erro no teste:', error);
+                statusDiv.innerHTML = `
+                    <div class="status error">
+                        <h3>❌ ERRO NO TESTE</h3>
+                        <p><strong>Erro:</strong> ${error.message}</p>
+                        <p>Verifique o console (F12) para mais detalhes.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Auto-executar quando carregar
+        window.addEventListener('load', () => {
+            setTimeout(testSystem, 1000);
+        });
+    </script>
+</body>
+</html>

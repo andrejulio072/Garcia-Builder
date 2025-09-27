@@ -1,8 +1,16 @@
 // Backend API para integração com Stripe
 // Este arquivo deve ser executado em um servidor Node.js/Express
 
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
+
+// Verificar se as variáveis de ambiente foram carregadas
+console.log('Environment variables check:');
+console.log('STRIPE_SECRET_KEY exists:', !!process.env.STRIPE_SECRET_KEY);
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('PORT:', process.env.PORT);
 const express = require('express');
-const stripe = require('stripe')('sk_test_...'); // Substitua pela sua chave secreta do Stripe
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const cors = require('cors');
 
 const app = express();
@@ -14,26 +22,26 @@ app.use(cors({
     credentials: true
 }));
 
-// Configuração dos produtos/preços
+// Configuração dos produtos/preços usando variáveis de ambiente
 const PRICE_CONFIG = {
     starter: {
-        priceId: 'price_starter_monthly', // Substitua pelos seus Price IDs do Stripe
+        priceId: process.env.PRICE_STARTER,
         name: 'Starter Plan'
     },
     beginner: {
-        priceId: 'price_beginner_monthly',
+        priceId: process.env.PRICE_BEGINNER,
         name: 'Beginner Plan'
     },
     essentials: {
-        priceId: 'price_essentials_monthly',
+        priceId: process.env.PRICE_ESSENTIALS,
         name: 'Essentials Plan'
     },
     full: {
-        priceId: 'price_full_monthly',
+        priceId: process.env.PRICE_FULL,
         name: 'Full Plan'
     },
     elite: {
-        priceId: 'price_elite_monthly',
+        priceId: process.env.PRICE_ELITE,
         name: 'Elite Plan'
     }
 };

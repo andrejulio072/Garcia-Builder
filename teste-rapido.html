@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Rápido - Stripe Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; }
+        .info { background: #d9ecf1; border: 1px solid #b6d7ff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Teste Rápido - Sistema Stripe</h1>
+        
+        <h3>1. Verificar Servidor</h3>
+        <button class="btn" onclick="testServer()">Testar Servidor</button>
+        <div id="serverResult" class="result info" style="display:none;"></div>
+        
+        <h3>2. Verificar Configurações</h3>
+        <button class="btn" onclick="testConfig()">Testar Configurações</button>
+        <div id="configResult" class="result info" style="display:none;"></div>
+        
+        <h3>3. Criar Sessão de Checkout</h3>
+        <button class="btn" onclick="testCheckout()">Testar Checkout</button>
+        <div id="checkoutResult" class="result info" style="display:none;"></div>
+        
+        <h3>4. Teste Completo</h3>
+        <button class="btn" onclick="fullTest()" style="background: #28a745;">Executar Teste Completo</button>
+        <div id="fullResult" class="result info" style="display:none;"></div>
+    </div>
+
+    <script src="js/stripe-config.js"></script>
+    <script>
+        async function testServer() {
+            const result = document.getElementById('serverResult');
+            result.style.display = 'block';
+            result.textContent = 'Testando servidor...';
+            
+            try {
+                const response = await fetch('http://localhost:3001/health');
+                const data = await response.json();
+                
+                result.className = 'result success';
+                result.textContent = `✅ Servidor OK!\nStatus: ${data.status}\nTimestamp: ${data.timestamp}`;
+            } catch (error) {
+                result.className = 'result error';
+                result.textContent = `❌ Erro no servidor: ${error.message}`;
+            }
+        }
+        
+        async function testConfig() {
+            const result = document.getElementById('configResult');
+            result.style.display = 'block';
+            result.textContent = 'Verificando configurações...';
+            
+            try {
+                if (typeof window.STRIPE_ENV_CONFIG === 'undefined') {
+                    throw new Error('Configurações não carregadas');
+                }
+                
+                const config = window.STRIPE_ENV_CONFIG;
+                
+                result.className = 'result success';
+                result.textContent = `✅ Configurações OK!
+Publishable Key: ${config.publishableKey.substring(0, 25)}...
+API URL: ${config.apiUrl}
+Price IDs:
+- Starter: ${config.priceIds.starter}
+- Beginner: ${config.priceIds.beginner}
+- Essentials: ${config.priceIds.essentials}
+- Full: ${config.priceIds.full}
+- Elite: ${config.priceIds.elite}`;
+            } catch (error) {
+                result.className = 'result error';
+                result.textContent = `❌ Erro nas configurações: ${error.message}`;
+            }
+        }
+        
+        async function testCheckout() {
+            const result = document.getElementById('checkoutResult');
+            result.style.display = 'block';
+            result.textContent = 'Criando sessão de checkout...';
+            
+            try {
+                const config = window.STRIPE_ENV_CONFIG;
+                
+                const response = await fetch(`${config.apiUrl}/create-checkout-session`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        priceId: config.priceIds.starter,
+                        planName: 'Starter - Garcia Builder',
+                        userEmail: 'teste@garciabuildre.com'
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Erro na API');
+                }
+                
+                const data = await response.json();
+                
+                result.className = 'result success';
+                result.textContent = `✅ Sessão criada com sucesso!
+Session ID: ${data.sessionId}
+URL: ${data.url}
+
+🚀 Clique no botão abaixo para ir ao checkout:`;
+                
+                const checkoutBtn = document.createElement('button');
+                checkoutBtn.className = 'btn';
+                checkoutBtn.textContent = 'Ir para Checkout do Stripe';
+                checkoutBtn.style.background = '#28a745';
+                checkoutBtn.onclick = () => window.open(data.url, '_blank');
+                result.appendChild(document.createElement('br'));
+                result.appendChild(checkoutBtn);
+                
+            } catch (error) {
+                result.className = 'result error';
+                result.textContent = `❌ Erro no checkout: ${error.message}`;
+            }
+        }
+        
+        async function fullTest() {
+            const result = document.getElementById('fullResult');
+            result.style.display = 'block';
+            result.textContent = 'Executando teste completo...\n';
+            
+            // Testar servidor
+            result.textContent += '1. Testando servidor...\n';
+            try {
+                const response = await fetch('http://localhost:3001/health');
+                const data = await response.json();
+                result.textContent += `✅ Servidor OK (${data.status})\n`;
+            } catch (error) {
+                result.textContent += `❌ Servidor ERRO: ${error.message}\n`;
+                result.className = 'result error';
+                return;
+            }
+            
+            // Testar configurações
+            result.textContent += '2. Testando configurações...\n';
+            try {
+                if (typeof window.STRIPE_ENV_CONFIG === 'undefined') {
+                    throw new Error('Configurações não carregadas');
+                }
+                result.textContent += '✅ Configurações OK\n';
+            } catch (error) {
+                result.textContent += `❌ Configurações ERRO: ${error.message}\n`;
+                result.className = 'result error';
+                return;
+            }
+            
+            // Testar checkout
+            result.textContent += '3. Testando checkout...\n';
+            try {
+                const config = window.STRIPE_ENV_CONFIG;
+                const response = await fetch(`${config.apiUrl}/create-checkout-session`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        priceId: config.priceIds.starter,
+                        planName: 'Starter - Garcia Builder',
+                        userEmail: 'teste@garciabuildre.com'
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Erro na API');
+                }
+                
+                const data = await response.json();
+                result.textContent += '✅ Checkout OK\n';
+                result.textContent += `\n🎉 TODOS OS TESTES PASSARAM!\n`;
+                result.textContent += `Session ID: ${data.sessionId}\n`;
+                result.textContent += `\nSeu sistema está funcionando perfeitamente!`;
+                result.className = 'result success';
+                
+            } catch (error) {
+                result.textContent += `❌ Checkout ERRO: ${error.message}\n`;
+                result.className = 'result error';
+            }
+        }
+        
+        // Auto-executar teste completo quando carregar
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                fullTest();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -14,7 +14,7 @@ a{color:var(--text);text-decoration:none}
 .navbar{position:sticky;top:0;z-index:80;background:rgba(9,14,24,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .navbar .inner{display:flex;gap:16px;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.3px}
-.brand img{height:40px;width:40px;border-radius:10px;border:1px solid var(--line)}
+.brand img{height:40px;width:40px;border-radius:50%;border:1px solid var(--line)}
 .nav{display:flex;gap:8px;flex-wrap:wrap}
 .nav a{padding:12px 14px;border-radius:12px;color:#eaf1ff;position:relative}
 .nav a.active{color:#ffeaa7;font-weight:800}

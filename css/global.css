@@ -48,6 +48,18 @@ a{color:var(--text);text-decoration:none}
 /* FEATURES - animated 3D tilt */
 .feature{padding:20px;transform-style:preserve-3d;transition:transform .2s ease, box-shadow .2s ease;will-change:transform}
 .feature:hover{box-shadow:0 50px 120px rgba(0,0,0,.55)}
+
+/* PROFILE SECTION */
+.profile-info .row {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 8px 0;
+}
+.profile-info .row:last-child {
+    border-bottom: none;
+}
+.profile-info .text-muted {
+    opacity: 0.7;
+}
 .feature .icon{font-size:28px;transform:translateZ(18px)}
 .feature h3{font-size:28px;transform:translateZ(16px);word-break:keep-all;hyphens:none}
 .feature p{transform:translateZ(10px)}

@@ -155,6 +155,17 @@ class SupabaseAuthSystem {
                 document.querySelector('input[name="password"]')
             )?.value;
 
+            // Novos campos extras
+            const phone = (
+                document.getElementById("registerPhone") ||
+                document.querySelector('input[name="phone"]')
+            )?.value.trim() || null;
+
+            const date_of_birth = (
+                document.getElementById("registerDob") ||
+                document.querySelector('input[name="date_of_birth"]')
+            )?.value || null;
+
             // Validações
             if (!full_name) throw new Error("Please enter your full name");
             if (!this.isValidEmail(email)) throw new Error("Please enter a valid email address");
@@ -164,7 +175,7 @@ class SupabaseAuthSystem {
                 email,
                 password,
                 options: {
-                    data: { full_name },
+                    data: { full_name, phone, date_of_birth },
                     emailRedirectTo: `${window.location.origin}/Garcia-Builder/dashboard.html`
                 }
             });
@@ -422,11 +433,69 @@ class SupabaseAuthSystem {
     }
 }
 
+// Social Login Functions
+function setupSocialLogin() {
+    const oauthRedirectTo = `${window.location.origin}/Garcia-Builder/dashboard.html`;
+
+    // Google Login
+    const googleBtn = document.getElementById("google-btn");
+    if (googleBtn) {
+        googleBtn.addEventListener("click", async () => {
+            try {
+                googleBtn.disabled = true;
+                googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando...';
+
+                const { error } = await window.supabaseClient.auth.signInWithOAuth({
+                    provider: "google",
+                    options: { redirectTo: oauthRedirectTo }
+                });
+
+                if (error) throw error;
+            } catch (error) {
+                console.error('Google login error:', error);
+                if (window.authSystem) {
+                    window.authSystem.showMessage(error.message, "danger");
+                }
+            } finally {
+                googleBtn.disabled = false;
+                googleBtn.innerHTML = '<i class="fab fa-google text-danger me-2"></i>Continuar com Google';
+            }
+        });
+    }
+
+    // Facebook Login
+    const facebookBtn = document.getElementById("facebook-btn");
+    if (facebookBtn) {
+        facebookBtn.addEventListener("click", async () => {
+            try {
+                facebookBtn.disabled = true;
+                facebookBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando...';
+
+                const { error } = await window.supabaseClient.auth.signInWithOAuth({
+                    provider: "facebook",
+                    options: { redirectTo: oauthRedirectTo }
+                });
+
+                if (error) throw error;
+            } catch (error) {
+                console.error('Facebook login error:', error);
+                if (window.authSystem) {
+                    window.authSystem.showMessage(error.message, "danger");
+                }
+            } finally {
+                facebookBtn.disabled = false;
+                facebookBtn.innerHTML = '<i class="fab fa-facebook-f me-2"></i>Continuar com Facebook';
+            }
+        });
+    }
+}
+
 // Initialize auth system when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     // Aguardar um pouco para garantir que o Supabase foi carregado
     setTimeout(() => {
         window.authSystem = new SupabaseAuthSystem();
+        setupSocialLogin(); // Configurar login social
     }, 100);
 });
 

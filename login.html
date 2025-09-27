@@ -136,6 +136,22 @@
                                 </div>
 
                                 <div class="mb-3">
+                                    <label for="registerPhone" class="form-label">Telefone (opcional)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                        <input type="tel" class="form-control" id="registerPhone" placeholder="+55 (11) 99999-9999">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="registerDob" class="form-label">Data de Nascimento</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                        <input type="date" class="form-control" id="registerDob">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
                                     <label for="registerPassword" class="form-label" data-i18n="auth.password">Senha</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
@@ -182,6 +198,26 @@
 
                         <!-- Status Messages -->
                         <div id="auth-msg" class="alert d-none mt-3" role="alert"></div>
+
+                        <!-- Social Login -->
+                        <div class="social-login-section mt-4">
+                            <div class="divider text-center mb-3">
+                                <span class="divider-text bg-dark text-muted px-3">ou continue com</span>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button id="google-btn" class="btn btn-outline-light border-2">
+                                    <i class="fab fa-google text-danger me-2"></i>
+                                    Continuar com Google
+                                </button>
+                                <button id="facebook-btn" class="btn btn-outline-primary border-2">
+                                    <i class="fab fa-facebook-f me-2"></i>
+                                    Continuar com Facebook
+                                </button>
+                            </div>
+                            <small class="text-muted d-block text-center mt-2">
+                                Você será redirecionado de volta aqui após a autenticação.
+                            </small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -226,5 +262,7 @@
     <script src="assets/i18n.js" defer></script>
     <script src="js/i18n-shim.js" defer></script>
     <script src="js/auth-supabase.js" defer></script>
+
+
 </body>
 </html>

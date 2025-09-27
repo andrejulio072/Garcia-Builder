@@ -1,0 +1,30 @@
+FACEBOOK OAUTH - CONFIGURAÇÃO DE URLs CORRETA
+
+=== PROBLEMA COMUM ===
+O validador de URI às vezes não reconhece URLs válidas.
+Use as seções específicas abaixo:
+
+=== SEÇÃO 1: URIs de redirecionamento do OAuth válidos ===
+Campo: "URIs de redirecionamento do OAuth válidos"
+Adicionar: https://qejtjcaldnuokoofpqap.supabase.co/auth/v1/callback
+
+=== SEÇÃO 2: Domínios permitidos para o SDK do JavaScript ===
+Campo: "Domínios permitidos para o SDK do JavaScript"
+Adicionar: andrejulio072.github.io
+
+=== SEÇÃO 3: Desautorizar URL de retorno de chamada ===
+Campo: "Desautorizar URL de retorno de chamada"
+Adicionar: https://andrejulio072.github.io/Garcia-Builder/login.html
+
+=== DEPOIS DE CONFIGURAR ===
+1. Clique em "Salvar alterações"
+2. Vá para: Menu lateral → Configurações → Básico
+3. Copie o ID do App
+4. Copie a Chave Secreta do App
+5. Configure no Supabase
+
+=== TROUBLESHOOTING ===
+Se ainda der erro:
+- Certifique-se que não há espaços extras
+- Tente sem https:// primeiro, depois adicione
+- Verifique se o app está em modo desenvolvimento

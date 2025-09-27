@@ -392,3 +392,60 @@
         transform: translateX(-20px);
     }
 }
+
+/* Social Login Styles */
+.social-login-section {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1.5rem;
+}
+
+.divider {
+    position: relative;
+    overflow: hidden;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.divider-text {
+    position: relative;
+    z-index: 1;
+    font-size: 0.875rem;
+}
+
+.btn-outline-light:hover,
+.btn-outline-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(246, 200, 78, 0.2);
+    transition: all 0.3s ease;
+}
+
+#google-btn {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+#google-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+#facebook-btn {
+    background-color: rgba(66, 103, 178, 0.1);
+    border-color: rgba(66, 103, 178, 0.3);
+    color: #4267B2;
+}
+
+#facebook-btn:hover {
+    background-color: rgba(66, 103, 178, 0.2);
+    border-color: rgba(66, 103, 178, 0.5);
+    color: #4267B2;
+}

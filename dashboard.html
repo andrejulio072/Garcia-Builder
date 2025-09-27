@@ -163,8 +163,48 @@
                 </div>
             </div>
 
-            <!-- Quick Actions -->
+            <!-- User Profile -->
             <div class="col-lg-4 mb-4">
+                <div class="card glass-effect mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-user me-2 text-primary"></i>
+                            <span data-i18n="dashboard.my_profile">Meu Perfil</span>
+                        </h5>
+
+                        <div class="text-center mb-3">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10" style="width: 80px; height: 80px;">
+                                <i class="fas fa-user text-primary" style="font-size: 2rem;"></i>
+                            </div>
+                        </div>
+
+                        <div class="profile-info">
+                            <div class="row mb-2">
+                                <div class="col-4 text-muted small">Nome:</div>
+                                <div class="col-8 small fw-bold" id="profile-name">Carregando...</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4 text-muted small">Email:</div>
+                                <div class="col-8 small" id="profile-email">Carregando...</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4 text-muted small">Telefone:</div>
+                                <div class="col-8 small" id="profile-phone">-</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4 text-muted small">Nascimento:</div>
+                                <div class="col-8 small" id="profile-dob">-</div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-outline-primary btn-sm w-100 mt-2">
+                            <i class="fas fa-edit me-1"></i>
+                            Editar Perfil
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
                 <div class="card glass-effect h-100">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -363,6 +403,30 @@
                 const userEmailEl = document.getElementById('userEmail');
                 if (userEmailEl) {
                     userEmailEl.textContent = user.email;
+                }
+
+                // Update profile section with detailed information
+                const profileNameEl = document.getElementById('profile-name');
+                const profileEmailEl = document.getElementById('profile-email');
+                const profilePhoneEl = document.getElementById('profile-phone');
+                const profileDobEl = document.getElementById('profile-dob');
+
+                if (profileNameEl) {
+                    profileNameEl.textContent = (profile && profile.full_name) ? profile.full_name : user.email.split('@')[0];
+                }
+                if (profileEmailEl) {
+                    profileEmailEl.textContent = user.email;
+                }
+                if (profilePhoneEl) {
+                    profilePhoneEl.textContent = (profile && profile.phone) ? profile.phone : '-';
+                }
+                if (profileDobEl) {
+                    if (profile && profile.date_of_birth) {
+                        const dob = new Date(profile.date_of_birth);
+                        profileDobEl.textContent = dob.toLocaleDateString('pt-BR');
+                    } else {
+                        profileDobEl.textContent = '-';
+                    }
                 }
 
                 // Add logout functionality to auth buttons

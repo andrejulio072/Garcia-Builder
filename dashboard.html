@@ -163,8 +163,48 @@
                 </div>
             </div>
 
-            <!-- Quick Actions -->
+            <!-- User Profile -->
             <div class="col-lg-4 mb-4">
+                <div class="card glass-effect mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-user me-2 text-primary"></i>
+                            <span data-i18n="dashboard.my_profile">Meu Perfil</span>
+                        </h5>
+
+                        <div class="text-center mb-3">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10" style="width: 80px; height: 80px;">
+                                <i class="fas fa-user text-primary" style="font-size: 2rem;"></i>
+                            </div>
+                        </div>
+
+                        <div class="profile-info">
+                            <div class="row mb-2">
+                                <div class="col-4 text-muted small">Nome:</div>
+                                <div class="col-8 small fw-bold" id="profile-name">Carregando...</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4 text-muted small">Email:</div>
+                                <div class="col-8 small" id="profile-email">Carregando...</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4 text-muted small">Telefone:</div>
+                                <div class="col-8 small" id="profile-phone">-</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4 text-muted small">Nascimento:</div>
+                                <div class="col-8 small" id="profile-dob">-</div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-outline-primary btn-sm w-100 mt-2">
+                            <i class="fas fa-edit me-1"></i>
+                            Editar Perfil
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
                 <div class="card glass-effect h-100">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -325,33 +365,106 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script defer src="js/i18n-shim.js"></script>
     <script defer src="assets/i18n.js?v=20250926"></script>
-    <script defer src="js/auth.js"></script>
-    <script defer src="js/auth-guard.js"></script>
+    <!-- Supabase Authentication -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth-supabase.js"></script>
 
     <script>
-        // Protect this entire page - redirect to login if not authenticated
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is logged in, redirect if not
-            if (!AuthSystem.isLoggedIn()) {
-                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
-                return;
-            }
+        // Dashboard authentication guard and user data loading
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // Initialize Supabase auth system
+                const authSystem = new SupabaseAuthSystem();
 
-            // Load user data
-            const currentUser = AuthSystem.getCurrentUser();
-            if (currentUser) {
+                // Check if user is authenticated
+                const user = await authSystem.getCurrentUser();
+                if (!user) {
+                    // Redirect to login with return URL
+                    window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                    return;
+                }
+
+                // Load user profile data
+                const profile = await authSystem.getUserProfile(user.id);
+
+                // Update UI with user information
                 const userNameElements = document.querySelectorAll('#userName');
                 userNameElements.forEach(el => {
                     if (!el.hasAttribute('data-i18n')) {
-                        el.textContent = currentUser.name;
+                        if (profile && profile.full_name) {
+                            el.textContent = profile.full_name;
+                        } else {
+                            el.textContent = user.email.split('@')[0]; // Use email prefix as fallback
+                        }
                     }
                 });
+
                 const userEmailEl = document.getElementById('userEmail');
                 if (userEmailEl) {
-                    userEmailEl.textContent = currentUser.email;
+                    userEmailEl.textContent = user.email;
                 }
+
+                // Update profile section with detailed information
+                const profileNameEl = document.getElementById('profile-name');
+                const profileEmailEl = document.getElementById('profile-email');
+                const profilePhoneEl = document.getElementById('profile-phone');
+                const profileDobEl = document.getElementById('profile-dob');
+
+                if (profileNameEl) {
+                    profileNameEl.textContent = (profile && profile.full_name) ? profile.full_name : user.email.split('@')[0];
+                }
+                if (profileEmailEl) {
+                    profileEmailEl.textContent = user.email;
+                }
+                if (profilePhoneEl) {
+                    profilePhoneEl.textContent = (profile && profile.phone) ? profile.phone : '-';
+                }
+                if (profileDobEl) {
+                    if (profile && profile.date_of_birth) {
+                        const dob = new Date(profile.date_of_birth);
+                        profileDobEl.textContent = dob.toLocaleDateString('pt-BR');
+                    } else {
+                        profileDobEl.textContent = '-';
+                    }
+                }
+
+                // Add logout functionality to auth buttons
+                const authButtons = document.getElementById('auth-buttons');
+                if (authButtons) {
+                    authButtons.innerHTML = `
+                        <div class="dropdown">
+                            <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i> ${profile?.full_name || user.email.split('@')[0]}
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            </ul>
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+                console.error('Dashboard authentication error:', error);
+                // Redirect to login on any error
+                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
             }
         });
+
+        // Logout function
+        async function handleLogout() {
+            try {
+                const authSystem = new SupabaseAuthSystem();
+                await authSystem.logout();
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+                // Force redirect even if logout fails
+                window.location.href = 'index.html';
+            }
+        }
     </script>
 
     <style>

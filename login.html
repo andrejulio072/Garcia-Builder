@@ -91,27 +91,10 @@
                                     <span data-i18n="auth.login_btn">Entrar</span>
                                 </button>
 
-                                <!-- Social Login para Login Form -->
-                                <div class="social-login-section mt-3 mb-3">
-                                    <div class="divider text-center mb-3">
-                                        <span class="divider-text">ou continue com</span>
-                                    </div>
-                                    <div class="d-grid gap-2">
-                                        <button id="google-btn-login" class="btn btn-google">
-                                            <i class="fab fa-google me-2"></i>
-                                            Continuar com Google
-                                        </button>
-                                        <button id="facebook-btn-login" class="btn btn-facebook">
-                                            <i class="fab fa-facebook-f me-2"></i>
-                                            Continuar com Facebook
-                                        </button>
-                                    </div>
-                                </div>
-
                                 <div class="text-center">
-                                    <p class="mb-0" data-i18n="auth.no_account">Não tem uma conta?</p>
-                                    <button type="button" class="btn btn-link text-decoration-none p-0" id="showRegister" data-i18n="auth.create_account">
-                                        Criar conta
+                                    <p class="mb-2" data-i18n="auth.no_account">Não tem uma conta?</p>
+                                    <button type="button" class="btn btn-link text-decoration-none w-100" id="showRegister" data-i18n="auth.create_account">
+                                        <i class="fas fa-user-plus me-2"></i>Criar conta
                                     </button>
                                 </div>
                             </form>
@@ -142,6 +125,22 @@
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                         <input type="email" class="form-control" id="registerEmail" data-i18n-ph="auth.email_placeholder" placeholder="seu@email.com" required>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="registerPhone" class="form-label">Telefone (opcional)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                        <input type="tel" class="form-control" id="registerPhone" placeholder="+55 (11) 99999-9999">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="registerDob" class="form-label">Data de Nascimento</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                        <input type="date" class="form-control" id="registerDob">
                                     </div>
                                 </div>
 
@@ -199,12 +198,35 @@
                                 </div>
 
                                 <div class="text-center">
-                                    <p class="mb-0" data-i18n="auth.have_account">Já tem uma conta?</p>
-                                    <button type="button" class="btn btn-link text-decoration-none p-0" id="showLogin" data-i18n="auth.login_link">
-                                        Fazer login
+                                    <p class="mb-2" data-i18n="auth.have_account">Já tem uma conta?</p>
+                                    <button type="button" class="btn btn-link text-decoration-none w-100" id="showLogin" data-i18n="auth.login_link">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Fazer login
                                     </button>
                                 </div>
                             </form>
+                        </div>
+
+                        <!-- Status Messages -->
+                        <div id="auth-msg" class="alert d-none mt-3" role="alert"></div>
+
+                        <!-- Social Login -->
+                        <div class="social-login-section mt-4">
+                            <div class="divider text-center mb-3">
+                                <span class="divider-text bg-dark text-muted px-3">ou continue com</span>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button id="google-btn" class="btn btn-outline-light border-2">
+                                    <i class="fab fa-google text-danger me-2"></i>
+                                    Continuar com Google
+                                </button>
+                                <button id="facebook-btn" class="btn btn-outline-primary border-2">
+                                    <i class="fab fa-facebook-f me-2"></i>
+                                    Continuar com Facebook
+                                </button>
+                            </div>
+                            <small class="text-muted d-block text-center mt-2">
+                                Você será redirecionado de volta aqui após a autenticação.
+                            </small>
                         </div>
                     </div>
                 </div>
@@ -242,13 +264,10 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Supabase -->
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <script src="js/supabase.js"></script>
-    
     <script src="assets/i18n.js" defer></script>
     <script src="js/i18n-shim.js" defer></script>
-    <script src="js/auth.js" defer></script>
+    <script src="js/auth-supabase.js" defer></script>
+
+
 </body>
 </html>

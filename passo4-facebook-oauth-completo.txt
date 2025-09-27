@@ -1,0 +1,41 @@
+PASSO 4: FACEBOOK OAUTH - CONFIGURAÇÃO ESPECÍFICA
+
+=== INFORMAÇÕES DO SEU PROJETO ===
+✅ GitHub Pages: https://andrejulio072.github.io/Garcia-Builder/
+✅ Supabase URL: https://qejtjcaldnuokoofpqap.supabase.co
+
+=== FACEBOOK DEVELOPERS - CONFIGURAÇÃO EXATA ===
+
+1. Acesse: https://developers.facebook.com
+2. Faça login com sua conta Facebook
+3. Clique em "Meus Apps" → "Criar App"
+
+4. Escolha o tipo de app:
+   - Selecione: "Consumidor" ou "Nenhum dos anteriores"
+   - Nome do App: Garcia Builder Auth
+   - Email de contato: seu-email@exemplo.com
+
+5. Após criar o app:
+   - Vá para "Produtos" no menu lateral
+   - Encontre "Login do Facebook" → Clique em "Configurar"
+
+6. No Login do Facebook → Configurações:
+   - URIs de redirecionamento OAuth válidos (copie e cole exatamente):
+     https://qejtjcaldnuokoofpqap.supabase.co/auth/v1/callback
+
+7. Em "Configurações" → "Básico":
+   - Copie o "ID do App" (App ID)
+   - Copie o "Chave Secreta do App" (App Secret)
+
+=== SUPABASE - CONFIGURAÇÃO FINAL ===
+
+8. Vá para seu Supabase Dashboard
+9. Autenticação → Provedores → Facebook
+10. Habilitar: ✓ Ativado
+11. Client ID: Cole o "ID do App" do Facebook
+12. Client Secret: Cole a "Chave Secreta do App" do Facebook
+13. Salvar
+
+=== IMPORTANTE ===
+- Para o app ficar público, você precisará submeter para revisão do Facebook
+- Para testes, pode usar no modo desenvolvimento (apenas suas contas)

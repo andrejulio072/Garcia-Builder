@@ -1,0 +1,42 @@
+GOOGLE CLOUD CONSOLE - GUIA DETALHADO EM PORTUGUÊS
+
+=== PASSO A PASSO SUPER DETALHADO ===
+
+📍 COMO ENCONTRAR A TELA DE CONSENTIMENTO OAUTH:
+
+1. PRIMEIRO - CERTIFIQUE-SE QUE ESTÁ NO PROJETO CORRETO:
+   • No topo da página, veja se está escrito o nome do seu projeto
+   • Se não, clique na seta ao lado do nome e selecione o projeto certo
+
+2. ENCONTRAR O MENU CORRETO:
+   • Olhe para o menu lateral ESQUERDO (hambúrguer ☰)
+   • Procure por: "APIs e serviços"
+   • OU procure por: "APIs & Services" (pode estar em inglês)
+   • CLIQUE em "APIs e serviços"
+
+3. DENTRO DE "APIs e serviços", procure:
+   • "Tela de consentimento OAuth"
+   • OU "OAuth consent screen"
+   • CLIQUE nessa opção
+
+4. SE NÃO ENCONTRAR:
+   • No menu superior, use a BUSCA (🔍)
+   • Digite: "oauth consent"
+   • Clique no resultado que aparecer
+
+=== ALTERNATIVA - LINK DIRETO ===
+Se ainda não conseguir, use este link direto:
+https://console.cloud.google.com/apis/credentials/consent
+
+=== O QUE VOCÊ VAI VER ===
+Quando encontrar a tela correta, você verá:
+• Título: "Tela de consentimento OAuth"
+• Opções de configuração do app
+• Campos para preencher informações
+
+=== ONDE ESTOU AGORA? ===
+Pela sua imagem, vejo que você está na página principal.
+Você precisa:
+1. Clicar no menu hambúrguer (☰) no canto superior esquerdo
+2. Procurar "APIs e serviços"
+3. Dentro dessa seção, procurar "Tela de consentimento OAuth"

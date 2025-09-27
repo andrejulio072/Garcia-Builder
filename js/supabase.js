@@ -4,9 +4,9 @@
  * Substitua as variáveis abaixo pelos valores do seu projeto Supabase
  */
 
-// TODO: Substitua pelos valores do seu projeto Supabase
-window.SUPABASE_URL = "https://YOUR-PROJECT-REF.supabase.co";
-window.SUPABASE_ANON_KEY = "YOUR-ANON-PUBLIC-KEY";
+// Credenciais do projeto Supabase - Garcia Builder
+window.SUPABASE_URL = "https://qejtjcaldnuokoofpqap.supabase.co";
+window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlanRqY2FsZG51b2tvb2ZwcWFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5OTY2MjgsImV4cCI6MjA3NDU3MjYyOH0.-4KmNNRpmNLu4-xPtnC4-FJJTBbvrSk03v2WCaT5Kyw";
 
 // Criar cliente Supabase
 if (typeof supabase !== 'undefined') {

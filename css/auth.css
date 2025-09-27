@@ -2,21 +2,30 @@
 
 .auth-container {
     min-height: 100vh;
-    padding-top: 100px;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    padding: 80px 20px 20px;
+    background:
+        radial-gradient(circle at 20% 50%, rgba(246, 200, 78, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(246, 200, 78, 0.08) 0%, transparent 50%),
+        linear-gradient(135deg, #0b1220 0%, #1a1a2e 50%, #16213e 100%);
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .auth-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 22px;
-    padding: 2.5rem;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    padding: 3rem 2.5rem;
+    backdrop-filter: blur(25px);
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.4),
+        0 8px 25px rgba(246, 200, 78, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
+    max-width: 450px;
+    width: 100%;
 }
 
 .auth-card::before {
@@ -34,6 +43,19 @@
     font-size: 3rem;
     color: #F6C84E;
     margin-bottom: 1rem;
+}
+
+.auth-logo {
+    position: relative;
+}
+
+.auth-logo img {
+    filter: drop-shadow(0 4px 8px rgba(246, 200, 78, 0.3));
+    transition: transform 0.3s ease;
+}
+
+.auth-logo:hover img {
+    transform: scale(1.05);
 }
 
 .auth-form {
@@ -272,15 +294,15 @@
         padding-left: 1rem;
         padding-right: 1rem;
     }
-    
+
     .auth-card {
         padding: 1.5rem;
     }
-    
+
     .auth-icon {
         font-size: 2.5rem;
     }
-    
+
     .btn-primary {
         padding: 0.75rem 1.25rem;
     }

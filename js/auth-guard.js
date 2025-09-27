@@ -14,16 +14,16 @@ class AuthGuard {
     addUserMenuToNavbar() {
         const currentUser = AuthSystem.getCurrentUser();
         const navbar = document.querySelector('.navbar .container');
-        
+
         if (!navbar) return;
 
         // Find or create user menu container
         let userMenu = navbar.querySelector('.user-menu');
-        
+
         if (!userMenu) {
             userMenu = document.createElement('div');
             userMenu.className = 'user-menu ms-auto';
-            
+
             // Insert before language switcher
             const langDropdown = navbar.querySelector('#languageDropdown');
             if (langDropdown) {
@@ -59,14 +59,14 @@ class AuthGuard {
         } else {
             // User not logged in - show login/register buttons
             userMenu.innerHTML = `
-                <div class="d-flex gap-2">
-                    <a href="login.html?action=login" class="btn btn-outline-light btn-sm">
+                <div class="d-flex gap-2 align-items-center">
+                    <a href="login.html?action=login" class="btn btn-outline-light btn-sm d-flex align-items-center" style="border-color: #F6C84E; color: #F6C84E;">
                         <i class="fas fa-sign-in-alt me-1"></i>
-                        <span class="d-none d-sm-inline">Login</span>
+                        <span>Login</span>
                     </a>
-                    <a href="login.html?action=register" class="btn btn-primary btn-sm">
+                    <a href="login.html?action=register" class="btn btn-sm d-flex align-items-center" style="background: linear-gradient(135deg, #F6C84E 0%, #e6b73e 100%); border: none; color: #000; font-weight: 600;">
                         <i class="fas fa-user-plus me-1"></i>
-                        <span class="d-none d-sm-inline">Cadastro</span>
+                        <span>Cadastrar</span>
                     </a>
                 </div>
             `;
@@ -76,7 +76,7 @@ class AuthGuard {
     protectRestrictedContent() {
         // Find elements that require authentication
         const restrictedElements = document.querySelectorAll('[data-auth-required]');
-        
+
         restrictedElements.forEach(element => {
             if (!AuthSystem.isLoggedIn()) {
                 // Replace content with login prompt
@@ -90,12 +90,12 @@ class AuthGuard {
     addLoginPrompts() {
         // Add login prompts to pricing CTAs
         const pricingButtons = document.querySelectorAll('.pricing-card .btn-primary');
-        
+
         pricingButtons.forEach(button => {
             if (!AuthSystem.isLoggedIn()) {
                 const originalHref = button.getAttribute('href');
                 button.setAttribute('href', 'login.html?action=register&plan=' + encodeURIComponent(originalHref));
-                
+
                 // Update button text
                 const buttonText = button.querySelector('span');
                 if (buttonText && !buttonText.textContent.includes('Cadastre-se')) {
@@ -106,7 +106,7 @@ class AuthGuard {
 
         // Add login prompts to contact forms
         const contactForms = document.querySelectorAll('form[action*="formspree"]');
-        
+
         contactForms.forEach(form => {
             if (!AuthSystem.isLoggedIn()) {
                 const submitButton = form.querySelector('button[type="submit"]');
@@ -141,7 +141,7 @@ class AuthGuard {
     showLoginModal() {
         // Create login modal if it doesn't exist
         let modal = document.getElementById('loginPromptModal');
-        
+
         if (!modal) {
             modal = document.createElement('div');
             modal.id = 'loginPromptModal';

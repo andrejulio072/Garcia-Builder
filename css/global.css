@@ -327,3 +327,32 @@ section#contact.section.has-bg.contact-bg {
   background-repeat: no-repeat !important;
   min-height: 100vh !important;
 }
+
+/* Auth buttons in navbar */
+.user-menu .btn {
+  transition: all 0.3s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.user-menu .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.user-menu .btn[style*="background: linear-gradient"] {
+  position: relative;
+  overflow: hidden;
+}
+
+.user-menu .btn[style*="background: linear-gradient"]:hover {
+  box-shadow: 0 4px 15px rgba(246, 200, 78, 0.4);
+}
+
+.user-menu .btn[style*="border-color: #F6C84E"]:hover {
+  background-color: rgba(246, 200, 78, 0.1);
+  border-color: #e6b73e !important;
+  color: #e6b73e !important;
+}

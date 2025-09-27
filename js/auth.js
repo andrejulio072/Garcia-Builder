@@ -52,7 +52,7 @@ class AuthSystem {
         // Password confirmation validation
         const confirmPassword = document.getElementById('confirmPassword');
         const registerPassword = document.getElementById('registerPassword');
-        
+
         if (confirmPassword && registerPassword) {
             confirmPassword.addEventListener('input', () => {
                 this.validatePasswordMatch(registerPassword, confirmPassword);
@@ -69,7 +69,7 @@ class AuthSystem {
             button.addEventListener('click', () => {
                 const input = button.closest('.input-group').querySelector('input');
                 const icon = button.querySelector('i');
-                
+
                 if (input.type === 'password') {
                     input.type = 'text';
                     icon.classList.replace('fa-eye', 'fa-eye-slash');
@@ -114,34 +114,34 @@ class AuthSystem {
     updatePasswordStrengthUI(strength) {
         const strengthElement = document.querySelector('.password-strength');
         const strengthText = document.querySelector('.password-strength-text');
-        
+
         if (!strengthElement || !strengthText) return;
 
         // Remove existing classes
         strengthElement.classList.remove('weak', 'medium', 'strong');
-        
+
         // Add new class
         strengthElement.classList.add(strength);
-        
+
         // Update text
         const strengthMessages = {
             weak: 'Senha fraca',
-            medium: 'Senha média', 
+            medium: 'Senha média',
             strong: 'Senha forte'
         };
-        
+
         strengthText.textContent = strengthMessages[strength] || '';
     }
 
     validateEmail(input) {
         const email = input.value;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        
+
         if (!email || !emailRegex.test(email)) {
             this.setFieldError(input, 'Por favor, insira um email válido');
             return false;
         }
-        
+
         this.setFieldValid(input);
         return true;
     }
@@ -149,12 +149,12 @@ class AuthSystem {
     validatePasswordMatch(passwordInput, confirmInput) {
         const password = passwordInput.value;
         const confirm = confirmInput.value;
-        
+
         if (confirm && password !== confirm) {
             this.setFieldError(confirmInput, 'As senhas não coincidem');
             return false;
         }
-        
+
         if (confirm && password === confirm) {
             this.setFieldValid(confirmInput);
         }
@@ -164,13 +164,13 @@ class AuthSystem {
     setFieldError(input, message) {
         input.classList.add('is-invalid');
         input.classList.remove('is-valid');
-        
+
         // Remove existing feedback
         const existingFeedback = input.parentNode.querySelector('.invalid-feedback');
         if (existingFeedback) {
             existingFeedback.remove();
         }
-        
+
         // Add error message
         const feedback = document.createElement('div');
         feedback.className = 'invalid-feedback';
@@ -181,7 +181,7 @@ class AuthSystem {
     setFieldValid(input) {
         input.classList.add('is-valid');
         input.classList.remove('is-invalid');
-        
+
         // Remove error message
         const existingFeedback = input.parentNode.querySelector('.invalid-feedback');
         if (existingFeedback) {
@@ -200,7 +200,7 @@ class AuthSystem {
     showForm(formType) {
         const loginForm = document.getElementById('loginForm');
         const registerForm = document.getElementById('registerForm');
-        
+
         if (formType === 'register') {
             loginForm?.classList.remove('active');
             registerForm?.classList.add('active');
@@ -217,7 +217,7 @@ class AuthSystem {
 
     async handleLogin(e) {
         e.preventDefault();
-        
+
         const email = document.getElementById('loginEmail').value.trim();
         const password = document.getElementById('loginPassword').value;
         const rememberMe = document.getElementById('rememberMe').checked;
@@ -238,7 +238,7 @@ class AuthSystem {
 
             // Find user
             const user = this.users.find(u => u.email.toLowerCase() === email.toLowerCase());
-            
+
             if (!user) {
                 throw new Error('Email não encontrado');
             }
@@ -263,7 +263,7 @@ class AuthSystem {
 
             // Save to localStorage
             localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
-            
+
             if (rememberMe) {
                 localStorage.setItem('gb_remember_user', email);
             }
@@ -286,7 +286,7 @@ class AuthSystem {
 
     async handleRegister(e) {
         e.preventDefault();
-        
+
         const name = document.getElementById('registerName').value.trim();
         const email = document.getElementById('registerEmail').value.trim();
         const password = document.getElementById('registerPassword').value;
@@ -350,7 +350,7 @@ class AuthSystem {
                 document.getElementById('loginEmail').value = email;
                 document.getElementById('loginPassword').value = password;
                 this.showForm('login');
-                
+
                 // Trigger login after form switch
                 setTimeout(() => {
                     document.getElementById('loginFormElement').dispatchEvent(new Event('submit'));
@@ -404,7 +404,7 @@ class AuthSystem {
     showSuccess(title, message = '') {
         document.getElementById('successTitle').textContent = title;
         document.getElementById('successMessage').textContent = message;
-        
+
         const modal = new bootstrap.Modal(document.getElementById('successModal'));
         modal.show();
     }
@@ -412,17 +412,17 @@ class AuthSystem {
     showError(message) {
         document.getElementById('errorTitle').textContent = 'Erro!';
         document.getElementById('errorMessage').textContent = message;
-        
+
         const modal = new bootstrap.Modal(document.getElementById('errorModal'));
         modal.show();
     }
 
     switchLanguage(lang) {
         localStorage.setItem('gb_language', lang);
-        
+
         // Update current language display
         document.getElementById('currentLang').textContent = lang.toUpperCase();
-        
+
         // Apply translations if available
         if (typeof applyTranslations === 'function') {
             applyTranslations(lang);

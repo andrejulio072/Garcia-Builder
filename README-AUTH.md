@@ -138,7 +138,7 @@ calculatePasswordStrength(password) {
         numbers: /\d/.test(password),        // Números
         special: /[!@#$%^&*()]/.test(password) // Caracteres especiais
     };
-    
+
     // Sua lógica personalizada aqui...
 }
 ```
@@ -246,28 +246,28 @@ async handleLogin(e) {
 // Por este (exemplo com fetch)
 async handleLogin(e) {
     e.preventDefault();
-    
+
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
-    
+
     try {
         const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
         });
-        
+
         if (!response.ok) throw new Error('Login failed');
-        
+
         const data = await response.json();
-        
+
         // Salvar token JWT
         localStorage.setItem('auth_token', data.token);
         localStorage.setItem('gb_current_user', JSON.stringify(data.user));
-        
+
         // Redirecionar
         window.location.href = 'dashboard.html';
-        
+
     } catch (error) {
         this.showError(error.message);
     }

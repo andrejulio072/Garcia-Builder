@@ -13,6 +13,7 @@
         faq: "FAQ",
         contact: "Contact",
         programs: "Programs",
+        back_to_site: "Back to Site",
         lang: { en: "EN", pt: "PT", es: "ES" }
       },
       home: {
@@ -313,6 +314,7 @@
         faq: "FAQ",
         contact: "Contato",
         programs: "Programas",
+        back_to_site: "Voltar ao Site",
         lang: { en: "EN", pt: "PT", es: "ES" }
       },
       home: {
@@ -604,6 +606,7 @@
         faq: "FAQ",
         contact: "Contacto",
         programs: "Programas",
+        back_to_site: "Volver al Sitio",
         lang: { en: "EN", pt: "PT", es: "ES" }
       },
       home: {

@@ -62,7 +62,8 @@
   .accordion-body{background:var(--gb-panel);color:var(--gb-txt)}
   .accordion-button::after{filter:invert(1) opacity(.85)}
 </style>
-<script defer src="assets/i18n.js"></script>
+<script defer src="js/i18n-shim.js"></script>
+<script defer src="assets/i18n.js?v=20250926"></script>
 </head>
 <body>
 
@@ -168,7 +169,8 @@ const FAQ = [
 
 /* ---- Render FAQ dynamically with translations ---- */
 function renderFAQ() {
-  const currentLang = localStorage.getItem('garcia-builder-lang') || 'en';
+  // Use the unified i18n key and API
+  const currentLang = (window.GB_I18N && window.GB_I18N.getLang && window.GB_I18N.getLang()) || localStorage.getItem('gb_lang') || 'en';
 
   // Wait for DICTS to be available
   if (!window.DICTS || !window.DICTS[currentLang] || !window.DICTS[currentLang].faq) {

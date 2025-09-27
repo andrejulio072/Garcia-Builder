@@ -666,6 +666,8 @@
     const lang = clamp(l);
     try { localStorage.setItem(KEY, lang); } catch {}
     apply(lang);
+    // Notify listeners (e.g., FAQ page) that language changed
+    try { document.dispatchEvent(new Event('languageChanged')); } catch {}
   }
 
   const getByPath = (obj, path) => path.split('.').reduce((o,k)=> (o && o[k] !== undefined) ? o[k] : undefined, obj);
@@ -705,5 +707,7 @@
     if (sel) sel.addEventListener('change', () => setLang(sel.value));
   });
 
+  // Expose APIs and raw dictionaries for legacy consumers
   window.GB_I18N = { setLang, getLang, applyTranslations: apply };
+  window.DICTS = DICTS;
 })();

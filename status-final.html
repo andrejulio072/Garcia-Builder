@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>✅ Teste Final Funcional - Stripe</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; }
+        .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin: 10px 0; }
+        .error { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin: 10px 0; }
+        .info { background: #d1ecf1; color: #0c5460; padding: 15px; border-radius: 5px; margin: 10px 0; }
+        .btn { background: #28a745; color: white; padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        .btn:hover { background: #218838; }
+        .btn-test { background: #007bff; }
+        .btn-test:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>🎯 Sistema de Pagamentos - Status Final</h1>
+
+    <div class="success">
+        <h3>✅ O que está funcionando:</h3>
+        <ul>
+            <li>✅ <strong>Servidor:</strong> Rodando na porta 3001</li>
+            <li>✅ <strong>Chaves API:</strong> Configuradas corretamente</li>
+            <li>✅ <strong>Price IDs:</strong> Todos os 5 planos configurados</li>
+            <li>✅ <strong>Arquivo .env:</strong> Corrigido e funcionando</li>
+        </ul>
+    </div>
+
+    <div class="info">
+        <h3>📊 Configurações Atuais:</h3>
+        <ul>
+            <li><strong>Starter:</strong> £75/mês → price_1SBnsQ2HQhMPvsUVKjShuCqS</li>
+            <li><strong>Beginner:</strong> £95/mês → price_1SBo0l2HQhMPvsUVb0CamUon</li>
+            <li><strong>Essentials:</strong> £115/mês → price_1SBo1D2HQhMPvsUVPZsgOFzA</li>
+            <li><strong>Full:</strong> £155/mês → price_1SBo1h2HQhMPvsUVSFUxEoi0</li>
+            <li><strong>Elite:</strong> £230/mês → price_1SBo2M2HQhMPvsUVZBfruITl</li>
+        </ul>
+    </div>
+
+    <h3>🧪 Teste o Sistema:</h3>
+    <p>Agora você pode testar o sistema diretamente na sua página de pricing:</p>
+
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="pricing.html" target="_blank">
+            <button class="btn">🚀 Abrir Página de Pricing</button>
+        </a>
+        <br><br>
+        <a href="test-stripe.html" target="_blank">
+            <button class="btn btn-test">🧪 Página de Teste Detalhada</button>
+        </a>
+    </div>
+
+    <div class="success">
+        <h3>💳 Como Testar Pagamentos:</h3>
+        <ol>
+            <li>Vá para a página <strong>pricing.html</strong></li>
+            <li>Faça login no sistema (se necessário)</li>
+            <li>Clique em qualquer botão "Choose Plan"</li>
+            <li>Use os dados de teste do Stripe:</li>
+            <ul>
+                <li><strong>Cartão:</strong> <code>4242 4242 4242 4242</code></li>
+                <li><strong>Expiração:</strong> <code>12/34</code> (qualquer data futura)</li>
+                <li><strong>CVC:</strong> <code>123</code> (qualquer 3 dígitos)</li>
+                <li><strong>Nome:</strong> Seu nome</li>
+                <li><strong>Email:</strong> Seu email</li>
+            </ul>
+        </ol>
+    </div>
+
+    <div class="info">
+        <h3>🔧 Resolução de Problemas:</h3>
+        <p>Se encontrar algum erro:</p>
+        <ol>
+            <li>Verifique se o servidor está rodando (janela do terminal deve estar aberta)</li>
+            <li>Se o servidor parar, execute <code>npm start</code> novamente</li>
+            <li>Certifique-se de que está acessando de <code>localhost</code> ou <code>127.0.0.1</code></li>
+        </ol>
+    </div>
+
+    <div class="success">
+        <h3>🎉 Próximos Passos:</h3>
+        <ul>
+            <li>✅ <strong>Sistema funcional:</strong> Pronto para testes</li>
+            <li>🔄 <strong>Webhooks:</strong> Configure depois para confirmação automática</li>
+            <li>🌐 <strong>Produção:</strong> Deploy em servidor quando estiver satisfeito</li>
+            <li>📧 <strong>Notificações:</strong> Configure emails de confirmação</li>
+        </ul>
+    </div>
+
+    <p style="text-align: center; margin-top: 40px; color: #666;">
+        <strong>Sistema Stripe integrado com sucesso! 🚀</strong><br>
+        Seu coaching business agora pode aceitar pagamentos online!
+    </p>
+</body>
+</html>

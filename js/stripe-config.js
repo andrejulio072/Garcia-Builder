@@ -1,14 +1,14 @@
 // Configuração de ambiente para Stripe
 const STRIPE_CONFIG = {
     development: {
-        publishableKey: 'pk_test_51S8Qxo2HQhMPvsUVtWDDtKrSyNzhc8QxEB13lJuhZTm4XgtGeDuqrrrrhGvgb671t4evmIju9k92FtBoCZsd6vhu00UoCa2KlA',
+        publishableKey: 'pk_live_51S8QxZCEdPbAOAaf5v5Y3yskMYdY3p9sRAIXs2clIAtBiJtLQQwVA3IBcZe02znzJYC8e6BTpdpKRmvkiOZLM5ee00QKktfaZT',
         apiUrl: 'http://localhost:3001/api',
         priceIds: {
-            starter: 'price_1SBnsQ2HQhMPvsUVKjShuCqS',
-            beginner: 'price_1SBo0l2HQhMPvsUVb0CamUon',
-            essentials: 'price_1SBo1D2HQhMPvsUVPZsgOFzA',
-            full: 'price_1SBo1h2HQhMPvsUVSFUxEoi0',
-            elite: 'price_1SBo2M2HQhMPvsUVZBfruITl'
+            starter: 'price_1SBojACEdPbAOAafxaiDr1nB',
+            beginner: 'price_1SBojdCEdPbAOAafa5fhnVKG',
+            essentials: 'price_1SBok8CEdPbAOAafF38Obn6w',
+            full: 'price_1SBokYCEdPbAOAafdUFUQ6VN',
+            elite: 'price_1SBolCCEdPbAOAafqoiKfe0L'
         }
     },
     production: {

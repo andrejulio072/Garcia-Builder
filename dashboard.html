@@ -325,33 +325,82 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script defer src="js/i18n-shim.js"></script>
     <script defer src="assets/i18n.js?v=20250926"></script>
-    <script defer src="js/auth.js"></script>
-    <script defer src="js/auth-guard.js"></script>
+    <!-- Supabase Authentication -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth-supabase.js"></script>
 
     <script>
-        // Protect this entire page - redirect to login if not authenticated
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is logged in, redirect if not
-            if (!AuthSystem.isLoggedIn()) {
-                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
-                return;
-            }
+        // Dashboard authentication guard and user data loading
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // Initialize Supabase auth system
+                const authSystem = new SupabaseAuthSystem();
 
-            // Load user data
-            const currentUser = AuthSystem.getCurrentUser();
-            if (currentUser) {
+                // Check if user is authenticated
+                const user = await authSystem.getCurrentUser();
+                if (!user) {
+                    // Redirect to login with return URL
+                    window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                    return;
+                }
+
+                // Load user profile data
+                const profile = await authSystem.getUserProfile(user.id);
+
+                // Update UI with user information
                 const userNameElements = document.querySelectorAll('#userName');
                 userNameElements.forEach(el => {
                     if (!el.hasAttribute('data-i18n')) {
-                        el.textContent = currentUser.name;
+                        if (profile && profile.full_name) {
+                            el.textContent = profile.full_name;
+                        } else {
+                            el.textContent = user.email.split('@')[0]; // Use email prefix as fallback
+                        }
                     }
                 });
+
                 const userEmailEl = document.getElementById('userEmail');
                 if (userEmailEl) {
-                    userEmailEl.textContent = currentUser.email;
+                    userEmailEl.textContent = user.email;
                 }
+
+                // Add logout functionality to auth buttons
+                const authButtons = document.getElementById('auth-buttons');
+                if (authButtons) {
+                    authButtons.innerHTML = `
+                        <div class="dropdown">
+                            <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i> ${profile?.full_name || user.email.split('@')[0]}
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            </ul>
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+                console.error('Dashboard authentication error:', error);
+                // Redirect to login on any error
+                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
             }
         });
+
+        // Logout function
+        async function handleLogout() {
+            try {
+                const authSystem = new SupabaseAuthSystem();
+                await authSystem.logout();
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+                // Force redirect even if logout fails
+                window.location.href = 'index.html';
+            }
+        }
     </script>
 
     <style>

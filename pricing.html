@@ -31,6 +31,77 @@
   /* Hover lift + spacing tweak */
   .price:hover{transform:translateY(-4px);transition:transform .25s ease}
   @media (min-width:992px){.price-grid{gap:22px}}
+
+  /* Member discount card */
+  .member-discount {
+    background: linear-gradient(135deg, #1a2449, #0f1a3a) !important;
+    border: 2px solid var(--gold) !important;
+    box-shadow:
+      0 25px 60px rgba(246, 200, 78, 0.2),
+      0 0 0 1px rgba(246, 200, 78, 0.1),
+      inset 0 1px 0 rgba(246, 200, 78, 0.2) !important;
+    position: relative;
+    overflow: hidden;
+    transform: scale(1.02);
+  }
+
+  .member-discount::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), #ffd700, var(--gold));
+    animation: shimmer 2s ease-in-out infinite;
+  }
+
+  .member-discount::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(246, 200, 78, 0.1) 0%, transparent 70%);
+    animation: pulse 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
+  }
+
+  .member-discount:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow:
+      0 35px 80px rgba(246, 200, 78, 0.25),
+      0 0 0 1px rgba(246, 200, 78, 0.2),
+      inset 0 1px 0 rgba(246, 200, 78, 0.3) !important;
+  }
+
+  .member-discount .crown-icon {
+    margin-bottom: 8px;
+    filter: drop-shadow(0 0 10px rgba(246, 200, 78, 0.5));
+  }
+
+  .member-discount .save {
+    background: linear-gradient(90deg, var(--gold), #ffd700) !important;
+    color: #0a0f1e !important;
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(246, 200, 78, 0.4);
+  }
+
+  .member-discount h3 {
+    color: var(--gold);
+    text-shadow: 0 0 10px rgba(246, 200, 78, 0.3);
+  }
 </style>
 </head>
 
@@ -46,6 +117,10 @@
     <a href="faq.html" data-i18n="nav.faq">FAQ</a>
     <a href="contact.html" data-i18n="nav.contact">Contact</a>
   </nav>
+
+  <!-- Auth buttons will be dynamically inserted here by auth-guard.js -->
+  <div id="auth-buttons"></div>
+
   <div class="lang"><select id="lang-select"><option value="en">EN</option><option value="pt">PT</option><option value="es">ES</option></select></div>
 </div></nav>
 
@@ -58,20 +133,20 @@
 
     <!-- Premium Content - Only for logged in users -->
     <div class="mt-5" data-auth-required>
-      <div class="card p-4 text-center">
-        <div class="row align-items-center">
-          <div class="col-md-4">
-            <i class="fas fa-crown" style="font-size: 3rem; color: #F6C84E;"></i>
-          </div>
-          <div class="col-md-8">
-            <h3 class="title-gradient mb-2">Desconto Exclusivo para Membros</h3>
-            <p class="mb-3">Como usuário registrado, você tem acesso a <strong>15% de desconto</strong> em qualquer plano de 3 meses ou mais!</p>
-            <div class="d-flex gap-2 justify-content-center">
-              <span class="badge bg-warning text-dark">Código: MEMBER15</span>
-              <span class="badge bg-success">Válido até 31/12/2025</span>
-            </div>
-          </div>
+      <div class="price member-discount reveal" data-tilt data-tilt-max="4" data-tilt-speed="500">
+        <span class="save">15% OFF</span>
+        <div class="crown-icon">
+          <i class="fas fa-crown" style="font-size: 2.5rem; color: var(--gold);"></i>
         </div>
+        <h3>Desconto Exclusivo para Membros</h3>
+        <div class="tag">15%<span style="font-size:16px"> desconto</span></div>
+        <ul>
+          <li>Válido em planos de 3+ meses</li>
+          <li>Código: <strong>MEMBER15</strong></li>
+          <li>Válido até 31/12/2025</li>
+        </ul>
+        <p class="muted">Como usuário registrado, você tem acesso a desconto especial em todos os planos de longa duração!</p>
+        <a class="btn btn-gold" href="contact.html">Usar Desconto</a>
       </div>
     </div>
   </div>
@@ -85,5 +160,6 @@
 <script defer src="js/app.js"></script>
 <script defer src="js/lightbox.js"></script>
 <script defer src="js/pricing.js"></script>
+<script defer src="js/auth.js"></script>
 <script defer src="js/auth-guard.js"></script>
 </body></html>

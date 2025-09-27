@@ -31,6 +31,12 @@
       });
     }
 
+    // Initialize tilt for member discount card
+    const memberDiscountCard = document.querySelector('.member-discount');
+    if (memberDiscountCard && window.VanillaTilt) {
+      VanillaTilt.init(memberDiscountCard, { max: 4, speed: 500, glare: false });
+    }
+
     // Reveal animation
     const io = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -41,6 +47,11 @@
       });
     }, { threshold: .15 });
     container.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Also observe member discount card for reveal animation
+    if (memberDiscountCard) {
+      io.observe(memberDiscountCard);
+    }
   }
 
   window.addEventListener('load', () => setTimeout(renderPricing, 100));

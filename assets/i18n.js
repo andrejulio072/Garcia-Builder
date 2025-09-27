@@ -14,6 +14,11 @@
         contact: "Contact",
         programs: "Programs",
         back_to_site: "Back to Site",
+        login: "Login",
+        register: "Register",
+        logout: "Logout",
+        profile: "My Profile",
+        dashboard: "Dashboard",
         lang: { en: "EN", pt: "PT", es: "ES" }
       },
       home: {
@@ -315,6 +320,11 @@
         contact: "Contato",
         programs: "Programas",
         back_to_site: "Voltar ao Site",
+        login: "Login",
+        register: "Cadastrar",
+        logout: "Sair",
+        profile: "Meu Perfil",
+        dashboard: "Dashboard",
         lang: { en: "EN", pt: "PT", es: "ES" }
       },
       home: {
@@ -607,6 +617,11 @@
         contact: "Contacto",
         programs: "Programas",
         back_to_site: "Volver al Sitio",
+        login: "Login",
+        register: "Registrarse",
+        logout: "Salir",
+        profile: "Mi Perfil",
+        dashboard: "Dashboard",
         lang: { en: "EN", pt: "PT", es: "ES" }
       },
       home: {

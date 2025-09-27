@@ -12,24 +12,32 @@ class AuthGuard {
     }
 
     addUserMenuToNavbar() {
+        console.log('AuthGuard: Adding user menu to navbar');
         const currentUser = AuthSystem.getCurrentUser();
-        const navbar = document.querySelector('.navbar .container');
+        console.log('AuthGuard: Current user:', currentUser);
 
-        if (!navbar) return;
+        // Try to find the auth-buttons container first
+        let userMenu = document.querySelector('#auth-buttons');
+        console.log('AuthGuard: Found #auth-buttons container:', !!userMenu);
 
-        // Find or create user menu container
-        let userMenu = navbar.querySelector('.user-menu');
-
+        // If not found, fall back to the old method
         if (!userMenu) {
-            userMenu = document.createElement('div');
-            userMenu.className = 'user-menu ms-auto';
+            const navbar = document.querySelector('.navbar .container');
+            if (!navbar) return;
 
-            // Insert before language switcher
-            const langDropdown = navbar.querySelector('#languageDropdown');
-            if (langDropdown) {
-                langDropdown.parentNode.parentNode.insertBefore(userMenu, langDropdown.parentNode);
-            } else {
-                navbar.appendChild(userMenu);
+            userMenu = navbar.querySelector('.user-menu');
+
+            if (!userMenu) {
+                userMenu = document.createElement('div');
+                userMenu.className = 'user-menu ms-auto';
+
+                // Insert before language switcher
+                const langDropdown = navbar.querySelector('#languageDropdown');
+                if (langDropdown) {
+                    langDropdown.parentNode.parentNode.insertBefore(userMenu, langDropdown.parentNode);
+                } else {
+                    navbar.appendChild(userMenu);
+                }
             }
         }
 
@@ -49,24 +57,27 @@ class AuthGuard {
                             </span>
                         </li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Meu Perfil</a></li>
-                        <li><a class="dropdown-item" href="dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                        <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>${this.getTranslation('nav.profile') || 'My Profile'}</a></li>
+                        <li><a class="dropdown-item" href="dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>${this.getTranslation('nav.dashboard') || 'Dashboard'}</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><button class="dropdown-item text-danger" onclick="AuthSystem.logout()"><i class="fas fa-sign-out-alt me-2"></i>Sair</button></li>
+                        <li><button class="dropdown-item text-danger" onclick="AuthSystem.logout()"><i class="fas fa-sign-out-alt me-2"></i>${this.getTranslation('nav.logout') || 'Logout'}</button></li>
                     </ul>
                 </div>
             `;
         } else {
             // User not logged in - show login/register buttons
+            const loginText = this.getTranslation('nav.login') || 'Login';
+            const registerText = this.getTranslation('nav.register') || 'Register';
+
             userMenu.innerHTML = `
                 <div class="d-flex gap-2 align-items-center">
                     <a href="login.html?action=login" class="btn btn-outline-light btn-sm d-flex align-items-center" style="border-color: #F6C84E; color: #F6C84E;">
                         <i class="fas fa-sign-in-alt me-1"></i>
-                        <span>Login</span>
+                        <span>${loginText}</span>
                     </a>
                     <a href="login.html?action=register" class="btn btn-sm d-flex align-items-center" style="background: linear-gradient(135deg, #F6C84E 0%, #e6b73e 100%); border: none; color: #000; font-weight: 600;">
                         <i class="fas fa-user-plus me-1"></i>
-                        <span>Cadastrar</span>
+                        <span>${registerText}</span>
                     </a>
                 </div>
             `;
@@ -171,6 +182,26 @@ class AuthGuard {
 
         const bootstrapModal = new bootstrap.Modal(modal);
         bootstrapModal.show();
+    }
+
+    getTranslation(key) {
+        try {
+            if (window.GB_I18N && window.GB_I18N.get) {
+                return window.GB_I18N.get(key);
+            }
+            // Fallback translations if i18n is not loaded yet
+            const fallbacks = {
+                'nav.login': 'Login',
+                'nav.register': 'Register',
+                'nav.logout': 'Logout',
+                'nav.profile': 'My Profile',
+                'nav.dashboard': 'Dashboard'
+            };
+            return fallbacks[key] || null;
+        } catch (error) {
+            console.warn('Translation not found:', key);
+            return null;
+        }
     }
 
     // Static method to protect entire pages

@@ -79,6 +79,10 @@
     <a href="faq.html" data-i18n="nav.faq">FAQ</a>
     <a href="contact.html" data-i18n="nav.contact">Contact</a>
   </nav>
+
+  <!-- Auth buttons will be dynamically inserted here by auth-guard.js -->
+  <div id="auth-buttons"></div>
+
   <div class="lang">
     <select id="lang-select"><option value="en">EN</option><option value="pt">PT</option><option value="es">ES</option></select>
   </div>
@@ -267,6 +271,7 @@ window.addEventListener('load', () => {
 
 
 <script defer src="js/app-optimizations.js"></script>
+<script defer src="js/auth.js"></script>
 <script defer src="js/auth-guard.js"></script>
 </body>
 </html>

@@ -38,6 +38,10 @@ img { max-width: 100%; height: auto; display: block; }
 <a data-i18n="nav.faq" href="faq.html">FAQ</a>
 <a data-i18n="nav.contact" href="contact.html">Contact</a>
 </nav>
+
+<!-- Auth buttons will be dynamically inserted here by auth-guard.js -->
+<div id="auth-buttons"></div>
+
 <div class="lang"><select id="lang-select"><option data-i18n="nav.lang.en" value="en">EN</option><option data-i18n="nav.lang.pt" value="pt">PT</option><option data-i18n="nav.lang.es" value="es">ES</option></select></div>
 </div></nav>
 
@@ -219,5 +223,6 @@ img { max-width: 100%; height: auto; display: block; }
 <script defer src="js/lightbox.js"></script>
 <script defer src="js/i18n-shim.js"></script>
 <script defer src="assets/i18n.js?v=20250926"></script>
+<script defer src="js/auth.js"></script>
 <script defer src="js/auth-guard.js"></script>
 </body></html>

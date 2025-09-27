@@ -356,3 +356,31 @@ section#contact.section.has-bg.contact-bg {
   border-color: #e6b73e !important;
   color: #e6b73e !important;
 }
+
+/* Auth buttons positioning */
+#auth-buttons {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 16px;
+}
+
+@media (max-width: 768px) {
+  #auth-buttons {
+    margin-left: 0;
+    margin-right: 8px;
+  }
+
+  #auth-buttons .btn {
+    font-size: 0.875rem;
+    padding: 6px 10px;
+  }
+
+  #auth-buttons .btn span {
+    display: none;
+  }
+
+  #auth-buttons .btn i {
+    margin: 0;
+  }
+}

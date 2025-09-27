@@ -21,6 +21,22 @@
         dashboard: "Dashboard",
         lang: { en: "EN", pt: "PT", es: "ES" }
       },
+      dashboard: {
+        welcome: "Welcome back to your dashboard",
+        loading: "Loading...",
+        active_days: "Active Days",
+        current_streak: "Current Streak",
+        total_workouts: "Total Workouts",
+        progress_photos: "Progress Photos",
+        recent_activity: "Recent Activity",
+        no_activity: "No recent activity to show",
+        timeline: {
+          workout_completed: "Workout completed",
+          progress_photo: "Progress photo uploaded",
+          weight_logged: "Weight logged",
+          measurements: "Measurements updated"
+        }
+      },
       home: {
         hero: {
           headline: "Online Coaching. Real Results."
@@ -218,6 +234,17 @@
           choose: "Choose Plan",
           popular: "Most Popular",
           contact: "Contact for Details"
+        },
+        member_discount: {
+          title: "Exclusive Member Discount",
+          discount: "discount",
+          features: [
+            "Valid on 3+ month plans",
+            "Code: MEMBER15",
+            "Valid until 31/12/2025"
+          ],
+          description: "As a registered user, you have access to special discount on all long-term plans!",
+          cta: "Use Discount"
         }
       },
       contact: {
@@ -326,6 +353,22 @@
         profile: "Meu Perfil",
         dashboard: "Dashboard",
         lang: { en: "EN", pt: "PT", es: "ES" }
+      },
+      dashboard: {
+        welcome: "Bem-vindo de volta ao seu painel de controle",
+        loading: "Carregando...",
+        active_days: "Dias Ativo",
+        current_streak: "Sequência Atual",
+        total_workouts: "Total de Treinos",
+        progress_photos: "Fotos de Progresso",
+        recent_activity: "Atividade Recente",
+        no_activity: "Nenhuma atividade recente para mostrar",
+        timeline: {
+          workout_completed: "Treino concluído",
+          progress_photo: "Foto de progresso enviada",
+          weight_logged: "Peso registrado",
+          measurements: "Medidas atualizadas"
+        }
       },
       home: {
         hero: {
@@ -524,6 +567,17 @@
           choose: "Escolher Plano",
           popular: "Mais Popular",
           contact: "Contato para Detalhes"
+        },
+        member_discount: {
+          title: "Desconto Exclusivo para Membros",
+          discount: "desconto",
+          features: [
+            "Válido em planos de 3+ meses",
+            "Código: MEMBER15",
+            "Válido até 31/12/2025"
+          ],
+          description: "Como usuário registrado, você tem acesso a desconto especial em todos os planos de longa duração!",
+          cta: "Usar Desconto"
         }
       },
       contact: {
@@ -623,6 +677,22 @@
         profile: "Mi Perfil",
         dashboard: "Dashboard",
         lang: { en: "EN", pt: "PT", es: "ES" }
+      },
+      dashboard: {
+        welcome: "Bienvenido de vuelta a tu panel de control",
+        loading: "Cargando...",
+        active_days: "Días Activo",
+        current_streak: "Racha Actual",
+        total_workouts: "Total de Entrenamientos",
+        progress_photos: "Fotos de Progreso",
+        recent_activity: "Actividad Reciente",
+        no_activity: "No hay actividad reciente para mostrar",
+        timeline: {
+          workout_completed: "Entrenamiento completado",
+          progress_photo: "Foto de progreso subida",
+          weight_logged: "Peso registrado",
+          measurements: "Medidas actualizadas"
+        }
       },
       home: {
         hero: {
@@ -821,6 +891,17 @@
           choose: "Elegir Plan",
           popular: "Más Popular",
           contact: "Contacto para Detalles"
+        },
+        member_discount: {
+          title: "Descuento Exclusivo para Miembros",
+          discount: "descuento",
+          features: [
+            "Válido en planes de 3+ meses",
+            "Código: MEMBER15",
+            "Válido hasta 31/12/2025"
+          ],
+          description: "Como usuario registrado, tienes acceso a descuento especial en todos los planes de larga duración!",
+          cta: "Usar Descuento"
         }
       },
       contact: {

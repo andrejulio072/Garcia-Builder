@@ -19,57 +19,45 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
-                <img src="assets/logo.png" alt="Garcia Builder" height="40" class="me-2">
-                <span class="fw-bold">Garcia Builder</span>
+    <nav class="navbar">
+        <div class="container inner">
+            <a class="brand" href="index.html">
+                <img loading="lazy" decoding="async" src="assets/logo.png">
+                <span class="title-gradient">Garcia Builder</span>
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <nav class="nav">
+                <a href="index.html" data-i18n="nav.home">Home</a>
+                <a href="about.html" data-i18n="nav.about">About</a>
+                <a href="transformations.html" data-i18n="nav.trans">Transformations</a>
+                <a href="testimonials.html" data-i18n="nav.testi">Testimonials</a>
+                <a href="pricing.html" data-i18n="nav.pricing">Pricing</a>
+                <a href="faq.html" data-i18n="nav.faq">FAQ</a>
+                <a href="contact.html" data-i18n="nav.contact">Contact</a>
+                <a href="dashboard.html" class="active">Dashboard</a>
+            </nav>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html" data-i18n="nav.home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html" data-i18n="nav.about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="pricing.html" data-i18n="nav.pricing">Pricing</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="dashboard.html">Dashboard</a>
-                    </li>
-                </ul>
+            <!-- Auth buttons will be dynamically inserted here by auth-guard.js -->
+            <div id="auth-buttons"></div>
 
-                <!-- Language Switcher -->
-                <div class="dropdown me-3">
-                    <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown">
-                        <i class="fas fa-globe me-1"></i>
-                        <span id="currentLang">EN</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#" data-lang="en"><i class="fas fa-flag me-2"></i>English</a></li>
-                        <li><a class="dropdown-item" href="#" data-lang="pt"><i class="fas fa-flag me-2"></i>Português</a></li>
-                        <li><a class="dropdown-item" href="#" data-lang="es"><i class="fas fa-flag me-2"></i>Español</a></li>
-                    </ul>
-                </div>
+            <div class="lang">
+                <select id="lang-select">
+                    <option data-i18n="nav.lang.en" value="en">EN</option>
+                    <option data-i18n="nav.lang.pt" value="pt">PT</option>
+                    <option data-i18n="nav.lang.es" value="es">ES</option>
+                </select>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="container mt-5 pt-5">
+    <div class="container" style="padding-top: 100px;">
         <div class="row">
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
                         <h1 class="title-gradient mb-2">Dashboard</h1>
-                        <p class="text-muted mb-0">Bem-vindo de volta ao seu painel de controle</p>
+                        <p class="text-muted mb-0" data-i18n="dashboard.welcome">Welcome back to your dashboard</p>
                     </div>
                     <div class="d-flex align-items-center">
                         <i class="fas fa-user-circle text-warning me-2" style="font-size: 2rem;"></i>
@@ -87,7 +75,7 @@
             <div class="col-md-3 mb-3">
                 <div class="card glass-effect h-100">
                     <div class="card-body text-center">
-                        <i class="fas fa-calendar-alt text-primary mb-3" style="font-size: 2rem;"></i>
+                            <div class="fw-bold" id="userName" data-i18n="dashboard.loading">Loading...</div>
                         <h5 class="card-title">Dias Ativo</h5>
                         <h3 class="text-primary" id="activeDays">7</h3>
                         <small class="text-muted">Esta semana</small>
@@ -101,7 +89,7 @@
                         <i class="fas fa-dumbbell text-success mb-3" style="font-size: 2rem;"></i>
                         <h5 class="card-title">Treinos</h5>
                         <h3 class="text-success" id="workouts">12</h3>
-                        <small class="text-muted">Este mês</small>
+                        <h5 class="card-title" data-i18n="dashboard.active_days">Active Days</h5>
                     </div>
                 </div>
             </div>
@@ -110,7 +98,7 @@
                 <div class="card glass-effect h-100">
                     <div class="card-body text-center">
                         <i class="fas fa-chart-line text-warning mb-3" style="font-size: 2rem;"></i>
-                        <h5 class="card-title">Progresso</h5>
+                        <h5 class="card-title" data-i18n="dashboard.current_streak">Current Streak</h5>
                         <h3 class="text-warning" id="progress">85%</h3>
                         <small class="text-muted">Meta mensal</small>
                     </div>
@@ -119,7 +107,7 @@
 
             <div class="col-md-3 mb-3">
                 <div class="card glass-effect h-100">
-                    <div class="card-body text-center">
+                        <h5 class="card-title" data-i18n="dashboard.total_workouts">Total Workouts</h5>
                         <i class="fas fa-trophy text-danger mb-3" style="font-size: 2rem;"></i>
                         <h5 class="card-title">Streak</h5>
                         <h3 class="text-danger" id="streak">14</h3>
@@ -128,7 +116,7 @@
                 </div>
             </div>
         </div>
-
+                        <h5 class="card-title" data-i18n="dashboard.progress_photos">Progress Photos</h5>
         <!-- Main Content Area -->
         <div class="row">
             <!-- Protected Content Section -->
@@ -140,14 +128,14 @@
                             Plano de Treino Personalizado
                         </h5>
                         <p class="card-text">
-                            Seu plano de treino foi personalizado especificamente para seus objetivos de hipertrofia e força.
+                        <h5 class="mb-0"><i class="fas fa-clock me-2"></i><span data-i18n="dashboard.recent_activity">Recent Activity</span></h5>
                             Esta semana focamos em chest e back com intensidade progressiva.
                         </p>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <h6><i class="fas fa-calendar-week me-1"></i> Semana Atual</h6>
-                                <ul class="list-unstyled">
+                                    <h6 class="mb-1" data-i18n="dashboard.timeline.workout_completed">Workout completed</h6>
                                     <li><i class="fas fa-check-circle text-success me-1"></i> Segunda - Push (Peito/Ombro)</li>
                                     <li><i class="fas fa-check-circle text-success me-1"></i> Terça - Pull (Costas/Bíceps)</li>
                                     <li><i class="fas fa-clock text-warning me-1"></i> Quinta - Legs (Pernas)</li>
@@ -155,7 +143,7 @@
                                 </ul>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <h6><i class="fas fa-chart-bar me-1"></i> Métricas</h6>
+                                    <h6 class="mb-1" data-i18n="dashboard.timeline.progress_photo">Progress photo uploaded</h6>
                                 <ul class="list-unstyled">
                                     <li>Bench Press: <strong>80kg → 85kg</strong></li>
                                     <li>Deadlift: <strong>120kg → 125kg</strong></li>
@@ -163,7 +151,7 @@
                                     <li>Volume Total: <strong>+12%</strong></li>
                                 </ul>
                             </div>
-                        </div>
+                                    <h6 class="mb-1" data-i18n="dashboard.timeline.weight_logged">Weight logged</h6>
 
                         <div class="d-flex gap-2">
                             <button class="btn btn-primary">
@@ -171,7 +159,7 @@
                             </button>
                             <button class="btn btn-outline-primary">
                                 <i class="fas fa-download me-1"></i>Download PDF
-                            </button>
+                                    <h6 class="mb-1" data-i18n="dashboard.timeline.measurements">Measurements updated</h6>
                         </div>
                     </div>
                 </div>
@@ -423,5 +411,11 @@
             color: #fff;
         }
     </style>
+
+        <!-- Scripts -->
+        <script defer src="js/i18n-shim.js"></script>
+        <script defer src="assets/i18n.js?v=20250926"></script>
+        <script defer src="js/auth.js"></script>
+        <script defer src="js/auth-guard.js"></script>
 </body>
 </html>

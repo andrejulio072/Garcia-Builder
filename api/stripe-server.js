@@ -10,7 +10,10 @@ console.log('STRIPE_SECRET_KEY exists:', !!process.env.STRIPE_SECRET_KEY);
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('PORT:', process.env.PORT);
 const express = require('express');
+// Inicializar Stripe seguindo documentação oficial
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+console.log('✅ Stripe inicializado seguindo padrão oficial');
+
 const cors = require('cors');
 
 const app = express();
@@ -66,10 +69,10 @@ app.post('/api/create-checkout-session', async (req, res) => {
 
         const planConfig = PRICE_CONFIG[planKey];
 
-        console.log(`📝 Criando sessão LIVE para: ${planConfig.name} - £${planConfig.amount/100}`);
+        console.log(`📝 Criando Checkout Session: ${planConfig.name} - £${planConfig.amount/100}`);
         console.log(`👤 Cliente: ${customerEmail}`);
 
-        // **MODO LIVE** - Usar Stripe real com chaves live
+        // Criar Checkout Session seguindo documentação oficial do Stripe
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [{
@@ -88,15 +91,17 @@ app.post('/api/create-checkout-session', async (req, res) => {
             }],
             mode: 'subscription',
             customer_email: customerEmail,
-            success_url: successUrl || `${process.env.FRONTEND_URL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: cancelUrl || `${process.env.FRONTEND_URL}/pricing.html`,
+            success_url: successUrl || `http://localhost:3001/success.html?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: cancelUrl || `http://localhost:3001/pricing.html`,
             metadata: {
                 planKey: planKey,
                 planName: planConfig.name
             }
         });
 
-        console.log(`✅ Sessão LIVE criada: ${session.id}`);
+        console.log(`✅ Checkout Session criada: ${session.id}`);
+
+        // Retornar URL para redirecionamento (padrão oficial)
         res.json({
             sessionId: session.id,
             url: session.url,
@@ -106,9 +111,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
                 currency: planConfig.currency,
                 planKey: planKey
             }
-        });
-
-    } catch (error) {
+        });    } catch (error) {
         console.error('Erro ao criar sessão de checkout DEMO:', error);
         res.status(500).json({
             error: 'Erro interno do servidor',

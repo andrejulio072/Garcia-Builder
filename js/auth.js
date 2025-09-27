@@ -39,6 +39,19 @@ class AuthSystem {
         } else if (urlParams.get('action') === 'register') {
             this.showForm('register');
         }
+
+        // Check for payment flow return
+        if (urlParams.get('return') === 'payment') {
+            const planKey = urlParams.get('plan');
+            if (planKey) {
+                // Armazenar informações do plano para após o login/registro
+                localStorage.setItem('pendingPayment', JSON.stringify({
+                    planKey: planKey,
+                    returnUrl: 'pricing.html',
+                    timestamp: Date.now()
+                }));
+            }
+        }
     }
 
     setupFormValidation() {
@@ -273,6 +286,20 @@ class AuthSystem {
 
             // Redirect after success
             setTimeout(() => {
+                // Verificar se há pagamento pendente
+                const pendingPayment = localStorage.getItem('pendingPayment');
+                if (pendingPayment) {
+                    const paymentData = JSON.parse(pendingPayment);
+                    localStorage.removeItem('pendingPayment');
+
+                    // Armazenar email do usuário para o sistema de pagamento
+                    localStorage.setItem('userEmail', this.currentUser.email);
+
+                    // Redirecionar para pricing com auto-pagamento
+                    window.location.href = `pricing.html?auto-pay=${paymentData.planKey}`;
+                    return;
+                }
+
                 const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'index.html';
                 window.location.href = redirectUrl;
             }, 1500);

@@ -5,9 +5,9 @@
 
 console.log('🔧 Loading Supabase configuration...');
 
-// Credenciais do projeto Supabase - Garcia Builder
+// Credenciais do projeto Supabase - Garcia Builder (Chave válida)
 window.SUPABASE_URL = "https://qejtjcaldnuokoofpqap.supabase.co";
-window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlanRqY2FsZG51b2tvb2ZwcWFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc0NTY5NTMsImV4cCI6MjA0MzAzMjk1M30.oPB-H7Kk1BPvPIMLRkYQpOOdEkXzIww2lCZPEu5rD7Q";
+window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlanRqY2FsZG51b2tvb2ZwcWFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5OTY2MjgsImV4cCI6MjA3NDU3MjYyOH0.-4KmNNRpmNLu4-xPtnC4-FJJTBbvrSk03v2WCaT5Kyw";
 
 // Criar cliente Supabase
 if (typeof supabase !== 'undefined') {

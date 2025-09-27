@@ -482,6 +482,46 @@
     color: #ffffff !important;
 }
 
+/* Responsividade para botões sociais */
+@media (max-width: 768px) {
+    .social-login-section {
+        margin: 1rem 0;
+    }
+
+    .btn-google,
+    .btn-facebook {
+        padding: 0.875rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .divider-text {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .auth-card {
+        padding: 2rem 1.5rem;
+        margin: 0 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn-google,
+    .btn-facebook {
+        padding: 1rem;
+        font-size: 0.85rem;
+    }
+
+    .social-login-section {
+        margin: 0.8rem 0;
+    }
+
+    .auth-card {
+        padding: 1.5rem 1rem;
+        margin: 0 0.5rem;
+    }
+}
+
 /* Animation for Form Switching */
 .auth-form.slide-out {
     animation: slideOut 0.2s ease-in forwards;

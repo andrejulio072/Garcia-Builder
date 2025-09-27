@@ -19,9 +19,29 @@ class AuthSystem {
         document.getElementById('showRegister')?.addEventListener('click', () => this.showForm('register'));
         document.getElementById('showLogin')?.addEventListener('click', () => this.showForm('login'));
 
-        // Form submissions
-        document.getElementById('loginFormElement')?.addEventListener('submit', (e) => this.handleLogin(e));
-        document.getElementById('registerFormElement')?.addEventListener('submit', (e) => this.handleRegister(e));
+        // Form submissions - APENAS para formulários tradicionais
+        const loginForm = document.getElementById('loginFormElement');
+        const registerForm = document.getElementById('registerFormElement');
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', (e) => {
+                // Permitir OAuth buttons sem validação
+                if (e.submitter && e.submitter.id && (e.submitter.id.includes('google') || e.submitter.id.includes('facebook'))) {
+                    return; // Deixa OAuth passar sem validação
+                }
+                this.handleLogin(e);
+            });
+        }
+
+        if (registerForm) {
+            registerForm.addEventListener('submit', (e) => {
+                // Permitir OAuth buttons sem validação
+                if (e.submitter && e.submitter.id && (e.submitter.id.includes('google') || e.submitter.id.includes('facebook'))) {
+                    return; // Deixa OAuth passar sem validação
+                }
+                this.handleRegister(e);
+            });
+        }
 
         // Language switching
         document.querySelectorAll('[data-lang]').forEach(button => {
@@ -485,82 +505,178 @@ class AuthSystem {
     }
 }
 
-// Social Login Functions (Supabase Integration)
+// OAUTH SOCIAL LOGIN - INDEPENDENTE DE FORMULÁRIOS
 function setupSocialLogin() {
-    if (!window.supabaseClient) {
-        console.log('⚠️ Supabase not available for social login');
-        return;
+    console.log('🔧 Configurando login social...');
+
+    // Aguardar Supabase estar disponível
+    const waitForSupabase = () => {
+        if (!window.supabaseClient) {
+            console.warn('⏳ Aguardando Supabase...');
+            setTimeout(waitForSupabase, 500);
+            return;
+        }
+
+        console.log('✅ Supabase disponível, configurando OAuth...');
+        setupOAuthButtons();
+    };
+
+    waitForSupabase();
+}
+
+function setupOAuthButtons() {
+    // URLs de redirecionamento
+    const currentHost = window.location.origin;
+    const isLocal = currentHost.includes('localhost') || currentHost.includes('127.0.0.1');
+    const redirectTo = isLocal
+        ? `${currentHost}/dashboard.html`
+        : `https://andrejulio072.github.io/Garcia-Builder/dashboard.html`;
+
+    console.log('🔗 OAuth redirect URL:', redirectTo);
+
+    // GOOGLE OAUTH - COMPLETAMENTE INDEPENDENTE
+    const setupGoogleButton = (btnId) => {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+
+        console.log(`🔵 Configurando botão Google: ${btnId}`);
+
+        // Remover todos os listeners existentes
+        btn.replaceWith(btn.cloneNode(true));
+        const newBtn = document.getElementById(btnId);
+
+        newBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            console.log('� CLIQUE NO GOOGLE - INICIANDO OAUTH');
+
+            try {
+                newBtn.disabled = true;
+                newBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Redirecionando para Google...';
+
+                const { data, error } = await window.supabaseClient.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: redirectTo,
+                        queryParams: {
+                            access_type: 'offline',
+                            prompt: 'select_account'
+                        }
+                    }
+                });
+
+                if (error) {
+                    console.error('❌ Erro Google OAuth:', error);
+                    throw error;
+                }
+
+                console.log('✅ Google OAuth iniciado com sucesso!');
+
+            } catch (error) {
+                console.error('❌ Falha no Google OAuth:', error);
+                showAuthMessage(`Erro no login Google: ${error.message}`, 'danger');
+                newBtn.disabled = false;
+                newBtn.innerHTML = '<i class="fab fa-google me-2"></i>Continuar com Google';
+            }
+        });
+    };
+
+    // Configurar todos os botões Google
+    setupGoogleButton('google-btn-login');
+    setupGoogleButton('google-btn-register');
+
+    // FACEBOOK OAUTH - COMPLETAMENTE INDEPENDENTE
+    const setupFacebookButton = (btnId) => {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+
+        console.log(`🔷 Configurando botão Facebook: ${btnId}`);
+
+        // Remover todos os listeners existentes
+        btn.replaceWith(btn.cloneNode(true));
+        const newBtn = document.getElementById(btnId);
+
+        newBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            console.log('� CLIQUE NO FACEBOOK - INICIANDO OAUTH');
+
+            try {
+                newBtn.disabled = true;
+                newBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Redirecionando para Facebook...';
+
+                const { data, error } = await window.supabaseClient.auth.signInWithOAuth({
+                    provider: 'facebook',
+                    options: {
+                        redirectTo: redirectTo,
+                        queryParams: {
+                            scope: 'email'
+                        }
+                    }
+                });
+
+                if (error) {
+                    console.error('❌ Erro Facebook OAuth:', error);
+                    throw error;
+                }
+
+                console.log('✅ Facebook OAuth iniciado com sucesso!');
+
+            } catch (error) {
+                console.error('❌ Falha no Facebook OAuth:', error);
+                showAuthMessage(`Erro no login Facebook: ${error.message}`, 'danger');
+                newBtn.disabled = false;
+                newBtn.innerHTML = '<i class="fab fa-facebook-f me-2"></i>Continuar com Facebook';
+            }
+        });
+    };
+
+    // Configurar todos os botões Facebook
+    setupFacebookButton('facebook-btn-login');
+    setupFacebookButton('facebook-btn-register');
+}
+
+// Helper function para mostrar mensagens de erro/sucesso
+function showAuthMessage(message, type = 'info') {
+    const authMsg = document.getElementById('auth-msg');
+    if (authMsg) {
+        authMsg.className = `alert alert-${type}`;
+        authMsg.innerHTML = `<i class="fas fa-${type === 'danger' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>${message}`;
+        authMsg.classList.remove('d-none');
+
+        // Auto-hide após 5 segundos
+        setTimeout(() => {
+            if (authMsg) {
+                authMsg.classList.add('d-none');
+            }
+        }, 5000);
     }
-
-    const oauthRedirectTo = `${window.location.origin}/Garcia-Builder/dashboard.html`;
-
-    // Google Login Buttons (Login e Register) - APENAS OS NOVOS
-    const googleBtns = [
-        document.getElementById("google-btn-login"),
-        document.getElementById("google-btn-register")
-    ].filter(btn => btn !== null);    googleBtns.forEach(googleBtn => {
-        googleBtn.addEventListener("click", async () => {
-            try {
-                googleBtn.disabled = true;
-                googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando...';
-
-                const { error } = await window.supabaseClient.auth.signInWithOAuth({
-                    provider: "google",
-                    options: { redirectTo: oauthRedirectTo }
-                });
-
-                if (error) throw error;
-            } catch (error) {
-                console.error('Google login error:', error);
-                if (window.authSystem) {
-                    window.authSystem.showMessage(error.message, "danger");
-                }
-            } finally {
-                googleBtn.disabled = false;
-                googleBtn.innerHTML = '<i class="fab fa-google me-2"></i>Continuar com Google';
-            }
-        });
-    });
-
-    // Facebook Login Buttons - APENAS OS NOVOS
-    const facebookBtns = [
-        document.getElementById("facebook-btn-login"),
-        document.getElementById("facebook-btn-register")
-    ].filter(btn => btn !== null);
-
-    facebookBtns.forEach(facebookBtn => {
-        facebookBtn.addEventListener("click", async () => {
-            try {
-                facebookBtn.disabled = true;
-                facebookBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando...';
-
-                const { error } = await window.supabaseClient.auth.signInWithOAuth({
-                    provider: "facebook",
-                    options: { redirectTo: oauthRedirectTo }
-                });
-
-                if (error) throw error;
-            } catch (error) {
-                console.error('Facebook login error:', error);
-                if (window.authSystem) {
-                    window.authSystem.showMessage(error.message, "danger");
-                }
-            } finally {
-                facebookBtn.disabled = false;
-                facebookBtn.innerHTML = '<i class="fab fa-facebook-f me-2"></i>Continuar com Facebook';
-            }
-        });
-    });
 }
 
 // Initialize auth system when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 Inicializando sistema de autenticação...');
     window.authSystem = new AuthSystem();
 
-    // Setup social login after page loads
+    // Setup social login - aguardar um pouco para garantir que tudo carregou
     setTimeout(() => {
+        console.log('🔧 Configurando login social...');
         setupSocialLogin();
-    }, 100);
+    }, 1000);
+});
+
+// Também tentar configurar quando a página carrega completamente
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        if (typeof setupSocialLogin === 'function') {
+            console.log('🔄 Re-configurando login social após load...');
+            setupSocialLogin();
+        }
+    }, 500);
 });
 
 // Export for external use

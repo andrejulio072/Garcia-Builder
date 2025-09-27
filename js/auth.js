@@ -494,14 +494,11 @@ function setupSocialLogin() {
 
     const oauthRedirectTo = `${window.location.origin}/Garcia-Builder/dashboard.html`;
 
-    // Google Login Buttons (Login e Register)
+    // Google Login Buttons (Login e Register) - APENAS OS NOVOS
     const googleBtns = [
-        document.getElementById("google-btn"),
-        document.getElementById("google-btn-login"), 
+        document.getElementById("google-btn-login"),
         document.getElementById("google-btn-register")
-    ].filter(btn => btn !== null);
-
-    googleBtns.forEach(googleBtn => {
+    ].filter(btn => btn !== null);    googleBtns.forEach(googleBtn => {
         googleBtn.addEventListener("click", async () => {
             try {
                 googleBtn.disabled = true;
@@ -525,9 +522,8 @@ function setupSocialLogin() {
         });
     });
 
-    // Facebook Login Buttons
+    // Facebook Login Buttons - APENAS OS NOVOS
     const facebookBtns = [
-        document.getElementById("facebook-btn"),
         document.getElementById("facebook-btn-login"),
         document.getElementById("facebook-btn-register")
     ].filter(btn => btn !== null);
@@ -560,7 +556,7 @@ function setupSocialLogin() {
 // Initialize auth system when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.authSystem = new AuthSystem();
-    
+
     // Setup social login after page loads
     setTimeout(() => {
         setupSocialLogin();

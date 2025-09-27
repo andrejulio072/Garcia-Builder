@@ -4,7 +4,7 @@
 ✅ PROBLEMAS RESOLVIDOS:
 
 1. 🔸 BOTÕES SOCIAIS AGORA APARECEM EM AMBAS AS SEÇÕES:
-   - ✅ Na tela de LOGIN 
+   - ✅ Na tela de LOGIN
    - ✅ Na tela de REGISTRO
 
 2. 🎨 VISUAL MELHORADO:

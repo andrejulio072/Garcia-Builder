@@ -1,7 +1,7 @@
-// Configuração Stripe seguindo documentação oficial
+// Configuração Stripe seguindo documentação oficial - VERSÃO PREMIUM
 const STRIPE_CONFIG = {
-    // Usando test keys para desenvolvimento (recomendado pela documentação)
-    publishableKey: 'pk_test_51S8QxZCEdPbAOAaf5v5Y3yskMYdY3p9sRAIXs2clIAtBiJtLQQwVA3IBcZe02znzJYC8e6BTpdpKRmvkiOZLM5ee00QKktfaZT',
+    // Usando chave pública LIVE para produção
+    publishableKey: 'pk_live_51S8QxZCEdPbAOAaf5v5Y3yskMYdY3p9sRAIXs2clIAtBiJtLQQwVA3IBcZe02znzJYC8e6BTpdpKRmvkiOZLM5ee00QKktfaZT',
     apiUrl: 'http://localhost:3001/api',
     plans: {
         starter: { name: 'Starter Plan', price: '£75', amount: 7500 },

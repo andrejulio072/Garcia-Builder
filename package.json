@@ -1,21 +1,29 @@
 {
   "name": "garcia-builder-stripe-integration",
-  "version": "1.0.0",
-  "description": "Stripe payment integration for Garcia Builder coaching website",
-  "main": "api/stripe-server.js",
+  "version": "2.0.0",
+  "description": "Premium Stripe payment integration for Garcia Builder coaching website",
+  "main": "api/stripe-server-premium.js",
   "scripts": {
-    "start": "node api/stripe-server.js",
-    "dev": "nodemon api/stripe-server.js",
+    "start": "node api/stripe-server-premium.js",
+    "dev": "nodemon api/stripe-server-premium.js",
+    "legacy": "node api/stripe-server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["stripe", "payments", "coaching", "fitness"],
+  "keywords": [
+    "stripe",
+    "payments",
+    "coaching",
+    "fitness"
+  ],
   "author": "Garcia Builder",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
-    "stripe": "^14.25.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^8.1.0",
+    "helmet": "^8.1.0",
+    "stripe": "^14.25.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

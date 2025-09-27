@@ -7,11 +7,11 @@ console.log('🔍 VERIFICAÇÃO DOS PAYMENT LINKS ATUAIS');
 console.log('==========================================');
 
 const currentLinks = {
-    'Starter Plan (£75)': 'https://buy.stripe.com/7sY6oG8qsexmbXE000',
-    'Beginner Plan (£95)': 'https://buy.stripe.com/6oU5kC7mobla2n4001',
-    'Essentials Plan (£115)': 'https://buy.stripe.com/14A14m6ik74U9Pw002',
-    'Full Plan (£155)': 'https://buy.stripe.com/bJe3cu5egbla7Hod003',
-    'Elite Plan (£230)': 'https://buy.stripe.com/5kQdR85eg1KA1j04004'
+    'Starter Plan (£75)': 'https://buy.stripe.com/7sY6oG8qsexmbXEfkyak000',
+    'Beginner Plan (£95)': 'https://buy.stripe.com/6oU5kC7mobla2n48Waak001',
+    'Essentials Plan (£115)': 'https://buy.stripe.com/14A14m6ik74U9Pw2xMak002',
+    'Full Plan (£155)': 'https://buy.stripe.com/bJe3cu5egbla7Hodcqak003',
+    'Elite Plan (£230)': 'https://buy.stripe.com/5kQdR85eg1KA1j04FUak004'
 };
 
 console.log('\n📋 LINKS ATUAIS NO SISTEMA:');

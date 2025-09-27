@@ -5,12 +5,22 @@
  */
 
 // Configuração dos Payment Links (você vai criar estes no painel Stripe)
+// Simple Payment Links mapping - used directly by pricing.js
+window.PAYMENT_LINKS = {
+    starter: "https://buy.stripe.com/7sY6oG8qsexmbXEfkyak000",
+    beginner: "https://buy.stripe.com/6oU5kC7mobla2n48Waak001",
+    essentials: "https://buy.stripe.com/14A14m6ik74U9Pw2xMak002",
+    full: "https://buy.stripe.com/bJe3cu5egbla7Hodcqak003",
+    elite: "https://buy.stripe.com/5kQdR85eg1KA1j04FUak004"
+};
+
+// Full plan details for display purposes
 const PAYMENT_LINKS = {
     starter: {
         name: 'Starter Plan',
         price: '£75/month',
         description: 'Perfect for beginners starting their fitness journey',
-        paymentLink: 'https://buy.stripe.com/7sY6oG8qsexmbXE000',
+        paymentLink: 'https://buy.stripe.com/7sY6oG8qsexmbXEfkyak000',
         features: [
             'Basic workout plans',
             'Nutrition guidelines',
@@ -22,7 +32,7 @@ const PAYMENT_LINKS = {
         name: 'Beginner Plan',
         price: '£95/month',
         description: 'Enhanced plan with more features and support',
-        paymentLink: 'https://buy.stripe.com/6oU5kC7mobla2n4001',
+        paymentLink: 'https://buy.stripe.com/6oU5kC7mobla2n48Waak001',
         features: [
             'Enhanced workout plans',
             'Meal prep guides',
@@ -35,7 +45,7 @@ const PAYMENT_LINKS = {
         name: 'Essentials Plan',
         price: '£115/month',
         description: 'Comprehensive fitness and nutrition coaching',
-        paymentLink: 'https://buy.stripe.com/14A14m6ik74U9Pw002',
+        paymentLink: 'https://buy.stripe.com/14A14m6ik74U9Pw2xMak002',
         features: [
             'Custom workout plans',
             'Personalized nutrition',
@@ -48,7 +58,7 @@ const PAYMENT_LINKS = {
         name: 'Full Plan',
         price: '£155/month',
         description: 'Complete transformation package with premium support',
-        paymentLink: 'https://buy.stripe.com/bJe3cu5egbla7Hod003',
+        paymentLink: 'https://buy.stripe.com/bJe3cu5egbla7Hodcqak003',
         features: [
             'Premium coaching',
             'Weekly check-ins',
@@ -62,7 +72,7 @@ const PAYMENT_LINKS = {
         name: 'Elite Plan',
         price: '£230/month',
         description: 'Ultimate coaching experience with exclusive access',
-        paymentLink: 'https://buy.stripe.com/5kQdR85eg1KA1j04004',
+        paymentLink: 'https://buy.stripe.com/5kQdR85eg1KA1j04FUak004',
         features: [
             'VIP coaching',
             'Daily support',

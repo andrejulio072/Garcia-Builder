@@ -274,6 +274,33 @@
           consent: "I agree to be contacted about coaching and understand my data will be used only to respond to this inquiry.",
           footnote: "Average reply time: 24–48h. No spam, ever."
         }
+      },
+      auth: {
+        login_title: "Login",
+        login_subtitle: "Access your Garcia Builder account",
+        register_title: "Create Account",
+        register_subtitle: "Join Garcia Builder",
+        email: "Email",
+        password: "Password",
+        name: "Full Name",
+        confirm_password: "Confirm Password",
+        email_placeholder: "your@email.com",
+        password_placeholder: "Your password",
+        name_placeholder: "Your full name",
+        confirm_password_placeholder: "Confirm your password",
+        remember_me: "Remember me",
+        login_btn: "Sign In",
+        register_btn: "Create Account",
+        no_account: "Don't have an account?",
+        create_account: "Create account",
+        have_account: "Already have an account?",
+        login_link: "Sign in",
+        agree_terms: "I agree to the",
+        terms_link: "Terms of Use"
+      },
+      common: {
+        ok: "OK",
+        close: "Close"
       }
     },
     pt: {
@@ -538,6 +565,33 @@
             }
           }
         }
+      },
+      auth: {
+        login_title: "Login",
+        login_subtitle: "Acesse sua conta Garcia Builder",
+        register_title: "Criar Conta",
+        register_subtitle: "Junte-se à Garcia Builder",
+        email: "Email",
+        password: "Senha",
+        name: "Nome Completo",
+        confirm_password: "Confirmar Senha",
+        email_placeholder: "seu@email.com",
+        password_placeholder: "Sua senha",
+        name_placeholder: "Seu nome completo",
+        confirm_password_placeholder: "Confirme sua senha",
+        remember_me: "Lembrar de mim",
+        login_btn: "Entrar",
+        register_btn: "Criar Conta",
+        no_account: "Não tem uma conta?",
+        create_account: "Criar conta",
+        have_account: "Já tem uma conta?",
+        login_link: "Fazer login",
+        agree_terms: "Concordo com os",
+        terms_link: "Termos de Uso"
+      },
+      common: {
+        ok: "OK",
+        close: "Fechar"
       }
     },
     es: {
@@ -802,6 +856,33 @@
             }
           }
         }
+      },
+      auth: {
+        login_title: "Iniciar Sesión",
+        login_subtitle: "Accede a tu cuenta Garcia Builder",
+        register_title: "Crear Cuenta",
+        register_subtitle: "Únete a Garcia Builder",
+        email: "Email",
+        password: "Contraseña",
+        name: "Nombre Completo",
+        confirm_password: "Confirmar Contraseña",
+        email_placeholder: "tu@email.com",
+        password_placeholder: "Tu contraseña",
+        name_placeholder: "Tu nombre completo",
+        confirm_password_placeholder: "Confirma tu contraseña",
+        remember_me: "Recordarme",
+        login_btn: "Iniciar Sesión",
+        register_btn: "Crear Cuenta",
+        no_account: "¿No tienes una cuenta?",
+        create_account: "Crear cuenta",
+        have_account: "¿Ya tienes una cuenta?",
+        login_link: "Iniciar sesión",
+        agree_terms: "Acepto los",
+        terms_link: "Términos de Uso"
+      },
+      common: {
+        ok: "OK",
+        close: "Cerrar"
       }
     }
   };

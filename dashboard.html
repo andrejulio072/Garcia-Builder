@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Garcia Builder</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/global.css">
+    
+    <!-- Preload Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="assets/logo.png" alt="Garcia Builder" height="40" class="me-2">
+                <span class="fw-bold">Garcia Builder</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html" data-i18n="nav.home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html" data-i18n="nav.about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pricing.html" data-i18n="nav.pricing">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="dashboard.html">Dashboard</a>
+                    </li>
+                </ul>
+                
+                <!-- Language Switcher -->
+                <div class="dropdown me-3">
+                    <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown">
+                        <i class="fas fa-globe me-1"></i>
+                        <span id="currentLang">EN</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#" data-lang="en"><i class="fas fa-flag me-2"></i>English</a></li>
+                        <li><a class="dropdown-item" href="#" data-lang="pt"><i class="fas fa-flag me-2"></i>Português</a></li>
+                        <li><a class="dropdown-item" href="#" data-lang="es"><i class="fas fa-flag me-2"></i>Español</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5 pt-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h1 class="title-gradient mb-2">Dashboard</h1>
+                        <p class="text-muted mb-0">Bem-vindo de volta ao seu painel de controle</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-user-circle text-warning me-2" style="font-size: 2rem;"></i>
+                        <div>
+                            <div class="fw-bold" id="userName">Carregando...</div>
+                            <small class="text-muted" id="userEmail">...</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="card glass-effect h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-calendar-alt text-primary mb-3" style="font-size: 2rem;"></i>
+                        <h5 class="card-title">Dias Ativo</h5>
+                        <h3 class="text-primary" id="activeDays">7</h3>
+                        <small class="text-muted">Esta semana</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+                <div class="card glass-effect h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-dumbbell text-success mb-3" style="font-size: 2rem;"></i>
+                        <h5 class="card-title">Treinos</h5>
+                        <h3 class="text-success" id="workouts">12</h3>
+                        <small class="text-muted">Este mês</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+                <div class="card glass-effect h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chart-line text-warning mb-3" style="font-size: 2rem;"></i>
+                        <h5 class="card-title">Progresso</h5>
+                        <h3 class="text-warning" id="progress">85%</h3>
+                        <small class="text-muted">Meta mensal</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+                <div class="card glass-effect h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-trophy text-danger mb-3" style="font-size: 2rem;"></i>
+                        <h5 class="card-title">Streak</h5>
+                        <h3 class="text-danger" id="streak">14</h3>
+                        <small class="text-muted">dias consecutivos</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="row">
+            <!-- Protected Content Section -->
+            <div class="col-lg-8 mb-4">
+                <div class="card glass-effect" data-auth-required>
+                    <div class="card-body">
+                        <h5 class="card-title d-flex align-items-center">
+                            <i class="fas fa-lock me-2 text-warning"></i>
+                            Plano de Treino Personalizado
+                        </h5>
+                        <p class="card-text">
+                            Seu plano de treino foi personalizado especificamente para seus objetivos de hipertrofia e força. 
+                            Esta semana focamos em chest e back com intensidade progressiva.
+                        </p>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <h6><i class="fas fa-calendar-week me-1"></i> Semana Atual</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check-circle text-success me-1"></i> Segunda - Push (Peito/Ombro)</li>
+                                    <li><i class="fas fa-check-circle text-success me-1"></i> Terça - Pull (Costas/Bíceps)</li>
+                                    <li><i class="fas fa-clock text-warning me-1"></i> Quinta - Legs (Pernas)</li>
+                                    <li><i class="fas fa-circle text-muted me-1"></i> Sábado - Upper (Superior)</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <h6><i class="fas fa-chart-bar me-1"></i> Métricas</h6>
+                                <ul class="list-unstyled">
+                                    <li>Bench Press: <strong>80kg → 85kg</strong></li>
+                                    <li>Deadlift: <strong>120kg → 125kg</strong></li>
+                                    <li>Squat: <strong>100kg → 105kg</strong></li>
+                                    <li>Volume Total: <strong>+12%</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-play me-1"></i>Iniciar Treino
+                            </button>
+                            <button class="btn btn-outline-primary">
+                                <i class="fas fa-download me-1"></i>Download PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="col-lg-4 mb-4">
+                <div class="card glass-effect h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-bolt me-2 text-primary"></i>
+                            Ações Rápidas
+                        </h5>
+                        
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary btn-sm d-flex align-items-center justify-content-start">
+                                <i class="fas fa-plus-circle me-2"></i>
+                                Registrar Treino
+                            </button>
+                            
+                            <button class="btn btn-outline-success btn-sm d-flex align-items-center justify-content-start">
+                                <i class="fas fa-weight me-2"></i>
+                                Atualizar Peso
+                            </button>
+                            
+                            <button class="btn btn-outline-warning btn-sm d-flex align-items-center justify-content-start">
+                                <i class="fas fa-camera me-2"></i>
+                                Foto de Progresso
+                            </button>
+                            
+                            <button class="btn btn-outline-info btn-sm d-flex align-items-center justify-content-start">
+                                <i class="fas fa-comments me-2"></i>
+                                Falar com Coach
+                            </button>
+                            
+                            <button class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-start">
+                                <i class="fas fa-cog me-2"></i>
+                                Configurações
+                            </button>
+                        </div>
+                        
+                        <hr>
+                        
+                        <h6 class="mb-3">
+                            <i class="fas fa-bell me-1 text-warning"></i>
+                            Lembretes
+                        </h6>
+                        
+                        <div class="small">
+                            <div class="d-flex align-items-center mb-2 p-2 rounded" style="background: rgba(255,193,7,0.1);">
+                                <i class="fas fa-clock text-warning me-2"></i>
+                                <span>Treino hoje às 18:00</span>
+                            </div>
+                            
+                            <div class="d-flex align-items-center mb-2 p-2 rounded" style="background: rgba(25,135,84,0.1);">
+                                <i class="fas fa-apple-alt text-success me-2"></i>
+                                <span>Meta de proteína: 80g restantes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card glass-effect">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-history me-2"></i>
+                            Atividade Recente
+                        </h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="timeline">
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker bg-success"></div>
+                                        <div class="timeline-content">
+                                            <h6 class="mb-0">Treino Concluído</h6>
+                                            <small class="text-muted">Push Day - 45 min</small>
+                                            <small class="text-muted d-block">Hoje, 19:30</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker bg-primary"></div>
+                                        <div class="timeline-content">
+                                            <h6 class="mb-0">Peso Atualizado</h6>
+                                            <small class="text-muted">75.2kg (-0.3kg)</small>
+                                            <small class="text-muted d-block">Ontem, 07:00</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker bg-warning"></div>
+                                        <div class="timeline-content">
+                                            <h6 class="mb-0">Foto de Progresso</h6>
+                                            <small class="text-muted">Semana 8 - Frontal</small>
+                                            <small class="text-muted d-block">2 dias atrás</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <h6 class="mb-3">Próximos Eventos</h6>
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0">
+                                        <div>
+                                            <i class="fas fa-dumbbell me-2 text-primary"></i>
+                                            <strong>Pull Day</strong>
+                                            <br><small class="text-muted">Costas e Bíceps</small>
+                                        </div>
+                                        <span class="badge bg-primary rounded-pill">Amanhã</span>
+                                    </div>
+                                    
+                                    <div class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0">
+                                        <div>
+                                            <i class="fas fa-video me-2 text-success"></i>
+                                            <strong>Check-in Semanal</strong>
+                                            <br><small class="text-muted">Revisão com Coach</small>
+                                        </div>
+                                        <span class="badge bg-success rounded-pill">Sexta</span>
+                                    </div>
+                                    
+                                    <div class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0">
+                                        <div>
+                                            <i class="fas fa-chart-line me-2 text-warning"></i>
+                                            <strong>Medidas</strong>
+                                            <br><small class="text-muted">Acompanhamento mensal</small>
+                                        </div>
+                                        <span class="badge bg-warning rounded-pill">28 Set</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-4" style="background: rgba(0,0,0,0.1);">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2025 Garcia Builder - Online Coaching</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="https://instagram.com/garcia.builder" target="_blank" class="text-decoration-none me-3">
+                        <i class="fab fa-instagram"></i> @garcia.builder
+                    </a>
+                    <a href="https://wa.me/447508497586" target="_blank" class="text-decoration-none">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/i18n.js" defer></script>
+    <script src="js/i18n-shim.js" defer></script>
+    <script src="js/auth-guard.js" defer></script>
+    
+    <script>
+        // Protect this entire page - redirect to login if not authenticated
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in, redirect if not
+            if (!AuthSystem.isLoggedIn()) {
+                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                return;
+            }
+            
+            // Load user data
+            const currentUser = AuthSystem.getCurrentUser();
+            if (currentUser) {
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('userEmail').textContent = currentUser.email;
+            }
+        });
+    </script>
+    
+    <style>
+        /* Dashboard-specific styles */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 22px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            left: -1.75rem;
+            top: 0.25rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.75rem;
+            border-radius: 8px;
+            border-left: 3px solid #F6C84E;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        
+        .list-group-item {
+            background: transparent;
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+    </style>
+</body>
+</html>

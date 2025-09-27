@@ -1,0 +1,314 @@
+/* Authentication Pages Styles */
+
+.auth-container {
+    min-height: 100vh;
+    padding-top: 100px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    display: flex;
+    align-items: center;
+}
+
+.auth-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 22px;
+    padding: 2.5rem;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #F6C84E, transparent);
+    opacity: 0.8;
+}
+
+.auth-icon {
+    font-size: 3rem;
+    color: #F6C84E;
+    margin-bottom: 1rem;
+}
+
+.auth-form {
+    display: none;
+    animation: slideIn 0.3s ease-out;
+}
+
+.auth-form.active {
+    display: block;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Form Controls */
+.form-control {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: #fff;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #F6C84E;
+    box-shadow: 0 0 0 0.2rem rgba(246, 200, 78, 0.25);
+    color: #fff;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.input-group-text {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px 0 0 12px;
+    color: #F6C84E;
+    border-right: none;
+}
+
+.input-group .form-control {
+    border-left: none;
+    border-radius: 0 12px 12px 0;
+}
+
+.input-group .btn {
+    border-radius: 0 12px 12px 0;
+    border-left: none;
+}
+
+/* Form Labels */
+.form-label {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* Form Check */
+.form-check-input {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.form-check-input:checked {
+    background-color: #F6C84E;
+    border-color: #F6C84E;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(246, 200, 78, 0.25);
+}
+
+.form-check-label {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, #F6C84E 0%, #e6b73e 100%);
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 0.875rem 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #e6b73e 0%, #F6C84E 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(246, 200, 78, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-link {
+    color: #F6C84E !important;
+    font-weight: 600;
+}
+
+.btn-link:hover {
+    color: #e6b73e !important;
+}
+
+.btn-outline-secondary {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-outline-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+/* Password Strength Indicator */
+.password-strength {
+    width: 100%;
+}
+
+.password-strength-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.password-strength-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.password-strength.weak .password-strength-bar::after {
+    width: 33%;
+    background: #dc3545;
+}
+
+.password-strength.medium .password-strength-bar::after {
+    width: 66%;
+    background: #ffc107;
+}
+
+.password-strength.strong .password-strength-bar::after {
+    width: 100%;
+    background: #28a745;
+}
+
+.password-strength-text {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Loading States */
+.btn.loading {
+    position: relative;
+    color: transparent !important;
+}
+
+.btn.loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Error States */
+.form-control.is-invalid {
+    border-color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+}
+
+.form-control.is-valid {
+    border-color: #28a745;
+    background: rgba(40, 167, 69, 0.1);
+}
+
+.invalid-feedback,
+.valid-feedback {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Modal Customization */
+.modal-content {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 22px;
+    backdrop-filter: blur(20px);
+}
+
+.modal-body {
+    color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+    .auth-container {
+        padding-top: 80px;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .auth-card {
+        padding: 1.5rem;
+    }
+    
+    .auth-icon {
+        font-size: 2.5rem;
+    }
+    
+    .btn-primary {
+        padding: 0.75rem 1.25rem;
+    }
+}
+
+/* Dark Theme Adjustments */
+@media (prefers-color-scheme: dark) {
+    .auth-container {
+        background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+    }
+}
+
+/* Focus Indicators for Accessibility */
+.form-control:focus,
+.btn:focus,
+.form-check-input:focus {
+    outline: 2px solid #F6C84E;
+    outline-offset: 2px;
+}
+
+/* Animation for Form Switching */
+.auth-form.slide-out {
+    animation: slideOut 0.2s ease-in forwards;
+}
+
+@keyframes slideOut {
+    to {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+}

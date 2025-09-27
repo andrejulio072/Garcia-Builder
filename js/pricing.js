@@ -76,10 +76,10 @@
       setTimeout(() => {
         const planData = getStoredPlanData();
         if (planData && planData.key === autoPay) {
-          processPlanPayment(autoPay, planData.name);
+          handlePlanSelection(autoPay, planData.name, planData.price);
         } else {
           // Fallback: tentar processar com base no parâmetro
-          processPlanPayment(autoPay, `Plan ${autoPay}`);
+          handlePlanSelection(autoPay, `Plan ${autoPay}`, '');
         }
 
         // Limpar URL
@@ -91,26 +91,65 @@
 })();
 
 // Função para lidar com seleção de planos
-function handlePlanSelection(planKey, planName, planPrice, buttonElement = null) {
-  // Verificar se o usuário está logado
-  const isLoggedIn = checkUserAuthentication(); // Esta função deve existir no auth.js
+async function handlePlanSelection(planKey, planName, planPrice, buttonElement) {
+  try {
+    // 1) Opção 1: Payment Links (sem backend)
+    if (window.PAYMENT_LINKS && window.PAYMENT_LINKS[planKey]) {
+      // feedback opcional no botão
+      if (buttonElement) {
+        const original = buttonElement.textContent;
+        buttonElement.textContent = 'Opening checkout...';
+        buttonElement.disabled = true;
+        setTimeout(() => {
+          buttonElement.textContent = original;
+          buttonElement.disabled = false;
+        }, 2000);
+      }
+      // abre o Stripe Payment Link (página hospedada pelo Stripe)
+      window.open(window.PAYMENT_LINKS[planKey], '_blank', 'noopener,noreferrer');
+      return;
+    }
 
-  if (!isLoggedIn) {
-    // Salvar seleção do plano no localStorage
-    localStorage.setItem('selectedPlan', JSON.stringify({
-      key: planKey,
-      name: planName,
-      price: planPrice,
-      timestamp: Date.now()
-    }));
+    // 2) Fallback (só será usado se um dia você ativar backend serverless)
+    if (typeof window.STRIPE_ENV_CONFIG === 'undefined') {
+      console.error('Stripe config not loaded and no Payment Link found.');
+      alert('Payment temporarily unavailable. Please try again later.');
+      return;
+    }
 
-    // Redirecionar para login com parâmetro de retorno
-    window.location.href = `login.html?action=register&return=payment&plan=${planKey}`;
-    return;
+    const config = window.STRIPE_ENV_CONFIG;
+    let originalText = '';
+    if (buttonElement) {
+      originalText = buttonElement.textContent;
+      buttonElement.textContent = 'Processing...';
+      buttonElement.disabled = true;
+    }
+
+    const response = await fetch(`${config.apiUrl}/create-checkout-session`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        planKey: planKey,
+        planName: planName,
+        customerEmail: getUserEmail && getUserEmail(),
+        successUrl: window.location.origin + '/success.html',
+        cancelUrl: window.location.origin + '/pricing.html'
+      })
+    });
+
+    if (!response.ok) throw new Error('Failed to create checkout session');
+    const data = await response.json();
+    if (!data || !data.url) throw new Error('Invalid session response');
+
+    window.location.href = data.url;
+  } catch (error) {
+    console.error(error);
+    alert('Payment error: ' + (error.message || 'unknown'));
+  } finally {
+    if (buttonElement) {
+      buttonElement.disabled = false;
+    }
   }
-
-  // Se já estiver logado, processar pagamento direto
-  processPlanPayment(planKey, planName, buttonElement);
 }
 
 // Função para verificar autenticação (placeholder - deve ser implementada no auth.js)
@@ -119,70 +158,7 @@ function checkUserAuthentication() {
   return localStorage.getItem('userToken') || sessionStorage.getItem('userSession');
 }
 
-// Função para processar pagamento
-async function processPlanPayment(planKey, planName, buttonElement = null) {
-  try {
-    // Verificar se o Stripe está configurado
-    if (typeof window.STRIPE_ENV_CONFIG === 'undefined') {
-      console.error('Configurações Stripe não carregadas');
-      alert('Erro de configuração. Tente novamente.');
-      return;
-    }
-
-    const config = window.STRIPE_ENV_CONFIG;
-
-    // Mostrar loading se o botão for fornecido
-    let originalText = '';
-    if (buttonElement) {
-      originalText = buttonElement.textContent;
-      buttonElement.textContent = 'Processando...';
-      buttonElement.disabled = true;
-    }
-
-    // Criar sessão de checkout usando planKey em vez de priceId
-    const response = await fetch(`${config.apiUrl}/create-checkout-session`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        planKey: planKey,
-        planName: planName,
-        customerEmail: getUserEmail(),
-        successUrl: window.location.origin + '/success.html',
-        cancelUrl: window.location.origin + '/pricing.html'
-      })
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Erro na criação da sessão de pagamento');
-    }
-
-        const sessionData = await response.json();
-
-        // **MODO DEMONSTRAÇÃO** - Redirecionar diretamente para página de sucesso
-        // Em produção, aqui seria usado o Stripe Checkout real
-        if (sessionData.url) {
-          statusDiv.className = 'status success';
-          statusDiv.textContent = '🎉 Redirecionando para simulação de pagamento...';
-
-          // Simular delay do Stripe
-          setTimeout(() => {
-            window.location.href = sessionData.url;
-          }, 1500);
-        } else if (sessionData.sessionId) {
-          // Se por algum motivo receber sessionId, redirecionar para sucesso
-          window.location.href = `${window.location.origin}/success.html?demo=true&plan=${planKey}`;
-        }  } catch (error) {
-    console.error('Erro no pagamento:', error);
-    alert(`Erro no pagamento: ${error.message}`);
-
-    // Restaurar botão se fornecido
-    if (buttonElement && originalText) {
-      buttonElement.textContent = originalText;
-      buttonElement.disabled = false;
-    }
-  }
-}
+// Legacy function removed - now using direct Payment Links
 
 // Função para obter email do usuário
 function getUserEmail() {

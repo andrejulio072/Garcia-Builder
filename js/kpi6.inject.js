@@ -53,14 +53,35 @@
     ['en','pt','es'].forEach(l=>Object.assign(dict[l], addKeys[l]));
   }
 
-  function buildKPI(num, labelKey, staticText){
+  function buildKPI(num, labelKey, staticText, opts){
     const div = document.createElement('div');
     div.className = 'kpi';
     const numEl = document.createElement('span');
     numEl.className = 'num';
+    const o = opts||{};
     if(typeof num==='number'){
-      numEl.textContent = num;
+      numEl.textContent = o.prefix? `${o.prefix}0`: '0';
       numEl.dataset.target = String(num);
+      if(o.prefix) numEl.dataset.prefix = o.prefix;
+      if(o.suffix) numEl.dataset.suffix = o.suffix;
+    } else if (typeof num==='string' && /^\d+\+?$/.test(num)){
+      // strings tipo '100+'
+      const clean = parseInt(num,10);
+      numEl.textContent = '0';
+      numEl.dataset.target = String(clean);
+      if(num.endsWith('+')) numEl.dataset.suffix = '+';
+    } else if (typeof num==='string' && /^(\d+)h$/.test(num)){
+      // '24h' -> count 0..24 e sufixo h
+      const m = num.match(/^(\d+)h$/);
+      numEl.textContent = '0h';
+      numEl.dataset.target = m[1];
+      numEl.dataset.suffix = 'h';
+    } else if (typeof num==='string' && /^(\d+)d$/.test(num)){
+      // '7d' -> count 0..7 e sufixo d
+      const m = num.match(/^(\d+)d$/);
+      numEl.textContent = '0d';
+      numEl.dataset.target = m[1];
+      numEl.dataset.suffix = 'd';
     } else {
       numEl.textContent = num;
     }
@@ -83,12 +104,12 @@
     // Clear old children
     wrap.innerHTML = '';
     // Six KPIs
-    wrap.appendChild(buildKPI('100+', 'kpi.transforms', 'Transformations'));
-    wrap.appendChild(buildKPI(12, 'kpi.years', 'Years Coaching'));
-    wrap.appendChild(buildKPI(3, 'kpi.langs', 'Languages'));
-    wrap.appendChild(buildKPI('🌍', 'kpi.worldwide', 'Worldwide Clients'));
-    wrap.appendChild(buildKPI('24h', 'kpi.response', 'Response Time'));
-    wrap.appendChild(buildKPI('7d', 'kpi.support', '7‑day Support'));
+  wrap.appendChild(buildKPI('100+', 'kpi.transforms', 'Transformations'));
+  wrap.appendChild(buildKPI(12, 'kpi.years', 'Years Coaching'));
+  wrap.appendChild(buildKPI(3, 'kpi.langs', 'Languages'));
+  wrap.appendChild(buildKPI(35, 'kpi.worldwide', 'Worldwide Clients', {suffix:'+'}));
+  wrap.appendChild(buildKPI('24h', 'kpi.response', 'Response Time'));
+  wrap.appendChild(buildKPI('7d', 'kpi.support', '7‑day Support'));
     // Reapply translations if function exists
     const fns=['applyTranslations','refreshI18n','i18nApply','translatePage'];
     for(const n of fns){ if(typeof window[n]==='function'){ window[n](); return; } }

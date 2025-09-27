@@ -47,7 +47,9 @@ const io = new IntersectionObserver((entries)=>{
         const step = (t)=>{
           const k = Math.min(1,(t - t0)/dur);
           const v = Math.floor(start + (target - start)*k);
-          el.textContent = el.dataset.prefix ? el.dataset.prefix + v : v;
+          const prefix = el.dataset.prefix || '';
+          const suffix = el.dataset.suffix || '';
+          el.textContent = `${prefix}${v}${suffix}`;
           if(k<1) requestAnimationFrame(step);
         };
         requestAnimationFrame(step);

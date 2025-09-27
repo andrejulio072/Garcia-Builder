@@ -20,7 +20,7 @@
           <div class="tag">${p.price}<span style="font-size:16px">${p.period}</span></div>
           <ul>${features}</ul>
           <p class="muted">${p.description || ''}</p>
-          <button class="btn btn-gold" onclick="handlePlanSelection('${key}', '${p.name}', '${p.price}')">${dict.cta?.choose || 'Choose Plan'}</button>
+          <button class="btn btn-gold" data-plan-key="${key}" data-plan-name="${p.name}" data-plan-price="${p.price}">${dict.cta?.choose || 'Choose Plan'}</button>
         </div>`;
     }).join('');
 
@@ -36,6 +36,17 @@
     if (memberDiscountCard && window.VanillaTilt) {
       VanillaTilt.init(memberDiscountCard, { max: 4, speed: 500, glare: false });
     }
+
+    // Add event listeners to plan buttons
+    container.querySelectorAll('.btn.btn-gold').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const planKey = this.getAttribute('data-plan-key');
+        const planName = this.getAttribute('data-plan-name');
+        const planPrice = this.getAttribute('data-plan-price');
+        handlePlanSelection(planKey, planName, planPrice, this);
+      });
+    });
 
     // Reveal animation
     const io = new IntersectionObserver(entries => {
@@ -80,7 +91,7 @@
 })();
 
 // Função para lidar com seleção de planos
-function handlePlanSelection(planKey, planName, planPrice) {
+function handlePlanSelection(planKey, planName, planPrice, buttonElement = null) {
   // Verificar se o usuário está logado
   const isLoggedIn = checkUserAuthentication(); // Esta função deve existir no auth.js
 
@@ -99,7 +110,7 @@ function handlePlanSelection(planKey, planName, planPrice) {
   }
 
   // Se já estiver logado, processar pagamento direto
-  processPlanPayment(planKey, planName);
+  processPlanPayment(planKey, planName, buttonElement);
 }
 
 // Função para verificar autenticação (placeholder - deve ser implementada no auth.js)
@@ -109,7 +120,7 @@ function checkUserAuthentication() {
 }
 
 // Função para processar pagamento
-async function processPlanPayment(planKey, planName) {
+async function processPlanPayment(planKey, planName, buttonElement = null) {
   try {
     // Verificar se o Stripe está configurado
     if (typeof window.STRIPE_ENV_CONFIG === 'undefined') {
@@ -119,28 +130,25 @@ async function processPlanPayment(planKey, planName) {
     }
 
     const config = window.STRIPE_ENV_CONFIG;
-    const priceId = config.priceIds[planKey];
 
-    if (!priceId) {
-      console.error('Price ID não encontrado para o plano:', planKey);
-      alert('Erro no plano selecionado. Tente novamente.');
-      return;
+    // Mostrar loading se o botão for fornecido
+    let originalText = '';
+    if (buttonElement) {
+      originalText = buttonElement.textContent;
+      buttonElement.textContent = 'Processando...';
+      buttonElement.disabled = true;
     }
 
-    // Mostrar loading
-    const button = event.target;
-    const originalText = button.textContent;
-    button.textContent = 'Processando...';
-    button.disabled = true;
-
-    // Criar sessão de checkout
+    // Criar sessão de checkout usando planKey em vez de priceId
     const response = await fetch(`${config.apiUrl}/create-checkout-session`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        priceId: priceId,
+        planKey: planKey,
         planName: planName,
-        userEmail: getUserEmail() // Esta função deve retornar o email do usuário logado
+        customerEmail: getUserEmail(),
+        successUrl: window.location.origin + '/success.html',
+        cancelUrl: window.location.origin + '/pricing.html'
       })
     });
 
@@ -149,24 +157,29 @@ async function processPlanPayment(planKey, planName) {
       throw new Error(errorData.error || 'Erro na criação da sessão de pagamento');
     }
 
-    const { sessionId } = await response.json();
+        const sessionData = await response.json();
 
-    // Redirecionar para Stripe Checkout
-    const stripe = Stripe(config.publishableKey);
-    const result = await stripe.redirectToCheckout({ sessionId });
+        // **MODO DEMONSTRAÇÃO** - Redirecionar diretamente para página de sucesso
+        // Em produção, aqui seria usado o Stripe Checkout real
+        if (sessionData.url) {
+          statusDiv.className = 'status success';
+          statusDiv.textContent = '🎉 Redirecionando para simulação de pagamento...';
 
-    if (result.error) {
-      throw new Error(result.error.message);
-    }
-
-  } catch (error) {
+          // Simular delay do Stripe
+          setTimeout(() => {
+            window.location.href = sessionData.url;
+          }, 1500);
+        } else if (sessionData.sessionId) {
+          // Se por algum motivo receber sessionId, redirecionar para sucesso
+          window.location.href = `${window.location.origin}/success.html?demo=true&plan=${planKey}`;
+        }  } catch (error) {
     console.error('Erro no pagamento:', error);
     alert(`Erro no pagamento: ${error.message}`);
 
-    // Restaurar botão
-    if (event && event.target) {
-      event.target.textContent = originalText;
-      event.target.disabled = false;
+    // Restaurar botão se fornecido
+    if (buttonElement && originalText) {
+      buttonElement.textContent = originalText;
+      buttonElement.disabled = false;
     }
   }
 }

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Payment Flow - Garcia Builder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-btn {
+            background: #6772e5;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+        }
+        .test-btn:hover {
+            background: #5469d4;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="test-card">
+        <h1>🧪 Test Payment Flow - Garcia Builder</h1>
+        <p>Este é um teste direto do fluxo de pagamento Stripe</p>
+
+        <div id="status" class="status info">
+            Inicializando Stripe...
+        </div>
+
+        <h3>Testar Planos Disponíveis:</h3>
+        <button class="test-btn" onclick="testPayment('starter', 'Starter Plan', '£75')">
+            🚀 Starter Plan - £75/mês
+        </button>
+        <button class="test-btn" onclick="testPayment('beginner', 'Beginner Plan', '£95')">
+            📈 Beginner Plan - £95/mês
+        </button>
+        <button class="test-btn" onclick="testPayment('essentials', 'Essentials Plan', '£115')">
+            ⭐ Essentials Plan - £115/mês
+        </button>
+        <button class="test-btn" onclick="testPayment('full', 'Full Plan', '£155')">
+            💎 Full Plan - £155/mês
+        </button>
+        <button class="test-btn" onclick="testPayment('elite', 'Elite Plan', '£230')">
+            👑 Elite Plan - £230/mês
+        </button>
+
+        <h3>Status do Sistema:</h3>
+        <div id="system-status"></div>
+    </div>
+
+    <!-- Stripe JS -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <!-- Nossos scripts -->
+    <script src="js/stripe-config.js"></script>
+    <script>
+        let stripe;
+        const statusDiv = document.getElementById('status');
+        const systemStatusDiv = document.getElementById('system-status');
+
+        // Inicializar Stripe
+        function initStripe() {
+            try {
+                if (window.STRIPE_ENV_CONFIG && window.STRIPE_ENV_CONFIG.publishableKey) {
+                    stripe = Stripe(window.STRIPE_ENV_CONFIG.publishableKey);
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Stripe inicializado com sucesso!';
+
+                    // Mostrar configuração
+                    systemStatusDiv.innerHTML = `
+                        <p><strong>API URL:</strong> ${window.STRIPE_ENV_CONFIG.apiUrl}</p>
+                        <p><strong>Price IDs:</strong></p>
+                        <ul>
+                            <li>Starter: ${window.STRIPE_ENV_CONFIG.priceIds.starter}</li>
+                            <li>Beginner: ${window.STRIPE_ENV_CONFIG.priceIds.beginner}</li>
+                            <li>Essentials: ${window.STRIPE_ENV_CONFIG.priceIds.essentials}</li>
+                            <li>Full: ${window.STRIPE_ENV_CONFIG.priceIds.full}</li>
+                            <li>Elite: ${window.STRIPE_ENV_CONFIG.priceIds.elite}</li>
+                        </ul>
+                    `;
+                    return true;
+                } else {
+                    throw new Error('Configuração do Stripe não encontrada');
+                }
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = `❌ Erro: ${error.message}`;
+                return false;
+            }
+        }
+
+        // Testar pagamento
+        async function testPayment(planKey, planName, planPrice) {
+            if (!stripe) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Stripe não foi inicializado';
+                return;
+            }
+
+            try {
+                statusDiv.className = 'status info';
+                statusDiv.textContent = `🔄 Criando sessão de checkout para ${planName}...`;
+
+                const priceId = window.STRIPE_ENV_CONFIG.priceIds[planKey];
+                const userEmail = 'test@example.com'; // Email de teste
+
+                // Criar sessão de checkout
+                const response = await fetch(`${window.STRIPE_ENV_CONFIG.apiUrl}/create-checkout-session`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        priceId: priceId,
+                        planName: planName,
+                        customerEmail: userEmail,
+                        successUrl: window.location.origin + '/success.html',
+                        cancelUrl: window.location.href
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorData}`);
+                }
+
+                const sessionData = await response.json();
+
+                if (!sessionData.sessionId) {
+                    throw new Error('Session ID não retornado pelo servidor');
+                }
+
+                statusDiv.className = 'status success';
+                statusDiv.textContent = `✅ Sessão criada! Redirecionando para Stripe...`;
+
+                // Redirecionar para Stripe Checkout
+                const { error } = await stripe.redirectToCheckout({
+                    sessionId: sessionData.sessionId
+                });
+
+                if (error) {
+                    throw error;
+                }
+
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = `❌ Erro no pagamento: ${error.message}`;
+                console.error('Payment error:', error);
+            }
+        }
+
+        // Inicializar quando a página carregar
+        window.addEventListener('load', () => {
+            setTimeout(initStripe, 500); // Aguardar stripe-config.js carregar
+        });
+    </script>
+</body>
+</html>

@@ -18,88 +18,98 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://seudominio.com'], // Ajuste conforme necessário
+    origin: ['http://localhost:3000', 'http://localhost:3001', 'https://seudominio.com'], // Ajuste conforme necessário
     credentials: true
 }));
 
-// Configuração dos produtos/preços usando variáveis de ambiente
+// Servir arquivos estáticos
+app.use(express.static(path.join(__dirname, '..')));
+
+// Configuração dos produtos/preços para teste
 const PRICE_CONFIG = {
     starter: {
-        priceId: process.env.PRICE_STARTER,
-        name: 'Starter Plan'
+        name: 'Starter Plan',
+        amount: 7500, // £75 em centavos
+        currency: 'gbp'
     },
     beginner: {
-        priceId: process.env.PRICE_BEGINNER,
-        name: 'Beginner Plan'
+        name: 'Beginner Plan',
+        amount: 9500, // £95 em centavos
+        currency: 'gbp'
     },
     essentials: {
-        priceId: process.env.PRICE_ESSENTIALS,
-        name: 'Essentials Plan'
+        name: 'Essentials Plan',
+        amount: 11500, // £115 em centavos
+        currency: 'gbp'
     },
     full: {
-        priceId: process.env.PRICE_FULL,
-        name: 'Full Plan'
+        name: 'Full Plan',
+        amount: 15500, // £155 em centavos
+        currency: 'gbp'
     },
     elite: {
-        priceId: process.env.PRICE_ELITE,
-        name: 'Elite Plan'
+        name: 'Elite Plan',
+        amount: 23000, // £230 em centavos
+        currency: 'gbp'
     }
 };
 
-// Endpoint para criar sessão de checkout
+// Endpoint para criar sessão de checkout (MODO DEMONSTRAÇÃO)
 app.post('/api/create-checkout-session', async (req, res) => {
     try {
-        const { priceId, planName, customerEmail, successUrl, cancelUrl } = req.body;
+        const { planKey, planName, customerEmail, successUrl, cancelUrl } = req.body;
 
         // Validar entrada
-        if (!priceId) {
-            return res.status(400).json({ error: 'Price ID é obrigatório' });
+        if (!planKey || !PRICE_CONFIG[planKey]) {
+            return res.status(400).json({ error: 'Plano não encontrado' });
         }
 
-        // Parâmetros da sessão
-        const sessionParams = {
+        const planConfig = PRICE_CONFIG[planKey];
+
+        console.log(`📝 Criando sessão LIVE para: ${planConfig.name} - £${planConfig.amount/100}`);
+        console.log(`👤 Cliente: ${customerEmail}`);
+
+        // **MODO LIVE** - Usar Stripe real com chaves live
+        const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [{
-                price: priceId,
-                quantity: 1,
+                price_data: {
+                    currency: planConfig.currency,
+                    product_data: {
+                        name: planConfig.name,
+                        description: `Plano de coaching personalizado - ${planConfig.name}`
+                    },
+                    unit_amount: planConfig.amount,
+                    recurring: {
+                        interval: 'month'
+                    }
+                },
+                quantity: 1
             }],
-            mode: 'subscription', // ou 'payment' para pagamentos únicos
-            success_url: successUrl,
-            cancel_url: cancelUrl,
+            mode: 'subscription',
+            customer_email: customerEmail,
+            success_url: successUrl || `${process.env.FRONTEND_URL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: cancelUrl || `${process.env.FRONTEND_URL}/pricing.html`,
             metadata: {
-                plan_name: planName,
-            },
-            // Adicionar informações do cliente se disponível
-            ...(customerEmail && {
-                customer_email: customerEmail,
-                customer_creation: 'always'
-            }),
-            // Configurações adicionais
-            allow_promotion_codes: true,
-            billing_address_collection: 'auto',
-            shipping_address_collection: {
-                allowed_countries: ['US', 'BR', 'PT', 'ES', 'GB'], // Ajuste conforme necessário
-            },
-            // Configurar trial period se necessário
-            subscription_data: {
-                trial_period_days: 7, // 7 dias de trial gratuito
-                metadata: {
-                    plan_name: planName,
-                    source: 'website'
-                }
+                planKey: planKey,
+                planName: planConfig.name
             }
-        };
+        });
 
-        // Criar sessão no Stripe
-        const session = await stripe.checkout.sessions.create(sessionParams);
-
+        console.log(`✅ Sessão LIVE criada: ${session.id}`);
         res.json({
-            id: session.id,
-            url: session.url
+            sessionId: session.id,
+            url: session.url,
+            planDetails: {
+                name: planConfig.name,
+                amount: planConfig.amount,
+                currency: planConfig.currency,
+                planKey: planKey
+            }
         });
 
     } catch (error) {
-        console.error('Erro ao criar sessão de checkout:', error);
+        console.error('Erro ao criar sessão de checkout DEMO:', error);
         res.status(500).json({
             error: 'Erro interno do servidor',
             message: error.message

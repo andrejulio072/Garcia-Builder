@@ -485,9 +485,86 @@ class AuthSystem {
     }
 }
 
+// Social Login Functions (Supabase Integration)
+function setupSocialLogin() {
+    if (!window.supabaseClient) {
+        console.log('⚠️ Supabase not available for social login');
+        return;
+    }
+
+    const oauthRedirectTo = `${window.location.origin}/Garcia-Builder/dashboard.html`;
+
+    // Google Login Buttons (Login e Register)
+    const googleBtns = [
+        document.getElementById("google-btn"),
+        document.getElementById("google-btn-login"), 
+        document.getElementById("google-btn-register")
+    ].filter(btn => btn !== null);
+
+    googleBtns.forEach(googleBtn => {
+        googleBtn.addEventListener("click", async () => {
+            try {
+                googleBtn.disabled = true;
+                googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando...';
+
+                const { error } = await window.supabaseClient.auth.signInWithOAuth({
+                    provider: "google",
+                    options: { redirectTo: oauthRedirectTo }
+                });
+
+                if (error) throw error;
+            } catch (error) {
+                console.error('Google login error:', error);
+                if (window.authSystem) {
+                    window.authSystem.showMessage(error.message, "danger");
+                }
+            } finally {
+                googleBtn.disabled = false;
+                googleBtn.innerHTML = '<i class="fab fa-google me-2"></i>Continuar com Google';
+            }
+        });
+    });
+
+    // Facebook Login Buttons
+    const facebookBtns = [
+        document.getElementById("facebook-btn"),
+        document.getElementById("facebook-btn-login"),
+        document.getElementById("facebook-btn-register")
+    ].filter(btn => btn !== null);
+
+    facebookBtns.forEach(facebookBtn => {
+        facebookBtn.addEventListener("click", async () => {
+            try {
+                facebookBtn.disabled = true;
+                facebookBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando...';
+
+                const { error } = await window.supabaseClient.auth.signInWithOAuth({
+                    provider: "facebook",
+                    options: { redirectTo: oauthRedirectTo }
+                });
+
+                if (error) throw error;
+            } catch (error) {
+                console.error('Facebook login error:', error);
+                if (window.authSystem) {
+                    window.authSystem.showMessage(error.message, "danger");
+                }
+            } finally {
+                facebookBtn.disabled = false;
+                facebookBtn.innerHTML = '<i class="fab fa-facebook-f me-2"></i>Continuar com Facebook';
+            }
+        });
+    });
+}
+
 // Initialize auth system when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.authSystem = new AuthSystem();
+    
+    // Setup social login after page loads
+    setTimeout(() => {
+        setupSocialLogin();
+    }, 100);
 });
 
 // Export for external use

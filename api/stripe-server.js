@@ -85,16 +85,16 @@ app.post('/api/create-checkout-session', async (req, res) => {
         // Criar sessão no Stripe
         const session = await stripe.checkout.sessions.create(sessionParams);
 
-        res.json({ 
+        res.json({
             id: session.id,
-            url: session.url 
+            url: session.url
         });
 
     } catch (error) {
         console.error('Erro ao criar sessão de checkout:', error);
-        res.status(500).json({ 
+        res.status(500).json({
             error: 'Erro interno do servidor',
-            message: error.message 
+            message: error.message
         });
     }
 });
@@ -103,9 +103,9 @@ app.post('/api/create-checkout-session', async (req, res) => {
 app.get('/api/payment-status/:sessionId', async (req, res) => {
     try {
         const { sessionId } = req.params;
-        
+
         const session = await stripe.checkout.sessions.retrieve(sessionId);
-        
+
         res.json({
             status: session.payment_status,
             customer_email: session.customer_details?.email,
@@ -139,13 +139,13 @@ app.post('/api/stripe-webhook', express.raw({type: 'application/json'}), (req, r
             // Aqui você pode atualizar seu banco de dados, enviar emails, etc.
             handleSuccessfulPayment(session);
             break;
-        
+
         case 'invoice.payment_succeeded':
             const invoice = event.data.object;
             console.log('Pagamento de fatura bem-sucedido:', invoice.id);
             // Lidar com pagamentos recorrentes
             break;
-        
+
         case 'customer.subscription.deleted':
             const subscription = event.data.object;
             console.log('Assinatura cancelada:', subscription.id);
@@ -164,7 +164,7 @@ async function handleSuccessfulPayment(session) {
     try {
         // Buscar detalhes do cliente
         const customer = await stripe.customers.retrieve(session.customer);
-        
+
         console.log('Novo cliente:', {
             email: customer.email,
             name: customer.name,
@@ -177,7 +177,7 @@ async function handleSuccessfulPayment(session) {
         // 2. Enviar email de boas-vindas
         // 3. Criar conta no seu sistema
         // 4. Integrar com outras ferramentas (ex: Trainerize)
-        
+
     } catch (error) {
         console.error('Erro ao processar pagamento bem-sucedido:', error);
     }

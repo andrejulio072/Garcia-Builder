@@ -36,7 +36,7 @@ STRIPE_WEBHOOK_SECRET=whsec_seu_webhook_secret_aqui
 2. Vá em **Products** → **Create Product**
 3. Crie produtos para cada plano:
    - **Starter Plan**
-   - **Beginner Plan** 
+   - **Beginner Plan**
    - **Essentials Plan**
    - **Full Plan**
    - **Elite Plan**

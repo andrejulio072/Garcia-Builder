@@ -9,7 +9,7 @@
                 cancelUrl: window.location.origin + '/pricing.html'
             };
         }
-        
+
         // Fallback para configuração padrão
         return {
             publishableKey: 'pk_test_...',  // Configure suas chaves no stripe-config.js
@@ -182,12 +182,12 @@
         document.querySelectorAll('.price .btn-gold').forEach((btn, index) => {
             const planKeys = ['starter', 'beginner', 'essentials', 'full', 'elite'];
             const planKey = planKeys[index];
-            
+
             if (planKey && STRIPE_CONFIG.priceIds[planKey]) {
                 btn.classList.add('payment-btn');
                 btn.textContent = 'Comprar Agora';
                 btn.href = '#';
-                
+
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
                     const planName = btn.closest('.price').querySelector('h3').textContent;
@@ -225,7 +225,7 @@
     function initialize() {
         // Adicionar overlay de loading
         addPaymentLoadingOverlay();
-        
+
         // Tentar inicializar Stripe
         if (!initializeStripe()) {
             console.warn('Stripe não pôde ser inicializado. Verifique se a chave pública está configurada.');

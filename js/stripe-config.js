@@ -1,25 +1,25 @@
 // Configuração de ambiente para Stripe
 const STRIPE_CONFIG = {
     development: {
-        publishableKey: 'pk_test_51...', // Substitua pela sua chave de teste
+        publishableKey: 'pk_test_51S8Qxo2HQhMPvsUVtWDDtKrSyNzhc8QxEB13lJuhZTm4XgtGeDuqrrrrhGvgb671t4evmIju9k92FtBoCZsd6vhu00UoCa2KlA',
         apiUrl: 'http://localhost:3001/api',
         priceIds: {
-            starter: 'price_1234567890_starter_test',
-            beginner: 'price_1234567890_beginner_test',
-            essentials: 'price_1234567890_essentials_test',
-            full: 'price_1234567890_full_test',
-            elite: 'price_1234567890_elite_test'
+            starter: 'price_1SBnsQ2HQhMPvsUVKjShuCqS',
+            beginner: 'price_1SBo0l2HQhMPvsUVb0CamUon',
+            essentials: 'price_1SBo1D2HQhMPvsUVPZsgOFzA',
+            full: 'price_1SBo1h2HQhMPvsUVSFUxEoi0',
+            elite: 'price_1SBo2M2HQhMPvsUVZBfruITl'
         }
     },
     production: {
-        publishableKey: 'pk_live_51...', // Substitua pela sua chave de produção
+        publishableKey: 'pk_live_51...', // Substitua pela sua chave de produção quando for ao vivo
         apiUrl: 'https://seudominio.com/api',
         priceIds: {
-            starter: 'price_1234567890_starter_live',
-            beginner: 'price_1234567890_beginner_live',
-            essentials: 'price_1234567890_essentials_live',
-            full: 'price_1234567890_full_live',
-            elite: 'price_1234567890_elite_live'
+            starter: 'price_1SBnsQ2HQhMPvsUVKjShuCqS',
+            beginner: 'price_1SBo0l2HQhMPvsUVb0CamUon',
+            essentials: 'price_1SBo1D2HQhMPvsUVPZsgOFzA',
+            full: 'price_1SBo1h2HQhMPvsUVSFUxEoi0',
+            elite: 'price_1SBo2M2HQhMPvsUVZBfruITl'
         }
     }
 };

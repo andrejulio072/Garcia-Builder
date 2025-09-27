@@ -315,11 +315,11 @@ class SupabaseAuthSystem {
         if (!loginForm || !registerForm) return;
 
         if (formType === 'login') {
-            loginForm.classList.remove('d-none');
-            registerForm.classList.add('d-none');
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
         } else {
-            registerForm.classList.remove('d-none');
-            loginForm.classList.add('d-none');
+            loginForm.classList.remove('active');
+            registerForm.classList.add('active');
         }
     }
 

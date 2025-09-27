@@ -1,25 +1,27 @@
 // Configuração de ambiente para Stripe
 const STRIPE_CONFIG = {
     development: {
-        publishableKey: 'pk_live_51S8QxZCEdPbAOAaf5v5Y3yskMYdY3p9sRAIXs2clIAtBiJtLQQwVA3IBcZe02znzJYC8e6BTpdpKRmvkiOZLM5ee00QKktfaZT',
+        // Chave de teste pública do Stripe
+        publishableKey: 'pk_test_TYooMQauvdEDq54NiTphI7jx',
         apiUrl: 'http://localhost:3001/api',
-        priceIds: {
-            starter: 'price_1SBojACEdPbAOAafxaiDr1nB',
-            beginner: 'price_1SBojdCEdPbAOAafa5fhnVKG',
-            essentials: 'price_1SBok8CEdPbAOAafF38Obn6w',
-            full: 'price_1SBokYCEdPbAOAafdUFUQ6VN',
-            elite: 'price_1SBolCCEdPbAOAafqoiKfe0L'
+        // Usando preços dinâmicos no servidor - não precisamos de Price IDs fixos
+        plans: {
+            starter: { name: 'Starter Plan', price: '£75', amount: 7500 },
+            beginner: { name: 'Beginner Plan', price: '£95', amount: 9500 },
+            essentials: { name: 'Essentials Plan', price: '£115', amount: 11500 },
+            full: { name: 'Full Plan', price: '£155', amount: 15500 },
+            elite: { name: 'Elite Plan', price: '£230', amount: 23000 }
         }
     },
     production: {
-        publishableKey: 'pk_live_51...', // Substitua pela sua chave de produção quando for ao vivo
+        publishableKey: 'pk_live_51S8QxZCEdPbAOAaf5v5Y3yskMYdY3p9sRAIXs2clIAtBiJtLQQwVA3IBcZe02znzJYC8e6BTpdpKRmvkiOZLM5ee00QKktfaZT',
         apiUrl: 'https://seudominio.com/api',
-        priceIds: {
-            starter: 'price_1SBnsQ2HQhMPvsUVKjShuCqS',
-            beginner: 'price_1SBo0l2HQhMPvsUVb0CamUon',
-            essentials: 'price_1SBo1D2HQhMPvsUVPZsgOFzA',
-            full: 'price_1SBo1h2HQhMPvsUVSFUxEoi0',
-            elite: 'price_1SBo2M2HQhMPvsUVZBfruITl'
+        plans: {
+            starter: { name: 'Starter Plan', price: '£75', amount: 7500 },
+            beginner: { name: 'Beginner Plan', price: '£95', amount: 9500 },
+            essentials: { name: 'Essentials Plan', price: '£115', amount: 11500 },
+            full: { name: 'Full Plan', price: '£155', amount: 15500 },
+            elite: { name: 'Elite Plan', price: '£230', amount: 23000 }
         }
     }
 };

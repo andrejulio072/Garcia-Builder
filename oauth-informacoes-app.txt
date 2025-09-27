@@ -1,0 +1,37 @@
+🎯 CONFIGURAÇÃO OAUTH CONSENT SCREEN - INFORMAÇÕES DO APLICATIVO
+================================================================
+
+Na tela que você está vendo (Visão geral de OAuth), procure por:
+
+📍 ONDE ENCONTRAR AS CONFIGURAÇÕES:
+----------------------------------
+1. No menu lateral ESQUERDO, procure:
+   - "Tela de permissão OAuth" ou
+   - "OAuth consent screen" ou
+   - "Configurar consentimento"
+
+2. Se não encontrar no menu lateral, procure por:
+   - Botão "CONFIGURAR" ou "EDITAR"
+   - Link "Personalizar aplicativo"
+   - Aba "Informações do aplicativo"
+
+📝 INFORMAÇÕES PARA PREENCHER:
+-----------------------------
+Quando encontrar a tela de configuração, preencha:
+
+✅ Nome do aplicativo: Garcia Builder
+✅ Email de suporte ao usuário: seu-email@gmail.com
+✅ Logo do aplicativo: (opcional - pode pular)
+✅ Domínios autorizados:
+   - andrejulio072.github.io
+   - localhost
+✅ Links de política de privacidade: (pode pular por enquanto)
+✅ Links de termos de serviço: (pode pular por enquanto)
+
+🔍 SE NÃO ENCONTRAR:
+-------------------
+- Procure um botão "CRIAR" ou "CONFIGURAR CONSENTIMENTO"
+- Ou texto como "Configure consent screen"
+- Pode estar em inglês: "OAuth consent screen"
+
+Diga onde você está vendo na tela atual!

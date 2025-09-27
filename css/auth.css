@@ -305,6 +305,64 @@
 
     .btn-primary {
         padding: 0.75rem 1.25rem;
+        font-size: 1rem;
+    }
+
+    /* Melhorar botões de troca entre login/register em mobile */
+    .btn-link {
+        font-size: 1rem !important;
+        padding: 0.5rem 1rem !important;
+        min-height: 44px !important; /* Área de toque mínima recomendada */
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-decoration: none !important;
+        border-radius: 0.375rem !important;
+        background-color: rgba(246, 200, 78, 0.1) !important;
+        border: 1px solid rgba(246, 200, 78, 0.3) !important;
+        margin-top: 0.5rem !important;
+    }
+
+    .btn-link:hover {
+        background-color: rgba(246, 200, 78, 0.2) !important;
+        border-color: rgba(246, 200, 78, 0.5) !important;
+    }
+
+    /* Texto antes dos botões de troca */
+    .text-center p {
+        font-size: 0.95rem;
+        margin-bottom: 0.75rem !important;
+    }
+
+    /* Container dos botões de troca */
+    .text-center {
+        padding-top: 1rem;
+    }
+}
+
+/* Tablet Responsive */
+@media (max-width: 768px) and (min-width: 577px) {
+    .btn-link {
+        font-size: 0.95rem !important;
+        padding: 0.4rem 0.8rem !important;
+        min-height: 40px !important;
+        background-color: rgba(246, 200, 78, 0.05) !important;
+        border: 1px solid rgba(246, 200, 78, 0.2) !important;
+        border-radius: 0.25rem !important;
+        margin-top: 0.25rem !important;
+    }
+
+    .btn-link:hover {
+        background-color: rgba(246, 200, 78, 0.15) !important;
+    }
+}
+
+/* Touch devices - melhor área de toque */
+@media (hover: none) and (pointer: coarse) {
+    .btn-link {
+        min-height: 48px !important; /* Área de toque maior para touch */
+        padding: 0.75rem 1.25rem !important;
+        font-size: 1.1rem !important;
     }
 }
 
@@ -333,4 +391,61 @@
         opacity: 0;
         transform: translateX(-20px);
     }
+}
+
+/* Social Login Styles */
+.social-login-section {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1.5rem;
+}
+
+.divider {
+    position: relative;
+    overflow: hidden;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.divider-text {
+    position: relative;
+    z-index: 1;
+    font-size: 0.875rem;
+}
+
+.btn-outline-light:hover,
+.btn-outline-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(246, 200, 78, 0.2);
+    transition: all 0.3s ease;
+}
+
+#google-btn {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+#google-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+#facebook-btn {
+    background-color: rgba(66, 103, 178, 0.1);
+    border-color: rgba(66, 103, 178, 0.3);
+    color: #4267B2;
+}
+
+#facebook-btn:hover {
+    background-color: rgba(66, 103, 178, 0.2);
+    border-color: rgba(66, 103, 178, 0.5);
+    color: #4267B2;
 }

@@ -127,35 +127,85 @@
       },
       pricing: {
         title: "Pricing",
-        subtitle: "Choose your path to transformation. All plans include Trainerize app, WhatsApp support, and weekly check-ins.",
+        subtitle: "Choose the coaching level that matches your goals today — and scale up as your results grow.",
         plans: {
           starter: {
+            badge: "Quick Start",
             name: "Starter",
-            price: "£120",
-            period: "/month",
-            description: "Perfect for beginners ready to build consistent habits",
-            features: ["Custom training plan", "Basic nutrition guidelines", "Monthly check-ins", "Email support", "Trainerize app access"]
+            price: "£75",
+            period: "/mo",
+            description: "Kick-start momentum with clarity and structure.",
+            features: [
+              "Personalized training plan",
+              "Simple nutrition targets",
+              "Weekly check-in",
+              "Email support"
+            ]
           },
-          standard: {
-            name: "Standard",
-            price: "£180",
-            period: "/month",
-            description: "Most popular - complete coaching with regular support",
-            features: ["Everything in Starter", "Weekly check-ins", "WhatsApp support", "Progress tracking", "Plan adjustments", "Habit coaching"]
+          beginner: {
+            badge: "New – Beginners",
+            name: "Beginner Progression",
+            price: "£95",
+            period: "/mo",
+            description: "For new lifters who want consistency and guidance.",
+            features: [
+              "Custom training built for beginners",
+              "Habit & step targets",
+              "Video form tips library",
+              "Monthly progress review",
+              "Access to Starter resources"
+            ]
           },
-          premium: {
-            name: "Premium",
-            price: "£240",
-            period: "/month",
-            description: "Maximum support with priority access and faster results",
-            features: ["Everything in Standard", "Bi-weekly video calls", "Priority WhatsApp support", "Supplement guidance", "Injury prevention", "24/7 question access"]
+          essentials: {
+            badge: "Popular",
+            name: "Essentials",
+            price: "£115",
+            period: "/mo",
+            description: "Everything you need to look and feel athletic — without extremes.",
+            features: [
+              "Fully custom training + nutrition",
+              "Deeper habit coaching & lifestyle balance",
+              "Bi-weekly check-ins (2×/month)",
+              "Coach form feedback via video",
+              "Macro targets with adjustments",
+              "Messaging support (48h response)"
+            ]
+          },
+          full: {
+            badge: "The Best",
+            name: "Full Coaching",
+            price: "£155",
+            period: "/mo",
+            description: "Built for consistent lifters who want visible changes, fast.",
+            features: [
+              "Periodized blocks, deloads & testing",
+              "Weekly check-ins + accountability tasks",
+              "Macros with ongoing adjustments",
+              "Priority feedback (≤48h) with video notes",
+              "Mobility & prehab plan",
+              "Technique reviews (2× per month)",
+              "Goal-driven mini-phases (cut/recomp/build)",
+              "Progress dashboards & benchmarks"
+            ]
           },
           elite: {
+            badge: "Advanced – Competition",
             name: "Elite",
-            price: "£320",
-            period: "/month",
-            description: "Ultimate transformation package for serious results",
-            features: ["Everything in Premium", "Weekly video calls", "Custom meal plans", "Competition prep", "24/7 coach availability", "VIP support"]
+            price: "£230",
+            period: "/mo",
+            description: "For ambitious transformations with premium accountability.",
+            features: [
+              "High-touch coaching: weekly deep-dives",
+              "WhatsApp priority & voice notes",
+              "Custom cut/build phases + peaking",
+              "Unlimited form reviews (fair use)",
+              "Nutrition audits & meal structure redesign",
+              "Lifestyle optimisation (sleep/stress routines)",
+              "Travel & event strategies (on-the-go plans)",
+              "Advanced testing blocks & performance prep",
+              "Same-day feedback on business days",
+              "Quarterly transformation report (PDF)"
+            ]
           }
         },
         cta: {
@@ -350,35 +400,85 @@
       },
       pricing: {
         title: "Planos",
-        subtitle: "Escolha seu caminho para a transformação. Todos os planos incluem app Trainerize, suporte WhatsApp e check-ins semanais.",
+        subtitle: "Escolha o nível de coaching que combina com seus objetivos hoje — e evolua conforme seus resultados crescem.",
         plans: {
           starter: {
-            name: "Iniciante",
-            price: "€120",
+            badge: "Começo Rápido",
+            name: "Starter",
+            price: "€75",
             period: "/mês",
-            description: "Perfeito para iniciantes prontos para criar hábitos consistentes",
-            features: ["Plano de treino personalizado", "Diretrizes nutricionais básicas", "Check-ins mensais", "Suporte por email", "Acesso ao app Trainerize"]
+            description: "Gere tração com clareza e estrutura.",
+            features: [
+              "Plano de treino personalizado",
+              "Metas simples de nutrição",
+              "Check-in semanal",
+              "Suporte por email"
+            ]
           },
-          standard: {
-            name: "Padrão",
-            price: "€180",
+          beginner: {
+            badge: "Novo – Iniciantes",
+            name: "Progressão para Iniciantes",
+            price: "€95",
             period: "/mês",
-            description: "Mais popular - coaching completo com suporte regular",
-            features: ["Tudo do Iniciante", "Check-ins semanais", "Suporte WhatsApp", "Acompanhamento de progresso", "Ajustes no plano", "Coaching de hábitos"]
+            description: "Para iniciantes que querem consistência e orientação.",
+            features: [
+              "Treino customizado para iniciantes",
+              "Metas de passos e hábitos",
+              "Biblioteca de dicas de técnica em vídeo",
+              "Revisão mensal de progresso",
+              "Acesso a recursos do Starter"
+            ]
           },
-          premium: {
-            name: "Premium",
-            price: "€240",
+          essentials: {
+            badge: "Popular",
+            name: "Essentials",
+            price: "€115",
             period: "/mês",
-            description: "Suporte máximo com acesso prioritário e resultados mais rápidos",
-            features: ["Tudo do Padrão", "Chamadas de vídeo quinzenais", "Suporte WhatsApp prioritário", "Orientação sobre suplementos", "Prevenção de lesões", "Acesso 24/7 para dúvidas"]
+            description: "Tudo que você precisa para parecer e se sentir atlético — sem extremos.",
+            features: [
+              "Treino + nutrição totalmente personalizados",
+              "Coaching de hábitos e equilíbrio de estilo de vida",
+              "Check-ins quinzenais (2×/mês)",
+              "Feedback de técnica por vídeo",
+              "Metas de macros com ajustes",
+              "Suporte por mensagens (até 48h)"
+            ]
+          },
+          full: {
+            badge: "O Melhor",
+            name: "Full Coaching",
+            price: "€155",
+            period: "/mês",
+            description: "Para quem treina com consistência e quer mudanças visíveis, rápido.",
+            features: [
+              "Blocos periodizados, deloads e testes",
+              "Check-ins semanais + tarefas de responsabilidade",
+              "Macros com ajustes contínuos",
+              "Feedback prioritário (≤48h) com notas em vídeo",
+              "Plano de mobilidade e prehab",
+              "Revisões de técnica (2× por mês)",
+              "Mini-fases por objetivo (cut/recomp/build)",
+              "Dashboards e benchmarks de progresso"
+            ]
           },
           elite: {
+            badge: "Avançado – Competição",
             name: "Elite",
-            price: "€320",
+            price: "€230",
             period: "/mês",
-            description: "Pacote de transformação definitivo para resultados sérios",
-            features: ["Tudo do Premium", "Chamadas de vídeo semanais", "Planos alimentares personalizados", "Preparação para competição", "Disponibilidade 24/7 do coach", "Suporte VIP"]
+            description: "Para transformações ambiciosas com responsabilidade premium.",
+            features: [
+              "Coaching de alta proximidade: mergulhos semanais",
+              "Prioridade no WhatsApp e áudios",
+              "Fases de cut/build + peak personalizadas",
+              "Revisões de técnica ilimitadas (uso justo)",
+              "Auditorias nutricionais e reestruturação de refeições",
+              "Otimização de estilo de vida (sono/estresse)",
+              "Estratégias para viagens e eventos",
+              "Blocos de teste avançados & preparação de performance",
+              "Feedback no mesmo dia útil",
+              "Relatório trimestral de transformação (PDF)"
+            ]
           }
         },
         cta: {
@@ -564,35 +664,85 @@
       },
       pricing: {
         title: "Precios",
-        subtitle: "Elige tu camino hacia la transformación. Todos los planes incluyen app Trainerize, soporte WhatsApp y check-ins semanales.",
+        subtitle: "Elige el nivel de coaching que se ajuste a tus objetivos hoy — y escala a medida que crecen tus resultados.",
         plans: {
           starter: {
-            name: "Principiante",
-            price: "€120",
+            badge: "Inicio Rápido",
+            name: "Starter",
+            price: "€75",
             period: "/mes",
-            description: "Perfecto para principiantes listos para crear hábitos consistentes",
-            features: ["Plan de entrenamiento personalizado", "Pautas nutricionales básicas", "Check-ins mensuales", "Soporte por email", "Acceso a app Trainerize"]
+            description: "Impulsa el progreso con claridad y estructura.",
+            features: [
+              "Plan de entrenamiento personalizado",
+              "Metas simples de nutrición",
+              "Check-in semanal",
+              "Soporte por email"
+            ]
           },
-          standard: {
-            name: "Estándar",
-            price: "€180",
+          beginner: {
+            badge: "Nuevo – Principiantes",
+            name: "Progresión Principiantes",
+            price: "€95",
             period: "/mes",
-            description: "Más popular - coaching completo con soporte regular",
-            features: ["Todo del Principiante", "Check-ins semanales", "Soporte WhatsApp", "Seguimiento de progreso", "Ajustes del plan", "Coaching de hábitos"]
+            description: "Para nuevos levantadores que quieren consistencia y guía.",
+            features: [
+              "Entrenamiento a medida para principiantes",
+              "Metas de pasos y hábitos",
+              "Biblioteca de consejos de técnica en video",
+              "Revisión mensual de progreso",
+              "Acceso a recursos de Starter"
+            ]
           },
-          premium: {
-            name: "Premium",
-            price: "€240",
+          essentials: {
+            badge: "Popular",
+            name: "Essentials",
+            price: "€115",
             period: "/mes",
-            description: "Soporte máximo con acceso prioritario y resultados más rápidos",
-            features: ["Todo del Estándar", "Llamadas de video quincenales", "Soporte WhatsApp prioritario", "Orientación sobre suplementos", "Prevención de lesiones", "Acceso 24/7 para dudas"]
+            description: "Todo lo que necesitas para verte y sentirte atlético — sin extremos.",
+            features: [
+              "Entrenamiento + nutrición totalmente personalizados",
+              "Coaching de hábitos y equilibrio de estilo de vida",
+              "Check-ins quincenales (2×/mes)",
+              "Feedback de técnica por video",
+              "Metas de macros con ajustes",
+              "Soporte por mensajes (48h)"
+            ]
+          },
+          full: {
+            badge: "Lo Mejor",
+            name: "Full Coaching",
+            price: "€155",
+            period: "/mes",
+            description: "Para quienes entrenan con consistencia y quieren cambios visibles, rápido.",
+            features: [
+              "Bloques periodizados, deloads y pruebas",
+              "Check-ins semanales + tareas de responsabilidad",
+              "Macros con ajustes continuos",
+              "Feedback prioritario (≤48h) con notas en video",
+              "Plan de movilidad y prehab",
+              "Revisiones de técnica (2× por mes)",
+              "Mini-fases por objetivo (cut/recomp/build)",
+              "Paneles y métricas de progreso"
+            ]
           },
           elite: {
+            badge: "Avanzado – Competición",
             name: "Elite",
-            price: "€320",
+            price: "€230",
             period: "/mes",
-            description: "Paquete de transformación definitivo para resultados serios",
-            features: ["Todo del Premium", "Llamadas de video semanales", "Planes alimentarios personalizados", "Preparación para competición", "Disponibilidad 24/7 del coach", "Soporte VIP"]
+            description: "Para transformaciones ambiciosas con responsabilidad premium.",
+            features: [
+              "Coaching de alta dedicación: análisis semanales",
+              "Prioridad WhatsApp y notas de voz",
+              "Fases de cut/build + peak personalizadas",
+              "Revisiones de técnica ilimitadas (uso justo)",
+              "Auditorías de nutrición y rediseño de comidas",
+              "Optimización de estilo de vida (sueño/estrés)",
+              "Estrategias para viajes y eventos",
+              "Bloques de prueba avanzados y preparación de desempeño",
+              "Feedback el mismo día hábil",
+              "Informe trimestral de transformación (PDF)"
+            ]
           }
         },
         cta: {

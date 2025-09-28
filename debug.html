@@ -16,9 +16,9 @@
 </head>
 <body>
     <h1>🔍 Debug do Sistema de Autenticação - Garcia Builder</h1>
-    
+
     <div id="logs"></div>
-    
+
     <div>
         <button onclick="testSupabase()">Testar Supabase</button>
         <button onclick="testAuth()">Testar Autenticação</button>
@@ -47,7 +47,7 @@
 
         async function testSupabase() {
             log('🔍 Testando Supabase...', 'info');
-            
+
             log(`window.supabase: ${typeof window.supabase}`, 'info');
             log(`window.supabaseClient: ${typeof window.supabaseClient}`, 'info');
             log(`SUPABASE_URL: ${window.SUPABASE_URL}`, 'info');
@@ -55,7 +55,7 @@
 
             if (!window.supabaseClient) {
                 log('❌ Cliente Supabase não encontrado', 'error');
-                
+
                 if (window.supabase) {
                     log('🔧 Tentando criar cliente...', 'warning');
                     try {
@@ -74,7 +74,7 @@
 
         async function testAuth() {
             log('🔐 Testando Autenticação...', 'info');
-            
+
             if (!window.supabaseClient) {
                 log('❌ Cliente Supabase não disponível', 'error');
                 return;
@@ -82,7 +82,7 @@
 
             try {
                 const { data, error } = await window.supabaseClient.auth.getUser();
-                
+
                 if (error) {
                     log(`❌ Erro de autenticação: ${error.message}`, 'error');
                 } else if (data.user) {

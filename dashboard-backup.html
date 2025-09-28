@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,475 +11,535 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/dashboard.css">
 
-    <!-- Preload Google Fonts -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            padding-top: 120px;
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, rgba(246, 200, 78, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(246, 200, 78, 0.2);
+        }
+
+        .stats-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            height: 100%;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(246, 200, 78, 0.3);
+            box-shadow: 0 8px 25px rgba(246, 200, 78, 0.2);
+        }
+
+        .main-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+        }
+
+        .profile-card {
+            background: linear-gradient(135deg, rgba(246, 200, 78, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(246, 200, 78, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .avatar-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .avatar-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .main-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #F6C84E;
+            object-fit: cover;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .main-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(246, 200, 78, 0.4);
+        }
+
+        .avatar-edit-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: #F6C84E;
+            color: #000;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .avatar-edit-btn:hover {
+            background: #f4b942;
+            transform: scale(1.1);
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-icon {
+            width: 40px;
+            text-align: center;
+            color: #F6C84E;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.7);
+            min-width: 100px;
+        }
+
+        .info-value {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #F6C84E 0%, #f4b942 100%);
+            border: none;
+            color: #000;
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #f4b942 0%, #F6C84E 100%);
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(246, 200, 78, 0.4);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid #F6C84E;
+            color: #F6C84E;
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background: #F6C84E;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        .text-readable {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .text-muted-readable {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #F6C84E 0%, #f4b942 100%);
+            border-radius: 4px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border-left: 4px solid #F6C84E;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .activity-icon.success { background: #28a745; }
+        .activity-icon.info { background: #17a2b8; }
+        .activity-icon.warning { background: #ffc107; }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container inner">
             <a class="brand" href="index.html">
-                <img loading="lazy" decoding="async" src="assets/logo.png">
+                <img loading="lazy" decoding="async" src="assets/logo.png" alt="Garcia Builder">
                 <span class="title-gradient">Garcia Builder</span>
             </a>
 
             <nav class="nav">
-                <a href="index.html" data-i18n="nav.home">Home</a>
-                <a href="about.html" data-i18n="nav.about">About</a>
-                <a href="transformations.html" data-i18n="nav.trans">Transformations</a>
-                <a href="testimonials.html" data-i18n="nav.testi">Testimonials</a>
-                <a href="pricing.html" data-i18n="nav.pricing">Pricing</a>
-                <a href="faq.html" data-i18n="nav.faq">FAQ</a>
-                <a href="contact.html" data-i18n="nav.contact">Contact</a>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="transformations.html">Transformations</a>
+                <a href="testimonials.html">Testimonials</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="faq.html">FAQ</a>
+                <a href="contact.html">Contact</a>
                 <a href="dashboard.html" class="active">Dashboard</a>
             </nav>
 
-            <!-- Auth buttons will be dynamically inserted here by auth-guard.js -->
             <div id="auth-buttons"></div>
 
             <div class="lang">
                 <select id="lang-select">
-                    <option data-i18n="nav.lang.en" value="en">EN</option>
-                    <option data-i18n="nav.lang.pt" value="pt">PT</option>
-                    <option data-i18n="nav.lang.es" value="es">ES</option>
+                    <option value="en">EN</option>
+                    <option value="pt">PT</option>
+                    <option value="es">ES</option>
                 </select>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container" style="padding-top: 100px;">
-        <div class="row">
-            <div class="col-12">
-                <div class="dashboard-header mb-4">
-                    <div class="row align-items-center">
-                        <div class="col-md-8">
-                            <div class="welcome-section">
-                                <h1 class="title-gradient mb-2">
-                                    <i class="fas fa-tachometer-alt me-2"></i>
-                                    Dashboard
-                                </h1>
-                                <div class="welcome-message">
-                                    <p class="mb-1">
-                                        <span class="text-muted">Bem-vindo de volta,</span>
-                                        <span class="fw-bold text-primary" id="userName">Carregando...</span>
-                                        <span class="wave">👋</span>
-                                    </p>
-                                    <p class="text-muted small mb-0">
-                                        <i class="fas fa-clock me-1"></i>
-                                        Última atividade: <span id="lastActivity">Hoje</span>
-                                    </p>
+    <!-- Main Dashboard -->
+    <div class="dashboard-container">
+        <div class="container">
+            <!-- Welcome Header -->
+            <div class="dashboard-header">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1 class="title-gradient mb-2">
+                            <i class="fas fa-tachometer-alt me-2"></i>
+                            Dashboard
+                        </h1>
+                        <p class="text-readable mb-1">
+                            Welcome back, <span class="fw-bold text-warning" id="userName">Loading...</span> 👋
+                        </p>
+                        <p class="text-muted-readable small mb-0">
+                            <i class="fas fa-clock me-1"></i>
+                            Last activity: <span id="lastActivity">Today</span>
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="d-flex align-items-center justify-content-end">
+                            <div class="me-3 text-end">
+                                <div class="fw-bold text-readable" id="userNameHeader">Loading...</div>
+                                <small class="text-muted-readable" id="userEmail">...</small>
+                                <div class="mt-1">
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-circle me-1"></i>Online
+                                    </span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4 text-end">
-                            <div class="user-quick-info">
-                                <div class="d-flex align-items-center justify-content-end">
-                                    <div class="me-3 text-end">
-                                        <div class="fw-bold" id="userNameHeader">Carregando...</div>
-                                        <small class="text-muted" id="userEmail">...</small>
-                                        <div class="mt-1">
-                                            <span class="badge bg-success-subtle text-success">
-                                                <i class="fas fa-circle pulse-dot me-1"></i>
-                                                Online
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="position-relative">
-                                        <img id="header-avatar" class="rounded-circle border border-2 border-primary"
-                                             style="width: 56px; height: 56px; object-fit: cover; cursor: pointer;"
-                                             src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=56"
-                                             alt="User Avatar"
-                                             onclick="scrollToProfile()">
-                                        <div class="position-absolute bottom-0 end-0">
-                                            <div class="bg-success rounded-circle border border-2 border-white"
-                                                 style="width: 16px; height: 16px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Quick Stats -->
-                                <div class="row mt-3 text-center">
-                                    <div class="col-4">
-                                        <div class="quick-stat">
-                                            <div class="fw-bold text-primary">7</div>
-                                            <small class="text-muted">Dias Ativos</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="quick-stat">
-                                            <div class="fw-bold text-success">85%</div>
-                                            <small class="text-muted">Progresso</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="quick-stat">
-                                            <div class="fw-bold text-warning">14</div>
-                                            <small class="text-muted">Sequência</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <img id="header-avatar" class="rounded-circle border border-2 border-warning"
+                                 style="width: 56px; height: 56px; object-fit: cover; cursor: pointer;"
+                                 src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=56"
+                                 alt="User Avatar" onclick="scrollToProfile()">
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Stats Cards -->
-        <div class="row mb-4">
-            <div class="col-md-3 mb-3">
-                <div class="card glass-effect h-100">
-                    <div class="card-body text-center">
-                        <i class="fas fa-calendar-alt text-primary mb-3" style="font-size: 2rem;"></i>
-                        <h5 class="card-title" data-i18n="dashboard.active_days">Active Days</h5>
-                        <h3 class="text-primary" id="activeDays">7</h3>
-                        <small class="text-muted" data-i18n="dashboard.this_week">This week</small>
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="stats-card text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-calendar-alt text-primary" style="font-size: 2.5rem;"></i>
+                        </div>
+                        <h5 class="text-readable">Active Days</h5>
+                        <h2 class="fw-bold text-primary mb-1">7</h2>
+                        <small class="text-muted-readable">This week</small>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="stats-card text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-dumbbell text-success" style="font-size: 2.5rem;"></i>
+                        </div>
+                        <h5 class="text-readable">Total Workouts</h5>
+                        <h2 class="fw-bold text-success mb-1">12</h2>
+                        <small class="text-muted-readable">This month</small>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="stats-card text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-chart-line text-warning" style="font-size: 2.5rem;"></i>
+                        </div>
+                        <h5 class="text-readable">Progress</h5>
+                        <h2 class="fw-bold text-warning mb-1">85%</h2>
+                        <small class="text-muted-readable">Monthly goal</small>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="stats-card text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-trophy text-danger" style="font-size: 2.5rem;"></i>
+                        </div>
+                        <h5 class="text-readable">Current Streak</h5>
+                        <h2 class="fw-bold text-danger mb-1">14</h2>
+                        <small class="text-muted-readable">Days in a row</small>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-3 mb-3">
-                <div class="card glass-effect h-100">
-                    <div class="card-body text-center">
-                        <i class="fas fa-dumbbell text-success mb-3" style="font-size: 2rem;"></i>
-                        <h5 class="card-title" data-i18n="dashboard.total_workouts">Total Workouts</h5>
-                        <h3 class="text-success" id="workouts">12</h3>
-                        <small class="text-muted" data-i18n="dashboard.this_month">This month</small>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 mb-3">
-                <div class="card glass-effect h-100">
-                    <div class="card-body text-center">
-                        <i class="fas fa-chart-line text-warning mb-3" style="font-size: 2rem;"></i>
-                        <h5 class="card-title" data-i18n="dashboard.progress">Progress</h5>
-                        <h3 class="text-warning" id="progress">85%</h3>
-                        <small class="text-muted" data-i18n="dashboard.monthly_goal">Monthly goal</small>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 mb-3">
-                <div class="card glass-effect h-100">
-                    <div class="card-body text-center">
-                        <i class="fas fa-trophy text-danger mb-3" style="font-size: 2rem;"></i>
-                        <h5 class="card-title" data-i18n="dashboard.current_streak">Current Streak</h5>
-                        <h3 class="text-danger" id="streak">14</h3>
-                        <small class="text-muted" data-i18n="dashboard.consecutive_days">consecutive days</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Main Content Area -->
-        <div class="row">
-            <!-- Protected Content Section -->
-            <div class="col-lg-8 mb-4">
-                <div class="card glass-effect" data-auth-required>
-                    <div class="card-body">
-                        <h5 class="card-title d-flex align-items-center">
+            <div class="row">
+                <!-- Main Content -->
+                <div class="col-lg-8">
+                    <!-- Workout Plan -->
+                    <div class="main-card">
+                        <h5 class="d-flex align-items-center mb-4 text-readable">
                             <i class="fas fa-lock me-2 text-warning"></i>
-                            <span data-i18n="dashboard.workout_plan.title">Personalized Workout Plan</span>
+                            Personalized Workout Plan
                         </h5>
-                        <p class="card-text" data-i18n="dashboard.workout_plan.description">
+                        <p class="text-muted-readable mb-4">
                             This week we focus on chest and back with progressive intensity.
                         </p>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <h6><i class="fas fa-calendar-week me-1"></i> <span data-i18n="dashboard.current_week">Current Week</span></h6>
-                                <ul class="list-unstyled">
-                                    <li><i class="fas fa-check-circle text-success me-1"></i> <span data-i18n="dashboard.schedule.monday">Monday - Push (Chest/Shoulder)</span></li>
-                                    <li><i class="fas fa-check-circle text-success me-1"></i> <span data-i18n="dashboard.schedule.tuesday">Tuesday - Pull (Back/Biceps)</span></li>
-                                    <li><i class="fas fa-clock text-warning me-1"></i> <span data-i18n="dashboard.schedule.thursday">Thursday - Legs</span></li>
-                                    <li><i class="fas fa-circle text-muted me-1"></i> <span data-i18n="dashboard.schedule.saturday">Saturday - Upper Body</span></li>
-                                </ul>
+                                <h6 class="text-readable mb-3">
+                                    <i class="fas fa-calendar-week me-2"></i>Current Week
+                                </h6>
+                                <div class="activity-item">
+                                    <div class="activity-icon success">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-readable">Monday - Push Day</div>
+                                        <small class="text-muted-readable">Chest & Shoulders</small>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon success">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-readable">Tuesday - Pull Day</div>
+                                        <small class="text-muted-readable">Back & Biceps</small>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon warning">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-readable">Thursday - Legs</div>
+                                        <small class="text-muted-readable">Today's workout</small>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <h6><i class="fas fa-chart-bar me-1"></i> <span data-i18n="dashboard.metrics">Metrics</span></h6>
-                                <ul class="list-unstyled">
-                                    <li>Bench Press: <strong>80kg → 85kg</strong></li>
-                                    <li>Deadlift: <strong>120kg → 125kg</strong></li>
-                                    <li>Squat: <strong>100kg → 105kg</strong></li>
-                                    <li><span data-i18n="dashboard.total_volume">Total Volume</span>: <strong>+12%</strong></li>
-                                </ul>
+                                <h6 class="text-readable mb-3">
+                                    <i class="fas fa-chart-bar me-2"></i>Progress Metrics
+                                </h6>
+                                <div class="info-row">
+                                    <div class="info-label">Bench Press:</div>
+                                    <div class="info-value">80kg → 85kg</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Deadlift:</div>
+                                    <div class="info-value">120kg → 125kg</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Squat:</div>
+                                    <div class="info-value">100kg → 105kg</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Total Volume:</div>
+                                    <div class="info-value text-success">+12%</div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 mt-4">
                             <button class="btn btn-primary">
-                                <i class="fas fa-play me-1"></i><span data-i18n="dashboard.start_workout">Start Workout</span>
+                                <i class="fas fa-play me-2"></i>Start Workout
                             </button>
                             <button class="btn btn-outline-primary">
-                                <i class="fas fa-download me-1"></i><span data-i18n="dashboard.download_pdf">Download PDF</span>
+                                <i class="fas fa-download me-2"></i>Download PDF
                             </button>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- User Profile Enhanced -->
-            <div class="col-lg-4 mb-4">
-                <div class="card glass-effect mb-4 profile-card">
-                    <div class="card-body text-center">
-                        <!-- Profile Header with Photo -->
-                        <div class="profile-header mb-4">
-                            <div class="position-relative d-inline-block">
-                                <div class="profile-avatar">
-                                    <img id="profile-avatar" class="rounded-circle border border-3 border-primary"
-                                         style="width: 100px; height: 100px; object-fit: cover; cursor: pointer;"
-                                         src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=100"
-                                         alt="Profile Picture">
-                                    <div class="avatar-overlay">
-                                        <i class="fas fa-camera"></i>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary btn-sm position-absolute"
-                                        style="bottom: 0; right: 0; border-radius: 50%; width: 32px; height: 32px; padding: 0;"
-                                        onclick="changeProfilePicture()">
-                                    <i class="fas fa-camera" style="font-size: 0.8rem;"></i>
+                    <!-- Recent Activity -->
+                    <div class="main-card">
+                        <h5 class="text-readable mb-4">
+                            <i class="fas fa-clock me-2"></i>Recent Activity
+                        </h5>
+
+                        <div class="activity-item">
+                            <div class="activity-icon success">
+                                <i class="fas fa-dumbbell"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-readable">Workout Completed</div>
+                                <small class="text-muted-readable">Push Day - Chest</small>
+                                <div class="text-muted-readable small">Today, 2:30 PM</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon info">
+                                <i class="fas fa-weight"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-readable">Weight Updated</div>
+                                <small class="text-muted-readable">75.2kg (-0.8kg)</small>
+                                <div class="text-muted-readable small">Yesterday, 9:00 AM</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon warning">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-readable">Progress Photo Uploaded</div>
+                                <small class="text-muted-readable">Week 12 comparison</small>
+                                <div class="text-muted-readable small">3 days ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Sidebar -->
+                <div class="col-lg-4">
+                    <div class="profile-card" id="profile-section">
+                        <!-- Avatar Section -->
+                        <div class="avatar-section">
+                            <div class="avatar-container">
+                                <img id="profile-avatar" class="main-avatar"
+                                     src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=120"
+                                     alt="Profile Picture">
+                                <button class="avatar-edit-btn" onclick="changeProfilePicture()">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            </div>
+                            <h5 class="text-readable mt-3 mb-1" id="profile-display-name">Loading...</h5>
+                            <p class="text-muted-readable mb-0" id="profile-display-email">...</p>
+                            <div class="mt-2">
+                                <span class="badge bg-success">
+                                    <i class="fas fa-check-circle me-1"></i>Verified Account
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Profile Information -->
+                        <div class="mb-4">
+                            <h6 class="text-readable mb-3">
+                                <i class="fas fa-user me-2"></i>Profile Information
+                            </h6>
+
+                            <div class="info-row">
+                                <i class="fas fa-user info-icon"></i>
+                                <div class="info-label">Name:</div>
+                                <div class="info-value" id="profile-name">Loading...</div>
+                            </div>
+
+                            <div class="info-row">
+                                <i class="fas fa-envelope info-icon"></i>
+                                <div class="info-label">Email:</div>
+                                <div class="info-value" id="profile-email">Loading...</div>
+                            </div>
+
+                            <div class="info-row">
+                                <i class="fas fa-phone info-icon"></i>
+                                <div class="info-label">Phone:</div>
+                                <div class="info-value" id="profile-phone">Not provided</div>
+                                <button class="btn btn-link btn-sm p-0 ms-2" onclick="editPhone()">
+                                    <i class="fas fa-edit text-warning"></i>
                                 </button>
                             </div>
 
-                            <h5 class="mt-3 mb-1 fw-bold" id="profile-display-name">Carregando...</h5>
-                            <p class="text-muted mb-0" id="profile-display-email">...</p>
-                            <div class="badge bg-success-subtle text-success mt-2">
-                                <i class="fas fa-check-circle me-1"></i>
-                                Conta Verificada
-                            </div>
-                        </div>
-
-                        <!-- Profile Stats -->
-                        <div class="row text-center mb-3">
-                            <div class="col-4">
-                                <div class="profile-stat">
-                                    <div class="h5 mb-0 text-primary">12</div>
-                                    <small class="text-muted">Treinos</small>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="profile-stat">
-                                    <div class="h5 mb-0 text-success">85%</div>
-                                    <small class="text-muted">Meta</small>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="profile-stat">
-                                    <div class="h5 mb-0 text-warning">14</div>
-                                    <small class="text-muted">Sequência</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Profile Details -->
-                        <div class="profile-details text-start">
-                            <div class="row mb-2 align-items-center">
-                                <div class="col-3">
-                                    <i class="fas fa-user text-muted me-1"></i>
-                                    <small class="text-muted">Nome</small>
-                                </div>
-                                <div class="col-9">
-                                    <span class="fw-medium" id="profile-name">Carregando...</span>
-                                </div>
+                            <div class="info-row">
+                                <i class="fas fa-birthday-cake info-icon"></i>
+                                <div class="info-label">Birthday:</div>
+                                <div class="info-value" id="profile-dob">Not provided</div>
+                                <button class="btn btn-link btn-sm p-0 ms-2" onclick="editBirthdate()">
+                                    <i class="fas fa-edit text-warning"></i>
+                                </button>
                             </div>
 
-                            <div class="row mb-2 align-items-center">
-                                <div class="col-3">
-                                    <i class="fas fa-envelope text-muted me-1"></i>
-                                    <small class="text-muted">Email</small>
-                                </div>
-                                <div class="col-9">
-                                    <span class="text-break" id="profile-email">Carregando...</span>
-                                </div>
-                            </div>
-
-                            <div class="row mb-2 align-items-center">
-                                <div class="col-3">
-                                    <i class="fas fa-phone text-muted me-1"></i>
-                                    <small class="text-muted">Telefone</small>
-                                </div>
-                                <div class="col-9">
-                                    <span id="profile-phone" class="text-muted">Não informado</span>
-                                    <button class="btn btn-link btn-sm p-0 ms-2" onclick="editPhone()">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="row mb-2 align-items-center">
-                                <div class="col-3">
-                                    <i class="fas fa-birthday-cake text-muted me-1"></i>
-                                    <small class="text-muted">Nascimento</small>
-                                </div>
-                                <div class="col-9">
-                                    <span id="profile-dob" class="text-muted">Não informado</span>
-                                    <button class="btn btn-link btn-sm p-0 ms-2" onclick="editBirthdate()">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="row mb-2 align-items-center">
-                                <div class="col-3">
-                                    <i class="fas fa-calendar-plus text-muted me-1"></i>
-                                    <small class="text-muted">Membro desde</small>
-                                </div>
-                                <div class="col-9">
-                                    <span id="profile-created" class="text-muted">...</span>
-                                </div>
+                            <div class="info-row">
+                                <i class="fas fa-calendar-plus info-icon"></i>
+                                <div class="info-label">Member since:</div>
+                                <div class="info-value" id="profile-created">...</div>
                             </div>
                         </div>
 
                         <!-- Profile Actions -->
-                        <div class="d-grid gap-2 mt-3">
-                            <button class="btn btn-primary" onclick="editProfile()">
-                                <i class="fas fa-edit me-2"></i>
-                                Editar Perfil Completo
-                            </button>
-                            <button class="btn btn-outline-secondary btn-sm" onclick="downloadProfile()">
-                                <i class="fas fa-download me-2"></i>
-                                Exportar Dados
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="card glass-effect h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <i class="fas fa-bolt me-2 text-primary"></i>
-                            <span data-i18n="dashboard.quick_actions">Quick Actions</span>
-                        </h5>
-
                         <div class="d-grid gap-2">
-                            <button class="btn btn-outline-primary btn-sm d-flex align-items-center justify-content-start">
-                                <i class="fas fa-plus-circle me-2"></i>
-                                <span data-i18n="dashboard.actions.log_workout">Log Workout</span>
+                            <button class="btn btn-primary" onclick="editProfile()">
+                                <i class="fas fa-edit me-2"></i>Edit Full Profile
                             </button>
-
-                            <button class="btn btn-outline-success btn-sm d-flex align-items-center justify-content-start">
-                                <i class="fas fa-weight me-2"></i>
-                                <span data-i18n="dashboard.actions.update_weight">Update Weight</span>
+                            <button class="btn btn-outline-primary" onclick="downloadProfile()">
+                                <i class="fas fa-download me-2"></i>Export Data
                             </button>
-
-                            <button class="btn btn-outline-warning btn-sm d-flex align-items-center justify-content-start">
-                                <i class="fas fa-camera me-2"></i>
-                                <span data-i18n="dashboard.actions.progress_photo">Progress Photo</span>
-                            </button>
-
-                            <button class="btn btn-outline-info btn-sm d-flex align-items-center justify-content-start">
-                                <i class="fas fa-comments me-2"></i>
-                                <span data-i18n="dashboard.actions.talk_coach">Talk to Coach</span>
-                            </button>
-
-                            <button class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-start">
-                                <i class="fas fa-cog me-2"></i>
-                                <span data-i18n="dashboard.actions.settings">Settings</span>
-                            </button>
-                        </div>
-
-                        <hr>
-
-                        <h6 class="mb-3">
-                            <i class="fas fa-bell me-1 text-warning"></i>
-                            <span data-i18n="dashboard.reminders">Reminders</span>
-                        </h6>
-
-                        <div class="small">
-                            <div class="d-flex align-items-center mb-2 p-2 rounded" style="background: rgba(255,193,7,0.1);">
-                                <i class="fas fa-clock text-warning me-2"></i>
-                                <span data-i18n="dashboard.reminder.workout_today">Workout today at 6:00 PM</span>
-                            </div>
-
-                            <div class="d-flex align-items-center mb-2 p-2 rounded" style="background: rgba(25,135,84,0.1);">
-                                <i class="fas fa-apple-alt text-success me-2"></i>
-                                <span data-i18n="dashboard.reminder.protein_goal">Protein goal: 80g remaining</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recent Activity -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card glass-effect">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <i class="fas fa-history me-2"></i>
-                            <span data-i18n="dashboard.recent_activity">Recent Activity</span>
-                        </h5>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="timeline">
-                                    <div class="timeline-item">
-                                        <div class="timeline-marker bg-success"></div>
-                                        <div class="timeline-content">
-                                            <h6 class="mb-0" data-i18n="dashboard.timeline.workout_completed">Workout Completed</h6>
-                                            <small class="text-muted">Push Day - 45 min</small>
-                                            <small class="text-muted d-block" data-i18n="dashboard.timeline.today">Today, 7:30 PM</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="timeline-item">
-                                        <div class="timeline-marker bg-primary"></div>
-                                        <div class="timeline-content">
-                                            <h6 class="mb-0" data-i18n="dashboard.timeline.weight_updated">Weight Updated</h6>
-                                            <small class="text-muted">75.2kg (-0.3kg)</small>
-                                            <small class="text-muted d-block" data-i18n="dashboard.timeline.yesterday">Yesterday, 7:00 AM</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="timeline-item">
-                                        <div class="timeline-marker bg-warning"></div>
-                                        <div class="timeline-content">
-                                            <h6 class="mb-0" data-i18n="dashboard.timeline.progress_photo">Progress Photo</h6>
-                                            <small class="text-muted" data-i18n="dashboard.timeline.week_front">Week 8 - Front</small>
-                                            <small class="text-muted d-block" data-i18n="dashboard.timeline.days_ago">2 days ago</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <h6 class="mb-3" data-i18n="dashboard.upcoming_events">Upcoming Events</h6>
-                                <div class="list-group list-group-flush">
-                                    <div class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0">
-                                        <div>
-                                            <i class="fas fa-dumbbell me-2 text-primary"></i>
-                                            <strong>Pull Day</strong>
-                                            <br><small class="text-muted" data-i18n="dashboard.events.back_biceps">Back and Biceps</small>
-                                        </div>
-                                        <span class="badge bg-primary rounded-pill" data-i18n="dashboard.events.tomorrow">Tomorrow</span>
-                                    </div>
-
-                                    <div class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0">
-                                        <div>
-                                            <i class="fas fa-video me-2 text-success"></i>
-                                            <strong data-i18n="dashboard.events.weekly_checkin">Weekly Check-in</strong>
-                                            <br><small class="text-muted" data-i18n="dashboard.events.coach_review">Coach Review</small>
-                                        </div>
-                                        <span class="badge bg-success rounded-pill" data-i18n="dashboard.events.friday">Friday</span>
-                                    </div>
-
-                                    <div class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0">
-                                        <div>
-                                            <i class="fas fa-chart-line me-2 text-warning"></i>
-                                            <strong data-i18n="dashboard.events.measurements">Measurements</strong>
-                                            <br><small class="text-muted" data-i18n="dashboard.events.monthly_tracking">Monthly Tracking</small>
-                                        </div>
-                                        <span class="badge bg-warning rounded-pill">28 Sep</span>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -490,192 +550,97 @@
     <!-- Profile Edit Modal -->
     <div class="modal fade" id="profileEditModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content glass-effect">
+            <div class="modal-content" style="background: rgba(15, 15, 15, 0.95); border: 1px solid rgba(246, 200, 78, 0.3); color: #fff;">
                 <div class="modal-header border-0">
                     <h5 class="modal-title text-warning">
-                        <i class="fas fa-user-edit me-2"></i>
-                        Editar Perfil Completo
+                        <i class="fas fa-user-edit me-2"></i>Edit Profile
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="profileEditForm">
-                        <div class="row">
-                            <!-- Profile Picture Section -->
-                            <div class="col-md-4 text-center mb-4">
-                                <div class="profile-picture-section">
-                                    <img id="modal-avatar" class="rounded-circle border border-3 border-primary mb-3"
-                                         style="width: 120px; height: 120px; object-fit: cover;"
-                                         src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=120"
-                                         alt="Profile Picture">
-                                    <div>
-                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="changeModalPicture()">
-                                            <i class="fas fa-camera me-1"></i>
-                                            Alterar Foto
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Profile Form -->
-                            <div class="col-md-8">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">
-                                            <i class="fas fa-user me-1 text-primary"></i>
-                                            Nome Completo
-                                        </label>
-                                        <input type="text" class="form-control" id="modal-name" placeholder="Digite seu nome completo">
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">
-                                            <i class="fas fa-envelope me-1 text-primary"></i>
-                                            Email
-                                        </label>
-                                        <input type="email" class="form-control" id="modal-email" readonly>
-                                        <small class="text-muted">Email não pode ser alterado</small>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">
-                                            <i class="fas fa-phone me-1 text-primary"></i>
-                                            Telefone
-                                        </label>
-                                        <input type="tel" class="form-control" id="modal-phone" placeholder="(11) 99999-9999">
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">
-                                            <i class="fas fa-birthday-cake me-1 text-primary"></i>
-                                            Data de Nascimento
-                                        </label>
-                                        <input type="date" class="form-control" id="modal-dob">
-                                    </div>
-
-                                    <div class="col-12 mb-3">
-                                        <label class="form-label">
-                                            <i class="fas fa-map-marker-alt me-1 text-primary"></i>
-                                            Cidade
-                                        </label>
-                                        <input type="text" class="form-control" id="modal-city" placeholder="Sua cidade">
-                                    </div>
-
-                                    <div class="col-12 mb-3">
-                                        <label class="form-label">
-                                            <i class="fas fa-info-circle me-1 text-primary"></i>
-                                            Sobre Você
-                                        </label>
-                                        <textarea class="form-control" id="modal-bio" rows="3"
-                                                  placeholder="Conte um pouco sobre você, seus objetivos..."></textarea>
-                                    </div>
-                                </div>
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-4">
+                            <img id="modal-avatar" class="rounded-circle border border-3 border-warning mb-3"
+                                 style="width: 120px; height: 120px; object-fit: cover;"
+                                 src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=120"
+                                 alt="Profile Picture">
+                            <div>
+                                <button type="button" class="btn btn-outline-primary btn-sm" onclick="changeModalPicture()">
+                                    <i class="fas fa-camera me-1"></i>Change Photo
+                                </button>
                             </div>
                         </div>
 
-                        <!-- Fitness Goals Section -->
-                        <hr class="my-4">
-                        <h6 class="text-warning mb-3">
-                            <i class="fas fa-bullseye me-2"></i>
-                            Objetivos Fitness
-                        </h6>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label text-readable">
+                                        <i class="fas fa-user me-1 text-warning"></i>Full Name
+                                    </label>
+                                    <input type="text" class="form-control" id="modal-name" placeholder="Enter your full name">
+                                </div>
 
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Objetivo Principal</label>
-                                <select class="form-select" id="modal-goal">
-                                    <option value="">Selecione...</option>
-                                    <option value="weight-loss">Perder Peso</option>
-                                    <option value="muscle-gain">Ganhar Massa</option>
-                                    <option value="maintenance">Manter Forma</option>
-                                    <option value="performance">Performance</option>
-                                </select>
-                            </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label text-readable">
+                                        <i class="fas fa-envelope me-1 text-warning"></i>Email
+                                    </label>
+                                    <input type="email" class="form-control" id="modal-email" readonly>
+                                    <small class="text-muted-readable">Email cannot be changed</small>
+                                </div>
 
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Nível de Experiência</label>
-                                <select class="form-select" id="modal-level">
-                                    <option value="">Selecione...</option>
-                                    <option value="beginner">Iniciante</option>
-                                    <option value="intermediate">Intermediário</option>
-                                    <option value="advanced">Avançado</option>
-                                </select>
-                            </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label text-readable">
+                                        <i class="fas fa-phone me-1 text-warning"></i>Phone
+                                    </label>
+                                    <input type="tel" class="form-control" id="modal-phone" placeholder="(11) 99999-9999">
+                                </div>
 
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Frequência Semanal</label>
-                                <select class="form-select" id="modal-frequency">
-                                    <option value="">Selecione...</option>
-                                    <option value="2-3">2-3 vezes</option>
-                                    <option value="4-5">4-5 vezes</option>
-                                    <option value="6+">6+ vezes</option>
-                                </select>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label text-readable">
+                                        <i class="fas fa-birthday-cake me-1 text-warning"></i>Date of Birth
+                                    </label>
+                                    <input type="date" class="form-control" id="modal-dob">
+                                </div>
+
+                                <div class="col-12 mb-3">
+                                    <label class="form-label text-readable">
+                                        <i class="fas fa-map-marker-alt me-1 text-warning"></i>City
+                                    </label>
+                                    <input type="text" class="form-control" id="modal-city" placeholder="Your city">
+                                </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i>
-                        Cancelar
-                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" onclick="saveProfile()">
-                        <i class="fas fa-save me-1"></i>
-                        Salvar Alterações
+                        <i class="fas fa-save me-1"></i>Save Changes
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="mt-5 py-4" style="background: rgba(0,0,0,0.1);">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="mb-0">&copy; 2025 Garcia Builder - Online Coaching</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <a href="https://instagram.com/garcia.builder" target="_blank" class="text-decoration-none me-3">
-                        <i class="fab fa-instagram"></i> @garcia.builder
-                    </a>
-                    <a href="https://wa.me/447508497586" target="_blank" class="text-decoration-none">
-                        <i class="fab fa-whatsapp"></i> WhatsApp
-                    </a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script defer src="js/i18n-shim.js"></script>
-    <script defer src="assets/i18n.js?v=20250926"></script>
-    <!-- Supabase Authentication -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
     <script src="js/auth.js"></script>
 
     <script>
-        // Dashboard authentication guard and user data loading
+        // Dashboard authentication and functionality
         document.addEventListener('DOMContentLoaded', async function() {
             try {
-                console.log('🏠 Inicializando Dashboard...');
-                console.log('🔍 Verificando disponibilidade do Supabase...');
-                console.log('window.supabase:', typeof window.supabase);
-                console.log('window.supabaseClient:', typeof window.supabaseClient);
+                console.log('🏠 Initializing Dashboard...');
 
-                // Função para aguardar Supabase de forma mais robusta
+                // Wait for Supabase with better error handling
                 async function waitForSupabase() {
                     let attempts = 0;
                     const maxAttempts = 10;
 
                     while (attempts < maxAttempts) {
-                        console.log(`🔄 Tentativa ${attempts + 1}/${maxAttempts} - Verificando Supabase...`);
-
-                        // Verificar se temos o supabase global
                         if (window.supabase && !window.supabaseClient) {
-                            console.log('🔧 Criando cliente Supabase...');
                             window.supabaseClient = window.supabase.createClient(
                                 window.SUPABASE_URL,
                                 window.SUPABASE_ANON_KEY
@@ -683,7 +648,6 @@
                         }
 
                         if (window.supabaseClient) {
-                            console.log('✅ Supabase client disponível');
                             return true;
                         }
 
@@ -691,311 +655,117 @@
                         await new Promise(resolve => setTimeout(resolve, 500));
                     }
 
-                    console.error('❌ Timeout aguardando Supabase');
                     return false;
                 }
 
                 const supabaseReady = await waitForSupabase();
                 if (!supabaseReady) {
-                    alert('Erro ao carregar sistema de autenticação. Tente recarregar a página.');
+                    showError('Authentication system failed to load. Please refresh the page.');
                     return;
                 }
 
-                // Check if user is authenticated with better error handling
-                console.log('🔐 Verificando autenticação do usuário...');
+                // Check authentication
+                const { data, error } = await window.supabaseClient.auth.getUser();
 
-                let user = null;
-                try {
-                    const { data, error } = await window.supabaseClient.auth.getUser();
-
-                    if (error) {
-                        console.error('Erro ao verificar usuário:', error);
-                        // Se erro for de conexão, não redirecionar imediatamente
-                        if (error.message.includes('network') || error.message.includes('fetch')) {
-                            console.warn('⚠️ Problema de conexão detectado');
-                            document.body.innerHTML = `
-                                <div class="container mt-5 text-center">
-                                    <div class="alert alert-warning">
-                                        <h4>🌐 Problema de Conexão</h4>
-                                        <p>Não foi possível conectar ao servidor de autenticação.</p>
-                                        <button class="btn btn-primary" onclick="window.location.reload()">
-                                            <i class="fas fa-refresh me-2"></i>Tentar Novamente
-                                        </button>
-                                    </div>
-                                </div>
-                            `;
-                            return;
-                        }
-                    }
-
-                    user = data?.user;
-                } catch (authError) {
-                    console.error('Erro crítico de autenticação:', authError);
-                    user = null;
-                }
-
-                if (!user) {
-                    console.log('❌ Usuário não autenticado, redirecionando para login...');
-                    // Evitar loop verificando se já estamos vindo do login
-                    const urlParams = new URLSearchParams(window.location.search);
-                    if (!urlParams.has('from_login')) {
-                        window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
-                    } else {
-                        console.error('⚠️ Loop de redirecionamento detectado!');
-                        alert('Erro de autenticação. Por favor, faça login novamente.');
-                        window.location.href = 'login.html';
-                    }
+                if (error || !data.user) {
+                    console.log('❌ User not authenticated, redirecting...');
+                    window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
                     return;
                 }
 
-                console.log('✅ Usuário autenticado:', user.email);
+                const user = data.user;
+                console.log('✅ User authenticated:', user.email);
 
-                // Load user profile data direto
+                // Load profile data
                 const { data: profile, error: profileError } = await window.supabaseClient
                     .from('user_profiles')
                     .select('*')
                     .eq('user_id', user.id)
                     .single();
 
-                // Update UI with user information
-                const userNameElements = document.querySelectorAll('#userName');
-                userNameElements.forEach(el => {
-                    if (!el.hasAttribute('data-i18n')) {
-                        if (profile && profile.full_name) {
-                            el.textContent = profile.full_name;
-                        } else {
-                            el.textContent = user.email.split('@')[0]; // Use email prefix as fallback
-                        }
-                    }
-                });
-
-                const userEmailEl = document.getElementById('userEmail');
-                if (userEmailEl) {
-                    userEmailEl.textContent = user.email;
-                }
-
-                // Update ALL profile elements with enhanced information
+                // Update UI
                 updateProfileElements(user, profile);
 
-                console.log('✅ Dashboard carregado com sucesso!');
+                // Setup auth buttons
+                setupAuthButtons(user, profile);
+
+                console.log('✅ Dashboard loaded successfully!');
 
             } catch (error) {
-                console.error('Dashboard authentication error:', error);
-                // Redirect to login on any error
-                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                console.error('Dashboard error:', error);
+                showError('Failed to load dashboard. Please try again.');
             }
         });
 
-        // Function to update all profile elements
         function updateProfileElements(user, profile) {
-            // Header elements
-            const userNameHeader = document.getElementById('userNameHeader');
-            const headerAvatar = document.getElementById('header-avatar');
-            const userName = document.getElementById('userName');
-            const userEmail = document.getElementById('userEmail');
-
-            // Profile elements
-            const profileDisplayName = document.getElementById('profile-display-name');
-            const profileDisplayEmail = document.getElementById('profile-display-email');
-            const profileAvatar = document.getElementById('profile-avatar');
-            const profileName = document.getElementById('profile-name');
-            const profileEmail = document.getElementById('profile-email');
-            const profilePhone = document.getElementById('profile-phone');
-            const profileDob = document.getElementById('profile-dob');
-            const profileCreated = document.getElementById('profile-created');
-
             const displayName = (profile && profile.full_name) ? profile.full_name : user.email.split('@')[0];
 
-            // Update header
-            if (userNameHeader) userNameHeader.textContent = displayName;
-            if (userName) userName.textContent = displayName;
-            if (userEmail) userEmail.textContent = user.email;
+            // Update all name elements
+            document.getElementById('userName').textContent = displayName;
+            document.getElementById('userNameHeader').textContent = displayName;
+            document.getElementById('profile-display-name').textContent = displayName;
+            document.getElementById('profile-name').textContent = displayName;
+
+            // Update email elements
+            document.getElementById('userEmail').textContent = user.email;
+            document.getElementById('profile-display-email').textContent = user.email;
+            document.getElementById('profile-email').textContent = user.email;
 
             // Update avatars
-            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=F6C84E&color=000&size=100`;
-            if (headerAvatar) headerAvatar.src = avatarUrl;
-            if (profileAvatar) profileAvatar.src = avatarUrl;
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=F6C84E&color=000&size=120`;
+            document.getElementById('header-avatar').src = avatarUrl;
+            document.getElementById('profile-avatar').src = avatarUrl;
 
-            // Update profile details
-            if (profileDisplayName) profileDisplayName.textContent = displayName;
-            if (profileDisplayEmail) profileDisplayEmail.textContent = user.email;
-            if (profileName) profileName.textContent = displayName;
-            if (profileEmail) profileEmail.textContent = user.email;
-
-            if (profilePhone) {
-                if (profile && profile.phone) {
-                    profilePhone.textContent = profile.phone;
-                    profilePhone.classList.remove('text-muted');
-                } else {
-                    profilePhone.textContent = 'Não informado';
-                    profilePhone.classList.add('text-muted');
-                }
+            // Update phone
+            const phoneElement = document.getElementById('profile-phone');
+            if (profile && profile.phone) {
+                phoneElement.textContent = profile.phone;
+                phoneElement.classList.remove('text-muted-readable');
+                phoneElement.classList.add('text-readable');
             }
 
-            if (profileDob) {
-                if (profile && profile.date_of_birth) {
-                    const dob = new Date(profile.date_of_birth);
-                    profileDob.textContent = dob.toLocaleDateString('pt-BR');
-                    profileDob.classList.remove('text-muted');
-                } else {
-                    profileDob.textContent = 'Não informado';
-                    profileDob.classList.add('text-muted');
-                }
+            // Update birth date
+            const dobElement = document.getElementById('profile-dob');
+            if (profile && profile.date_of_birth) {
+                const date = new Date(profile.date_of_birth);
+                dobElement.textContent = date.toLocaleDateString('en-US');
+                dobElement.classList.remove('text-muted-readable');
+                dobElement.classList.add('text-readable');
             }
 
-            if (profileCreated && user.created_at) {
+            // Update member since
+            if (user.created_at) {
                 const created = new Date(user.created_at);
-                profileCreated.textContent = created.toLocaleDateString('pt-BR');
+                document.getElementById('profile-created').textContent = created.toLocaleDateString('en-US');
             }
         }
 
-        // Profile management functions
-        function changeProfilePicture() {
-            // Create file input
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = function(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    // Create preview
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const avatars = document.querySelectorAll('#profile-avatar, #header-avatar');
-                        avatars.forEach(avatar => {
-                            avatar.src = e.target.result;
-                        });
+        function setupAuthButtons(user, profile) {
+            const authButtons = document.getElementById('auth-buttons');
+            const displayName = (profile && profile.full_name) ? profile.full_name : user.email.split('@')[0];
 
-                        // Here you would upload to your storage service
-                        console.log('📸 Nova foto selecionada:', file.name);
-                        showToast('Foto de perfil atualizada!', 'success');
-                    };
-                    reader.readAsDataURL(file);
-                }
-            };
-            input.click();
-        }
-
-        function editPhone() {
-            const currentPhone = document.getElementById('profile-phone').textContent;
-            const newPhone = prompt('Digite seu telefone:', currentPhone === 'Não informado' ? '' : currentPhone);
-
-            if (newPhone !== null) {
-                // Update UI immediately
-                const phoneEl = document.getElementById('profile-phone');
-                phoneEl.textContent = newPhone || 'Não informado';
-                phoneEl.classList.toggle('text-muted', !newPhone);
-
-                // Here you would save to database
-                console.log('📱 Telefone atualizado:', newPhone);
-                showToast('Telefone atualizado!', 'success');
-            }
-        }
-
-        function editBirthdate() {
-            const currentDob = document.getElementById('profile-dob').textContent;
-            const newDob = prompt('Digite sua data de nascimento (DD/MM/AAAA):',
-                                  currentDob === 'Não informado' ? '' : currentDob);
-
-            if (newDob !== null && newDob.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
-                // Update UI immediately
-                const dobEl = document.getElementById('profile-dob');
-                dobEl.textContent = newDob;
-                dobEl.classList.remove('text-muted');
-
-                // Here you would save to database
-                console.log('🎂 Data de nascimento atualizada:', newDob);
-                showToast('Data de nascimento atualizada!', 'success');
-            } else if (newDob !== null) {
-                alert('Por favor, use o formato DD/MM/AAAA');
-            }
-        }
-
-        function editProfile() {
-            alert('Funcionalidade de edição completa de perfil será implementada em breve!');
-            // Here you would open a modal or redirect to edit page
-        }
-
-        function downloadProfile() {
-            const profileData = {
-                nome: document.getElementById('profile-name').textContent,
-                email: document.getElementById('profile-email').textContent,
-                telefone: document.getElementById('profile-phone').textContent,
-                nascimento: document.getElementById('profile-dob').textContent,
-                membro_desde: document.getElementById('profile-created').textContent
-            };
-
-            const dataStr = JSON.stringify(profileData, null, 2);
-            const dataBlob = new Blob([dataStr], {type: 'application/json'});
-
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(dataBlob);
-            link.download = 'perfil_garcia_builder.json';
-            link.click();
-
-            showToast('Dados do perfil exportados!', 'success');
-        }
-
-        function scrollToProfile() {
-            document.querySelector('.profile-card').scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-            });
-        }
-
-        function showToast(message, type = 'info') {
-            // Simple toast notification
-            const toast = document.createElement('div');
-            toast.className = `alert alert-${type} position-fixed`;
-            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
-            toast.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check' : 'info'}-circle me-2"></i>
-                ${message}
+            authButtons.innerHTML = `
+                <div class="dropdown">
+                    <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user me-1"></i> ${displayName}
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="dashboard.html">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a></li>
+                        <li><a class="dropdown-item" href="my-profile.html">
+                            <i class="fas fa-user me-2"></i>My Profile
+                        </a></li>
+                        <li><a class="dropdown-item" href="profile-manager.html">
+                            <i class="fas fa-user-cog me-2"></i>Profile Manager
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </a></li>
+                    </ul>
+                </div>
             `;
-
-            document.body.appendChild(toast);
-
-            // Auto remove after 3 seconds
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }
-
-                // Add logout functionality to auth buttons
-                const authButtons = document.getElementById('auth-buttons');
-                if (authButtons) {
-                    authButtons.innerHTML = `
-                        <div class="dropdown">
-                            <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user me-1"></i> ${profile?.full_name || user.email.split('@')[0]}
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
-                            </ul>
-                        </div>
-                    `;
-                }
-
-            } catch (error) {
-                console.error('Dashboard authentication error:', error);
-                // Redirect to login on any error
-                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
-            }
-        });
-
-        // Logout function
-        async function handleLogout() {
-            try {
-                console.log('🚪 Fazendo logout...');
-                await window.supabaseClient.auth.signOut();
-                window.location.href = 'index.html';
-            } catch (error) {
-                console.error('Logout error:', error);
-                // Force redirect even if logout fails
-                window.location.href = 'index.html';
-            }
         }
 
         // Profile management functions
@@ -1008,11 +778,9 @@
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        const avatars = document.querySelectorAll('#profile-avatar, #header-avatar');
-                        avatars.forEach(avatar => {
-                            avatar.src = e.target.result;
-                        });
-                        showToast('Foto de perfil atualizada!', 'success');
+                        document.getElementById('profile-avatar').src = e.target.result;
+                        document.getElementById('header-avatar').src = e.target.result;
+                        showToast('Profile picture updated!', 'success');
                     };
                     reader.readAsDataURL(file);
                 }
@@ -1022,63 +790,42 @@
 
         function editPhone() {
             const currentPhone = document.getElementById('profile-phone').textContent;
-            const newPhone = prompt('Digite seu telefone:', currentPhone === 'Não informado' ? '' : currentPhone);
+            const newPhone = prompt('Enter your phone number:', currentPhone === 'Not provided' ? '' : currentPhone);
 
             if (newPhone !== null) {
                 const phoneEl = document.getElementById('profile-phone');
-                phoneEl.textContent = newPhone || 'Não informado';
-                phoneEl.classList.toggle('text-muted', !newPhone);
-                showToast('Telefone atualizado!', 'success');
+                phoneEl.textContent = newPhone || 'Not provided';
+                phoneEl.classList.toggle('text-muted-readable', !newPhone);
+                phoneEl.classList.toggle('text-readable', !!newPhone);
+                showToast('Phone number updated!', 'success');
             }
         }
 
         function editBirthdate() {
-            const currentDob = document.getElementById('profile-dob').textContent;
-            const newDob = prompt('Digite sua data de nascimento (DD/MM/AAAA):',
-                                  currentDob === 'Não informado' ? '' : currentDob);
+            const newDob = prompt('Enter your date of birth (MM/DD/YYYY):');
 
             if (newDob !== null && newDob.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
                 const dobEl = document.getElementById('profile-dob');
                 dobEl.textContent = newDob;
-                dobEl.classList.remove('text-muted');
-                showToast('Data de nascimento atualizada!', 'success');
+                dobEl.classList.remove('text-muted-readable');
+                dobEl.classList.add('text-readable');
+                showToast('Date of birth updated!', 'success');
             } else if (newDob !== null) {
-                alert('Por favor, use o formato DD/MM/AAAA');
+                alert('Please use the format MM/DD/YYYY');
             }
         }
 
         function editProfile() {
-            // Populate modal with current data
-            const modal = document.getElementById('profileEditModal');
-            const modalAvatar = document.getElementById('modal-avatar');
-            const modalName = document.getElementById('modal-name');
-            const modalEmail = document.getElementById('modal-email');
-            const modalPhone = document.getElementById('modal-phone');
-            const modalDob = document.getElementById('modal-dob');
+            // Populate modal
+            document.getElementById('modal-avatar').src = document.getElementById('profile-avatar').src;
+            document.getElementById('modal-name').value = document.getElementById('profile-name').textContent;
+            document.getElementById('modal-email').value = document.getElementById('profile-email').textContent;
 
-            // Get current values
-            const currentName = document.getElementById('profile-name').textContent;
-            const currentEmail = document.getElementById('profile-email').textContent;
-            const currentPhone = document.getElementById('profile-phone').textContent;
-            const currentDob = document.getElementById('profile-dob').textContent;
-
-            // Set avatar
-            modalAvatar.src = document.getElementById('profile-avatar').src;
-
-            // Set form values
-            modalName.value = currentName !== 'Carregando...' ? currentName : '';
-            modalEmail.value = currentEmail !== 'Carregando...' ? currentEmail : '';
-            modalPhone.value = currentPhone !== 'Não informado' ? currentPhone : '';
-
-            // Convert DD/MM/YYYY to YYYY-MM-DD for date input
-            if (currentDob !== 'Não informado' && currentDob.includes('/')) {
-                const [day, month, year] = currentDob.split('/');
-                modalDob.value = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-            }
+            const phone = document.getElementById('profile-phone').textContent;
+            document.getElementById('modal-phone').value = phone !== 'Not provided' ? phone : '';
 
             // Show modal
-            const bsModal = new bootstrap.Modal(modal);
-            bsModal.show();
+            new bootstrap.Modal(document.getElementById('profileEditModal')).show();
         }
 
         function changeModalPicture() {
@@ -1090,8 +837,7 @@
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        const modalAvatar = document.getElementById('modal-avatar');
-                        modalAvatar.src = e.target.result;
+                        document.getElementById('modal-avatar').src = e.target.result;
                     };
                     reader.readAsDataURL(file);
                 }
@@ -1100,68 +846,52 @@
         }
 
         function saveProfile() {
-            const modalName = document.getElementById('modal-name').value;
-            const modalPhone = document.getElementById('modal-phone').value;
-            const modalDob = document.getElementById('modal-dob').value;
-            const modalCity = document.getElementById('modal-city').value;
-            const modalBio = document.getElementById('modal-bio').value;
-            const modalGoal = document.getElementById('modal-goal').value;
-            const modalLevel = document.getElementById('modal-level').value;
-            const modalFrequency = document.getElementById('modal-frequency').value;
+            const name = document.getElementById('modal-name').value;
+            const phone = document.getElementById('modal-phone').value;
+            const city = document.getElementById('modal-city').value;
+            const dob = document.getElementById('modal-dob').value;
 
-            // Update profile elements
-            if (modalName) {
-                document.getElementById('profile-name').textContent = modalName;
-                document.getElementById('profile-display-name').textContent = modalName;
-                document.getElementById('userName').textContent = modalName;
-                document.getElementById('userNameHeader').textContent = modalName;
+            // Update UI elements
+            if (name) {
+                document.getElementById('userName').textContent = name;
+                document.getElementById('userNameHeader').textContent = name;
+                document.getElementById('profile-display-name').textContent = name;
+                document.getElementById('profile-name').textContent = name;
             }
 
-            if (modalPhone) {
+            if (phone) {
                 const phoneEl = document.getElementById('profile-phone');
-                phoneEl.textContent = modalPhone;
-                phoneEl.classList.remove('text-muted');
+                phoneEl.textContent = phone;
+                phoneEl.classList.remove('text-muted-readable');
+                phoneEl.classList.add('text-readable');
             }
 
-            if (modalDob) {
+            if (dob) {
                 const dobEl = document.getElementById('profile-dob');
-                const date = new Date(modalDob);
-                dobEl.textContent = date.toLocaleDateString('pt-BR');
-                dobEl.classList.remove('text-muted');
+                const date = new Date(dob);
+                dobEl.textContent = date.toLocaleDateString('en-US');
+                dobEl.classList.remove('text-muted-readable');
+                dobEl.classList.add('text-readable');
             }
 
             // Update avatars
-            const newAvatarSrc = document.getElementById('modal-avatar').src;
-            document.getElementById('profile-avatar').src = newAvatarSrc;
-            document.getElementById('header-avatar').src = newAvatarSrc;
+            const newAvatar = document.getElementById('modal-avatar').src;
+            document.getElementById('profile-avatar').src = newAvatar;
+            document.getElementById('header-avatar').src = newAvatar;
 
             // Close modal
-            const modal = bootstrap.Modal.getInstance(document.getElementById('profileEditModal'));
-            modal.hide();
+            bootstrap.Modal.getInstance(document.getElementById('profileEditModal')).hide();
 
-            // Show success message
-            showToast('Perfil atualizado com sucesso!', 'success');
-
-            // Here you would save to database
-            console.log('💾 Perfil salvo:', {
-                name: modalName,
-                phone: modalPhone,
-                dob: modalDob,
-                city: modalCity,
-                bio: modalBio,
-                goal: modalGoal,
-                level: modalLevel,
-                frequency: modalFrequency
-            });
+            showToast('Profile updated successfully!', 'success');
         }
 
         function downloadProfile() {
             const profileData = {
-                nome: document.getElementById('profile-name').textContent,
+                name: document.getElementById('profile-name').textContent,
                 email: document.getElementById('profile-email').textContent,
-                telefone: document.getElementById('profile-phone').textContent,
-                nascimento: document.getElementById('profile-dob').textContent,
-                membro_desde: document.getElementById('profile-created').textContent
+                phone: document.getElementById('profile-phone').textContent,
+                birthday: document.getElementById('profile-dob').textContent,
+                member_since: document.getElementById('profile-created').textContent
             };
 
             const dataStr = JSON.stringify(profileData, null, 2);
@@ -1169,26 +899,50 @@
 
             const link = document.createElement('a');
             link.href = URL.createObjectURL(dataBlob);
-            link.download = 'perfil_garcia_builder.json';
+            link.download = 'garcia_builder_profile.json';
             link.click();
 
-            showToast('Dados do perfil exportados!', 'success');
+            showToast('Profile data exported!', 'success');
         }
 
         function scrollToProfile() {
-            document.querySelector('.profile-card').scrollIntoView({
+            document.getElementById('profile-section').scrollIntoView({
                 behavior: 'smooth',
                 block: 'center'
             });
         }
 
+        async function handleLogout() {
+            try {
+                await window.supabaseClient.auth.signOut();
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+                window.location.href = 'index.html';
+            }
+        }
+
+        function showError(message) {
+            document.body.innerHTML = `
+                <div class="container mt-5 text-center">
+                    <div class="alert alert-danger">
+                        <h4><i class="fas fa-exclamation-triangle me-2"></i>Error</h4>
+                        <p>${message}</p>
+                        <button class="btn btn-primary" onclick="window.location.reload()">
+                            <i class="fas fa-refresh me-2"></i>Try Again
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
-            const bgClass = type === 'success' ? 'alert-success' : type === 'error' ? 'alert-danger' : 'alert-info';
-            const icon = type === 'success' ? 'check' : type === 'error' ? 'exclamation' : 'info';
+            const bgClass = type === 'success' ? 'alert-success' : 'alert-info';
+            const icon = type === 'success' ? 'check' : 'info';
 
             toast.className = `alert ${bgClass} position-fixed`;
-            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);';
+            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
             toast.innerHTML = `
                 <i class="fas fa-${icon}-circle me-2"></i>
                 ${message}
@@ -1201,72 +955,34 @@
                 if (toast.parentElement) toast.remove();
             }, 4000);
         }
+
+        // Update form controls styling
+        document.addEventListener('DOMContentLoaded', function() {
+            const style = document.createElement('style');
+            style.textContent = `
+                .form-control {
+                    background: rgba(255, 255, 255, 0.08);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 8px;
+                    color: #fff;
+                    padding: 0.75rem;
+                }
+                .form-control:focus {
+                    background: rgba(255, 255, 255, 0.12);
+                    border-color: #F6C84E;
+                    box-shadow: 0 0 0 0.2rem rgba(246, 200, 78, 0.25);
+                    color: #fff;
+                }
+                .form-control::placeholder {
+                    color: rgba(255, 255, 255, 0.5);
+                }
+                .form-control[readonly] {
+                    background: rgba(255, 255, 255, 0.05);
+                    color: rgba(255, 255, 255, 0.7);
+                }
+            `;
+            document.head.appendChild(style);
+        });
     </script>
-
-    <style>
-        /* Dashboard-specific styles */
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 22px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .timeline {
-            position: relative;
-            padding-left: 2rem;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0.5rem;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-
-        .timeline-marker {
-            position: absolute;
-            left: -1.75rem;
-            top: 0.25rem;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        .timeline-content {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.75rem;
-            border-radius: 8px;
-            border-left: 3px solid #F6C84E;
-        }
-
-        body {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            color: #fff;
-            min-height: 100vh;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-
-        .list-group-item {
-            background: transparent;
-            border-color: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-    </style>
-
 </body>
 </html>

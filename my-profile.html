@@ -41,6 +41,44 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
         }
 
+        .main-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #F6C84E;
+            object-fit: cover;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .main-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(246, 200, 78, 0.5);
+        }
+
+        .avatar-upload-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #F6C84E;
+            color: #000;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .avatar-upload-overlay:hover {
+            background: #FFD700;
+            transform: scale(1.1);
+        }
+
         .profile-card {
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.12);
@@ -48,220 +86,268 @@
             padding: 2rem;
             backdrop-filter: blur(12px);
             margin-bottom: 2rem;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
             transition: all 0.3s ease;
         }
 
         .profile-card:hover {
+            border-color: rgba(246, 200, 78, 0.3);
             transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
         }
 
-        .main-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 3px solid #F6C84E;
-            object-fit: cover;
-            margin-bottom: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .main-avatar:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(246, 200, 78, 0.4);
-        }
-
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .info-item:last-child {
-            border-bottom: none;
-        }
-
-        .info-label {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.9rem;
+        .card-title {
+            color: #F6C84E;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .form-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #F6C84E;
+            box-shadow: 0 0 0 0.2rem rgba(246, 200, 78, 0.25);
+            color: #fff;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-check {
+            margin-bottom: 0.5rem;
+        }
+
+        .form-check-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-check-input:checked {
+            background-color: #F6C84E;
+            border-color: #F6C84E;
+        }
+
+        .form-check-label {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #F6C84E, #FFD700);
+            border: none;
+            color: #000;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(246, 200, 78, 0.3);
+            color: #000;
+        }
+
+        .btn-secondary-custom {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary-custom:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        .info-display {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
         }
 
         .info-value {
             color: #fff;
             font-weight: 500;
-            text-align: right;
-            max-width: 200px;
-            word-break: break-word;
         }
 
-        .info-value.editable {
-            cursor: pointer;
-            color: #F6C84E;
-            transition: all 0.3s ease;
-        }
-
-        .info-value.editable:hover {
-            color: #ffd700;
-            text-decoration: underline;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #F6C84E 0%, #f4b942 100%);
-            border: none;
-            color: #000;
-            font-weight: 600;
-            border-radius: 12px;
-            padding: 0.75rem 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #f4b942 0%, #F6C84E 100%);
-            color: #000;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(246, 200, 78, 0.3);
-        }
-
-        .btn-outline-primary {
-            border: 2px solid #F6C84E;
-            color: #F6C84E;
-            font-weight: 600;
-            border-radius: 12px;
-            padding: 0.75rem 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-primary:hover {
-            background: #F6C84E;
-            color: #000;
-            transform: translateY(-2px);
-        }
-
-        .btn-outline-secondary {
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 600;
-            border-radius: 12px;
-            padding: 0.75rem 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            border-color: rgba(255, 255, 255, 0.5);
-            transform: translateY(-2px);
-        }
-
-        .text-readable {
-            color: rgba(255, 255, 255, 0.9) !important;
-        }
-
-        .text-muted-readable {
-            color: rgba(255, 255, 255, 0.6) !important;
-        }
-
-        .stats-grid {
+        .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        .stat-card {
-            background: linear-gradient(135deg, rgba(246, 200, 78, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-            border: 1px solid rgba(246, 200, 78, 0.2);
-            border-radius: 15px;
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
             padding: 1.5rem;
             text-align: center;
+            transition: all 0.3s ease;
         }
 
-        .stat-number {
+        .metric-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .metric-number {
             font-size: 2rem;
             font-weight: 700;
             color: #F6C84E;
             margin-bottom: 0.5rem;
         }
 
-        .stat-label {
-            color: rgba(255, 255, 255, 0.7);
+        .metric-label {
+            color: rgba(255, 255, 255, 0.8);
             font-size: 0.9rem;
         }
 
-        .activity-item {
-            display: flex;
-            align-items: center;
+        .progress-photos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 1rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 10px;
-            margin-bottom: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .progress-photo {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .activity-item:hover {
-            background: rgba(255, 255, 255, 0.08);
+        .progress-photo:hover {
+            transform: scale(1.05);
         }
 
-        .activity-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #F6C84E 0%, #f4b942 100%);
+        .progress-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-date {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: #fff;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(246, 200, 78, 0.5);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: #F6C84E;
+            background: rgba(246, 200, 78, 0.05);
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: #F6C84E;
+            margin-bottom: 1rem;
+        }
+
+        .tab-buttons {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #000;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             font-size: 0.9rem;
         }
 
-        .activity-content {
-            flex: 1;
+        .tab-btn.active {
+            background: linear-gradient(135deg, #F6C84E, #FFD700);
+            color: #000;
+            border-color: transparent;
         }
 
-        .activity-title {
+        .tab-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.15);
             color: #fff;
-            font-weight: 500;
-            margin-bottom: 0.25rem;
         }
 
-        .activity-time {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.8rem;
+        .tab-content {
+            display: none;
         }
 
-        .progress {
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            background: linear-gradient(90deg, #F6C84E 0%, #f4b942 100%);
-            height: 100%;
-            transition: width 0.3s ease;
+        .tab-content.active {
+            display: block;
         }
 
         @media (max-width: 768px) {
-            .profile-container {
-                padding-top: 100px;
-            }
-
             .profile-header {
                 padding: 1.5rem;
             }
-
-            .profile-card {
-                padding: 1.5rem;
+            
+            .main-avatar {
+                width: 120px;
+                height: 120px;
             }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .tab-buttons {
+                justify-content: center;
+            }
+        }
+
+        .alert-custom {
+            background: rgba(246, 200, 78, 0.1);
+            border: 1px solid rgba(246, 200, 78, 0.3);
+            color: #F6C84E;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
         }
     </style>
 </head>
@@ -270,7 +356,7 @@
     <nav class="navbar">
         <div class="container inner">
             <a class="brand" href="index.html">
-                <img loading="lazy" decoding="async" src="assets/logo.png" alt="Garcia Builder">
+                <img src="assets/logo.png" alt="Garcia Builder" decoding="async" loading="eager"/>
                 <span class="title-gradient">Garcia Builder</span>
             </a>
 
@@ -283,211 +369,353 @@
                 <a href="faq.html">FAQ</a>
                 <a href="contact.html">Contact</a>
                 <a href="dashboard.html">Dashboard</a>
+                <a href="my-profile.html" class="active">Profile</a>
             </nav>
 
-            <div id="auth-buttons"></div>
-
-            <div class="lang">
-                <select id="lang-select">
-                    <option value="en">EN</option>
-                    <option value="pt">PT</option>
-                    <option value="es">ES</option>
-                </select>
+            <div class="nav-actions">
+                <a href="dashboard.html" class="btn btn-outline-light">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <button id="logout-btn" class="btn btn-outline-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- Profile Container -->
     <div class="profile-container">
         <div class="container">
-            <!-- Header -->
+            <!-- Profile Header -->
             <div class="profile-header">
-                <img id="profile-avatar" class="main-avatar"
-                     src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=120"
-                     alt="Profile Picture" onclick="changeAvatar()">
-                <h1 class="title-gradient mb-2" id="profile-name">Loading...</h1>
-                <p class="text-muted-readable mb-3" id="profile-email">...</p>
-                <div class="d-flex gap-2 justify-content-center flex-wrap">
-                    <a href="dashboard.html" class="btn btn-outline-secondary">
-                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
-                    </a>
-                    <a href="profile-manager.html" class="btn btn-primary">
-                        <i class="fas fa-edit me-2"></i>Edit Profile
-                    </a>
+                <div class="position-relative d-inline-block">
+                    <img id="main-avatar" src="https://via.placeholder.com/150/333/fff?text=U" alt="Profile Picture" class="main-avatar">
+                    <div class="avatar-upload-overlay" onclick="document.getElementById('avatar-upload').click()">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+                </div>
+                <h1 id="profile-name">Your Profile</h1>
+                <p class="lead" id="profile-email">user@example.com</p>
+                <p class="text-muted">Member since <span id="member-since-display">2024</span></p>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="basic">
+                    <i class="fas fa-user"></i> Basic Info
+                </button>
+                <button class="tab-btn" data-tab="metrics">
+                    <i class="fas fa-weight"></i> Body Metrics
+                </button>
+                <button class="tab-btn" data-tab="progress">
+                    <i class="fas fa-chart-line"></i> Progress
+                </button>
+                <button class="tab-btn" data-tab="goals">
+                    <i class="fas fa-target"></i> Goals
+                </button>
+                <button class="tab-btn" data-tab="settings">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </div>
+
+            <!-- Basic Info Tab -->
+            <div class="tab-content active" id="basic-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-user-edit"></i>
+                        Personal Information
+                    </h3>
+                    
+                    <form id="basic-info-form" data-profile-section="basic">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="full_name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Your full name">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="+1 (555) 123-4567">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="birthday" class="form-label">Birthday</label>
+                                <input type="date" class="form-control" id="birthday" name="birthday">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="location" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="location" name="location" placeholder="City, Country">
+                            </div>
+                            <div class="col-12">
+                                <label for="bio" class="form-label">Bio</label>
+                                <textarea class="form-control" id="bio" name="bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="experience_level" class="form-label">Experience Level</label>
+                                <select class="form-select" id="experience_level" name="experience_level">
+                                    <option value="">Select your level</option>
+                                    <option value="beginner">Beginner</option>
+                                    <option value="intermediate">Intermediate</option>
+                                    <option value="advanced">Advanced</option>
+                                    <option value="expert">Expert</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h5 class="text-light mb-3">Fitness Goals</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_weight_loss" name="goals" value="Weight Loss">
+                                        <label class="form-check-label" for="goal_weight_loss">Weight Loss</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_muscle_gain" name="goals" value="Muscle Gain">
+                                        <label class="form-check-label" for="goal_muscle_gain">Muscle Gain</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_strength" name="goals" value="Strength">
+                                        <label class="form-check-label" for="goal_strength">Strength Training</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_endurance" name="goals" value="Endurance">
+                                        <label class="form-check-label" for="goal_endurance">Endurance</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_flexibility" name="goals" value="Flexibility">
+                                        <label class="form-check-label" for="goal_flexibility">Flexibility</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_general" name="goals" value="General Health">
+                                        <label class="form-check-label" for="goal_general">General Health</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Save Basic Info
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
-            <div class="row">
-                <!-- Personal Information -->
-                <div class="col-lg-8">
-                    <!-- Profile Stats -->
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-number" id="profile-days">0</div>
-                            <div class="stat-label">Days as Member</div>
+            <!-- Body Metrics Tab -->
+            <div class="tab-content" id="metrics-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-weight"></i>
+                        Body Measurements
+                    </h3>
+
+                    <!-- Current Metrics Display -->
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-number" id="display-weight">--</div>
+                            <div class="metric-label">Current Weight</div>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="profile-sessions">0</div>
-                            <div class="stat-label">Login Sessions</div>
+                        <div class="metric-card">
+                            <div class="metric-number" id="display-height">--</div>
+                            <div class="metric-label">Height</div>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="profile-progress">0%</div>
-                            <div class="stat-label">Profile Complete</div>
+                        <div class="metric-card">
+                            <div class="metric-number" id="display-bmi">--</div>
+                            <div class="metric-label">BMI</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number" id="display-body-fat">--%</div>
+                            <div class="metric-label">Body Fat</div>
                         </div>
                     </div>
 
-                    <!-- Personal Details -->
-                    <div class="profile-card">
-                        <h5 class="text-readable mb-4">
-                            <i class="fas fa-user me-2"></i>Personal Information
-                        </h5>
-
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-user text-warning"></i>
-                                Full Name
+                    <form id="body-metrics-form" data-profile-section="body_metrics">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="current_weight" class="form-label">Current Weight</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="current_weight" name="current_weight" step="0.1" placeholder="70">
+                                    <span class="input-group-text">kg</span>
+                                </div>
                             </div>
-                            <div class="info-value editable" id="info-name" onclick="editField('name')">Not provided</div>
+                            <div class="col-md-4">
+                                <label for="height" class="form-label">Height</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="height" name="height" step="0.1" placeholder="175">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="target_weight" class="form-label">Target Weight</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="target_weight" name="target_weight" step="0.1" placeholder="65">
+                                    <span class="input-group-text">kg</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="body_fat_percentage" class="form-label">Body Fat %</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="body_fat_percentage" name="body_fat_percentage" step="0.1" placeholder="15">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurements_chest" class="form-label">Chest</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="measurements_chest" name="measurements_chest" step="0.1" placeholder="100">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurements_waist" class="form-label">Waist</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="measurements_waist" name="measurements_waist" step="0.1" placeholder="80">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurements_hips" class="form-label">Hips</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="measurements_hips" name="measurements_hips" step="0.1" placeholder="95">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurements_arms" class="form-label">Arms</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="measurements_arms" name="measurements_arms" step="0.1" placeholder="35">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurements_thighs" class="form-label">Thighs</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="measurements_thighs" name="measurements_thighs" step="0.1" placeholder="55">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-envelope text-warning"></i>
-                                Email Address
-                            </div>
-                            <div class="info-value" id="info-email">Loading...</div>
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Save Measurements
+                            </button>
                         </div>
+                    </form>
+                </div>
+            </div>
 
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-phone text-warning"></i>
-                                Phone Number
-                            </div>
-                            <div class="info-value editable" id="info-phone" onclick="editField('phone')">Not provided</div>
-                        </div>
+            <!-- Progress Tab -->
+            <div class="tab-content" id="progress-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-camera"></i>
+                        Progress Photos
+                    </h3>
 
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-birthday-cake text-warning"></i>
-                                Date of Birth
-                            </div>
-                            <div class="info-value editable" id="info-dob" onclick="editField('dob')">Not provided</div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-map-marker-alt text-warning"></i>
-                                Location
-                            </div>
-                            <div class="info-value editable" id="info-location" onclick="editField('location')">Not provided</div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-clock text-warning"></i>
-                                Timezone
-                            </div>
-                            <div class="info-value editable" id="info-timezone" onclick="editField('timezone')">Not provided</div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-calendar text-warning"></i>
-                                Member Since
-                            </div>
-                            <div class="info-value" id="info-created">Loading...</div>
-                        </div>
+                    <div class="upload-area" onclick="document.getElementById('photo-upload').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h5>Upload Progress Photo</h5>
+                        <p class="text-muted mb-0">Click to select or drag and drop your photo</p>
+                        <input type="file" id="photo-upload" accept="image/*" style="display: none;">
                     </div>
 
-                    <!-- Fitness Information -->
-                    <div class="profile-card">
-                        <h5 class="text-readable mb-4">
-                            <i class="fas fa-dumbbell me-2"></i>Fitness Profile
-                        </h5>
-
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-target text-warning"></i>
-                                Primary Goal
-                            </div>
-                            <div class="info-value editable" id="info-goal" onclick="editField('goal')">Not set</div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-chart-line text-warning"></i>
-                                Experience Level
-                            </div>
-                            <div class="info-value editable" id="info-experience" onclick="editField('experience')">Not set</div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-calendar-week text-warning"></i>
-                                Workout Frequency
-                            </div>
-                            <div class="info-value editable" id="info-frequency" onclick="editField('frequency')">Not set</div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-tools text-warning"></i>
-                                Equipment Access
-                            </div>
-                            <div class="info-value editable" id="info-equipment" onclick="editField('equipment')">Not set</div>
-                        </div>
-                    </div>
-
-                    <!-- About Section -->
-                    <div class="profile-card">
-                        <h5 class="text-readable mb-4">
-                            <i class="fas fa-info-circle me-2"></i>About Me
-                        </h5>
-                        <div class="info-value editable" id="info-bio" onclick="editField('bio')" style="text-align: left; max-width: 100%; cursor: pointer; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px; min-height: 60px;">
-                            Click to add your bio...
-                        </div>
+                    <div id="progress-photos-container" class="progress-photos">
+                        <!-- Progress photos will be dynamically inserted here -->
                     </div>
                 </div>
 
-                <!-- Activity Sidebar -->
-                <div class="col-lg-4">
-                    <!-- Profile Completion -->
-                    <div class="profile-card">
-                        <h6 class="text-readable mb-3">Profile Completion</h6>
-                        <div class="progress mb-2">
-                            <div class="progress-bar" id="completion-bar" style="width: 25%"></div>
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-line"></i>
+                        Weight History
+                    </h3>
+                    
+                    <div id="weight-chart-container">
+                        <div class="alert-custom">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Start logging your weight to see your progress chart here.
                         </div>
-                        <small class="text-muted-readable">Complete your profile to unlock all features</small>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Recent Activity -->
-                    <div class="profile-card">
-                        <h6 class="text-readable mb-3">Recent Activity</h6>
-                        <div id="recent-activity">
-                            <div class="activity-item">
-                                <div class="activity-icon">
-                                    <i class="fas fa-sign-in-alt"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <div class="activity-title">Profile Created</div>
-                                    <div class="activity-time">Welcome to Garcia Builder!</div>
-                                </div>
+            <!-- Goals Tab -->
+            <div class="tab-content" id="goals-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-target"></i>
+                        My Goals & Achievements
+                    </h3>
+
+                    <div id="goals-display">
+                        <div class="alert-custom">
+                            <i class="fas fa-bullseye me-2"></i>
+                            Set your fitness goals in the Basic Info tab to track your progress here.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settings-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-cog"></i>
+                        Preferences & Settings
+                    </h3>
+
+                    <form id="preferences-form" data-profile-section="preferences">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="units" class="form-label">Unit System</label>
+                                <select class="form-select" id="units" name="units">
+                                    <option value="metric">Metric (kg, cm)</option>
+                                    <option value="imperial">Imperial (lbs, ft/in)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="language" class="form-label">Language</label>
+                                <select class="form-select" id="language" name="language">
+                                    <option value="en">English</option>
+                                    <option value="pt">Português</option>
+                                    <option value="es">Español</option>
+                                </select>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Quick Actions -->
-                    <div class="profile-card">
-                        <h6 class="text-readable mb-3">Quick Actions</h6>
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-outline-primary" onclick="exportProfile()">
-                                <i class="fas fa-download me-2"></i>Export Profile Data
-                            </button>
-                            <button class="btn btn-outline-secondary" onclick="deleteAccount()">
-                                <i class="fas fa-trash me-2"></i>Delete Account
+                        <div class="mt-4">
+                            <h5 class="text-light mb-3">Notifications</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="email_notifications" name="email_notifications" checked>
+                                <label class="form-check-label" for="email_notifications">Email notifications</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="workout_reminders" name="workout_reminders" checked>
+                                <label class="form-check-label" for="workout_reminders">Workout reminders</label>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h5 class="text-light mb-3">Privacy</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="profile_visible" name="profile_visible" checked>
+                                <label class="form-check-label" for="profile_visible">Make profile visible to other users</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="progress_visible" name="progress_visible">
+                                <label class="form-check-label" for="progress_visible">Share progress photos publicly</label>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Save Preferences
                             </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -498,317 +726,137 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/profile-manager.js"></script>
 
     <script>
-        let currentUser = null;
-        let currentProfile = null;
-
-        document.addEventListener('DOMContentLoaded', async function() {
-            await initializeProfile();
+        // Profile page specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeProfilePage();
+            setupTabNavigation();
+            setupEventListeners();
         });
 
-        async function initializeProfile() {
+        async function initializeProfilePage() {
             try {
-                // Wait for Supabase
-                if (!window.supabaseClient) {
-                    if (window.supabase) {
-                        window.supabaseClient = window.supabase.createClient(
-                            window.SUPABASE_URL,
-                            window.SUPABASE_ANON_KEY
-                        );
-                    } else {
-                        throw new Error('Supabase not loaded');
-                    }
+                // Wait for profile manager
+                if (window.GarciaProfileManager) {
+                    await window.GarciaProfileManager.init();
+                    updateMetricsDisplay();
                 }
-
-                // Check authentication
-                const { data, error } = await window.supabaseClient.auth.getUser();
-
-                if (error || !data.user) {
-                    window.location.href = 'login.html?redirect=my-profile.html';
-                    return;
-                }
-
-                currentUser = data.user;
-
-                // Load profile data
-                const { data: profile } = await window.supabaseClient
-                    .from('user_profiles')
-                    .select('*')
-                    .eq('user_id', currentUser.id)
-                    .single();
-
-                currentProfile = profile;
-
-                // Update UI
-                loadProfileData();
-                setupAuthButtons();
-                calculateStats();
-
             } catch (error) {
-                console.error('Profile initialization error:', error);
-                showToast('Failed to load profile data', 'error');
+                console.error('Error initializing profile page:', error);
             }
         }
 
-        function loadProfileData() {
-            // Basic info
-            document.getElementById('profile-email').textContent = currentUser.email;
-            document.getElementById('info-email').textContent = currentUser.email;
+        function setupTabNavigation() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
 
-            if (currentProfile) {
-                const fullName = currentProfile.full_name || 'User';
-                document.getElementById('profile-name').textContent = fullName;
-                document.getElementById('info-name').textContent = fullName;
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
 
-                document.getElementById('info-phone').textContent = currentProfile.phone || 'Not provided';
-                document.getElementById('info-dob').textContent = currentProfile.date_of_birth || 'Not provided';
-                document.getElementById('info-location').textContent =
-                    (currentProfile.city && currentProfile.country)
-                        ? `${currentProfile.city}, ${currentProfile.country}`
-                        : 'Not provided';
-                document.getElementById('info-timezone').textContent = currentProfile.timezone || 'Not provided';
-                document.getElementById('info-bio').textContent = currentProfile.bio || 'Click to add your bio...';
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
 
-                // Fitness info
-                document.getElementById('info-goal').textContent = currentProfile.fitness_goal || 'Not set';
-                document.getElementById('info-experience').textContent = currentProfile.experience_level || 'Not set';
-                document.getElementById('info-frequency').textContent = currentProfile.workout_frequency || 'Not set';
-                document.getElementById('info-equipment').textContent = currentProfile.equipment || 'Not set';
-            } else {
-                document.getElementById('profile-name').textContent = currentUser.email.split('@')[0];
-                document.getElementById('info-name').textContent = 'Not provided';
+                    // Add active class to clicked button and target content
+                    this.classList.add('active');
+                    document.getElementById(targetTab + '-tab').classList.add('active');
+                });
+            });
+        }
+
+        function setupEventListeners() {
+            // Logout button
+            document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
+
+            // Weight input change for BMI calculation
+            const weightInput = document.getElementById('current_weight');
+            const heightInput = document.getElementById('height');
+            
+            if (weightInput && heightInput) {
+                [weightInput, heightInput].forEach(input => {
+                    input.addEventListener('input', calculateAndDisplayBMI);
+                });
             }
 
-            // Created date
-            const createdDate = new Date(currentUser.created_at);
-            document.getElementById('info-created').textContent = createdDate.toLocaleDateString();
-
-            // Update avatar
-            const displayName = currentProfile?.full_name || currentUser.email.split('@')[0];
-            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=F6C84E&color=000&size=120`;
-            document.getElementById('profile-avatar').src = avatarUrl;
+            // Form auto-save functionality
+            const forms = document.querySelectorAll('form[data-profile-section]');
+            forms.forEach(form => {
+                const inputs = form.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => {
+                    input.addEventListener('change', () => {
+                        // Auto-save after short delay
+                        setTimeout(() => {
+                            if (window.GarciaProfileManager) {
+                                const event = { target: form, preventDefault: () => {} };
+                                window.GarciaProfileManager.handleFormSubmit?.(event);
+                            }
+                        }, 500);
+                    });
+                });
+            });
         }
 
-        function setupAuthButtons() {
-            const authButtons = document.getElementById('auth-buttons');
-            const displayName = currentProfile?.full_name || currentUser.email.split('@')[0];
+        function updateMetricsDisplay() {
+            const profileData = window.GarciaProfileManager?.getProfileData();
+            if (!profileData) return;
 
-            authButtons.innerHTML = `
-                <div class="dropdown">
-                    <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-user me-1"></i> ${displayName}
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="dashboard.html">
-                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
-                        </a></li>
-                        <li><a class="dropdown-item" href="my-profile.html">
-                            <i class="fas fa-user me-2"></i>My Profile
-                        </a></li>
-                        <li><a class="dropdown-item" href="profile-manager.html">
-                            <i class="fas fa-user-cog me-2"></i>Profile Manager
-                        </a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#" onclick="handleLogout()">
-                            <i class="fas fa-sign-out-alt me-2"></i>Logout
-                        </a></li>
-                    </ul>
-                </div>
-            `;
-        }
+            const metrics = profileData.body_metrics;
+            const units = profileData.preferences?.units || 'metric';
 
-        function calculateStats() {
-            // Calculate days as member
-            const createdDate = new Date(currentUser.created_at);
-            const today = new Date();
-            const daysDiff = Math.floor((today - createdDate) / (1000 * 60 * 60 * 24));
-            document.getElementById('profile-days').textContent = daysDiff;
-
-            // Mock sessions (you can implement real tracking)
-            document.getElementById('profile-sessions').textContent = Math.max(1, Math.floor(daysDiff / 2));
-
-            // Calculate profile completion
-            let completionScore = 25; // Base score for having account
-            if (currentProfile) {
-                if (currentProfile.full_name) completionScore += 15;
-                if (currentProfile.phone) completionScore += 10;
-                if (currentProfile.date_of_birth) completionScore += 10;
-                if (currentProfile.city && currentProfile.country) completionScore += 10;
-                if (currentProfile.timezone) completionScore += 5;
-                if (currentProfile.bio) completionScore += 10;
-                if (currentProfile.fitness_goal) completionScore += 5;
-                if (currentProfile.experience_level) completionScore += 5;
-                if (currentProfile.workout_frequency) completionScore += 5;
-            }
-
-            document.getElementById('profile-progress').textContent = `${completionScore}%`;
-            document.getElementById('completion-bar').style.width = `${completionScore}%`;
-        }
-
-        function editField(field) {
-            let currentValue = '';
-            let label = '';
-
-            switch(field) {
-                case 'name':
-                    currentValue = currentProfile?.full_name || '';
-                    label = 'Full Name';
-                    break;
-                case 'phone':
-                    currentValue = currentProfile?.phone || '';
-                    label = 'Phone Number';
-                    break;
-                case 'dob':
-                    currentValue = currentProfile?.date_of_birth || '';
-                    label = 'Date of Birth (YYYY-MM-DD)';
-                    break;
-                case 'location':
-                    currentValue = currentProfile?.city || '';
-                    label = 'City';
-                    break;
-                case 'timezone':
-                    currentValue = currentProfile?.timezone || '';
-                    label = 'Timezone';
-                    break;
-                case 'bio':
-                    currentValue = currentProfile?.bio || '';
-                    label = 'About You';
-                    break;
-                case 'goal':
-                    currentValue = currentProfile?.fitness_goal || '';
-                    label = 'Fitness Goal';
-                    break;
-                case 'experience':
-                    currentValue = currentProfile?.experience_level || '';
-                    label = 'Experience Level';
-                    break;
-                case 'frequency':
-                    currentValue = currentProfile?.workout_frequency || '';
-                    label = 'Workout Frequency';
-                    break;
-                case 'equipment':
-                    currentValue = currentProfile?.equipment || '';
-                    label = 'Equipment Access';
-                    break;
-            }
-
-            const newValue = prompt(`Edit ${label}:`, currentValue);
-            if (newValue !== null && newValue !== currentValue) {
-                updateField(field, newValue);
-            }
-        }
-
-        async function updateField(field, value) {
-            try {
-                const updates = { [field]: value };
-
-                // Map field names to database columns
-                const fieldMap = {
-                    'name': 'full_name',
-                    'phone': 'phone',
-                    'dob': 'date_of_birth',
-                    'location': 'city',
-                    'timezone': 'timezone',
-                    'bio': 'bio',
-                    'goal': 'fitness_goal',
-                    'experience': 'experience_level',
-                    'frequency': 'workout_frequency',
-                    'equipment': 'equipment'
-                };
-
-                const dbField = fieldMap[field] || field;
-                const dbUpdate = { [dbField]: value };
-
-                // Update in database (mock for now)
-                console.log('Updating field:', dbField, 'with value:', value);
-
-                // Update current profile
-                if (!currentProfile) currentProfile = {};
-                currentProfile[dbField] = value;
-
-                // Refresh display
-                loadProfileData();
-                calculateStats();
-
-                showToast(`${field} updated successfully!`, 'success');
-
-            } catch (error) {
-                console.error('Update error:', error);
-                showToast('Failed to update field', 'error');
-            }
-        }
-
-        function changeAvatar() {
-            showToast('Avatar change functionality coming soon!', 'info');
-        }
-
-        function exportProfile() {
-            const profileData = {
-                name: currentProfile?.full_name || 'Not provided',
-                email: currentUser.email,
-                phone: currentProfile?.phone || 'Not provided',
-                dateOfBirth: currentProfile?.date_of_birth || 'Not provided',
-                location: currentProfile?.city || 'Not provided',
-                timezone: currentProfile?.timezone || 'Not provided',
-                bio: currentProfile?.bio || 'Not provided',
-                fitnessGoal: currentProfile?.fitness_goal || 'Not set',
-                experienceLevel: currentProfile?.experience_level || 'Not set',
-                workoutFrequency: currentProfile?.workout_frequency || 'Not set',
-                equipment: currentProfile?.equipment || 'Not set',
-                memberSince: currentUser.created_at,
-                exportDate: new Date().toISOString()
+            // Update metric displays
+            const displays = {
+                'display-weight': metrics.current_weight ? 
+                    `${metrics.current_weight} ${units === 'metric' ? 'kg' : 'lbs'}` : '--',
+                'display-height': metrics.height ? 
+                    `${metrics.height} ${units === 'metric' ? 'cm' : 'ft'}` : '--',
+                'display-bmi': calculateBMI(metrics.current_weight, metrics.height) || '--',
+                'display-body-fat': metrics.body_fat_percentage ? 
+                    `${metrics.body_fat_percentage}%` : '--%'
             };
 
-            const dataStr = JSON.stringify(profileData, null, 2);
-            const dataBlob = new Blob([dataStr], {type: 'application/json'});
-
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(dataBlob);
-            link.download = 'garcia_builder_profile.json';
-            link.click();
-
-            showToast('Profile data exported successfully!', 'success');
+            Object.entries(displays).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = value;
+            });
         }
 
-        function deleteAccount() {
-            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-                if (confirm('This will permanently delete all your data. Are you absolutely sure?')) {
-                    showToast('Account deletion feature coming soon. Please contact support.', 'info');
-                }
+        function calculateAndDisplayBMI() {
+            const weight = parseFloat(document.getElementById('current_weight')?.value);
+            const height = parseFloat(document.getElementById('height')?.value);
+            
+            const bmi = calculateBMI(weight, height);
+            const displayElement = document.getElementById('display-bmi');
+            
+            if (displayElement && bmi) {
+                displayElement.textContent = bmi;
             }
+        }
+
+        function calculateBMI(weight, height) {
+            if (!weight || !height) return null;
+            
+            const heightInMeters = height > 3 ? height / 100 : height;
+            const bmi = weight / (heightInMeters * heightInMeters);
+            
+            return bmi.toFixed(1);
         }
 
         async function handleLogout() {
             try {
-                await window.supabaseClient.auth.signOut();
-                window.location.href = 'index.html';
+                if (window.supabase) {
+                    await window.supabase.auth.signOut();
+                }
+                localStorage.clear();
+                window.location.href = 'login.html';
             } catch (error) {
-                console.error('Logout error:', error);
-                window.location.href = 'index.html';
+                console.error('Error logging out:', error);
+                localStorage.clear();
+                window.location.href = 'login.html';
             }
         }
-
-        function showToast(message, type = 'info') {
-            const toast = document.createElement('div');
-            const bgClass = type === 'success' ? 'alert-success' : type === 'error' ? 'alert-danger' : 'alert-info';
-            const icon = type === 'success' ? 'check' : type === 'error' ? 'exclamation' : 'info';
-
-            toast.className = `alert ${bgClass} position-fixed`;
-            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; border-radius: 10px;';
-            toast.innerHTML = `
-                <i class="fas fa-${icon}-circle me-2"></i>
-                ${message}
-                <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
-            `;
-
-            document.body.appendChild(toast);
-
-            setTimeout(() => {
-                if (toast.parentElement) toast.remove();
-            }, 4000);
-        }
     </script>
-    <script defer src="js/body-metrics.js"></script>
 </body>
 </html>

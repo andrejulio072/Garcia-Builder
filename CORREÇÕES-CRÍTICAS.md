@@ -69,7 +69,7 @@ const { data: { user }, error } = await window.supabaseClient.auth.getUser();
 // Google OAuth
 Client ID: 84856110459-bghsgv3d1pst0n7v6e2nvf0glghf6fs9.apps.googleusercontent.com
 
-// Facebook OAuth  
+// Facebook OAuth
 App ID: 1155731136457398
 ```
 
@@ -79,7 +79,7 @@ App ID: 1155731136457398
 
 ### ✅ **Problemas Resolvidos:**
 1. ❌ ~~Loop dashboard-login~~ → ✅ **RESOLVIDO**
-2. ❌ ~~Botões responsivos quebrados~~ → ✅ **RESOLVIDO**  
+2. ❌ ~~Botões responsivos quebrados~~ → ✅ **RESOLVIDO**
 3. ❌ ~~Auth-supabase.js 404 errors~~ → ✅ **RESOLVIDO**
 4. ❌ ~~OAuth forçando email/password~~ → ✅ **INDEPENDENTE**
 
@@ -97,7 +97,7 @@ App ID: 1155731136457398
 
 ### 📱 **Testagem Recomendada:**
 1. **Desktop:** Testar login social e dashboard
-2. **Mobile:** Verificar botões responsivos  
+2. **Mobile:** Verificar botões responsivos
 3. **Tablet:** Testar fluxo completo
 4. **Navegadores:** Chrome, Firefox, Edge, Safari
 

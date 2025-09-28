@@ -4,6 +4,7 @@
   let me = null;
   let clients = [];
   let selectedClient = null;
+  let sessions = [];
 
   document.addEventListener('DOMContentLoaded', init);
 
@@ -15,6 +16,7 @@
       return;
     }
     await loadClients();
+    await loadSessions();
     bindUI();
   }
 
@@ -119,10 +121,129 @@
     }
   }
 
+  async function loadSessions(){
+    try{
+      const { data, error } = await window.supabaseClient
+        .from('sessions')
+        .select(`
+          *,
+          user_profiles:user_id(full_name, email)
+        `)
+        .eq('trainer_id', me.id)
+        .order('scheduled_at', { ascending: true });
+      
+      if(error) throw error;
+      sessions = data || [];
+      renderSessions();
+    }catch(e){
+      console.error('loadSessions error:', e);
+    }
+  }
+
+  function renderSessions(){
+    const container = document.getElementById('sessions-list');
+    if (!container) return;
+
+    if (sessions.length === 0) {
+      container.innerHTML = '<div class="text-muted">No sessions scheduled</div>';
+      return;
+    }
+
+    const now = new Date();
+    const upcomingSessions = sessions.filter(s => new Date(s.scheduled_at) > now);
+    const pastSessions = sessions.filter(s => new Date(s.scheduled_at) <= now);
+
+    let html = '';
+    
+    if (upcomingSessions.length > 0) {
+      html += '<h6 class="mb-2 text-warning">Upcoming Sessions</h6>';
+      upcomingSessions.forEach(session => {
+        const date = new Date(session.scheduled_at).toLocaleString();
+        html += `
+          <div class="session-item p-2 mb-2 border rounded">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <strong>${session.title}</strong>
+                <div class="text-muted small">${session.user_profiles?.full_name || 'Unknown Client'}</div>
+                <div class="text-muted small">${date}</div>
+                ${session.notes ? `<div class="text-muted small mt-1">${session.notes}</div>` : ''}
+              </div>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-success btn-sm" onclick="updateSessionStatus('${session.id}', 'completed')">Complete</button>
+                <button class="btn btn-outline-danger btn-sm" onclick="updateSessionStatus('${session.id}', 'cancelled')">Cancel</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    if (pastSessions.length > 0) {
+      html += '<h6 class="mb-2 mt-3 text-success">Recent Sessions</h6>';
+      pastSessions.slice(0, 5).forEach(session => {
+        const date = new Date(session.scheduled_at).toLocaleString();
+        const statusClass = session.status === 'completed' ? 'text-success' : 
+                           session.status === 'cancelled' ? 'text-danger' : 'text-muted';
+        html += `
+          <div class="session-item p-2 mb-2 border rounded">
+            <div>
+              <strong>${session.title}</strong>
+              <span class="badge badge-soft ms-2 ${statusClass}">${session.status || 'scheduled'}</span>
+              <div class="text-muted small">${session.user_profiles?.full_name || 'Unknown Client'}</div>
+              <div class="text-muted small">${date}</div>
+              ${session.notes ? `<div class="text-muted small mt-1">${session.notes}</div>` : ''}
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    container.innerHTML = html;
+  }
+
+  async function updateSessionStatus(sessionId, status) {
+    try {
+      const { error } = await window.supabaseClient
+        .from('sessions')
+        .update({ status, updated_at: new Date().toISOString() })
+        .eq('id', sessionId);
+      
+      if (error) throw error;
+      
+      // Update local sessions array
+      const sessionIndex = sessions.findIndex(s => s.id === sessionId);
+      if (sessionIndex >= 0) {
+        sessions[sessionIndex].status = status;
+        renderSessions();
+      }
+      
+      showNotification(`Session marked as ${status}`, 'success');
+    } catch (error) {
+      console.error('Error updating session status:', error);
+      showNotification('Failed to update session status', 'error');
+    }
+  }
+
+  function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type === 'error' ? 'danger' : 'success'} position-fixed top-0 end-0 m-3`;
+    notification.style.zIndex = '9999';
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+      notification.remove();
+    }, 3000);
+  }
+
+  // Make updateSessionStatus globally available
+  window.updateSessionStatus = updateSessionStatus;
+
   async function createSession(e){
     e.preventDefault();
     if (!selectedClient){
-      alert('Select a client first');
+      showNotification('Please select a client first', 'error');
       return;
     }
     try{
@@ -140,11 +261,13 @@
 
       const { error } = await window.supabaseClient.from('sessions').insert(payload);
       if (error) throw error;
-      alert('Session created');
+      
+      showNotification('Session created successfully', 'success');
       e.target.reset();
+      await loadSessions(); // Refresh sessions list
     }catch(err){
       console.error('createSession failed', err);
-      alert('Failed to create session: ' + (err.message||err));
+      showNotification('Failed to create session: ' + (err.message||err), 'error');
     }
   }
 })();

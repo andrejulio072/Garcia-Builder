@@ -10,6 +10,17 @@
     body{background:#0f0f0f;color:#fff}
     .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
     .badge-soft{background:rgba(246,200,78,.15);color:#F6C84E;border:1px solid rgba(246,200,78,.3)}
+    .session-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08)!important}
+    .session-item:hover{background:rgba(255,255,255,.08)}
+    .list-group-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);cursor:pointer}
+    .list-group-item:hover{background:rgba(255,255,255,.08)}
+    .text-success{color:#28a745!important}
+    .text-danger{color:#dc3545!important}
+    .text-warning{color:#ffc107!important}
+    .btn-outline-success{border-color:#28a745;color:#28a745}
+    .btn-outline-success:hover{background-color:#28a745;color:#fff}
+    .btn-outline-danger{border-color:#dc3545;color:#dc3545}
+    .btn-outline-danger:hover{background-color:#dc3545;color:#fff}
   </style>
   </head>
 <body>
@@ -31,10 +42,16 @@
     <h1 class="mb-4">Trainer Dashboard</h1>
     <div class="row g-3">
       <div class="col-12 col-lg-4">
-        <div class="card p-3">
+        <div class="card p-3 mb-3">
           <h5 class="mb-3">Your Clients</h5>
           <input id="client-search" class="form-control mb-3" placeholder="Search by name or email" />
           <ul id="client-list" class="list-group list-group-flush"></ul>
+        </div>
+        <div class="card p-3">
+          <h5 class="mb-3">Sessions</h5>
+          <div id="sessions-list" style="max-height: 400px; overflow-y: auto;">
+            <div class="text-muted">Loading sessions...</div>
+          </div>
         </div>
       </div>
       <div class="col-12 col-lg-8">
@@ -49,7 +66,7 @@
               <div class="col-md-6"><input type="datetime-local" id="scheduled_at" class="form-control" required></div>
               <div class="col-md-6"><input type="text" id="title" class="form-control" placeholder="Session title" required></div>
               <div class="col-12"><input type="text" id="notes" class="form-control" placeholder="Notes (optional)"></div>
-              <div class="col-12 text-end"><button class="btn btn-warning">Create</button></div>
+              <div class="col-12 text-end"><button type="submit" class="btn btn-warning">Create Session</button></div>
             </div>
           </form>
         </div>

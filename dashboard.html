@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 
     <!-- Preload Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,16 +55,75 @@
     <div class="container" style="padding-top: 100px;">
         <div class="row">
             <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h1 class="title-gradient mb-2" data-i18n="dashboard.title">Dashboard</h1>
-                        <p class="text-muted mb-0" data-i18n="dashboard.welcome">Welcome back to your dashboard</p>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-user-circle text-warning me-2" style="font-size: 2rem;"></i>
-                        <div>
-                            <div class="fw-bold" id="userName" data-i18n="dashboard.loading">Loading...</div>
-                            <small class="text-muted" id="userEmail">...</small>
+                <div class="dashboard-header mb-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <div class="welcome-section">
+                                <h1 class="title-gradient mb-2">
+                                    <i class="fas fa-tachometer-alt me-2"></i>
+                                    Dashboard
+                                </h1>
+                                <div class="welcome-message">
+                                    <p class="mb-1">
+                                        <span class="text-muted">Bem-vindo de volta,</span>
+                                        <span class="fw-bold text-primary" id="userName">Carregando...</span>
+                                        <span class="wave">👋</span>
+                                    </p>
+                                    <p class="text-muted small mb-0">
+                                        <i class="fas fa-clock me-1"></i>
+                                        Última atividade: <span id="lastActivity">Hoje</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="user-quick-info">
+                                <div class="d-flex align-items-center justify-content-end">
+                                    <div class="me-3 text-end">
+                                        <div class="fw-bold" id="userNameHeader">Carregando...</div>
+                                        <small class="text-muted" id="userEmail">...</small>
+                                        <div class="mt-1">
+                                            <span class="badge bg-success-subtle text-success">
+                                                <i class="fas fa-circle pulse-dot me-1"></i>
+                                                Online
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="position-relative">
+                                        <img id="header-avatar" class="rounded-circle border border-2 border-primary" 
+                                             style="width: 56px; height: 56px; object-fit: cover; cursor: pointer;"
+                                             src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=56" 
+                                             alt="User Avatar"
+                                             onclick="scrollToProfile()">
+                                        <div class="position-absolute bottom-0 end-0">
+                                            <div class="bg-success rounded-circle border border-2 border-white" 
+                                                 style="width: 16px; height: 16px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Quick Stats -->
+                                <div class="row mt-3 text-center">
+                                    <div class="col-4">
+                                        <div class="quick-stat">
+                                            <div class="fw-bold text-primary">7</div>
+                                            <small class="text-muted">Dias Ativos</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="quick-stat">
+                                            <div class="fw-bold text-success">85%</div>
+                                            <small class="text-muted">Progresso</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="quick-stat">
+                                            <div class="fw-bold text-warning">14</div>
+                                            <small class="text-muted">Sequência</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -163,44 +223,129 @@
                 </div>
             </div>
 
-            <!-- User Profile -->
+            <!-- User Profile Enhanced -->
             <div class="col-lg-4 mb-4">
-                <div class="card glass-effect mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <i class="fas fa-user me-2 text-primary"></i>
-                            <span data-i18n="dashboard.my_profile">Meu Perfil</span>
-                        </h5>
-
-                        <div class="text-center mb-3">
-                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10" style="width: 80px; height: 80px;">
-                                <i class="fas fa-user text-primary" style="font-size: 2rem;"></i>
+                <div class="card glass-effect mb-4 profile-card">
+                    <div class="card-body text-center">
+                        <!-- Profile Header with Photo -->
+                        <div class="profile-header mb-4">
+                            <div class="position-relative d-inline-block">
+                                <div class="profile-avatar">
+                                    <img id="profile-avatar" class="rounded-circle border border-3 border-primary" 
+                                         style="width: 100px; height: 100px; object-fit: cover; cursor: pointer;"
+                                         src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=100" 
+                                         alt="Profile Picture">
+                                    <div class="avatar-overlay">
+                                        <i class="fas fa-camera"></i>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-sm position-absolute" 
+                                        style="bottom: 0; right: 0; border-radius: 50%; width: 32px; height: 32px; padding: 0;"
+                                        onclick="changeProfilePicture()">
+                                    <i class="fas fa-camera" style="font-size: 0.8rem;"></i>
+                                </button>
+                            </div>
+                            
+                            <h5 class="mt-3 mb-1 fw-bold" id="profile-display-name">Carregando...</h5>
+                            <p class="text-muted mb-0" id="profile-display-email">...</p>
+                            <div class="badge bg-success-subtle text-success mt-2">
+                                <i class="fas fa-check-circle me-1"></i>
+                                Conta Verificada
                             </div>
                         </div>
 
-                        <div class="profile-info">
-                            <div class="row mb-2">
-                                <div class="col-4 text-muted small">Nome:</div>
-                                <div class="col-8 small fw-bold" id="profile-name">Carregando...</div>
+                        <!-- Profile Stats -->
+                        <div class="row text-center mb-3">
+                            <div class="col-4">
+                                <div class="profile-stat">
+                                    <div class="h5 mb-0 text-primary">12</div>
+                                    <small class="text-muted">Treinos</small>
+                                </div>
                             </div>
-                            <div class="row mb-2">
-                                <div class="col-4 text-muted small">Email:</div>
-                                <div class="col-8 small" id="profile-email">Carregando...</div>
+                            <div class="col-4">
+                                <div class="profile-stat">
+                                    <div class="h5 mb-0 text-success">85%</div>
+                                    <small class="text-muted">Meta</small>
+                                </div>
                             </div>
-                            <div class="row mb-2">
-                                <div class="col-4 text-muted small">Telefone:</div>
-                                <div class="col-8 small" id="profile-phone">-</div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-4 text-muted small">Nascimento:</div>
-                                <div class="col-8 small" id="profile-dob">-</div>
+                            <div class="col-4">
+                                <div class="profile-stat">
+                                    <div class="h5 mb-0 text-warning">14</div>
+                                    <small class="text-muted">Sequência</small>
+                                </div>
                             </div>
                         </div>
 
-                        <button class="btn btn-outline-primary btn-sm w-100 mt-2">
-                            <i class="fas fa-edit me-1"></i>
-                            Editar Perfil
-                        </button>
+                        <!-- Profile Details -->
+                        <div class="profile-details text-start">
+                            <div class="row mb-2 align-items-center">
+                                <div class="col-3">
+                                    <i class="fas fa-user text-muted me-1"></i>
+                                    <small class="text-muted">Nome</small>
+                                </div>
+                                <div class="col-9">
+                                    <span class="fw-medium" id="profile-name">Carregando...</span>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-2 align-items-center">
+                                <div class="col-3">
+                                    <i class="fas fa-envelope text-muted me-1"></i>
+                                    <small class="text-muted">Email</small>
+                                </div>
+                                <div class="col-9">
+                                    <span class="text-break" id="profile-email">Carregando...</span>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-2 align-items-center">
+                                <div class="col-3">
+                                    <i class="fas fa-phone text-muted me-1"></i>
+                                    <small class="text-muted">Telefone</small>
+                                </div>
+                                <div class="col-9">
+                                    <span id="profile-phone" class="text-muted">Não informado</span>
+                                    <button class="btn btn-link btn-sm p-0 ms-2" onclick="editPhone()">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-2 align-items-center">
+                                <div class="col-3">
+                                    <i class="fas fa-birthday-cake text-muted me-1"></i>
+                                    <small class="text-muted">Nascimento</small>
+                                </div>
+                                <div class="col-9">
+                                    <span id="profile-dob" class="text-muted">Não informado</span>
+                                    <button class="btn btn-link btn-sm p-0 ms-2" onclick="editBirthdate()">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-2 align-items-center">
+                                <div class="col-3">
+                                    <i class="fas fa-calendar-plus text-muted me-1"></i>
+                                    <small class="text-muted">Membro desde</small>
+                                </div>
+                                <div class="col-9">
+                                    <span id="profile-created" class="text-muted">...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Actions -->
+                        <div class="d-grid gap-2 mt-3">
+                            <button class="btn btn-primary" onclick="editProfile()">
+                                <i class="fas fa-edit me-2"></i>
+                                Editar Perfil Completo
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="downloadProfile()">
+                                <i class="fas fa-download me-2"></i>
+                                Exportar Dados
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -342,6 +487,147 @@
         </div>
     </div>
 
+    <!-- Profile Edit Modal -->
+    <div class="modal fade" id="profileEditModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content glass-effect">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-warning">
+                        <i class="fas fa-user-edit me-2"></i>
+                        Editar Perfil Completo
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="profileEditForm">
+                        <div class="row">
+                            <!-- Profile Picture Section -->
+                            <div class="col-md-4 text-center mb-4">
+                                <div class="profile-picture-section">
+                                    <img id="modal-avatar" class="rounded-circle border border-3 border-primary mb-3" 
+                                         style="width: 120px; height: 120px; object-fit: cover;"
+                                         src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=120" 
+                                         alt="Profile Picture">
+                                    <div>
+                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="changeModalPicture()">
+                                            <i class="fas fa-camera me-1"></i>
+                                            Alterar Foto
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Profile Form -->
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-user me-1 text-primary"></i>
+                                            Nome Completo
+                                        </label>
+                                        <input type="text" class="form-control" id="modal-name" placeholder="Digite seu nome completo">
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-envelope me-1 text-primary"></i>
+                                            Email
+                                        </label>
+                                        <input type="email" class="form-control" id="modal-email" readonly>
+                                        <small class="text-muted">Email não pode ser alterado</small>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-phone me-1 text-primary"></i>
+                                            Telefone
+                                        </label>
+                                        <input type="tel" class="form-control" id="modal-phone" placeholder="(11) 99999-9999">
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-birthday-cake me-1 text-primary"></i>
+                                            Data de Nascimento
+                                        </label>
+                                        <input type="date" class="form-control" id="modal-dob">
+                                    </div>
+                                    
+                                    <div class="col-12 mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-map-marker-alt me-1 text-primary"></i>
+                                            Cidade
+                                        </label>
+                                        <input type="text" class="form-control" id="modal-city" placeholder="Sua cidade">
+                                    </div>
+                                    
+                                    <div class="col-12 mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-info-circle me-1 text-primary"></i>
+                                            Sobre Você
+                                        </label>
+                                        <textarea class="form-control" id="modal-bio" rows="3" 
+                                                  placeholder="Conte um pouco sobre você, seus objetivos..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Fitness Goals Section -->
+                        <hr class="my-4">
+                        <h6 class="text-warning mb-3">
+                            <i class="fas fa-bullseye me-2"></i>
+                            Objetivos Fitness
+                        </h6>
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Objetivo Principal</label>
+                                <select class="form-select" id="modal-goal">
+                                    <option value="">Selecione...</option>
+                                    <option value="weight-loss">Perder Peso</option>
+                                    <option value="muscle-gain">Ganhar Massa</option>
+                                    <option value="maintenance">Manter Forma</option>
+                                    <option value="performance">Performance</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Nível de Experiência</label>
+                                <select class="form-select" id="modal-level">
+                                    <option value="">Selecione...</option>
+                                    <option value="beginner">Iniciante</option>
+                                    <option value="intermediate">Intermediário</option>
+                                    <option value="advanced">Avançado</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Frequência Semanal</label>
+                                <select class="form-select" id="modal-frequency">
+                                    <option value="">Selecione...</option>
+                                    <option value="2-3">2-3 vezes</option>
+                                    <option value="4-5">4-5 vezes</option>
+                                    <option value="6+">6+ vezes</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveProfile()">
+                        <i class="fas fa-save me-1"></i>
+                        Salvar Alterações
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="mt-5 py-4" style="background: rgba(0,0,0,0.1);">
         <div class="container">
@@ -415,29 +701,192 @@
                     userEmailEl.textContent = user.email;
                 }
 
-                // Update profile section with detailed information
-                const profileNameEl = document.getElementById('profile-name');
-                const profileEmailEl = document.getElementById('profile-email');
-                const profilePhoneEl = document.getElementById('profile-phone');
-                const profileDobEl = document.getElementById('profile-dob');
+                // Update ALL profile elements with enhanced information
+                updateProfileElements(user, profile);
 
-                if (profileNameEl) {
-                    profileNameEl.textContent = (profile && profile.full_name) ? profile.full_name : user.email.split('@')[0];
+                console.log('✅ Dashboard carregado com sucesso!');
+
+            } catch (error) {
+                console.error('Dashboard authentication error:', error);
+                // Redirect to login on any error
+                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
+            }
+        });
+
+        // Function to update all profile elements
+        function updateProfileElements(user, profile) {
+            // Header elements
+            const userNameHeader = document.getElementById('userNameHeader');
+            const headerAvatar = document.getElementById('header-avatar');
+            const userName = document.getElementById('userName');
+            const userEmail = document.getElementById('userEmail');
+
+            // Profile elements
+            const profileDisplayName = document.getElementById('profile-display-name');
+            const profileDisplayEmail = document.getElementById('profile-display-email');
+            const profileAvatar = document.getElementById('profile-avatar');
+            const profileName = document.getElementById('profile-name');
+            const profileEmail = document.getElementById('profile-email');
+            const profilePhone = document.getElementById('profile-phone');
+            const profileDob = document.getElementById('profile-dob');
+            const profileCreated = document.getElementById('profile-created');
+
+            const displayName = (profile && profile.full_name) ? profile.full_name : user.email.split('@')[0];
+
+            // Update header
+            if (userNameHeader) userNameHeader.textContent = displayName;
+            if (userName) userName.textContent = displayName;
+            if (userEmail) userEmail.textContent = user.email;
+
+            // Update avatars
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=F6C84E&color=000&size=100`;
+            if (headerAvatar) headerAvatar.src = avatarUrl;
+            if (profileAvatar) profileAvatar.src = avatarUrl;
+
+            // Update profile details
+            if (profileDisplayName) profileDisplayName.textContent = displayName;
+            if (profileDisplayEmail) profileDisplayEmail.textContent = user.email;
+            if (profileName) profileName.textContent = displayName;
+            if (profileEmail) profileEmail.textContent = user.email;
+            
+            if (profilePhone) {
+                if (profile && profile.phone) {
+                    profilePhone.textContent = profile.phone;
+                    profilePhone.classList.remove('text-muted');
+                } else {
+                    profilePhone.textContent = 'Não informado';
+                    profilePhone.classList.add('text-muted');
                 }
-                if (profileEmailEl) {
-                    profileEmailEl.textContent = user.email;
+            }
+            
+            if (profileDob) {
+                if (profile && profile.date_of_birth) {
+                    const dob = new Date(profile.date_of_birth);
+                    profileDob.textContent = dob.toLocaleDateString('pt-BR');
+                    profileDob.classList.remove('text-muted');
+                } else {
+                    profileDob.textContent = 'Não informado';
+                    profileDob.classList.add('text-muted');
                 }
-                if (profilePhoneEl) {
-                    profilePhoneEl.textContent = (profile && profile.phone) ? profile.phone : '-';
+            }
+
+            if (profileCreated && user.created_at) {
+                const created = new Date(user.created_at);
+                profileCreated.textContent = created.toLocaleDateString('pt-BR');
+            }
+        }
+
+        // Profile management functions
+        function changeProfilePicture() {
+            // Create file input
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    // Create preview
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const avatars = document.querySelectorAll('#profile-avatar, #header-avatar');
+                        avatars.forEach(avatar => {
+                            avatar.src = e.target.result;
+                        });
+                        
+                        // Here you would upload to your storage service
+                        console.log('📸 Nova foto selecionada:', file.name);
+                        showToast('Foto de perfil atualizada!', 'success');
+                    };
+                    reader.readAsDataURL(file);
                 }
-                if (profileDobEl) {
-                    if (profile && profile.date_of_birth) {
-                        const dob = new Date(profile.date_of_birth);
-                        profileDobEl.textContent = dob.toLocaleDateString('pt-BR');
-                    } else {
-                        profileDobEl.textContent = '-';
-                    }
-                }
+            };
+            input.click();
+        }
+
+        function editPhone() {
+            const currentPhone = document.getElementById('profile-phone').textContent;
+            const newPhone = prompt('Digite seu telefone:', currentPhone === 'Não informado' ? '' : currentPhone);
+            
+            if (newPhone !== null) {
+                // Update UI immediately
+                const phoneEl = document.getElementById('profile-phone');
+                phoneEl.textContent = newPhone || 'Não informado';
+                phoneEl.classList.toggle('text-muted', !newPhone);
+                
+                // Here you would save to database
+                console.log('📱 Telefone atualizado:', newPhone);
+                showToast('Telefone atualizado!', 'success');
+            }
+        }
+
+        function editBirthdate() {
+            const currentDob = document.getElementById('profile-dob').textContent;
+            const newDob = prompt('Digite sua data de nascimento (DD/MM/AAAA):', 
+                                  currentDob === 'Não informado' ? '' : currentDob);
+            
+            if (newDob !== null && newDob.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+                // Update UI immediately
+                const dobEl = document.getElementById('profile-dob');
+                dobEl.textContent = newDob;
+                dobEl.classList.remove('text-muted');
+                
+                // Here you would save to database
+                console.log('🎂 Data de nascimento atualizada:', newDob);
+                showToast('Data de nascimento atualizada!', 'success');
+            } else if (newDob !== null) {
+                alert('Por favor, use o formato DD/MM/AAAA');
+            }
+        }
+
+        function editProfile() {
+            alert('Funcionalidade de edição completa de perfil será implementada em breve!');
+            // Here you would open a modal or redirect to edit page
+        }
+
+        function downloadProfile() {
+            const profileData = {
+                nome: document.getElementById('profile-name').textContent,
+                email: document.getElementById('profile-email').textContent,
+                telefone: document.getElementById('profile-phone').textContent,
+                nascimento: document.getElementById('profile-dob').textContent,
+                membro_desde: document.getElementById('profile-created').textContent
+            };
+            
+            const dataStr = JSON.stringify(profileData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'perfil_garcia_builder.json';
+            link.click();
+            
+            showToast('Dados do perfil exportados!', 'success');
+        }
+
+        function scrollToProfile() {
+            document.querySelector('.profile-card').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+
+        function showToast(message, type = 'info') {
+            // Simple toast notification
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type} position-fixed`;
+            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check' : 'info'}-circle me-2"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
 
                 // Add logout functionality to auth buttons
                 const authButtons = document.getElementById('auth-buttons');
@@ -474,6 +923,210 @@
                 // Force redirect even if logout fails
                 window.location.href = 'index.html';
             }
+        }
+
+        // Profile management functions
+        function changeProfilePicture() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const avatars = document.querySelectorAll('#profile-avatar, #header-avatar');
+                        avatars.forEach(avatar => {
+                            avatar.src = e.target.result;
+                        });
+                        showToast('Foto de perfil atualizada!', 'success');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        function editPhone() {
+            const currentPhone = document.getElementById('profile-phone').textContent;
+            const newPhone = prompt('Digite seu telefone:', currentPhone === 'Não informado' ? '' : currentPhone);
+            
+            if (newPhone !== null) {
+                const phoneEl = document.getElementById('profile-phone');
+                phoneEl.textContent = newPhone || 'Não informado';
+                phoneEl.classList.toggle('text-muted', !newPhone);
+                showToast('Telefone atualizado!', 'success');
+            }
+        }
+
+        function editBirthdate() {
+            const currentDob = document.getElementById('profile-dob').textContent;
+            const newDob = prompt('Digite sua data de nascimento (DD/MM/AAAA):', 
+                                  currentDob === 'Não informado' ? '' : currentDob);
+            
+            if (newDob !== null && newDob.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+                const dobEl = document.getElementById('profile-dob');
+                dobEl.textContent = newDob;
+                dobEl.classList.remove('text-muted');
+                showToast('Data de nascimento atualizada!', 'success');
+            } else if (newDob !== null) {
+                alert('Por favor, use o formato DD/MM/AAAA');
+            }
+        }
+
+        function editProfile() {
+            // Populate modal with current data
+            const modal = document.getElementById('profileEditModal');
+            const modalAvatar = document.getElementById('modal-avatar');
+            const modalName = document.getElementById('modal-name');
+            const modalEmail = document.getElementById('modal-email');
+            const modalPhone = document.getElementById('modal-phone');
+            const modalDob = document.getElementById('modal-dob');
+            
+            // Get current values
+            const currentName = document.getElementById('profile-name').textContent;
+            const currentEmail = document.getElementById('profile-email').textContent;
+            const currentPhone = document.getElementById('profile-phone').textContent;
+            const currentDob = document.getElementById('profile-dob').textContent;
+            
+            // Set avatar
+            modalAvatar.src = document.getElementById('profile-avatar').src;
+            
+            // Set form values
+            modalName.value = currentName !== 'Carregando...' ? currentName : '';
+            modalEmail.value = currentEmail !== 'Carregando...' ? currentEmail : '';
+            modalPhone.value = currentPhone !== 'Não informado' ? currentPhone : '';
+            
+            // Convert DD/MM/YYYY to YYYY-MM-DD for date input
+            if (currentDob !== 'Não informado' && currentDob.includes('/')) {
+                const [day, month, year] = currentDob.split('/');
+                modalDob.value = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+            }
+            
+            // Show modal
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+        }
+
+        function changeModalPicture() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const modalAvatar = document.getElementById('modal-avatar');
+                        modalAvatar.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        function saveProfile() {
+            const modalName = document.getElementById('modal-name').value;
+            const modalPhone = document.getElementById('modal-phone').value;
+            const modalDob = document.getElementById('modal-dob').value;
+            const modalCity = document.getElementById('modal-city').value;
+            const modalBio = document.getElementById('modal-bio').value;
+            const modalGoal = document.getElementById('modal-goal').value;
+            const modalLevel = document.getElementById('modal-level').value;
+            const modalFrequency = document.getElementById('modal-frequency').value;
+            
+            // Update profile elements
+            if (modalName) {
+                document.getElementById('profile-name').textContent = modalName;
+                document.getElementById('profile-display-name').textContent = modalName;
+                document.getElementById('userName').textContent = modalName;
+                document.getElementById('userNameHeader').textContent = modalName;
+            }
+            
+            if (modalPhone) {
+                const phoneEl = document.getElementById('profile-phone');
+                phoneEl.textContent = modalPhone;
+                phoneEl.classList.remove('text-muted');
+            }
+            
+            if (modalDob) {
+                const dobEl = document.getElementById('profile-dob');
+                const date = new Date(modalDob);
+                dobEl.textContent = date.toLocaleDateString('pt-BR');
+                dobEl.classList.remove('text-muted');
+            }
+            
+            // Update avatars
+            const newAvatarSrc = document.getElementById('modal-avatar').src;
+            document.getElementById('profile-avatar').src = newAvatarSrc;
+            document.getElementById('header-avatar').src = newAvatarSrc;
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('profileEditModal'));
+            modal.hide();
+            
+            // Show success message
+            showToast('Perfil atualizado com sucesso!', 'success');
+            
+            // Here you would save to database
+            console.log('💾 Perfil salvo:', {
+                name: modalName,
+                phone: modalPhone,
+                dob: modalDob,
+                city: modalCity,
+                bio: modalBio,
+                goal: modalGoal,
+                level: modalLevel,
+                frequency: modalFrequency
+            });
+        }
+
+        function downloadProfile() {
+            const profileData = {
+                nome: document.getElementById('profile-name').textContent,
+                email: document.getElementById('profile-email').textContent,
+                telefone: document.getElementById('profile-phone').textContent,
+                nascimento: document.getElementById('profile-dob').textContent,
+                membro_desde: document.getElementById('profile-created').textContent
+            };
+            
+            const dataStr = JSON.stringify(profileData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'perfil_garcia_builder.json';
+            link.click();
+            
+            showToast('Dados do perfil exportados!', 'success');
+        }
+
+        function scrollToProfile() {
+            document.querySelector('.profile-card').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            const bgClass = type === 'success' ? 'alert-success' : type === 'error' ? 'alert-danger' : 'alert-info';
+            const icon = type === 'success' ? 'check' : type === 'error' ? 'exclamation' : 'info';
+            
+            toast.className = `alert ${bgClass} position-fixed`;
+            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);';
+            toast.innerHTML = `
+                <i class="fas fa-${icon}-circle me-2"></i>
+                ${message}
+                <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentElement) toast.remove();
+            }, 4000);
         }
     </script>
 

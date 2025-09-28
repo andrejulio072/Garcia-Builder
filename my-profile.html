@@ -326,16 +326,16 @@
             .profile-header {
                 padding: 1.5rem;
             }
-            
+
             .main-avatar {
                 width: 120px;
                 height: 120px;
             }
-            
+
             .metrics-grid {
                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             }
-            
+
             .tab-buttons {
                 justify-content: center;
             }
@@ -425,7 +425,7 @@
                         <i class="fas fa-user-edit"></i>
                         Personal Information
                     </h3>
-                    
+
                     <form id="basic-info-form" data-profile-section="basic">
                         <div class="row g-3">
                             <div class="col-md-6">
@@ -632,7 +632,7 @@
                         <i class="fas fa-chart-line"></i>
                         Weight History
                     </h3>
-                    
+
                     <div id="weight-chart-container">
                         <div class="alert-custom">
                             <i class="fas fa-info-circle me-2"></i>
@@ -774,7 +774,7 @@
             // Weight input change for BMI calculation
             const weightInput = document.getElementById('current_weight');
             const heightInput = document.getElementById('height');
-            
+
             if (weightInput && heightInput) {
                 [weightInput, heightInput].forEach(input => {
                     input.addEventListener('input', calculateAndDisplayBMI);
@@ -808,12 +808,12 @@
 
             // Update metric displays
             const displays = {
-                'display-weight': metrics.current_weight ? 
+                'display-weight': metrics.current_weight ?
                     `${metrics.current_weight} ${units === 'metric' ? 'kg' : 'lbs'}` : '--',
-                'display-height': metrics.height ? 
+                'display-height': metrics.height ?
                     `${metrics.height} ${units === 'metric' ? 'cm' : 'ft'}` : '--',
                 'display-bmi': calculateBMI(metrics.current_weight, metrics.height) || '--',
-                'display-body-fat': metrics.body_fat_percentage ? 
+                'display-body-fat': metrics.body_fat_percentage ?
                     `${metrics.body_fat_percentage}%` : '--%'
             };
 
@@ -826,10 +826,10 @@
         function calculateAndDisplayBMI() {
             const weight = parseFloat(document.getElementById('current_weight')?.value);
             const height = parseFloat(document.getElementById('height')?.value);
-            
+
             const bmi = calculateBMI(weight, height);
             const displayElement = document.getElementById('display-bmi');
-            
+
             if (displayElement && bmi) {
                 displayElement.textContent = bmi;
             }
@@ -837,23 +837,27 @@
 
         function calculateBMI(weight, height) {
             if (!weight || !height) return null;
-            
+
             const heightInMeters = height > 3 ? height / 100 : height;
             const bmi = weight / (heightInMeters * heightInMeters);
-            
+
             return bmi.toFixed(1);
         }
 
         async function handleLogout() {
             try {
-                if (window.supabase) {
+                if (window.supabaseClient && window.supabaseClient.auth) {
+                    await window.supabaseClient.auth.signOut();
+                } else if (window.supabase && window.supabase.auth) {
                     await window.supabase.auth.signOut();
                 }
-                localStorage.clear();
+                localStorage.removeItem('gb_current_user');
+                localStorage.removeItem('gb_remember_user');
                 window.location.href = 'login.html';
             } catch (error) {
                 console.error('Error logging out:', error);
-                localStorage.clear();
+                localStorage.removeItem('gb_current_user');
+                localStorage.removeItem('gb_remember_user');
                 window.location.href = 'login.html';
             }
         }

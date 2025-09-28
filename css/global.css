@@ -125,6 +125,7 @@ a{color:var(--text);text-decoration:none}
 .feature.pro::before{
   content:'';position:absolute;inset:-1px;border-radius:22px;
   background: conic-gradient(from 180deg, #f6c84e55, #ff9f2d33, #6bc7ff44, #f6c84e55);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor; mask-composite: exclude;
   padding:1px; pointer-events:none; filter:blur(.4px);
@@ -388,8 +389,9 @@ section#contact.section.has-bg.contact-bg {
     padding: 6px 10px;
   }
 
+  /* Keep button text visible on small screens for clarity */
   #auth-buttons .btn span {
-    display: none;
+    display: inline;
   }
 
   #auth-buttons .btn i {

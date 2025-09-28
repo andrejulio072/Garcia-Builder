@@ -13,7 +13,7 @@ class AuthGuard {
 
     addUserMenuToNavbar() {
         console.log('AuthGuard: Adding user menu to navbar');
-        const currentUser = AuthSystem.getCurrentUser();
+    const currentUser = AuthSystem.getCurrentUser();
         console.log('AuthGuard: Current user:', currentUser);
 
         // Try to find the auth-buttons container first
@@ -42,24 +42,27 @@ class AuthGuard {
         }
 
         if (currentUser) {
+            const firstName = (currentUser.name || currentUser.full_name || currentUser.email || 'User').toString().split(' ')[0];
+            const displayName = (currentUser.name || currentUser.full_name || currentUser.email || 'User');
+            const displayEmail = currentUser.email || '';
             // User is logged in - show user menu
             userMenu.innerHTML = `
                 <div class="dropdown">
                     <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
                         <i class="fas fa-user-circle me-1"></i>
-                        <span class="d-none d-sm-inline">${currentUser.name.split(' ')[0]}</span>
+                        <span class="d-none d-sm-inline">${firstName}</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
                             <span class="dropdown-item-text">
-                                <div class="fw-bold">${currentUser.name}</div>
-                                <small class="text-muted">${currentUser.email}</small>
+                                <div class="fw-bold">${displayName}</div>
+                                <small class="text-muted">${displayEmail}</small>
                             </span>
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>${this.getTranslation('nav.dashboard') || 'Dashboard'}</a></li>
                         <li><a class="dropdown-item" href="my-profile.html"><i class="fas fa-user me-2"></i>${this.getTranslation('nav.profile') || 'My Profile'}</a></li>
-                        <li><a class="dropdown-item" href="profile-manager.html"><i class="fas fa-user-cog me-2"></i>${this.getTranslation('nav.profile_manager') || 'Profile Manager'}</a></li>
+
                         <li><hr class="dropdown-divider"></li>
                         <li><button class="dropdown-item text-danger" onclick="AuthSystem.logout()"><i class="fas fa-sign-out-alt me-2"></i>${this.getTranslation('nav.logout') || 'Logout'}</button></li>
                     </ul>
@@ -101,7 +104,7 @@ class AuthGuard {
 
     addLoginPrompts() {
         // Add login prompts to pricing CTAs
-        const pricingButtons = document.querySelectorAll('.pricing-card .btn-primary');
+    const pricingButtons = document.querySelectorAll('.pricing-card .btn-primary');
 
         pricingButtons.forEach(button => {
             if (!AuthSystem.isLoggedIn()) {
@@ -110,8 +113,8 @@ class AuthGuard {
 
                 // Update button text
                 const buttonText = button.querySelector('span');
-                if (buttonText && !buttonText.textContent.includes('Cadastre-se')) {
-                    buttonText.textContent = 'Cadastre-se para Começar';
+                if (buttonText && !/Sign up/i.test(buttonText.textContent)) {
+                    buttonText.textContent = 'Sign up to start';
                 }
             }
         });
@@ -136,14 +139,14 @@ class AuthGuard {
         return `
             <div class="text-center p-4 border border-warning rounded" style="background: rgba(246, 200, 78, 0.1);">
                 <i class="fas fa-lock text-warning display-4 mb-3"></i>
-                <h4 class="text-warning mb-3">Conteúdo Restrito</h4>
-                <p class="text-muted mb-3">Faça login para acessar este conteúdo exclusivo</p>
+                <h4 class="text-warning mb-3">Restricted Content</h4>
+                <p class="text-muted mb-3">Please log in to access this exclusive content</p>
                 <div class="d-flex gap-2 justify-content-center">
                     <a href="login.html?action=login" class="btn btn-outline-warning btn-sm">
-                        <i class="fas fa-sign-in-alt me-1"></i>Fazer Login
+                        <i class="fas fa-sign-in-alt me-1"></i>Login
                     </a>
                     <a href="login.html?action=register" class="btn btn-warning btn-sm">
-                        <i class="fas fa-user-plus me-1"></i>Criar Conta
+                        <i class="fas fa-user-plus me-1"></i>Create Account
                     </a>
                 </div>
             </div>
@@ -163,17 +166,17 @@ class AuthGuard {
                     <div class="modal-content">
                         <div class="modal-body text-center p-4">
                             <i class="fas fa-user-circle text-warning display-4 mb-3"></i>
-                            <h4>Login Necessário</h4>
-                            <p class="text-muted">Você precisa fazer login para acessar esta funcionalidade</p>
+                            <h4>Login Required</h4>
+                            <p class="text-muted">You need to log in to access this feature</p>
                             <div class="d-flex gap-2 justify-content-center mt-4">
                                 <a href="login.html?action=login&redirect=${encodeURIComponent(window.location.pathname)}" class="btn btn-outline-primary">
-                                    <i class="fas fa-sign-in-alt me-1"></i>Fazer Login
+                                    <i class="fas fa-sign-in-alt me-1"></i>Login
                                 </a>
                                 <a href="login.html?action=register&redirect=${encodeURIComponent(window.location.pathname)}" class="btn btn-primary">
-                                    <i class="fas fa-user-plus me-1"></i>Criar Conta
+                                    <i class="fas fa-user-plus me-1"></i>Create Account
                                 </a>
                             </div>
-                            <button type="button" class="btn btn-sm btn-link text-muted mt-3" data-bs-dismiss="modal">Fechar</button>
+                            <button type="button" class="btn btn-sm btn-link text-muted mt-3" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>

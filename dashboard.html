@@ -181,11 +181,11 @@
             .dashboard-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .welcome-text {
                 text-align: center;
             }
-            
+
             .user-info {
                 justify-content: center;
             }
@@ -430,7 +430,7 @@
                         <i class="fas fa-clock"></i>
                         Recent Activity
                     </h3>
-                    
+
                     <div id="recent-activity">
                         <div class="empty-state">
                             <i class="fas fa-history"></i>
@@ -448,7 +448,7 @@
                         <i class="fas fa-target"></i>
                         Your Goals
                     </h3>
-                    
+
                     <div id="user-goals">
                         <div class="empty-state">
                             <i class="fas fa-bullseye"></i>
@@ -469,7 +469,7 @@
                             <i class="fas fa-chart-bar"></i>
                             Progress Summary
                         </h3>
-                        
+
                         <div class="row text-center">
                             <div class="col-md-3 col-6 mb-3">
                                 <div class="stats-number" style="font-size: 1.5rem;" id="total-sessions">0</div>
@@ -530,10 +530,10 @@
 
                 // Update recent activity
                 updateRecentActivity(profileData);
-                
+
                 // Update goals
                 updateGoalsDisplay(profileData);
-                
+
                 // Update trends
                 updateTrends(profileData);
 
@@ -640,15 +640,19 @@
 
         async function handleLogout() {
             try {
-                if (window.supabase) {
+                if (window.supabaseClient && window.supabaseClient.auth) {
+                    await window.supabaseClient.auth.signOut();
+                } else if (window.supabase && window.supabase.auth) {
                     await window.supabase.auth.signOut();
                 }
-                localStorage.clear();
+                localStorage.removeItem('gb_current_user');
+                localStorage.removeItem('gb_remember_user');
                 window.location.href = 'login.html';
             } catch (error) {
                 console.error('Error logging out:', error);
                 // Force logout anyway
-                localStorage.clear();
+                localStorage.removeItem('gb_current_user');
+                localStorage.removeItem('gb_remember_user');
                 window.location.href = 'login.html';
             }
         }

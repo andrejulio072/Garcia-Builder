@@ -9,7 +9,8 @@
       // Check authentication
       currentUser = await getCurrentUser();
       if (!currentUser) {
-        window.location.href = 'login.html';
+        const ret = encodeURIComponent(window.location.pathname + window.location.search);
+        window.location.href = `login.html?redirect=${ret}`;
         return;
       }
 
@@ -32,17 +33,15 @@
   // Get current user
   const getCurrentUser = async () => {
     try {
-      // Check Supabase auth first
-      if (window.supabase) {
-        const { data: { user } } = await window.supabase.auth.getUser();
+      // Prefer Supabase client if available
+      if (window.supabaseClient && window.supabaseClient.auth) {
+        const { data: { user } } = await window.supabaseClient.auth.getUser();
         if (user) return user;
       }
 
-      // Fallback to localStorage
-      const userData = localStorage.getItem('garcia_user');
-      if (userData) {
-        return JSON.parse(userData);
-      }
+      // Fallback: auth system might have stored a normalized current user
+      const stored = localStorage.getItem('gb_current_user') || localStorage.getItem('garcia_user');
+      if (stored) return JSON.parse(stored);
 
       return null;
     } catch (error) {
@@ -114,7 +113,7 @@
       };
 
       // Try to load from Supabase
-      if (window.supabase) {
+      if (window.supabaseClient) {
         await loadFromSupabase();
       }
 
@@ -131,7 +130,7 @@
   const loadFromSupabase = async () => {
     try {
       // Load basic profile
-      const { data: profile, error: profileError } = await window.supabase
+      const { data: profile, error: profileError } = await window.supabaseClient
         .from('user_profiles')
         .select('*')
         .eq('user_id', currentUser.id)
@@ -142,7 +141,7 @@
       }
 
       // Load body metrics
-      const { data: metrics, error: metricsError } = await window.supabase
+      const { data: metrics, error: metricsError } = await window.supabaseClient
         .from('body_metrics')
         .select('*')
         .eq('user_id', currentUser.id)
@@ -154,7 +153,7 @@
       }
 
       // Load preferences
-      const { data: prefs, error: prefsError } = await window.supabase
+      const { data: prefs, error: prefsError } = await window.supabaseClient
         .from('user_preferences')
         .select('*')
         .eq('user_id', currentUser.id)
@@ -191,7 +190,7 @@
       }
 
       // Save to Supabase
-      if (window.supabase) {
+      if (window.supabaseClient) {
         await saveToSupabase(section);
       }
 
@@ -211,7 +210,7 @@
   const saveToSupabase = async (section) => {
     try {
       if (section === 'basic' || !section) {
-        const { error } = await window.supabase
+        const { error } = await window.supabaseClient
           .from('user_profiles')
           .upsert({
             user_id: currentUser.id,
@@ -222,7 +221,7 @@
       }
 
       if (section === 'body_metrics' || !section) {
-        const { error } = await window.supabase
+        const { error } = await window.supabaseClient
           .from('body_metrics')
           .upsert({
             user_id: currentUser.id,
@@ -233,7 +232,7 @@
       }
 
       if (section === 'preferences' || !section) {
-        const { error } = await window.supabase
+        const { error } = await window.supabaseClient
           .from('user_preferences')
           .upsert({
             user_id: currentUser.id,
@@ -288,7 +287,8 @@
       'user-bio': profileData.basic.bio || 'No bio added yet',
       'user-goals': profileData.basic.goals.join(', ') || 'No goals set',
       'user-experience': profileData.basic.experience_level || 'Not specified',
-      'member-since': formatDate(profileData.basic.joined_date)
+      'member-since': formatDate(profileData.basic.joined_date),
+      'last-login': formatDate(profileData.basic.last_login)
     };
 
     Object.entries(elements).forEach(([id, value]) => {
@@ -579,7 +579,9 @@
     getProfileData: () => profileData,
     saveProfileData,
     updateBasicInfoDisplay,
-    updateDashboardStats
+    updateDashboardStats,
+    handleFormSubmit,
+    handleSaveProfile
   };
 
   // Auto-initialize if DOM is ready

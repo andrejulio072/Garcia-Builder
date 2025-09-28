@@ -158,9 +158,9 @@ class AuthSystem {
 
         // Update text
         const strengthMessages = {
-            weak: 'Senha fraca',
-            medium: 'Senha média',
-            strong: 'Senha forte'
+            weak: 'Weak password',
+            medium: 'Medium strength',
+            strong: 'Strong password'
         };
 
         strengthText.textContent = strengthMessages[strength] || '';
@@ -171,7 +171,7 @@ class AuthSystem {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!email || !emailRegex.test(email)) {
-            this.setFieldError(input, 'Por favor, insira um email válido');
+            this.setFieldError(input, 'Please enter a valid email address');
             return false;
         }
 
@@ -184,7 +184,7 @@ class AuthSystem {
         const confirm = confirmInput.value;
 
         if (confirm && password !== confirm) {
-            this.setFieldError(confirmInput, 'As senhas não coincidem');
+            this.setFieldError(confirmInput, 'Passwords do not match');
             return false;
         }
 
@@ -257,7 +257,7 @@ class AuthSystem {
 
         // Basic validation
         if (!email || !password) {
-            this.showError('Por favor, preencha todos os campos');
+            this.showError('Please fill in all fields');
             return;
         }
 
@@ -266,43 +266,66 @@ class AuthSystem {
         this.setLoadingState(submitBtn, true);
 
         try {
-            // Simulate API delay
-            await this.delay(1000);
+            // Prefer Supabase auth when available
+            if (window.supabaseClient && window.supabaseClient.auth) {
+                const { data, error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
+                if (error) throw new Error(error.message || 'Login failed');
 
-            // Find user
-            const user = this.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+                const supaUser = data.user;
+                // Normalize and persist user locally for cross-script UI
+                this.currentUser = {
+                    id: supaUser?.id,
+                    name: supaUser?.user_metadata?.full_name || supaUser?.email,
+                    full_name: supaUser?.user_metadata?.full_name || '',
+                    email: supaUser?.email,
+                    registeredAt: supaUser?.created_at || new Date().toISOString(),
+                    lastLogin: new Date().toISOString()
+                };
+                localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
 
-            if (!user) {
-                throw new Error('Email não encontrado');
+                // Best-effort: upsert user profile record in Supabase
+                try {
+                    await window.supabaseClient
+                      .from('user_profiles')
+                      .upsert({
+                        user_id: supaUser.id,
+                        email: supaUser.email,
+                        full_name: supaUser.user_metadata?.full_name || '',
+                        joined_date: supaUser.created_at || new Date().toISOString(),
+                        last_login: new Date().toISOString()
+                      });
+                } catch (e) {
+                    console.warn('Profile upsert skipped:', e?.message || e);
+                }
+            } else {
+                // Fallback: local auth
+                // Simulate API delay
+                await this.delay(500);
+                const user = this.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+                if (!user) {
+                    throw new Error('Email not found');
+                }
+                if (user.password !== password) {
+                    throw new Error('Incorrect password');
+                }
+                user.lastLogin = new Date().toISOString();
+                this.saveUsers();
+                this.currentUser = {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    registeredAt: user.registeredAt,
+                    lastLogin: user.lastLogin
+                };
+                localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
             }
-
-            // Check password (in production, use proper hashing)
-            if (user.password !== password) {
-                throw new Error('Senha incorreta');
-            }
-
-            // Update last login
-            user.lastLogin = new Date().toISOString();
-            this.saveUsers();
-
-            // Set current user
-            this.currentUser = {
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                registeredAt: user.registeredAt,
-                lastLogin: user.lastLogin
-            };
-
-            // Save to localStorage
-            localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
 
             if (rememberMe) {
                 localStorage.setItem('gb_remember_user', email);
             }
 
             // Show success
-            this.showSuccess('Login realizado com sucesso!', 'Redirecionando...');
+            this.showSuccess('Login successful!', 'Redirecting...');
 
             // Redirect after success
             setTimeout(() => {
@@ -342,28 +365,22 @@ class AuthSystem {
 
         // Validation
         if (!name || !email || !password || !confirmPassword) {
-            this.showError('Por favor, preencha todos os campos');
+            this.showError('Please fill out all fields');
             return;
         }
 
         if (password.length < 6) {
-            this.showError('A senha deve ter pelo menos 6 caracteres');
+            this.showError('Password must be at least 6 characters');
             return;
         }
 
         if (password !== confirmPassword) {
-            this.showError('As senhas não coincidem');
+            this.showError('Passwords do not match');
             return;
         }
 
         if (!agreeTerms) {
-            this.showError('Você deve concordar com os termos de uso');
-            return;
-        }
-
-        // Check if email already exists
-        if (this.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-            this.showError('Este email já está cadastrado');
+            this.showError('You must agree to the terms of use');
             return;
         }
 
@@ -372,40 +389,65 @@ class AuthSystem {
         this.setLoadingState(submitBtn, true);
 
         try {
-            // Simulate API delay
-            await this.delay(1500);
+            // Prefer Supabase sign up when available (sends verification email)
+            if (window.supabaseClient && window.supabaseClient.auth) {
+                const origin = window.location.origin;
+                const isLocal = origin.includes('localhost') || origin.includes('127.0.0.1');
+                const emailRedirectTo = isLocal
+                    ? `${origin}/dashboard.html`
+                    : `https://andrejulio072.github.io/Garcia-Builder/dashboard.html`;
 
-            // Create new user
+                const { data, error } = await window.supabaseClient.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        emailRedirectTo,
+                        data: {
+                            full_name: name,
+                            phone: document.getElementById('registerPhone')?.value || '',
+                            date_of_birth: document.getElementById('registerDob')?.value || ''
+                        }
+                    }
+                });
+
+                if (error) throw new Error(error.message || 'Registration failed');
+
+                // Save email for convenience
+                localStorage.setItem('gb_remember_user', email);
+                this.showSuccess('Account created successfully!', 'Check your email to verify your account.');
+                // Switch to login form for when user returns
+                setTimeout(() => this.showForm('login'), 800);
+                return;
+            }
+
+            // Fallback: local registration
+            await this.delay(800);
+            if (this.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+                this.showError('This email is already registered');
+                return;
+            }
             const newUser = {
                 id: this.generateId(),
                 name,
                 email: email.toLowerCase(),
-                password, // In production, hash this!
+                password,
                 registeredAt: new Date().toISOString(),
                 lastLogin: null
             };
-
-            // Add to users array
             this.users.push(newUser);
             this.saveUsers();
-
-            // Show success and auto-login
-            this.showSuccess('Conta criada com sucesso!', 'Fazendo login automaticamente...');
-
-            // Auto-login
+            this.showSuccess('Account created successfully!', 'Signing you in...');
             setTimeout(() => {
                 document.getElementById('loginEmail').value = email;
                 document.getElementById('loginPassword').value = password;
                 this.showForm('login');
-
-                // Trigger login after form switch
                 setTimeout(() => {
                     document.getElementById('loginFormElement').dispatchEvent(new Event('submit'));
                 }, 300);
-            }, 1500);
+            }, 800);
 
         } catch (error) {
-            this.showError('Erro ao criar conta: ' + error.message);
+            this.showError('Error creating account: ' + error.message);
         } finally {
             this.setLoadingState(submitBtn, false);
         }
@@ -457,7 +499,7 @@ class AuthSystem {
     }
 
     showError(message) {
-        document.getElementById('errorTitle').textContent = 'Erro!';
+        document.getElementById('errorTitle').textContent = 'Error!';
         document.getElementById('errorMessage').textContent = message;
 
         const modal = new bootstrap.Modal(document.getElementById('errorModal'));
@@ -482,17 +524,29 @@ class AuthSystem {
 
     // Public methods for external use
     static getCurrentUser() {
-        return JSON.parse(localStorage.getItem('gb_current_user') || 'null');
+        // Prefer local cached user for sync speed
+        const cached = JSON.parse(localStorage.getItem('gb_current_user') || 'null');
+        return cached;
     }
 
     static isLoggedIn() {
         return !!AuthSystem.getCurrentUser();
     }
 
-    static logout() {
-        localStorage.removeItem('gb_current_user');
-        localStorage.removeItem('gb_remember_user');
-        window.location.href = 'login.html';
+    static async logout() {
+        try {
+            if (window.supabaseClient && window.supabaseClient.auth) {
+                await window.supabaseClient.auth.signOut();
+            } else if (window.supabase && window.supabase.auth) {
+                await window.supabase.auth.signOut();
+            }
+        } catch (e) {
+            console.warn('Supabase signOut error (ignored):', e?.message || e);
+        } finally {
+            localStorage.removeItem('gb_current_user');
+            localStorage.removeItem('gb_remember_user');
+            window.location.href = 'login.html';
+        }
     }
 
     static requireAuth() {
@@ -661,6 +715,67 @@ function showAuthMessage(message, type = 'info') {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 Inicializando sistema de autenticação...');
     window.authSystem = new AuthSystem();
+
+    // Default language to English if unset
+    const lang = localStorage.getItem('gb_language') || 'en';
+    try {
+        document.getElementById('currentLang').textContent = (lang || 'en').toUpperCase();
+    } catch {}
+    if (typeof applyTranslations === 'function') {
+        applyTranslations(lang);
+    }
+
+    // Sync Supabase session user to local cache so other scripts (auth-guard) see it
+    (async () => {
+        try {
+            if (window.supabaseClient && window.supabaseClient.auth) {
+                const { data } = await window.supabaseClient.auth.getUser();
+                const u = data?.user;
+                if (u) {
+                    const normalized = {
+                        id: u.id,
+                        name: u.user_metadata?.full_name || u.email,
+                        full_name: u.user_metadata?.full_name || '',
+                        email: u.email,
+                        registeredAt: u.created_at || new Date().toISOString(),
+                        lastLogin: new Date().toISOString()
+                    };
+                    localStorage.setItem('gb_current_user', JSON.stringify(normalized));
+                }
+
+                // Listen for auth state changes (OAuth redirects, logout in other tabs)
+                window.supabaseClient.auth.onAuthStateChange(async (event, session) => {
+                    try {
+                        if (event === 'SIGNED_IN' && session?.user) {
+                            const su = session.user;
+                            const norm = {
+                                id: su.id,
+                                name: su.user_metadata?.full_name || su.email,
+                                full_name: su.user_metadata?.full_name || '',
+                                email: su.email,
+                                registeredAt: su.created_at || new Date().toISOString(),
+                                lastLogin: new Date().toISOString()
+                            };
+                            localStorage.setItem('gb_current_user', JSON.stringify(norm));
+
+                            // If on login page, redirect to intended destination
+                            if (window.location.pathname.includes('login.html')) {
+                                const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'index.html';
+                                window.location.replace(redirectUrl);
+                            }
+                        }
+                        if (event === 'SIGNED_OUT') {
+                            localStorage.removeItem('gb_current_user');
+                        }
+                    } catch (e) {
+                        console.warn('onAuthStateChange handler error:', e?.message || e);
+                    }
+                });
+            }
+        } catch (e) {
+            console.warn('Supabase getUser failed:', e?.message || e);
+        }
+    })();
 
     // Setup social login - aguardar um pouco para garantir que tudo carregou
     setTimeout(() => {

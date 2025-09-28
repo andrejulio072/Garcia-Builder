@@ -34,7 +34,10 @@
 
   // Initialize currency system
   const init = () => {
-    const currencySelect = document.getElementById('currency-select');
+    // Support multiple selectors (navbar + legacy)
+    const navSelect = document.getElementById('currency-select-nav');
+    const legacySelect = document.getElementById('currency-select');
+    const currencySelect = navSelect || legacySelect;
     if (!currencySelect) return;
 
     // Load saved currency preference
@@ -45,7 +48,18 @@
     }
 
     // Add change listener
-    currencySelect.addEventListener('change', handleCurrencyChange);
+    const onChange = (e) => handleCurrencyChange(e);
+    currencySelect.addEventListener('change', onChange);
+    if (navSelect && legacySelect) {
+      navSelect.addEventListener('change', (e) => {
+        legacySelect.value = e.target.value;
+        handleCurrencyChange(e);
+      });
+      legacySelect.addEventListener('change', (e) => {
+        navSelect.value = e.target.value;
+        handleCurrencyChange(e);
+      });
+    }
 
     // Initial conversion
     updatePrices();
@@ -85,7 +99,7 @@
   // Show loading indicator
   const showLoading = (show) => {
     isLoading = show;
-    const select = document.getElementById('currency-select');
+    const select = document.getElementById('currency-select-nav') || document.getElementById('currency-select');
     const loadingIndicator = document.querySelector('.currency-loading');
 
     if (show) {
@@ -108,7 +122,7 @@
     const pricingGrid = document.getElementById('pricingGrid');
     if (!pricingGrid) return;
 
-    const symbol = currencySymbols[currentCurrency];
+  const symbol = currencySymbols[currentCurrency] || '';
     const rate = exchangeRates[currentCurrency];
 
     // Update plan prices

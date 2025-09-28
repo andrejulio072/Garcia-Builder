@@ -93,6 +93,12 @@
 // Função para lidar com seleção de planos
 async function handlePlanSelection(planKey, planName, planPrice, buttonElement) {
   try {
+    // Attach any active discount (applied at checkout only)
+    let activeDiscount = null;
+    try {
+      activeDiscount = JSON.parse(localStorage.getItem('active-discount') || 'null');
+    } catch {}
+
     // 1) Opção 1: Payment Links (sem backend)
     if (window.PAYMENT_LINKS && window.PAYMENT_LINKS[planKey]) {
       // feedback opcional no botão
@@ -106,7 +112,12 @@ async function handlePlanSelection(planKey, planName, planPrice, buttonElement) 
         }, 2000);
       }
       // abre o Stripe Payment Link (página hospedada pelo Stripe)
-      window.open(window.PAYMENT_LINKS[planKey], '_blank', 'noopener,noreferrer');
+      let url = window.PAYMENT_LINKS[planKey];
+      if (activeDiscount && activeDiscount.code) {
+        const separator = url.includes('?') ? '&' : '?';
+        url += `${separator}discount=${encodeURIComponent(activeDiscount.code)}`;
+      }
+      window.open(url, '_blank', 'noopener,noreferrer');
       return;
     }
 
@@ -133,7 +144,8 @@ async function handlePlanSelection(planKey, planName, planPrice, buttonElement) 
         planName: planName,
         customerEmail: getUserEmail && getUserEmail(),
         successUrl: window.location.origin + '/success.html',
-        cancelUrl: window.location.origin + '/pricing.html'
+        cancelUrl: window.location.origin + '/pricing.html',
+        discountCode: activeDiscount?.code || undefined
       })
     });
 

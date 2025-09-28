@@ -48,8 +48,8 @@
       e.target.value = e.target.value.toUpperCase();
     });
 
-    // Store original prices
-    storeOriginalPrices();
+  // Store original prices (kept for potential future UI reference)
+  storeOriginalPrices();
 
     console.log('Discount system initialized');
   };
@@ -87,8 +87,11 @@
     setTimeout(() => {
       if (discountCodes[code]) {
         currentDiscount = { code, ...discountCodes[code] };
-        applyDiscountToPrices();
-        showDiscountResult(`✅ ${discountCodes[code].description} applied!`, 'success');
+        // Persist to localStorage; pricing cards remain unchanged. Discount will be applied at checkout only.
+        try {
+          localStorage.setItem('active-discount', JSON.stringify(currentDiscount));
+        } catch {}
+        showDiscountResult(`✅ ${discountCodes[code].description} will be applied at checkout.`, 'success');
 
         // Analytics event
         if (window.gtag) {
@@ -116,74 +119,17 @@
   };
 
   const applyDiscountToPrices = () => {
-    const pricingGrid = document.getElementById('pricingGrid');
-    if (!pricingGrid || !currentDiscount) return;
-
-    pricingGrid.querySelectorAll('[data-plan-key]').forEach(button => {
-      const planKey = button.getAttribute('data-plan-key');
-      const priceCard = button.closest('.price');
-      const priceTag = priceCard.querySelector('.tag');
-
-      if (!priceTag || !originalPrices[planKey]) return;
-
-      const originalPriceText = originalPrices[planKey];
-      const priceMatch = originalPriceText.match(/[\d,]+/);
-      if (!priceMatch) return;
-
-      const originalPrice = parseInt(priceMatch[0].replace(/,/g, ''));
-      let discountedPrice;
-
-      if (currentDiscount.type === 'percentage') {
-        discountedPrice = Math.round(originalPrice * (1 - currentDiscount.value / 100));
-      } else {
-        discountedPrice = Math.max(0, originalPrice - currentDiscount.value);
-      }
-
-      // Format prices
-      const symbol = originalPriceText.charAt(0);
-      const currency = window.CurrencyConverter?.getCurrentCurrency() || 'EUR';
-      const formatter = getNumberFormatter(currency);
-
-      const formattedOriginal = `${symbol}${formatter.format(originalPrice)}`;
-      const formattedDiscounted = `${symbol}${formatter.format(discountedPrice)}`;
-
-      // Update display
-      const periodText = priceTag.querySelector('span').textContent;
-      priceTag.innerHTML = `
-        <span class="original-price">${formattedOriginal}</span>
-        <span class="discounted-price">${formattedDiscounted}</span>
-        <span style="font-size:16px">${periodText}</span>
-      `;
-
-      // Add visual effect
-      priceCard.classList.add('discounted');
-
-      // Update button data
-      button.setAttribute('data-plan-price', formattedDiscounted);
-      button.setAttribute('data-discount-applied', currentDiscount.code);
-    });
+    // Deprecated: prices no longer change on the cards. Kept for backward compatibility.
+    return;
   };
 
   const removeDiscount = () => {
     const pricingGrid = document.getElementById('pricingGrid');
     if (!pricingGrid) return;
 
-    pricingGrid.querySelectorAll('[data-plan-key]').forEach(button => {
-      const planKey = button.getAttribute('data-plan-key');
-      const priceCard = button.closest('.price');
-      const priceTag = priceCard.querySelector('.tag');
-
-      if (!priceTag || !originalPrices[planKey]) return;
-
-      const periodText = priceTag.querySelector('span').textContent;
-      priceTag.innerHTML = `${originalPrices[planKey]}<span style="font-size:16px">${periodText}</span>`;
-
-      priceCard.classList.remove('discounted');
-      button.removeAttribute('data-discount-applied');
-      button.setAttribute('data-plan-price', originalPrices[planKey]);
-    });
-
+    // Only clear stored discount
     currentDiscount = null;
+    try { localStorage.removeItem('active-discount'); } catch {}
   };
 
   const showDiscountResult = (message, type) => {

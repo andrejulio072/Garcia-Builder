@@ -109,7 +109,7 @@
   }
 
   .currency-select-input {
-    max-width: 300px;
+    max-width: 220px;
     margin: 0 auto;
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(102, 126, 234, 0.3);
@@ -258,7 +258,19 @@
   <!-- Auth buttons will be dynamically inserted here by auth-guard.js -->
   <div id="auth-buttons"></div>
 
-  <div class="lang"><select id="lang-select"><option value="en">EN</option><option value="pt">PT</option><option value="es">ES</option></select></div>
+  <div class="lang" style="display:flex; gap:.5rem; align-items:center;">
+    <div class="currency-nav">
+      <select id="currency-select-nav" class="currency-select-input" title="Currency">
+        <option value="GBP" selected>£ British Pound (GBP)</option>
+        <option value="EUR">€ Euro (EUR)</option>
+        <option value="USD">$ US Dollar (USD)</option>
+        <option value="BRL">R$ Brazilian Real (BRL)</option>
+        <option value="CAD">C$ Canadian Dollar (CAD)</option>
+        <option value="AUD">A$ Australian Dollar (AUD)</option>
+      </select>
+    </div>
+    <select id="lang-select"><option value="en">EN</option><option value="pt">PT</option><option value="es">ES</option></select>
+  </div>
 </div></nav>
 
 <section class="section">
@@ -266,36 +278,8 @@
     <h1 class="title-gradient text-glow" data-i18n="pricing.title">Pricing</h1>
     <p class="subtitle" data-i18n="pricing.subtitle">Choose your path to transformation. All plans include Trainerize app, WhatsApp support, and weekly check-ins.</p>
 
-    <!-- Currency Selector -->
-    <div class="currency-selector text-center mb-4">
-      <label for="currency-select" class="form-label text-muted">View prices in:</label>
-      <select id="currency-select" class="form-select currency-select-input">
-        <option value="GBP" selected>�� British Pound (GBP)</option>
-        <option value="EUR">�� Euro (EUR)</option>
-        <option value="USD">�� US Dollar (USD)</option>
-        <option value="BRL">🇧🇷 Brazilian Real (BRL)</option>
-        <option value="CAD">🇨🇦 Canadian Dollar (CAD)</option>
-        <option value="AUD">🇦🇺 Australian Dollar (AUD)</option>
-      </select>
-    </div>
+    <!-- Currency Selector moved to navbar -->
 
-    <!-- Discount Code Section -->
-    <div class="discount-section text-center mb-4">
-      <button class="btn btn-outline-light" id="show-discount-form" type="button">
-        🎁 Have a discount code?
-      </button>
-      <div class="discount-form mt-3" id="discount-form" style="display: none;">
-        <div class="row justify-content-center">
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="input-group">
-              <input type="text" class="form-control discount-input" id="discount-code" placeholder="Enter discount code" maxlength="20">
-              <button class="btn btn-gold" type="button" id="apply-discount">Apply</button>
-            </div>
-            <div class="discount-result mt-2" id="discount-result"></div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <div id="pricingGrid" class="price-grid mt-3"></div>
 
@@ -318,6 +302,28 @@
       </div>
     </div>
   </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="container">
+      <div class="discount-section text-center mb-4">
+        <button class="btn btn-outline-light" id="show-discount-form" type="button">
+          🎁 Have a discount code?
+        </button>
+        <div class="discount-form mt-3" id="discount-form" style="display: none;">
+          <div class="row justify-content-center">
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="input-group">
+                <input type="text" class="form-control discount-input" id="discount-code" placeholder="Enter discount code" maxlength="20">
+                <button class="btn btn-gold" type="button" id="apply-discount">Apply</button>
+              </div>
+              <div class="discount-result mt-2" id="discount-result"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </section>
 
 <hr class="hr-shine">

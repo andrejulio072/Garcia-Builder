@@ -236,7 +236,7 @@ class TransformationsManager {
 
         // Basic transformation stats
         let basicStats = '<div class="row mb-4"><div class="col-12"><h6 class="text-warning mb-3"><i class="fas fa-chart-bar me-2"></i>Transformation Results</h6></div>';
-        
+
         if (card.dataset.age) {
             basicStats += `<div class="col-6 mb-2"><i class="fas fa-birthday-cake text-warning me-2"></i>Age: ${card.dataset.age}</div>`;
         }

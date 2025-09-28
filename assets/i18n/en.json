@@ -1,0 +1,4 @@
+{
+  "nav": {"home":"Home","about":"About","trans":"Transformations","testi":"Testimonials","pricing":"Pricing","faq":"FAQ","contact":"Contact","programs":"Programs","back_to_site":"Back to Site","login":"Login","register":"Register","logout":"Logout","profile":"My Profile","dashboard":"Dashboard","lang":{"en":"EN","pt":"PT","es":"ES"}},
+  "profile": {"title":"My Profile","basic":"Basic Info","metrics":"Body Metrics","progress":"Progress","goals":"Goals","settings":"Settings","schedule":"Schedule","sessions":"Sessions","files":"Files","nutrition":"Nutrition","workouts":"Workouts"}
+}

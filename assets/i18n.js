@@ -989,12 +989,52 @@
   const KEY = "gb_lang";
   const clamp = (l) => (l==="en"||l==="pt"||l==="es") ? l : "en";
 
+  // Cache of external language files already loaded
+  const LOADED = { en: true }; // built-in EN exists; others will be fetched on demand
+
+  // Deep merge utility (minimal) to merge external JSON over built-ins
+  function mergeDeep(target, source) {
+    if (!source || typeof source !== 'object') return target;
+    Object.keys(source).forEach(key => {
+      const srcVal = source[key];
+      const tgtVal = target ? target[key] : undefined;
+      if (srcVal && typeof srcVal === 'object' && !Array.isArray(srcVal)) {
+        target[key] = mergeDeep(tgtVal || {}, srcVal);
+      } else {
+        target[key] = srcVal;
+      }
+    });
+    return target;
+  }
+
+  async function ensureLangLoaded(lang) {
+    const l = clamp(lang);
+    if (LOADED[l]) return;
+    try {
+      const url = `assets/i18n/${l}.json`;
+      const res = await fetch(url, { cache: 'no-cache' });
+      if (res.ok) {
+        const json = await res.json();
+        DICTS[l] = mergeDeep(DICTS[l] || {}, json);
+        LOADED[l] = true;
+      } else {
+        // If fetch fails, mark as loaded to avoid repeated fetches this session
+        LOADED[l] = true;
+      }
+    } catch (e) {
+      // Network or parsing issue — fall back to built-in
+      LOADED[l] = true;
+      // Optional: console.warn('i18n load failed for', l, e);
+    }
+  }
+
   function getLang() {
     try { return clamp(localStorage.getItem(KEY) || "en"); } catch { return "en"; }
   }
-  function setLang(l) {
+  async function setLang(l) {
     const lang = clamp(l);
     try { localStorage.setItem(KEY, lang); } catch {}
+    await ensureLangLoaded(lang);
     apply(lang);
     // Notify listeners (e.g., FAQ page) that language changed
     try { document.dispatchEvent(new Event('languageChanged')); } catch {}
@@ -1032,9 +1072,13 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     const lang = getLang(); // EN by default
-    apply(lang);
+    // Load external dict (if any) then apply
+    (async () => {
+      await ensureLangLoaded(lang);
+      apply(lang);
+    })();
     const sel = document.getElementById('lang-select');
-    if (sel) sel.addEventListener('change', () => setLang(sel.value));
+    if (sel) sel.addEventListener('change', () => { setLang(sel.value); });
   });
 
   // Expose APIs and raw dictionaries for legacy consumers

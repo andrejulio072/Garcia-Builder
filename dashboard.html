@@ -368,25 +368,35 @@
     <!-- Supabase Authentication -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
-    <script src="js/auth-supabase.js"></script>
+    <script src="js/auth.js"></script>
 
     <script>
         // Dashboard authentication guard and user data loading
         document.addEventListener('DOMContentLoaded', async function() {
             try {
-                // Initialize Supabase auth system
-                const authSystem = new SupabaseAuthSystem();
+                console.log('🏠 Inicializando Dashboard...');
+                
+                // Aguardar Supabase estar disponível
+                if (!window.supabaseClient) {
+                    console.warn('⏳ Aguardando Supabase no dashboard...');
+                    setTimeout(() => window.location.reload(), 1000);
+                    return;
+                }
 
                 // Check if user is authenticated
-                const user = await authSystem.getCurrentUser();
-                if (!user) {
-                    // Redirect to login with return URL
+                const { data: { user }, error } = await window.supabaseClient.auth.getUser();
+                if (!user || error) {
+                    console.log('❌ Usuário não autenticado, redirecionando...');
                     window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
                     return;
                 }
 
-                // Load user profile data
-                const profile = await authSystem.getUserProfile(user.id);
+                // Load user profile data direto
+                const { data: profile, error: profileError } = await window.supabaseClient
+                    .from('user_profiles')
+                    .select('*')
+                    .eq('user_id', user.id)
+                    .single();
 
                 // Update UI with user information
                 const userNameElements = document.querySelectorAll('#userName');
@@ -456,8 +466,8 @@
         // Logout function
         async function handleLogout() {
             try {
-                const authSystem = new SupabaseAuthSystem();
-                await authSystem.logout();
+                console.log('🚪 Fazendo logout...');
+                await window.supabaseClient.auth.signOut();
                 window.location.href = 'index.html';
             } catch (error) {
                 console.error('Logout error:', error);

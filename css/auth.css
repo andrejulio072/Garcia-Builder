@@ -417,13 +417,17 @@
 .btn-google {
     background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
     border: 1px solid rgba(66, 133, 244, 0.3);
-    color: #ffffff;
+    color: #ffffff !important;
     font-weight: 600;
     padding: 0.75rem 1.5rem;
     border-radius: 12px;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
 }
 
 .btn-google:hover {
@@ -441,13 +445,17 @@
 .btn-facebook {
     background: linear-gradient(135deg, #1877f2 0%, #42a5f5 100%);
     border: 1px solid rgba(24, 119, 242, 0.3);
-    color: #ffffff;
+    color: #ffffff !important;
     font-weight: 600;
     padding: 0.75rem 1.5rem;
     border-radius: 12px;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
 }
 
 .btn-facebook:hover {
@@ -508,8 +516,21 @@
 @media (max-width: 480px) {
     .btn-google,
     .btn-facebook {
-        padding: 1rem;
+        padding: 1rem 0.8rem;
         font-size: 0.85rem;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        white-space: nowrap;
+        overflow: visible;
+    }
+
+    .btn-google i,
+    .btn-facebook i {
+        margin-right: 0.5rem;
+        font-size: 1rem;
     }
 
     .social-login-section {

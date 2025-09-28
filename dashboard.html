@@ -661,21 +661,94 @@
         document.addEventListener('DOMContentLoaded', async function() {
             try {
                 console.log('🏠 Inicializando Dashboard...');
+                console.log('🔍 Verificando disponibilidade do Supabase...');
+                console.log('window.supabase:', typeof window.supabase);
+                console.log('window.supabaseClient:', typeof window.supabaseClient);
 
-                // Aguardar Supabase estar disponível
-                if (!window.supabaseClient) {
-                    console.warn('⏳ Aguardando Supabase no dashboard...');
-                    setTimeout(() => window.location.reload(), 1000);
+                // Função para aguardar Supabase de forma mais robusta
+                async function waitForSupabase() {
+                    let attempts = 0;
+                    const maxAttempts = 10;
+                    
+                    while (attempts < maxAttempts) {
+                        console.log(`🔄 Tentativa ${attempts + 1}/${maxAttempts} - Verificando Supabase...`);
+                        
+                        // Verificar se temos o supabase global
+                        if (window.supabase && !window.supabaseClient) {
+                            console.log('🔧 Criando cliente Supabase...');
+                            window.supabaseClient = window.supabase.createClient(
+                                window.SUPABASE_URL, 
+                                window.SUPABASE_ANON_KEY
+                            );
+                        }
+                        
+                        if (window.supabaseClient) {
+                            console.log('✅ Supabase client disponível');
+                            return true;
+                        }
+                        
+                        attempts++;
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }
+                    
+                    console.error('❌ Timeout aguardando Supabase');
+                    return false;
+                }
+                
+                const supabaseReady = await waitForSupabase();
+                if (!supabaseReady) {
+                    alert('Erro ao carregar sistema de autenticação. Tente recarregar a página.');
                     return;
                 }
 
-                // Check if user is authenticated
-                const { data: { user }, error } = await window.supabaseClient.auth.getUser();
-                if (!user || error) {
-                    console.log('❌ Usuário não autenticado, redirecionando...');
-                    window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                // Check if user is authenticated with better error handling
+                console.log('🔐 Verificando autenticação do usuário...');
+                
+                let user = null;
+                try {
+                    const { data, error } = await window.supabaseClient.auth.getUser();
+                    
+                    if (error) {
+                        console.error('Erro ao verificar usuário:', error);
+                        // Se erro for de conexão, não redirecionar imediatamente
+                        if (error.message.includes('network') || error.message.includes('fetch')) {
+                            console.warn('⚠️ Problema de conexão detectado');
+                            document.body.innerHTML = `
+                                <div class="container mt-5 text-center">
+                                    <div class="alert alert-warning">
+                                        <h4>🌐 Problema de Conexão</h4>
+                                        <p>Não foi possível conectar ao servidor de autenticação.</p>
+                                        <button class="btn btn-primary" onclick="window.location.reload()">
+                                            <i class="fas fa-refresh me-2"></i>Tentar Novamente
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                            return;
+                        }
+                    }
+                    
+                    user = data?.user;
+                } catch (authError) {
+                    console.error('Erro crítico de autenticação:', authError);
+                    user = null;
+                }
+                
+                if (!user) {
+                    console.log('❌ Usuário não autenticado, redirecionando para login...');
+                    // Evitar loop verificando se já estamos vindo do login
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (!urlParams.has('from_login')) {
+                        window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
+                    } else {
+                        console.error('⚠️ Loop de redirecionamento detectado!');
+                        alert('Erro de autenticação. Por favor, faça login novamente.');
+                        window.location.href = 'login.html';
+                    }
                     return;
                 }
+                
+                console.log('✅ Usuário autenticado:', user.email);
 
                 // Load user profile data direto
                 const { data: profile, error: profileError } = await window.supabaseClient

@@ -252,3 +252,111 @@ END$$;
 
 CREATE INDEX IF NOT EXISTS idx_sessions_trainer ON public.sessions(trainer_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_user ON public.sessions(user_id);
+
+-- ============================================================
+-- Trainer Applications System
+-- Handles trainer registration and approval workflow
+-- ============================================================
+
+-- trainer_applications: stores trainer application data
+CREATE TABLE IF NOT EXISTS public.trainer_applications (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    full_name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    experience_years TEXT NOT NULL,
+    specialties JSONB DEFAULT '[]'::jsonb,
+    certifications TEXT NOT NULL,
+    bio TEXT NOT NULL,
+    status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+    reviewed_by UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+    reviewed_at TIMESTAMPTZ,
+    review_notes TEXT,
+    applied_at TIMESTAMPTZ DEFAULT now(),
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now(),
+    UNIQUE(user_id)
+);
+
+ALTER TABLE public.trainer_applications ENABLE ROW LEVEL SECURITY;
+
+-- Users can view and create their own applications
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE policyname = 'Users can view own trainer_applications' AND tablename = 'trainer_applications'
+    ) THEN
+        CREATE POLICY "Users can view own trainer_applications" ON public.trainer_applications
+            FOR SELECT USING (auth.uid() = user_id);
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE policyname = 'Users can create own trainer_applications' AND tablename = 'trainer_applications'
+    ) THEN
+        CREATE POLICY "Users can create own trainer_applications" ON public.trainer_applications
+            FOR INSERT WITH CHECK (auth.uid() = user_id);
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE policyname = 'Users can update own trainer_applications' AND tablename = 'trainer_applications'
+    ) THEN
+        CREATE POLICY "Users can update own trainer_applications" ON public.trainer_applications
+            FOR UPDATE USING (auth.uid() = user_id);
+    END IF;
+END$$;
+
+-- Admins can view and manage all applications (implement admin check in your app)
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE policyname = 'Admins can manage all trainer_applications' AND tablename = 'trainer_applications'  
+    ) THEN
+        CREATE POLICY "Admins can manage all trainer_applications" ON public.trainer_applications
+            FOR ALL USING (
+                EXISTS (
+                    SELECT 1 FROM user_profiles 
+                    WHERE user_id = auth.uid() 
+                    AND (
+                        -- User has clients (is a trainer/admin)
+                        EXISTS (SELECT 1 FROM user_profiles up2 WHERE up2.trainer_id = auth.uid())
+                        -- Or user has admin flag in metadata (implement as needed)
+                    )
+                )
+            );
+    END IF;
+END$$;
+
+CREATE INDEX IF NOT EXISTS idx_trainer_applications_user ON public.trainer_applications(user_id);
+CREATE INDEX IF NOT EXISTS idx_trainer_applications_status ON public.trainer_applications(status);
+
+-- Function to auto-approve trainer and create trainer profile
+CREATE OR REPLACE FUNCTION approve_trainer_application(app_id UUID, reviewer_id UUID DEFAULT NULL, notes TEXT DEFAULT NULL)
+RETURNS BOOLEAN AS $$
+DECLARE
+    app_record RECORD;
+BEGIN
+    -- Get the application
+    SELECT * INTO app_record FROM trainer_applications WHERE id = app_id;
+    
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Application not found';
+    END IF;
+    
+    -- Update application status
+    UPDATE trainer_applications 
+    SET 
+        status = 'approved',
+        reviewed_by = COALESCE(reviewer_id, auth.uid()),
+        reviewed_at = now(),
+        review_notes = notes,
+        updated_at = now()
+    WHERE id = app_id;
+    
+    -- Update user metadata to include trainer flag
+    -- Note: This would need to be done via your application logic
+    -- as RLS policies don't allow direct auth.users updates
+    
+    RETURN TRUE;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;

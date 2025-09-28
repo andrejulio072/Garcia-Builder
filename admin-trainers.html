@@ -35,6 +35,30 @@
 
         <div class="row g-3">
             <div class="col-12">
+                <div class="card p-3 mb-3">
+                    <h5 class="mb-3">Trainer Applications</h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Applicant</th>
+                                    <th>Experience</th>
+                                    <th>Specialties</th>
+                                    <th>Applied</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applications-table-body">
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">Loading applications...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
                 <div class="card p-3">
                     <h5 class="mb-3">User & Trainer Assignment</h5>
                     <div class="table-responsive">
@@ -54,6 +78,26 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Application Modal -->
+        <div class="modal fade" id="viewApplicationModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content bg-dark">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Trainer Application Details</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" id="application-details">
+                        <!-- Application details will be loaded here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" onclick="reviewApplication(false)">Reject</button>
+                        <button type="button" class="btn btn-success" onclick="reviewApplication(true)">Approve</button>
                     </div>
                 </div>
             </div>
@@ -98,7 +142,9 @@
     <script>
         let users = [];
         let trainers = [];
+        let applications = [];
         let currentUser = null;
+        let currentApplication = null;
 
         document.addEventListener('DOMContentLoaded', init);
 
@@ -117,6 +163,7 @@
                 return;
             }
 
+            await loadApplications();
             await loadUsers();
             await loadTrainers();
         }
@@ -315,6 +362,162 @@
             } catch (error) {
                 console.error('Error removing trainer:', error);
                 showNotification('Failed to remove trainer: ' + error.message, 'error');
+            }
+        }
+
+        async function loadApplications() {
+            try {
+                const { data, error } = await window.supabaseClient
+                    .from('trainer_applications')
+                    .select('*')
+                    .order('applied_at', { ascending: false });
+
+                if (error) throw error;
+                applications = data || [];
+                renderApplicationsTable();
+            } catch (error) {
+                console.error('Error loading applications:', error);
+                document.getElementById('applications-table-body').innerHTML = 
+                    '<tr><td colspan="6" class="text-center text-danger">Failed to load applications</td></tr>';
+            }
+        }
+
+        function renderApplicationsTable() {
+            const tbody = document.getElementById('applications-table-body');
+            
+            if (applications.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No applications found</td></tr>';
+                return;
+            }
+
+            const html = applications.map(app => {
+                const statusClass = {
+                    'pending': 'badge-soft',
+                    'approved': 'bg-success',
+                    'rejected': 'bg-danger'
+                }[app.status] || 'badge-soft';
+
+                const specialties = Array.isArray(app.specialties) ? app.specialties.slice(0, 2).join(', ') + (app.specialties.length > 2 ? '...' : '') : '';
+                const appliedDate = new Date(app.applied_at).toLocaleDateString();
+
+                return `
+                    <tr>
+                        <td>
+                            <div><strong>${app.full_name}</strong></div>
+                            <small class="text-muted">${app.email}</small>
+                        </td>
+                        <td>${app.experience_years}</td>
+                        <td><small>${specialties}</small></td>
+                        <td>${appliedDate}</td>
+                        <td><span class="badge ${statusClass}">${app.status}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-info" onclick="viewApplication('${app.id}')">View</button>
+                            ${app.status === 'pending' ? `
+                                <button class="btn btn-sm btn-outline-success ms-1" onclick="quickApprove('${app.id}')">Approve</button>
+                                <button class="btn btn-sm btn-outline-danger ms-1" onclick="quickReject('${app.id}')">Reject</button>
+                            ` : ''}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            tbody.innerHTML = html;
+        }
+
+        function viewApplication(appId) {
+            currentApplication = applications.find(app => app.id === appId);
+            if (!currentApplication) return;
+
+            const specialties = Array.isArray(currentApplication.specialties) ? 
+                currentApplication.specialties.map(s => `<span class="badge badge-soft me-1">${s.replace('_', ' ')}</span>`).join('') : 
+                'None specified';
+
+            document.getElementById('application-details').innerHTML = `
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <h6>Personal Information</h6>
+                        <p><strong>Name:</strong> ${currentApplication.full_name}</p>
+                        <p><strong>Email:</strong> ${currentApplication.email}</p>
+                        <p><strong>Phone:</strong> ${currentApplication.phone}</p>
+                        <p><strong>Experience:</strong> ${currentApplication.experience_years}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Application Details</h6>
+                        <p><strong>Applied:</strong> ${new Date(currentApplication.applied_at).toLocaleString()}</p>
+                        <p><strong>Status:</strong> <span class="badge badge-soft">${currentApplication.status}</span></p>
+                        ${currentApplication.reviewed_at ? `<p><strong>Reviewed:</strong> ${new Date(currentApplication.reviewed_at).toLocaleString()}</p>` : ''}
+                    </div>
+                    <div class="col-12">
+                        <h6>Specializations</h6>
+                        <div>${specialties}</div>
+                    </div>
+                    <div class="col-12">
+                        <h6>Certifications</h6>
+                        <p>${currentApplication.certifications}</p>
+                    </div>
+                    <div class="col-12">
+                        <h6>Professional Bio</h6>
+                        <p>${currentApplication.bio}</p>
+                    </div>
+                    ${currentApplication.review_notes ? `
+                        <div class="col-12">
+                            <h6>Review Notes</h6>
+                            <p class="text-muted">${currentApplication.review_notes}</p>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            const modal = new bootstrap.Modal(document.getElementById('viewApplicationModal'));
+            modal.show();
+        }
+
+        async function quickApprove(appId) {
+            if (!confirm('Are you sure you want to approve this trainer application?')) return;
+            await updateApplicationStatus(appId, 'approved');
+        }
+
+        async function quickReject(appId) {
+            if (!confirm('Are you sure you want to reject this trainer application?')) return;
+            await updateApplicationStatus(appId, 'rejected');
+        }
+
+        async function reviewApplication(approve) {
+            if (!currentApplication) return;
+            
+            const status = approve ? 'approved' : 'rejected';
+            const notes = prompt(`${approve ? 'Approval' : 'Rejection'} notes (optional):`);
+            
+            await updateApplicationStatus(currentApplication.id, status, notes);
+            bootstrap.Modal.getInstance(document.getElementById('viewApplicationModal')).hide();
+        }
+
+        async function updateApplicationStatus(appId, status, notes = null) {
+            try {
+                const { error } = await window.supabaseClient
+                    .from('trainer_applications')
+                    .update({
+                        status: status,
+                        reviewed_by: currentUser.id,
+                        reviewed_at: new Date().toISOString(),
+                        review_notes: notes,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', appId);
+
+                if (error) throw error;
+
+                // If approved, we could also automatically create trainer profile entry
+                if (status === 'approved') {
+                    // This would need additional logic to set up the trainer
+                    console.log('Trainer approved - consider auto-setup logic');
+                }
+
+                await loadApplications();
+                showNotification(`Application ${status} successfully`, 'success');
+            } catch (error) {
+                console.error('Error updating application:', error);
+                showNotification('Failed to update application: ' + error.message, 'error');
             }
         }
 

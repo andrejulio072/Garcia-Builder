@@ -289,21 +289,21 @@
     .filter-tabs {
         gap: 10px;
     }
-    
+
     .filter-btn {
         padding: 10px 18px;
         font-size: 0.9rem;
     }
-    
+
     .stat-number {
         font-size: 2.5rem;
     }
-    
+
     .transformation-stats {
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .before-after-comparison {
         grid-template-columns: 1fr;
     }
@@ -334,32 +334,32 @@
     <div class="text-center">
       <h1 class="title-gradient text-glow mb-4" data-i18n="transformations.title">Client Transformations</h1>
       <p class="lead mb-4" data-i18n="transformations.subtitle">Real people. Real results. See what's possible with evidence-based coaching.</p>
-      
+
       <!-- Success Statistics -->
       <div class="stats-row">
         <div class="row">
           <div class="col-md-3 col-6">
             <div class="stat-item">
-              <div class="stat-number" data-count="347">0</div>
+              <div class="stat-number" data-count="127">0</div>
               <div class="stat-label">Clients Transformed</div>
             </div>
           </div>
           <div class="col-md-3 col-6">
             <div class="stat-item">
-              <div class="stat-number" data-count="87">0</div>
-              <div class="stat-label">Average Weight Lost (lbs)</div>
+              <div class="stat-number" data-count="12">0</div>
+              <div class="stat-label">Average Weeks</div>
             </div>
           </div>
           <div class="col-md-3 col-6">
             <div class="stat-item">
-              <div class="stat-number" data-count="95">0</div>
+              <div class="stat-number" data-count="94">0</div>
               <div class="stat-label">Success Rate (%)</div>
             </div>
           </div>
           <div class="col-md-3 col-6">
             <div class="stat-item">
-              <div class="stat-number" data-count="24">0</div>
-              <div class="stat-label">Average Months</div>
+              <div class="stat-number" data-count="8">0</div>
+              <div class="stat-label">Avg Kg Lost</div>
             </div>
           </div>
         </div>
@@ -394,223 +394,649 @@
 
     <!-- Transformations Grid -->
     <div class="row" id="transformations-grid">
-      <!-- Sarah's Weight Loss Journey -->
+      <!-- James R. - 6 Months Weight Loss -->
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal" 
-             data-client="Sarah M." data-story="Lost 67 lbs in 8 months while building confidence and strength"
-             data-before="assets/t1.png" data-after="assets/t2.png"
-             data-weight-lost="67" data-timeline="8 months" data-body-fat="-22%">
+             data-client="James R. (35)" data-story="Lost 15kg in 6 months through consistent training and nutrition"
+             data-before="assets/t1.png" data-after="assets/t1.png"
+             data-weight-lost="15" data-timeline="6 months" data-age="35">
           <div class="before-after-container">
-            <div class="transformation-overlay">-67 lbs</div>
+            <div class="transformation-overlay">-15kg</div>
             <div class="before-after-slider">
-              <img src="assets/t1.png" alt="Before" class="before-img">
-              <img src="assets/t2.png" alt="After" class="after-img">
+              <img src="assets/t1.png" alt="Before/After" class="before-img">
             </div>
           </div>
           <div class="transformation-info">
-            <h3 class="client-name">Sarah M.</h3>
-            <div class="timeline-badge">8 Months</div>
-            <div class="transformation-stats">
-              <div class="stat-item-small">
-                <div class="stat-value">-67</div>
-                <div class="stat-unit">lbs Lost</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">-22%</div>
-                <div class="stat-unit">Body Fat</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">3</div>
-                <div class="stat-unit">Dress Sizes</div>
-              </div>
-            </div>
-            <p class="transformation-story">
-              "I never thought I could lose this much weight while still enjoying food. Andre's approach made it sustainable and actually enjoyable!"
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Marcus's Muscle Gain -->
-      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="muscle-gain">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="Marcus K." data-story="Built 23 lbs of lean muscle in 6 months"
-             data-before="assets/t3.png" data-after="assets/t4.png"
-             data-muscle-gained="23" data-timeline="6 months" data-strength="+145%">
-          <div class="before-after-container">
-            <div class="transformation-overlay">+23 lbs Muscle</div>
-            <div class="before-after-slider">
-              <img src="assets/t3.png" alt="Before" class="before-img">
-              <img src="assets/t4.png" alt="After" class="after-img">
-            </div>
-          </div>
-          <div class="transformation-info">
-            <h3 class="client-name">Marcus K.</h3>
+            <h3 class="client-name">James R. (35)</h3>
             <div class="timeline-badge">6 Months</div>
             <div class="transformation-stats">
               <div class="stat-item-small">
-                <div class="stat-value">+23</div>
-                <div class="stat-unit">lbs Muscle</div>
+                <div class="stat-value">-15</div>
+                <div class="stat-unit">kg Lost</div>
               </div>
               <div class="stat-item-small">
-                <div class="stat-value">+145%</div>
-                <div class="stat-unit">Strength</div>
+                <div class="stat-value">35</div>
+                <div class="stat-unit">Years Old</div>
               </div>
               <div class="stat-item-small">
-                <div class="stat-value">6%</div>
-                <div class="stat-unit">Body Fat</div>
+                <div class="stat-value">24</div>
+                <div class="stat-unit">Weeks</div>
               </div>
             </div>
             <p class="transformation-story">
-              "From skinny to strong! The systematic approach to training and nutrition gave me the muscle I've always wanted."
+              "At 35, I thought it was too late to get in shape. Garcia Builder proved me wrong with sustainable habits that fit my busy lifestyle."
             </p>
           </div>
         </div>
       </div>
 
-      <!-- Emma's Body Recomposition -->
+      <!-- Marcus K. - Body Recomposition -->
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="Emma L." data-story="Complete body recomposition in 10 months"
-             data-before="assets/t5.jpg" data-after="assets/t6.jpg"
-             data-weight-change="-12" data-timeline="10 months" data-muscle="+18 lbs">
+             data-client="Marcus K. (20)" data-story="Amazing body recomposition - lost 20% body fat in 14 months"
+             data-before="assets/t2.png" data-after="assets/t2.png"
+             data-body-fat="-20%" data-timeline="14 months" data-age="20">
           <div class="before-after-container">
-            <div class="transformation-overlay">Body Recomp</div>
+            <div class="transformation-overlay">-20% BF</div>
             <div class="before-after-slider">
-              <img src="assets/t5.jpg" alt="Before" class="before-img">
-              <img src="assets/t6.jpg" alt="After" class="after-img">
+              <img src="assets/t2.png" alt="Before/After" class="before-img">
             </div>
           </div>
           <div class="transformation-info">
-            <h3 class="client-name">Emma L.</h3>
-            <div class="timeline-badge">10 Months</div>
-            <div class="transformation-stats">
-              <div class="stat-item-small">
-                <div class="stat-value">-30</div>
-                <div class="stat-unit">lbs Fat</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">+18</div>
-                <div class="stat-unit">lbs Muscle</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">-12</div>
-                <div class="stat-unit">lbs Total</div>
-              </div>
-            </div>
-            <p class="transformation-story">
-              "Same weight, completely different body! I learned that the scale doesn't tell the whole story."
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- James's Strength Journey -->
-      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="strength">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="James R." data-story="Tripled his strength in 12 months"
-             data-before="assets/t7.jpg" data-after="assets/t8.jpg"
-             data-deadlift="495" data-timeline="12 months" data-squat="405">
-          <div class="before-after-container">
-            <div class="transformation-overlay">3x Stronger</div>
-            <div class="before-after-slider">
-              <img src="assets/t7.jpg" alt="Before" class="before-img">
-              <img src="assets/t8.jpg" alt="After" class="after-img">
-            </div>
-          </div>
-          <div class="transformation-info">
-            <h3 class="client-name">James R.</h3>
-            <div class="timeline-badge">12 Months</div>
-            <div class="transformation-stats">
-              <div class="stat-item-small">
-                <div class="stat-value">495</div>
-                <div class="stat-unit">lbs Deadlift</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">405</div>
-                <div class="stat-unit">lbs Squat</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">275</div>
-                <div class="stat-unit">lbs Bench</div>
-              </div>
-            </div>
-            <p class="transformation-story">
-              "From lifting empty barbells to powerlifting competitions. The progressive programming works!"
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Lisa's Endurance -->
-      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="endurance">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="Lisa H." data-story="From couch to marathon in 14 months"
-             data-before="assets/t9.jpg" data-after="assets/t10.jpg"
-             data-marathon="3:45" data-timeline="14 months" data-weight="-34">
-          <div class="before-after-container">
-            <div class="transformation-overlay">Marathon Ready</div>
-            <div class="before-after-slider">
-              <img src="assets/t9.jpg" alt="Before" class="before-img">
-              <img src="assets/t10.jpg" alt="After" class="after-img">
-            </div>
-          </div>
-          <div class="transformation-info">
-            <h3 class="client-name">Lisa H.</h3>
+            <h3 class="client-name">Marcus K. (20)</h3>
             <div class="timeline-badge">14 Months</div>
             <div class="transformation-stats">
               <div class="stat-item-small">
-                <div class="stat-value">3:45</div>
-                <div class="stat-unit">Marathon</div>
+                <div class="stat-value">-20%</div>
+                <div class="stat-unit">Body Fat</div>
               </div>
               <div class="stat-item-small">
-                <div class="stat-value">-34</div>
-                <div class="stat-unit">lbs Lost</div>
+                <div class="stat-value">20</div>
+                <div class="stat-unit">Years Old</div>
               </div>
               <div class="stat-item-small">
-                <div class="stat-value">26.2</div>
-                <div class="stat-unit">Miles</div>
+                <div class="stat-value">60</div>
+                <div class="stat-unit">Weeks</div>
               </div>
             </div>
             <p class="transformation-story">
-              "Couldn't run a mile, now I've completed 3 marathons! The endurance programming was life-changing."
+              "Young but determined! Complete body transformation with 20% body fat reduction while building lean muscle mass."
+            </p>
+          </div>
+        </div>
+      </div>      <!-- Sarah T. - 2 Years Transformation -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Sarah T. (29)" data-story="Incredible 20kg transformation over 2 years with sustainable habits"
+             data-before="assets/t3.png" data-after="assets/t3.png"
+             data-weight-lost="20" data-timeline="2 years" data-age="29">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-20kg</div>
+            <div class="before-after-slider">
+              <img src="assets/t3.png" alt="Before/After" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Sarah T. (29)</h3>
+            <div class="timeline-badge">2 Years</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">-20</div>
+                <div class="stat-unit">kg Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">29</div>
+                <div class="stat-unit">Years Old</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">104</div>
+                <div class="stat-unit">Weeks</div>
+              </div>
+            </div>
+            <p class="transformation-story">
+              "Slow and sustainable wins the race! 20kg lost over 2 years with lifestyle changes that became second nature."
             </p>
           </div>
         </div>
       </div>
 
-      <!-- David's Weight Loss -->
-      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
+      <!-- Alex M. - 16 Weeks Body Recomp -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="David T." data-story="Lost 89 lbs and reversed diabetes"
-             data-before="assets/t11.jpg" data-after="assets/t12.jpg"
-             data-weight-lost="89" data-timeline="11 months" data-health="Diabetes Reversed">
+             data-client="Alex M. (23)" data-story="Rapid body recomposition in just 16 weeks - 8% body fat reduction plus muscle gain"
+             data-before="assets/t4.png" data-after="assets/t4.png"
+             data-body-fat="-8%" data-timeline="16 weeks" data-age="23">
           <div class="before-after-container">
-            <div class="transformation-overlay">-89 lbs</div>
+            <div class="transformation-overlay">-8% BF + Muscle</div>
             <div class="before-after-slider">
-              <img src="assets/t11.jpg" alt="Before" class="before-img">
-              <img src="assets/t12.jpg" alt="After" class="after-img">
+              <img src="assets/t4.png" alt="Before/After" class="before-img">
             </div>
           </div>
           <div class="transformation-info">
-            <h3 class="client-name">David T.</h3>
-            <div class="timeline-badge">11 Months</div>
+            <h3 class="client-name">Alex M. (23)</h3>
+            <div class="timeline-badge">16 Weeks</div>
             <div class="transformation-stats">
               <div class="stat-item-small">
-                <div class="stat-value">-89</div>
-                <div class="stat-unit">lbs Lost</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">-28%</div>
+                <div class="stat-value">-8%</div>
                 <div class="stat-unit">Body Fat</div>
               </div>
               <div class="stat-item-small">
-                <div class="stat-value">6.2</div>
-                <div class="stat-unit">A1C Level</div>
+                <div class="stat-value">+Muscle</div>
+                <div class="stat-unit">Mass</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">23</div>
+                <div class="stat-unit">Years Old</div>
               </div>
             </div>
             <p class="transformation-story">
-              "Not only did I lose weight, but I reversed my Type 2 diabetes and got my life back!"
+              "Young and focused! Amazing body recomposition in just 16 weeks - lost fat while building quality muscle mass."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Maria P. - 6 Months Transformation -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Maria P. (60)" data-story="Proof that age is just a number - 30lb transformation at 60"
+             data-before="assets/t5.jpg" data-after="assets/t5.jpg"
+             data-weight-lost="30" data-timeline="6 months" data-age="60">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-30lb at 60</div>
+            <div class="before-after-slider">
+              <img src="assets/t5.jpg" alt="Before/After" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Maria P. (60)</h3>
+            <div class="timeline-badge">6 Months</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">-30</div>
+                <div class="stat-unit">lbs Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">60</div>
+                <div class="stat-unit">Years Old</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">24</div>
+                <div class="stat-unit">Weeks</div>
+              </div>
+            </div>
+            <p class="transformation-story">
+              "At 60, I thought my best days were behind me. Garcia Builder showed me that transformation has no age limit!"
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carlos R. - 12 Weeks Quick Results -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Carlos R. (27)" data-story="Quick and effective - 8kg lost in just 12 weeks"
+             data-before="assets/t6.jpg" data-after="assets/t6.jpg"
+             data-weight-lost="8" data-timeline="12 weeks" data-age="27">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-8kg in 12w</div>
+            <div class="before-after-slider">
+              <img src="assets/t6.jpg" alt="Before/After" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Carlos R. (27)</h3>
+            <div class="timeline-badge">12 Weeks</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">-8</div>
+                <div class="stat-unit">kg Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">27</div>
+                <div class="stat-unit">Years Old</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">12</div>
+                <div class="stat-unit">Weeks</div>
+              </div>
+            </div>
+            <p class="transformation-story">
+              "Perfect timing for summer! 8kg down in 12 weeks with a program that fit my demanding work schedule."
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Elena S. - 18 Weeks Body Recomp -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Elena S. (32)" data-story="18 weeks of body recomposition - 8kg lost while building muscle"
+             data-before="assets/t7.jpg" data-after="assets/t7.jpg"
+             data-weight-lost="8" data-timeline="18 weeks" data-age="32">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-8kg + Muscle</div>
+            <div class="before-after-slider">
+              <img src="assets/t7.jpg" alt="Before/After" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Elena S. (32)</h3>
+            <div class="timeline-badge">18 Weeks</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">-8</div>
+                <div class="stat-unit">kg Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">+Muscle</div>
+                <div class="stat-unit">Mass</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">32</div>
+                <div class="stat-unit">Years Old</div>
+              </div>
+            </div>
+            <p class="transformation-story">
+              "Body recomposition at its finest! Lost fat while building strength and muscle in just 18 weeks."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tom L. - 12 Weeks Body Recomp -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Tom L. (31)" data-story="Perfect balance - 6kg fat loss with 5% muscle mass increase in 12 weeks"
+             data-before="assets/t8.jpg" data-after="assets/t8.jpg"
+             data-weight-lost="6" data-timeline="12 weeks" data-age="31" data-muscle="+5%">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-6kg +5% Muscle</div>
+            <div class="before-after-slider">
+              <img src="assets/t8.jpg" alt="Before/After" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Tom L. (31)</h3>
+            <div class="timeline-badge">12 Weeks</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">-6</div>
+                <div class="stat-unit">kg Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">+5%</div>
+                <div class="stat-unit">Muscle</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">31</div>
+                <div class="stat-unit">Years Old</div>
+              </div>
+            </div>
+            <p class="transformation-story">
+              "The perfect combination! Lost 6kg of fat while gaining 5% muscle mass in just 12 weeks."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lisa M. - 8 Weeks Quick Results -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Lisa M. (43)" data-story="8 weeks to summer ready - 5kg transformation"
+             data-before="assets/t9.jpg" data-after="assets/t9.jpg"
+             data-weight-lost="5" data-timeline="8 weeks" data-age="43">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-5kg in 8w</div>
+            <div class="before-after-slider">
+              <img src="assets/t9.jpg" alt="Before/After" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Lisa M. (43)</h3>
+            <div class="timeline-badge">8 Weeks</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">-5</div>
+                <div class="stat-unit">kg Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">43</div>
+                <div class="stat-unit">Years Old</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">8</div>
+                <div class="stat-unit">Weeks</div>
+              </div>
+            </div>
+            <p class="transformation-story">
+              "Short timeframe, amazing results! 5kg down in 8 weeks with a program that respected my busy mom life."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Anna K. - 1 Year Transformation -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Anna K. (55)" data-story="One year journey - sustainable 10kg transformation at 55"
+             data-before="assets/t10.jpg" data-after="assets/t10.jpg"
+             data-weight-lost="10" data-timeline="1 year" data-age="55">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-10kg at 55</div>
+            <div class="before-after-slider">
+              <img src="assets/t10.jpg" alt="Before/After" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Anna K. (55)</h3>
+            <div class="timeline-badge">1 Year</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">-10</div>
+                <div class="stat-unit">kg Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">55</div>
+                <div class="stat-unit">Years Old</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">52</div>
+                <div class="stat-unit">Weeks</div>
+              </div>
+            </div>
+            <p class="transformation-story">
+              "Slow and steady at 55! One year of consistent habits led to a 10kg transformation and renewed energy."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jessica R. - 8 Weeks Fast Results -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Jessica R. (33)" data-story="Fast and effective - 5kg down in 8 weeks"
+             data-before="assets/t11.jpg" data-after="assets/t11.jpg"
+             data-weight-lost="5" data-timeline="8 weeks" data-age="33">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-5kg in 8w</div>
+            <div class="before-after-slider">
+              <img src="assets/t11.jpg" alt="Before/After" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Jessica R. (33)</h3>
+            <div class="timeline-badge">8 Weeks</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">-5</div>
+                <div class="stat-unit">kg Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">33</div>
+                <div class="stat-unit">Years Old</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">8</div>
+                <div class="stat-unit">Weeks</div>
+              </div>
+            </div>
+            <p class="transformation-story">
+              "Quick results that last! 5kg transformation in 8 weeks with sustainable habits that continue to work."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mike S. - Quick 8 Week Cut -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Mike S. (22)" data-story="Young and focused - 4kg cut in 8 weeks"
+             data-before="assets/t12.jpg" data-after="assets/t12.jpg"
+             data-weight-lost="4" data-timeline="8 weeks" data-age="22">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-4kg in 8w</div>
+            <div class="before-after-slider">
+              <img src="assets/t12.jpg" alt="Before/After" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Mike S. (22)</h3>
+            <div class="timeline-badge">8 Weeks</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">-4</div>
+                <div class="stat-unit">kg Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">22</div>
+                <div class="stat-unit">Years Old</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">8</div>
+                <div class="stat-unit">Weeks</div>
+              </div>
+            </div>
+            <p class="transformation-story">
+              "College student success! Managed studies and training to achieve 4kg fat loss in 8 weeks."
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden Load More Section -->
+    <div class="row" id="additional-transformations" style="display: none;">
+      <!-- Amanda C. - 6 Weeks Body Recomp -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Amanda C. (27)" data-story="Amazing 6-week body recomp - 4kg lost while building muscle"
+             data-before="assets/t13.jpg" data-after="assets/t13.jpg"
+             data-weight-lost="4" data-timeline="6 weeks" data-age="27" data-muscle="+">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-4kg +Muscle</div>
+            <div class="before-after-slider">
+              <img src="assets/t13.jpg" alt="Before/After" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Amanda C. (27)</h3>
+            <div class="timeline-badge">6 Weeks</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">-4</div>
+                <div class="stat-unit">kg Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">+Muscle</div>
+                <div class="stat-unit">Mass</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">27</div>
+                <div class="stat-unit">Years Old</div>
+              </div>
+            </div>
+            <p class="transformation-story">
+              "6 weeks of perfection! Lost 4kg while building lean muscle - the ideal short-term transformation."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diego M. - 20 Day Challenge -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Diego M. (25)" data-story="Incredible 20-day challenge - 5kg lost plus muscle gain"
+             data-before="assets/t14.jpg" data-after="assets/t14.jpg"
+             data-weight-lost="5" data-timeline="20 days" data-age="25" data-muscle="+">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-5kg in 20d</div>
+            <div class="before-after-slider">
+              <img src="assets/t14.jpg" alt="Before/After" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Diego M. (25)</h3>
+            <div class="timeline-badge">20 Days</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">-5</div>
+                <div class="stat-unit">kg Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">+Muscle</div>
+                <div class="stat-unit">Mass</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">25</div>
+                <div class="stat-unit">Years Old</div>
+              </div>
+            </div>
+            <p class="transformation-story">
+              "20-day transformation challenge! Proof that with dedication, incredible results are possible in short time."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rachel B. - 1 Year Journey -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Rachel B. (35)" data-story="One year body recomposition journey - 8kg lost while building muscle"
+             data-before="assets/t15.jpg" data-after="assets/t15.jpg"
+             data-weight-lost="8" data-timeline="1 year" data-age="35" data-muscle="+">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-8kg +Muscle</div>
+            <div class="before-after-slider">
+              <img src="assets/t15.jpg" alt="Before/After" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Rachel B. (35)</h3>
+            <div class="timeline-badge">1 Year</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">-8</div>
+                <div class="stat-unit">kg Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">+Muscle</div>
+                <div class="stat-unit">Mass</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">35</div>
+                <div class="stat-unit">Years Old</div>
+              </div>
+            </div>
+            <p class="transformation-story">
+              "A year of transformation at 35! Sustainable approach led to 8kg fat loss while building strength and muscle."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Patricia S. - 12 Weeks Success -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Patricia S. (37)" data-story="12 weeks to new me - 10kg transformation"
+             data-before="assets/t16.jpg" data-after="assets/t16.jpg"
+             data-weight-lost="10" data-timeline="12 weeks" data-age="37">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-10kg in 12w</div>
+            <div class="before-after-slider">
+              <img src="assets/t16.jpg" alt="Before/After" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Patricia S. (37)</h3>
+            <div class="timeline-badge">12 Weeks</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">-10</div>
+                <div class="stat-unit">kg Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">37</div>
+                <div class="stat-unit">Years Old</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">12</div>
+                <div class="stat-unit">Weeks</div>
+              </div>
+            </div>
+            <p class="transformation-story">
+              "12 weeks that changed everything! 10kg transformation while maintaining energy for work and family."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Roberto F. - 16 Weeks Transformation -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Roberto F. (41)" data-story="Mid-life transformation - 10kg lost in 16 weeks"
+             data-before="assets/t17.jpg" data-after="assets/t17.jpg"
+             data-weight-lost="10" data-timeline="16 weeks" data-age="41">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-10kg at 41</div>
+            <div class="before-after-slider">
+              <img src="assets/t17.jpg" alt="Before/After" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Roberto F. (41)</h3>
+            <div class="timeline-badge">16 Weeks</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">-10</div>
+                <div class="stat-unit">kg Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">41</div>
+                <div class="stat-unit">Years Old</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">16</div>
+                <div class="stat-unit">Weeks</div>
+              </div>
+            </div>
+            <p class="transformation-story">
+              "Never too late at 41! 16 weeks of dedication led to 10kg weight loss and renewed confidence."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sofia T. - 20 Day Challenge -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Sofia T. (25)" data-story="20-day intensive challenge - 5.5kg transformation"
+             data-before="assets/t18.jpg" data-after="assets/t18.jpg"
+             data-weight-lost="5.5" data-timeline="20 days" data-age="25">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-5.5kg in 20d</div>
+            <div class="before-after-slider">
+              <img src="assets/t18.jpg" alt="Before/After" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Sofia T. (25)</h3>
+            <div class="timeline-badge">20 Days</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">-5.5</div>
+                <div class="stat-unit">kg Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">25</div>
+                <div class="stat-unit">Years Old</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">20</div>
+                <div class="stat-unit">Days</div>
+              </div>
+            </div>
+            <p class="transformation-story">
+              "20-day intensive challenge success! 5.5kg lost with a focused, sustainable approach that actually worked."
             </p>
           </div>
         </div>

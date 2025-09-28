@@ -50,7 +50,7 @@ class TransformationsManager {
     // Animate statistics counter
     animateStats() {
         const stats = document.querySelectorAll('.stat-number[data-count]');
-        
+
         const animateCounter = (element, target) => {
             let current = 0;
             const increment = target / 100;
@@ -105,7 +105,7 @@ class TransformationsManager {
         items.forEach((item, index) => {
             const category = item.dataset.category;
             const shouldShow = filter === 'all' || category === filter;
-            
+
             if (shouldShow && visibleCount < this.visibleItems) {
                 item.style.display = 'block';
                 item.style.animation = `fadeInUp 0.6s ease forwards ${index * 0.1}s`;
@@ -122,28 +122,40 @@ class TransformationsManager {
 
     // Load more transformations
     loadMoreTransformations() {
-        const items = document.querySelectorAll('.transformation-item');
-        const filteredItems = Array.from(items).filter(item => {
-            const category = item.dataset.category;
-            return this.currentFilter === 'all' || category === this.currentFilter;
-        });
-
-        let visibleCount = 0;
-        filteredItems.forEach((item, index) => {
-            if (item.style.display !== 'none') {
-                visibleCount++;
-            }
-        });
-
-        // Show next 6 items
-        const nextItems = filteredItems.slice(visibleCount, visibleCount + 6);
-        nextItems.forEach((item, index) => {
-            item.style.display = 'block';
-            item.style.animation = `fadeInUp 0.6s ease forwards ${index * 0.1}s`;
-        });
-
-        this.visibleItems += 6;
-        this.updateLoadMoreButton();
+        const additionalSection = document.getElementById('additional-transformations');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        
+        if (additionalSection && additionalSection.style.display === 'none') {
+            // Show additional transformations section
+            additionalSection.style.display = 'block';
+            
+            // Animate each card
+            const additionalCards = additionalSection.querySelectorAll('.transformation-card');
+            additionalCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+                
+                // Add event listener for modal
+                card.addEventListener('click', (e) => {
+                    this.openTransformationModal(e.currentTarget);
+                });
+            });
+            
+            // Update button text and eventually hide it
+            loadMoreBtn.innerHTML = '<i class="fas fa-check me-2"></i>All Transformations Loaded';
+            loadMoreBtn.disabled = true;
+            
+            // Hide button after 2 seconds
+            setTimeout(() => {
+                loadMoreBtn.style.display = 'none';
+            }, 2000);
+        }
     }
 
     // Update load more button visibility
@@ -156,7 +168,7 @@ class TransformationsManager {
 
         const visibleItems = filteredItems.filter(item => item.style.display !== 'none').length;
         const loadMoreBtn = document.getElementById('loadMoreBtn');
-        
+
         if (loadMoreBtn) {
             if (visibleItems >= filteredItems.length) {
                 loadMoreBtn.style.display = 'none';
@@ -221,16 +233,19 @@ class TransformationsManager {
     // Generate stats HTML for modal
     generateModalStats(card) {
         let statsHTML = `<div class="mb-3"><strong>Timeline:</strong> ${card.dataset.timeline}</div>`;
-        
+
         // Add specific stats based on available data
         if (card.dataset.weightLost) {
-            statsHTML += `<div class="mb-2"><i class="fas fa-weight text-warning me-2"></i>Weight Lost: ${card.dataset.weightLost} lbs</div>`;
+            statsHTML += `<div class="mb-2"><i class="fas fa-weight text-warning me-2"></i>Weight Lost: ${card.dataset.weightLost}kg</div>`;
         }
-        if (card.dataset.muscleGained) {
-            statsHTML += `<div class="mb-2"><i class="fas fa-dumbbell text-warning me-2"></i>Muscle Gained: ${card.dataset.muscleGained} lbs</div>`;
+        if (card.dataset.age) {
+            statsHTML += `<div class="mb-2"><i class="fas fa-birthday-cake text-warning me-2"></i>Age: ${card.dataset.age} years old</div>`;
         }
         if (card.dataset.bodyFat) {
             statsHTML += `<div class="mb-2"><i class="fas fa-chart-line text-warning me-2"></i>Body Fat: ${card.dataset.bodyFat}</div>`;
+        }
+        if (card.dataset.muscle) {
+            statsHTML += `<div class="mb-2"><i class="fas fa-dumbbell text-warning me-2"></i>Muscle: ${card.dataset.muscle}</div>`;
         }
         if (card.dataset.strength) {
             statsHTML += `<div class="mb-2"><i class="fas fa-fist-raised text-warning me-2"></i>Strength Gain: ${card.dataset.strength}</div>`;
@@ -251,7 +266,7 @@ class TransformationsManager {
     // Setup scroll animations
     setupScrollAnimations() {
         const cards = document.querySelectorAll('.transformation-card');
-        
+
         const cardObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {

@@ -8,6 +8,7 @@ class TransformationsManager {
         this.currentFilter = 'all';
         this.visibleItems = 6;
         this.totalItems = 0;
+        this.modalInstance = null; // Single modal instance
         this.init();
     }
 
@@ -39,7 +40,7 @@ class TransformationsManager {
         // Use event delegation for transformation cards to avoid duplicate listeners
         document.addEventListener('click', (e) => {
             const card = e.target.closest('.transformation-card');
-            if (card) {
+            if (card && !e.target.closest('.btn, .filter-btn, .load-more-btn')) {
                 e.preventDefault();
                 e.stopPropagation();
                 this.openTransformationModal(card);
@@ -129,22 +130,24 @@ class TransformationsManager {
         const loadMoreBtn = document.getElementById('loadMoreBtn');
 
         if (additionalSection && additionalSection.style.display === 'none') {
-            // Show additional transformations section
-            additionalSection.style.display = 'block';
+            // Show additional transformations section with proper display
+            additionalSection.style.display = 'flex';
+            additionalSection.style.flexWrap = 'wrap';
 
-            // Animate each card
-            const additionalCards = additionalSection.querySelectorAll('.transformation-card');
-            additionalCards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(30px)';
+            // Animate each card container (not just the card)
+            const additionalCards = additionalSection.querySelectorAll('.transformation-item');
+            additionalCards.forEach((cardContainer, index) => {
+                const card = cardContainer.querySelector('.transformation-card');
+                if (card) {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px)';
 
-                setTimeout(() => {
-                    card.style.transition = 'all 0.6s ease';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 100);
-
-                // Event listener handled by delegation - no need to add here
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.6s ease';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
             });
 
             // Update button text and eventually hide it
@@ -184,20 +187,28 @@ class TransformationsManager {
 
     // Setup modal functionality
     setupModal() {
-        const modal = document.getElementById('transformationModal');
-        if (!modal) return;
+        const modalElement = document.getElementById('transformationModal');
+        if (!modalElement) return;
 
-        modal.addEventListener('show.bs.modal', (event) => {
-            const card = event.relatedTarget;
-            this.populateModal(card);
+        // Create single modal instance
+        this.modalInstance = new bootstrap.Modal(modalElement, {
+            keyboard: true,
+            backdrop: true,
+            focus: true
+        });
+
+        // Clean up on modal hide
+        modalElement.addEventListener('hidden.bs.modal', () => {
+            // Reset modal content if needed
         });
     }
 
     // Open transformation modal with data
     openTransformationModal(card) {
-        const modal = new bootstrap.Modal(document.getElementById('transformationModal'));
         this.populateModal(card);
-        modal.show();
+        if (this.modalInstance) {
+            this.modalInstance.show();
+        }
     }
 
     // Populate modal with transformation data

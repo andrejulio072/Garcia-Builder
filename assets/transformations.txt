@@ -1,0 +1,20 @@
+transformations:
+
+t1-  male, 6 months, 15kg off , 35 y.o
+t2 - male, 14 months, -20% body fat, 20 y.o
+t3 - female, 2 years, 20kg off, 29 y.o
+t4 - male, 16 weeks, -8% body fat,+muscle mass, 23yo
+t5 - female, 6 months, -30lb, 60yo
+t6 - male, 12 weeks, - 8kg off, 27 y.o
+t7 - female, 18 weeks, - 8kg off, +muscle mass, 32 yo
+t8 - male, 12 weeks, -6kg off, +5%muscle mass, 31yo
+t9 - female, 8 weeks, -5kg off, 43yo
+t10 - female, 1 year, -10kf off, 55yo
+t11 - female, 8 weeks, -5kg off, 33yo
+t12- male, 8 weeks, -4kg off, 22yo
+t13 female, 6 weeks, -4kg, +muscle mass, 27yo
+t14 - male, 20 days, -5kg, +muscle mass, 25yo
+t15 - female, 1year, -8kg, +muscle mass, 35yo
+t16 -female, 12 weeks, 10kg off, 37yo
+t17 -male, 16 weeks, 10kg off, 41yo
+t18 -female, 20days, -5.5kg, 25yo

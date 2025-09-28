@@ -529,6 +529,10 @@
                             <div class="metric-number" id="display-body-fat">--%</div>
                             <div class="metric-label">Body Fat</div>
                         </div>
+                        <div class="metric-card">
+                            <div class="metric-number" id="display-muscle-mass">--</div>
+                            <div class="metric-label">Muscle Mass</div>
+                        </div>
                     </div>
 
                     <form id="body-metrics-form" data-profile-section="body_metrics">
@@ -559,6 +563,13 @@
                                 <div class="input-group">
                                     <input type="number" class="form-control" id="body_fat_percentage" name="body_fat_percentage" step="0.1" placeholder="15">
                                     <span class="input-group-text">%</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="muscle_mass" class="form-label">Muscle Mass</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="muscle_mass" name="muscle_mass" step="0.1" placeholder="30">
+                                    <span class="input-group-text">kg</span>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -813,8 +824,10 @@
                 'display-height': metrics.height ?
                     `${metrics.height} ${units === 'metric' ? 'cm' : 'ft'}` : '--',
                 'display-bmi': calculateBMI(metrics.current_weight, metrics.height) || '--',
-                'display-body-fat': metrics.body_fat_percentage ?
-                    `${metrics.body_fat_percentage}%` : '--%'
+                    'display-body-fat': metrics.body_fat_percentage ?
+                        `${metrics.body_fat_percentage}%` : '--%',
+                    'display-muscle-mass': metrics.muscle_mass ?
+                        `${metrics.muscle_mass} ${units === 'metric' ? 'kg' : 'lbs'}` : '--'
             };
 
             Object.entries(displays).forEach(([id, value]) => {

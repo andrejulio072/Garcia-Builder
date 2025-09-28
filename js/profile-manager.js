@@ -63,7 +63,7 @@
           last_name: currentUser.user_metadata?.last_name || '',
           phone: currentUser.user_metadata?.phone || '',
           avatar_url: currentUser.user_metadata?.avatar_url || '',
-          birthday: '',
+          birthday: currentUser.user_metadata?.date_of_birth || '',
           location: '',
           bio: '',
           goals: [],
@@ -76,6 +76,7 @@
           height: '',
           target_weight: '',
           body_fat_percentage: '',
+          muscle_mass: '',
           measurements: {
             chest: '',
             waist: '',
@@ -145,11 +146,10 @@
         .from('body_metrics')
         .select('*')
         .eq('user_id', currentUser.id)
-        .order('created_at', { ascending: false })
-        .limit(1);
+        .single();
 
-      if (metrics && metrics.length > 0 && !metricsError) {
-        Object.assign(profileData.body_metrics, metrics[0]);
+      if (metrics && !metricsError) {
+        Object.assign(profileData.body_metrics, metrics);
       }
 
       // Load preferences
@@ -209,35 +209,53 @@
   // Save to Supabase
   const saveToSupabase = async (section) => {
     try {
+      const num = (v) => {
+        if (v === undefined || v === null || v === '') return null;
+        const n = Number(v);
+        return Number.isFinite(n) ? n : null;
+      };
+
       if (section === 'basic' || !section) {
+        const payload = {
+          user_id: currentUser.id,
+          ...profileData.basic,
+          birthday: profileData.basic.birthday || null,
+          updated_at: new Date().toISOString()
+        };
         const { error } = await window.supabaseClient
           .from('user_profiles')
-          .upsert({
-            user_id: currentUser.id,
-            ...profileData.basic
-          });
+          .upsert(payload);
 
         if (error) throw error;
       }
 
       if (section === 'body_metrics' || !section) {
+        const payload = {
+          user_id: currentUser.id,
+          ...profileData.body_metrics,
+          current_weight: num(profileData.body_metrics.current_weight),
+          height: num(profileData.body_metrics.height),
+          target_weight: num(profileData.body_metrics.target_weight),
+          body_fat_percentage: num(profileData.body_metrics.body_fat_percentage),
+          muscle_mass: num(profileData.body_metrics.muscle_mass),
+          updated_at: new Date().toISOString()
+        };
         const { error } = await window.supabaseClient
           .from('body_metrics')
-          .upsert({
-            user_id: currentUser.id,
-            ...profileData.body_metrics
-          });
+          .upsert(payload);
 
         if (error) throw error;
       }
 
       if (section === 'preferences' || !section) {
+        const payload = {
+          user_id: currentUser.id,
+          ...profileData.preferences,
+          updated_at: new Date().toISOString()
+        };
         const { error } = await window.supabaseClient
           .from('user_preferences')
-          .upsert({
-            user_id: currentUser.id,
-            ...profileData.preferences
-          });
+          .upsert(payload);
 
         if (error) throw error;
       }
@@ -274,6 +292,9 @@
     // Setup photo upload
     setupPhotoUpload();
 
+  // Render any existing progress photos
+  updateProgressPhotos();
+
     console.log('UI initialized');
   };
 
@@ -288,7 +309,10 @@
       'user-goals': profileData.basic.goals.join(', ') || 'No goals set',
       'user-experience': profileData.basic.experience_level || 'Not specified',
       'member-since': formatDate(profileData.basic.joined_date),
-      'last-login': formatDate(profileData.basic.last_login)
+      'member-since-display': formatDate(profileData.basic.joined_date),
+      'last-login': formatDate(profileData.basic.last_login),
+      'profile-name': profileData.basic.full_name || profileData.basic.first_name || 'Your Profile',
+      'profile-email': profileData.basic.email
     };
 
     Object.entries(elements).forEach(([id, value]) => {
@@ -355,7 +379,7 @@
     // Body metrics form
     const metricsForm = document.getElementById('body-metrics-form');
     if (metricsForm) {
-      const fields = ['current_weight', 'height', 'target_weight', 'body_fat_percentage'];
+      const fields = ['current_weight', 'height', 'target_weight', 'body_fat_percentage', 'muscle_mass'];
       fields.forEach(field => {
         const input = metricsForm.querySelector(`[name="${field}"]`);
         if (input && profileData.body_metrics[field]) {
@@ -427,15 +451,24 @@
 
   // Upload image
   const uploadImage = async (file, folder) => {
-    // For now, use a placeholder service or base64
-    // In production, implement proper image upload to Supabase Storage
+    try {
+      if (window.supabaseClient && window.supabaseClient.storage) {
+        const bucket = 'user-assets';
+        const path = `${currentUser.id}/${folder}/${Date.now()}-${file.name}`;
+        const { data, error } = await window.supabaseClient.storage.from(bucket).upload(path, file, {
+          cacheControl: '3600', upsert: false, contentType: file.type
+        });
+        if (error) throw error;
+        const { data: pub } = window.supabaseClient.storage.from(bucket).getPublicUrl(data.path);
+        return pub.publicUrl;
+      }
+    } catch (e) {
+      console.warn('Supabase Storage upload failed, falling back to base64:', e?.message || e);
+    }
+    // Fallback: base64
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = (e) => {
-        // For demo purposes, store as base64
-        // In production, upload to Supabase Storage
-        resolve(e.target.result);
-      };
+      reader.onload = (e) => resolve(e.target.result);
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
@@ -498,6 +531,26 @@
           profileData.body_metrics[key] = value;
         }
       });
+    } else if (section === 'preferences') {
+      // Selects
+      const units = formData.get('units');
+      const language = formData.get('language');
+      if (units) profileData.preferences.units = units;
+      if (language) profileData.preferences.language = language;
+
+      // Notifications
+      profileData.preferences.notifications = {
+        ...profileData.preferences.notifications,
+        email: !!formData.get('email_notifications'),
+        reminders: !!formData.get('workout_reminders'),
+      };
+
+      // Privacy
+      profileData.preferences.privacy = {
+        ...profileData.preferences.privacy,
+        profile_visible: !!formData.get('profile_visible'),
+        progress_visible: !!formData.get('progress_visible')
+      };
     }
 
     await saveProfileData(section);

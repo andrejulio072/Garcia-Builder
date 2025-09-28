@@ -12,6 +12,29 @@ class AuthSystem {
         this.checkAuthStatus();
         this.setupPasswordToggle();
         this.setupPasswordStrength();
+
+        // Dev mode: allow quick local login when running on localhost with ?dev=1
+        try {
+            const isLocal = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1');
+            const isDev = new URLSearchParams(window.location.search).get('dev') === '1';
+            if (isLocal && isDev && !localStorage.getItem('gb_current_user')) {
+                const devUser = {
+                    id: 'dev-user-1',
+                    name: 'Test User',
+                    full_name: 'Test User',
+                    email: 'test.user@example.com',
+                    registeredAt: new Date().toISOString(),
+                    lastLogin: new Date().toISOString()
+                };
+                localStorage.setItem('gb_current_user', JSON.stringify(devUser));
+                // Redirect to dashboard by default
+                if (window.location.pathname.endsWith('login.html')) {
+                    window.location.href = 'dashboard.html?dev=1';
+                }
+            }
+        } catch (e) {
+            console.warn('Dev mode init skipped:', e?.message || e);
+        }
     }
 
     setupEventListeners() {

@@ -1,0 +1,4 @@
+{
+  "nav": {"home":"Inicio","about":"Acerca de","trans":"Transformaciones","testi":"Testimonios","pricing":"Precios","faq":"FAQ","contact":"Contacto","programs":"Programas","back_to_site":"Volver al Sitio","login":"Iniciar Sesión","register":"Registrarse","logout":"Salir","profile":"Mi Perfil","dashboard":"Panel","lang":{"en":"EN","pt":"PT","es":"ES"}},
+  "profile": {"title":"Mi Perfil","basic":"Información Básica","metrics":"Medidas Corporales","progress":"Progreso","goals":"Metas","settings":"Configuración","schedule":"Agenda","sessions":"Sesiones","files":"Archivos","nutrition":"Nutrición","workouts":"Entrenamientos"}
+}

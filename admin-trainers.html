@@ -377,14 +377,14 @@
                 renderApplicationsTable();
             } catch (error) {
                 console.error('Error loading applications:', error);
-                document.getElementById('applications-table-body').innerHTML = 
+                document.getElementById('applications-table-body').innerHTML =
                     '<tr><td colspan="6" class="text-center text-danger">Failed to load applications</td></tr>';
             }
         }
 
         function renderApplicationsTable() {
             const tbody = document.getElementById('applications-table-body');
-            
+
             if (applications.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No applications found</td></tr>';
                 return;
@@ -428,8 +428,8 @@
             currentApplication = applications.find(app => app.id === appId);
             if (!currentApplication) return;
 
-            const specialties = Array.isArray(currentApplication.specialties) ? 
-                currentApplication.specialties.map(s => `<span class="badge badge-soft me-1">${s.replace('_', ' ')}</span>`).join('') : 
+            const specialties = Array.isArray(currentApplication.specialties) ?
+                currentApplication.specialties.map(s => `<span class="badge badge-soft me-1">${s.replace('_', ' ')}</span>`).join('') :
                 'None specified';
 
             document.getElementById('application-details').innerHTML = `
@@ -484,10 +484,10 @@
 
         async function reviewApplication(approve) {
             if (!currentApplication) return;
-            
+
             const status = approve ? 'approved' : 'rejected';
             const notes = prompt(`${approve ? 'Approval' : 'Rejection'} notes (optional):`);
-            
+
             await updateApplicationStatus(currentApplication.id, status, notes);
             bootstrap.Modal.getInstance(document.getElementById('viewApplicationModal')).hide();
         }

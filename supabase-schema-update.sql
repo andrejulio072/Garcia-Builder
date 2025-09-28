@@ -310,13 +310,13 @@ END$$;
 DO $$
 BEGIN
     IF NOT EXISTS (
-        SELECT 1 FROM pg_policies WHERE policyname = 'Admins can manage all trainer_applications' AND tablename = 'trainer_applications'  
+        SELECT 1 FROM pg_policies WHERE policyname = 'Admins can manage all trainer_applications' AND tablename = 'trainer_applications'
     ) THEN
         CREATE POLICY "Admins can manage all trainer_applications" ON public.trainer_applications
             FOR ALL USING (
                 EXISTS (
-                    SELECT 1 FROM user_profiles 
-                    WHERE user_id = auth.uid() 
+                    SELECT 1 FROM user_profiles
+                    WHERE user_id = auth.uid()
                     AND (
                         -- User has clients (is a trainer/admin)
                         EXISTS (SELECT 1 FROM user_profiles up2 WHERE up2.trainer_id = auth.uid())
@@ -338,25 +338,25 @@ DECLARE
 BEGIN
     -- Get the application
     SELECT * INTO app_record FROM trainer_applications WHERE id = app_id;
-    
+
     IF NOT FOUND THEN
         RAISE EXCEPTION 'Application not found';
     END IF;
-    
+
     -- Update application status
-    UPDATE trainer_applications 
-    SET 
+    UPDATE trainer_applications
+    SET
         status = 'approved',
         reviewed_by = COALESCE(reviewer_id, auth.uid()),
         reviewed_at = now(),
         review_notes = notes,
         updated_at = now()
     WHERE id = app_id;
-    
+
     -- Update user metadata to include trainer flag
     -- Note: This would need to be done via your application logic
     -- as RLS policies don't allow direct auth.users updates
-    
+
     RETURN TRUE;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;

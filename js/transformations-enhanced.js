@@ -36,11 +36,14 @@ class TransformationsManager {
             });
         }
 
-        // Transformation cards for modal
-        document.querySelectorAll('.transformation-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                this.openTransformationModal(e.currentTarget);
-            });
+        // Use event delegation for transformation cards to avoid duplicate listeners
+        document.addEventListener('click', (e) => {
+            const card = e.target.closest('.transformation-card');
+            if (card) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.openTransformationModal(card);
+            }
         });
 
         // Intersection Observer for animations
@@ -124,33 +127,30 @@ class TransformationsManager {
     loadMoreTransformations() {
         const additionalSection = document.getElementById('additional-transformations');
         const loadMoreBtn = document.getElementById('loadMoreBtn');
-        
+
         if (additionalSection && additionalSection.style.display === 'none') {
             // Show additional transformations section
             additionalSection.style.display = 'block';
-            
+
             // Animate each card
             const additionalCards = additionalSection.querySelectorAll('.transformation-card');
             additionalCards.forEach((card, index) => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(30px)';
-                
+
                 setTimeout(() => {
                     card.style.transition = 'all 0.6s ease';
                     card.style.opacity = '1';
                     card.style.transform = 'translateY(0)';
                 }, index * 100);
-                
-                // Add event listener for modal
-                card.addEventListener('click', (e) => {
-                    this.openTransformationModal(e.currentTarget);
-                });
+
+                // Event listener handled by delegation - no need to add here
             });
-            
+
             // Update button text and eventually hide it
             loadMoreBtn.innerHTML = '<i class="fas fa-check me-2"></i>All Transformations Loaded';
             loadMoreBtn.disabled = true;
-            
+
             // Hide button after 2 seconds
             setTimeout(() => {
                 loadMoreBtn.style.display = 'none';
@@ -232,35 +232,75 @@ class TransformationsManager {
 
     // Generate stats HTML for modal
     generateModalStats(card) {
-        let statsHTML = `<div class="mb-3"><strong>Timeline:</strong> ${card.dataset.timeline}</div>`;
+        let statsHTML = `<div class="mb-4"><strong><i class="fas fa-clock text-warning me-2"></i>Timeline:</strong> ${card.dataset.timeline}</div>`;
 
-        // Add specific stats based on available data
-        if (card.dataset.weightLost) {
-            statsHTML += `<div class="mb-2"><i class="fas fa-weight text-warning me-2"></i>Weight Lost: ${card.dataset.weightLost}kg</div>`;
-        }
+        // Basic transformation stats
+        let basicStats = '<div class="row mb-4"><div class="col-12"><h6 class="text-warning mb-3"><i class="fas fa-chart-bar me-2"></i>Transformation Results</h6></div>';
+        
         if (card.dataset.age) {
-            statsHTML += `<div class="mb-2"><i class="fas fa-birthday-cake text-warning me-2"></i>Age: ${card.dataset.age} years old</div>`;
+            basicStats += `<div class="col-6 mb-2"><i class="fas fa-birthday-cake text-warning me-2"></i>Age: ${card.dataset.age}</div>`;
+        }
+        if (card.dataset.weightLost) {
+            basicStats += `<div class="col-6 mb-2"><i class="fas fa-weight text-warning me-2"></i>Weight Lost: ${card.dataset.weightLost}kg</div>`;
         }
         if (card.dataset.bodyFat) {
-            statsHTML += `<div class="mb-2"><i class="fas fa-chart-line text-warning me-2"></i>Body Fat: ${card.dataset.bodyFat}</div>`;
+            basicStats += `<div class="col-6 mb-2"><i class="fas fa-chart-line text-warning me-2"></i>Body Fat: ${card.dataset.bodyFat}</div>`;
         }
         if (card.dataset.muscle) {
-            statsHTML += `<div class="mb-2"><i class="fas fa-dumbbell text-warning me-2"></i>Muscle: ${card.dataset.muscle}</div>`;
+            basicStats += `<div class="col-6 mb-2"><i class="fas fa-dumbbell text-warning me-2"></i>Muscle: ${card.dataset.muscle}</div>`;
         }
-        if (card.dataset.strength) {
-            statsHTML += `<div class="mb-2"><i class="fas fa-fist-raised text-warning me-2"></i>Strength Gain: ${card.dataset.strength}</div>`;
+        basicStats += '</div>';
+
+        // Performance Achievements Section
+        let achievementsHTML = '<div class="row mb-4"><div class="col-12"><h6 class="text-warning mb-3"><i class="fas fa-trophy me-2"></i>Performance Achievements</h6></div>';
+        let hasAchievements = false;
+
+        // Strength Achievements
+        if (card.dataset.squat) {
+            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-medal text-gold me-2"></i><strong>Squat:</strong> ${card.dataset.squat}</div></div>`;
+            hasAchievements = true;
         }
         if (card.dataset.deadlift) {
-            statsHTML += `<div class="mb-2"><i class="fas fa-weight-hanging text-warning me-2"></i>Deadlift: ${card.dataset.deadlift} lbs</div>`;
+            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-medal text-gold me-2"></i><strong>Deadlift:</strong> ${card.dataset.deadlift}</div></div>`;
+            hasAchievements = true;
         }
-        if (card.dataset.squat) {
-            statsHTML += `<div class="mb-2"><i class="fas fa-weight-hanging text-warning me-2"></i>Squat: ${card.dataset.squat} lbs</div>`;
-        }
-        if (card.dataset.marathon) {
-            statsHTML += `<div class="mb-2"><i class="fas fa-running text-warning me-2"></i>Marathon Time: ${card.dataset.marathon}</div>`;
+        if (card.dataset.bench) {
+            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-medal text-gold me-2"></i><strong>Bench Press:</strong> ${card.dataset.bench}</div></div>`;
+            hasAchievements = true;
         }
 
-        return statsHTML;
+        // Cardio Achievements
+        if (card.dataset.marathon) {
+            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-running text-primary me-2"></i><strong>Marathon:</strong> ${card.dataset.marathon}</div></div>`;
+            hasAchievements = true;
+        }
+        if (card.dataset.runTime) {
+            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-stopwatch text-primary me-2"></i><strong>5K Time:</strong> ${card.dataset.runTime}</div></div>`;
+            hasAchievements = true;
+        }
+        if (card.dataset.miles) {
+            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-route text-primary me-2"></i><strong>Distance PR:</strong> ${card.dataset.miles}</div></div>`;
+            hasAchievements = true;
+        }
+
+        // Fitness Achievements
+        if (card.dataset.pullUps) {
+            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-hand-rock text-success me-2"></i><strong>Pull-ups:</strong> ${card.dataset.pullUps}</div></div>`;
+            hasAchievements = true;
+        }
+        if (card.dataset.pushUps) {
+            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-hand-paper text-success me-2"></i><strong>Push-ups:</strong> ${card.dataset.pushUps}</div></div>`;
+            hasAchievements = true;
+        }
+
+        achievementsHTML += '</div>';
+
+        // Only add achievements section if there are achievements
+        if (!hasAchievements) {
+            achievementsHTML = '';
+        }
+
+        return basicStats + achievementsHTML;
     }
 
     // Setup scroll animations

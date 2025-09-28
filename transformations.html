@@ -285,6 +285,36 @@
     z-index: 2;
 }
 
+/* Achievement Styles */
+.achievement-item {
+    background: linear-gradient(135deg, rgba(246,200,78,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    border: 1px solid rgba(246,200,78,0.3);
+    border-radius: 10px;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.achievement-item:hover {
+    background: linear-gradient(135deg, rgba(246,200,78,0.2) 0%, rgba(255,255,255,0.1) 100%);
+    border-color: rgba(246,200,78,0.5);
+    transform: translateY(-2px);
+}
+
+.text-gold {
+    color: #FFD700 !important;
+}
+
+.achievement-item strong {
+    color: #F6C84E;
+}
+
+.achievement-item i {
+    width: 16px;
+    text-align: center;
+}
+
 @media (max-width: 768px) {
     .filter-tabs {
         gap: 10px;
@@ -396,10 +426,11 @@
     <div class="row" id="transformations-grid">
       <!-- James R. - 6 Months Weight Loss -->
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal" 
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="James R. (35)" data-story="Lost 15kg in 6 months through consistent training and nutrition"
              data-before="assets/t1.png" data-after="assets/t1.png"
-             data-weight-lost="15" data-timeline="6 months" data-age="35">
+             data-weight-lost="15" data-timeline="6 months" data-age="35"
+             data-squat="120kg" data-deadlift="140kg" data-bench="85kg" data-run-time="28:45">
           <div class="before-after-container">
             <div class="transformation-overlay">-15kg</div>
             <div class="before-after-slider">
@@ -435,7 +466,8 @@
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Marcus K. (20)" data-story="Amazing body recomposition - lost 20% body fat in 14 months"
              data-before="assets/t2.png" data-after="assets/t2.png"
-             data-body-fat="-20%" data-timeline="14 months" data-age="20">
+             data-body-fat="-20%" data-timeline="14 months" data-age="20"
+             data-pull-ups="15" data-push-ups="50" data-squat="100kg" data-marathon="4:15:30">
           <div class="before-after-container">
             <div class="transformation-overlay">-20% BF</div>
             <div class="before-after-slider">
@@ -469,7 +501,8 @@
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Sarah T. (29)" data-story="Incredible 20kg transformation over 2 years with sustainable habits"
              data-before="assets/t3.png" data-after="assets/t3.png"
-             data-weight-lost="20" data-timeline="2 years" data-age="29">
+             data-weight-lost="20" data-timeline="2 years" data-age="29"
+             data-miles="10km" data-run-time="45:20" data-push-ups="30">
           <div class="before-after-container">
             <div class="transformation-overlay">-20kg</div>
             <div class="before-after-slider">
@@ -505,7 +538,8 @@
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Alex M. (23)" data-story="Rapid body recomposition in just 16 weeks - 8% body fat reduction plus muscle gain"
              data-before="assets/t4.png" data-after="assets/t4.png"
-             data-body-fat="-8%" data-timeline="16 weeks" data-age="23">
+             data-body-fat="-8%" data-timeline="16 weeks" data-age="23"
+             data-deadlift="160kg" data-squat="130kg" data-bench="95kg" data-pull-ups="12">
           <div class="before-after-container">
             <div class="transformation-overlay">-8% BF + Muscle</div>
             <div class="before-after-slider">
@@ -577,7 +611,8 @@
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Carlos R. (27)" data-story="Quick and effective - 8kg lost in just 12 weeks"
              data-before="assets/t6.jpg" data-after="assets/t6.jpg"
-             data-weight-lost="8" data-timeline="12 weeks" data-age="27">
+             data-weight-lost="8" data-timeline="12 weeks" data-age="27"
+             data-run-time="22:15" data-miles="5km" data-push-ups="40" data-squat="105kg">
           <div class="before-after-container">
             <div class="transformation-overlay">-8kg in 12w</div>
             <div class="before-after-slider">
@@ -867,7 +902,8 @@
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Diego M. (25)" data-story="Incredible 20-day challenge - 5kg lost plus muscle gain"
              data-before="assets/t14.jpg" data-after="assets/t14.jpg"
-             data-weight-lost="5" data-timeline="20 days" data-age="25" data-muscle="+">
+             data-weight-lost="5" data-timeline="20 days" data-age="25" data-muscle="+"
+             data-push-ups="35" data-pull-ups="8" data-squat="90kg" data-run-time="26:30">
           <div class="before-after-container">
             <div class="transformation-overlay">-5kg in 20d</div>
             <div class="before-after-slider">

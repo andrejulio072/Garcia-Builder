@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -294,9 +294,9 @@
                                     </span>
                                 </div>
                             </div>
-                            <img id="header-avatar" class="rounded-circle border border-2 border-warning" 
+                            <img id="header-avatar" class="rounded-circle border border-2 border-warning"
                                  style="width: 56px; height: 56px; object-fit: cover; cursor: pointer;"
-                                 src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=56" 
+                                 src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=56"
                                  alt="User Avatar" onclick="scrollToProfile()">
                         </div>
                     </div>
@@ -431,7 +431,7 @@
                         <h5 class="text-readable mb-4">
                             <i class="fas fa-clock me-2"></i>Recent Activity
                         </h5>
-                        
+
                         <div class="activity-item">
                             <div class="activity-icon success">
                                 <i class="fas fa-dumbbell"></i>
@@ -473,8 +473,8 @@
                         <!-- Avatar Section -->
                         <div class="avatar-section">
                             <div class="avatar-container">
-                                <img id="profile-avatar" class="main-avatar" 
-                                     src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=120" 
+                                <img id="profile-avatar" class="main-avatar"
+                                     src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=120"
                                      alt="Profile Picture">
                                 <button class="avatar-edit-btn" onclick="changeProfilePicture()">
                                     <i class="fas fa-camera"></i>
@@ -494,19 +494,19 @@
                             <h6 class="text-readable mb-3">
                                 <i class="fas fa-user me-2"></i>Profile Information
                             </h6>
-                            
+
                             <div class="info-row">
                                 <i class="fas fa-user info-icon"></i>
                                 <div class="info-label">Name:</div>
                                 <div class="info-value" id="profile-name">Loading...</div>
                             </div>
-                            
+
                             <div class="info-row">
                                 <i class="fas fa-envelope info-icon"></i>
                                 <div class="info-label">Email:</div>
                                 <div class="info-value" id="profile-email">Loading...</div>
                             </div>
-                            
+
                             <div class="info-row">
                                 <i class="fas fa-phone info-icon"></i>
                                 <div class="info-label">Phone:</div>
@@ -515,7 +515,7 @@
                                     <i class="fas fa-edit text-warning"></i>
                                 </button>
                             </div>
-                            
+
                             <div class="info-row">
                                 <i class="fas fa-birthday-cake info-icon"></i>
                                 <div class="info-label">Birthday:</div>
@@ -524,7 +524,7 @@
                                     <i class="fas fa-edit text-warning"></i>
                                 </button>
                             </div>
-                            
+
                             <div class="info-row">
                                 <i class="fas fa-calendar-plus info-icon"></i>
                                 <div class="info-label">Member since:</div>
@@ -560,9 +560,9 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-4 text-center mb-4">
-                            <img id="modal-avatar" class="rounded-circle border border-3 border-warning mb-3" 
+                            <img id="modal-avatar" class="rounded-circle border border-3 border-warning mb-3"
                                  style="width: 120px; height: 120px; object-fit: cover;"
-                                 src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=120" 
+                                 src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=120"
                                  alt="Profile Picture">
                             <div>
                                 <button type="button" class="btn btn-outline-primary btn-sm" onclick="changeModalPicture()">
@@ -570,7 +570,7 @@
                                 </button>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-8">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
@@ -579,7 +579,7 @@
                                     </label>
                                     <input type="text" class="form-control" id="modal-name" placeholder="Enter your full name">
                                 </div>
-                                
+
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label text-readable">
                                         <i class="fas fa-envelope me-1 text-warning"></i>Email
@@ -587,21 +587,21 @@
                                     <input type="email" class="form-control" id="modal-email" readonly>
                                     <small class="text-muted-readable">Email cannot be changed</small>
                                 </div>
-                                
+
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label text-readable">
                                         <i class="fas fa-phone me-1 text-warning"></i>Phone
                                     </label>
                                     <input type="tel" class="form-control" id="modal-phone" placeholder="(11) 99999-9999">
                                 </div>
-                                
+
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label text-readable">
                                         <i class="fas fa-birthday-cake me-1 text-warning"></i>Date of Birth
                                     </label>
                                     <input type="date" class="form-control" id="modal-dob">
                                 </div>
-                                
+
                                 <div class="col-12 mb-3">
                                     <label class="form-label text-readable">
                                         <i class="fas fa-map-marker-alt me-1 text-warning"></i>City
@@ -638,26 +638,26 @@
                 async function waitForSupabase() {
                     let attempts = 0;
                     const maxAttempts = 10;
-                    
+
                     while (attempts < maxAttempts) {
                         if (window.supabase && !window.supabaseClient) {
                             window.supabaseClient = window.supabase.createClient(
-                                window.SUPABASE_URL, 
+                                window.SUPABASE_URL,
                                 window.SUPABASE_ANON_KEY
                             );
                         }
-                        
+
                         if (window.supabaseClient) {
                             return true;
                         }
-                        
+
                         attempts++;
                         await new Promise(resolve => setTimeout(resolve, 500));
                     }
-                    
+
                     return false;
                 }
-                
+
                 const supabaseReady = await waitForSupabase();
                 if (!supabaseReady) {
                     showError('Authentication system failed to load. Please refresh the page.');
@@ -666,7 +666,7 @@
 
                 // Check authentication
                 const { data, error } = await window.supabaseClient.auth.getUser();
-                
+
                 if (error || !data.user) {
                     console.log('❌ User not authenticated, redirecting...');
                     window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
@@ -699,23 +699,23 @@
 
         function updateProfileElements(user, profile) {
             const displayName = (profile && profile.full_name) ? profile.full_name : user.email.split('@')[0];
-            
+
             // Update all name elements
             document.getElementById('userName').textContent = displayName;
             document.getElementById('userNameHeader').textContent = displayName;
             document.getElementById('profile-display-name').textContent = displayName;
             document.getElementById('profile-name').textContent = displayName;
-            
+
             // Update email elements
             document.getElementById('userEmail').textContent = user.email;
             document.getElementById('profile-display-email').textContent = user.email;
             document.getElementById('profile-email').textContent = user.email;
-            
+
             // Update avatars
             const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=F6C84E&color=000&size=120`;
             document.getElementById('header-avatar').src = avatarUrl;
             document.getElementById('profile-avatar').src = avatarUrl;
-            
+
             // Update phone
             const phoneElement = document.getElementById('profile-phone');
             if (profile && profile.phone) {
@@ -723,7 +723,7 @@
                 phoneElement.classList.remove('text-muted-readable');
                 phoneElement.classList.add('text-readable');
             }
-            
+
             // Update birth date
             const dobElement = document.getElementById('profile-dob');
             if (profile && profile.date_of_birth) {
@@ -732,7 +732,7 @@
                 dobElement.classList.remove('text-muted-readable');
                 dobElement.classList.add('text-readable');
             }
-            
+
             // Update member since
             if (user.created_at) {
                 const created = new Date(user.created_at);
@@ -743,7 +743,7 @@
         function setupAuthButtons(user, profile) {
             const authButtons = document.getElementById('auth-buttons');
             const displayName = (profile && profile.full_name) ? profile.full_name : user.email.split('@')[0];
-            
+
             authButtons.innerHTML = `
                 <div class="dropdown">
                     <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -752,6 +752,12 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="dashboard.html">
                             <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a></li>
+                        <li><a class="dropdown-item" href="my-profile.html">
+                            <i class="fas fa-user me-2"></i>My Profile
+                        </a></li>
+                        <li><a class="dropdown-item" href="profile-manager.html">
+                            <i class="fas fa-user-cog me-2"></i>Profile Manager
                         </a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#" onclick="handleLogout()">
@@ -785,7 +791,7 @@
         function editPhone() {
             const currentPhone = document.getElementById('profile-phone').textContent;
             const newPhone = prompt('Enter your phone number:', currentPhone === 'Not provided' ? '' : currentPhone);
-            
+
             if (newPhone !== null) {
                 const phoneEl = document.getElementById('profile-phone');
                 phoneEl.textContent = newPhone || 'Not provided';
@@ -797,7 +803,7 @@
 
         function editBirthdate() {
             const newDob = prompt('Enter your date of birth (MM/DD/YYYY):');
-            
+
             if (newDob !== null && newDob.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
                 const dobEl = document.getElementById('profile-dob');
                 dobEl.textContent = newDob;
@@ -814,10 +820,10 @@
             document.getElementById('modal-avatar').src = document.getElementById('profile-avatar').src;
             document.getElementById('modal-name').value = document.getElementById('profile-name').textContent;
             document.getElementById('modal-email').value = document.getElementById('profile-email').textContent;
-            
+
             const phone = document.getElementById('profile-phone').textContent;
             document.getElementById('modal-phone').value = phone !== 'Not provided' ? phone : '';
-            
+
             // Show modal
             new bootstrap.Modal(document.getElementById('profileEditModal')).show();
         }
@@ -844,7 +850,7 @@
             const phone = document.getElementById('modal-phone').value;
             const city = document.getElementById('modal-city').value;
             const dob = document.getElementById('modal-dob').value;
-            
+
             // Update UI elements
             if (name) {
                 document.getElementById('userName').textContent = name;
@@ -852,14 +858,14 @@
                 document.getElementById('profile-display-name').textContent = name;
                 document.getElementById('profile-name').textContent = name;
             }
-            
+
             if (phone) {
                 const phoneEl = document.getElementById('profile-phone');
                 phoneEl.textContent = phone;
                 phoneEl.classList.remove('text-muted-readable');
                 phoneEl.classList.add('text-readable');
             }
-            
+
             if (dob) {
                 const dobEl = document.getElementById('profile-dob');
                 const date = new Date(dob);
@@ -867,15 +873,15 @@
                 dobEl.classList.remove('text-muted-readable');
                 dobEl.classList.add('text-readable');
             }
-            
+
             // Update avatars
             const newAvatar = document.getElementById('modal-avatar').src;
             document.getElementById('profile-avatar').src = newAvatar;
             document.getElementById('header-avatar').src = newAvatar;
-            
+
             // Close modal
             bootstrap.Modal.getInstance(document.getElementById('profileEditModal')).hide();
-            
+
             showToast('Profile updated successfully!', 'success');
         }
 
@@ -887,20 +893,20 @@
                 birthday: document.getElementById('profile-dob').textContent,
                 member_since: document.getElementById('profile-created').textContent
             };
-            
+
             const dataStr = JSON.stringify(profileData, null, 2);
             const dataBlob = new Blob([dataStr], {type: 'application/json'});
-            
+
             const link = document.createElement('a');
             link.href = URL.createObjectURL(dataBlob);
             link.download = 'garcia_builder_profile.json';
             link.click();
-            
+
             showToast('Profile data exported!', 'success');
         }
 
         function scrollToProfile() {
-            document.getElementById('profile-section').scrollIntoView({ 
+            document.getElementById('profile-section').scrollIntoView({
                 behavior: 'smooth',
                 block: 'center'
             });
@@ -934,7 +940,7 @@
             const toast = document.createElement('div');
             const bgClass = type === 'success' ? 'alert-success' : 'alert-info';
             const icon = type === 'success' ? 'check' : 'info';
-            
+
             toast.className = `alert ${bgClass} position-fixed`;
             toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
             toast.innerHTML = `
@@ -942,9 +948,9 @@
                 ${message}
                 <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
             `;
-            
+
             document.body.appendChild(toast);
-            
+
             setTimeout(() => {
                 if (toast.parentElement) toast.remove();
             }, 4000);

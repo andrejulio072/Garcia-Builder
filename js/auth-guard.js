@@ -57,8 +57,9 @@ class AuthGuard {
                             </span>
                         </li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>${this.getTranslation('nav.profile') || 'My Profile'}</a></li>
                         <li><a class="dropdown-item" href="dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>${this.getTranslation('nav.dashboard') || 'Dashboard'}</a></li>
+                        <li><a class="dropdown-item" href="my-profile.html"><i class="fas fa-user me-2"></i>${this.getTranslation('nav.profile') || 'My Profile'}</a></li>
+                        <li><a class="dropdown-item" href="profile-manager.html"><i class="fas fa-user-cog me-2"></i>${this.getTranslation('nav.profile_manager') || 'Profile Manager'}</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><button class="dropdown-item text-danger" onclick="AuthSystem.logout()"><i class="fas fa-sign-out-alt me-2"></i>${this.getTranslation('nav.logout') || 'Logout'}</button></li>
                     </ul>

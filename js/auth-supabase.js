@@ -92,16 +92,106 @@ class SupabaseAuthSystem {
         });
     }
 
-    updateUserStorage(user) {
-        const userData = {
-            id: user.id,
-            email: user.email,
-            full_name: user.user_metadata?.full_name || user.email,
-            email_confirmed: user.email_confirmed_at ? true : false,
-            last_sign_in: user.last_sign_in_at,
-            created_at: user.created_at
-        };
-        localStorage.setItem('gb_current_user', JSON.stringify(userData));
+    async updateUserStorage(user) {
+        try {
+            // Dados básicos do usuário
+            const userData = {
+                id: user.id,
+                email: user.email,
+                full_name: user.user_metadata?.full_name || user.email,
+                email_confirmed: user.email_confirmed_at ? true : false,
+                last_sign_in: user.last_sign_in_at,
+                created_at: user.created_at,
+                // Dados do OAuth (Google, Facebook, etc.)
+                provider: user.app_metadata?.provider || 'email',
+                providers: user.app_metadata?.providers || ['email'],
+                // Dados adicionais do metadata
+                avatar_url: user.user_metadata?.avatar_url || user.user_metadata?.picture || null,
+                phone: user.user_metadata?.phone || null,
+                date_of_birth: user.user_metadata?.date_of_birth || null,
+                // Dados do provedor social
+                google_data: user.app_metadata?.provider === 'google' ? {
+                    picture: user.user_metadata?.picture,
+                    verified_email: user.user_metadata?.email_verified,
+                    locale: user.user_metadata?.locale
+                } : null,
+                facebook_data: user.app_metadata?.provider === 'facebook' ? {
+                    picture: user.user_metadata?.picture,
+                    verified: user.user_metadata?.email_verified
+                } : null
+            };
+
+            // Tentar buscar dados do perfil na tabela user_profiles
+            try {
+                const { data: profile, error } = await window.supabaseClient
+                    .from('user_profiles')
+                    .select('*')
+                    .eq('user_id', user.id)
+                    .single();
+
+                if (!error && profile) {
+                    // Mesclar dados do perfil
+                    userData.profile = profile;
+                    userData.phone = profile.phone || userData.phone;
+                    userData.date_of_birth = profile.date_of_birth || userData.date_of_birth;
+                    userData.city = profile.city || null;
+                    userData.country = profile.country || null;
+                    userData.bio = profile.bio || null;
+                    userData.preferences = profile.preferences || {};
+                } else {
+                    // Criar perfil inicial se não existir
+                    await this.createUserProfile(user, userData);
+                }
+            } catch (profileError) {
+                console.warn('Profile fetch error (creating new):', profileError);
+                await this.createUserProfile(user, userData);
+            }
+
+            localStorage.setItem('gb_current_user', JSON.stringify(userData));
+            console.log('✅ User data stored:', userData);
+
+        } catch (error) {
+            console.error('❌ Error updating user storage:', error);
+            // Fallback para dados básicos
+            const fallbackData = {
+                id: user.id,
+                email: user.email,
+                full_name: user.user_metadata?.full_name || user.email
+            };
+            localStorage.setItem('gb_current_user', JSON.stringify(fallbackData));
+        }
+    }
+
+    async createUserProfile(user, userData) {
+        try {
+            const profileData = {
+                user_id: user.id,
+                email: user.email,
+                full_name: userData.full_name,
+                phone: userData.phone,
+                date_of_birth: userData.date_of_birth,
+                avatar_url: userData.avatar_url,
+                provider: userData.provider,
+                preferences: {
+                    currency: 'EUR',
+                    language: 'en',
+                    email_notifications: true,
+                    theme: 'dark'
+                },
+                created_at: new Date().toISOString()
+            };
+
+            const { error } = await window.supabaseClient
+                .from('user_profiles')
+                .insert([profileData])
+                .select();
+
+            if (error) throw error;
+            console.log('✅ User profile created');
+
+        } catch (error) {
+            console.error('❌ Error creating user profile:', error);
+        }
     }
 
     clearUserStorage() {

@@ -1,0 +1,199 @@
+// Currency Conversion System
+(() => {
+  // Exchange rates (updated periodically - in production, use real API)
+  let exchangeRates = {
+    'EUR': 1.0,     // Base currency
+    'USD': 1.08,
+    'GBP': 0.85,
+    'BRL': 6.35,
+    'CAD': 1.50,
+    'AUD': 1.65
+  };
+
+  // Base prices in EUR
+  const basePrices = {
+    starter: 150,
+    beginner: 200,
+    essentials: 300,
+    full: 400,
+    elite: 500
+  };
+
+  let currentCurrency = 'EUR';
+  let isLoading = false;
+
+  // Currency symbols
+  const currencySymbols = {
+    'EUR': '€',
+    'USD': '$',
+    'GBP': '£',
+    'BRL': 'R$',
+    'CAD': 'C$',
+    'AUD': 'A$'
+  };
+
+  // Initialize currency system
+  const init = () => {
+    const currencySelect = document.getElementById('currency-select');
+    if (!currencySelect) return;
+
+    // Load saved currency preference
+    const savedCurrency = localStorage.getItem('preferred-currency');
+    if (savedCurrency && exchangeRates[savedCurrency]) {
+      currentCurrency = savedCurrency;
+      currencySelect.value = savedCurrency;
+    }
+
+    // Add change listener
+    currencySelect.addEventListener('change', handleCurrencyChange);
+
+    // Initial conversion
+    updatePrices();
+  };
+
+  // Handle currency change
+  const handleCurrencyChange = async (e) => {
+    const newCurrency = e.target.value;
+    if (newCurrency === currentCurrency || isLoading) return;
+
+    showLoading(true);
+
+    try {
+      // Update exchange rates (in production, fetch from API)
+      await updateExchangeRates();
+
+      currentCurrency = newCurrency;
+      localStorage.setItem('preferred-currency', newCurrency);
+
+      updatePrices();
+
+      // Show success feedback
+      setTimeout(() => {
+        showLoading(false);
+      }, 500);
+
+    } catch (error) {
+      console.error('Currency conversion error:', error);
+      showLoading(false);
+
+      // Show error and revert
+      e.target.value = currentCurrency;
+      showNotification('Failed to update currency. Please try again.', 'error');
+    }
+  };
+
+  // Show loading indicator
+  const showLoading = (show) => {
+    isLoading = show;
+    const select = document.getElementById('currency-select');
+    const loadingIndicator = document.querySelector('.currency-loading');
+
+    if (show) {
+      select.disabled = true;
+      if (!loadingIndicator) {
+        const loader = document.createElement('span');
+        loader.className = 'currency-loading';
+        select.parentNode.appendChild(loader);
+      }
+    } else {
+      select.disabled = false;
+      if (loadingIndicator) {
+        loadingIndicator.remove();
+      }
+    }
+  };
+
+  // Update all prices on the page
+  const updatePrices = () => {
+    const pricingGrid = document.getElementById('pricingGrid');
+    if (!pricingGrid) return;
+
+    const symbol = currencySymbols[currentCurrency];
+    const rate = exchangeRates[currentCurrency];
+
+    // Update plan prices
+    Object.keys(basePrices).forEach(planKey => {
+      const basePrice = basePrices[planKey];
+      const convertedPrice = Math.round(basePrice * rate);
+      const formattedPrice = formatPrice(convertedPrice, symbol);
+
+      // Update in DOM
+      const planButton = pricingGrid.querySelector(`[data-plan-key="${planKey}"]`);
+      if (planButton) {
+        planButton.setAttribute('data-plan-price', formattedPrice);
+
+        // Update price display
+        const priceTag = planButton.closest('.price').querySelector('.tag');
+        if (priceTag) {
+          const periodText = priceTag.querySelector('span');
+          const period = periodText ? periodText.textContent : '/month';
+          priceTag.innerHTML = `${formattedPrice}<span style="font-size:16px">${period}</span>`;
+        }
+      }
+    });
+
+    console.log(`Prices updated to ${currentCurrency}`);
+  };
+
+  // Format price according to currency
+  const formatPrice = (amount, symbol) => {
+    if (currentCurrency === 'BRL') {
+      return `${symbol} ${amount.toLocaleString('pt-BR')}`;
+    }
+    return `${symbol}${amount.toLocaleString()}`;
+  };
+
+  // Update exchange rates (mock API call)
+  const updateExchangeRates = async () => {
+    return new Promise((resolve) => {
+      // Simulate API delay
+      setTimeout(() => {
+        // In production, fetch real rates from API
+        // For now, use static rates with small random variation
+        const variation = 0.98 + Math.random() * 0.04; // ±2% variation
+
+        Object.keys(exchangeRates).forEach(currency => {
+          if (currency !== 'EUR') {
+            exchangeRates[currency] *= variation;
+          }
+        });
+
+        resolve();
+      }, 300);
+    });
+  };
+
+  // Show notification
+  const showNotification = (message, type = 'info') => {
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type === 'error' ? 'danger' : 'success'} position-fixed`;
+    notification.style.cssText = `
+      top: 20px; right: 20px; z-index: 9999;
+      max-width: 300px; opacity: 0.95;
+    `;
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+      notification.remove();
+    }, 3000);
+  };
+
+  // Public API
+  window.CurrencyConverter = {
+    init,
+    getCurrentCurrency: () => currentCurrency,
+    convertPrice: (eurAmount) => Math.round(eurAmount * exchangeRates[currentCurrency]),
+    getSymbol: () => currencySymbols[currentCurrency]
+  };
+
+  // Auto-initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    setTimeout(init, 100);
+  }
+
+  console.log('Currency conversion system loaded');
+})();

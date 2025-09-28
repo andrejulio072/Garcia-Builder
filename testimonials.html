@@ -23,8 +23,102 @@ img { max-width: 100%; height: auto; display: block; }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
 }
-/* Card tweaks specific to testimonials (defer to global.css for avatar/name/badge sizes) */
-.tcard p { margin: .5rem 0 0; }
+/* Enhanced testimonials styling */
+.tcard {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.tcard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+.tcard p { margin: .5rem 0 0; line-height: 1.6; }
+.tcard::before {
+  content: '"';
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 3rem;
+  color: rgba(102, 126, 234, 0.1);
+  font-family: serif;
+  pointer-events: none;
+}
+
+/* Filter buttons */
+.testimonial-filters {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+.testimonial-filters button {
+  background: rgba(102, 126, 234, 0.1);
+  border: 2px solid transparent;
+  padding: 0.5rem 1.5rem;
+  border-radius: 25px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.testimonial-filters button.active,
+.testimonial-filters button:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: #667eea;
+}
+
+/* Statistics bar */
+.testimonial-stats {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  padding: 2rem;
+  border-radius: 15px;
+  margin: 2rem 0;
+  text-align: center;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 2rem;
+  margin-top: 1rem;
+}
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 0.5rem;
+  opacity: 0.8;
+}
+
+/* Quote icon animation */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.grid .tcard {
+  animation: fadeInUp 0.6s ease forwards;
+}
+.grid .tcard:nth-child(1) { animation-delay: 0.1s; }
+.grid .tcard:nth-child(2) { animation-delay: 0.2s; }
+.grid .tcard:nth-child(3) { animation-delay: 0.3s; }
+.grid .tcard:nth-child(4) { animation-delay: 0.4s; }
+.grid .tcard:nth-child(5) { animation-delay: 0.5s; }
+.grid .tcard:nth-child(6) { animation-delay: 0.6s; }
 </style>
 </head><body>
 <nav class="navbar"><div class="container inner">
@@ -49,9 +143,41 @@ img { max-width: 100%; height: auto; display: block; }
 <h1 class="title-gradient text-glow" data-i18n="testimonials.title">Testimonials</h1>
 <p class="lead text-center" data-i18n="testimonials.subtitle">What clients say about their Garcia Builder experience.</p>
 
+<!-- Statistics Bar -->
+<div class="testimonial-stats">
+  <h3 class="title-gradient">Real Results, Real People</h3>
+  <div class="stats-grid">
+    <div class="stat-item">
+      <div class="stat-number">500+</div>
+      <div class="stat-label">Clients Transformed</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">98%</div>
+      <div class="stat-label">Success Rate</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">4.9</div>
+      <div class="stat-label">Average Rating</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">18</div>
+      <div class="stat-label">Countries Served</div>
+    </div>
+  </div>
+</div>
+
+<!-- Filter Buttons -->
+<div class="testimonial-filters">
+  <button class="filter-btn active" data-filter="all">All Stories</button>
+  <button class="filter-btn" data-filter="weight-loss">Weight Loss</button>
+  <button class="filter-btn" data-filter="muscle-gain">Muscle Gain</button>
+  <button class="filter-btn" data-filter="transformation">Body Recomposition</button>
+  <button class="filter-btn" data-filter="health">Health & Wellness</button>
+</div>
+
 <div class="grid grid-3 mt-3">
   <!-- 1 -->
-  <div class="card tcard">
+  <div class="card tcard" data-category="weight-loss transformation">
     <img loading="lazy" decoding="async" src="https://i.pravatar.cc/128?img=31" alt="Eduarda Ribeiro"/>
     <div>
       <div class="name">Eduarda Ribeiro</div>
@@ -60,7 +186,7 @@ img { max-width: 100%; height: auto; display: block; }
     </div>
   </div>
   <!-- 2 -->
-  <div class="card tcard">
+  <div class="card tcard" data-category="health muscle-gain">
     <img loading="lazy" decoding="async" src="https://i.pravatar.cc/128?img=12" alt="Conrad Norman"/>
     <div>
       <div class="name">Conrad Norman</div>
@@ -69,7 +195,7 @@ img { max-width: 100%; height: auto; display: block; }
     </div>
   </div>
   <!-- 3 -->
-  <div class="card tcard">
+  <div class="card tcard" data-category="transformation weight-loss">
     <img loading="lazy" decoding="async" src="https://i.pravatar.cc/128?img=21" alt="Mariana Vieira"/>
     <div>
       <div class="name">Mariana Vieira</div>
@@ -78,7 +204,7 @@ img { max-width: 100%; height: auto; display: block; }
     </div>
   </div>
   <!-- 4 -->
-  <div class="card tcard">
+  <div class="card tcard" data-category="weight-loss health">
     <img loading="lazy" decoding="async" src="https://i.pravatar.cc/128?img=17" alt="Isabella Antunes"/>
     <div>
       <div class="name">Isabella Antunes</div>
@@ -87,7 +213,7 @@ img { max-width: 100%; height: auto; display: block; }
     </div>
   </div>
   <!-- 5 -->
-  <div class="card tcard">
+  <div class="card tcard" data-category="health muscle-gain">
     <img loading="lazy" decoding="async" src="https://i.pravatar.cc/128?img=45" alt="Leticia Salles"/>
     <div>
       <div class="name">Leticia Salles</div>
@@ -96,7 +222,7 @@ img { max-width: 100%; height: auto; display: block; }
     </div>
   </div>
   <!-- 6 -->
-  <div class="card tcard">
+  <div class="card tcard" data-category="transformation muscle-gain">
     <img loading="lazy" decoding="async" src="https://i.pravatar.cc/128?img=24" alt="Lyandra"/>
     <div>
       <div class="name">Lyandra</div>
@@ -105,7 +231,7 @@ img { max-width: 100%; height: auto; display: block; }
     </div>
   </div>
   <!-- 7 -->
-  <div class="card tcard">
+  <div class="card tcard" data-category="weight-loss health">
     <img loading="lazy" decoding="async" src="https://i.pravatar.cc/128?img=5" alt="Carlos Alberto Romano"/>
     <div>
       <div class="name">Carlos Alberto Romano</div>
@@ -114,7 +240,7 @@ img { max-width: 100%; height: auto; display: block; }
     </div>
   </div>
   <!-- 8 -->
-  <div class="card tcard">
+  <div class="card tcard" data-category="transformation muscle-gain">
     <img loading="lazy" decoding="async" src="https://i.pravatar.cc/128?img=8" alt="Ana Paula Tannus"/>
     <div>
       <div class="name">Ana Paula Tannus</div>
@@ -221,6 +347,8 @@ img { max-width: 100%; height: auto; display: block; }
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script defer src="js/app.js"></script>
 <script defer src="js/lightbox.js"></script>
+<script defer src="js/testimonials-filter.js"></script>
+<script defer src="js/user-reviews.js"></script>
 <script defer src="js/i18n-shim.js"></script>
 <script defer src="assets/i18n.js?v=20250926"></script>
 <script defer src="js/auth.js"></script>

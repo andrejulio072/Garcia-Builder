@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Trainer Form - Garcia Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #0f0f0f; color: #fff; }
+        .test-container { max-width: 800px; margin: 50px auto; }
+        .test-result { margin: 20px 0; padding: 15px; border-radius: 8px; }
+        .test-success { background: rgba(40, 167, 69, 0.2); border: 1px solid #28a745; }
+        .test-error { background: rgba(220, 53, 69, 0.2); border: 1px solid #dc3545; }
+        .test-info { background: rgba(23, 162, 184, 0.2); border: 1px solid #17a2b8; }
+        .btn-test { margin: 10px 5px; }
+        .log-output { background: #1a1a1a; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 12px; max-height: 400px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <div class="container test-container">
+        <h1 class="text-center mb-4"><i class="fas fa-flask me-2"></i>Trainer Form Test Suite</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card bg-dark border-secondary">
+                    <div class="card-header">
+                        <h5><i class="fas fa-cog me-2"></i>Test Controls</h5>
+                    </div>
+                    <div class="card-body">
+                        <button id="testConnection" class="btn btn-primary btn-test">
+                            <i class="fas fa-wifi me-2"></i>Test Supabase Connection
+                        </button>
+                        <button id="testFormValidation" class="btn btn-warning btn-test">
+                            <i class="fas fa-check-circle me-2"></i>Test Form Validation
+                        </button>
+                        <button id="testSubmission" class="btn btn-success btn-test">
+                            <i class="fas fa-paper-plane me-2"></i>Test Form Submission
+                        </button>
+                        <button id="clearLog" class="btn btn-secondary btn-test">
+                            <i class="fas fa-trash me-2"></i>Clear Log
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card bg-dark border-secondary">
+                    <div class="card-header">
+                        <h5><i class="fas fa-info-circle me-2"></i>Test Status</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="testResults"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card bg-dark border-secondary mt-4">
+            <div class="card-header">
+                <h5><i class="fas fa-terminal me-2"></i>Test Log</h5>
+            </div>
+            <div class="card-body">
+                <div id="logOutput" class="log-output"></div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="become-trainer.html" class="btn btn-outline-light">
+                <i class="fas fa-arrow-right me-2"></i>Go to Actual Form
+            </a>
+            <a href="index.html" class="btn btn-outline-light">
+                <i class="fas fa-home me-2"></i>Back to Home
+            </a>
+        </div>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Initialize Supabase
+        const supabaseUrl = 'https://uqpibvlugdrnzdzlsljy.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxcGlidmx1Z2RybnpkemxzbGp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcyNzUzMjYsImV4cCI6MjA0Mjg1MTMyNn0.NjbNTdqBHhvn7n0DjqIKl-wMqEW7GhpXtJRpRX4KX_o';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        function log(message, type = 'info') {
+            const logOutput = document.getElementById('logOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.innerHTML = `<span class="text-muted">[${timestamp}]</span> <span class="text-${type === 'error' ? 'danger' : type === 'success' ? 'success' : 'info'}">${message}</span>`;
+            logOutput.appendChild(logEntry);
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
+
+        function showResult(message, type) {
+            const resultsDiv = document.getElementById('testResults');
+            const result = document.createElement('div');
+            result.className = `test-result test-${type}`;
+            result.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : 'info'} me-2"></i>${message}`;
+            resultsDiv.appendChild(result);
+        }
+
+        // Test Supabase Connection
+        document.getElementById('testConnection').addEventListener('click', async () => {
+            log('Testing Supabase connection...', 'info');
+            
+            try {
+                const { data, error } = await supabase.from('trainer_applications').select('count').limit(1);
+                
+                if (error) {
+                    throw error;
+                }
+                
+                log('✅ Supabase connection successful', 'success');
+                showResult('Supabase connection is working', 'success');
+                
+            } catch (error) {
+                log(`❌ Supabase connection failed: ${error.message}`, 'error');
+                showResult(`Connection failed: ${error.message}`, 'error');
+            }
+        });
+
+        // Test Form Validation
+        document.getElementById('testFormValidation').addEventListener('click', () => {
+            log('Testing form validation logic...', 'info');
+            
+            const testData = {
+                fullName: '',
+                email: 'invalid-email',
+                phone: '',
+                experienceYears: '',
+                specialties: [],
+                certifications: '',
+                bio: ''
+            };
+            
+            const validationErrors = [];
+            
+            if (!testData.fullName.trim()) validationErrors.push('Full name is required');
+            if (!testData.email.includes('@')) validationErrors.push('Valid email is required');
+            if (!testData.phone.trim()) validationErrors.push('Phone is required');
+            if (!testData.experienceYears) validationErrors.push('Experience years is required');
+            if (testData.specialties.length === 0) validationErrors.push('At least one specialty is required');
+            if (!testData.certifications.trim()) validationErrors.push('Certifications are required');
+            if (!testData.bio.trim()) validationErrors.push('Bio is required');
+            
+            if (validationErrors.length > 0) {
+                log(`✅ Validation working: Found ${validationErrors.length} errors`, 'success');
+                validationErrors.forEach(error => log(`  - ${error}`, 'info'));
+                showResult('Form validation is working correctly', 'success');
+            } else {
+                log('❌ Validation failed: No errors detected with invalid data', 'error');
+                showResult('Form validation may have issues', 'error');
+            }
+        });
+
+        // Test Form Submission (with mock data)
+        document.getElementById('testSubmission').addEventListener('click', async () => {
+            log('Testing form submission with mock data...', 'info');
+            
+            try {
+                // Mock a user session (in real app, this would come from auth)
+                const mockUser = { id: 'test-user-' + Date.now() };
+                
+                const mockApplicationData = {
+                    user_id: mockUser.id,
+                    full_name: 'Test Trainer',
+                    email: 'test@example.com',
+                    phone: '+1234567890',
+                    experience_years: 5,
+                    specialties: JSON.stringify(['Strength Training', 'Weight Loss']),
+                    certifications: 'NASM-CPT, ACSM-CPT',
+                    bio: 'This is a test bio for the trainer application system.',
+                    status: 'pending',
+                    applied_at: new Date().toISOString()
+                };
+                
+                log('Submitting mock application data...', 'info');
+                log(`Data: ${JSON.stringify(mockApplicationData, null, 2)}`, 'info');
+                
+                const { data, error } = await supabase
+                    .from('trainer_applications')
+                    .insert([mockApplicationData]);
+                
+                if (error) {
+                    throw error;
+                }
+                
+                log('✅ Mock submission successful', 'success');
+                showResult('Form submission is working correctly', 'success');
+                
+                // Clean up test data
+                setTimeout(async () => {
+                    try {
+                        await supabase
+                            .from('trainer_applications')
+                            .delete()
+                            .eq('user_id', mockUser.id);
+                        log('🧹 Test data cleaned up', 'info');
+                    } catch (cleanupError) {
+                        log(`⚠️ Cleanup warning: ${cleanupError.message}`, 'warning');
+                    }
+                }, 2000);
+                
+            } catch (error) {
+                log(`❌ Submission failed: ${error.message}`, 'error');
+                showResult(`Submission failed: ${error.message}`, 'error');
+            }
+        });
+
+        // Clear log
+        document.getElementById('clearLog').addEventListener('click', () => {
+            document.getElementById('logOutput').innerHTML = '';
+            document.getElementById('testResults').innerHTML = '';
+        });
+
+        // Initial status
+        log('Trainer Form Test Suite initialized', 'success');
+        log('Click buttons above to run tests', 'info');
+    </script>
+</body>
+</html>

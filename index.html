@@ -230,7 +230,7 @@ function showTrainerInfo() {
     document.body.appendChild(modal);
     const bootstrapModal = new bootstrap.Modal(modal);
     bootstrapModal.show();
-    
+
     // Remove modal from DOM when hidden
     modal.addEventListener('hidden.bs.modal', () => {
         document.body.removeChild(modal);

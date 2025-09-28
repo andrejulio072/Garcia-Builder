@@ -477,7 +477,7 @@
                 // Submit application
                 const { data, error } = await window.supabaseClient
                     .from('trainer_applications')
-                    .upsert(applicationData, { 
+                    .upsert(applicationData, {
                         onConflict: 'user_id',
                         returning: 'minimal'
                     });

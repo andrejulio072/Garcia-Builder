@@ -67,7 +67,7 @@
   const updateNavigation = () => {
     // Add trainer link to navigation if user is a trainer
     const navs = document.querySelectorAll('.nav, nav.nav');
-    
+
     navs.forEach(nav => {
       // Remove existing trainer link to avoid duplicates
       const existingTrainerLink = nav.querySelector('a[href="trainer-dashboard.html"]');
@@ -81,7 +81,7 @@
         trainerLink.href = 'trainer-dashboard.html';
         trainerLink.textContent = 'Trainer';
         trainerLink.setAttribute('data-i18n', 'nav.trainer');
-        
+
         // Add active class if on trainer dashboard
         if (window.location.pathname.includes('trainer-dashboard.html')) {
           trainerLink.classList.add('active');
@@ -105,7 +105,7 @@
   const hideTrainerIdField = () => {
     const trainerIdField = document.getElementById('trainer_id');
     const trainerIdGroup = trainerIdField?.closest('.col-md-6');
-    
+
     if (trainerIdGroup) {
       // Only show to trainers or if user has admin flag
       const isAdmin = currentUser?.user_metadata?.is_admin || false;

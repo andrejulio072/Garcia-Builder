@@ -32,7 +32,7 @@
 
     <div class="container py-5" style="padding-top:110px;">
         <h1 class="mb-4">Trainer Management</h1>
-        
+
         <div class="row g-3">
             <div class="col-12">
                 <div class="card p-3">
@@ -161,7 +161,7 @@
                 renderUsersTable();
             } catch (error) {
                 console.error('Error loading users:', error);
-                document.getElementById('users-table-body').innerHTML = 
+                document.getElementById('users-table-body').innerHTML =
                     '<tr><td colspan="5" class="text-center text-danger">Failed to load users</td></tr>';
             }
         }
@@ -178,7 +178,7 @@
 
                 // Get unique trainer IDs
                 const trainerIds = [...new Set(data.map(user => user.trainer_id))];
-                
+
                 // Get trainer details
                 const { data: trainerData, error: trainerError } = await window.supabaseClient
                     .from('user_profiles')
@@ -196,7 +196,7 @@
 
         function renderUsersTable() {
             const tbody = document.getElementById('users-table-body');
-            
+
             if (users.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No users found</td></tr>';
                 return;
@@ -205,12 +205,12 @@
             const html = users.map(user => {
                 const isTrainer = trainers.some(t => t.user_id === user.user_id);
                 const hasTrainer = user.trainer_id && user.trainer_name;
-                
+
                 return `
                     <tr>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="${user.avatar_url || 'assets/avatar-m1.svg'}" 
+                                <img src="${user.avatar_url || 'assets/avatar-m1.svg'}"
                                      style="width:32px;height:32px;border-radius:50%;margin-right:8px;">
                                 ${user.full_name || 'Unnamed'}
                             </div>
@@ -236,7 +236,7 @@
         function populateTrainerSelect() {
             const select = document.getElementById('trainer-select');
             select.innerHTML = '<option value="">Choose a trainer...</option>';
-            
+
             trainers.forEach(trainer => {
                 const option = document.createElement('option');
                 option.value = trainer.user_id;
@@ -248,7 +248,7 @@
         function openAssignTrainerModal(userId, userName) {
             document.getElementById('client-id').value = userId;
             document.getElementById('client-name').value = userName;
-            
+
             const modal = new bootstrap.Modal(document.getElementById('assignTrainerModal'));
             modal.show();
         }
@@ -257,7 +257,7 @@
             try {
                 const clientId = document.getElementById('client-id').value;
                 const trainerId = document.getElementById('trainer-select').value;
-                
+
                 if (!trainerId) {
                     alert('Please select a trainer');
                     return;
@@ -285,7 +285,7 @@
                 // Close modal and refresh
                 bootstrap.Modal.getInstance(document.getElementById('assignTrainerModal')).hide();
                 await loadUsers();
-                
+
                 showNotification('Trainer assigned successfully', 'success');
             } catch (error) {
                 console.error('Error assigning trainer:', error);

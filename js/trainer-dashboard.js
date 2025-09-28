@@ -131,7 +131,7 @@
         `)
         .eq('trainer_id', me.id)
         .order('scheduled_at', { ascending: true });
-      
+
       if(error) throw error;
       sessions = data || [];
       renderSessions();
@@ -154,7 +154,7 @@
     const pastSessions = sessions.filter(s => new Date(s.scheduled_at) <= now);
 
     let html = '';
-    
+
     if (upcomingSessions.length > 0) {
       html += '<h6 class="mb-2 text-warning">Upcoming Sessions</h6>';
       upcomingSessions.forEach(session => {
@@ -182,7 +182,7 @@
       html += '<h6 class="mb-2 mt-3 text-success">Recent Sessions</h6>';
       pastSessions.slice(0, 5).forEach(session => {
         const date = new Date(session.scheduled_at).toLocaleString();
-        const statusClass = session.status === 'completed' ? 'text-success' : 
+        const statusClass = session.status === 'completed' ? 'text-success' :
                            session.status === 'cancelled' ? 'text-danger' : 'text-muted';
         html += `
           <div class="session-item p-2 mb-2 border rounded">
@@ -207,16 +207,16 @@
         .from('sessions')
         .update({ status, updated_at: new Date().toISOString() })
         .eq('id', sessionId);
-      
+
       if (error) throw error;
-      
+
       // Update local sessions array
       const sessionIndex = sessions.findIndex(s => s.id === sessionId);
       if (sessionIndex >= 0) {
         sessions[sessionIndex].status = status;
         renderSessions();
       }
-      
+
       showNotification(`Session marked as ${status}`, 'success');
     } catch (error) {
       console.error('Error updating session status:', error);
@@ -261,7 +261,7 @@
 
       const { error } = await window.supabaseClient.from('sessions').insert(payload);
       if (error) throw error;
-      
+
       showNotification('Session created successfully', 'success');
       e.target.reset();
       await loadSessions(); // Refresh sessions list

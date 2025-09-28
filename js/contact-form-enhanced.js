@@ -2,21 +2,7 @@
   const form = document.getElementById('contact-form');
   if (!form) return;
 
-  const bt      if (res.ok) {
-        localStorage.setItem('gb_last_submit', Date.now().toString());
-
-        // Store user email for confirmation
-        const userEmail = emailEl.value.trim();
-        const userName = nameEl.value.trim();
-
-        form.reset(); updateCount();
-        alertBox.classList.remove('visually-hidden');
-        alertBox.textContent = 'Thanks! Your message was sent. I'll reply within 24–48h.';
-
-        // Show success popup and send confirmation email
-        showSuccessPopup(userName, userEmail);
-        sendConfirmationEmail(userName, userEmail);
-      } else {cument.getElementById('sendBtn');
+  const btn = document.getElementById('sendBtn');
   const alertBox = document.getElementById('form-alert');
   const nameEl = document.getElementById('name');
   const emailEl = document.getElementById('email');
@@ -70,6 +56,98 @@
     return Date.now() - last > 60_000;
   };
 
+  // Success popup function
+  const showSuccessPopup = (userName, userEmail) => {
+    // Create modal HTML
+    const modalHTML = `
+      <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header border-0">
+              <h1 class="modal-title fs-4 text-center w-100" id="successModalLabel">
+                <i class="text-success">✅</i> Message Sent Successfully!
+              </h1>
+            </div>
+            <div class="modal-body text-center">
+              <p class="mb-3">Thank you <strong>${userName}</strong>!</p>
+              <p class="text-muted mb-3">Your message has been sent successfully and a confirmation email has been sent to:</p>
+              <p class="text-primary fw-bold">${userEmail}</p>
+              <p class="text-muted small">I'll reply within 24-48 hours. Check your spam folder if you don't receive the confirmation email.</p>
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+              <button type="button" class="btn btn-gradient px-4" data-bs-dismiss="modal">Got it!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Remove existing modal if any
+    const existingModal = document.getElementById('successModal');
+    if (existingModal) {
+      existingModal.remove();
+    }
+
+    // Add modal to body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('successModal'));
+    modal.show();
+
+    // Auto-hide after 8 seconds
+    setTimeout(() => {
+      modal.hide();
+    }, 8000);
+
+    // Remove modal from DOM after hiding
+    document.getElementById('successModal').addEventListener('hidden.bs.modal', () => {
+      document.getElementById('successModal').remove();
+    });
+  };
+
+  // Send confirmation email function
+  const sendConfirmationEmail = async (userName, userEmail) => {
+    try {
+      // Create confirmation email data
+      const confirmationData = new FormData();
+      confirmationData.append('_to', userEmail);
+      confirmationData.append('_subject', 'Message Received - Garcia Builder Coaching');
+      confirmationData.append('_template', 'table');
+      confirmationData.append('name', userName);
+      confirmationData.append('message', `
+Hi ${userName},
+
+Thank you for reaching out! I've received your message and will get back to you within 24-48 hours.
+
+In the meantime, feel free to:
+• Follow me on Instagram @garcia.builder for daily tips
+• Check out my transformation stories at garciabuilder.com/transformations
+• Book a free consultation call if you'd like to chat sooner
+
+Looking forward to speaking with you soon!
+
+Best regards,
+Andre Garcia
+Garcia Builder - Online Coaching
+📧 coach@garciabuilder.com
+📱 WhatsApp: +447508497586
+🌐 garciabuilder.com
+      `);
+
+      // Send confirmation email via Formspree
+      await fetch('https://formspree.io/f/mldpgrwq', {
+        method: 'POST',
+        body: confirmationData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      console.log('Confirmation email sent successfully');
+    } catch (error) {
+      console.warn('Failed to send confirmation email:', error);
+    }
+  };
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -115,9 +193,18 @@
 
       if (res.ok) {
         localStorage.setItem('gb_last_submit', Date.now().toString());
+
+        // Store user data for confirmation
+        const userEmail = emailEl.value.trim();
+        const userName = nameEl.value.trim();
+
         form.reset(); updateCount();
         alertBox.classList.remove('visually-hidden');
-        alertBox.textContent = 'Thanks! Your message was sent. I’ll reply within 24–48h.';
+        alertBox.textContent = 'Thanks! Your message was sent. I'll reply within 24–48h.';
+
+        // Show success popup and send confirmation email
+        showSuccessPopup(userName, userEmail);
+        sendConfirmationEmail(userName, userEmail);
       } else {
         alertBox.classList.remove('visually-hidden');
         alertBox.textContent = 'Hmm, something went wrong. You can also email me at: coach@garciabuilder.com';

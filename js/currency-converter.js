@@ -2,24 +2,24 @@
 (() => {
   // Exchange rates (updated periodically - in production, use real API)
   let exchangeRates = {
-    'EUR': 1.0,     // Base currency
-    'USD': 1.08,
-    'GBP': 0.85,
-    'BRL': 6.35,
-    'CAD': 1.50,
-    'AUD': 1.65
+    'GBP': 1.0,     // Base currency - British Pounds
+    'EUR': 1.18,
+    'USD': 1.27,
+    'BRL': 7.50,
+    'CAD': 1.77,
+    'AUD': 1.95
   };
 
-  // Base prices in EUR
+  // Base prices in GBP (British Pounds) - Original Stripe prices
   const basePrices = {
-    starter: 150,
-    beginner: 200,
-    essentials: 300,
-    full: 400,
-    elite: 500
+    starter: 75,      // £75
+    beginner: 95,     // £95
+    essentials: 115,  // £115
+    full: 155,        // £155
+    elite: 230        // £230
   };
 
-  let currentCurrency = 'EUR';
+  let currentCurrency = 'GBP';
   let isLoading = false;
 
   // Currency symbols

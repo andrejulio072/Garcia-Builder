@@ -179,3 +179,76 @@ CREATE INDEX IF NOT EXISTS idx_user_profiles_phone ON public.user_profiles(phone
 -- Create a public bucket named 'user-assets' in Storage for avatars and progress photos.
 -- Consider adding a folder structure {user_id}/avatars and {user_id}/progress.
 -- If you prefer signed URLs, disable 'Public bucket' and fetch signed URLs on the client instead.
+
+-- ============================================================
+-- Trainer/Coach capabilities
+-- Adds trainer assignment and scheduling minimal tables + RLS
+-- ============================================================
+
+-- Add trainer assignment fields to user_profiles
+ALTER TABLE public.user_profiles
+    ADD COLUMN IF NOT EXISTS trainer_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+    ADD COLUMN IF NOT EXISTS trainer_name TEXT;
+
+CREATE INDEX IF NOT EXISTS idx_user_profiles_trainer ON public.user_profiles(trainer_id);
+
+-- Allow trainers to SELECT user_profiles for their assigned clients
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE policyname = 'Trainer can select assigned user_profiles' AND tablename = 'user_profiles'
+    ) THEN
+        CREATE POLICY "Trainer can select assigned user_profiles" ON public.user_profiles
+            FOR SELECT USING (
+                auth.uid() = trainer_id OR auth.uid() = user_id
+            );
+    END IF;
+END$$;
+
+-- Sessions: basic scheduling between trainer and client
+CREATE TABLE IF NOT EXISTS public.sessions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    trainer_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    notes TEXT,
+    scheduled_at TIMESTAMPTZ NOT NULL,
+    status TEXT DEFAULT 'scheduled',
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+ALTER TABLE public.sessions ENABLE ROW LEVEL SECURITY;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE policyname = 'Users and trainers can select own sessions' AND tablename = 'sessions'
+    ) THEN
+        CREATE POLICY "Users and trainers can select own sessions" ON public.sessions
+            FOR SELECT USING (
+                auth.uid() = user_id OR auth.uid() = trainer_id
+            );
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE policyname = 'Trainer can insert sessions for their clients' AND tablename = 'sessions'
+    ) THEN
+        CREATE POLICY "Trainer can insert sessions for their clients" ON public.sessions
+            FOR INSERT WITH CHECK (
+                auth.uid() = trainer_id
+            );
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE policyname = 'Users or trainers can update own sessions' AND tablename = 'sessions'
+    ) THEN
+        CREATE POLICY "Users or trainers can update own sessions" ON public.sessions
+            FOR UPDATE USING (
+                auth.uid() = user_id OR auth.uid() = trainer_id
+            );
+    END IF;
+END$$;
+
+CREATE INDEX IF NOT EXISTS idx_sessions_trainer ON public.sessions(trainer_id);
+CREATE INDEX IF NOT EXISTS idx_sessions_user ON public.sessions(user_id);

@@ -68,6 +68,8 @@
           bio: '',
           goals: [],
           experience_level: '',
+          trainer_id: null,
+          trainer_name: '',
           joined_date: new Date().toISOString(),
           last_login: new Date().toISOString()
         },
@@ -215,49 +217,95 @@
         return Number.isFinite(n) ? n : null;
       };
 
+      const pick = (obj, keys) => keys.reduce((acc, k) => {
+        if (obj[k] !== undefined) acc[k] = obj[k];
+        return acc;
+      }, {});
+
+      const normalizeDate = (v) => {
+        if (!v) return null;
+        // Handle dd/mm/yyyy or yyyy-mm-dd
+        if (/^\d{2}\/\d{2}\/\d{4}$/.test(v)) {
+          const [d, m, y] = v.split('/');
+          return `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
+        }
+        // Accept yyyy-mm-dd or ISO
+        const dt = new Date(v);
+        if (!isNaN(dt.getTime())) {
+          return dt.toISOString().slice(0,10);
+        }
+        return null;
+      };
+
       if (section === 'basic' || !section) {
+        // whitelist columns for user_profiles
+        const allowed = [
+          'email','full_name','first_name','last_name','phone','avatar_url','birthday','location','bio','goals','experience_level','joined_date','last_login','trainer_id','trainer_name'
+        ];
+        const base = pick(profileData.basic, allowed);
         const payload = {
           user_id: currentUser.id,
-          ...profileData.basic,
-          birthday: profileData.basic.birthday || null,
+          ...base,
+          birthday: normalizeDate(base.birthday),
           updated_at: new Date().toISOString()
         };
         const { error } = await window.supabaseClient
           .from('user_profiles')
           .upsert(payload);
 
-        if (error) throw error;
+        if (error) {
+          const msg = error?.message || 'Unknown error';
+          console.error('user_profiles upsert failed:', error);
+          showNotification(`Profile save failed: ${msg}`, 'error');
+          throw error;
+        }
       }
 
       if (section === 'body_metrics' || !section) {
+        const allowed = [
+          'current_weight','height','target_weight','body_fat_percentage','muscle_mass','measurements','progress_photos','weight_history','created_at','updated_at'
+        ];
+        const base = pick(profileData.body_metrics, allowed);
         const payload = {
           user_id: currentUser.id,
-          ...profileData.body_metrics,
-          current_weight: num(profileData.body_metrics.current_weight),
-          height: num(profileData.body_metrics.height),
-          target_weight: num(profileData.body_metrics.target_weight),
-          body_fat_percentage: num(profileData.body_metrics.body_fat_percentage),
-          muscle_mass: num(profileData.body_metrics.muscle_mass),
+          ...base,
+          current_weight: num(base.current_weight),
+          height: num(base.height),
+          target_weight: num(base.target_weight),
+          body_fat_percentage: num(base.body_fat_percentage),
+          muscle_mass: num(base.muscle_mass),
           updated_at: new Date().toISOString()
         };
         const { error } = await window.supabaseClient
           .from('body_metrics')
           .upsert(payload);
 
-        if (error) throw error;
+        if (error) {
+          const msg = error?.message || 'Unknown error';
+          console.error('body_metrics upsert failed:', error);
+          showNotification(`Metrics save failed: ${msg}`, 'error');
+          throw error;
+        }
       }
 
       if (section === 'preferences' || !section) {
+        const allowed = ['units','theme','language','notifications','privacy','created_at','updated_at'];
+        const base = pick(profileData.preferences, allowed);
         const payload = {
           user_id: currentUser.id,
-          ...profileData.preferences,
+          ...base,
           updated_at: new Date().toISOString()
         };
         const { error } = await window.supabaseClient
           .from('user_preferences')
           .upsert(payload);
 
-        if (error) throw error;
+        if (error) {
+          const msg = error?.message || 'Unknown error';
+          console.error('user_preferences upsert failed:', error);
+          showNotification(`Preferences save failed: ${msg}`, 'error');
+          throw error;
+        }
       }
 
     } catch (error) {
@@ -361,7 +409,7 @@
     const basicForm = document.getElementById('basic-info-form');
     if (basicForm) {
       // Populate form fields
-      const fields = ['full_name', 'first_name', 'last_name', 'phone', 'birthday', 'location', 'bio', 'experience_level'];
+      const fields = ['full_name', 'first_name', 'last_name', 'phone', 'birthday', 'location', 'bio', 'experience_level', 'trainer_name', 'trainer_id'];
       fields.forEach(field => {
         const input = basicForm.querySelector(`[name="${field}"]`);
         if (input && profileData.basic[field]) {
@@ -522,6 +570,14 @@
           profileData.basic[key] = value;
         }
       });
+      // Normalize birthday
+      if (profileData.basic.birthday) {
+        const v = profileData.basic.birthday;
+        if (/^\d{2}\/\d{2}\/\d{4}$/.test(v)) {
+          const [d,m,y] = v.split('/');
+          profileData.basic.birthday = `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
+        }
+      }
     } else if (section === 'body_metrics') {
       Object.entries(Object.fromEntries(formData)).forEach(([key, value]) => {
         if (key.startsWith('measurements_')) {

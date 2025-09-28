@@ -337,6 +337,24 @@ input, select, textarea { font-size: 1rem; }
   backdrop-filter: blur(8px);
 }
 
+/* Ensure profile page cards/sections are always dark and readable */
+.profile-card,
+.profile-header,
+.upload-area,
+.metric-card,
+.tab-btn,
+.alert-custom{
+  background: rgba(255,255,255,0.06) !important;
+  color: #eaf0ff !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+}
+.tab-btn{ color: rgba(255,255,255,0.9) !important; }
+.tab-btn.active{ color:#000 !important; }
+.input-group-text{ background: rgba(255,255,255,0.08); color:#eaf0ff; border:1px solid var(--line); }
+.profile-card .form-label, .profile-card .metric-label{ color:#eaf0ff; }
+.profile-card .text-muted{ color:#cdd7ee !important; opacity:.95; }
+.alert-custom{ color:#F6C84E !important; }
+
 /* Inputs iguais ao FAQ, mas com melhor contraste do placeholder */
 .form-control,.form-select{ background: rgba(9,14,25,.88); }
 .form-control::placeholder{ color:#aab7d1; }

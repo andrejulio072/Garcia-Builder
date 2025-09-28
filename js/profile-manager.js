@@ -201,7 +201,8 @@
       return true;
     } catch (error) {
       console.error('Error saving profile data:', error);
-      showNotification('Error saving profile. Please try again.', 'error');
+      const details = error?.message || error?.hint || error?.code || 'Please try again.';
+      showNotification(`Error saving profile: ${details}`, 'error');
       return false;
     }
   };
@@ -215,11 +216,25 @@
         return Number.isFinite(n) ? n : null;
       };
 
+      // Helper: pick only allowed keys for a table
+      const pick = (obj, keys) => keys.reduce((acc, k) => { if (obj[k] !== undefined) acc[k] = obj[k]; return acc; }, {});
+      // Normalize potential inconsistencies for basic profile
+      const normalizeBasicProfile = (basic) => {
+        const copy = { ...basic };
+        // Normalize birthday/date_of_birth naming
+        if (!copy.birthday && copy.date_of_birth) copy.birthday = copy.date_of_birth;
+        if (copy.birthday === '') copy.birthday = null;
+        return copy;
+      };
+
       if (section === 'basic' || !section) {
+        const b = normalizeBasicProfile(profileData.basic || {});
+        const allowed = [
+          'email','full_name','first_name','last_name','phone','avatar_url','birthday','location','bio','goals','experience_level','joined_date','last_login','created_at','updated_at'
+        ];
         const payload = {
           user_id: currentUser.id,
-          ...profileData.basic,
-          birthday: profileData.basic.birthday || null,
+          ...pick(b, allowed),
           updated_at: new Date().toISOString()
         };
         const { error } = await window.supabaseClient
@@ -230,14 +245,18 @@
       }
 
       if (section === 'body_metrics' || !section) {
+        const bm = profileData.body_metrics || {};
+        const allowed = [
+          'current_weight','height','target_weight','body_fat_percentage','muscle_mass','measurements','progress_photos','weight_history','created_at','updated_at'
+        ];
         const payload = {
           user_id: currentUser.id,
-          ...profileData.body_metrics,
-          current_weight: num(profileData.body_metrics.current_weight),
-          height: num(profileData.body_metrics.height),
-          target_weight: num(profileData.body_metrics.target_weight),
-          body_fat_percentage: num(profileData.body_metrics.body_fat_percentage),
-          muscle_mass: num(profileData.body_metrics.muscle_mass),
+          ...pick(bm, allowed),
+          current_weight: num(bm.current_weight),
+          height: num(bm.height),
+          target_weight: num(bm.target_weight),
+          body_fat_percentage: num(bm.body_fat_percentage),
+          muscle_mass: num(bm.muscle_mass),
           updated_at: new Date().toISOString()
         };
         const { error } = await window.supabaseClient
@@ -248,9 +267,11 @@
       }
 
       if (section === 'preferences' || !section) {
+        const pref = profileData.preferences || {};
+        const allowed = ['units','theme','language','notifications','privacy','created_at','updated_at'];
         const payload = {
           user_id: currentUser.id,
-          ...profileData.preferences,
+          ...pick(pref, allowed),
           updated_at: new Date().toISOString()
         };
         const { error } = await window.supabaseClient
@@ -513,11 +534,31 @@
     const section = form.dataset.profileSection;
     const formData = new FormData(form);
 
+    // Flexible date parser (dd/mm/yyyy or yyyy-mm-dd)
+    const parseDateISO = (val) => {
+      if (!val) return '';
+      if (/^\d{4}-\d{2}-\d{2}$/.test(val)) return val; // already ISO
+      const m = val.match(/^(\d{1,2})[\/](\d{1,2})[\/](\d{4})$/);
+      if (m) {
+        const [_, d, mo, y] = m;
+        const dd = String(d).padStart(2, '0');
+        const mm = String(mo).padStart(2, '0');
+        return `${y}-${mm}-${dd}`;
+      }
+      try {
+        const dt = new Date(val);
+        if (!isNaN(dt.getTime())) return dt.toISOString().slice(0, 10);
+      } catch {}
+      return val;
+    };
+
     // Update profile data based on section
     if (section === 'basic') {
       Object.entries(Object.fromEntries(formData)).forEach(([key, value]) => {
         if (key === 'goals') {
           profileData.basic.goals = formData.getAll('goals');
+        } else if (key === 'birthday') {
+          profileData.basic.birthday = parseDateISO(value);
         } else {
           profileData.basic[key] = value;
         }
@@ -623,6 +664,18 @@
     setTimeout(() => {
       notification.remove();
     }, 3000);
+  };
+
+  // Wrap saveProfileData to surface better error message details
+  const _origSaveProfileData = saveProfileData;
+  saveProfileData = async (section = null) => {
+    try {
+      return await _origSaveProfileData(section);
+    } catch (err) {
+      const details = err?.message || err?.hint || err?.code || 'Please try again.';
+      showNotification(`Error saving profile: ${details}`, 'error');
+      return false;
+    }
   };
 
   // Public API

@@ -316,16 +316,36 @@
 
   // Setup exit/focus popup - real exit intent detection
   const setupExitIntentPopup = () => {
-    // Show only on homepage and keep it minimal & professional
+    // Show only on homepage - improved detection
     const isHomePage = () => {
       const p = (window.location.pathname || '').toLowerCase();
       const h = window.location.href.toLowerCase();
-      return p === '/' || p.endsWith('/index.html') || p === '' || h.includes('index.html') || h.endsWith('/');
+
+      // Check if it's the root path, index.html, or localhost root
+      const isRoot = p === '/' || p === '' || p === '/index.html' || p.endsWith('/index.html');
+      const isLocalhost = h.includes('localhost') && (h.endsWith('/') || h.endsWith('/index.html') || h.split('/').pop() === '');
+
+      const result = isRoot || isLocalhost;
+      console.log('🏠 Homepage detection:', {
+        pathname: p,
+        href: h,
+        isRoot,
+        isLocalhost,
+        finalResult: result
+      });
+
+      return result;
     };
 
-    console.log('Setting up exit intent popup...');
-    console.log('Current path:', window.location.pathname);
-    console.log('Is home page:', isHomePage());
+    console.log('🚀 Setting up exit intent popup...');
+    console.log('📍 Current location:', window.location.href);
+    console.log('🏠 Is homepage:', isHomePage());
+
+    // Only proceed if we're on the homepage
+    if (!isHomePage()) {
+      console.log('❌ Not on homepage - exit intent popup disabled');
+      return;
+    }
 
     // Session-based frequency controls (resets when user reopens website)
     const EXIT_SESSION_KEY = 'gb_exit_intent_shown_session';
@@ -361,24 +381,25 @@
     };
 
     const showExitIntent = () => {
-      console.log('Attempting to show exit intent popup...');
+      console.log('🎯 Tentando mostrar popup exit intent...');
+
+      // Double-check homepage (user might have navigated)
+      if (!isHomePage()) {
+        console.log('❌ Bloqueado: não está mais na homepage');
+        return;
+      }
 
       if (shownThisSession) {
-        console.log('Popup blocked: already shown this session');
+        console.log('❌ Bloqueado: já mostrado nesta sessão');
         return;
       }
 
       if (isSuppressed()) {
-        console.log('Popup blocked: suppressed');
+        console.log('❌ Bloqueado: suprimido para esta sessão');
         return;
       }
 
-      if (!isHomePage()) {
-        console.log('Popup blocked: not on homepage');
-        return;
-      }
-
-      console.log('Showing exit intent popup!');
+      console.log('✅ Mostrando exit intent popup!');
 
       shownThisSession = true;
       suppressForSession();
@@ -393,6 +414,7 @@
       }, 100);
 
       trackEvent('exit_intent_popup_shown');
+      console.log('🎉 Popup exibido com sucesso!');
     };
 
     // Real exit intent detection - mouse leaving viewport
@@ -405,15 +427,42 @@
       }
     });
 
-    // Mobile fallback: show after significant scroll + time delay
-    if (window.innerWidth <= 768) {
+    // Enhanced mobile detection and behavior
+    const isMobile = () => {
+      return window.innerWidth <= 768 ||
+             /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+             'ontouchstart' in window;
+    };
+
+    // Mobile and touch-friendly scroll detection
+    if (isMobile()) {
       let scrollTriggered = false;
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > window.innerHeight * 0.6 && !scrollTriggered && !shownThisSession) {
+      let lastScrollY = 0;
+
+      const handleMobileScroll = () => {
+        const currentScrollY = window.scrollY;
+        const scrollPercent = currentScrollY / (document.body.scrollHeight - window.innerHeight);
+
+        // Trigger when user scrolls past 60% and has been scrolling down
+        if (scrollPercent > 0.6 && currentScrollY > lastScrollY && !scrollTriggered && !shownThisSession) {
           scrollTriggered = true;
+          console.log('Mobile scroll trigger activated at', Math.round(scrollPercent * 100) + '%');
           setTimeout(showExitIntent, 3000); // 3 second delay on mobile
         }
-      });
+
+        lastScrollY = currentScrollY;
+      };
+
+      // Use passive listeners for better performance on mobile
+      window.addEventListener('scroll', handleMobileScroll, { passive: true });
+
+      // Additional mobile trigger: after significant time on page
+      setTimeout(() => {
+        if (!shownThisSession && !scrollTriggered) {
+          console.log('Mobile time-based trigger activated');
+          showExitIntent();
+        }
+      }, 30000); // 30 seconds fallback
     }
 
     // Public helper to suppress for this session when user converts
@@ -437,13 +486,20 @@
     // Manual trigger will work through lead magnet links and proper exit detection
   };
 
-  // Create exit intent popup
+  // Create exit intent popup with mobile optimization
   const createExitIntentPopup = () => {
     const popup = document.createElement('div');
     popup.className = 'exit-intent-overlay';
+
+    // Prevent body scroll on mobile when popup is open
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      document.body.style.overflow = 'hidden';
+    }
+
     popup.innerHTML = `
       <div class="exit-intent-popup">
-        <button class="exit-intent-close">&times;</button>
+        <button class="exit-intent-close" aria-label="Fechar popup">&times;</button>
         <div class="exit-intent-content">
           <div class="exit-intent-header">
             <span class="exit-intent-badge">🔥 ESPERA!</span>
@@ -451,7 +507,7 @@
             <p>Baixe seu guia de treino GRATUITO antes de ir</p>
           </div>
           <form class="exit-intent-form download-form" data-source="Exit Intent">
-            <input type="email" name="email" placeholder="Digite seu email" required>
+            <input type="email" name="email" placeholder="Digite seu email" required autocomplete="email">
             <input type="hidden" name="goal" value="Transformation Guide">
             <button type="submit">
               <i class="fas fa-download"></i> Baixar Guia Grátis
@@ -468,16 +524,37 @@
       </div>
     `;
 
-    // Handle close button
-    popup.querySelector('.exit-intent-close').addEventListener('click', () => {
+    // Enhanced close handlers with mobile support
+    const closePopup = () => {
       popup.remove();
+      document.body.style.overflow = ''; // Restore scrolling
+
+      // Mark popup as shown for this session - will only reset when browser/tab is closed
+      suppressForSession();
+      shownThisSession = true;
+
       trackEvent('exit_intent_popup_closed');
+
+      console.log('✅ Popup fechado - não aparecerá novamente até reabrir o site');
+    };
+
+    // Handle close button with better touch support
+    popup.querySelector('.exit-intent-close').addEventListener('click', closePopup);
+    popup.querySelector('.exit-intent-close').addEventListener('touchend', (e) => {
+      e.preventDefault();
+      closePopup();
     });
 
-    // Handle form submission
+    // Handle form submission with mobile optimization
     popup.querySelector('.exit-intent-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = popup.querySelector('input[name="email"]').value;
+      const submitBtn = popup.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+
+      // Show loading state
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+      submitBtn.disabled = true;
 
       try {
         await saveLeadToDatabase({
@@ -500,7 +577,10 @@
           </div>
         `;
 
-        setTimeout(() => popup.remove(), 3000);
+        setTimeout(() => {
+          popup.remove();
+          document.body.style.overflow = ''; // Restore scrolling
+        }, 3000);
 
         // Track conversion
         trackEvent('lead_magnet_download', { source: 'exit_intent' });
@@ -512,23 +592,31 @@
 
       } catch (error) {
         console.error('Error saving lead:', error);
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
         showNotification('Erro ao processar. Tente novamente.', 'error');
       }
     });
 
-    // Close on background click
+    // Enhanced close on background click with touch support
     popup.addEventListener('click', (e) => {
       if (e.target === popup) {
-        popup.remove();
-        trackEvent('exit_intent_popup_dismissed');
+        closePopup();
+      }
+    });
+
+    // Touch support for mobile
+    popup.addEventListener('touchend', (e) => {
+      if (e.target === popup) {
+        e.preventDefault();
+        closePopup();
       }
     });
 
     // Close on ESC key
     const handleEsc = (e) => {
       if (e.key === 'Escape') {
-        popup.remove();
-        trackEvent('exit_intent_popup_esc');
+        closePopup();
         document.removeEventListener('keydown', handleEsc);
       }
     };
@@ -813,6 +901,23 @@
     handleNewsletterSignup,
     trackConversion,
     trackEvent,
-    getLeadsData: () => leadData
+    getLeadsData: () => leadData,
+    // Debug functions
+    resetPopupSession: () => {
+      sessionStorage.removeItem('gb_exit_intent_shown_session');
+      sessionStorage.removeItem('garcia_session_leads');
+      sessionStorage.removeItem('garcia_session_subscribers');
+      console.log('🧹 Sessão do popup resetada - popup pode aparecer novamente');
+    },
+    checkPopupStatus: () => {
+      const status = {
+        isHomePage: window.location.pathname === '/' || window.location.pathname.endsWith('/index.html'),
+        sessionSuppressed: sessionStorage.getItem('gb_exit_intent_shown_session') === '1',
+        currentPath: window.location.pathname,
+        currentHref: window.location.href
+      };
+      console.table(status);
+      return status;
+    }
   };
 })();

@@ -94,6 +94,11 @@
       // Track conversion
       trackConversion('lead_capture', leadInfo.source);
 
+      // Mark user as converted for session
+      if (typeof window.gbMarkUserConverted === 'function') {
+        window.gbMarkUserConverted();
+      }
+
   // Show success message (PT-BR)
   showNotification('Obrigado! Entraremos em contato em breve para sua consulta gratuita.', 'success');
 
@@ -150,6 +155,11 @@
 
       // Track conversion
       trackConversion('newsletter_signup', subscriberInfo.source);
+
+      // Mark user as converted for session
+      if (typeof window.gbMarkUserConverted === 'function') {
+        window.gbMarkUserConverted();
+      }
 
   // Show success message (PT-BR)
   showNotification('Inscrição realizada com sucesso! Confira seu e-mail para confirmar.', 'success');
@@ -212,7 +222,7 @@
     }
   };
 
-  // Setup exit/focus popup - simplified: show once after short delay, never again after close
+  // Setup exit/focus popup - reappears on website reopening
   const setupExitIntentPopup = () => {
     // Show only on homepage and keep it minimal & professional
     const isHomePage = () => {
@@ -220,36 +230,32 @@
       return p === '/' || p.endsWith('/index.html') || p === '';
     };
 
-    // Frequency controls (persist suppression after close)
-    const EXIT_SUPPRESS_KEY = 'gb_exit_intent_suppress_until';
+    // Session-based frequency controls (resets when user reopens website)
     const EXIT_SESSION_KEY = 'gb_exit_intent_shown_session';
-    const SUPPRESS_DAYS = 30; // cooldown after dismiss/submit
-    const DELAY_MS = 2500;    // show after ~2.5s
+    const DELAY_MS = 3000;    // show after 3s
     let shownThisSession = false;
 
     const isSuppressed = () => {
-      // once per session
+      // Check if already shown this session only
       if (sessionStorage.getItem(EXIT_SESSION_KEY) === '1') return true;
 
-      // 30-day cooldown
-      const until = parseInt(localStorage.getItem(EXIT_SUPPRESS_KEY) || '0', 10);
-      if (!Number.isNaN(until) && until > Date.now()) return true;
-
-      // If user already became lead/subscriber locally, don't show
+      // If user already became lead/subscriber locally in this session, don't show
       try {
-        const leads = JSON.parse(localStorage.getItem('garcia_leads') || '[]');
-        const subsA = JSON.parse(localStorage.getItem('garcia_newsletter_subscribers') || '[]');
-        const subsB = JSON.parse(localStorage.getItem('garcia_newsletter') || '[]');
-        const hasSubs = (Array.isArray(subsA) && subsA.length) || (Array.isArray(subsB) && subsB.length);
-        if ((Array.isArray(leads) && leads.length) || hasSubs) return true;
+        const sessionLeads = sessionStorage.getItem('garcia_session_leads');
+        const sessionSubs = sessionStorage.getItem('garcia_session_subscribers');
+        if (sessionLeads || sessionSubs) return true;
       } catch (_) {}
       return false;
     };
 
-    const suppressNow = () => {
+    const suppressForSession = () => {
       sessionStorage.setItem(EXIT_SESSION_KEY, '1');
-      const until = Date.now() + SUPPRESS_DAYS * 24 * 60 * 60 * 1000;
-      localStorage.setItem(EXIT_SUPPRESS_KEY, String(until));
+    };
+
+    const markUserConverted = () => {
+      // Mark that user converted in this session
+      sessionStorage.setItem('garcia_session_leads', '1');
+      suppressForSession();
     };
 
     const showExitIntent = () => {
@@ -259,18 +265,18 @@
       if (!window.matchMedia || !window.matchMedia('(pointer: fine)').matches) return;
 
       shownThisSession = true;
-      sessionStorage.setItem(EXIT_SESSION_KEY, '1');
+      suppressForSession();
 
       const popup = createExitIntentPopup();
       document.body.appendChild(popup);
       trackEvent('exit_intent_popup_shown');
     };
 
-    // Timed initial trigger (2.5s)
+    // Timed initial trigger (3s)
     setTimeout(() => showExitIntent(), DELAY_MS);
 
-    // Public helper to suppress if user interacts positively elsewhere
-    window.gbSuppressExitIntent = suppressNow;
+    // Public helper to suppress for this session when user converts
+    window.gbMarkUserConverted = markUserConverted;
 
     // Optional: footer trigger link with [data-open-lead-magnet]
     document.querySelectorAll('[data-open-lead-magnet]').forEach(el => {
@@ -287,28 +293,29 @@
         <div class="popup-content">
           <button class="popup-close">&times;</button>
           <div class="popup-header">
-            <h3>Espere um momento 🎯</h3>
-            <p>Vai sair sem sua guia gratuita de transformação?</p>
+            <h3>🎯 Transformação Garantida</h3>
+            <p>Baixe seu guia completo de transformação corporal</p>
           </div>
           <div class="popup-body">
             <img src="assets/transformation-guide-preview.jpg" alt="Guia Gratuita" class="guide-preview">
-            <h4>Baixe GRÁTIS:</h4>
+            <h4>Inclui Gratuitamente:</h4>
             <ul>
-              <li>✅ Plano de treino de 30 dias</li>
-              <li>✅ Guia básico de nutrição</li>
-              <li>✅ Calculadora de calorias</li>
-              <li>✅ 50 receitas saudáveis</li>
+              <li>✅ Plano de treino de 30 dias progressivo</li>
+              <li>✅ Guia completo de nutrição esportiva</li>
+              <li>✅ Calculadora personalizada de macros</li>
+              <li>✅ 50+ receitas saudáveis e saborosas</li>
+              <li>✅ Dicas profissionais de suplementação</li>
             </ul>
             <form class="popup-form download-form" data-source="Exit Intent">
-              <input type="email" name="email" placeholder="Seu email aqui" required>
+              <input type="email" name="email" placeholder="Digite seu melhor e-mail" required>
               <input type="hidden" name="goal" value="Transformation Guide">
               <button type="submit" class="btn btn-primary">
-                <i class="fas fa-download"></i> Baixar Agora
+                <i class="fas fa-download"></i> Baixar Grátis
               </button>
             </form>
             <p class="privacy-note">
-              <i class="fas fa-lock"></i>
-              Sem spam. Apenas conteúdo valioso.
+              <i class="fas fa-shield-alt"></i>
+              100% Seguro. Sem spam. Apenas conteúdo de valor.
             </p>
           </div>
         </div>
@@ -322,7 +329,10 @@
 
     const dismiss = (reason) => {
       popup.remove();
-      if (typeof window.gbSuppressExitIntent === 'function') window.gbSuppressExitIntent();
+      // Only suppress for this session, not permanently
+      if (typeof window.gbMarkUserConverted === 'function' && reason === 'form_submitted') {
+        window.gbMarkUserConverted();
+      }
       trackEvent(reason || 'exit_intent_popup_closed');
     };
 
@@ -372,7 +382,7 @@
       // Close popup if exists
       const popup = form.closest('.exit-intent-popup');
       if (popup) {
-        if (typeof window.gbSuppressExitIntent === 'function') window.gbSuppressExitIntent();
+        if (typeof window.gbMarkUserConverted === 'function') window.gbMarkUserConverted();
         popup.remove();
       }
 

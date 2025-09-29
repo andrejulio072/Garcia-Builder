@@ -24,6 +24,20 @@ a{color:var(--text);text-decoration:none}
 .nav a:hover::after{transform:scaleX(1)}
 .lang select{background:#0b1220;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
 
+/* Global select styling for dark theme */
+select {
+    background: #1a1a1a !important;
+    color: white !important;
+    border: 1px solid rgba(246, 200, 78, 0.3) !important;
+    border-radius: 8px !important;
+}
+
+select option {
+    background: #1a1a1a !important;
+    color: white !important;
+    padding: 8px !important;
+}
+
 /* Dark dropdown styling for user menu */
 .dropdown-menu{ background:#0f172a; color:#eaf1ff; border:1px solid #23314f; box-shadow:0 10px 30px rgba(0,0,0,.35); }
 .dropdown-menu .dropdown-item{ color:#eaf1ff; }

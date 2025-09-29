@@ -1,6 +1,6 @@
-# Garcia Builder — Online Coaching Website
+# Garcia Builder — Professional Online Coaching Platform
 
-Professional static website for **Andre Garcia (Garcia Builder)** — multilingual online fitness coaching in **EN/PT/ES** — focused on conversion, professional design, and performance. Deployed on **GitHub Pages**.
+Complete multilingual fitness coaching platform for **Andre Garcia (Garcia Builder)** — featuring advanced user authentication, payment processing, newsletter management, and mobile-optimized lead capture. Built with modern web technologies and deployed on **GitHub Pages**.
 
 > 🔗 **Live Website:** https://andrejulio072.github.io/Garcia-Builder/
 > 💬 **WhatsApp:** https://wa.me/447508497586
@@ -12,27 +12,74 @@ Professional static website for **Andre Garcia (Garcia Builder)** — multilingu
 
 ## ✨ Project Highlights
 
+### 🎨 **Frontend & UX**
 - **Multilingual Support** (EN/PT/ES) with complete internationalization system
-- **Professional Design** with charcoal + gold (`#F6C84E`) brand colors and glass effects
+- **Professional Design** with charcoal + gold (`#F6C84E`) brand colors and glassmorphism effects
+- **Mobile-First Responsive** design optimized for all devices
+- **Exit Intent Popup** with intelligent triggers and session management
 - **18 Client Testimonials** with 5-star ratings and detailed success stories
-- **Hero Section** with fitness imagery, overlay gradients, and compelling CTAs
-- **3D Tilt Cards** using VanillaTilt for interactive value propositions
 - **Transformation Gallery** with before/after images and lightbox functionality
-- **5-Tier Pricing Plans** starting from £75 with clear value propositions
-- **FAQ Section** with instant search and 25+ essential questions
-- **Contact Integration** via Formspree, WhatsApp, Calendly, Instagram, and Trainerize
-- **SEO Optimized** with sitemap, robots.txt, and performance optimizations
+
+### 🔐 **Authentication & User Management**
+- **OAuth Integration** with Google and Facebook login
+- **Supabase Authentication** with secure session management
+- **User Dashboards** with personalized profiles and progress tracking
+- **Admin Panel** for trainer management and user oversight
+- **Auth Guards** protecting sensitive pages and content
+
+### 💳 **Payment & Business Logic**
+- **Stripe Integration** with multiple payment methods
+- **Payment Links** for quick checkout and course sales
+- **5-Tier Pricing Plans** from £75 to £250 with clear value propositions
+- **Currency Conversion** support for international clients
+- **Discount System** with promotional codes
+
+### 📧 **Marketing & Lead Generation**
+- **Newsletter System** with automated email sequences
+- **Lead Capture Forms** with validation and database storage
+- **Exit Intent Technology** to maximize conversion rates
+- **Contact Integration** via Formspree, WhatsApp, and Calendly
+- **CRM Integration** with lead tracking and management
+
+### 📊 **Analytics & Performance**
+- **SEO Optimized** with sitemap, robots.txt, and meta tags
+- **Performance Monitoring** with Google Analytics integration
+- **A/B Testing** capabilities for conversion optimization
+- **Database Analytics** for user behavior tracking
 
 ---
 
-## 🧱 Tech Stack
+## 🛠 Tech Stack
 
-- **Frontend**: HTML5, CSS3, Vanilla JavaScript
-- **Styling**: Bootstrap 5 + Custom CSS with glass effects
-- **Effects**: VanillaTilt for 3D card interactions
-- **Hosting**: GitHub Pages (automatic deployment)
-- **Forms**: Formspree integration for contact submissions
-- **Images**: Optimized with lazy loading and WebP support
+### **Frontend**
+- **HTML5/CSS3/JavaScript** - Modern web standards
+- **Bootstrap 5** - Responsive framework
+- **VanillaTilt** - 3D card interactions
+- **Custom CSS** - Glassmorphism and modern effects
+
+### **Backend & Database**
+- **Supabase** - Backend-as-a-Service with PostgreSQL
+- **Real-time subscriptions** - Live data updates
+- **Row Level Security** - Database security policies
+- **Edge Functions** - Serverless API endpoints
+
+### **Payment Processing**
+- **Stripe** - Complete payment infrastructure
+- **Webhook handling** - Secure payment verification
+- **Multiple currencies** - International support
+- **Subscription management** - Recurring payments
+
+### **Authentication**
+- **OAuth 2.0** - Google and Facebook integration
+- **JWT tokens** - Secure session management
+- **Password reset** - Email-based recovery
+- **Multi-factor support** - Enhanced security
+
+### **DevOps & Deployment**
+- **GitHub Pages** - Static site hosting
+- **GitHub Actions** - CI/CD pipeline
+- **Environment variables** - Secure configuration
+- **Version control** - Git workflow
 
 ---
 
@@ -40,37 +87,83 @@ Professional static website for **Andre Garcia (Garcia Builder)** — multilingu
 
 ```
 Garcia-Builder/
-├── index.html                    # Homepage with hero, KPIs, features
-├── about.html                    # About Andre, methodology, gallery
-├── pricing.html                  # 5-tier pricing plans (£75-£250)
-├── faq.html                      # FAQ with search functionality
-├── transformations.html          # Client transformation gallery
-├── testimonials.html            # 18 client testimonials with ratings
-├── contact.html                 # Contact form + external links
-├── programs.html                # Programs overview page
-├── robots.txt                   # SEO crawler instructions
-├── sitemap.xml                  # Site structure for search engines
-├── logo.png                     # Brand logo
-├── assets/                      # Images and translations
-│   ├── i18n.js                  # Translation dictionaries (EN/PT/ES)
-│   ├── logo.png                 # Main brand logo
-│   ├── hero-fitness.jpg         # Hero section background
-│   ├── about1.jpg - about11.jpg # About page gallery images
-│   ├── t1.png - t8.webp        # Transformation before/after images
-│   └── [various images]         # Additional assets
-├── css/                         # Stylesheets
-│   ├── global.css              # Main stylesheet with brand colors
-│   └── global-optimizations.css # Performance optimizations
-├── js/                          # JavaScript modules
-│   ├── app.js                  # Main application logic
-│   ├── i18n-shim.js           # Internationalization handler
-│   ├── lightbox.js            # Image lightbox functionality
-│   ├── pricing.js             # Dynamic pricing rendering
-│   ├── kpi6.inject.js         # KPI cards injection
-│   ├── credibility.inject.js  # Credibility cards injection
-│   └── app-optimizations.js   # Performance enhancements
-└── tools/                      # Development utilities
-    └── patch_project.py        # HTML optimization script
+├── 📄 Core Pages
+│   ├── index.html                 # Homepage with lead capture
+│   ├── about.html                 # About Andre & methodology
+│   ├── pricing.html               # Pricing plans & payment links
+│   ├── programs.html              # Program descriptions
+│   ├── testimonials.html          # Client success stories
+│   ├── transformations.html       # Before/after gallery
+│   ├── contact.html               # Contact form & links
+│   └── faq.html                   # FAQ with search
+│
+├── 🔐 Authentication Pages
+│   ├── login.html                 # OAuth & email login
+│   ├── reset-password.html        # Password recovery
+│   ├── dashboard.html             # User dashboard
+│   ├── my-profile.html            # Profile management
+│   ├── admin-dashboard.html       # Admin panel
+│   ├── admin-trainers.html        # Trainer management
+│   └── trainer-dashboard.html     # Trainer interface
+│
+├── 💳 Business Pages
+│   ├── stripe-oficial.html        # Stripe integration
+│   ├── pricing-payment-links.html # Payment processing
+│   ├── success.html               # Payment success
+│   ├── become-trainer.html        # Trainer application
+│   ├── certificacao-completa.html # Certification page
+│   └── profile-manager.html       # Profile editing
+│
+├── 🎨 Assets & Resources
+│   ├── assets/
+│   │   ├── i18n/                  # Translation files
+│   │   ├── images/                # Optimized images
+│   │   ├── logo.png               # Brand assets
+│   │   └── transformations/       # Client photos
+│   ├── css/
+│   │   ├── global.css             # Main styles
+│   │   ├── newsletter.css         # Newsletter system
+│   │   ├── auth.css               # Authentication UI
+│   │   ├── dashboard.css          # Dashboard styles
+│   │   └── credibility.css        # Trust elements
+│   └── js/
+│       ├── app.js                 # Main application
+│       ├── auth.js                # Authentication logic
+│       ├── newsletter-manager.js  # Lead capture system
+│       ├── stripe-payments.js     # Payment processing
+│       ├── supabase-config.js     # Database config
+│       └── [30+ specialized modules]
+│
+├── 📚 Documentation
+│   ├── docs/
+│   │   ├── setup/                 # Setup guides
+│   │   │   ├── OAUTH-SETUP-GUIDE.md
+│   │   │   ├── SUPABASE-SETUP.md
+│   │   │   ├── README-STRIPE.md
+│   │   │   └── NEWSLETTER-SETUP-GUIDE.md
+│   │   └── testing/               # Test files
+│   │       ├── test-mobile-popup.html
+│   │       ├── test-homepage-popup.html
+│   │       └── MOBILE-POPUP-TESTING.md
+│   └── archive/                   # Archived files
+│       ├── docs-obsoletos/        # Old documentation
+│       ├── testes-obsoletos/      # Legacy tests
+│       ├── backups/               # File backups
+│       └── config-info/           # Configuration files
+│
+├── 🗄 Database & Configuration
+│   ├── supabase-schema-update.sql # Database schema
+│   ├── newsletter-database-schema.sql # Newsletter tables
+│   ├── .env.example              # Environment template
+│   ├── package.json              # Dependencies
+│   └── start-server.bat          # Local development
+│
+└── 🔧 Development Tools
+    ├── .github/                   # GitHub workflows
+    ├── .vscode/                   # VS Code settings
+    ├── tools/                     # Development scripts
+    ├── robots.txt                 # SEO configuration
+    └── sitemap.xml                # Site structure
 ```
 
 ---
@@ -79,16 +172,51 @@ Garcia-Builder/
 
 ### Local Development
 ```bash
+---
+
+## 🚀 Quick Start
+
+### Local Development
+
+```bash
 # Clone the repository
 git clone https://github.com/yourusername/Garcia-Builder.git
 cd Garcia-Builder
 
-# Serve locally (Python)
-python -m http.server 5173
+# Start local server (choose one method)
+python -m http.server 8000         # Python 3
+python2 -m SimpleHTTPServer 8000   # Python 2
+npx serve .                        # Node.js
+php -S localhost:8000              # PHP
 
-# Or use any static server
-# Open http://localhost:5173
+# Open browser
+# Visit: http://localhost:8000
 ```
+
+### Environment Setup
+
+1. **Create Environment File**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Configure Variables**
+   ```env
+   # Supabase Configuration
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_anon_key
+
+   # Stripe Configuration
+   VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...
+   STRIPE_SECRET_KEY=sk_test_...
+
+   # OAuth Keys
+   GOOGLE_CLIENT_ID=your_google_client_id
+   FACEBOOK_APP_ID=your_facebook_app_id
+
+   # API Keys
+   FORMSPREE_ENDPOINT=https://formspree.io/f/your_form_id
+   ```
 
 ### GitHub Pages Deployment
 1. Push changes to **main** branch
@@ -98,160 +226,230 @@ python -m http.server 5173
 
 ---
 
-## 🌐 Internationalization System
+## 🔐 Authentication System
 
-Complete multilingual support with 3 languages:
+### OAuth Integration
+- **Google OAuth**: Complete setup with consent screens
+- **Facebook Login**: App-based authentication
+- **Session Management**: Secure JWT token handling
+- **Protected Routes**: Dashboard and admin access control
 
-### Supported Languages
-- **English (EN)**: Default language, complete translations
-- **Portuguese (PT)**: Full Brazilian Portuguese translations
-- **Spanish (ES)**: Complete Spanish translations
+### User Roles & Permissions
+- **Client**: Access to personal dashboard and programs
+- **Trainer**: Manage clients and programs
+- **Admin**: Full system access and user management
 
-### Implementation
-- **Translation File**: [`assets/i18n.js`](assets/i18n.js) contains all text content
-- **HTML Attributes**: `data-i18n="key"` for text, `data-i18n-ph="key"` for placeholders
-- **Language Switcher**: Dropdown in navigation saves preference to localStorage
-- **Dynamic Loading**: JavaScript applies translations on page load and language change
+### Setup Guides
+- 📖 [OAuth Setup Guide](docs/setup/OAUTH-SETUP-GUIDE.md)
+- 🔧 [Authentication Quick Start](GUIA-RAPIDO-AUTH.md)
 
-### Translation Structure
+---
+
+## 💳 Payment Integration
+
+### Stripe Configuration
+- **Payment Links**: Direct checkout for programs
+- **Subscription Management**: Recurring payments
+- **Webhook Handling**: Secure payment verification
+- **Multiple Currencies**: International support
+
+### Pricing Structure
+- **5-Tier System**: £75 to £250 monthly plans
+- **Payment Options**: One-time and subscription
+- **Discount Codes**: Promotional pricing support
+
+### Setup Documentation
+- 💰 [Stripe Setup Guide](docs/setup/README-STRIPE.md)
+- 🔗 [Payment Links Guide](GUIA-PAYMENT-LINKS.md)
+
+---
+
+## 📧 Newsletter & Lead Capture
+
+### Exit Intent System
+- **Mobile Optimized**: Touch-friendly popup triggers
+- **Session Control**: Smart display logic
+- **Analytics Integration**: Conversion tracking
+- **A/B Testing**: Multiple popup variants
+
+### Features
+- ✨ **Exit Intent Detection**: Captures leaving users
+- 📱 **Mobile Triggers**: Scroll and interaction based
+- 💾 **Session Management**: Prevents popup spam
+- 📊 **Lead Tracking**: Supabase integration
+- 🌐 **Multilingual**: Full i18n support
+
+### Implementation Files
+- **JavaScript**: `js/newsletter-manager.js`
+- **Styling**: `css/newsletter.css`
+- **Database**: `newsletter-database-schema.sql`
+
+---
+
+## 🌐 Internationalization (i18n)
+
+### Language Support
+- **English (EN)**: Default language
+- **Portuguese (PT)**: Complete Brazilian Portuguese
+- **Spanish (ES)**: Full Spanish translations
+
+### Technical Implementation
 ```javascript
+// Translation structure
 const I18N = {
   en: {
-    nav: { home: "Home", about: "About", ... },
-    testimonials: { t1: "Client feedback...", ... },
-    // ... all sections
+    nav: { home: "Home", about: "About" },
+    hero: { title: "Transform Your Body", subtitle: "..." }
   },
   pt: { /* Portuguese translations */ },
   es: { /* Spanish translations */ }
 };
+
+// Usage in HTML
+<h1 data-i18n="hero.title">Transform Your Body</h1>
+<input data-i18n-ph="contact.email" placeholder="Your email">
 ```
 
----
-
-## 💬 Client Testimonials
-
-**18 authentic testimonials** with detailed success stories:
-
-### Featured Clients
-- **Eduarda Ribeiro**: "Andre gave me structure, habits I could actually follow..."
-- **Conrad Norman**: "As a busy dad I didn't think I had time. Andre simplified training..."
-- **Mariana Vieira**: "Twelve weeks later my friends keep asking what I changed..."
-- **Carlos Alberto Romano**: "Down 9 kg and sleeping better than ever..."
-- **Ana Paula Tannus**: "I kept my social life and still transformed..."
-
-### Testimonial Features
-- ⭐ **5-star ratings** for all clients
-- 📸 **Profile avatars** (currently placeholder, ready for real photos)
-- 📝 **150+ character detailed feedback** per testimonial
-- 🌐 **Fully translated** in all three languages
-- 📱 **Responsive grid layout** (3 columns → 1 on mobile)
+### Translation Features
+- 🌍 **Complete Coverage**: All UI text translated
+- 💾 **Persistent Selection**: Language choice saved to localStorage
+- 🔄 **Dynamic Switching**: No page reload required
+- 📝 **Form Support**: Placeholders and validation messages
 
 ---
 
-## 💰 Pricing Plans
+## 📊 Analytics & Tracking
 
-**5 comprehensive tiers** designed for different client needs:
+### Conversion Tracking
+- **Newsletter Signups**: Lead capture analytics
+- **Button Clicks**: CTA performance tracking
+- **Page Views**: User journey analysis
+- **Payment Success**: Revenue tracking
 
-### Plan Structure
-- **Starter Plan**: £75/month - Basic coaching essentials
-- **Standard Plan**: £125/month - Most popular choice
-- **Premium Plan**: £175/month - Advanced support
-- **Elite Plan**: £225/month - VIP treatment
-- **Transformation Plan**: £250/month - Complete transformation package
-
-### Features
-- 📊 **Clear value propositions** for each tier
-- 🎯 **Highlighted "Most Popular"** plan
-- 💳 **Ready for Stripe integration** (checkout URLs configurable)
-- 🌐 **Fully translatable** pricing descriptions
+### Performance Monitoring
+- **Load Times**: Page speed optimization
+- **Mobile Experience**: Touch interaction tracking
+- **Error Monitoring**: JavaScript error reporting
 
 ---
 
-## 🎨 Design System
+## 🛠 Development & Testing
 
-### Brand Colors
-- **Primary**: Charcoal dark backgrounds
-- **Accent**: Gold `#F6C84E` for CTAs and highlights
-- **Text**: High contrast whites and cool grays
-- **Effects**: Glass blur effects with subtle transparency
-
-### Typography
-- **Font Family**: Inter (400, 600, 700, 800, 900 weights)
-- **Headers**: Gradient text with glow effects using `.title-gradient .text-glow`
-- **Body Text**: High contrast for excellent readability
-
-### Components
-- **Cards**: 22px border radius, consistent drop shadows
-- **Buttons**: Gold primary, outlined secondary styles
-- **Grid**: Responsive 3-column layout, mobile-first approach
-- **3D Effects**: VanillaTilt integration for interactive cards
-
----
-
-## 🔧 Key Features
-
-### Hero Section
-- **Background**: Fitness imagery with overlay for text contrast
-- **CTA**: Prominent "Book Free Consultation" button
-- **Navigation**: Sticky navbar with language switcher
-
-### About Page
-- **Story**: Comprehensive background about Andre Garcia
-- **Methodology**: "Assess → Build → Execute" framework
-- **Gallery**: 11 images with lightbox functionality
-- **Credentials**: Dynamic injection of qualifications
-
-### Transformations
-- **Before/After**: Client transformation images
-- **Lightbox**: Click to view full-size images
-- **Grid Layout**: Consistent aspect ratios
-
-### FAQ System
-- ⚡ **Instant Search**: Filter questions as you type
-- 📋 **25+ Questions**: Covering all common client concerns
-- 🔽 **Accordion**: Expandable answers
-- 🌐 **Multilingual**: All content translated
-
-### Contact Integration
-- 📧 **Formspree**: Contact form submissions
-- 💬 **WhatsApp Float**: Persistent chat button
-- 📅 **Calendly**: Direct booking integration
-- 📸 **Instagram**: Social media link
-- 🏋️ **Trainerize**: Training platform integration
-
----
-
-## 📈 Performance Optimizations
-
-### Loading Performance
-- ⚡ **Lazy Loading**: Images load as needed
-- 🚀 **Deferred Scripts**: Non-critical JS loads after page render
-- 🔤 **Font Preloading**: Google Fonts optimized loading
-- 📱 **Mobile Optimized**: Fast loading on mobile networks
-
-### SEO Features
-- 🗺️ **Sitemap**: Complete site structure in `sitemap.xml`
-- 🤖 **Robots.txt**: Search engine crawler instructions
-- 🏷️ **Meta Tags**: Optimized for each page
-- 📊 **Structured Data**: Ready for rich snippets
-
----
-
-## 🛠️ Development Tools
-
-### Optimization Script
-Use `tools/patch_project.py` to optimize HTML files:
-
-```bash
-python tools/patch_project.py /path/to/Garcia-Builder
+### Test Files & Validation
+```
+docs/testing/
+├── test-mobile-popup.html      # Mobile popup testing
+├── test-homepage-popup.html    # Homepage integration test
+├── test-newsletter.html        # Newsletter system test
+├── test-payment-flow.html      # Payment integration test
+└── MOBILE-POPUP-TESTING.md    # Testing documentation
 ```
 
-**Optimizations Applied:**
-- Adds viewport meta tags
-- Injects Google Fonts preconnects
-- Adds `defer` to script tags
-- Optimizes images with `loading="lazy"`
-- Creates backups before modifications
+### Quality Assurance
+- **Mobile Testing**: Cross-device compatibility
+- **Payment Testing**: Stripe test mode validation
+- **Authentication Testing**: OAuth flow verification
+- **Performance Testing**: Load time optimization
+
+### Development Tools
+- **Local Server**: Multiple options for development
+- **Environment Variables**: Secure configuration management
+- **Database Scripts**: Schema updates and migrations
+- **Optimization Tools**: Image compression and code minification
+
+---
+
+## 🚀 Deployment & Production
+
+### Production Configuration
+- **Environment**: GitHub Pages static hosting
+- **CDN**: Optimized asset delivery
+- **SSL**: Automatic HTTPS certificates
+- **Performance**: Optimized for speed and SEO
+
+### Monitoring & Maintenance
+- **Uptime Monitoring**: Site availability tracking
+- **Performance Metrics**: Speed and conversion monitoring
+- **Security Updates**: Regular dependency updates
+- **Backup Strategy**: Code and database backups
+
+---
+
+## 📚 Documentation & Support
+
+### Setup Guides
+- 🔧 [Supabase Setup](docs/setup/SUPABASE-SETUP.md)
+- 🔐 [OAuth Configuration](docs/setup/OAUTH-SETUP-GUIDE.md)
+- 💳 [Stripe Integration](docs/setup/README-STRIPE.md)
+- 📧 [Newsletter System](docs/setup/NEWSLETTER-SETUP-GUIDE.md)
+
+### Testing Documentation
+- 📱 [Mobile Testing Guide](docs/testing/MOBILE-POPUP-TESTING.md)
+- 🧪 [Test File Documentation](docs/testing/)
+
+### Project History
+- 📝 [Implementation Timeline](IMPLEMENTACAO-COMPLETA.md)
+- ✅ [Feature Completion](MELHORIAS-COMPLETAS.md)
+- 🔄 [Project Updates](DASHBOARD-MELHORADO.md)
+
+---
+
+## 🤝 Contributing
+
+### Development Workflow
+1. **Fork** the repository
+2. **Create feature branch**: `git checkout -b feature-name`
+3. **Make changes** following code style guidelines
+4. **Test thoroughly** on all supported devices
+5. **Submit pull request** with detailed description
+
+### Code Standards
+- **HTML**: Semantic markup and accessibility
+- **CSS**: Mobile-first responsive design
+- **JavaScript**: Modern ES6+ syntax
+- **Documentation**: Clear comments and README updates
+
+---
+
+## 📄 License & Contact
+
+### Project Information
+- **Version**: 2.0 (Complete Platform)
+- **Status**: Production Ready
+- **Last Updated**: December 2024
+- **Maintainer**: Andre Garcia (Garcia Builder)
+
+### Contact & Support
+- 💬 **WhatsApp**: https://wa.me/447508497586
+- 📅 **Book Consultation**: https://calendly.com/andrenjulio072/consultation
+- 📸 **Instagram**: https://instagram.com/garcia.builder
+- 🏋️ **Trainerize**: https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/
+
+### Business Information
+- **Services**: Online Fitness Coaching
+- **Specialization**: Body Transformation & Strength Training
+- **Languages**: English, Portuguese, Spanish
+- **Location**: UK-based, International Clients
+
+---
+
+## 🏆 Client Success Stories
+
+> *"Andre gave me structure, habits I could actually follow, and most importantly - results that last."*
+> **— Eduarda Ribeiro** ⭐⭐⭐⭐⭐
+
+> *"As a busy dad I didn't think I had time. Andre simplified training and nutrition into something I could manage."*
+> **— Conrad Norman** ⭐⭐⭐⭐⭐
+
+> *"Twelve weeks later my friends keep asking what I changed. It wasn't just my body - my whole mindset shifted."*
+> **— Mariana Vieira** ⭐⭐⭐⭐⭐
+
+**18 verified testimonials** with detailed transformation stories available on the live website.
+
+---
+
+**Ready to transform your body?** 🔥
+👉 [**Book Your Free Consultation**](https://calendly.com/andrenjulio072/consultation) 👈
 
 ### Dynamic Components
 - **KPI Injection**: [`js/kpi6.inject.js`](js/kpi6.inject.js) creates performance metrics

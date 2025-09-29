@@ -1,0 +1,576 @@
+/* Garcia Builder - Newsletter & Lead Generation Styles */
+
+/* Newsletter Forms */
+.newsletter-form {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(246, 200, 78, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    backdrop-filter: blur(15px);
+    transition: all 0.3s ease;
+}
+
+.newsletter-form:hover {
+    border-color: rgba(246, 200, 78, 0.5);
+    transform: translateY(-2px);
+}
+
+.newsletter-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.newsletter-header h3 {
+    color: #F6C84E;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.newsletter-header p {
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+}
+
+.newsletter-input-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.newsletter-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    font-size: 0.9rem;
+}
+
+.newsletter-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.newsletter-input:focus {
+    outline: none;
+    border-color: #F6C84E;
+}
+
+.newsletter-btn {
+    background: linear-gradient(135deg, #F6C84E, #FFD700);
+    color: #000;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.newsletter-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(246, 200, 78, 0.3);
+}
+
+/* Lead Capture Forms */
+.hero-lead-form {
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid rgba(246, 200, 78, 0.3);
+    border-radius: 25px;
+    padding: 2.5rem;
+    backdrop-filter: blur(20px);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.lead-form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.lead-form-header h3 {
+    color: #F6C84E;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.lead-form-header .badge {
+    background: linear-gradient(135deg, #F6C84E, #FFD700);
+    color: #000;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.lead-form-field {
+    margin-bottom: 1rem;
+}
+
+.lead-form-field label {
+    display: block;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.lead-form-field input,
+.lead-form-field select,
+.lead-form-field textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.lead-form-field input:focus,
+.lead-form-field select:focus,
+.lead-form-field textarea:focus {
+    outline: none;
+    border-color: #F6C84E;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.lead-form-field input::placeholder,
+.lead-form-field textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.lead-form-submit {
+    width: 100%;
+    background: linear-gradient(135deg, #F6C84E, #FFD700);
+    color: #000;
+    border: none;
+    padding: 1rem;
+    border-radius: 15px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.lead-form-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(246, 200, 78, 0.4);
+}
+
+.lead-form-benefits {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lead-form-benefits ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lead-form-benefits li {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lead-form-benefits li i {
+    color: #F6C84E;
+    font-size: 0.8rem;
+}
+
+/* Exit Intent Popup */
+.exit-intent-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    animation: popupFadeIn 0.3s ease;
+}
+
+.popup-overlay {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.popup-content {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    border: 2px solid #F6C84E;
+    border-radius: 25px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: popupSlideIn 0.4s ease;
+}
+
+.popup-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.popup-close:hover {
+    color: #F6C84E;
+    background: rgba(246, 200, 78, 0.1);
+}
+
+.popup-header {
+    text-align: center;
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.popup-header h3 {
+    color: #F6C84E;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.popup-header p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.popup-body {
+    padding: 2rem;
+}
+
+.guide-preview {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border-radius: 15px;
+    margin: 0 auto 1.5rem;
+    display: block;
+    border: 2px solid rgba(246, 200, 78, 0.3);
+}
+
+.popup-body h4 {
+    color: #F6C84E;
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.popup-body ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.popup-body li {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.popup-form {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.popup-form input[type="email"] {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    font-size: 0.9rem;
+}
+
+.popup-form input[type="email"]:focus {
+    outline: none;
+    border-color: #F6C84E;
+}
+
+.popup-form button {
+    background: linear-gradient(135deg, #F6C84E, #FFD700);
+    color: #000;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.popup-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(246, 200, 78, 0.3);
+}
+
+.privacy-note {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.privacy-note i {
+    color: #F6C84E;
+    margin-right: 0.25rem;
+}
+
+/* Consultation Forms */
+.consultation-form {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(246, 200, 78, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    backdrop-filter: blur(15px);
+}
+
+.consultation-form .form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Download Forms */
+.download-form {
+    background: linear-gradient(135deg, rgba(246, 200, 78, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 2px solid rgba(246, 200, 78, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.download-preview {
+    margin-bottom: 1.5rem;
+}
+
+.download-preview img {
+    max-width: 150px;
+    height: auto;
+    border-radius: 10px;
+    border: 2px solid rgba(246, 200, 78, 0.3);
+}
+
+/* Notifications */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    border-left: 4px solid #F6C84E;
+    border-radius: 10px;
+    padding: 1rem;
+    color: white;
+    max-width: 400px;
+    z-index: 10001;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.notification-success {
+    border-left-color: #10B981;
+}
+
+.notification.notification-error {
+    border-left-color: #EF4444;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.notification-content i {
+    font-size: 1.1rem;
+}
+
+.notification.notification-success i {
+    color: #10B981;
+}
+
+.notification.notification-error i {
+    color: #EF4444;
+}
+
+/* Newsletter CTA Sections */
+.newsletter-cta {
+    background: linear-gradient(135deg, rgba(246, 200, 78, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 1px solid rgba(246, 200, 78, 0.3);
+    border-radius: 25px;
+    padding: 3rem 2rem;
+    text-align: center;
+    margin: 3rem 0;
+    backdrop-filter: blur(15px);
+}
+
+.newsletter-cta h3 {
+    color: #F6C84E;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.newsletter-cta p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.newsletter-cta .newsletter-form {
+    max-width: 500px;
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .newsletter-input-group {
+        flex-direction: column;
+    }
+
+    .popup-content {
+        margin: 1rem;
+    }
+
+    .popup-header {
+        padding: 1.5rem 1.5rem 1rem;
+    }
+
+    .popup-body {
+        padding: 1.5rem;
+    }
+
+    .popup-form {
+        flex-direction: column;
+    }
+
+    .hero-lead-form {
+        padding: 2rem 1.5rem;
+    }
+
+    .consultation-form .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Animations */
+@keyframes popupFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes popupSlideIn {
+    from {
+        transform: scale(0.8) translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Footer Newsletter */
+.footer-newsletter {
+    background: rgba(0, 0, 0, 0.5);
+    border-top: 1px solid rgba(246, 200, 78, 0.3);
+    padding: 2rem 0;
+    margin-top: 2rem;
+}
+
+.footer-newsletter h4 {
+    color: #F6C84E;
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.footer-newsletter .newsletter-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Lead Magnets */
+.lead-magnet {
+    background: linear-gradient(135deg, rgba(246, 200, 78, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 2px solid rgba(246, 200, 78, 0.4);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.lead-magnet h4 {
+    color: #F6C84E;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.lead-magnet .benefit-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+    text-align: left;
+    display: inline-block;
+}
+
+.lead-magnet .benefit-list li {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lead-magnet .benefit-list i {
+    color: #F6C84E;
+}

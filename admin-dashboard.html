@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Garcia Builder</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/dashboard-admin.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-chart-line me-2"></i>
+                Garcia Builder Admin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#dashboard" data-tab="dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#leads" data-tab="leads">
+                            <i class="fas fa-users me-1"></i>Leads
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#newsletter" data-tab="newsletter">
+                            <i class="fas fa-envelope me-1"></i>Newsletter
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#campaigns" data-tab="campaigns">
+                            <i class="fas fa-bullhorn me-1"></i>Campanhas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#analytics" data-tab="analytics">
+                            <i class="fas fa-chart-bar me-1"></i>Analytics
+                        </a>
+                    </li>
+                </ul>
+                <div class="navbar-nav">
+                    <a class="nav-link" href="dashboard.html">
+                        <i class="fas fa-home me-1"></i>Voltar ao Site
+                    </a>
+                    <a class="nav-link" href="#" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt me-1"></i>Sair
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid main-content">
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard-content" class="tab-content active">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="page-title">
+                        <i class="fas fa-tachometer-alt me-2"></i>
+                        Dashboard Administrativo
+                    </h1>
+                    <p class="text-muted">Visão geral do sistema de leads e newsletter</p>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stats-card stats-card-primary">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="stats-title">Total de Leads</div>
+                                    <div class="stats-number" id="totalLeads">0</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-users stats-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stats-card stats-card-success">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="stats-title">Conversões</div>
+                                    <div class="stats-number" id="totalConversions">0</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-check-circle stats-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stats-card stats-card-warning">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="stats-title">Newsletter</div>
+                                    <div class="stats-number" id="totalSubscribers">0</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-envelope stats-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stats-card stats-card-info">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="stats-title">Taxa de Conversão</div>
+                                    <div class="stats-number" id="conversionRate">0%</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-percentage stats-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row mb-4">
+                <div class="col-xl-8 col-lg-7">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-chart-line me-2"></i>
+                                Leads por Período
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="leadsChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-chart-pie me-2"></i>
+                                Fontes de Leads
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="sourcesChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-clock me-2"></i>
+                                Leads Recentes
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="recentLeads" class="activity-list">
+                                <!-- Leads recentes serão carregados aqui -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-newspaper me-2"></i>
+                                Inscrições Newsletter
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="recentSubscribers" class="activity-list">
+                                <!-- Inscrições recentes serão carregadas aqui -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leads Tab -->
+        <div id="leads-content" class="tab-content">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="page-title">
+                        <i class="fas fa-users me-2"></i>
+                        Gerenciamento de Leads
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Leads Filters -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="filterStatus" class="form-label">Status</label>
+                            <select class="form-select" id="filterStatus">
+                                <option value="">Todos</option>
+                                <option value="new">Novo</option>
+                                <option value="contacted">Contatado</option>
+                                <option value="qualified">Qualificado</option>
+                                <option value="converted">Convertido</option>
+                                <option value="closed">Fechado</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="filterSource" class="form-label">Fonte</label>
+                            <select class="form-select" id="filterSource">
+                                <option value="">Todas</option>
+                                <option value="Hero Form">Formulário Hero</option>
+                                <option value="Exit Intent">Exit Intent</option>
+                                <option value="Contact Form">Formulário Contato</option>
+                                <option value="Download">Download</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="filterDate" class="form-label">Período</label>
+                            <select class="form-select" id="filterDate">
+                                <option value="">Todos</option>
+                                <option value="today">Hoje</option>
+                                <option value="week">Esta Semana</option>
+                                <option value="month">Este Mês</option>
+                                <option value="quarter">Este Trimestre</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="searchLeads" class="form-label">Buscar</label>
+                            <input type="text" class="form-control" id="searchLeads" placeholder="Nome ou email...">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-auto">
+                            <button class="btn btn-primary" id="applyFilters">
+                                <i class="fas fa-filter me-1"></i>Aplicar Filtros
+                            </button>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-success" id="exportLeads">
+                                <i class="fas fa-download me-1"></i>Exportar CSV
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leads Table -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="leadsTable">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Objetivo</th>
+                                    <th>Fonte</th>
+                                    <th>Status</th>
+                                    <th>Data</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leadsTableBody">
+                                <!-- Leads serão carregados aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav aria-label="Leads pagination">
+                        <ul class="pagination justify-content-center" id="leadsPagination">
+                            <!-- Paginação será gerada aqui -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Newsletter Tab -->
+        <div id="newsletter-content" class="tab-content">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="page-title">
+                        <i class="fas fa-envelope me-2"></i>
+                        Newsletter & Inscritos
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Newsletter Stats -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card stats-card-sm">
+                        <div class="card-body text-center">
+                            <div class="stats-number text-primary" id="activeSubscribers">0</div>
+                            <div class="stats-title">Inscritos Ativos</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card-sm">
+                        <div class="card-body text-center">
+                            <div class="stats-number text-success" id="newSubscribersMonth">0</div>
+                            <div class="stats-title">Novos Este Mês</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card-sm">
+                        <div class="card-body text-center">
+                            <div class="stats-number text-warning" id="unsubscribedMonth">0</div>
+                            <div class="stats-title">Cancelamentos</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card-sm">
+                        <div class="card-body text-center">
+                            <div class="stats-number text-info" id="growthRate">0%</div>
+                            <div class="stats-title">Taxa de Crescimento</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Newsletter Filters and Actions -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="filterSubscriberStatus" class="form-label">Status</label>
+                            <select class="form-select" id="filterSubscriberStatus">
+                                <option value="">Todos</option>
+                                <option value="subscribed">Inscrito</option>
+                                <option value="unsubscribed">Cancelado</option>
+                                <option value="bounced">Bounced</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="filterSubscriberSource" class="form-label">Fonte</label>
+                            <select class="form-select" id="filterSubscriberSource">
+                                <option value="">Todas</option>
+                                <option value="Newsletter Form">Formulário Newsletter</option>
+                                <option value="Footer Newsletter">Footer Newsletter</option>
+                                <option value="Exit Intent">Exit Intent</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="searchSubscribers" class="form-label">Buscar</label>
+                            <input type="text" class="form-control" id="searchSubscribers" placeholder="Nome ou email...">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-auto">
+                            <button class="btn btn-primary" id="applySubscriberFilters">
+                                <i class="fas fa-filter me-1"></i>Aplicar Filtros
+                            </button>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-success" id="exportSubscribers">
+                                <i class="fas fa-download me-1"></i>Exportar CSV
+                            </button>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-info" id="createCampaign">
+                                <i class="fas fa-plus me-1"></i>Nova Campanha
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscribers Table -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="subscribersTable">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Fonte</th>
+                                    <th>Status</th>
+                                    <th>Data Inscrição</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="subscribersTableBody">
+                                <!-- Inscritos serão carregados aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav aria-label="Subscribers pagination">
+                        <ul class="pagination justify-content-center" id="subscribersPagination">
+                            <!-- Paginação será gerada aqui -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Campaigns Tab -->
+        <div id="campaigns-content" class="tab-content">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="page-title">
+                        <i class="fas fa-bullhorn me-2"></i>
+                        Campanhas de Email
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Create Campaign Button -->
+            <div class="row mb-4">
+                <div class="col-auto">
+                    <button class="btn btn-primary btn-lg" id="newCampaignBtn">
+                        <i class="fas fa-plus me-2"></i>Nova Campanha
+                    </button>
+                </div>
+            </div>
+
+            <!-- Campaigns List -->
+            <div class="row" id="campaignsList">
+                <!-- Campanhas serão carregadas aqui -->
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div id="analytics-content" class="tab-content">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="page-title">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Analytics & Relatórios
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Analytics Charts -->
+            <div class="row mb-4">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Conversão por Fonte</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="conversionBySourceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Performance Newsletter</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="newsletterPerformanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Tables -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Relatório de Performance</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="performanceTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Métrica</th>
+                                            <th>Hoje</th>
+                                            <th>Esta Semana</th>
+                                            <th>Este Mês</th>
+                                            <th>Trimestre</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="performanceTableBody">
+                                        <!-- Dados de performance serão carregados aqui -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modals -->
+
+    <!-- Lead Details Modal -->
+    <div class="modal fade" id="leadDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-user me-2"></i>Detalhes do Lead
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="leadDetailsContent">
+                    <!-- Conteúdo será carregado dinamicamente -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" id="updateLeadBtn">Salvar Alterações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Campaign Modal -->
+    <div class="modal fade" id="campaignModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-bullhorn me-2"></i>Nova Campanha
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="campaignModalContent">
+                    <!-- Conteúdo será carregado dinamicamente -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveCampaignBtn">Salvar Campanha</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
+
+    <!-- Custom JS -->
+    <script src="js/admin-dashboard.js"></script>
+</body>
+</html>

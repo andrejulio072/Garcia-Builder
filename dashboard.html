@@ -100,8 +100,8 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
             margin-bottom: 2rem;
         }
 
@@ -109,16 +109,35 @@
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 20px;
-            padding: 2rem;
+            padding: 1.5rem;
             backdrop-filter: blur(12px);
             transition: all 0.3s ease;
             text-align: center;
+            position: relative;
         }
 
         .stats-card:hover {
             transform: translateY(-5px);
             border-color: rgba(246, 200, 78, 0.3);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Auto-calculated indicators for dashboard */
+        .stats-card[data-metric="bmi"]::after,
+        .stats-card[data-metric="body-fat"]::after,
+        .stats-card[data-metric="calories"]::after,
+        .stats-card[data-metric="hydration"]::after,
+        .stats-card[data-metric="progress"]::after {
+            content: "AUTO";
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(246, 200, 78, 0.2);
+            color: #F6C84E;
+            font-size: 0.65rem;
+            padding: 2px 5px;
+            border-radius: 6px;
+            font-weight: 600;
         }
 
         .stats-icon {
@@ -385,25 +404,7 @@
 
             <!-- Stats Grid -->
             <div class="stats-grid">
-                <div class="stats-card">
-                    <div class="stats-icon">
-                        <i class="fas fa-dumbbell"></i>
-                    </div>
-                    <div class="stats-number" id="workouts-completed">0</div>
-                    <div class="stats-label">Workouts Completed</div>
-                    <span class="stats-trend trend-neutral" id="workouts-trend">Getting started</span>
-                </div>
-
-                <div class="stats-card">
-                    <div class="stats-icon">
-                        <i class="fas fa-fire"></i>
-                    </div>
-                    <div class="stats-number" id="current-streak">0</div>
-                    <div class="stats-label">Day Streak</div>
-                    <span class="stats-trend trend-neutral" id="streak-trend">Keep going!</span>
-                </div>
-
-                <div class="stats-card">
+                <div class="stats-card" data-metric="current-weight">
                     <div class="stats-icon">
                         <i class="fas fa-weight-hanging"></i>
                     </div>
@@ -412,13 +413,67 @@
                     <span class="stats-trend trend-neutral" id="weight-trend">Not set</span>
                 </div>
 
-                <div class="stats-card">
+                <div class="stats-card" data-metric="bmi">
                     <div class="stats-icon">
                         <i class="fas fa-chart-line"></i>
                     </div>
                     <div class="stats-number" id="bmi">--</div>
                     <div class="stats-label">BMI</div>
                     <span class="stats-trend trend-neutral" id="bmi-category">Calculate</span>
+                </div>
+
+                <div class="stats-card" data-metric="body-fat">
+                    <div class="stats-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="stats-number" id="body-fat">--%</div>
+                    <div class="stats-label">Body Fat</div>
+                    <span class="stats-trend trend-neutral" id="body-fat-trend">Auto-calculated</span>
+                </div>
+
+                <div class="stats-card" data-metric="calories">
+                    <div class="stats-icon">
+                        <i class="fas fa-fire-flame-curved"></i>
+                    </div>
+                    <div class="stats-number" id="daily-calories">--</div>
+                    <div class="stats-label">Daily Calories</div>
+                    <span class="stats-trend trend-up" id="calories-trend">Recommended</span>
+                </div>
+
+                <div class="stats-card" data-metric="hydration">
+                    <div class="stats-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <div class="stats-number" id="daily-water">--</div>
+                    <div class="stats-label">Daily Water</div>
+                    <span class="stats-trend trend-up" id="water-trend">Target</span>
+                </div>
+
+                <div class="stats-card" data-metric="progress">
+                    <div class="stats-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="stats-number" id="progress-to-goal">--</div>
+                    <div class="stats-label">Progress to Goal</div>
+                    <span class="stats-trend trend-neutral" id="progress-trend">Set target</span>
+                </div>
+
+                <div class="stats-card" data-metric="workouts">
+                    <div class="stats-icon">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <div class="stats-number" id="workouts-completed">0</div>
+                    <div class="stats-label">Workouts Completed</div>
+                    <span class="stats-trend trend-neutral" id="workouts-trend">Getting started</span>
+                </div>
+
+                <div class="stats-card" data-metric="streak">
+                    <div class="stats-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="stats-number" id="current-streak">0</div>
+                    <div class="stats-label">Day Streak</div>
+                    <span class="stats-trend trend-neutral" id="streak-trend">Keep going!</span>
                 </div>
             </div>
 
@@ -524,10 +579,109 @@
             }
         }
 
+        // Update dashboard stats with auto-calculations
+        function updateDashboardStats() {
+            try {
+                const profileData = window.GarciaProfileManager?.getProfileData();
+                if (!profileData) return;
+
+                const metrics = profileData.body_metrics || {};
+                const weight = parseFloat(metrics.current_weight) || 0;
+                const height = parseFloat(metrics.height) || 0;
+                const targetWeight = parseFloat(metrics.target_weight) || 0;
+                const bodyFat = parseFloat(metrics.body_fat_percentage) || 0;
+
+                // Update current weight
+                updateStatCard('current-weight', weight > 0 ? `${weight}kg` : '--', 
+                    weight > 0 ? 'Recorded' : 'Not set');
+
+                // Calculate and update BMI
+                if (weight > 0 && height > 0) {
+                    const bmi = weight / Math.pow(height / 100, 2);
+                    const bmiCategory = getBMICategory(bmi);
+                    updateStatCard('bmi', Math.round(bmi * 10) / 10, bmiCategory);
+                } else {
+                    updateStatCard('bmi', '--', 'Calculate');
+                }
+
+                // Calculate and update body fat
+                if (bodyFat > 0) {
+                    updateStatCard('body-fat', `${bodyFat}%`, 'Recorded');
+                } else if (weight > 0 && height > 0) {
+                    const bmi = weight / Math.pow(height / 100, 2);
+                    const estimatedBodyFat = estimateBodyFat(bmi);
+                    updateStatCard('body-fat', `${Math.round(estimatedBodyFat * 10) / 10}%`, 'Estimated');
+                } else {
+                    updateStatCard('body-fat', '--%', 'Not calculated');
+                }
+
+                // Calculate daily calories
+                if (weight > 0 && height > 0) {
+                    const bmr = (10 * weight) + (6.25 * height) - (5 * 30) + 5; // Assuming age 30, male
+                    const dailyCalories = Math.round(bmr * 1.55);
+                    updateStatCard('calories', dailyCalories.toLocaleString(), 'Recommended');
+                } else {
+                    updateStatCard('calories', '--', 'Not calculated');
+                }
+
+                // Calculate daily water
+                if (weight > 0) {
+                    const dailyWater = Math.round(weight * 35);
+                    const liters = (dailyWater / 1000).toFixed(1);
+                    updateStatCard('hydration', `${liters}L`, 'Daily target');
+                } else {
+                    updateStatCard('hydration', '--', 'Not calculated');
+                }
+
+                // Calculate progress to goal
+                if (weight > 0 && targetWeight > 0) {
+                    const difference = Math.abs(weight - targetWeight);
+                    const direction = weight > targetWeight ? 'lose' : 'gain';
+                    updateStatCard('progress', `${Math.round(difference * 10) / 10}kg`, 
+                        `to ${direction}`);
+                } else {
+                    updateStatCard('progress', '--', 'Set target');
+                }
+
+            } catch (error) {
+                console.error('Error updating dashboard stats:', error);
+            }
+        }
+
+        // Helper function to update individual stat cards
+        function updateStatCard(metric, value, trend) {
+            const card = document.querySelector(`[data-metric="${metric}"]`);
+            if (!card) return;
+
+            const numberElement = card.querySelector('.stats-number');
+            const trendElement = card.querySelector('.stats-trend');
+
+            if (numberElement) numberElement.textContent = value;
+            if (trendElement) trendElement.textContent = trend;
+        }
+
+        // Get BMI category
+        function getBMICategory(bmi) {
+            if (bmi < 18.5) return 'Underweight';
+            if (bmi < 25) return 'Normal';
+            if (bmi < 30) return 'Overweight';
+            return 'Obese';
+        }
+
+        // Estimate body fat from BMI
+        function estimateBodyFat(bmi) {
+            if (bmi < 18.5) return Math.max(5, bmi * 0.8);
+            if (bmi < 25) return bmi * 1.2 + 0.23;
+            return bmi * 1.5 - 5;
+        }
+
         function updateDashboardContent() {
             try {
                 const profileData = window.GarciaProfileManager?.getProfileData();
                 if (!profileData) return;
+
+                // Update stats with auto-calculations
+                updateDashboardStats();
 
                 // Update recent activity
                 updateRecentActivity(profileData);
@@ -538,7 +692,7 @@
                 // Update trends
                 updateTrends(profileData);
 
-                console.log('Dashboard content updated');
+                console.log('Dashboard content updated with auto-calculations');
             } catch (error) {
                 console.error('Error updating dashboard content:', error);
             }

@@ -731,8 +731,82 @@
     measurementInputs.forEach(input => {
       input.addEventListener('input', () => {
         updateBodyMetricsDisplays();
+        calculateAdvancedMetrics();
       });
     });
+
+    // Calculate advanced metrics on page load
+    setTimeout(() => {
+      calculateAdvancedMetrics();
+    }, 200);
+  };
+
+  // Calculate advanced metrics (calories, hydration, progress)
+  const calculateAdvancedMetrics = () => {
+    const metricsForm = document.getElementById('body-metrics-form');
+    if (!metricsForm) return;
+
+    const weight = parseFloat(metricsForm.querySelector('[name="current_weight"]')?.value || 0);
+    const height = parseFloat(metricsForm.querySelector('[name="height"]')?.value || 0);
+    const targetWeight = parseFloat(metricsForm.querySelector('[name="target_weight"]')?.value || 0);
+    const bodyFat = parseFloat(metricsForm.querySelector('[name="body_fat_percentage"]')?.value || 0);
+
+    // Calculate daily calorie needs (basic formula)
+    if (weight > 0 && height > 0) {
+      const bmr = calculateBMR(weight, height);
+      const dailyCalories = Math.round(bmr * 1.55); // Moderate activity level
+      updateCaloriesDisplay(dailyCalories);
+    }
+
+    // Calculate daily water intake recommendation
+    if (weight > 0) {
+      const dailyWater = Math.round(weight * 35); // 35ml per kg
+      updateHydrationDisplay(dailyWater);
+    }
+
+    // Calculate progress to goal
+    if (weight > 0 && targetWeight > 0) {
+      const progressToGoal = calculateProgressToGoal(weight, targetWeight);
+      updateProgressDisplay(progressToGoal);
+    }
+
+    // Determine fitness category
+    if (weight > 0 && height > 0 && bodyFat > 0) {
+      const fitnessCategory = determineFitnessCategory(weight, height, bodyFat);
+      updateFitnessCategoryDisplay(fitnessCategory);
+    }
+  };
+
+  // Calculate Basal Metabolic Rate (BMR)
+  const calculateBMR = (weight, height) => {
+    // Using Mifflin-St Jeor Equation (assuming average age 30, male)
+    // For more accuracy, would need age and gender inputs
+    return (10 * weight) + (6.25 * height) - (5 * 30) + 5;
+  };
+
+  // Calculate progress to goal
+  const calculateProgressToGoal = (currentWeight, targetWeight) => {
+    const difference = Math.abs(currentWeight - targetWeight);
+    const direction = currentWeight > targetWeight ? 'lose' : 'gain';
+    const weeksToGoal = Math.ceil(difference / 0.5); // Assuming 0.5kg per week
+    
+    return {
+      difference: Math.round(difference * 10) / 10,
+      direction,
+      weeksToGoal,
+      percentage: currentWeight === targetWeight ? 100 : 0
+    };
+  };
+
+  // Determine fitness category based on BMI and body fat
+  const determineFitnessCategory = (weight, height, bodyFat) => {
+    const bmi = weight / Math.pow(height / 100, 2);
+    
+    if (bodyFat < 10) return { category: 'Athletic', color: '#10B981' };
+    if (bodyFat < 15 && bmi < 25) return { category: 'Fit', color: '#059669' };
+    if (bodyFat < 20 && bmi < 27) return { category: 'Average', color: '#F59E0B' };
+    if (bodyFat < 25) return { category: 'Above Average', color: '#D97706' };
+    return { category: 'Needs Improvement', color: '#DC2626' };
   };
 
   // Update BMI display in the dashboard cards
@@ -820,6 +894,59 @@
         }
       }
     });
+  };
+
+  // Update calories display
+  const updateCaloriesDisplay = (calories) => {
+    const caloriesCard = document.querySelector('[data-metric="calories"]');
+    if (caloriesCard) {
+      const caloriesValue = caloriesCard.querySelector('.metric-value');
+      if (caloriesValue) {
+        caloriesValue.textContent = calories.toLocaleString();
+      }
+    }
+  };
+
+  // Update hydration display
+  const updateHydrationDisplay = (waterMl) => {
+    const hydrationCard = document.querySelector('[data-metric="hydration"]');
+    if (hydrationCard) {
+      const hydrationValue = hydrationCard.querySelector('.metric-value');
+      if (hydrationValue) {
+        const liters = (waterMl / 1000).toFixed(1);
+        hydrationValue.textContent = `${liters}L`;
+      }
+    }
+  };
+
+  // Update progress display
+  const updateProgressDisplay = (progress) => {
+    const progressCard = document.querySelector('[data-metric="progress"]');
+    if (progressCard) {
+      const progressValue = progressCard.querySelector('.metric-value');
+      const progressLabel = progressCard.querySelector('.metric-label');
+      if (progressValue && progressLabel) {
+        if (progress.percentage === 100) {
+          progressValue.textContent = 'Goal!';
+          progressLabel.textContent = 'Target Reached';
+        } else {
+          progressValue.textContent = `${progress.difference}kg`;
+          progressLabel.textContent = `to ${progress.direction} (${progress.weeksToGoal} weeks)`;
+        }
+      }
+    }
+  };
+
+  // Update fitness category display
+  const updateFitnessCategoryDisplay = (fitness) => {
+    const fitnessCard = document.querySelector('[data-metric="fitness-category"]');
+    if (fitnessCard) {
+      const fitnessValue = fitnessCard.querySelector('.metric-value');
+      if (fitnessValue) {
+        fitnessValue.textContent = fitness.category;
+        fitnessValue.style.color = fitness.color;
+      }
+    }
   };
 
   // Handle save profile

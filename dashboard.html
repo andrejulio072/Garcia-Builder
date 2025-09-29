@@ -392,7 +392,7 @@
                         <a href="my-profile.html" class="btn-quick">
                             <i class="fas fa-user-edit"></i> Edit Profile
                         </a>
-                        <a href="#" class="btn-quick" onclick="document.getElementById('body-metrics-modal')?.querySelector('[data-bs-toggle=modal]')?.click()">
+                        <a href="#" class="btn-quick" id="log-weight-btn">
                             <i class="fas fa-weight"></i> Log Weight
                         </a>
                         <a href="contact.html" class="btn-quick">
@@ -556,6 +556,7 @@
     <script src="js/auth.js"></script>
     <script src="js/navigation-manager.js"></script>
     <script src="js/profile-manager.js"></script>
+    <script defer src="js/body-metrics.js"></script>
 
     <script>
         // Dashboard-specific functionality
@@ -565,6 +566,51 @@
 
             // Setup logout
             document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
+
+            // Wire Log Weight quick action to the Body Metrics modal
+            const logWeightBtn = document.getElementById('log-weight-btn');
+            if (logWeightBtn) {
+                logWeightBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (window.BodyMetrics && typeof window.BodyMetrics.showMetricsModal === 'function') {
+                        window.BodyMetrics.showMetricsModal();
+                    }
+                });
+            }
+
+            // Refresh stats when body metrics are saved from the modal
+            window.addEventListener('gb:bodyMetricsSaved', (e) => {
+                try {
+                    const data = e.detail || {};
+                    // Update immediate cards from saved entry
+                    if (typeof data.weight === 'number') {
+                        updateStatCard('current-weight', `${data.weight}kg`, 'Recorded');
+                        // Hydration from weight
+                        const dailyWater = Math.round(data.weight * 35);
+                        const liters = (dailyWater / 1000).toFixed(1);
+                        updateStatCard('hydration', `${liters}L`, 'Daily target');
+                    }
+                    if (typeof data.weight === 'number' && typeof data.height === 'number') {
+                        const bmi = data.weight / Math.pow(data.height / 100, 2);
+                        updateStatCard('bmi', Math.round(bmi * 10) / 10, getBMICategory(bmi));
+                    }
+                    if (typeof data.body_fat === 'number') {
+                        updateStatCard('body-fat', `${data.body_fat}%`, 'Recorded');
+                    }
+                    // Progress to goal if target exists in profile data
+                    const profileData = window.GarciaProfileManager?.getProfileData?.();
+                    const targetWeight = parseFloat(profileData?.body_metrics?.target_weight) || 0;
+                    if (typeof data.weight === 'number' && targetWeight > 0) {
+                        const diff = Math.abs(data.weight - targetWeight);
+                        const direction = data.weight > targetWeight ? 'lose' : 'gain';
+                        updateStatCard('progress', `${Math.round(diff * 10) / 10}kg`, `to ${direction}`);
+                    }
+                    // Fallback: run full recompute
+                    updateDashboardStats();
+                } catch (e) {
+                    console.warn('Failed to refresh dashboard after metrics save:', e);
+                }
+            });
         });
 
         async function initializeDashboard() {

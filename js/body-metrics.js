@@ -316,6 +316,13 @@
       // Sucesso
       showNotification('✅ Body metrics saved successfully!', 'success');
 
+      // Notify other parts of the app (e.g., Dashboard) that body metrics were saved
+      try {
+        window.dispatchEvent(new CustomEvent('gb:bodyMetricsSaved', { detail: entryData }));
+      } catch (e) {
+        console.warn('Event dispatch failed:', e);
+      }
+
       // Fechar modal
       bootstrap.Modal.getInstance(document.getElementById('metricsModal')).hide();
 

@@ -932,12 +932,14 @@
     <script src="js/auth.js"></script>
     <script src="js/navigation-manager.js"></script>
     <script src="js/profile-manager.js"></script>
+    <script defer src="js/body-metrics.js"></script>
 
     <script>
         // Profile page specific functionality
         document.addEventListener('DOMContentLoaded', function() {
             initializeProfilePage();
             setupTabNavigation();
+            activateTabFromUrl();
             setupEventListeners();
         });
 
@@ -970,6 +972,24 @@
                     document.getElementById(targetTab + '-tab').classList.add('active');
                 });
             });
+        }
+
+        // Allow linking directly to tabs via query parameter ?tab=metrics|progress|goals|settings
+        function activateTabFromUrl() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                let target = params.get('tab');
+                if (!target && window.location.hash.startsWith('#tab=')) {
+                    target = window.location.hash.replace('#tab=', '');
+                }
+                const validTabs = ['basic', 'metrics', 'progress', 'goals', 'settings'];
+                if (target && validTabs.includes(target)) {
+                    const btn = document.querySelector(`.tab-btn[data-tab="${target}"]`);
+                    btn?.click();
+                }
+            } catch (e) {
+                console.warn('Failed to activate tab from URL:', e);
+            }
         }
 
         function setupEventListeners() {
@@ -1070,4 +1090,4 @@
         }
     </script>
 </body>
-</html>
+ </html>

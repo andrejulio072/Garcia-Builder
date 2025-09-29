@@ -216,7 +216,7 @@
       return true;
     } catch (error) {
       console.error('Error saving profile data:', error);
-      
+
       // Try to create profiles table if it doesn't exist
       if (error.message && error.message.includes('table') && error.message.includes('does not exist')) {
         try {
@@ -230,7 +230,7 @@
           console.error('Error creating profiles table:', createError);
         }
       }
-      
+
       showNotification('Error saving profile. Please try again.', 'error');
       return false;
     }
@@ -328,7 +328,7 @@
 
           if (profileError) {
             console.warn('Profiles table upsert failed, trying fallback:', profileError);
-            
+
             // Fallback: Try to update user metadata
             const { error: metadataError } = await window.supabaseClient.auth.updateUser({
               data: {

@@ -105,15 +105,36 @@
         }
 
         .form-label {
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.9) !important;
             font-weight: 500;
             margin-bottom: 0.5rem;
+        }
+
+        /* Ensure all form text is visible */
+        .text-muted {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        /* Fix for input text color */
+        input.form-control,
+        textarea.form-control {
+            color: #fff !important;
+        }
+
+        input.form-control::-webkit-input-placeholder,
+        textarea.form-control::-webkit-input-placeholder {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        input.form-control::-moz-placeholder,
+        textarea.form-control::-moz-placeholder {
+            color: rgba(255, 255, 255, 0.5) !important;
         }
 
         .form-control, .form-select {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
+            color: #fff !important;
             border-radius: 10px;
             padding: 0.75rem 1rem;
             transition: all 0.3s ease;
@@ -123,11 +144,35 @@
             background: rgba(255, 255, 255, 0.08);
             border-color: #F6C84E;
             box-shadow: 0 0 0 0.2rem rgba(246, 200, 78, 0.25);
-            color: #fff;
+            color: #fff !important;
         }
 
         .form-control::placeholder {
             color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Fix for select options visibility */
+        .form-select option {
+            background: #1a1a1a !important;
+            color: #fff !important;
+            padding: 8px 12px;
+        }
+
+        .form-select option:checked,
+        .form-select option:hover {
+            background: #F6C84E !important;
+            color: #000 !important;
+        }
+
+        /* Ensure text is visible in all states */
+        select.form-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
         }
 
         .form-check {
@@ -137,6 +182,31 @@
         .form-check-input {
             background-color: rgba(255, 255, 255, 0.1);
             border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-check-label {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .form-check-input:checked {
+            background-color: #F6C84E;
+            border-color: #F6C84E;
+        }
+
+        /* Fix for button text */
+        .btn-primary {
+            background: linear-gradient(135deg, #F6C84E 0%, #ff6b35 100%);
+            border: none;
+            color: #000 !important;
+            font-weight: 600;
+        }
+
+        .tab-btn {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        .tab-btn.active {
+            color: #F6C84E !important;
         }
 
         .form-check-input:checked {

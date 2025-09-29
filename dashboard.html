@@ -592,7 +592,7 @@
                 const bodyFat = parseFloat(metrics.body_fat_percentage) || 0;
 
                 // Update current weight
-                updateStatCard('current-weight', weight > 0 ? `${weight}kg` : '--', 
+                updateStatCard('current-weight', weight > 0 ? `${weight}kg` : '--',
                     weight > 0 ? 'Recorded' : 'Not set');
 
                 // Calculate and update BMI
@@ -637,7 +637,7 @@
                 if (weight > 0 && targetWeight > 0) {
                     const difference = Math.abs(weight - targetWeight);
                     const direction = weight > targetWeight ? 'lose' : 'gain';
-                    updateStatCard('progress', `${Math.round(difference * 10) / 10}kg`, 
+                    updateStatCard('progress', `${Math.round(difference * 10) / 10}kg`,
                         `to ${direction}`);
                 } else {
                     updateStatCard('progress', '--', 'Set target');

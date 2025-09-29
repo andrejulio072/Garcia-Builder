@@ -789,7 +789,7 @@
     const difference = Math.abs(currentWeight - targetWeight);
     const direction = currentWeight > targetWeight ? 'lose' : 'gain';
     const weeksToGoal = Math.ceil(difference / 0.5); // Assuming 0.5kg per week
-    
+
     return {
       difference: Math.round(difference * 10) / 10,
       direction,
@@ -801,7 +801,7 @@
   // Determine fitness category based on BMI and body fat
   const determineFitnessCategory = (weight, height, bodyFat) => {
     const bmi = weight / Math.pow(height / 100, 2);
-    
+
     if (bodyFat < 10) return { category: 'Athletic', color: '#10B981' };
     if (bodyFat < 15 && bmi < 25) return { category: 'Fit', color: '#059669' };
     if (bodyFat < 20 && bmi < 27) return { category: 'Average', color: '#F59E0B' };

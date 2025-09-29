@@ -201,13 +201,10 @@
             font-weight: 600;
         }
 
-        .tab-btn {
-            color: rgba(255, 255, 255, 0.7) !important;
-        }
-
-        .tab-btn.active {
-            color: #F6C84E !important;
-        }
+        /* Tabs: base color only (visual state handled below around line 420) */
+        .tab-btn { color: rgba(255, 255, 255, 0.8); }
+        /* Remove conflicting yellow text style so active state below is visible */
+        .tab-btn.active { color: #000; }
 
         .form-check-input:checked {
             background-color: #F6C84E;
@@ -427,12 +424,13 @@
         .tab-btn {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.92);
             padding: 0.75rem 1.5rem;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 0.9rem;
+            outline: 0;
         }
 
         .tab-btn.active {
@@ -445,6 +443,8 @@
             background: rgba(255, 255, 255, 0.15);
             color: #fff;
         }
+
+        .tab-btn:focus-visible { box-shadow: 0 0 0 3px rgba(246,200,78,.45); }
 
         .tab-content {
             display: none;

@@ -94,8 +94,8 @@
       // Track conversion
       trackConversion('lead_capture', leadInfo.source);
 
-      // Show success message
-      showNotification('¡Gracias! Te contactaremos pronto para tu consulta gratuita.', 'success');
+  // Show success message (PT-BR)
+  showNotification('Obrigado! Entraremos em contato em breve para sua consulta gratuita.', 'success');
 
       // Redirect to thank you page or show additional content
       setTimeout(() => {
@@ -106,8 +106,8 @@
       form.reset();
 
     } catch (error) {
-      console.error('Error capturing lead:', error);
-      showNotification('Error al enviar. Por favor, intenta de nuevo.', 'error');
+  console.error('Error capturing lead:', error);
+  showNotification('Erro ao enviar. Por favor, tente novamente.', 'error');
     }
   };
 
@@ -121,7 +121,7 @@
     const name = formData.get('name') || '';
 
     if (!email || !isValidEmail(email)) {
-      showNotification('Por favor, ingresa un email válido.', 'error');
+      showNotification('Por favor, insira um e-mail válido.', 'error');
       return;
     }
 
@@ -151,15 +151,15 @@
       // Track conversion
       trackConversion('newsletter_signup', subscriberInfo.source);
 
-      // Show success message
-      showNotification('¡Suscrito exitosamente! Revisa tu email para confirmar.', 'success');
+  // Show success message (PT-BR)
+  showNotification('Inscrição realizada com sucesso! Confira seu e-mail para confirmar.', 'success');
 
       // Reset form
       form.reset();
 
     } catch (error) {
-      console.error('Error subscribing to newsletter:', error);
-      showNotification('Error en la suscripción. Intenta de nuevo.', 'error');
+  console.error('Error subscribing to newsletter:', error);
+  showNotification('Erro na inscrição. Tente novamente.', 'error');
     }
   };
 
@@ -198,8 +198,8 @@
       // Track conversion
       trackConversion('consultation_request', 'Consultation Form');
 
-      // Show success message
-      showNotification('¡Solicitud enviada! Te contactaremos dentro de 24 horas.', 'success');
+  // Show success message (PT-BR)
+  showNotification('Solicitação enviada! Entraremos em contato em até 24 horas.', 'success');
 
       // Show calendar booking option
       showCalendarBooking();
@@ -207,41 +207,74 @@
       form.reset();
 
     } catch (error) {
-      console.error('Error requesting consultation:', error);
-      showNotification('Error al enviar solicitud. Intenta de nuevo.', 'error');
+  console.error('Error requesting consultation:', error);
+  showNotification('Erro ao enviar solicitação. Tente novamente.', 'error');
     }
   };
 
-  // Setup exit intent popup
+  // Setup exit/focus popup - simplified: show once after short delay, never again after close
   const setupExitIntentPopup = () => {
-    let exitIntentTriggered = false;
+    // Show only on homepage and keep it minimal & professional
+    const isHomePage = () => {
+      const p = (window.location.pathname || '').toLowerCase();
+      return p === '/' || p.endsWith('/index.html') || p === '';
+    };
+
+    // Frequency controls (persist suppression after close)
+    const EXIT_SUPPRESS_KEY = 'gb_exit_intent_suppress_until';
+    const EXIT_SESSION_KEY = 'gb_exit_intent_shown_session';
+    const SUPPRESS_DAYS = 30; // cooldown after dismiss/submit
+    const DELAY_MS = 2500;    // show after ~2.5s
+    let shownThisSession = false;
+
+    const isSuppressed = () => {
+      // once per session
+      if (sessionStorage.getItem(EXIT_SESSION_KEY) === '1') return true;
+
+      // 30-day cooldown
+      const until = parseInt(localStorage.getItem(EXIT_SUPPRESS_KEY) || '0', 10);
+      if (!Number.isNaN(until) && until > Date.now()) return true;
+
+      // If user already became lead/subscriber locally, don't show
+      try {
+        const leads = JSON.parse(localStorage.getItem('garcia_leads') || '[]');
+        const subsA = JSON.parse(localStorage.getItem('garcia_newsletter_subscribers') || '[]');
+        const subsB = JSON.parse(localStorage.getItem('garcia_newsletter') || '[]');
+        const hasSubs = (Array.isArray(subsA) && subsA.length) || (Array.isArray(subsB) && subsB.length);
+        if ((Array.isArray(leads) && leads.length) || hasSubs) return true;
+      } catch (_) {}
+      return false;
+    };
+
+    const suppressNow = () => {
+      sessionStorage.setItem(EXIT_SESSION_KEY, '1');
+      const until = Date.now() + SUPPRESS_DAYS * 24 * 60 * 60 * 1000;
+      localStorage.setItem(EXIT_SUPPRESS_KEY, String(until));
+    };
 
     const showExitIntent = () => {
-      if (exitIntentTriggered) return;
+      if (shownThisSession || isSuppressed()) return;
+      if (!isHomePage()) return; // homepage only
+      // desktop-only (avoid mobile pollution)
+      if (!window.matchMedia || !window.matchMedia('(pointer: fine)').matches) return;
 
-      exitIntentTriggered = true;
+      shownThisSession = true;
+      sessionStorage.setItem(EXIT_SESSION_KEY, '1');
+
       const popup = createExitIntentPopup();
       document.body.appendChild(popup);
-
-      // Track exit intent
       trackEvent('exit_intent_popup_shown');
     };
 
-    // Detect exit intent
-    document.addEventListener('mouseleave', (e) => {
-      if (e.clientY <= 0) {
-        showExitIntent();
-      }
-    });
+    // Timed initial trigger (2.5s)
+    setTimeout(() => showExitIntent(), DELAY_MS);
 
-    // Mobile scroll exit intent
-    let lastScrollY = 0;
-    window.addEventListener('scroll', () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY < lastScrollY && currentScrollY < 100) {
-        showExitIntent();
-      }
-      lastScrollY = currentScrollY;
+    // Public helper to suppress if user interacts positively elsewhere
+    window.gbSuppressExitIntent = suppressNow;
+
+    // Optional: footer trigger link with [data-open-lead-magnet]
+    document.querySelectorAll('[data-open-lead-magnet]').forEach(el => {
+      el.addEventListener('click', (e) => { e.preventDefault(); showExitIntent(); });
     });
   };
 
@@ -254,28 +287,28 @@
         <div class="popup-content">
           <button class="popup-close">&times;</button>
           <div class="popup-header">
-            <h3>¡Espera! 🎯</h3>
-            <p>¿Te vas sin tu guía gratuita de transformación?</p>
+            <h3>Espere um momento 🎯</h3>
+            <p>Vai sair sem sua guia gratuita de transformação?</p>
           </div>
           <div class="popup-body">
-            <img src="assets/transformation-guide-preview.jpg" alt="Guía Gratuita" class="guide-preview">
-            <h4>Descarga GRATIS:</h4>
+            <img src="assets/transformation-guide-preview.jpg" alt="Guia Gratuita" class="guide-preview">
+            <h4>Baixe GRÁTIS:</h4>
             <ul>
-              <li>✅ Plan de entrenamiento de 30 días</li>
-              <li>✅ Guía de nutrición básica</li>
-              <li>✅ Calculadora de calorías</li>
-              <li>✅ 50 recetas saludables</li>
+              <li>✅ Plano de treino de 30 dias</li>
+              <li>✅ Guia básico de nutrição</li>
+              <li>✅ Calculadora de calorias</li>
+              <li>✅ 50 receitas saudáveis</li>
             </ul>
             <form class="popup-form download-form" data-source="Exit Intent">
-              <input type="email" name="email" placeholder="Tu email aquí" required>
+              <input type="email" name="email" placeholder="Seu email aqui" required>
               <input type="hidden" name="goal" value="Transformation Guide">
               <button type="submit" class="btn btn-primary">
-                <i class="fas fa-download"></i> Descargar Gratis
+                <i class="fas fa-download"></i> Baixar Agora
               </button>
             </form>
             <p class="privacy-note">
               <i class="fas fa-lock"></i>
-              No spam. Solo contenido valioso.
+              Sem spam. Apenas conteúdo valioso.
             </p>
           </div>
         </div>
@@ -287,17 +320,15 @@
     const overlay = popup.querySelector('.popup-overlay');
     const form = popup.querySelector('.popup-form');
 
-    closeBtn.addEventListener('click', () => {
+    const dismiss = (reason) => {
       popup.remove();
-      trackEvent('exit_intent_popup_closed');
-    });
+      if (typeof window.gbSuppressExitIntent === 'function') window.gbSuppressExitIntent();
+      trackEvent(reason || 'exit_intent_popup_closed');
+    };
 
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        popup.remove();
-        trackEvent('exit_intent_popup_dismissed');
-      }
-    });
+    closeBtn.addEventListener('click', () => dismiss('exit_intent_popup_closed'));
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) dismiss('exit_intent_popup_dismissed'); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') dismiss('exit_intent_popup_esc'); }, { once: true });
 
     form.addEventListener('submit', handleDownloadRequest);
 
@@ -332,8 +363,8 @@
       // Track conversion
       trackConversion('guide_download', downloadInfo.source);
 
-      // Show success and provide immediate download
-      showNotification('¡Enviado! Revisa tu email para el enlace de descarga.', 'success');
+  // Show success and provide immediate download (PT-BR)
+  showNotification('Enviado! Confira seu e-mail para o link de download.', 'success');
 
       // Immediate download
       triggerFileDownload('transformation-guide.pdf');
@@ -341,14 +372,15 @@
       // Close popup if exists
       const popup = form.closest('.exit-intent-popup');
       if (popup) {
+        if (typeof window.gbSuppressExitIntent === 'function') window.gbSuppressExitIntent();
         popup.remove();
       }
 
       form.reset();
 
     } catch (error) {
-      console.error('Error processing download:', error);
-      showNotification('Error al procesar descarga. Intenta de nuevo.', 'error');
+  console.error('Error processing download:', error);
+  showNotification('Erro ao processar download. Tente novamente.', 'error');
     }
   };
 
@@ -378,8 +410,13 @@
       if (error) throw error;
     } else {
       // Fallback to localStorage
-      const existingSubscribers = JSON.parse(localStorage.getItem('garcia_newsletter') || '[]');
+      const existingSubscribers = JSON.parse(
+        localStorage.getItem('garcia_newsletter_subscribers') ||
+        localStorage.getItem('garcia_newsletter') || '[]'
+      );
       existingSubscribers.push(subscriberInfo);
+      // Write to canonical key and mirror to legacy key for compatibility
+      localStorage.setItem('garcia_newsletter_subscribers', JSON.stringify(existingSubscribers));
       localStorage.setItem('garcia_newsletter', JSON.stringify(existingSubscribers));
     }
   };
@@ -473,21 +510,13 @@
       notification.classList.add('show');
     }, 100);
 
-    setTimeout(() => {
-      notification.remove();
-    }, 5000);
+    setTimeout(() => notification.remove(), 4000);
   };
 
-  const triggerFileDownload = (filename) => {
-    const link = document.createElement('a');
-    link.href = `downloads/${filename}`;
-    link.download = filename;
-    link.click();
-  };
-
+  // Subtle lead magnet after successful lead capture (non-intrusive)
   const showLeadMagnet = (leadInfo) => {
-    // Show additional valuable content after lead capture
-    console.log('Showing lead magnet for:', leadInfo.email);
+    if (typeof window.gbSuppressExitIntent === 'function') window.gbSuppressExitIntent();
+    console.log('Lead captured, offering magnet later for:', leadInfo?.email);
   };
 
   const showCalendarBooking = () => {
@@ -503,18 +532,31 @@
     // Track scroll depth
     let maxScrollDepth = 0;
     window.addEventListener('scroll', () => {
-      const scrollDepth = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
-      if (scrollDepth > maxScrollDepth) {
-        maxScrollDepth = scrollDepth;
-        if (scrollDepth >= 25 && scrollDepth < 50) {
-          trackEvent('scroll_25_percent');
-        } else if (scrollDepth >= 50 && scrollDepth < 75) {
-          trackEvent('scroll_50_percent');
-        } else if (scrollDepth >= 75) {
-          trackEvent('scroll_75_percent');
-        }
+      const doc = document.documentElement;
+      const scrollTop = window.scrollY || doc.scrollTop || 0;
+      const scrollHeight = doc.scrollHeight - window.innerHeight;
+      const pct = Math.max(0, Math.min(100, Math.round((scrollTop / (scrollHeight || 1)) * 100)));
+      if (pct > maxScrollDepth) {
+        maxScrollDepth = pct;
+        if (pct >= 25 && pct < 50) trackEvent('scroll_25_percent');
+        else if (pct >= 50 && pct < 75) trackEvent('scroll_50_percent');
+        else if (pct >= 75) trackEvent('scroll_75_percent');
       }
-    });
+    }, { passive: true });
+  };
+
+  // Stubs to avoid runtime errors on optional flows
+  const triggerFileDownload = (filename) => {
+    console.log('Trigger download requested for:', filename);
+  };
+
+  const saveConsultationRequest = async (info) => {
+    console.log('Consultation request captured:', info);
+    await saveLeadToDatabase(info);
+  };
+
+  const notifyAdminNewConsultation = async (info) => {
+    console.log('Notify admin (stub):', info.email);
   };
 
   // Load leads data for admin

@@ -56,6 +56,9 @@
           p: "Book a free consultation or message me on WhatsApp. I coach in EN/PT/ES.",
           book: "Book a Free Consultation",
           ig: "Follow on Instagram"
+        },
+        footer: {
+          leadmagnet: "Download free workout guide"
         }
       },
       kpi: {
@@ -389,6 +392,9 @@
           p: "Agende uma consulta gratuita ou me mande mensagem no WhatsApp. Atendo em PT/EN/ES.",
           book: "Agendar Consulta Gratuita",
           ig: "Seguir no Instagram"
+        },
+        footer: {
+          leadmagnet: "Baixar guia de treino"
         }
       },
       kpi: {
@@ -713,6 +719,9 @@
           p: "Reserva una consulta gratuita o envíame un mensaje por WhatsApp. Entreno en ES/EN/PT.",
           book: "Reservar Consulta Gratuita",
           ig: "Seguir en Instagram"
+        },
+        footer: {
+          leadmagnet: "Descargar guía de entrenamiento gratis"
         }
       },
       kpi: {

@@ -550,7 +550,7 @@
       // Trigger auto-calculations after form is populated
       setTimeout(() => {
         updateBodyMetricsDisplays();
-        
+
         // Trigger BMI calculation if weight and height are available
         const weightInput = metricsForm.querySelector('[name="current_weight"]');
         const heightInput = metricsForm.querySelector('[name="height"]');
@@ -677,15 +677,15 @@
       const calculateAndDisplayBMI = () => {
         const weight = parseFloat(weightInput.value);
         const height = parseFloat(heightInput.value);
-        
+
         if (weight > 0 && height > 0) {
           // Convert height from cm to meters for BMI calculation
           const heightInMeters = height / 100;
           const bmi = weight / (heightInMeters * heightInMeters);
-          
+
           // Update BMI display in the cards
           updateBMIDisplay(bmi);
-          
+
           // Also estimate body fat percentage if not manually entered
           if (!bodyFatInput.value) {
             estimateBodyFat(bmi);
@@ -695,7 +695,7 @@
 
       weightInput.addEventListener('input', calculateAndDisplayBMI);
       heightInput.addEventListener('input', calculateAndDisplayBMI);
-      
+
       // Calculate on page load if values exist
       setTimeout(calculateAndDisplayBMI, 100);
     }
@@ -705,15 +705,15 @@
       const calculateLeanBodyMass = () => {
         const weight = parseFloat(weightInput.value);
         const bodyFat = parseFloat(bodyFatInput.value);
-        
+
         if (weight > 0 && bodyFat >= 0 && bodyFat <= 50) {
           const leanBodyMass = weight * (1 - bodyFat / 100);
-          
+
           // Update muscle mass field if not manually entered
           if (muscleMassInput && !muscleMassInput.value) {
             muscleMassInput.value = Math.round(leanBodyMass * 10) / 10;
           }
-          
+
           // Update muscle mass display card
           updateMuscleMassDisplay(leanBodyMass);
         }
@@ -721,7 +721,7 @@
 
       weightInput.addEventListener('input', calculateLeanBodyMass);
       bodyFatInput.addEventListener('input', calculateLeanBodyMass);
-      
+
       // Calculate on page load if values exist
       setTimeout(calculateLeanBodyMass, 100);
     }
@@ -743,7 +743,7 @@
       if (bmiValue) {
         bmiValue.textContent = Math.round(bmi * 10) / 10;
       }
-      
+
       // Update BMI category and color
       const bmiCategory = getBMICategory(bmi);
       bmiCard.setAttribute('data-category', bmiCategory.toLowerCase());
@@ -762,7 +762,7 @@
   const estimateBodyFat = (bmi) => {
     // Basic estimation formula (not medical grade)
     let estimatedBodyFat;
-    
+
     if (bmi < 18.5) {
       estimatedBodyFat = Math.max(5, bmi * 0.8);
     } else if (bmi < 25) {
@@ -770,7 +770,7 @@
     } else {
       estimatedBodyFat = bmi * 1.5 - 5;
     }
-    
+
     // Update body fat display
     const bodyFatCard = document.querySelector('[data-metric="body-fat"]');
     if (bodyFatCard) {

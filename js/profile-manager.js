@@ -23,6 +23,9 @@
       // Set up event listeners
       setupEventListeners();
 
+      // Initial display update
+      updateBodyMetricsDisplays();
+
       console.log('Profile management initialized successfully');
     } catch (error) {
       console.error('Error initializing profile management:', error);
@@ -543,6 +546,18 @@
           input.value = value;
         }
       });
+
+      // Trigger auto-calculations after form is populated
+      setTimeout(() => {
+        updateBodyMetricsDisplays();
+        
+        // Trigger BMI calculation if weight and height are available
+        const weightInput = metricsForm.querySelector('[name="current_weight"]');
+        const heightInput = metricsForm.querySelector('[name="height"]');
+        if (weightInput && heightInput && weightInput.value && heightInput.value) {
+          weightInput.dispatchEvent(new Event('input'));
+        }
+      }, 200);
     }
   };
 
@@ -641,6 +656,170 @@
     if (weightInput) {
       weightInput.addEventListener('change', handleWeightChange);
     }
+
+    // Setup automatic calculations
+    setupAutoCalculations();
+  };
+
+  // Setup automatic calculations for body metrics
+  const setupAutoCalculations = () => {
+    const metricsForm = document.getElementById('body-metrics-form');
+    if (!metricsForm) return;
+
+    // Get input elements
+    const weightInput = metricsForm.querySelector('[name="current_weight"]');
+    const heightInput = metricsForm.querySelector('[name="height"]');
+    const bodyFatInput = metricsForm.querySelector('[name="body_fat_percentage"]');
+    const muscleMassInput = metricsForm.querySelector('[name="muscle_mass"]');
+
+    // Auto-calculate BMI when weight and height change
+    if (weightInput && heightInput) {
+      const calculateAndDisplayBMI = () => {
+        const weight = parseFloat(weightInput.value);
+        const height = parseFloat(heightInput.value);
+        
+        if (weight > 0 && height > 0) {
+          // Convert height from cm to meters for BMI calculation
+          const heightInMeters = height / 100;
+          const bmi = weight / (heightInMeters * heightInMeters);
+          
+          // Update BMI display in the cards
+          updateBMIDisplay(bmi);
+          
+          // Also estimate body fat percentage if not manually entered
+          if (!bodyFatInput.value) {
+            estimateBodyFat(bmi);
+          }
+        }
+      };
+
+      weightInput.addEventListener('input', calculateAndDisplayBMI);
+      heightInput.addEventListener('input', calculateAndDisplayBMI);
+      
+      // Calculate on page load if values exist
+      setTimeout(calculateAndDisplayBMI, 100);
+    }
+
+    // Auto-calculate lean body mass when weight and body fat are entered
+    if (weightInput && bodyFatInput) {
+      const calculateLeanBodyMass = () => {
+        const weight = parseFloat(weightInput.value);
+        const bodyFat = parseFloat(bodyFatInput.value);
+        
+        if (weight > 0 && bodyFat >= 0 && bodyFat <= 50) {
+          const leanBodyMass = weight * (1 - bodyFat / 100);
+          
+          // Update muscle mass field if not manually entered
+          if (muscleMassInput && !muscleMassInput.value) {
+            muscleMassInput.value = Math.round(leanBodyMass * 10) / 10;
+          }
+          
+          // Update muscle mass display card
+          updateMuscleMassDisplay(leanBodyMass);
+        }
+      };
+
+      weightInput.addEventListener('input', calculateLeanBodyMass);
+      bodyFatInput.addEventListener('input', calculateLeanBodyMass);
+      
+      // Calculate on page load if values exist
+      setTimeout(calculateLeanBodyMass, 100);
+    }
+
+    // Update displays when any measurement changes
+    const measurementInputs = metricsForm.querySelectorAll('input[type="number"]');
+    measurementInputs.forEach(input => {
+      input.addEventListener('input', () => {
+        updateBodyMetricsDisplays();
+      });
+    });
+  };
+
+  // Update BMI display in the dashboard cards
+  const updateBMIDisplay = (bmi) => {
+    const bmiCard = document.querySelector('[data-metric="bmi"]');
+    if (bmiCard) {
+      const bmiValue = bmiCard.querySelector('.metric-value');
+      if (bmiValue) {
+        bmiValue.textContent = Math.round(bmi * 10) / 10;
+      }
+      
+      // Update BMI category and color
+      const bmiCategory = getBMICategory(bmi);
+      bmiCard.setAttribute('data-category', bmiCategory.toLowerCase());
+    }
+  };
+
+  // Get BMI category
+  const getBMICategory = (bmi) => {
+    if (bmi < 18.5) return 'Underweight';
+    if (bmi < 25) return 'Normal';
+    if (bmi < 30) return 'Overweight';
+    return 'Obese';
+  };
+
+  // Estimate body fat percentage based on BMI (basic estimation)
+  const estimateBodyFat = (bmi) => {
+    // Basic estimation formula (not medical grade)
+    let estimatedBodyFat;
+    
+    if (bmi < 18.5) {
+      estimatedBodyFat = Math.max(5, bmi * 0.8);
+    } else if (bmi < 25) {
+      estimatedBodyFat = bmi * 1.2 + 0.23;
+    } else {
+      estimatedBodyFat = bmi * 1.5 - 5;
+    }
+    
+    // Update body fat display
+    const bodyFatCard = document.querySelector('[data-metric="body-fat"]');
+    if (bodyFatCard) {
+      const bodyFatValue = bodyFatCard.querySelector('.metric-value');
+      if (bodyFatValue) {
+        bodyFatValue.textContent = Math.round(estimatedBodyFat * 10) / 10;
+      }
+    }
+  };
+
+  // Update muscle mass display
+  const updateMuscleMassDisplay = (leanBodyMass) => {
+    const muscleMassCard = document.querySelector('[data-metric="muscle-mass"]');
+    if (muscleMassCard) {
+      const muscleMassValue = muscleMassCard.querySelector('.metric-value');
+      if (muscleMassValue) {
+        muscleMassValue.textContent = Math.round(leanBodyMass * 10) / 10;
+      }
+    }
+  };
+
+  // Update all body metrics displays
+  const updateBodyMetricsDisplays = () => {
+    const metricsForm = document.getElementById('body-metrics-form');
+    if (!metricsForm) return;
+
+    // Update all metric cards with current form values
+    const metrics = {
+      'current-weight': metricsForm.querySelector('[name="current_weight"]')?.value || '--',
+      'height': metricsForm.querySelector('[name="height"]')?.value || '--',
+      'target-weight': metricsForm.querySelector('[name="target_weight"]')?.value || '--',
+      'body-fat': metricsForm.querySelector('[name="body_fat_percentage"]')?.value || '--',
+      'muscle-mass': metricsForm.querySelector('[name="muscle_mass"]')?.value || '--',
+      'chest': metricsForm.querySelector('[name="measurements_chest"]')?.value || '--',
+      'waist': metricsForm.querySelector('[name="measurements_waist"]')?.value || '--',
+      'hips': metricsForm.querySelector('[name="measurements_hips"]')?.value || '--',
+      'arms': metricsForm.querySelector('[name="measurements_arms"]')?.value || '--',
+      'thighs': metricsForm.querySelector('[name="measurements_thighs"]')?.value || '--'
+    };
+
+    Object.entries(metrics).forEach(([metric, value]) => {
+      const card = document.querySelector(`[data-metric="${metric}"]`);
+      if (card) {
+        const valueElement = card.querySelector('.metric-value');
+        if (valueElement) {
+          valueElement.textContent = value;
+        }
+      }
+    });
   };
 
   // Handle save profile

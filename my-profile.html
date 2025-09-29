@@ -297,6 +297,47 @@
             font-size: 0.9rem;
         }
 
+        /* Auto-calculated metrics styling */
+        .metric-card[data-category] {
+            border: 2px solid rgba(246, 200, 78, 0.3);
+        }
+
+        .metric-card[data-category="normal"] {
+            border-color: rgba(34, 197, 94, 0.5);
+        }
+
+        .metric-card[data-category="overweight"] {
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .metric-card[data-category="obese"] {
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .metric-card[data-category="underweight"] {
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        /* Auto-calculation indicator */
+        .metric-card[data-metric="bmi"]::after,
+        .metric-card[data-metric="body-fat"]::after,
+        .metric-card[data-metric="muscle-mass"]::after {
+            content: "AUTO";
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(246, 200, 78, 0.2);
+            color: #F6C84E;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .metric-card {
+            position: relative;
+        }
+
         .progress-photos {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -592,25 +633,53 @@
 
                     <!-- Current Metrics Display -->
                     <div class="metrics-grid">
-                        <div class="metric-card">
-                            <div class="metric-number" id="display-weight">--</div>
+                        <div class="metric-card" data-metric="current-weight">
+                            <div class="metric-number metric-value" id="display-weight">--</div>
                             <div class="metric-label">Current Weight</div>
                         </div>
-                        <div class="metric-card">
-                            <div class="metric-number" id="display-height">--</div>
+                        <div class="metric-card" data-metric="height">
+                            <div class="metric-number metric-value" id="display-height">--</div>
                             <div class="metric-label">Height</div>
                         </div>
-                        <div class="metric-card">
-                            <div class="metric-number" id="display-bmi">--</div>
+                        <div class="metric-card" data-metric="bmi">
+                            <div class="metric-number metric-value" id="display-bmi">38.4</div>
                             <div class="metric-label">BMI</div>
                         </div>
-                        <div class="metric-card">
-                            <div class="metric-number" id="display-body-fat">--%</div>
+                        <div class="metric-card" data-metric="body-fat">
+                            <div class="metric-number metric-value" id="display-body-fat">--%</div>
                             <div class="metric-label">Body Fat</div>
                         </div>
-                        <div class="metric-card">
-                            <div class="metric-number" id="display-muscle-mass">--</div>
+                        <div class="metric-card" data-metric="muscle-mass">
+                            <div class="metric-number metric-value" id="display-muscle-mass">--</div>
                             <div class="metric-label">Muscle Mass</div>
+                        </div>
+                    </div>
+
+                    <!-- Body Measurements Display -->
+                    <h4 class="mt-4 mb-3">
+                        <i class="fas fa-ruler"></i>
+                        Body Measurements
+                    </h4>
+                    <div class="metrics-grid">
+                        <div class="metric-card" data-metric="chest">
+                            <div class="metric-number metric-value">100</div>
+                            <div class="metric-label">Chest</div>
+                        </div>
+                        <div class="metric-card" data-metric="waist">
+                            <div class="metric-number metric-value">94</div>
+                            <div class="metric-label">Waist</div>
+                        </div>
+                        <div class="metric-card" data-metric="hips">
+                            <div class="metric-number metric-value">115</div>
+                            <div class="metric-label">Hips</div>
+                        </div>
+                        <div class="metric-card" data-metric="arms">
+                            <div class="metric-number metric-value">35</div>
+                            <div class="metric-label">Arms</div>
+                        </div>
+                        <div class="metric-card" data-metric="thighs">
+                            <div class="metric-number metric-value">55</div>
+                            <div class="metric-label">Thighs</div>
                         </div>
                     </div>
 

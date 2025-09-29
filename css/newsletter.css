@@ -78,7 +78,7 @@
     background: rgba(0, 0, 0, 0.7);
     border: 2px solid rgba(246, 200, 78, 0.3);
     border-radius: 25px;
-    padding: 2.5rem;
+    padding: 2rem; /* slightly tighter to feel less bulky */
     backdrop-filter: blur(20px);
     max-width: 500px;
     margin: 0 auto;
@@ -163,8 +163,8 @@
 }
 
 .lead-form-benefits {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
+    margin-top: 1rem; /* compact */
+    padding-top: 1rem; /* compact */
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -202,36 +202,37 @@
 .popup-overlay {
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.55); /* lighter overlay to reduce perceived clutter */
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 0.75rem;
 }
 
 .popup-content {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-    border: 2px solid #F6C84E;
-    border-radius: 25px;
-    max-width: 600px;
+    background: rgba(18, 18, 18, 0.92);
+    border: 1px solid rgba(246, 200, 78, 0.35);
+    border-radius: 16px;
+    max-width: 520px;
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
-    animation: popupSlideIn 0.4s ease;
+    animation: popupSlideIn 0.3s ease;
+    box-shadow: 0 18px 48px rgba(0,0,0,0.35);
 }
 
 .popup-close {
     position: absolute;
-    top: 15px;
-    right: 20px;
+    top: 10px;
+    right: 12px;
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.25rem;
     cursor: pointer;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -241,59 +242,59 @@
 
 .popup-close:hover {
     color: #F6C84E;
-    background: rgba(246, 200, 78, 0.1);
+    background: rgba(246, 200, 78, 0.12);
 }
 
 .popup-header {
     text-align: center;
-    padding: 2rem 2rem 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.25rem 1.25rem 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .popup-header h3 {
     color: #F6C84E;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
 }
 
 .popup-header p {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.95rem;
     margin: 0;
 }
 
 .popup-body {
-    padding: 2rem;
+    padding: 1.25rem;
 }
 
 .guide-preview {
     width: 100%;
-    max-width: 200px;
+    max-width: 170px;
     height: auto;
-    border-radius: 15px;
-    margin: 0 auto 1.5rem;
+    border-radius: 12px;
+    margin: 0 auto 1rem;
     display: block;
-    border: 2px solid rgba(246, 200, 78, 0.3);
+    border: 1px solid rgba(246, 200, 78, 0.28);
 }
 
 .popup-body h4 {
     color: #F6C84E;
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     font-weight: 600;
 }
 
 .popup-body ul {
     list-style: none;
     padding: 0;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .popup-body li {
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 0.75rem;
-    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.88);
+    margin-bottom: 0.5rem;
+    font-size: 0.92rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -302,15 +303,15 @@
 .popup-form {
     display: flex;
     gap: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .popup-form input[type="email"] {
     flex: 1;
-    padding: 0.75rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.6rem 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
     border-radius: 10px;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.35);
     color: white;
     font-size: 0.9rem;
 }
@@ -324,7 +325,7 @@
     background: linear-gradient(135deg, #F6C84E, #FFD700);
     color: #000;
     border: none;
-    padding: 0.75rem 1.5rem;
+    padding: 0.6rem 1.2rem;
     border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
@@ -334,12 +335,12 @@
 
 .popup-form button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(246, 200, 78, 0.3);
+    box-shadow: 0 10px 25px rgba(246, 200, 78, 0.25);
 }
 
 .privacy-note {
     text-align: center;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.65);
     font-size: 0.8rem;
     margin: 0;
 }

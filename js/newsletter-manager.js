@@ -227,23 +227,34 @@
     // Show only on homepage and keep it minimal & professional
     const isHomePage = () => {
       const p = (window.location.pathname || '').toLowerCase();
-      return p === '/' || p.endsWith('/index.html') || p === '';
+      const h = window.location.href.toLowerCase();
+      return p === '/' || p.endsWith('/index.html') || p === '' || h.includes('index.html') || h.endsWith('/');
     };
+
+    console.log('Setting up exit intent popup...');
+    console.log('Current path:', window.location.pathname);
+    console.log('Is home page:', isHomePage());
 
     // Session-based frequency controls (resets when user reopens website)
     const EXIT_SESSION_KEY = 'gb_exit_intent_shown_session';
-    const DELAY_MS = 3000;    // show after 3s
+    const DELAY_MS = 4000;    // show after 4s for better timing
     let shownThisSession = false;
 
     const isSuppressed = () => {
       // Check if already shown this session only
-      if (sessionStorage.getItem(EXIT_SESSION_KEY) === '1') return true;
+      if (sessionStorage.getItem(EXIT_SESSION_KEY) === '1') {
+        console.log('Popup suppressed: already shown this session');
+        return true;
+      }
 
       // If user already became lead/subscriber locally in this session, don't show
       try {
         const sessionLeads = sessionStorage.getItem('garcia_session_leads');
         const sessionSubs = sessionStorage.getItem('garcia_session_subscribers');
-        if (sessionLeads || sessionSubs) return true;
+        if (sessionLeads || sessionSubs) {
+          console.log('Popup suppressed: user already converted');
+          return true;
+        }
       } catch (_) {}
       return false;
     };
@@ -259,11 +270,26 @@
     };
 
     const showExitIntent = () => {
-      if (shownThisSession || isSuppressed()) return;
-      if (!isHomePage()) return; // homepage only
-      // desktop-only (avoid mobile pollution)
-      if (!window.matchMedia || !window.matchMedia('(pointer: fine)').matches) return;
+      console.log('Attempting to show exit intent popup...');
+      
+      if (shownThisSession) {
+        console.log('Popup blocked: already shown this session');
+        return;
+      }
+      
+      if (isSuppressed()) {
+        console.log('Popup blocked: suppressed');
+        return;
+      }
+      
+      if (!isHomePage()) {
+        console.log('Popup blocked: not on homepage');
+        return;
+      }
 
+      // Show on all devices, not just desktop
+      console.log('Showing exit intent popup!');
+      
       shownThisSession = true;
       suppressForSession();
 
@@ -272,16 +298,42 @@
       trackEvent('exit_intent_popup_shown');
     };
 
-    // Timed initial trigger (3s)
-    setTimeout(() => showExitIntent(), DELAY_MS);
+    // Timed initial trigger (4s)
+    setTimeout(() => {
+      console.log('Timer triggered, checking if popup should show...');
+      showExitIntent();
+    }, DELAY_MS);
 
     // Public helper to suppress for this session when user converts
     window.gbMarkUserConverted = markUserConverted;
 
     // Optional: footer trigger link with [data-open-lead-magnet]
     document.querySelectorAll('[data-open-lead-magnet]').forEach(el => {
-      el.addEventListener('click', (e) => { e.preventDefault(); showExitIntent(); });
+      el.addEventListener('click', (e) => { 
+        e.preventDefault(); 
+        console.log('Lead magnet link clicked, clearing session and showing popup...');
+        // Clear session to allow popup to show
+        sessionStorage.removeItem(EXIT_SESSION_KEY);
+        sessionStorage.removeItem('garcia_session_leads');
+        sessionStorage.removeItem('garcia_session_subscribers');
+        shownThisSession = false;
+        showExitIntent(); 
+      });
     });
+
+    // Debug: Add temporary test button (remove after testing)
+    if (isHomePage()) {
+      const testBtn = document.createElement('button');
+      testBtn.innerHTML = '🧪 Test Popup';
+      testBtn.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; background: #F6C84E; color: #000; border: none; padding: 10px; border-radius: 5px; cursor: pointer;';
+      testBtn.onclick = () => {
+        console.log('Test button clicked');
+        sessionStorage.clear();
+        shownThisSession = false;
+        showExitIntent();
+      };
+      document.body.appendChild(testBtn);
+    }
   };
 
   // Create exit intent popup
@@ -293,29 +345,35 @@
         <div class="popup-content">
           <button class="popup-close">&times;</button>
           <div class="popup-header">
-            <h3>🎯 Transformação Garantida</h3>
-            <p>Baixe seu guia completo de transformação corporal</p>
+            <h3>🎯 Espere! Não Perca Sua Transformação</h3>
+            <p>Baixe GRÁTIS seu guia completo de transformação corporal</p>
           </div>
           <div class="popup-body">
-            <img src="assets/transformation-guide-preview.jpg" alt="Guia Gratuita" class="guide-preview">
-            <h4>Inclui Gratuitamente:</h4>
+            <div style="width: 180px; height: 240px; background: linear-gradient(145deg, #F6C84E 0%, #FFD700 100%); margin: 0 auto 1.5rem; border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #000; font-weight: bold; text-align: center; box-shadow: 0 8px 25px rgba(0,0,0,0.3); border: 2px solid rgba(246, 200, 78, 0.4);">
+              <i class="fas fa-dumbbell" style="font-size: 2.5rem; margin-bottom: 0.5rem;"></i>
+              <div style="font-size: 1.1rem;">GUIA DE</div>
+              <div style="font-size: 1.3rem;">TRANSFORMAÇÃO</div>
+              <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.5rem;">100% GRÁTIS</div>
+            </div>
+            <h4>O que você vai receber:</h4>
             <ul>
               <li>✅ Plano de treino de 30 dias progressivo</li>
               <li>✅ Guia completo de nutrição esportiva</li>
               <li>✅ Calculadora personalizada de macros</li>
               <li>✅ 50+ receitas saudáveis e saborosas</li>
               <li>✅ Dicas profissionais de suplementação</li>
+              <li>✅ Cronograma de evolução semanal</li>
             </ul>
             <form class="popup-form download-form" data-source="Exit Intent">
               <input type="email" name="email" placeholder="Digite seu melhor e-mail" required>
               <input type="hidden" name="goal" value="Transformation Guide">
               <button type="submit" class="btn btn-primary">
-                <i class="fas fa-download"></i> Baixar Grátis
+                <i class="fas fa-download"></i> Baixar Grátis Agora
               </button>
             </form>
             <p class="privacy-note">
               <i class="fas fa-shield-alt"></i>
-              100% Seguro. Sem spam. Apenas conteúdo de valor.
+              100% Seguro. Sem spam. Apenas conteúdo de valor premium.
             </p>
           </div>
         </div>

@@ -63,37 +63,61 @@
     }
   };
 
-  // Update navigation based on user role
+  // Update navigation based on user role and login status
   const updateNavigation = () => {
-    // Add trainer link to navigation if user is a trainer
-    const navs = document.querySelectorAll('.nav, nav.nav');
+    const navs = document.querySelectorAll('.navbar .nav, nav.nav');
+
+    const url = new URL(window.location.href);
+    const path = window.location.pathname.split('/').pop() || 'index.html';
+    const tab = url.searchParams.get('tab');
+
+    // Helper to build a link element
+    const buildLink = (href, text, i18nKey, isActive) => {
+      const a = document.createElement('a');
+      a.href = href;
+      a.textContent = text;
+      if (i18nKey) a.setAttribute('data-i18n', i18nKey);
+      if (isActive) a.classList.add('active');
+      return a;
+    };
+
+    // Determine login state (cached currentUser)
+    const loggedIn = !!currentUser;
 
     navs.forEach(nav => {
-      // Remove existing trainer link to avoid duplicates
-      const existingTrainerLink = nav.querySelector('a[href="trainer-dashboard.html"]');
-      if (existingTrainerLink) {
-        existingTrainerLink.remove();
+      // Clear existing nav links, keep container element
+      while (nav.firstChild) nav.removeChild(nav.firstChild);
+
+      // Marketing/primary links (always visible)
+      const links = [
+        { href: 'index.html', key: 'nav.home', text: 'Home', active: path === 'index.html' || path === '' },
+        { href: 'about.html', key: 'nav.about', text: 'About', active: path === 'about.html' },
+        { href: 'transformations.html', key: 'nav.trans', text: 'Transformations', active: path === 'transformations.html' },
+        { href: 'testimonials.html', key: 'nav.testi', text: 'Testimonials', active: path === 'testimonials.html' },
+        { href: 'pricing.html', key: 'nav.pricing', text: 'Pricing', active: path === 'pricing.html' },
+        { href: 'faq.html', key: 'nav.faq', text: 'FAQ', active: path === 'faq.html' },
+        { href: 'contact.html', key: 'nav.contact', text: 'Contact', active: path === 'contact.html' }
+      ];
+
+      // App links (login-aware)
+      if (loggedIn) {
+        links.push(
+          { href: 'dashboard.html', key: 'nav.dashboard', text: 'Dashboard', active: path === 'dashboard.html' },
+          // Profile cluster with deep links
+          { href: 'my-profile.html', key: 'nav.profile', text: 'Profile', active: path === 'my-profile.html' && !tab },
+          { href: 'my-profile.html?tab=metrics', key: 'nav.metrics', text: 'Metrics', active: path === 'my-profile.html' && tab === 'metrics' },
+          { href: 'my-profile.html?tab=progress', key: 'nav.progress', text: 'Progress', active: path === 'my-profile.html' && tab === 'progress' }
+        );
+
+        // Role-aware Trainer link
+        if (isTrainer) {
+          links.push({ href: 'trainer-dashboard.html', key: 'nav.trainer', text: 'Trainer', active: path === 'trainer-dashboard.html' });
+        }
       }
 
-      if (isTrainer) {
-        // Create trainer dashboard link
-        const trainerLink = document.createElement('a');
-        trainerLink.href = 'trainer-dashboard.html';
-        trainerLink.textContent = 'Trainer';
-        trainerLink.setAttribute('data-i18n', 'nav.trainer');
-
-        // Add active class if on trainer dashboard
-        if (window.location.pathname.includes('trainer-dashboard.html')) {
-          trainerLink.classList.add('active');
-        }
-
-        // Insert trainer link after profile link or at the end
-        const profileLink = nav.querySelector('a[href="my-profile.html"]');
-        if (profileLink) {
-          profileLink.insertAdjacentElement('afterend', trainerLink);
-        } else {
-          nav.appendChild(trainerLink);
-        }
+      // Render links
+      for (const l of links) {
+        nav.appendChild(buildLink(l.href, l.text, l.key, l.active));
       }
     });
 

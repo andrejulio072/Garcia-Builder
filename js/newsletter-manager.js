@@ -6,35 +6,127 @@
   // Initialize newsletter system
   const init = async () => {
     try {
-      // Setup lead capture forms
-      setupLeadCaptureForms();
+      console.log('🚀 Initializing Newsletter System...');
 
-      // Setup newsletter forms
+      // Wait for DOM to be fully ready
+      await new Promise(resolve => {
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', resolve);
+        } else {
+          resolve();
+        }
+      });
+
+      // Setup all form handlers
+      setupLeadCaptureForms();
       setupNewsletterForms();
 
-      // Setup exit intent popup
+      // Setup exit intent popup (without test button)
       setupExitIntentPopup();
 
       // Setup analytics tracking
       setupAnalyticsTracking();
 
-      // Load existing leads if admin
-      if (await isAdmin()) {
-        await loadLeadsData();
+      // Load existing leads if admin user
+      try {
+        if (await isAdmin()) {
+          await loadLeadsData();
+          console.log('✅ Admin dashboard loaded');
+        }
+      } catch (adminError) {
+        console.log('ℹ️ Not admin user or admin features unavailable');
       }
 
-      console.log('Newsletter system initialized successfully');
+      console.log('✅ Newsletter system initialized successfully');
+
+      // Dispatch ready event
+      window.dispatchEvent(new CustomEvent('newsletterSystemReady'));
+
     } catch (error) {
-      console.error('Error initializing newsletter system:', error);
+      console.error('❌ Error initializing newsletter system:', error);
     }
   };
 
   // Setup lead capture forms throughout the site
   const setupLeadCaptureForms = () => {
-    // Hero section lead capture
+    // Main hero lead capture form with better error handling
     const heroForms = document.querySelectorAll('.hero-lead-form');
+
     heroForms.forEach(form => {
-      form.addEventListener('submit', handleLeadCapture);
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const submitBtn = form.querySelector('.lead-form-submit, .btn-primary, button[type="submit"]');
+        const originalText = submitBtn ? submitBtn.innerHTML : '';
+
+        // Show loading state
+        if (submitBtn) {
+          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+          submitBtn.disabled = true;
+        }
+
+        try {
+          const formData = new FormData(form);
+          const leadData = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            phone: formData.get('phone') || '',
+            goal: formData.get('goal'),
+            source: form.dataset.source || 'Main CTA Form',
+            timestamp: new Date().toISOString(),
+            page: window.location.pathname,
+            type: 'consultation_request',
+            status: 'new',
+            id: generateLeadId()
+          };
+
+          // Validate required fields
+          if (!leadData.name || !leadData.email || !leadData.goal) {
+            throw new Error('Por favor, preencha todos os campos obrigatórios');
+          }
+
+          // Save to database
+          await saveLeadToDatabase(leadData);
+
+          // Show success message
+          form.innerHTML = `
+            <div class="lead-form-success">
+              <i class="fas fa-check-circle"></i>
+              <h3>Obrigado!</h3>
+              <p>Entraremos em contato em até 24 horas para agendar sua consulta gratuita.</p>
+              <p><strong>Próximos passos:</strong> Verifique seu email para uma mensagem de boas-vindas com dicas de preparação.</p>
+            </div>
+          `;
+
+          // Track conversion
+          trackEvent('lead_captured', {
+            source: leadData.source,
+            goal: leadData.goal,
+            page: leadData.page
+          });
+
+        } catch (error) {
+          console.error('Error saving lead:', error);
+
+          // Show error message
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'alert alert-danger mt-3';
+          errorDiv.innerHTML = `
+            <i class="fas fa-exclamation-triangle"></i>
+            ${error.message || 'Algo deu errado. Tente novamente ou entre em contato diretamente.'}
+          `;
+          form.appendChild(errorDiv);
+
+          // Reset button
+          if (submitBtn) {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+          }
+
+          // Remove error after 5 seconds
+          setTimeout(() => errorDiv.remove(), 5000);
+        }
+      });
     });
 
     // Free consultation forms
@@ -293,27 +385,36 @@
 
       const popup = createExitIntentPopup();
       document.body.appendChild(popup);
+
+      // Show popup with animation
+      setTimeout(() => {
+        popup.style.display = 'flex';
+        popup.classList.add('show');
+      }, 100);
+
       trackEvent('exit_intent_popup_shown');
     };
 
     // Real exit intent detection - mouse leaving viewport
+    let exitIntentTriggered = false;
     document.addEventListener('mouseleave', (e) => {
-      // Only trigger if mouse leaves from the top of the page
-      if (e.clientY <= 0) {
+      // Only trigger if mouse leaves from the top of the page and not already triggered
+      if (e.clientY <= 0 && !exitIntentTriggered && !shownThisSession) {
+        exitIntentTriggered = true;
         showExitIntent();
       }
     });
 
-    // Mobile fallback - scroll to bottom detection
-    let hasScrolledToBottom = false;
-    window.addEventListener('scroll', () => {
-      if (!hasScrolledToBottom && (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
-        hasScrolledToBottom = true;
-        setTimeout(() => {
-          showExitIntent();
-        }, 2000); // Show after 2s when user reaches bottom
-      }
-    });
+    // Mobile fallback: show after significant scroll + time delay
+    if (window.innerWidth <= 768) {
+      let scrollTriggered = false;
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > window.innerHeight * 0.6 && !scrollTriggered && !shownThisSession) {
+          scrollTriggered = true;
+          setTimeout(showExitIntent, 3000); // 3 second delay on mobile
+        }
+      });
+    }
 
     // Public helper to suppress for this session when user converts
     window.gbMarkUserConverted = markUserConverted;
@@ -332,76 +433,106 @@
       });
     });
 
-    // Debug: Add temporary test button (remove after testing)
-    if (isHomePage()) {
-      const testBtn = document.createElement('button');
-      testBtn.innerHTML = '🧪 Test Popup';
-      testBtn.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; background: #F6C84E; color: #000; border: none; padding: 10px; border-radius: 5px; cursor: pointer;';
-      testBtn.onclick = () => {
-        console.log('Test button clicked');
-        sessionStorage.clear();
-        shownThisSession = false;
-        showExitIntent();
-      };
-      document.body.appendChild(testBtn);
-    }
+    // Exit intent popup is now properly configured without test button
+    // Manual trigger will work through lead magnet links and proper exit detection
   };
 
   // Create exit intent popup
   const createExitIntentPopup = () => {
     const popup = document.createElement('div');
-    popup.className = 'exit-intent-popup';
+    popup.className = 'exit-intent-overlay';
     popup.innerHTML = `
-      <div class="popup-overlay">
-        <div class="popup-content">
-          <button class="popup-close">&times;</button>
-          <div class="popup-header">
-            <h3>🎯 Wait! Get Your Free Fitness Guide</h3>
-            <p>Download your complete transformation guide - FREE</p>
+      <div class="exit-intent-popup">
+        <button class="exit-intent-close">&times;</button>
+        <div class="exit-intent-content">
+          <div class="exit-intent-header">
+            <span class="exit-intent-badge">🔥 ESPERA!</span>
+            <h3>Não saia de mãos vazias!</h3>
+            <p>Baixe seu guia de treino GRATUITO antes de ir</p>
           </div>
-          <div class="popup-body">
-            <h4>What you'll get:</h4>
+          <form class="exit-intent-form download-form" data-source="Exit Intent">
+            <input type="email" name="email" placeholder="Digite seu email" required>
+            <input type="hidden" name="goal" value="Transformation Guide">
+            <button type="submit">
+              <i class="fas fa-download"></i> Baixar Guia Grátis
+            </button>
+          </form>
+          <div class="exit-intent-benefits">
             <ul>
-              <li>✅ 30-day progressive workout plan</li>
-              <li>✅ Complete nutrition guide</li>
-              <li>✅ Macro calculator</li>
-              <li>✅ Weekly progress tracker</li>
+              <li><i class="fas fa-check"></i> Plano de treino de 7 dias</li>
+              <li><i class="fas fa-check"></i> Básicos da nutrição</li>
+              <li><i class="fas fa-check"></i> Dicas de acompanhamento</li>
             </ul>
-            <form class="popup-form download-form" data-source="Exit Intent">
-              <input type="email" name="email" placeholder="Enter your email" required>
-              <input type="hidden" name="goal" value="Transformation Guide">
-              <button type="submit" class="btn btn-primary">
-                <i class="fas fa-download"></i> Download Free
-              </button>
-            </form>
-            <p class="privacy-note">
-              <i class="fas fa-shield-alt"></i>
-              No spam. Unsubscribe anytime.
-            </p>
           </div>
         </div>
       </div>
     `;
 
-    // Setup popup events
-    const closeBtn = popup.querySelector('.popup-close');
-    const overlay = popup.querySelector('.popup-overlay');
-    const form = popup.querySelector('.popup-form');
-
-    const dismiss = (reason) => {
+    // Handle close button
+    popup.querySelector('.exit-intent-close').addEventListener('click', () => {
       popup.remove();
-      // Only suppress for this session, not permanently
-      if (typeof window.gbMarkUserConverted === 'function' && reason === 'form_submitted') {
-        window.gbMarkUserConverted();
+      trackEvent('exit_intent_popup_closed');
+    });
+
+    // Handle form submission
+    popup.querySelector('.exit-intent-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = popup.querySelector('input[name="email"]').value;
+
+      try {
+        await saveLeadToDatabase({
+          id: generateLeadId(),
+          email: email,
+          source: 'Exit Intent Popup',
+          timestamp: new Date().toISOString(),
+          page: window.location.pathname,
+          type: 'lead_magnet',
+          goal: 'Transformation Guide',
+          status: 'new'
+        });
+
+        // Show success and close
+        popup.querySelector('.exit-intent-content').innerHTML = `
+          <div class="text-center" style="padding: 2rem; color: #fff;">
+            <i class="fas fa-check-circle" style="font-size: 3rem; color: #28a745; margin-bottom: 1rem;"></i>
+            <h3>Sucesso!</h3>
+            <p>Verifique seu email para o guia de treino gratuito!</p>
+          </div>
+        `;
+
+        setTimeout(() => popup.remove(), 3000);
+
+        // Track conversion
+        trackEvent('lead_magnet_download', { source: 'exit_intent' });
+
+        // Mark user as converted
+        if (typeof window.gbMarkUserConverted === 'function') {
+          window.gbMarkUserConverted();
+        }
+
+      } catch (error) {
+        console.error('Error saving lead:', error);
+        showNotification('Erro ao processar. Tente novamente.', 'error');
       }
-      trackEvent(reason || 'exit_intent_popup_closed');
+    });
+
+    // Close on background click
+    popup.addEventListener('click', (e) => {
+      if (e.target === popup) {
+        popup.remove();
+        trackEvent('exit_intent_popup_dismissed');
+      }
+    });
+
+    // Close on ESC key
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') {
+        popup.remove();
+        trackEvent('exit_intent_popup_esc');
+        document.removeEventListener('keydown', handleEsc);
+      }
     };
-
-    closeBtn.addEventListener('click', () => dismiss('exit_intent_popup_closed'));
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) dismiss('exit_intent_popup_dismissed'); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') dismiss('exit_intent_popup_esc'); }, { once: true });
-
-    form.addEventListener('submit', handleDownloadRequest);
+    document.addEventListener('keydown', handleEsc);
 
     return popup;
   };
@@ -674,4 +805,14 @@
   } else {
     init();
   }
+
+  // Make system globally available for debugging
+  window.GarciaNewsletterSystem = {
+    init,
+    handleLeadCapture,
+    handleNewsletterSignup,
+    trackConversion,
+    trackEvent,
+    getLeadsData: () => leadData
+  };
 })();

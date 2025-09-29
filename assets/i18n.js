@@ -19,6 +19,9 @@
         logout: "Logout",
         profile: "My Profile",
         dashboard: "Dashboard",
+        metrics: "Metrics",
+        progress: "Progress",
+        trainer: "Trainer",
         lang: { en: "EN", pt: "PT", es: "ES" }
       },
       dashboard: {
@@ -355,6 +358,9 @@
         logout: "Sair",
         profile: "Meu Perfil",
         dashboard: "Dashboard",
+        metrics: "Métricas",
+        progress: "Progresso",
+        trainer: "Treinador",
         lang: { en: "EN", pt: "PT", es: "ES" }
       },
       dashboard: {

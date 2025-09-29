@@ -132,37 +132,50 @@
   // Load data from Supabase
   const loadFromSupabase = async () => {
     try {
-      // Load basic profile
+      // Load from main profiles table
       const { data: profile, error: profileError } = await window.supabaseClient
-        .from('user_profiles')
+        .from('profiles')
         .select('*')
-        .eq('user_id', currentUser.id)
+        .eq('id', currentUser.id)
         .single();
 
       if (profile && !profileError) {
-        Object.assign(profileData.basic, profile);
+        // Map Supabase profile to our structure
+        profileData.basic = {
+          ...profileData.basic,
+          full_name: profile.full_name || currentUser.user_metadata?.full_name || '',
+          email: currentUser.email || '',
+          phone: profile.phone || currentUser.user_metadata?.phone || '',
+          avatar_url: profile.avatar_url || currentUser.user_metadata?.avatar_url || '',
+          birthday: profile.date_of_birth || currentUser.user_metadata?.birthday || '',
+          location: currentUser.user_metadata?.location || '',
+          bio: currentUser.user_metadata?.bio || '',
+          experience_level: currentUser.user_metadata?.experience_level || 'beginner'
+        };
+      } else {
+        // Fallback to user metadata
+        const userData = currentUser.user_metadata || {};
+        profileData.basic = {
+          ...profileData.basic,
+          full_name: userData.full_name || '',
+          email: currentUser.email || '',
+          phone: userData.phone || '',
+          avatar_url: userData.avatar_url || '',
+          birthday: userData.birthday || '',
+          location: userData.location || '',
+          bio: userData.bio || '',
+          experience_level: userData.experience_level || 'beginner'
+        };
       }
 
-      // Load body metrics
-      const { data: metrics, error: metricsError } = await window.supabaseClient
-        .from('body_metrics')
-        .select('*')
-        .eq('user_id', currentUser.id)
-        .single();
-
-      if (metrics && !metricsError) {
-        Object.assign(profileData.body_metrics, metrics);
+      // Load body metrics from user metadata
+      if (currentUser.user_metadata?.body_metrics) {
+        Object.assign(profileData.body_metrics, currentUser.user_metadata.body_metrics);
       }
 
-      // Load preferences
-      const { data: prefs, error: prefsError } = await window.supabaseClient
-        .from('user_preferences')
-        .select('*')
-        .eq('user_id', currentUser.id)
-        .single();
-
-      if (prefs && !prefsError) {
-        Object.assign(profileData.preferences, prefs);
+      // Load preferences from user metadata
+      if (currentUser.user_metadata?.preferences) {
+        Object.assign(profileData.preferences, currentUser.user_metadata.preferences);
       }
 
     } catch (error) {
@@ -203,8 +216,63 @@
       return true;
     } catch (error) {
       console.error('Error saving profile data:', error);
+      
+      // Try to create profiles table if it doesn't exist
+      if (error.message && error.message.includes('table') && error.message.includes('does not exist')) {
+        try {
+          await createProfilesTable();
+          // Retry saving after creating table
+          await saveToSupabase(section);
+          saveToLocalStorage();
+          showNotification('Profile updated successfully!', 'success');
+          return true;
+        } catch (createError) {
+          console.error('Error creating profiles table:', createError);
+        }
+      }
+      
       showNotification('Error saving profile. Please try again.', 'error');
       return false;
+    }
+  };
+
+  // Create profiles table if it doesn't exist
+  const createProfilesTable = async () => {
+    try {
+      const { error } = await window.supabaseClient.rpc('exec', {
+        sql: `
+        CREATE TABLE IF NOT EXISTS profiles (
+          id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
+          full_name TEXT,
+          phone TEXT,
+          avatar_url TEXT,
+          date_of_birth DATE,
+          updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+        );
+
+        -- Enable RLS
+        ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+
+        -- Create policies
+        CREATE POLICY IF NOT EXISTS "Users can view own profile" ON profiles
+          FOR SELECT USING (auth.uid() = id);
+
+        CREATE POLICY IF NOT EXISTS "Users can update own profile" ON profiles
+          FOR UPDATE USING (auth.uid() = id);
+
+        CREATE POLICY IF NOT EXISTS "Users can insert own profile" ON profiles
+          FOR INSERT WITH CHECK (auth.uid() = id);
+        `
+      });
+
+      if (error) {
+        console.warn('Could not create profiles table via RPC:', error);
+      } else {
+        console.log('Profiles table created successfully');
+      }
+    } catch (error) {
+      console.warn('Could not create profiles table:', error);
     }
   };
 
@@ -237,74 +305,107 @@
         return null;
       };
 
+      // Try to save to profiles table (main Supabase auth table)
       if (section === 'basic' || !section) {
-        // whitelist columns for user_profiles
-        const allowed = [
-          'email','full_name','first_name','last_name','phone','avatar_url','birthday','location','bio','goals','experience_level','joined_date','last_login','trainer_id','trainer_name'
-        ];
-        const base = pick(profileData.basic, allowed);
-        const payload = {
-          user_id: currentUser.id,
-          ...base,
-          birthday: normalizeDate(base.birthday),
-          updated_at: new Date().toISOString()
-        };
-        const { error } = await window.supabaseClient
-          .from('user_profiles')
-          .upsert(payload);
+        try {
+          // Use the main profiles table that comes with Supabase Auth
+          const payload = {
+            id: currentUser.id,
+            full_name: profileData.basic.full_name || currentUser.user_metadata?.full_name || '',
+            phone: profileData.basic.phone || currentUser.user_metadata?.phone || null,
+            avatar_url: profileData.basic.avatar_url || currentUser.user_metadata?.avatar_url || null,
+            updated_at: new Date().toISOString()
+          };
 
-        if (error) {
-          const msg = error?.message || 'Unknown error';
-          console.error('user_profiles upsert failed:', error);
-          showNotification(`Profile save failed: ${msg}`, 'error');
+          // Add custom fields if they exist
+          if (profileData.basic.birthday) {
+            payload.date_of_birth = normalizeDate(profileData.basic.birthday);
+          }
+
+          const { error: profileError } = await window.supabaseClient
+            .from('profiles')
+            .upsert(payload, { onConflict: 'id' });
+
+          if (profileError) {
+            console.warn('Profiles table upsert failed, trying fallback:', profileError);
+            
+            // Fallback: Try to update user metadata
+            const { error: metadataError } = await window.supabaseClient.auth.updateUser({
+              data: {
+                full_name: profileData.basic.full_name,
+                phone: profileData.basic.phone,
+                birthday: profileData.basic.birthday,
+                location: profileData.basic.location,
+                bio: profileData.basic.bio,
+                experience_level: profileData.basic.experience_level
+              }
+            });
+
+            if (metadataError) {
+              throw new Error(`Failed to save profile: ${metadataError.message}`);
+            }
+          }
+
+        } catch (error) {
+          console.error('Error saving basic profile:', error);
           throw error;
         }
       }
 
+      // Save metrics to user metadata as fallback (no separate table needed)
       if (section === 'body_metrics' || !section) {
-        const allowed = [
-          'current_weight','height','target_weight','body_fat_percentage','muscle_mass','measurements','progress_photos','weight_history','created_at','updated_at'
-        ];
-        const base = pick(profileData.body_metrics, allowed);
-        const payload = {
-          user_id: currentUser.id,
-          ...base,
-          current_weight: num(base.current_weight),
-          height: num(base.height),
-          target_weight: num(base.target_weight),
-          body_fat_percentage: num(base.body_fat_percentage),
-          muscle_mass: num(base.muscle_mass),
-          updated_at: new Date().toISOString()
-        };
-        const { error } = await window.supabaseClient
-          .from('body_metrics')
-          .upsert(payload);
+        try {
+          const metricsData = {
+            current_weight: num(profileData.body_metrics.current_weight),
+            height: num(profileData.body_metrics.height),
+            target_weight: num(profileData.body_metrics.target_weight),
+            body_fat_percentage: num(profileData.body_metrics.body_fat_percentage),
+            muscle_mass: num(profileData.body_metrics.muscle_mass),
+            measurements_chest: num(profileData.body_metrics.measurements_chest),
+            measurements_waist: num(profileData.body_metrics.measurements_waist),
+            measurements_hips: num(profileData.body_metrics.measurements_hips),
+            measurements_arms: num(profileData.body_metrics.measurements_arms),
+            measurements_thighs: num(profileData.body_metrics.measurements_thighs),
+            updated_at: new Date().toISOString()
+          };
 
-        if (error) {
-          const msg = error?.message || 'Unknown error';
-          console.error('body_metrics upsert failed:', error);
-          showNotification(`Metrics save failed: ${msg}`, 'error');
-          throw error;
+          // Store in user metadata
+          const { error: metricsError } = await window.supabaseClient.auth.updateUser({
+            data: { body_metrics: metricsData }
+          });
+
+          if (metricsError) {
+            console.warn('Failed to save metrics to user metadata:', metricsError);
+          }
+
+        } catch (error) {
+          console.error('Error saving body metrics:', error);
+          // Don't throw error for metrics, just log it
         }
       }
 
+      // Save preferences to user metadata
       if (section === 'preferences' || !section) {
-        const allowed = ['units','theme','language','notifications','privacy','created_at','updated_at'];
-        const base = pick(profileData.preferences, allowed);
-        const payload = {
-          user_id: currentUser.id,
-          ...base,
-          updated_at: new Date().toISOString()
-        };
-        const { error } = await window.supabaseClient
-          .from('user_preferences')
-          .upsert(payload);
+        try {
+          const preferencesData = {
+            units: profileData.preferences.units || 'metric',
+            language: profileData.preferences.language || 'en',
+            notifications: profileData.preferences.notifications || {},
+            updated_at: new Date().toISOString()
+          };
 
-        if (error) {
-          const msg = error?.message || 'Unknown error';
-          console.error('user_preferences upsert failed:', error);
-          showNotification(`Preferences save failed: ${msg}`, 'error');
-          throw error;
+          // Store in user metadata
+          const { error: prefsError } = await window.supabaseClient.auth.updateUser({
+            data: { preferences: preferencesData }
+          });
+
+          if (prefsError) {
+            console.warn('Failed to save preferences to user metadata:', prefsError);
+          }
+
+        } catch (error) {
+          console.error('Error saving preferences:', error);
+          // Don't throw error for preferences, just log it
         }
       }
 

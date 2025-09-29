@@ -63,7 +63,7 @@ img, video { max-width: 100%; height: auto; display: block; }
 <section class="hero">
 <div class="content container">
 <div class="row align-items-center">
-<div class="col-lg-7">
+<div class="col-lg-12">
 <h1 class="title-gradient text-glow" data-i18n="home.hero.headline" style="font-size:56px">Online Coaching. Real Results.</h1>
 <p class="mt-2" data-i18n="hero.p">Precision training, simple nutrition and relentless accountability — 100% online via Trainerize and WhatsApp.</p>
 <div class="d-flex gap-2 justify-content-center mt-3">
@@ -76,29 +76,61 @@ img, video { max-width: 100%; height: auto; display: block; }
 <div class="kpi"><div class="num">3</div><div data-i18n="kpi.langs">Languages</div></div>
 </div>
 </div>
-<div class="col-lg-5">
-<!-- Lead Capture Form -->
-<form class="hero-lead-form" data-source="Hero Form">
+</div>
+</div>
+</section>
+<section class="section"><div class="container">
+<h2 class="title-gradient text-glow" data-i18n="home.why.title">Why Garcia Builder</h2>
+<div class="grid grid-3 mt-3">
+<div class="card feature pro"><div class="icon">🏋️</div><h3 data-i18n="why.f1.title">Personalized Plans</h3><p data-i18n="why.f1.p">Designed for your schedule, equipment and goal.</p></div>
+<div class="card feature pro"><div class="icon">🥗</div><h3 data-i18n="why.f2.title">Simple Nutrition</h3><p data-i18n="why.f2.p">Flexible guidelines. No extremes. Sustainable.</p></div>
+<div class="card feature pro"><div class="icon">📈</div><h3 data-i18n="why.f3.title">Data‑Driven</h3><p data-i18n="why.f3.p">Progress checks &amp; smart adjustments weekly.</p></div>
+<div class="card feature pro"><div class="icon">🎯</div><h3 data-i18n="why.f4.title">Accountability</h3><p data-i18n="why.f4.p">WhatsApp support + weekly reviews.</p></div>
+<div class="card feature pro"><div class="icon">🛡️</div><h3 data-i18n="why.f5.title">Injury‑Smart</h3><p data-i18n="why.f5.p">Technique cues and safe progressions.</p></div>
+<div class="card feature pro"><div class="icon">🧠</div><h3 data-i18n="why.f6.title">Mindset &amp; Habits</h3><p data-i18n="why.f6.p">Systems that keep you consistent.</p></div>
+</div>
+</div></section>
+
+<!-- Lead Capture Section -->
+<section class="section" style="background: linear-gradient(135deg, rgba(246,200,78,0.03) 0%, rgba(0,0,0,0.7) 100%); padding: 80px 0;">
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-lg-8">
+<div class="text-center mb-5">
+<h2 class="title-gradient text-glow mb-3">Ready to Transform Your Body?</h2>
+<p class="lead" style="color: rgba(255,255,255,0.8);">
+Get your personalized fitness plan and join 127+ successful transformations
+</p>
+</div>
+<form class="hero-lead-form" data-source="Main CTA Form" style="max-width: 600px; margin: 0 auto;">
 <div class="lead-form-header">
 <span class="badge">🔥 FREE CONSULTATION</span>
 <h3>Get Your Personalized Fitness Plan</h3>
-<p>Join 127+ successful transformations</p>
+<p>Start your transformation journey today</p>
 </div>
+<div class="row g-3">
+<div class="col-md-6">
 <div class="lead-form-field">
-<label for="hero-name">Full Name</label>
-<input type="text" id="hero-name" name="name" placeholder="Enter your name" required>
+<label for="main-name">Full Name</label>
+<input type="text" id="main-name" name="name" placeholder="Enter your name" required>
 </div>
-<div class="lead-form-field">
-<label for="hero-email">Email Address</label>
-<input type="email" id="hero-email" name="email" placeholder="your@email.com" required>
 </div>
+<div class="col-md-6">
 <div class="lead-form-field">
-<label for="hero-phone">Phone Number</label>
-<input type="tel" id="hero-phone" name="phone" placeholder="+1 (555) 123-4567">
+<label for="main-email">Email Address</label>
+<input type="email" id="main-email" name="email" placeholder="your@email.com" required>
 </div>
+</div>
+<div class="col-md-6">
 <div class="lead-form-field">
-<label for="hero-goal">Primary Goal</label>
-<select id="hero-goal" name="goal" required>
+<label for="main-phone">Phone Number</label>
+<input type="tel" id="main-phone" name="phone" placeholder="+1 (555) 123-4567">
+</div>
+</div>
+<div class="col-md-6">
+<div class="lead-form-field">
+<label for="main-goal">Primary Goal</label>
+<select id="main-goal" name="goal" required>
 <option value="">Select your goal</option>
 <option value="Weight Loss">Weight Loss</option>
 <option value="Muscle Gain">Muscle Gain</option>
@@ -107,6 +139,8 @@ img, video { max-width: 100%; height: auto; display: block; }
 <option value="General Fitness">General Fitness</option>
 <option value="Body Recomposition">Body Recomposition</option>
 </select>
+</div>
+</div>
 </div>
 <button type="submit" class="lead-form-submit">
 <i class="fas fa-rocket"></i> Get My Free Consultation
@@ -124,17 +158,7 @@ img, video { max-width: 100%; height: auto; display: block; }
 </div>
 </div>
 </section>
-<section class="section"><div class="container">
-<h2 class="title-gradient text-glow" data-i18n="home.why.title">Why Garcia Builder</h2>
-<div class="grid grid-3 mt-3">
-<div class="card feature pro"><div class="icon">🏋️</div><h3 data-i18n="why.f1.title">Personalized Plans</h3><p data-i18n="why.f1.p">Designed for your schedule, equipment and goal.</p></div>
-<div class="card feature pro"><div class="icon">🥗</div><h3 data-i18n="why.f2.title">Simple Nutrition</h3><p data-i18n="why.f2.p">Flexible guidelines. No extremes. Sustainable.</p></div>
-<div class="card feature pro"><div class="icon">📈</div><h3 data-i18n="why.f3.title">Data‑Driven</h3><p data-i18n="why.f3.p">Progress checks &amp; smart adjustments weekly.</p></div>
-<div class="card feature pro"><div class="icon">🎯</div><h3 data-i18n="why.f4.title">Accountability</h3><p data-i18n="why.f4.p">WhatsApp support + weekly reviews.</p></div>
-<div class="card feature pro"><div class="icon">🛡️</div><h3 data-i18n="why.f5.title">Injury‑Smart</h3><p data-i18n="why.f5.p">Technique cues and safe progressions.</p></div>
-<div class="card feature pro"><div class="icon">🧠</div><h3 data-i18n="why.f6.title">Mindset &amp; Habits</h3><p data-i18n="why.f6.p">Systems that keep you consistent.</p></div>
-</div>
-</div></section>
+
 <section class="cta-strip">
 <div class="container">
 <h2 data-i18n="cta.strip.title">Ready to start? Let’s build your strongest body.</h2>
@@ -146,145 +170,10 @@ img, video { max-width: 100%; height: auto; display: block; }
 </div>
 </section>
 
-<!-- Become a Trainer Section -->
-<section class="trainer-cta" style="background: linear-gradient(135deg, rgba(246,200,78,0.1) 0%, rgba(255,107,53,0.1) 100%); padding: 80px 0; margin-top: 60px;">
-<div class="container">
-<div class="row align-items-center">
-<div class="col-lg-8">
-<h2 class="mb-3" style="color: #F6C84E; font-size: 2.5rem; font-weight: 700;">
-<i class="fas fa-dumbbell me-3"></i>Join Our Elite Trainer Team
-</h2>
-<p class="lead mb-4" style="color: #fff; font-size: 1.2rem;">
-Are you a certified fitness professional? Join Garcia Builder's exclusive trainer network and help transform lives with our cutting-edge platform and proven methodologies.
-</p>
-<div class="row g-3 mb-4">
-<div class="col-md-6">
-<div class="d-flex align-items-center">
-<i class="fas fa-check-circle text-warning me-2"></i>
-<span>Premium client management tools</span>
-</div>
-</div>
-<div class="col-md-6">
-<div class="d-flex align-items-center">
-<i class="fas fa-check-circle text-warning me-2"></i>
-<span>Competitive revenue sharing</span>
-</div>
-</div>
-<div class="col-md-6">
-<div class="d-flex align-items-center">
-<i class="fas fa-check-circle text-warning me-2"></i>
-<span>Marketing & lead generation support</span>
-</div>
-</div>
-<div class="col-md-6">
-<div class="d-flex align-items-center">
-<i class="fas fa-check-circle text-warning me-2"></i>
-<span>Professional development resources</span>
-</div>
-</div>
-</div>
-<div class="d-flex gap-3 flex-wrap">
-<a href="become-trainer.html" class="btn btn-warning btn-lg px-4 py-3" style="font-weight: 600;">
-<i class="fas fa-rocket me-2"></i>Apply to Become a Trainer
-</a>
-<a href="#trainer-info" class="btn btn-outline-light btn-lg px-4 py-3" onclick="showTrainerInfo()">
-<i class="fas fa-info-circle me-2"></i>Learn More
-</a>
-</div>
-</div>
-<div class="col-lg-4 text-center">
-<div class="trainer-stats p-4" style="background: rgba(255,255,255,0.05); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
-<div class="stat-item mb-3">
-<h3 class="text-warning mb-1">500+</h3>
-<p class="text-muted mb-0">Active Clients</p>
-</div>
-<div class="stat-item mb-3">
-<h3 class="text-warning mb-1">50+</h3>
-<p class="text-muted mb-0">Professional Trainers</p>
-</div>
-<div class="stat-item">
-<h3 class="text-warning mb-1">98%</h3>
-<p class="text-muted mb-0">Client Satisfaction</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<!-- Newsletter CTA Section -->
-<section class="newsletter-cta" style="background: linear-gradient(135deg, rgba(246,200,78,0.08) 0%, rgba(255,255,255,0.02) 100%); padding: 60px 0; margin: 80px 0; border-top: 1px solid rgba(246,200,78,0.2); border-bottom: 1px solid rgba(246,200,78,0.2);">
-<div class="container">
-<div class="row justify-content-center">
-<div class="col-lg-8 text-center">
-<div class="newsletter-header mb-4">
-<h3 style="color: #F6C84E; font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem;">
-🎯 Never Miss a Fitness Tip
-</h3>
-<p style="color: rgba(255,255,255,0.8); font-size: 1.1rem; max-width: 500px; margin: 0 auto;">
-Join weekly training and nutrition insights. No spam. Unsubscribe anytime.
-</p>
-</div>
-<form class="newsletter-form" data-source="Homepage Newsletter" style="max-width: 600px; margin: 0 auto;">
-<div class="newsletter-input-group">
-<input type="text" name="name" class="newsletter-input" placeholder="Your name">
-<input type="email" name="email" class="newsletter-input" placeholder="your@email.com" required>
-<button type="submit" class="newsletter-btn">
-<i class="fas fa-paper-plane"></i> Subscribe Free
-</button>
-</div>
-<div class="newsletter-benefits" style="margin-top: 1.5rem; text-align: center;">
-<small style="color: rgba(255,255,255,0.7); display: inline-flex; align-items: center; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-<span><i class="fas fa-shield-alt" style="color: #F6C84E; margin-right: 0.5rem;"></i>No spam, unsubscribe anytime</span>
-<span><i class="fas fa-gift" style="color: #F6C84E; margin-right: 0.5rem;"></i>Free workout guide included</span>
-</small>
-</div>
-</form>
-</div>
-</div>
-</div>
-</section>
-
 <hr class="hr-shine"/>
 
-<!-- Enhanced Footer -->
-<footer class="footer" style="background: linear-gradient(135deg, rgba(246,200,78,0.05) 0%, rgba(0,0,0,0.8) 100%); padding: 40px 0 20px; border-top: 1px solid rgba(246,200,78,0.2);">
-<div class="container">
-<div class="row align-items-center">
-<div class="col-md-8">
-<div class="footer-content">
-<div class="footer-brand mb-3">
-<span class="title-gradient" style="font-size: 1.2rem; font-weight: 700;">Garcia Builder</span>
-<span style="color: rgba(255,255,255,0.6); margin-left: 1rem;">— Online Coaching</span>
-</div>
-<div class="footer-links d-flex flex-wrap gap-3">
-<a href="https://instagram.com/garcia.builder" target="_blank" style="color: rgba(255,255,255,0.7); text-decoration: none;">
-<i class="fab fa-instagram"></i> @garcia.builder
-</a>
-<a data-i18n="cta.strip.book" href="https://calendly.com/andrenjulio072/consultation" target="_blank" style="color: rgba(255,255,255,0.7); text-decoration: none;">
-<i class="fas fa-calendar"></i> Book a call
-</a>
-</div>
-</div>
-</div>
-<div class="col-md-4 text-md-end">
-<div class="footer-cta">
-<a href="#" data-open-lead-magnet class="btn" style="background: linear-gradient(135deg, #F6C84E, #FFD700); color: #000; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;">
-<i class="fas fa-download"></i>
-<span data-i18n="cta.footer.leadmagnet">Baixar guia de treino</span>
-</a>
-</div>
-</div>
-</div>
-<div class="row mt-3">
-<div class="col-12 text-center">
-<p class="small" style="color: rgba(255,255,255,0.5); margin: 0;">
-© 2025 Garcia Builder. All rights reserved.
-</p>
-</div>
-</div>
-</div>
-</footer>
+<!-- Footer igual as outras páginas -->
+<div class="footer"><div class="container small">© 2025 Garcia Builder — Online Coaching • <a href="https://instagram.com/garcia.builder" target="_blank">@garcia.builder</a> • <a data-i18n="cta.strip.book" href="https://calendly.com/andrenjulio072/consultation" target="_blank">Book a call</a> • <a href="#" data-open-lead-magnet data-i18n="cta.footer.leadmagnet">Baixar guia de treino</a></div></div>
 <a class="whatsapp-float" data-i18n="footer.whatsapp" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank">WhatsApp</a>
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Supabase -->

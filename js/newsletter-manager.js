@@ -222,7 +222,7 @@
     }
   };
 
-  // Setup exit/focus popup - reappears on website reopening
+  // Setup exit/focus popup - real exit intent detection
   const setupExitIntentPopup = () => {
     // Show only on homepage and keep it minimal & professional
     const isHomePage = () => {
@@ -237,7 +237,6 @@
 
     // Session-based frequency controls (resets when user reopens website)
     const EXIT_SESSION_KEY = 'gb_exit_intent_shown_session';
-    const DELAY_MS = 4000;    // show after 4s for better timing
     let shownThisSession = false;
 
     const isSuppressed = () => {
@@ -271,25 +270,24 @@
 
     const showExitIntent = () => {
       console.log('Attempting to show exit intent popup...');
-      
+
       if (shownThisSession) {
         console.log('Popup blocked: already shown this session');
         return;
       }
-      
+
       if (isSuppressed()) {
         console.log('Popup blocked: suppressed');
         return;
       }
-      
+
       if (!isHomePage()) {
         console.log('Popup blocked: not on homepage');
         return;
       }
 
-      // Show on all devices, not just desktop
       console.log('Showing exit intent popup!');
-      
+
       shownThisSession = true;
       suppressForSession();
 
@@ -298,26 +296,39 @@
       trackEvent('exit_intent_popup_shown');
     };
 
-    // Timed initial trigger (4s)
-    setTimeout(() => {
-      console.log('Timer triggered, checking if popup should show...');
-      showExitIntent();
-    }, DELAY_MS);
+    // Real exit intent detection - mouse leaving viewport
+    document.addEventListener('mouseleave', (e) => {
+      // Only trigger if mouse leaves from the top of the page
+      if (e.clientY <= 0) {
+        showExitIntent();
+      }
+    });
+
+    // Mobile fallback - scroll to bottom detection
+    let hasScrolledToBottom = false;
+    window.addEventListener('scroll', () => {
+      if (!hasScrolledToBottom && (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+        hasScrolledToBottom = true;
+        setTimeout(() => {
+          showExitIntent();
+        }, 2000); // Show after 2s when user reaches bottom
+      }
+    });
 
     // Public helper to suppress for this session when user converts
     window.gbMarkUserConverted = markUserConverted;
 
-    // Optional: footer trigger link with [data-open-lead-magnet]
+    // Footer trigger link with [data-open-lead-magnet]
     document.querySelectorAll('[data-open-lead-magnet]').forEach(el => {
-      el.addEventListener('click', (e) => { 
-        e.preventDefault(); 
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
         console.log('Lead magnet link clicked, clearing session and showing popup...');
         // Clear session to allow popup to show
         sessionStorage.removeItem(EXIT_SESSION_KEY);
         sessionStorage.removeItem('garcia_session_leads');
         sessionStorage.removeItem('garcia_session_subscribers');
         shownThisSession = false;
-        showExitIntent(); 
+        showExitIntent();
       });
     });
 
@@ -345,35 +356,27 @@
         <div class="popup-content">
           <button class="popup-close">&times;</button>
           <div class="popup-header">
-            <h3>🎯 Espere! Não Perca Sua Transformação</h3>
-            <p>Baixe GRÁTIS seu guia completo de transformação corporal</p>
+            <h3>🎯 Wait! Get Your Free Fitness Guide</h3>
+            <p>Download your complete transformation guide - FREE</p>
           </div>
           <div class="popup-body">
-            <div style="width: 180px; height: 240px; background: linear-gradient(145deg, #F6C84E 0%, #FFD700 100%); margin: 0 auto 1.5rem; border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #000; font-weight: bold; text-align: center; box-shadow: 0 8px 25px rgba(0,0,0,0.3); border: 2px solid rgba(246, 200, 78, 0.4);">
-              <i class="fas fa-dumbbell" style="font-size: 2.5rem; margin-bottom: 0.5rem;"></i>
-              <div style="font-size: 1.1rem;">GUIA DE</div>
-              <div style="font-size: 1.3rem;">TRANSFORMAÇÃO</div>
-              <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.5rem;">100% GRÁTIS</div>
-            </div>
-            <h4>O que você vai receber:</h4>
+            <h4>What you'll get:</h4>
             <ul>
-              <li>✅ Plano de treino de 30 dias progressivo</li>
-              <li>✅ Guia completo de nutrição esportiva</li>
-              <li>✅ Calculadora personalizada de macros</li>
-              <li>✅ 50+ receitas saudáveis e saborosas</li>
-              <li>✅ Dicas profissionais de suplementação</li>
-              <li>✅ Cronograma de evolução semanal</li>
+              <li>✅ 30-day progressive workout plan</li>
+              <li>✅ Complete nutrition guide</li>
+              <li>✅ Macro calculator</li>
+              <li>✅ Weekly progress tracker</li>
             </ul>
             <form class="popup-form download-form" data-source="Exit Intent">
-              <input type="email" name="email" placeholder="Digite seu melhor e-mail" required>
+              <input type="email" name="email" placeholder="Enter your email" required>
               <input type="hidden" name="goal" value="Transformation Guide">
               <button type="submit" class="btn btn-primary">
-                <i class="fas fa-download"></i> Baixar Grátis Agora
+                <i class="fas fa-download"></i> Download Free
               </button>
             </form>
             <p class="privacy-note">
               <i class="fas fa-shield-alt"></i>
-              100% Seguro. Sem spam. Apenas conteúdo de valor premium.
+              No spam. Unsubscribe anytime.
             </p>
           </div>
         </div>
@@ -431,8 +434,8 @@
       // Track conversion
       trackConversion('guide_download', downloadInfo.source);
 
-  // Show success and provide immediate download (PT-BR)
-  showNotification('Enviado! Confira seu e-mail para o link de download.', 'success');
+      // Show success and provide immediate download
+      showNotification('Sent! Check your email for the download link.', 'success');
 
       // Immediate download
       triggerFileDownload('transformation-guide.pdf');

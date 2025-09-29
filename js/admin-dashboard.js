@@ -32,13 +32,11 @@ class AdminDashboard {
     }
 
     initSupabase() {
-        if (typeof supabase !== 'undefined') {
-            this.supabase = supabase.createClient(
-                'https://your-project.supabase.co',
-                'your-anon-key'
-            );
+        if (window.supabaseClient) {
+            this.supabase = window.supabaseClient;
+            console.log('✅ Admin Dashboard: Supabase client connected');
         } else {
-            console.warn('Supabase not available, using localStorage fallback');
+            console.warn('⚠️ Admin Dashboard: Supabase not available, using localStorage fallback');
         }
     }
 

@@ -18,13 +18,13 @@ class EnhancedAuthSystem {
 
     initDefaultUsers() {
         // Create default admin user if not exists
-        const adminExists = this.users.find(user => user.email === 'admin@garcia-builder.com');
+        const adminExists = this.users.find(user => user.email === 'admin@garciabuilder.com');
         if (!adminExists) {
             const adminUser = {
                 id: 'admin-garcia-builder',
-                email: 'admin@garcia-builder.com',
+                email: 'admin@garciabuilder.com',
                 username: 'admin',
-                password: 'admin', // In production, this should be hashed
+                password: 'admingarciabuilder', // In production, this should be hashed
                 full_name: 'Andre Garcia',
                 first_name: 'Andre',
                 last_name: 'Garcia',

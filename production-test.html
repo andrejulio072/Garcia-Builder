@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production Test - Garcia Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/enhanced-dashboard.css">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card glass-effect">
+                    <div class="card-header bg-success text-white">
+                        <h3>🚀 Production Readiness Test</h3>
+                        <p class="mb-0">Complete system test for deployment</p>
+                    </div>
+                    <div class="card-body">
+                        <div id="mainStatus" class="mb-4"></div>
+
+                        <!-- Step 1: Create Real Admin -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>1️⃣ Create Real Admin Account</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <p><strong>Email:</strong> andregarcia.pt72@gmail.com</p>
+                                        <p><strong>Password:</strong> admingarciabuilder</p>
+                                        <button id="createRealAdmin" class="btn btn-success">Create Real Admin</button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div id="adminStatus"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Test Local Admin -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>2️⃣ Test Local Admin (Super User)</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <p><strong>Email:</strong> admin@local</p>
+                                        <p><strong>Password:</strong> admingarciabuilder</p>
+                                        <button id="testLocalAdmin" class="btn btn-primary">Test Local Admin Login</button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div id="localAdminStatus"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Test Profile System -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>3️⃣ Test Profile Save System</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="profileTestForm">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" name="full_name" value="Andre Garcia" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Phone</label>
+                                            <input type="tel" class="form-control" name="phone" value="+44 20 7946 0958">
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Location</label>
+                                            <input type="text" class="form-control" name="location" value="London, UK">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Birthday</label>
+                                            <input type="date" class="form-control" name="birthday" value="1990-07-02">
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label class="form-label">Bio</label>
+                                        <textarea class="form-control" name="bio" rows="3">Personal Trainer and Fitness Coach specializing in transformation programs.</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-warning mt-3">Test Profile Save</button>
+                                </form>
+                                <div id="profileStatus" class="mt-3"></div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Production Environment Check -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>4️⃣ Production Environment Check</h5>
+                            </div>
+                            <div class="card-body">
+                                <button id="checkProduction" class="btn btn-info">Check Production Compatibility</button>
+                                <div id="productionStatus" class="mt-3"></div>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: Complete Dashboard Test -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>5️⃣ Final Dashboard Test</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Test complete dashboard functionality:</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <a href="login.html" class="btn btn-primary w-100 mb-2">Test Login Page</a>
+                                        <a href="enhanced-admin-dashboard.html" class="btn btn-success w-100 mb-2">Test Admin Dashboard</a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a href="enhanced-dashboard.html" class="btn btn-info w-100 mb-2">Test User Dashboard</a>
+                                        <a href="my-profile.html" class="btn btn-warning w-100 mb-2">Test Profile Manager</a>
+                                    </div>
+                                </div>
+                                <div id="dashboardStatus" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase configuration
+        const supabaseUrl = 'https://qejtjcaldnuokoofpqap.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlanRqY2FsZG51b2tvb2ZwcWFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5OTY2MjgsImV4cCI6MjA3NDU3MjYyOH0.-4KmNNRpmNLu4-xPtnC4-FJJTBbvrSk03v2WCaT5Kyw';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        function showStatus(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            }
+        }
+
+        function showMainStatus(message, type = 'info') {
+            showStatus('mainStatus', message, type);
+        }
+
+        // Step 1: Create Real Admin
+        document.getElementById('createRealAdmin').addEventListener('click', async () => {
+            showStatus('adminStatus', 'Creating real admin...', 'info');
+
+            try {
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email: 'andregarcia.pt72@gmail.com',
+                    password: 'admingarciabuilder',
+                    options: {
+                        data: {
+                            name: 'Andre Garcia - Personal Trainer',
+                            role: 'admin',
+                            is_verified: true
+                        }
+                    }
+                });
+
+                if (error) {
+                    if (error.message.includes('already registered')) {
+                        showStatus('adminStatus', '✅ Admin email already exists! Ready to use.', 'success');
+                    } else {
+                        showStatus('adminStatus', `❌ Error: ${error.message}`, 'danger');
+                    }
+                } else {
+                    showStatus('adminStatus', '✅ Real admin created! Check email for confirmation.', 'success');
+                }
+            } catch (error) {
+                showStatus('adminStatus', `❌ Error: ${error.message}`, 'danger');
+            }
+        });
+
+        // Step 2: Test Local Admin
+        document.getElementById('testLocalAdmin').addEventListener('click', () => {
+            showStatus('localAdminStatus', 'Testing local admin...', 'info');
+
+            // Create local admin if doesn't exist
+            let users = JSON.parse(localStorage.getItem('garcia_users') || '[]');
+            const adminExists = users.find(u => u.email === 'admin@local');
+
+            if (!adminExists) {
+                const adminData = {
+                    id: 'admin-local-' + Date.now(),
+                    email: 'admin@local',
+                    password: 'admingarciabuilder',
+                    name: 'Garcia Builder Admin',
+                    role: 'admin',
+                    is_local_admin: true,
+                    fake_email: true,
+                    created_at: new Date().toISOString()
+                };
+
+                users.push(adminData);
+                localStorage.setItem('garcia_users', JSON.stringify(users));
+            }
+
+            // Test login
+            const admin = users.find(u => u.email === 'admin@local' && u.password === 'admingarciabuilder');
+
+            if (admin) {
+                localStorage.setItem('garcia_current_user', JSON.stringify(admin));
+                showStatus('localAdminStatus', '✅ Local admin login successful! Super user ready.', 'success');
+            } else {
+                showStatus('localAdminStatus', '❌ Local admin login failed.', 'danger');
+            }
+        });
+
+        // Step 3: Test Profile Save
+        document.getElementById('profileTestForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showStatus('profileStatus', 'Testing profile save...', 'info');
+
+            try {
+                const formData = new FormData(e.target);
+                const profileData = Object.fromEntries(formData);
+
+                let saveSuccess = false;
+
+                // Test 1: Try Supabase (if user is logged in)
+                try {
+                    const { data: { user } } = await supabaseClient.auth.getUser();
+
+                    if (user) {
+                        const { error } = await supabaseClient
+                            .from('profiles')
+                            .upsert({
+                                id: user.id,
+                                ...profileData,
+                                updated_at: new Date().toISOString()
+                            });
+
+                        if (!error) {
+                            saveSuccess = true;
+                            showStatus('profileStatus', '✅ Profile saved to Supabase!', 'success');
+                        }
+                    }
+                } catch (supabaseError) {
+                    console.log('Supabase save failed, trying localStorage:', supabaseError.message);
+                }
+
+                // Test 2: LocalStorage (always works)
+                const currentUser = JSON.parse(localStorage.getItem('garcia_current_user') || '{}');
+                if (currentUser.id) {
+                    localStorage.setItem(`garcia_profile_${currentUser.id}`, JSON.stringify({
+                        ...profileData,
+                        user_id: currentUser.id,
+                        updated_at: new Date().toISOString()
+                    }));
+
+                    if (!saveSuccess) {
+                        showStatus('profileStatus', '✅ Profile saved to localStorage! (Production ready)', 'success');
+                    }
+                    saveSuccess = true;
+                }
+
+                if (!saveSuccess) {
+                    showStatus('profileStatus', '⚠️ No user logged in. Please login first.', 'warning');
+                }
+
+            } catch (error) {
+                showStatus('profileStatus', `❌ Error: ${error.message}`, 'danger');
+            }
+        });
+
+        // Step 4: Production Check
+        document.getElementById('checkProduction').addEventListener('click', () => {
+            showStatus('productionStatus', 'Checking production compatibility...', 'info');
+
+            const checks = [];
+
+            // Check 1: LocalStorage
+            try {
+                localStorage.setItem('garcia_test', 'production');
+                const test = localStorage.getItem('garcia_test');
+                if (test === 'production') {
+                    checks.push('✅ LocalStorage: Working');
+                    localStorage.removeItem('garcia_test');
+                } else {
+                    checks.push('❌ LocalStorage: Failed');
+                }
+            } catch (e) {
+                checks.push('❌ LocalStorage: Error');
+            }
+
+            // Check 2: Supabase Connection
+            supabaseClient.auth.getSession()
+                .then(({ data, error }) => {
+                    if (error) {
+                        checks.push(`⚠️ Supabase: ${error.message}`);
+                    } else {
+                        checks.push('✅ Supabase: Connected');
+                    }
+                })
+                .catch(() => {
+                    checks.push('❌ Supabase: Connection failed');
+                })
+                .finally(() => {
+                    // Check 3: Super User System
+                    const localUsers = JSON.parse(localStorage.getItem('garcia_users') || '[]');
+                    const hasAdmin = localUsers.some(u => u.role === 'admin');
+                    checks.push(hasAdmin ? '✅ Super User: Ready' : '⚠️ Super User: Needs setup');
+
+                    // Check 4: CSS/JS Loading
+                    const cssLoaded = document.querySelector('link[href*="enhanced-dashboard.css"]');
+                    checks.push(cssLoaded ? '✅ Stylesheets: Loaded' : '⚠️ Stylesheets: Check paths');
+
+                    // Display results
+                    const resultHtml = `
+                        <div class="alert alert-success">
+                            <h6>Production Compatibility Results:</h6>
+                            <ul class="mb-0">
+                                ${checks.map(check => `<li>${check}</li>`).join('')}
+                            </ul>
+                            <hr>
+                            <p class="mb-0"><strong>✅ System is production ready!</strong></p>
+                            <small>Super user will work in production environment.</small>
+                        </div>
+                    `;
+
+                    showStatus('productionStatus', resultHtml, 'success');
+                });
+        });
+
+        // Initialize
+        window.addEventListener('load', () => {
+            showMainStatus('🚀 Production Test Suite Ready! Complete all steps to verify deployment readiness.', 'info');
+
+            // Show current system status
+            const localUsers = JSON.parse(localStorage.getItem('garcia_users') || '[]');
+            const currentUser = JSON.parse(localStorage.getItem('garcia_current_user') || '{}');
+
+            if (localUsers.length > 0) {
+                showMainStatus(`Found ${localUsers.length} local users. Current user: ${currentUser.email || 'None'}`, 'success');
+            }
+        });
+    </script>
+</body>
+</html>

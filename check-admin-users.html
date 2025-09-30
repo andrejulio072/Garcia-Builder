@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Supabase Admin Users</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Supabase Admin Users Check</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="status" class="mb-3"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Supabase Users</h5>
+                                <button id="checkSupabaseUsers" class="btn btn-primary mb-3">Check Supabase Users</button>
+                                <div id="supabaseUsers"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <h5>Local Storage Users</h5>
+                                <button id="checkLocalUsers" class="btn btn-success mb-3">Check Local Users</button>
+                                <div id="localUsers"></div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h5>Create Admin in Supabase (Real Email)</h5>
+                                <form id="createSupabaseAdmin">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <input type="email" class="form-control" id="adminEmail" placeholder="admin@example.com" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="password" class="form-control" id="adminPassword" placeholder="Password" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="submit" class="btn btn-warning">Create Supabase Admin</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div id="createResult" class="mt-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase configuration
+        const supabaseUrl = 'https://qejtjcaldnuokoofpqap.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlanRqY2FsZG51b2tvb2ZwcWFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5OTY2MjgsImV4cCI6MjA3NDU3MjYyOH0.-4KmNNRpmNLu4-xPtnC4-FJJTBbvrSk03v2WCaT5Kyw';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        function showStatus(message, type = 'info') {
+            document.getElementById('status').innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+
+        function showCreateResult(message, type = 'info') {
+            document.getElementById('createResult').innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+
+        // Check Supabase users
+        document.getElementById('checkSupabaseUsers').addEventListener('click', async () => {
+            showStatus('Checking Supabase users...', 'info');
+
+            try {
+                // Get current user
+                const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+
+                if (userError) {
+                    console.log('No authenticated user:', userError.message);
+                }
+
+                // Try to get users from profiles table (if exists)
+                const { data: profiles, error: profilesError } = await supabaseClient
+                    .from('profiles')
+                    .select('*');
+
+                let html = '<div class="list-group">';
+
+                if (user) {
+                    html += `
+                        <div class="list-group-item">
+                            <strong>Current Authenticated User:</strong><br>
+                            <small>Email: ${user.email}</small><br>
+                            <small>ID: ${user.id}</small><br>
+                            <small>Confirmed: ${user.email_confirmed_at ? 'Yes' : 'No'}</small>
+                        </div>
+                    `;
+                }
+
+                if (profiles && profiles.length > 0) {
+                    html += '<div class="list-group-item"><strong>Profiles Table:</strong></div>';
+                    profiles.forEach(profile => {
+                        html += `
+                            <div class="list-group-item">
+                                <strong>${profile.email || profile.name || 'No email'}</strong><br>
+                                <small>Role: ${profile.role || 'No role'}</small><br>
+                                <small>ID: ${profile.id}</small>
+                            </div>
+                        `;
+                    });
+                } else if (profilesError) {
+                    html += `<div class="list-group-item text-warning">Profiles table error: ${profilesError.message}</div>`;
+                } else {
+                    html += '<div class="list-group-item text-muted">No profiles found</div>';
+                }
+
+                if (!user && (!profiles || profiles.length === 0)) {
+                    html += '<div class="list-group-item text-muted">No Supabase users found</div>';
+                }
+
+                html += '</div>';
+                document.getElementById('supabaseUsers').innerHTML = html;
+
+                showStatus('✅ Supabase check completed', 'success');
+
+            } catch (error) {
+                showStatus(`❌ Error checking Supabase: ${error.message}`, 'danger');
+                document.getElementById('supabaseUsers').innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+            }
+        });
+
+        // Check local users
+        document.getElementById('checkLocalUsers').addEventListener('click', () => {
+            const users = JSON.parse(localStorage.getItem('garcia_users') || '[]');
+            const currentUser = JSON.parse(localStorage.getItem('garcia_current_user') || 'null');
+
+            let html = '<div class="list-group">';
+
+            if (currentUser) {
+                html += `
+                    <div class="list-group-item">
+                        <strong>Current Local User:</strong><br>
+                        <small>Email: ${currentUser.email}</small><br>
+                        <small>Role: ${currentUser.role}</small><br>
+                        <small>Local Admin: ${currentUser.is_local_admin ? 'Yes' : 'No'}</small>
+                    </div>
+                `;
+            }
+
+            if (users.length > 0) {
+                html += '<div class="list-group-item"><strong>All Local Users:</strong></div>';
+                users.forEach((user, index) => {
+                    html += `
+                        <div class="list-group-item">
+                            <strong>${user.email}</strong><br>
+                            <small>Role: ${user.role}</small><br>
+                            <small>Local Admin: ${user.is_local_admin ? 'Yes' : 'No'}</small><br>
+                            <small>Fake Email: ${user.fake_email ? 'Yes' : 'No'}</small>
+                        </div>
+                    `;
+                });
+            } else {
+                html += '<div class="list-group-item text-muted">No local users found</div>';
+            }
+
+            html += '</div>';
+            document.getElementById('localUsers').innerHTML = html;
+
+            showStatus(`✅ Found ${users.length} local users`, 'success');
+        });
+
+        // Create Supabase admin
+        document.getElementById('createSupabaseAdmin').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+
+            showCreateResult('Creating admin in Supabase...', 'info');
+
+            try {
+                // Sign up the user
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            name: 'Garcia Builder Admin',
+                            role: 'admin'
+                        }
+                    }
+                });
+
+                if (error) {
+                    showCreateResult(`❌ Error: ${error.message}`, 'danger');
+                    return;
+                }
+
+                if (data.user) {
+                    showCreateResult(`✅ Admin created! Check email ${email} for confirmation link.`, 'success');
+
+                    // Try to create profile
+                    const { error: profileError } = await supabaseClient
+                        .from('profiles')
+                        .insert([
+                            {
+                                id: data.user.id,
+                                email: email,
+                                name: 'Garcia Builder Admin',
+                                role: 'admin',
+                                created_at: new Date().toISOString()
+                            }
+                        ]);
+
+                    if (profileError) {
+                        console.log('Profile creation error (table might not exist):', profileError);
+                    }
+                } else {
+                    showCreateResult('User might already exist or need email confirmation', 'warning');
+                }
+
+            } catch (error) {
+                showCreateResult(`❌ Error: ${error.message}`, 'danger');
+            }
+        });
+
+        // Initialize page
+        window.addEventListener('load', () => {
+            showStatus('Ready to check users in both Supabase and Local Storage', 'info');
+        });
+    </script>
+</body>
+</html>

@@ -193,6 +193,20 @@ class AuthSystem {
         const email = input.value;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+        // Exceção para administradores locais - aceitar emails fictícios
+        const isAdminLocal = email && (
+            email === 'admin@local' ||
+            email === 'admin@system' ||
+            email === 'admin' ||
+            email.startsWith('admin@') && email.length < 20 // IDs admin simples
+        );
+
+        if (isAdminLocal) {
+            this.setFieldValid(input);
+            return true;
+        }
+
+        // Validação normal para outros usuários
         if (!email || !emailRegex.test(email)) {
             this.setFieldError(input, 'Please enter a valid email address');
             return false;
@@ -289,7 +303,45 @@ class AuthSystem {
         this.setLoadingState(submitBtn, true);
 
         try {
-            // Prefer Supabase auth when available
+            // PRIMEIRO: Verificar se é admin local
+            const isAdminLocal = email === 'admin@local' || email === 'admin' ||
+                                email.startsWith('admin@') && email.length < 20;
+
+            if (isAdminLocal) {
+                // Buscar admin no localStorage
+                const users = JSON.parse(localStorage.getItem('gb_users') || '[]');
+                const adminUser = users.find(u =>
+                    u.email === email ||
+                    (u.role === 'admin' && (u.email === 'admin@local' || u.username === 'admin'))
+                );
+
+                if (adminUser && adminUser.password === password) {
+                    // Login admin local bem-sucedido
+                    adminUser.lastLogin = new Date().toISOString();
+                    localStorage.setItem('gb_users', JSON.stringify(users));
+
+                    this.currentUser = {
+                        id: adminUser.id,
+                        name: adminUser.full_name || adminUser.username,
+                        full_name: adminUser.full_name || '',
+                        email: adminUser.email,
+                        role: adminUser.role,
+                        registeredAt: adminUser.created_at || new Date().toISOString(),
+                        lastLogin: new Date().toISOString(),
+                        is_local_admin: true
+                    };
+                    localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
+
+                    // Redirecionar admin para dashboard admin
+                    this.setLoadingState(submitBtn, false);
+                    this.redirectAdminAfterLogin();
+                    return;
+                } else {
+                    throw new Error('Invalid admin credentials');
+                }
+            }
+
+            // SEGUNDO: Tentar Supabase para usuários normais
             if (window.supabaseClient && window.supabaseClient.auth) {
                 const { data, error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
                 if (error) throw new Error(error.message || 'Login failed');
@@ -374,6 +426,22 @@ class AuthSystem {
             this.showError(error.message);
         } finally {
             this.setLoadingState(submitBtn, false);
+        }
+    }
+
+    redirectAdminAfterLogin() {
+        // Redirecionar admins para o dashboard administrativo
+        if (this.currentUser && this.currentUser.role === 'admin') {
+            console.log('Redirecting admin to admin dashboard...');
+            setTimeout(() => {
+                window.location.href = 'enhanced-admin-dashboard.html';
+            }, 1000);
+        } else {
+            // Para outros usuários, usar redirecionamento normal
+            const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'dashboard.html';
+            setTimeout(() => {
+                window.location.href = redirectUrl;
+            }, 1000);
         }
     }
 

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Admin Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Test Admin Login</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="testLoginForm">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" value="admin@local" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" value="admingarciabuilder" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Test Login</button>
+                        </form>
+                        <div id="result" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase configuration
+        const supabaseUrl = 'https://bhvhyfqemqaajgafkrcz.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJodmh5ZnFlbXFhYWpnYWZrcmN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc1NTQxNzIsImV4cCI6MjA1MzEzMDE3Mn0.UXRKJuWYLm4PL3YDWVPnJYb5R4B51WHj9Pjr6KEe_kE';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        function showResult(message, type = 'info') {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+
+        function validateEmail(email) {
+            // Permitir emails de admin sem validação
+            if (email.includes('admin@') || email === 'admin') {
+                return true;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        document.getElementById('testLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            showResult('Testing login...', 'info');
+
+            try {
+                // Verificar se é admin local primeiro
+                if (email.includes('admin@') || email === 'admin') {
+                    showResult('Admin email detected, checking localStorage...', 'info');
+
+                    const localUsers = JSON.parse(localStorage.getItem('garcia_users') || '[]');
+                    const localUser = localUsers.find(u => u.email === email && u.password === password);
+
+                    if (localUser) {
+                        showResult(`✅ Admin login successful! Role: ${localUser.role}`, 'success');
+
+                        // Simular armazenamento da sessão
+                        localStorage.setItem('garcia_current_user', JSON.stringify(localUser));
+
+                        setTimeout(() => {
+                            window.location.href = 'enhanced-admin-dashboard.html';
+                        }, 2000);
+                        return;
+                    } else {
+                        showResult('❌ Admin not found in localStorage', 'danger');
+
+                        // Mostrar usuários locais para debug
+                        const users = JSON.parse(localStorage.getItem('garcia_users') || '[]');
+                        console.log('Local users:', users);
+                        showResult(`Local users found: ${users.length}`, 'warning');
+                        return;
+                    }
+                }
+
+                // Para usuários normais, usar Supabase
+                showResult('Attempting Supabase login...', 'info');
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
+
+                if (error) {
+                    showResult(`❌ Supabase Error: ${error.message}`, 'danger');
+                } else {
+                    showResult('✅ Supabase login successful!', 'success');
+                }
+
+            } catch (error) {
+                showResult(`❌ Error: ${error.message}`, 'danger');
+            }
+        });
+
+        // Mostrar estado atual do localStorage
+        window.addEventListener('load', () => {
+            const users = JSON.parse(localStorage.getItem('garcia_users') || '[]');
+            const currentUser = JSON.parse(localStorage.getItem('garcia_current_user') || 'null');
+
+            console.log('Garcia users in localStorage:', users);
+            console.log('Current user:', currentUser);
+
+            showResult(`Found ${users.length} users in localStorage. Current user: ${currentUser ? currentUser.email : 'none'}`, 'info');
+        });
+    </script>
+</body>
+</html>

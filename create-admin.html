@@ -141,13 +141,14 @@
 </head>
 <body>
     <div class="admin-container">
-        <h1 class="admin-title">Criar Admin no Supabase</h1>
+        <h1 class="admin-title">Criar Admin Local</h1>
         <p class="admin-description">
-            Esta ferramenta criará o usuário administrador diretamente no banco de dados Supabase.
-            <strong>Administradores não precisam confirmar email</strong> - o acesso será liberado imediatamente para facilitar a gestão do sistema.
+            Esta ferramenta criará um administrador local sem necessidade de email real.
+            <strong>Administradores locais usam IDs fictícios</strong> como "admin@local" e funcionam completamente offline,
+            perfeito para gestão local do sistema.
         </p>        <button class="btn-create" onclick="createAdminUser()">
             <i class="fas fa-user-shield"></i>
-            Criar Admin no Supabase
+            Criar Admin Local
         </button>
 
         <button class="btn-create btn-secondary" onclick="showManualForm()">
@@ -159,8 +160,11 @@
             <h3 style="color: var(--primary-gold); margin-bottom: 1rem;">Admin Personalizado</h3>
             <form id="adminForm">
                 <div class="form-group">
-                    <label class="form-label">Email *</label>
-                    <input type="email" class="form-control" id="adminEmail" value="admin@garciabuilder.com" required>
+                    <label class="form-label">Email/ID do Admin *</label>
+                    <input type="text" class="form-control" id="adminEmail" value="admin@local" required>
+                    <small style="color: var(--text-secondary); margin-top: 0.25rem; display: block;">
+                        💡 Para admins, use um ID simples como: admin@local, admin@system, ou admin
+                    </small>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Senha *</label>
@@ -187,7 +191,7 @@
             <h3 style="color: var(--primary-gold); margin-bottom: 1rem;">✅ Admin Criado com Sucesso!</h3>
             <p><strong>Para fazer login no sistema:</strong></p>
             <p>
-                <strong>Email:</strong> <code id="displayEmail">admin@garciabuilder.com</code><br>
+                <strong>Email/ID:</strong> <code id="displayEmail">admin@local</code><br>
                 <strong>Senha:</strong> <code id="displayPassword">admingarciabuilder</code>
             </p>
             <div style="margin-top: 1.5rem; text-align: center;">
@@ -212,39 +216,19 @@
 
     <script>
         async function createAdminUser() {
-            showStatus('Criando usuário admin (sem confirmação de email)...', 'info');
+            showStatus('Criando usuário admin (sem email real necessário)...', 'info');
 
             try {
                 await waitForSupabase();
 
-                // Método alternativo: Usar Service Role para criar admin confirmado
-                const result = await createAdminDirectly();
+                // Método alternativo: Criar admin com email fictício
+                const result = await createAdminWithFakeEmail();
 
                 if (result.success) {
-                    showCredentials('admin@garciabuilder.com', 'admingarciabuilder');
-                    showStatus('Admin criado com sucesso! Email já confirmado automaticamente.', 'success');
+                    showCredentials('admin@local', 'admingarciabuilder');
+                    showStatus('Admin criado com sucesso! Email fictício aceito automaticamente.', 'success');
                 } else {
-                    // Fallback para método normal
-                    const adminData = {
-                        email: 'admin@garciabuilder.com',
-                        password: 'admingarciabuilder',
-                        options: {
-                            data: {
-                                full_name: 'Andre Garcia',
-                                role: 'admin',
-                                phone: '+44 7508 497586'
-                            }
-                        }
-                    };
-
-                    const fallbackResult = await createAdmin(adminData);
-
-                    if (fallbackResult.success) {
-                        showCredentials(adminData.email, adminData.password);
-                        showStatus('Admin criado! Nota: ' + (fallbackResult.message || 'Pode ser necessário ativar manualmente.'), 'success');
-                    } else {
-                        showStatus('Erro ao criar admin: ' + fallbackResult.error, 'error');
-                    }
+                    showStatus('Erro ao criar admin: ' + result.error, 'error');
                 }
 
             } catch (error) {
@@ -253,7 +237,98 @@
             }
         }
 
-        // Função para criar admin diretamente (método preferido)
+        // Função para criar admin com email fictício
+        async function createAdminWithFakeEmail() {
+            try {
+                // Usar email fictício para admin local
+                const adminEmail = 'admin@local';
+                const adminPassword = 'admingarciabuilder';
+
+                // Tentar primeiro com Supabase (pode não funcionar com email fictício)
+                let supabaseResult = null;
+                try {
+                    const { data, error } = await window.supabaseClient.auth.signUp({
+                        email: adminEmail,
+                        password: adminPassword,
+                        options: {
+                            data: {
+                                full_name: 'Andre Garcia',
+                                role: 'admin',
+                                phone: '+44 7508 497586',
+                                email_confirmed: true,
+                                fake_email: true
+                            }
+                        }
+                    });
+
+                    if (!error && data.user) {
+                        supabaseResult = { success: true, user: data.user };
+                    }
+                } catch (supabaseError) {
+                    console.warn('Supabase com email fictício falhou, usando localStorage:', supabaseError);
+                }
+
+                // Fallback: Criar admin direto no localStorage (sempre funciona)
+                const adminUser = {
+                    id: 'admin-local-001',
+                    email: adminEmail,
+                    username: 'admin',
+                    password: adminPassword,
+                    full_name: 'Andre Garcia',
+                    role: 'admin',
+                    phone: '+44 7508 497586',
+                    created_at: new Date().toISOString(),
+                    last_login: new Date().toISOString(),
+                    status: 'active',
+                    email_confirmed: true,
+                    fake_email: true,
+                    is_local_admin: true
+                };
+
+                // Salvar no localStorage como backup/primary
+                let existingUsers = [];
+                try {
+                    existingUsers = JSON.parse(localStorage.getItem('gb_users') || '[]');
+                } catch (e) {
+                    existingUsers = [];
+                }
+
+                // Remover admin existente se houver
+                existingUsers = existingUsers.filter(u => u.role !== 'admin' && u.email !== adminEmail);
+
+                // Adicionar novo admin
+                existingUsers.push(adminUser);
+                localStorage.setItem('gb_users', JSON.stringify(existingUsers));
+
+                // Definir como usuário atual
+                localStorage.setItem('gb_current_user', JSON.stringify(adminUser));
+
+                // Criar profile
+                const profiles = JSON.parse(localStorage.getItem('gb_user_profiles') || '{}');
+                profiles[adminUser.id] = {
+                    bio: 'Administrador local do sistema Garcia Builder',
+                    goals: ['Gerenciar sistema', 'Administrar usuários'],
+                    experience_level: 'Expert',
+                    location: 'Sistema Local',
+                    certifications: ['Admin Sistema'],
+                    specializations: ['Gestão', 'Administração'],
+                    is_local: true
+                };
+                localStorage.setItem('gb_user_profiles', JSON.stringify(profiles));
+
+                return {
+                    success: true,
+                    data: { user: adminUser },
+                    message: 'Admin local criado com email fictício (funciona offline)'
+                };
+
+            } catch (error) {
+                return {
+                    success: false,
+                    error: error.message
+                };
+            }
+        }        // Função para criar admin diretamente (método preferido)
         async function createAdminDirectly() {
             try {
                 // Usar createUser para admin (não requer confirmação)

@@ -18,11 +18,11 @@ class EnhancedAuthSystem {
 
     initDefaultUsers() {
         // Create default admin user if not exists
-        const adminExists = this.users.find(user => user.email === 'admin@garciabuilder.com');
+        const adminExists = this.users.find(user => user.email === 'admin@local' || user.email === 'admin@garciabuilder.com');
         if (!adminExists) {
             const adminUser = {
                 id: 'admin-garcia-builder',
-                email: 'admin@garciabuilder.com',
+                email: 'admin@local',
                 username: 'admin',
                 password: 'admingarciabuilder', // In production, this should be hashed
                 full_name: 'Andre Garcia',
@@ -34,7 +34,9 @@ class EnhancedAuthSystem {
                 created_at: new Date().toISOString(),
                 last_login: new Date().toISOString(),
                 status: 'active',
-                permissions: ['all']
+                permissions: ['all'],
+                fake_email: true,
+                is_local_admin: true
             };
             this.users.push(adminUser);
 
@@ -103,10 +105,13 @@ class EnhancedAuthSystem {
     async login(credentials) {
         const { username, password, email } = credentials;
 
-        // Find user by username or email
+        // Find user by username or email (incluindo emails fictícios)
         const user = this.users.find(u =>
             (username && (u.username === username || u.email === username)) ||
-            (email && u.email === email)
+            (email && u.email === email) ||
+            // Busca especial para emails fictícios/IDs simples
+            (username && username.includes('@') && u.email === username) ||
+            (email && email.includes('@local') && u.email === email)
         );
 
         if (!user) {

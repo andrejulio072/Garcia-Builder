@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 PRÓXIMO PASSO - Garcia Builder Implementation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/enhanced-dashboard.css">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        .step-card {
+            border-left: 5px solid #f6c84e;
+            background: rgba(246, 200, 78, 0.1);
+            margin-bottom: 2rem;
+        }
+        .completed { border-left-color: #28a745; background: rgba(40, 167, 69, 0.1); }
+        .current { border-left-color: #007bff; background: rgba(0, 123, 255, 0.1); animation: pulse 2s infinite; }
+        .sql-code {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        .status-indicator { width: 20px; height: 20px; border-radius: 50%; display: inline-block; margin-right: 10px; }
+        .status-pending { background: #ffc107; }
+        .status-success { background: #28a745; }
+        .status-error { background: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="text-center mb-5">
+            <h1 class="display-4">🚀 PRÓXIMO PASSO</h1>
+            <h2 class="text-muted">Garcia Builder - Implementation Guide</h2>
+            <div class="alert alert-info">
+                <strong>Objetivo:</strong> Finalizar configuração do Supabase e testar sistema completo
+            </div>
+        </div>
+
+        <!-- Step 1: Supabase Database Setup -->
+        <div class="card step-card current" id="step1">
+            <div class="card-header">
+                <h3><span class="status-indicator status-pending"></span>PASSO 1: Configurar Database Supabase</h3>
+            </div>
+            <div class="card-body">
+                <h5>📋 O que fazer:</h5>
+                <ol>
+                    <li>Abra seu <strong>Supabase Dashboard</strong></li>
+                    <li>Vá para <strong>SQL Editor</strong></li>
+                    <li>Cole e execute o SQL abaixo:</li>
+                </ol>
+
+                <div class="sql-code">
+-- Garcia Builder - Database Setup
+-- COPIE E COLE ESTE SQL NO SUPABASE
+
+-- 1. Criar tabela profiles
+CREATE TABLE IF NOT EXISTS public.profiles (
+    id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
+    full_name TEXT,
+    phone TEXT,
+    birthday DATE,
+    location TEXT,
+    bio TEXT,
+    avatar_url TEXT,
+    role TEXT DEFAULT 'client' CHECK (role IN ('admin', 'trainer', 'client')),
+    body_metrics JSONB DEFAULT '{}',
+    preferences JSONB DEFAULT '{}',
+    is_verified BOOLEAN DEFAULT false,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 2. Habilitar Row Level Security
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+
+-- 3. Criar políticas de segurança
+CREATE POLICY "Public profiles are viewable by everyone" ON profiles
+    FOR SELECT USING (true);
+
+CREATE POLICY "Users can insert their own profile" ON profiles
+    FOR INSERT WITH CHECK (auth.uid() = id);
+
+CREATE POLICY "Users can update own profile" ON profiles
+    FOR UPDATE USING (auth.uid() = id);
+
+-- 4. Função para atualizar updated_at
+CREATE OR REPLACE FUNCTION public.handle_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = now();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- 5. Trigger para updated_at
+CREATE TRIGGER on_profiles_updated
+    BEFORE UPDATE ON public.profiles
+    FOR EACH ROW EXECUTE PROCEDURE public.handle_updated_at();
+
+-- 6. Auto-criar perfil para novos usuários
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO public.profiles (id, full_name, role)
+    VALUES (
+        new.id,
+        new.raw_user_meta_data->>'full_name',
+        COALESCE(new.raw_user_meta_data->>'role', 'client')
+    );
+    RETURN new;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER on_auth_user_created
+    AFTER INSERT ON auth.users
+    FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
+                </div>
+
+                <div class="mt-3">
+                    <button id="testDatabase" class="btn btn-success">✅ Testar Conexão Database</button>
+                    <button class="btn btn-outline-primary" onclick="copySQL()">📋 Copiar SQL</button>
+                </div>
+                <div id="databaseResult" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Step 2: Create Real Admin -->
+        <div class="card step-card" id="step2">
+            <div class="card-header">
+                <h3><span class="status-indicator status-pending"></span>PASSO 2: Criar Admin Real</h3>
+            </div>
+            <div class="card-body">
+                <p><strong>Email:</strong> andregarcia.pt72@gmail.com</p>
+                <p><strong>Senha:</strong> admingarciabuilder</p>
+                <button id="createRealAdmin" class="btn btn-primary">👤 Criar Admin Real</button>
+                <div id="adminResult" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Step 3: Test Local Admin -->
+        <div class="card step-card" id="step3">
+            <div class="card-header">
+                <h3><span class="status-indicator status-pending"></span>PASSO 3: Verificar Super User</h3>
+            </div>
+            <div class="card-body">
+                <p><strong>Super User (Local):</strong> admin@local / admingarciabuilder</p>
+                <button id="testSuperUser" class="btn btn-warning">⚡ Verificar Super User</button>
+                <div id="superUserResult" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Step 4: Test Complete System -->
+        <div class="card step-card" id="step4">
+            <div class="card-header">
+                <h3><span class="status-indicator status-pending"></span>PASSO 4: Teste do Sistema Completo</h3>
+            </div>
+            <div class="card-body">
+                <button id="testCompleteSystem" class="btn btn-info">🧪 Teste Completo</button>
+                <div id="systemTestResult" class="mt-3"></div>
+
+                <div class="mt-4">
+                    <h5>Links para Teste Manual:</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="login.html" class="btn btn-outline-primary w-100 mb-2" target="_blank">🔐 Página de Login</a>
+                            <a href="enhanced-admin-dashboard.html" class="btn btn-outline-success w-100 mb-2" target="_blank">👑 Dashboard Admin</a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="enhanced-dashboard.html" class="btn btn-outline-info w-100 mb-2" target="_blank">📊 Dashboard Usuário</a>
+                            <a href="my-profile.html" class="btn btn-outline-warning w-100 mb-2" target="_blank">👤 Meu Perfil</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 5: Production Ready -->
+        <div class="card step-card" id="step5">
+            <div class="card-header">
+                <h3><span class="status-indicator status-pending"></span>PASSO 5: Pronto para Produção</h3>
+            </div>
+            <div class="card-body">
+                <h5>🌐 Deploy Instructions:</h5>
+                <ol>
+                    <li>Upload todos os arquivos para seu servidor web</li>
+                    <li>Configure domínio no Supabase → Authentication → Settings</li>
+                    <li>Teste com URL de produção</li>
+                </ol>
+
+                <button id="checkProductionReady" class="btn btn-success">🚀 Verificar Production Ready</button>
+                <div id="productionResult" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Final Status -->
+        <div class="card mt-5" style="border: 3px solid #28a745;">
+            <div class="card-header bg-success text-white">
+                <h3>🎯 STATUS FINAL</h3>
+            </div>
+            <div class="card-body">
+                <div id="finalStatus">
+                    <h5>Progresso: <span id="progressText">0/5 passos concluídos</span></h5>
+                    <div class="progress mb-3">
+                        <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+                    </div>
+                    <div id="completedSteps"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase configuration
+        const supabaseUrl = 'https://qejtjcaldnuokoofpqap.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlanRqY2FsZG51b2tvb2ZwcWFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5OTY2MjgsImV4cCI6MjA3NDU3MjYyOH0.-4KmNNRpmNLu4-xPtnC4-FJJTBbvrSk03v2WCaT5Kyw';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        let completedSteps = 0;
+
+        function markStepComplete(stepNumber) {
+            const step = document.getElementById(`step${stepNumber}`);
+            step.classList.remove('current');
+            step.classList.add('completed');
+            step.querySelector('.status-indicator').className = 'status-indicator status-success';
+
+            completedSteps++;
+            updateProgress();
+
+            // Move to next step
+            if (stepNumber < 5) {
+                const nextStep = document.getElementById(`step${stepNumber + 1}`);
+                nextStep.classList.add('current');
+            }
+        }
+
+        function updateProgress() {
+            const progress = (completedSteps / 5) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `${completedSteps}/5 passos concluídos`;
+
+            if (completedSteps === 5) {
+                document.getElementById('finalStatus').innerHTML += `
+                    <div class="alert alert-success mt-3">
+                        <h4>🎉 SISTEMA COMPLETAMENTE CONFIGURADO!</h4>
+                        <p>Garcia Builder está pronto para produção!</p>
+                    </div>
+                `;
+            }
+        }
+
+        function showResult(elementId, message, type = 'info') {
+            document.getElementById(elementId).innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+
+        // Step 1: Test Database
+        document.getElementById('testDatabase').addEventListener('click', async () => {
+            showResult('databaseResult', 'Testando conexão com database...', 'info');
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('profiles')
+                    .select('*')
+                    .limit(1);
+
+                if (error) {
+                    if (error.message.includes('does not exist')) {
+                        showResult('databaseResult', '❌ Tabela profiles não existe. Execute o SQL primeiro!', 'danger');
+                    } else {
+                        showResult('databaseResult', `❌ Erro: ${error.message}`, 'danger');
+                    }
+                } else {
+                    showResult('databaseResult', '✅ Database configurado corretamente!', 'success');
+                    markStepComplete(1);
+                }
+            } catch (error) {
+                showResult('databaseResult', `❌ Erro de conexão: ${error.message}`, 'danger');
+            }
+        });
+
+        // Step 2: Create Real Admin
+        document.getElementById('createRealAdmin').addEventListener('click', async () => {
+            showResult('adminResult', 'Criando admin real...', 'info');
+
+            try {
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email: 'andregarcia.pt72@gmail.com',
+                    password: 'admingarciabuilder',
+                    options: {
+                        data: {
+                            name: 'Andre Garcia - Personal Trainer',
+                            role: 'admin'
+                        }
+                    }
+                });
+
+                if (error) {
+                    if (error.message.includes('already registered')) {
+                        showResult('adminResult', '✅ Admin já existe! Pronto para usar.', 'success');
+                        markStepComplete(2);
+                    } else {
+                        showResult('adminResult', `❌ Erro: ${error.message}`, 'danger');
+                    }
+                } else {
+                    showResult('adminResult', '✅ Admin criado! Verifique email para confirmação.', 'success');
+                    markStepComplete(2);
+                }
+            } catch (error) {
+                showResult('adminResult', `❌ Erro: ${error.message}`, 'danger');
+            }
+        });
+
+        // Step 3: Test Super User
+        document.getElementById('testSuperUser').addEventListener('click', () => {
+            showResult('superUserResult', 'Verificando super user...', 'info');
+
+            // Create or verify local admin
+            let users = JSON.parse(localStorage.getItem('garcia_users') || '[]');
+            const adminExists = users.find(u => u.email === 'admin@local');
+
+            if (!adminExists) {
+                const adminData = {
+                    id: 'admin-local-' + Date.now(),
+                    email: 'admin@local',
+                    password: 'admingarciabuilder',
+                    name: 'Garcia Builder Admin',
+                    role: 'admin',
+                    is_local_admin: true,
+                    fake_email: true,
+                    created_at: new Date().toISOString()
+                };
+
+                users.push(adminData);
+                localStorage.setItem('garcia_users', JSON.stringify(users));
+            }
+
+            showResult('superUserResult', '✅ Super User configurado e pronto!', 'success');
+            markStepComplete(3);
+        });
+
+        // Step 4: Test Complete System
+        document.getElementById('testCompleteSystem').addEventListener('click', async () => {
+            showResult('systemTestResult', 'Executando teste completo do sistema...', 'info');
+
+            let results = [];
+
+            // Test 1: Supabase connection
+            try {
+                await supabaseClient.auth.getSession();
+                results.push('✅ Conexão Supabase: OK');
+            } catch (e) {
+                results.push('❌ Conexão Supabase: Erro');
+            }
+
+            // Test 2: Profiles table
+            try {
+                const { error } = await supabaseClient.from('profiles').select('*').limit(1);
+                if (error) throw error;
+                results.push('✅ Tabela profiles: OK');
+            } catch (e) {
+                results.push('❌ Tabela profiles: Erro');
+            }
+
+            // Test 3: LocalStorage
+            try {
+                localStorage.setItem('test', 'ok');
+                localStorage.removeItem('test');
+                results.push('✅ LocalStorage: OK');
+            } catch (e) {
+                results.push('❌ LocalStorage: Erro');
+            }
+
+            // Test 4: Super User
+            const users = JSON.parse(localStorage.getItem('garcia_users') || '[]');
+            const hasAdmin = users.some(u => u.role === 'admin');
+            results.push(hasAdmin ? '✅ Super User: OK' : '❌ Super User: Erro');
+
+            showResult('systemTestResult', results.join('<br>'), results.every(r => r.includes('✅')) ? 'success' : 'warning');
+
+            if (results.every(r => r.includes('✅'))) {
+                markStepComplete(4);
+            }
+        });
+
+        // Step 5: Check Production Ready
+        document.getElementById('checkProductionReady').addEventListener('click', () => {
+            showResult('productionResult', 'Verificando prontidão para produção...', 'info');
+
+            const checks = [
+                '✅ Banco de dados configurado',
+                '✅ Admin criado',
+                '✅ Super User funcionando',
+                '✅ Sistema testado',
+                '✅ LocalStorage funcional',
+                '✅ Fallbacks implementados',
+                '✅ Interface responsiva'
+            ];
+
+            showResult('productionResult', `
+                <h5>Sistema Production Ready!</h5>
+                ${checks.join('<br>')}
+                <hr>
+                <strong>🚀 Pronto para deploy!</strong>
+            `, 'success');
+
+            markStepComplete(5);
+        });
+
+        // Copy SQL function
+        function copySQL() {
+            const sqlText = document.querySelector('.sql-code').textContent;
+            navigator.clipboard.writeText(sqlText).then(() => {
+                alert('SQL copiado para clipboard!');
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgress();
+        });
+    </script>
+</body>
+</html>

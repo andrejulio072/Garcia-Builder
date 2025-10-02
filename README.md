@@ -1,3 +1,26 @@
+# Confirmação de E-mail para Contato
+
+Agora o sistema possui confirmação de e-mail para usuários que entram em contato pelo formulário do site.
+
+**Como usar:**
+- Inclua o script `assets/js/contact-send.js` no seu formulário de contato.
+- O backend está em `api/contact-confirmation.js`.
+- A página de confirmação é `confirm-contact.html`.
+- Veja instruções detalhadas em `docs/confirmacao-contato.md`.
+
+**Exemplo de formulário:**
+```html
+<form onsubmit="enviarContato(this); return false;">
+  <input type="text" name="nome" placeholder="Seu nome" required>
+  <input type="email" name="email" placeholder="Seu e-mail" required>
+  <textarea name="mensagem" placeholder="Mensagem" required></textarea>
+  <button type="submit">Enviar</button>
+</form>
+```
+
+**Importante:**
+- Configure o e-mail do remetente no backend antes de usar em produção.
+- Tokens de confirmação são armazenados localmente (troque para banco em produção).
 # Garcia Builder — Professional Online Coaching Platform
 
 Complete multilingual fitness coaching platform for **Andre Garcia (Garcia Builder)** — featuring advanced user authentication, payment processing, newsletter management, and mobile-optimized lead capture. Built with modern web technologies and deployed on **GitHub Pages**.

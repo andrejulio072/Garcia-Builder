@@ -215,6 +215,9 @@
         profileData.body_metrics.weight_history = currentUser.user_metadata.body_metrics.weight_history;
       }
 
+      // Fetch latest body metrics record to populate current fields (weight, height, body fat, measurements)
+      await fetchLatestBodyMetricsFromTable();
+
     } catch (error) {
       console.error('Error loading from Supabase:', error);
     }
@@ -241,6 +244,40 @@
       }
     } catch (e) {
       console.warn('Failed to load weight history from table:', e?.message || e);
+    }
+  };
+
+  // Fetch the latest body metrics entry to hydrate current fields
+  const fetchLatestBodyMetricsFromTable = async () => {
+    try {
+      if (!window.supabaseClient) return;
+      const { data, error } = await window.supabaseClient
+        .from('body_metrics')
+        .select('date, weight, height, body_fat, measurements')
+        .eq('user_id', currentUser.id)
+        .order('date', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (error) {
+        console.warn('Could not fetch latest body metrics:', error.message || error);
+        return;
+      }
+      if (data) {
+        if (data.weight != null && data.weight !== '') profileData.body_metrics.current_weight = Number(data.weight);
+        if (data.height != null && data.height !== '') profileData.body_metrics.height = Number(data.height);
+        if (data.body_fat != null && data.body_fat !== '') profileData.body_metrics.body_fat_percentage = Number(data.body_fat);
+        const m = data.measurements || {};
+        if (typeof m === 'object') {
+          const setIf = (key) => {
+            if (m[key] != null && m[key] !== '') {
+              profileData.body_metrics.measurements[key] = Number(m[key]);
+            }
+          };
+          ['chest','waist','hips','arms','thighs','muscle_mass'].forEach(setIf);
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to load latest body metrics from table:', e?.message || e);
     }
   };
 
@@ -413,24 +450,55 @@
         }
       }
 
-      // Save metrics to user metadata as fallback (no separate table needed)
+      // Save metrics: preferred upsert to body_metrics table (today) and mirror to user metadata
       if (section === 'body_metrics' || !section) {
         try {
+          // 1) Upsert into table for today's date
+          try {
+            const today = new Date().toISOString().slice(0,10);
+            const payload = {
+              user_id: currentUser.id,
+              date: today,
+              weight: num(profileData.body_metrics.current_weight),
+              height: num(profileData.body_metrics.height),
+              body_fat: num(profileData.body_metrics.body_fat_percentage),
+              measurements: {
+                chest: num(profileData.body_metrics.measurements?.chest ?? profileData.body_metrics.measurements_chest),
+                waist: num(profileData.body_metrics.measurements?.waist ?? profileData.body_metrics.measurements_waist),
+                hips: num(profileData.body_metrics.measurements?.hips ?? profileData.body_metrics.measurements_hips),
+                arms: num(profileData.body_metrics.measurements?.arms ?? profileData.body_metrics.measurements_arms),
+                thighs: num(profileData.body_metrics.measurements?.thighs ?? profileData.body_metrics.measurements_thighs),
+                muscle_mass: num(profileData.body_metrics.muscle_mass),
+                target_weight: num(profileData.body_metrics.target_weight)
+              },
+              client_id: `bm-${today}`,
+              updated_at: new Date().toISOString()
+            };
+            const { error: bmErr } = await window.supabaseClient
+              .from('body_metrics')
+              .upsert(payload, { onConflict: 'user_id,client_id' });
+            if (bmErr) console.warn('Upsert body_metrics table failed:', bmErr);
+          } catch (e) {
+            console.warn('Could not upsert body metrics table:', e?.message || e);
+          }
+
+          // 2) Mirror to user metadata as fallback
           const metricsData = {
             current_weight: num(profileData.body_metrics.current_weight),
             height: num(profileData.body_metrics.height),
             target_weight: num(profileData.body_metrics.target_weight),
             body_fat_percentage: num(profileData.body_metrics.body_fat_percentage),
             muscle_mass: num(profileData.body_metrics.muscle_mass),
-            measurements_chest: num(profileData.body_metrics.measurements_chest),
-            measurements_waist: num(profileData.body_metrics.measurements_waist),
-            measurements_hips: num(profileData.body_metrics.measurements_hips),
-            measurements_arms: num(profileData.body_metrics.measurements_arms),
-            measurements_thighs: num(profileData.body_metrics.measurements_thighs),
+            measurements: {
+              chest: num(profileData.body_metrics.measurements?.chest ?? profileData.body_metrics.measurements_chest),
+              waist: num(profileData.body_metrics.measurements?.waist ?? profileData.body_metrics.measurements_waist),
+              hips: num(profileData.body_metrics.measurements?.hips ?? profileData.body_metrics.measurements_hips),
+              arms: num(profileData.body_metrics.measurements?.arms ?? profileData.body_metrics.measurements_arms),
+              thighs: num(profileData.body_metrics.measurements?.thighs ?? profileData.body_metrics.measurements_thighs)
+            },
             updated_at: new Date().toISOString()
           };
 
-          // Store in user metadata
           const { error: metricsError } = await window.supabaseClient.auth.updateUser({
             data: { body_metrics: metricsData }
           });
@@ -494,6 +562,26 @@
             console.warn('Failed to save macros to user metadata:', macrosError);
           }
 
+          // Best-effort: also write calories to today's body_metrics row
+          try {
+            const today = new Date().toISOString().slice(0,10);
+            const { data: existing } = await window.supabaseClient
+              .from('body_metrics')
+              .select('measurements')
+              .eq('user_id', currentUser.id)
+              .eq('date', today)
+              .maybeSingle();
+            const measurements = existing?.measurements || {};
+            measurements.calories = macrosData.calories;
+            const payload = { user_id: currentUser.id, date: today, measurements, client_id: `bm-${today}` };
+            const { error: upErr } = await window.supabaseClient
+              .from('body_metrics')
+              .upsert(payload, { onConflict: 'user_id,client_id' });
+            if (upErr) console.warn('Failed to upsert calories into body_metrics:', upErr);
+          } catch (e) {
+            console.warn('Could not mirror macros calories to body_metrics:', e?.message || e);
+          }
+
         } catch (error) {
           console.error('Error saving macros:', error);
         }
@@ -550,6 +638,8 @@
 
     // Render weight chart if data exists
     renderWeightHistoryChart();
+  // Render body fat chart (async fetch)
+  renderBodyFatHistoryChart();
 
   // Habits
   setupHabitsForm();
@@ -773,6 +863,11 @@
     const weightInput = document.getElementById('current_weight');
     if (weightInput) {
       weightInput.addEventListener('change', handleWeightChange);
+    }
+    // Body fat tracking
+    const bodyFatInput = document.getElementById('body_fat_percentage');
+    if (bodyFatInput) {
+      bodyFatInput.addEventListener('change', handleBodyFatChange);
     }
 
     // Setup automatic calculations
@@ -1430,6 +1525,44 @@
     }
   };
 
+  // Handle body fat change
+  const handleBodyFatChange = (event) => {
+    const bf = event.target.value;
+    if (bf && bf !== profileData.body_metrics.body_fat_percentage) {
+      // Save current value
+      profileData.body_metrics.body_fat_percentage = parseFloat(bf);
+      // Persist to metadata (best effort)
+      window.supabaseClient?.auth?.updateUser({
+        data: { body_metrics: { ...profileData.body_metrics } }
+      }).catch(() => {});
+      // Update chart
+      renderBodyFatHistoryChart();
+      // Upsert into table for today
+      upsertBodyFatRowToTable(parseFloat(bf)).catch(() => {});
+    }
+  };
+
+  const upsertBodyFatRowToTable = async (bodyFat) => {
+    try {
+      if (!window.supabaseClient) return;
+      const today = new Date().toISOString().slice(0,10);
+      const { data: { user } } = await window.supabaseClient.auth.getUser();
+      const payload = {
+        user_id: user?.id,
+        date: today,
+        body_fat: bodyFat,
+        client_id: `bm-${today}`,
+        updated_at: new Date().toISOString()
+      };
+      const { error } = await window.supabaseClient
+        .from('body_metrics')
+        .upsert(payload, { onConflict: 'user_id,client_id' });
+      if (error) console.warn('Upsert body fat to table failed:', error.message || error);
+    } catch (e) {
+      console.warn('Upsert body fat error:', e?.message || e);
+    }
+  };
+
   // Upsert a weight row for today into body_metrics using unique client_id per date
   const upsertWeightRowToTable = async (weight) => {
     try {
@@ -1549,6 +1682,79 @@
       });
     } catch (e) {
       console.warn('Could not render weight chart:', e);
+    }
+  };
+
+  // Render body fat history chart (from table if available, fallback to metadata current values over time)
+  let bodyFatChartInstance = null;
+  const renderBodyFatHistoryChart = async () => {
+    try {
+      const empty = document.getElementById('bodyfat-chart-empty');
+      const canvas = document.getElementById('bodyfat-history-canvas');
+      if (!canvas) return;
+
+      // Prefer reading from table: last 180 days of body_fat not null
+      let rows = [];
+      try {
+        if (window.supabaseClient) {
+          const { data, error } = await window.supabaseClient
+            .from('body_metrics')
+            .select('date, body_fat')
+            .eq('user_id', currentUser.id)
+            .not('body_fat', 'is', null)
+            .order('date', { ascending: true })
+            .limit(180);
+          if (!error && Array.isArray(data)) rows = data;
+        }
+      } catch (e) { /* noop */ }
+
+      if (!rows.length) {
+        if (empty) empty.style.display = '';
+        if (canvas) canvas.style.display = 'none';
+        return;
+      }
+
+      const labels = rows.map(r => new Date(r.date).toLocaleDateString());
+      const values = rows.map(r => Number(r.body_fat));
+
+      if (empty) empty.style.display = 'none';
+      canvas.style.display = '';
+
+      const ctx = canvas.getContext('2d');
+      if (bodyFatChartInstance) {
+        bodyFatChartInstance.data.labels = labels;
+        bodyFatChartInstance.data.datasets[0].data = values;
+        bodyFatChartInstance.update();
+        return;
+      }
+
+      bodyFatChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Body Fat %',
+            data: values,
+            borderColor: 'rgba(99, 179, 237, 1)',
+            backgroundColor: 'rgba(99, 179, 237, 0.15)',
+            tension: 0.3,
+            fill: true,
+            pointRadius: 3,
+            pointHoverRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#fff' } } },
+          scales: {
+            x: { ticks: { color: '#ddd' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+            y: { ticks: { color: '#ddd' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+          }
+        }
+      });
+    } catch (e) {
+      console.warn('Could not render body fat chart:', e);
     }
   };
 

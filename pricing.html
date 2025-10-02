@@ -278,6 +278,34 @@
     <h1 class="title-gradient text-glow" data-i18n="pricing.title">Pricing</h1>
     <p class="subtitle" data-i18n="pricing.subtitle">Choose your path to transformation. All plans include Trainerize app, WhatsApp support, and weekly check-ins.</p>
 
+    <!-- Period Selection -->
+    <div class="period-selector text-center mb-4">
+      <h3 class="mb-3" data-i18n="pricing.period_selector.title">Choose Your Plan Duration</h3>
+      <div class="btn-group" role="group" aria-label="Plan Duration">
+        <input type="radio" class="btn-check" name="planDuration" id="monthly" value="monthly" checked>
+        <label class="btn btn-outline-light" for="monthly" data-i18n="pricing.period_selector.monthly">Monthly</label>
+        
+        <input type="radio" class="btn-check" name="planDuration" id="quarterly" value="quarterly">
+        <label class="btn btn-outline-light" for="quarterly">
+          <span data-i18n="pricing.period_selector.quarterly">3 Months</span>
+          <small class="discount-badge">10% OFF</small>
+        </label>
+        
+        <input type="radio" class="btn-check" name="planDuration" id="biannual" value="biannual">
+        <label class="btn btn-outline-light" for="biannual">
+          <span data-i18n="pricing.period_selector.biannual">6 Months</span>
+          <small class="discount-badge">15% OFF</small>
+        </label>
+        
+        <input type="radio" class="btn-check" name="planDuration" id="annual" value="annual">
+        <label class="btn btn-outline-light" for="annual">
+          <span data-i18n="pricing.period_selector.annual">12 Months</span>
+          <small class="discount-badge">25% OFF</small>
+        </label>
+      </div>
+      <p class="text-muted mt-2" data-i18n="pricing.period_selector.note">Save more with longer commitments. All plans include full access from day one.</p>
+    </div>
+
     <!-- Currency Selector moved to navbar -->
 
 
@@ -330,12 +358,129 @@
 <div class="footer"><div class="container small">© 2025 Garcia Builder — Online Coaching • <a href="https://instagram.com/garcia.builder" target="_blank">@garcia.builder</a> • <a data-i18n="cta.strip.book" href="https://calendly.com/andrenjulio072/consultation" target="_blank">Book a call</a> • <a href="#" data-open-lead-magnet data-i18n="cta.footer.leadmagnet">Baixar guia de treino</a></div></div>
 <a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank">WhatsApp</a>
 
+<style>
+/* Period Selector Styles */
+.period-selector {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.1) 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+}
+
+.period-selector .btn-group {
+  background: rgba(0,0,0,0.3);
+  border-radius: 15px;
+  padding: 5px;
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.period-selector .btn {
+  position: relative;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  transition: all 0.3s ease;
+  background: transparent;
+  color: #fff;
+  font-weight: 500;
+  margin: 0 2px;
+}
+
+.period-selector .btn:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.period-selector .btn-check:checked + .btn {
+  background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+  color: #000;
+  box-shadow: 0 5px 20px rgba(255,215,0,0.4);
+  transform: translateY(-2px);
+}
+
+.discount-badge {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #32CD32;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  margin-top: 0.25rem;
+}
+
+.btn-check:checked + .btn .discount-badge {
+  color: #006400;
+}
+
+/* Pricing Grid Enhancement */
+.pricing-grid {
+  transition: all 0.5s ease;
+}
+
+.pricing-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pricing-card.discounted {
+  border: 2px solid #32CD32;
+  box-shadow: 0 10px 30px rgba(50,205,50,0.3);
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9em;
+}
+
+.discounted-price {
+  color: #32CD32;
+  font-weight: 700;
+  font-size: 1.1em;
+}
+
+.discount-indicator {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: linear-gradient(135deg, #32CD32 0%, #228B22 100%);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(50,205,50,0.4);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .period-selector .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .period-selector .btn {
+    margin: 2px 0;
+    width: 100%;
+  }
+}
+</style>
+
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script defer src="js/app.js"></script>
 <script defer src="js/lightbox.js"></script>
 <script defer src="js/currency-converter.js"></script>
 <script defer src="js/discount-system.js"></script>
 <script defer src="js/payment-links.js"></script>
+<script defer src="js/stripe-discount-integration.js"></script>
 <script defer src="js/pricing.js"></script>
 <script defer src="js/auth.js"></script>
 <script defer src="js/auth-guard.js"></script>

@@ -1,5 +1,103 @@
 // Pricing page specific JavaScript
 (function() {
+  let currentDiscount = { period: 'monthly', percentage: 0 };
+
+  function getDiscountForPeriod(period) {
+    const discounts = {
+      'monthly': 0,
+      'quarterly': 10,
+      'biannual': 15,
+      'annual': 25
+    };
+    return discounts[period] || 0;
+  }
+
+  function calculateDiscountedPrice(originalPrice, discountPercentage) {
+    const price = parseFloat(originalPrice.replace(/[£€$]/g, ''));
+    const discounted = price * (1 - discountPercentage / 100);
+    const currency = originalPrice.charAt(0);
+    return {
+      original: originalPrice,
+      discounted: currency + Math.round(discounted),
+      savings: currency + Math.round(price - discounted)
+    };
+  }
+
+  function updatePricingDisplay() {
+    const selectedPeriod = document.querySelector('input[name="planDuration"]:checked')?.value || 'monthly';
+    const discountPercentage = getDiscountForPeriod(selectedPeriod);
+    currentDiscount = { period: selectedPeriod, percentage: discountPercentage };
+    
+    const container = document.getElementById('pricingGrid');
+    if (!container) return;
+
+    const cards = container.querySelectorAll('.price');
+    cards.forEach(card => {
+      const priceTag = card.querySelector('.tag');
+      if (!priceTag) return;
+
+      const button = card.querySelector('.btn.btn-gold');
+      const originalPrice = button?.getAttribute('data-original-price') || button?.getAttribute('data-plan-price');
+      
+      if (!originalPrice) return;
+
+      // Store original price if not already stored
+      if (!button.getAttribute('data-original-price')) {
+        button.setAttribute('data-original-price', originalPrice);
+      }
+
+      if (discountPercentage > 0) {
+        const pricing = calculateDiscountedPrice(originalPrice, discountPercentage);
+        const periodMultiplier = selectedPeriod === 'quarterly' ? 3 : 
+                               selectedPeriod === 'biannual' ? 6 : 
+                               selectedPeriod === 'annual' ? 12 : 1;
+        
+        // Update price display
+        priceTag.innerHTML = `
+          <div class="original-price">${pricing.original}/mo</div>
+          <div class="discounted-price">${pricing.discounted}/mo</div>
+          <small>Save ${pricing.savings}/mo</small>
+        `;
+
+        // Add discount indicator
+        if (!card.querySelector('.discount-indicator')) {
+          const indicator = document.createElement('div');
+          indicator.className = 'discount-indicator';
+          indicator.textContent = `-${discountPercentage}%`;
+          card.style.position = 'relative';
+          card.appendChild(indicator);
+        }
+
+        // Update button data
+        button.setAttribute('data-plan-price', pricing.discounted);
+        button.setAttribute('data-period', selectedPeriod);
+        button.setAttribute('data-discount', discountPercentage);
+        button.setAttribute('data-period-multiplier', periodMultiplier);
+        
+        card.classList.add('discounted');
+      } else {
+        // Reset to original price
+        const lang = (window.GB_I18N && window.GB_I18N.getLang && window.GB_I18N.getLang()) || 'en';
+        const dict = (window.DICTS && window.DICTS[lang] && window.DICTS[lang].pricing) ? window.DICTS[lang].pricing : null;
+        const period = dict?.plans?.[button.getAttribute('data-plan-key')]?.period || '/mo';
+        
+        priceTag.innerHTML = `${originalPrice}<span style="font-size:16px">${period}</span>`;
+        
+        // Remove discount indicator
+        const indicator = card.querySelector('.discount-indicator');
+        if (indicator) indicator.remove();
+        
+        // Reset button data
+        button.setAttribute('data-plan-price', originalPrice);
+        button.removeAttribute('data-period');
+        button.removeAttribute('data-discount');
+        button.removeAttribute('data-period-multiplier');
+        
+        card.classList.remove('discounted');
+      }
+    });
+  }
+
   function renderPricing(){
     const container = document.getElementById('pricingGrid');
     if (!container) return;
@@ -23,6 +121,14 @@
           <button class="btn btn-gold" data-plan-key="${key}" data-plan-name="${p.name}" data-plan-price="${p.price}">${dict.cta?.choose || 'Choose Plan'}</button>
         </div>`;
     }).join('');
+
+    // Initialize period selector event listeners
+    document.querySelectorAll('input[name="planDuration"]').forEach(radio => {
+      radio.addEventListener('change', updatePricingDisplay);
+    });
+
+    // Initialize pricing display
+    updatePricingDisplay();
 
     // Initialize tilt
     if (window.VanillaTilt) {
@@ -93,6 +199,11 @@
 // Função para lidar com seleção de planos
 async function handlePlanSelection(planKey, planName, planPrice, buttonElement) {
   try {
+    // Get current discount information
+    const period = buttonElement?.getAttribute('data-period') || 'monthly';
+    const discount = buttonElement?.getAttribute('data-discount') || '0';
+    const periodMultiplier = buttonElement?.getAttribute('data-period-multiplier') || '1';
+    
     // Attach any active discount (applied at checkout only)
     let activeDiscount = null;
     try {
@@ -101,6 +212,9 @@ async function handlePlanSelection(planKey, planName, planPrice, buttonElement) 
 
     // 1) Opção 1: Payment Links (sem backend)
     if (window.PAYMENT_LINKS && window.PAYMENT_LINKS[planKey]) {
+      // Generate URL with period and discount information
+      let url = window.PAYMENT_LINKS[planKey];
+      
       // feedback opcional no botão
       if (buttonElement) {
         const original = buttonElement.textContent;
@@ -111,12 +225,32 @@ async function handlePlanSelection(planKey, planName, planPrice, buttonElement) 
           buttonElement.disabled = false;
         }, 2000);
       }
-      // abre o Stripe Payment Link (página hospedada pelo Stripe)
-      let url = window.PAYMENT_LINKS[planKey];
+      
+      // Add period discount to URL if applicable
+      if (period !== 'monthly' && discount > 0) {
+        const separator = url.includes('?') ? '&' : '?';
+        url += `${separator}period=${period}&discount=${discount}&months=${periodMultiplier}`;
+      }
+      
+      // Add any active discount code
       if (activeDiscount && activeDiscount.code) {
         const separator = url.includes('?') ? '&' : '?';
-        url += `${separator}discount=${encodeURIComponent(activeDiscount.code)}`;
+        url += `${separator}discount_code=${encodeURIComponent(activeDiscount.code)}`;
       }
+      
+      // Store plan data with discount info for tracking
+      const planData = {
+        key: planKey,
+        name: planName,
+        price: planPrice,
+        period: period,
+        discount: discount,
+        periodMultiplier: periodMultiplier,
+        timestamp: Date.now()
+      };
+      localStorage.setItem('selectedPlan', JSON.stringify(planData));
+      
+      // abre o Stripe Payment Link (página hospedada pelo Stripe)
       window.open(url, '_blank', 'noopener,noreferrer');
       return;
     }

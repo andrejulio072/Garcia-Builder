@@ -224,6 +224,14 @@
       pricing: {
         title: "Pricing",
         subtitle: "Choose the coaching level that matches your goals today — and scale up as your results grow.",
+        period_selector: {
+          title: "Choose Your Plan Duration",
+          monthly: "Monthly",
+          quarterly: "3 Months",
+          biannual: "6 Months", 
+          annual: "12 Months",
+          note: "Save more with longer commitments. All plans include full access from day one."
+        },
         plans: {
           starter: {
             badge: "Quick Start",
@@ -644,6 +652,14 @@
       pricing: {
         title: "Planos",
         subtitle: "Escolha o nível de coaching que combina com seus objetivos hoje — e evolua conforme seus resultados crescem.",
+        period_selector: {
+          title: "Escolha a Duração do Seu Plano",
+          monthly: "Mensal",
+          quarterly: "3 Meses",
+          biannual: "6 Meses",
+          annual: "12 Meses",
+          note: "Economize mais com compromissos de longo prazo. Todos os planos incluem acesso completo desde o primeiro dia."
+        },
         plans: {
           starter: {
             badge: "Começo Rápido",
@@ -1052,6 +1068,14 @@
       pricing: {
         title: "Precios",
         subtitle: "Elige el nivel de coaching que se ajuste a tus objetivos hoy — y escala a medida que crecen tus resultados.",
+        period_selector: {
+          title: "Elige la Duración de tu Plan",
+          monthly: "Mensual",
+          quarterly: "3 Meses",
+          biannual: "6 Meses",
+          annual: "12 Meses",
+          note: "Ahorra más con compromisos a largo plazo. Todos los planes incluyen acceso completo desde el primer día."
+        },
         plans: {
           starter: {
             badge: "Inicio Rápido",

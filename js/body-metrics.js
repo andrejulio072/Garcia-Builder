@@ -7,7 +7,12 @@
   const init = () => {
     checkUserAuth();
 
+    // On my-profile page we already have a dedicated Body Metrics tab.
+    // Avoid injecting a duplicate section here; just expose modal/upload helpers.
     if (window.location.pathname.includes('my-profile')) {
+      initializeBodyMetrics();
+    } else {
+      // On other pages (e.g., dashboard), we can render a compact section.
       initializeBodyMetrics();
       addBodyMetricsSection();
     }
@@ -373,18 +378,26 @@
 
   const saveBodyMetrics = async (entryData) => {
     try {
+      let savedViaSupabase = false;
       if (window.supabaseClient && currentUser) {
         const { error } = await window.supabaseClient
           .from('body_metrics')
           .insert([entryData]);
 
-        if (error) throw error;
-      } else {
-        // Fallback para localStorage
-        const stored = JSON.parse(localStorage.getItem(`gb_body_metrics_${currentUser?.id}`) || '[]');
-        entryData.id = Date.now().toString();
+        if (!error) {
+          savedViaSupabase = true;
+        } else {
+          console.warn('Supabase insert failed for body_metrics, falling back to localStorage:', error?.message || error);
+        }
+      }
+
+      if (!savedViaSupabase) {
+        // Fallback para localStorage (sempre persistimos localmente)
+        const key = `gb_body_metrics_${currentUser?.id || 'guest'}`;
+        const stored = JSON.parse(localStorage.getItem(key) || '[]');
+        entryData.id = entryData.id || Date.now().toString();
         stored.push(entryData);
-        localStorage.setItem(`gb_body_metrics_${currentUser?.id}`, JSON.stringify(stored));
+        localStorage.setItem(key, JSON.stringify(stored));
       }
 
       // Atualizar array local
@@ -393,7 +406,8 @@
 
     } catch (error) {
       console.error('❌ Error saving body metrics:', error);
-      throw new Error('Failed to save metrics. Please try again.');
+      // Graceful fallback message (avoid blocking the user)
+      throw new Error('Failed to save metrics online. Saved locally and will sync later.');
     }
   };
 
@@ -486,22 +500,45 @@
 
     input.onchange = function(event) {
       const files = Array.from(event.target.files);
-      files.forEach(file => {
-        if (file.type.startsWith('image/')) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            const photoData = {
+      files.forEach(async (file) => {
+        if (!file.type.startsWith('image/')) return;
+
+        // Try Supabase Storage first to avoid localStorage quota limits
+        let photoRecord = null;
+        if (window.supabaseClient && currentUser) {
+          try {
+            const bucket = 'user-assets';
+            const path = `${currentUser.id}/progress/${Date.now()}-${file.name}`;
+            const { data, error } = await window.supabaseClient.storage
+              .from(bucket)
+              .upload(path, file, { cacheControl: '3600', upsert: false, contentType: file.type });
+            if (error) throw error;
+            const { data: pub } = window.supabaseClient.storage.from(bucket).getPublicUrl(data.path);
+            photoRecord = {
               user_id: currentUser?.id,
-              image_data: e.target.result,
+              image_url: pub.publicUrl,
               filename: file.name,
               date: new Date().toISOString().split('T')[0],
               created_at: new Date().toISOString()
             };
-
-            saveProgressPhoto(photoData);
-          };
-          reader.readAsDataURL(file);
+          } catch (e) {
+            console.warn('Supabase Storage upload failed, compressing and saving locally:', e?.message || e);
+          }
         }
+
+        // Fallback: compress to base64 (max ~1280px) and store locally
+        if (!photoRecord) {
+          const compressedDataUrl = await compressImageToDataURL(file, 1280, 0.8);
+          photoRecord = {
+            user_id: currentUser?.id,
+            image_data: compressedDataUrl,
+            filename: file.name,
+            date: new Date().toISOString().split('T')[0],
+            created_at: new Date().toISOString()
+          };
+        }
+
+        saveProgressPhoto(photoRecord);
       });
     };
 
@@ -513,8 +550,9 @@
       progressPhotos = progressPhotos || [];
       progressPhotos.unshift(photoData);
 
-      // Salvar no localStorage (em produção, usar Supabase Storage)
-      localStorage.setItem(`gb_progress_photos_${currentUser?.id}`, JSON.stringify(progressPhotos));
+      // Salvar metadados no localStorage (armazenamos URL ou base64 comprimida)
+      const key = `gb_progress_photos_${currentUser?.id || 'guest'}`;
+      localStorage.setItem(key, JSON.stringify(progressPhotos));
 
       showNotification('📸 Progress photo uploaded!', 'success');
       loadProgressPhotos();
@@ -530,7 +568,7 @@
     if (!photosGrid) return;
 
     // Carregar do localStorage
-    const stored = localStorage.getItem(`gb_progress_photos_${currentUser?.id}`);
+  const stored = localStorage.getItem(`gb_progress_photos_${currentUser?.id || 'guest'}`);
     progressPhotos = stored ? JSON.parse(stored) : [];
 
     if (!progressPhotos.length) {
@@ -538,9 +576,9 @@
       return;
     }
 
-    const photosHTML = progressPhotos.slice(0, 6).map((photo, index) => `
+    const photosHTML = progressPhotos.slice(0, 12).map((photo, index) => `
       <div class="progress-photo-item">
-        <img src="${photo.image_data}" alt="Progress ${index + 1}" class="progress-photo" onclick="viewPhoto('${photo.image_data}')">
+        <img src="${photo.image_url || photo.image_data}" alt="Progress ${index + 1}" class="progress-photo" onclick="viewPhoto('${photo.image_url || photo.image_data}')">
         <div class="photo-date">${new Date(photo.date).toLocaleDateString()}</div>
       </div>
     `).join('');
@@ -715,6 +753,9 @@
           cursor: pointer;
           transition: all 0.3s ease;
         }
+        @media (min-width: 768px) {
+          .progress-photo { height: 180px; }
+        }
         .progress-photo:hover {
           transform: scale(1.05);
         }
@@ -796,3 +837,29 @@
 
   console.log('Body Metrics System loaded');
 })();
+
+// Utility: compress image file to DataURL to reduce localStorage usage
+async function compressImageToDataURL(file, maxSize = 1280, quality = 0.8) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let { width, height } = img;
+        const scale = Math.min(1, maxSize / Math.max(width, height));
+        width = Math.round(width * scale);
+        height = Math.round(height * scale);
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}

@@ -18,7 +18,7 @@
   // Base payment links (monthly prices)
   const BASE_PAYMENT_LINKS = {
     starter: "https://buy.stripe.com/7sY6oG8qsexmbXEfkyak000",
-    beginner: "https://buy.stripe.com/6oU5kC7mobla2n48Waak001", 
+    beginner: "https://buy.stripe.com/6oU5kC7mobla2n48Waak001",
     essentials: "https://buy.stripe.com/14A14m6ik74U9Pw2xMak002",
     full: "https://buy.stripe.com/bJe3cu5egbla7Hodcqak003",
     elite: "https://buy.stripe.com/5kQdR85eg1KA1j04FUak004"
@@ -42,7 +42,7 @@
   function generateDiscountedPaymentLink(planKey, period = 'monthly') {
     const baseLink = BASE_PAYMENT_LINKS[planKey];
     const periodConfig = PERIOD_DISCOUNTS[period];
-    
+
     if (!baseLink || !periodConfig) {
       console.warn(`Invalid plan key (${planKey}) or period (${period})`);
       return baseLink || '#';
@@ -82,7 +82,7 @@
   function calculateDiscountedPricing(planKey, period = 'monthly') {
     const basePrice = BASE_PRICES[planKey];
     const periodConfig = PERIOD_DISCOUNTS[period];
-    
+
     if (!basePrice || !periodConfig) {
       return null;
     }
@@ -161,7 +161,7 @@
       if (e.target.name === 'planDuration') {
         const selectedPeriod = e.target.value;
         updatePaymentLinksForPeriod(selectedPeriod);
-        
+
         // Log para debugging
         console.log(`Discount system: Updated payment links for period: ${selectedPeriod}`);
       }

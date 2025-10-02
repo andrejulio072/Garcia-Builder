@@ -620,6 +620,18 @@
                 <button class="tab-btn" data-tab="settings">
                     <i class="fas fa-cog"></i> Settings
                 </button>
+                <button class="tab-btn" data-tab="macros">
+                    <i class="fas fa-utensils"></i> Macros
+                 </button>
+                <button class="tab-btn" data-tab="habits">
+                    <i class="fas fa-check-circle"></i> Habits
+                </button>
+                <button class="tab-btn" data-tab="workouts">
+                    <i class="fas fa-dumbbell"></i> Workouts
+                </button>
+                <button class="tab-btn" data-tab="meetings">
+                    <i class="fas fa-video"></i> Meetings
+                </button>
             </div>
 
             <!-- Basic Info Tab -->
@@ -994,6 +1006,62 @@
                     </form>
                 </div>
             </div>
+
+            <!-- Macros Tab -->
+            <div class="tab-content" id="macros-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-balance-scale"></i>
+                        Macronutrients
+                    </h3>
+                    <div class="alert-custom">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Configure your daily macro targets and see suggested splits here. (Coming soon)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Habits Tab -->
+            <div class="tab-content" id="habits-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-list-check"></i>
+                        Habits & Routines
+                    </h3>
+                    <div class="alert-custom">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Track steps, sleep, hydration and more. (Coming soon)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workouts Tab -->
+            <div class="tab-content" id="workouts-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-dumbbell"></i>
+                        Workouts
+                    </h3>
+                    <div class="alert-custom">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Your assigned workouts and training blocks will appear here. (Coming soon)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Meetings Tab -->
+            <div class="tab-content" id="meetings-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-video"></i>
+                        Meetings & Check-ins
+                    </h3>
+                    <div class="alert-custom">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Schedule calls and review previous check-ins here. (Coming soon)
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1055,7 +1123,7 @@
                 if (!target && window.location.hash.startsWith('#tab=')) {
                     target = window.location.hash.replace('#tab=', '');
                 }
-                const validTabs = ['basic', 'metrics', 'progress', 'goals', 'settings'];
+                const validTabs = ['basic', 'metrics', 'progress', 'goals', 'settings', 'macros', 'habits', 'workouts', 'meetings'];
                 if (target && validTabs.includes(target)) {
                     const btn = document.querySelector(`.tab-btn[data-tab="${target}"]`);
                     btn?.click();

@@ -228,7 +228,7 @@
           title: "Choose Your Plan Duration",
           monthly: "Monthly",
           quarterly: "3 Months",
-          biannual: "6 Months", 
+          biannual: "6 Months",
           annual: "12 Months",
           note: "Save more with longer commitments. All plans include full access from day one."
         },

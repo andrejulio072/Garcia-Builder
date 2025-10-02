@@ -4,7 +4,7 @@
 ### 📋 RESUMO DO SISTEMA
 Sistema implementado para captar mais usuários com descontos progressivos:
 - **3 meses**: 10% de desconto
-- **6 meses**: 15% de desconto  
+- **6 meses**: 15% de desconto
 - **12 meses**: 25% de desconto
 
 ### 🎨 IMPLEMENTAÇÃO CONCLUÍDA
@@ -38,7 +38,7 @@ Sistema implementado para captar mais usuários com descontos progressivos:
 
 #### Planos Mensais (Base)
 - Starter: £75/mês
-- Beginner: £95/mês  
+- Beginner: £95/mês
 - Essentials: £115/mês
 - Full: £155/mês
 - Elite: £230/mês
@@ -102,7 +102,7 @@ Editar `/js/stripe-discount-integration.js`:
 const BASE_PAYMENT_LINKS = {
   starter: {
     monthly: "https://buy.stripe.com/starter_monthly",
-    quarterly: "https://buy.stripe.com/starter_quarterly", 
+    quarterly: "https://buy.stripe.com/starter_quarterly",
     biannual: "https://buy.stripe.com/starter_biannual",
     annual: "https://buy.stripe.com/starter_annual"
   },

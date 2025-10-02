@@ -14,6 +14,7 @@
         contact: "Contact",
         programs: "Programs",
         back_to_site: "Back to Site",
+        back_to_login: "Back to Login",
         login: "Login",
         register: "Register",
         logout: "Logout",
@@ -396,7 +397,13 @@
         terms_link: "Terms of Use",
         or_continue_with: "or continue with",
         continue_google: "Continue with Google",
-        continue_facebook: "Continue with Facebook"
+        continue_facebook: "Continue with Facebook",
+        forgot_password: "Forgot your password?",
+        forgot_password_title: "Forgot Password",
+        forgot_password_subtitle: "Enter your email address and we'll send you a link to reset your password.",
+        send_reset_link: "Send Reset Link",
+        back_to_login: "Back to Login",
+        sending: "Sending..."
       },
       common: {
         ok: "OK",
@@ -414,6 +421,7 @@
         contact: "Contato",
         programs: "Programas",
         back_to_site: "Voltar ao Site",
+        back_to_login: "Voltar ao Login",
         login: "Login",
         register: "Cadastrar",
         logout: "Sair",
@@ -787,7 +795,13 @@
         terms_link: "Termos de Uso",
         or_continue_with: "ou continue com",
         continue_google: "Continuar com Google",
-        continue_facebook: "Continuar com Facebook"
+        continue_facebook: "Continuar com Facebook",
+        forgot_password: "Esqueceu sua senha?",
+        forgot_password_title: "Esqueci a Senha",
+        forgot_password_subtitle: "Digite seu endereço de email e enviaremos um link para redefinir sua senha.",
+        send_reset_link: "Enviar Link de Redefinição",
+        back_to_login: "Voltar ao Login",
+        sending: "Enviando..."
       },
       common: {
         ok: "OK",
@@ -805,6 +819,7 @@
         contact: "Contacto",
         programs: "Programas",
         back_to_site: "Volver al Sitio",
+        back_to_login: "Volver al Login",
         login: "Login",
         register: "Registrarse",
         logout: "Salir",
@@ -1175,7 +1190,13 @@
         terms_link: "Términos de Uso",
         or_continue_with: "o continúa con",
         continue_google: "Continuar con Google",
-        continue_facebook: "Continuar con Facebook"
+        continue_facebook: "Continuar con Facebook",
+        forgot_password: "¿Olvidaste tu contraseña?",
+        forgot_password_title: "Olvidé la Contraseña",
+        forgot_password_subtitle: "Ingresa tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
+        send_reset_link: "Enviar Enlace de Restablecimiento",
+        back_to_login: "Volver al Login",
+        sending: "Enviando..."
       },
       common: {
         ok: "OK",

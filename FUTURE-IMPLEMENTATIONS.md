@@ -1,4 +1,30 @@
-# 🚧 IMPLEMENTAÇÕES FUTURAS - Garcia Builder
+# � Website Roadmap — Ordem de Execução (Fácil → Difícil)
+
+## ✅ Já implementado
+- Navbar: melhorar o arredondamento da logo
+- Pagamento Stripe
+- Criação de usuário, login e senha
+- Armazenar usuário e senha para login, Google login
+- Mensagem de confirmação após contato
+- Correção de erros de tradução: login/register
+
+## 🔜 Pendentes (Ordem sugerida)
+1. Melhorar testimonials e acrescentar transformations (UX/UI)
+2. Resolver erros de tradução no dashboard
+3. Melhorar layout do pricing e opções de conversão de moeda no navbar/rodapé; corrigir quebra de página antes dos cards
+4. Implementar “My Profile” (usuário pode ver e editar suas informações pessoais)
+5. Armazenar informações completas do usuário (foto, email, telefone, birthday, etc.) após login
+6. Upload de físico, peso, altura, medidas no “My Profile”
+7. Usuários podem deixar review
+8. Implementar descontos e preços para 3, 6 e 12 meses
+9. Conversão de moedas no checkout (libra, euro, reais, etc.) — considerar preços diferentes por moeda
+10. Conectar com Trainerize e automatizar processo de clientes e perfil
+
+## 💡 Opções Futuras
+- Conectar com Trainerize Blogs
+- Criar sistema de newsletter para e-mail
+- Criar e-book gratuito
+# �🚧 IMPLEMENTAÇÕES FUTURAS - Garcia Builder
 
 ## 📋 Próximas Melhorias e Correções
 

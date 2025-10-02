@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Unverified Access - Garcia Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+        .test-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(246, 200, 78, 0.2);
+        }
+        .btn-test {
+            background: linear-gradient(45deg, #f6c84e, #ffd700);
+            border: none;
+            color: #1a1a1a;
+            font-weight: 600;
+            padding: 12px 25px;
+            border-radius: 25px;
+        }
+        .btn-danger-test {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 12px 25px;
+            border-radius: 25px;
+        }
+        .status-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="test-card text-center">
+                    <h1><i class="fas fa-shield-exclamation me-2"></i>Email Verification Test</h1>
+                    <p class="text-muted">Test the email verification guard system</p>
+                </div>
+
+                <!-- Current Status -->
+                <div class="test-card">
+                    <h3><i class="fas fa-info-circle me-2"></i>Current Status</h3>
+                    <div id="status-display" class="status-box">
+                        <p><i class="fas fa-spinner fa-spin me-2"></i>Loading status...</p>
+                    </div>
+                </div>
+
+                <!-- Test Actions -->
+                <div class="test-card">
+                    <h3><i class="fas fa-flask me-2"></i>Test Actions</h3>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <button class="btn btn-test w-100" onclick="createUnverifiedUser()">
+                                <i class="fas fa-user-plus me-2"></i>Create Unverified User
+                            </button>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <button class="btn btn-danger-test w-100" onclick="clearCurrentUser()">
+                                <i class="fas fa-sign-out-alt me-2"></i>Clear Current User
+                            </button>
+                        </div>
+                    </div>
+
+                    <hr style="border-color: rgba(255,255,255,0.2);">
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <a href="dashboard.html" class="btn btn-outline-light w-100">
+                                <i class="fas fa-tachometer-alt me-2"></i>Test Dashboard
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <a href="enhanced-dashboard.html" class="btn btn-outline-light w-100">
+                                <i class="fas fa-chart-line me-2"></i>Test Enhanced
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <a href="my-profile.html" class="btn btn-outline-light w-100">
+                                <i class="fas fa-user me-2"></i>Test Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manual Email Verification -->
+                <div class="test-card">
+                    <h3><i class="fas fa-envelope-open me-2"></i>Manual Verification Test</h3>
+                    <p class="text-muted">Manually test the verification process</p>
+                    
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input type="email" class="form-control mb-2" id="testEmailManual" placeholder="Enter email to test verification" value="test.unverified@example.com">
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-test w-100" onclick="testManualVerification()">
+                                <i class="fas fa-check me-2"></i>Test Verification
+                            </button>
+                        </div>
+                    </div>
+                    <div id="manual-verification-result" class="mt-3"></div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="test-card">
+                    <h3><i class="fas fa-arrow-left me-2"></i>Navigation</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="login.html" class="btn btn-outline-light w-100">
+                                <i class="fas fa-sign-in-alt me-2"></i>Back to Login
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="test-email-verification.html" class="btn btn-outline-light w-100">
+                                <i class="fas fa-vial me-2"></i>Main Email Test
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    
+    <script>
+        async function checkCurrentStatus() {
+            const statusDiv = document.getElementById('status-display');
+            
+            try {
+                if (!window.supabaseClient) {
+                    statusDiv.innerHTML = '<div style="color: #dc3545;"><i class="fas fa-exclamation-triangle me-2"></i>Supabase not initialized</div>';
+                    return;
+                }
+
+                const { data: { user }, error } = await window.supabaseClient.auth.getUser();
+                
+                if (error) {
+                    statusDiv.innerHTML = `<div style="color: #dc3545;"><i class="fas fa-exclamation-triangle me-2"></i>Auth Error: ${error.message}</div>`;
+                    return;
+                }
+
+                if (!user) {
+                    statusDiv.innerHTML = '<div style="color: #ffc107;"><i class="fas fa-user-slash me-2"></i><strong>No User Logged In</strong><br>Perfect for testing login protection</div>';
+                    return;
+                }
+
+                const isVerified = user.email_confirmed_at ? true : false;
+                const verifiedAt = user.email_confirmed_at ? new Date(user.email_confirmed_at).toLocaleDateString() : 'Not verified';
+                
+                if (isVerified) {
+                    statusDiv.innerHTML = `
+                        <div style="color: #28a745;">
+                            <i class="fas fa-check-circle me-2"></i><strong>Verified User</strong><br>
+                            <strong>Email:</strong> ${user.email}<br>
+                            <strong>Verified:</strong> ${verifiedAt}<br>
+                            <em>This user will have access to protected pages</em>
+                        </div>
+                    `;
+                } else {
+                    statusDiv.innerHTML = `
+                        <div style="color: #ffc107;">
+                            <i class="fas fa-exclamation-triangle me-2"></i><strong>Unverified User</strong><br>
+                            <strong>Email:</strong> ${user.email}<br>
+                            <strong>Status:</strong> Email not verified<br>
+                            <em>This user should be blocked from protected pages</em>
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+                statusDiv.innerHTML = `<div style="color: #dc3545;"><i class="fas fa-exclamation-triangle me-2"></i>Error: ${error.message}</div>`;
+            }
+        }
+
+        async function createUnverifiedUser() {
+            try {
+                // First, sign out any current user
+                await window.supabaseClient.auth.signOut();
+
+                // Create a test account
+                const testEmail = 'test.unverified@example.com';
+                const testPassword = 'testpass123';
+
+                const { data, error } = await window.supabaseClient.auth.signUp({
+                    email: testEmail,
+                    password: testPassword,
+                    options: {
+                        emailRedirectTo: `${window.location.origin}/dashboard.html`,
+                        data: {
+                            full_name: 'Test Unverified User'
+                        }
+                    }
+                });
+
+                if (error) {
+                    if (error.message.includes('already registered')) {
+                        // Try to sign in the existing user
+                        const { data: signInData, error: signInError } = await window.supabaseClient.auth.signInWithPassword({
+                            email: testEmail,
+                            password: testPassword
+                        });
+
+                        if (signInError) throw signInError;
+                        
+                        alert('✅ Signed in existing unverified user!\nNow try accessing a protected page.');
+                    } else {
+                        throw error;
+                    }
+                } else {
+                    alert('✅ Created unverified user!\nNow try accessing a protected page.');
+                }
+
+                // Refresh status
+                setTimeout(checkCurrentStatus, 1000);
+
+            } catch (error) {
+                alert(`❌ Error: ${error.message}`);
+            }
+        }
+
+        async function clearCurrentUser() {
+            try {
+                await window.supabaseClient.auth.signOut();
+                
+                // Clear local storage
+                localStorage.removeItem('garcia_current_user');
+                localStorage.removeItem('gb_current_user');
+                
+                alert('✅ User cleared!\nNow try accessing a protected page.');
+                
+                // Refresh status
+                setTimeout(checkCurrentStatus, 1000);
+
+            } catch (error) {
+                alert(`❌ Error: ${error.message}`);
+            }
+        }
+
+        async function testManualVerification() {
+            const email = document.getElementById('testEmailManual').value.trim();
+            const resultDiv = document.getElementById('manual-verification-result');
+
+            if (!email) {
+                resultDiv.innerHTML = '<div style="color: #dc3545;"><i class="fas fa-exclamation-circle"></i> Please enter an email address</div>';
+                return;
+            }
+
+            try {
+                resultDiv.innerHTML = '<div style="color: #ffc107;"><i class="fas fa-spinner fa-spin"></i> Testing verification for ' + email + '...</div>';
+
+                const { error } = await window.supabaseClient.auth.resend({
+                    type: 'signup',
+                    email: email,
+                    options: {
+                        emailRedirectTo: `${window.location.origin}/dashboard.html`
+                    }
+                });
+
+                if (error) {
+                    resultDiv.innerHTML = `<div style="color: #dc3545;"><i class="fas fa-exclamation-circle"></i> ${error.message}</div>`;
+                } else {
+                    resultDiv.innerHTML = `<div style="color: #28a745;"><i class="fas fa-check-circle"></i> Verification email sent to ${email}!</div>`;
+                }
+
+            } catch (error) {
+                resultDiv.innerHTML = `<div style="color: #dc3545;"><i class="fas fa-exclamation-circle"></i> Error: ${error.message}</div>`;
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(checkCurrentStatus, 1000);
+        });
+    </script>
+</body>
+</html>

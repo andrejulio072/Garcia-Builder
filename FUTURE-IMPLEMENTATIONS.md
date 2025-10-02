@@ -7,6 +7,8 @@
 - Armazenar usuário e senha para login, Google login
 - Mensagem de confirmação após contato
 - Correção de erros de tradução: login/register
+- ✅ **Sistema de reset de senha completo** (forgot-password.html + email workflow)
+- ✅ **Sistema de verificação de email** (email-verification-guard.js + proteção de páginas)
 
 ## 🔜 Pendentes (Ordem sugerida)
 1. Melhorar testimonials e acrescentar transformations (UX/UI)
@@ -49,15 +51,16 @@
 
 ### 🛡️ SEGURANÇA
 
-#### 2. **Validação de Email para Usuários Reais**
-**Status:** 🟡 Para implementar
-**Descrição:** Adicionar validação de email obrigatória para usuários não-admin
+#### 2. **✅ Validação de Email para Usuários Reais** 
+**Status:** ✅ IMPLEMENTADO
+**Descrição:** Sistema de verificação de email obrigatório implementado com email-verification-guard.js
 **Benefício:** Maior segurança e verificação de identidade
+**Arquivos:** `js/email-verification-guard.js`, proteção adicionada ao dashboard, enhanced-dashboard e my-profile
 
-#### 3. **Sistema de Recuperação de Senha**
-**Status:** 🟡 Para implementar
-**Descrição:** Interface para reset de senha via email
-**Arquivo:** `reset-password.html` (estrutura já existe)
+#### 3. **✅ Sistema de Recuperação de Senha**
+**Status:** ✅ IMPLEMENTADO  
+**Descrição:** Sistema completo de reset de senha via email implementado
+**Arquivos:** `forgot-password.html`, `reset-password.html`, `test-password-reset.html`
 
 ---
 
@@ -128,11 +131,12 @@
 
 ### **Fase 1 - Correções Críticas** (Próximas 2 semanas)
 - [ ] Correção do admin real Supabase
-- [ ] Validação de email para novos usuários
+- [x] Validação de email para novos usuários ✅ **IMPLEMENTADO**
 - [ ] Testes completos de produção
 
 ### **Fase 2 - Melhorias UX** (1-2 meses)
 - [x] Sistema de recuperação de senha ✅ **IMPLEMENTADO**
+- [x] Sistema de verificação de email ✅ **IMPLEMENTADO**
 - [ ] Dashboard mobile otimizado
 - [ ] Notificações básicas
 

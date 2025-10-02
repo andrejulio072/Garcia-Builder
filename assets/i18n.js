@@ -62,6 +62,19 @@
         update_password: "Update Password",
         back_to_sign_in: "← Back to Sign In",
         password_updated_success: "✅ Password updated successfully! You can now sign in with your new password.",
+        // Email verification specific
+        email_verification_required: "Email Verification Required",
+        email_verification_message: "To access the dashboard, please verify your email address. We've sent a verification link to your email.",
+        resend_verification: "Resend Email",
+        check_verification: "I've Verified",
+        verification_trouble: "Having trouble? Check your spam folder or contact support.",
+        logout_try_different: "Logout and try different email",
+        verification_email_sent: "Verification email sent!",
+        verification_check_inbox: "Check your inbox and click the verification link",
+        email_verified_success: "Email verified! Redirecting...",
+        email_not_verified_yet: "Email not yet verified. Please check your email and click the verification link.",
+        checking_verification: "Checking verification status...",
+        sending_verification: "Sending verification email...",
         // Newsletter specific
         join_newsletter: "Join Newsletter",
         newsletter_benefits: {
@@ -469,6 +482,19 @@
         update_password: "Atualizar Senha",
         back_to_sign_in: "← Voltar ao Login",
         password_updated_success: "✅ Senha atualizada com sucesso! Agora você pode fazer login com sua nova senha.",
+        // Email verification specific
+        email_verification_required: "Verificação de Email Necessária",
+        email_verification_message: "Para acessar o dashboard, por favor verifique seu endereço de email. Enviamos um link de verificação para seu email.",
+        resend_verification: "Reenviar Email",
+        check_verification: "Já Verifiquei",
+        verification_trouble: "Tendo problemas? Verifique sua pasta de spam ou entre em contato com o suporte.",
+        logout_try_different: "Fazer logout e tentar email diferente",
+        verification_email_sent: "Email de verificação enviado!",
+        verification_check_inbox: "Verifique sua caixa de entrada e clique no link de verificação",
+        email_verified_success: "Email verificado! Redirecionando...",
+        email_not_verified_yet: "Email ainda não verificado. Por favor verifique seu email e clique no link de verificação.",
+        checking_verification: "Verificando status de verificação...",
+        sending_verification: "Enviando email de verificação...",
         // Newsletter specific
         join_newsletter: "Inscrever-se na Newsletter",
         newsletter_benefits: {
@@ -864,6 +890,19 @@
         update_password: "Actualizar Contraseña",
         back_to_sign_in: "← Volver al Inicio de Sesión",
         password_updated_success: "✅ ¡Contraseña actualizada exitosamente! Ahora puedes iniciar sesión con tu nueva contraseña.",
+        // Email verification specific
+        email_verification_required: "Verificación de Email Requerida",
+        email_verification_message: "Para acceder al dashboard, por favor verifica tu dirección de email. Hemos enviado un enlace de verificación a tu email.",
+        resend_verification: "Reenviar Email",
+        check_verification: "Ya Verifiqué",
+        verification_trouble: "¿Problemas? Revisa tu carpeta de spam o contacta soporte.",
+        logout_try_different: "Cerrar sesión e intentar email diferente",
+        verification_email_sent: "¡Email de verificación enviado!",
+        verification_check_inbox: "Revisa tu bandeja de entrada y haz clic en el enlace de verificación",
+        email_verified_success: "¡Email verificado! Redirigiendo...",
+        email_not_verified_yet: "Email aún no verificado. Por favor revisa tu email y haz clic en el enlace de verificación.",
+        checking_verification: "Verificando estado de verificación...",
+        sending_verification: "Enviando email de verificación...",
         // Newsletter specific
         join_newsletter: "Unirse al Newsletter",
         newsletter_benefits: {

@@ -106,6 +106,42 @@
           progress_photo: "Progress photo uploaded",
           weight_logged: "Weight logged",
           measurements: "Measurements updated"
+        },
+        macros: {
+          title: "Macronutrients",
+          goal: "Goal",
+          activity_level: "Activity Level",
+          calories: "Daily Calories",
+          auto: "Auto",
+          split_title: "Macro Split (%)",
+          protein_pct: "Protein %",
+          carbs_pct: "Carbs %",
+          fats_pct: "Fats %",
+          targets_title: "Targets (per day)",
+          protein: "Protein",
+          carbs: "Carbs",
+          fats: "Fats",
+          save: "Save Macros",
+          tip: "Tip: set weight, height and target weight in Body Metrics to improve auto-calculation."
+        },
+        habits: {
+          title: "Habits & Routines",
+          water: "Water (ml)",
+          steps: "Steps",
+          sleep: "Sleep (hours)",
+          workout: "Workout done",
+          meditation: "Meditation",
+          stretch: "Stretching",
+          save_today: "Save Today",
+          streak_workout: "Workout Streak (days)",
+          streak_meditation: "Meditation Streak (days)",
+          streak_stretch: "Stretching Streak (days)",
+          steps_7days: "Steps (Last 7 days)"
+        },
+        progress_i18n: {
+          upload_photo: "Upload Progress Photo",
+          start_logging_weight: "Start logging your weight to see your progress chart here.",
+          weight_history: "Weight History"
         }
       },
       home: {
@@ -534,6 +570,42 @@
           progress_photo: "Foto de progresso enviada",
           weight_logged: "Peso registrado",
           measurements: "Medidas atualizadas"
+        },
+        macros: {
+          title: "Macronutrientes",
+          goal: "Objetivo",
+          activity_level: "Nível de Atividade",
+          calories: "Calorias Diárias",
+          auto: "Auto",
+          split_title: "Divisão de Macros (%)",
+          protein_pct: "Proteína %",
+          carbs_pct: "Carboidratos %",
+          fats_pct: "Gorduras %",
+          targets_title: "Metas (por dia)",
+          protein: "Proteína",
+          carbs: "Carboidratos",
+          fats: "Gorduras",
+          save: "Salvar Macros",
+          tip: "Dica: preencha peso, altura e meta na aba Métricas para melhorar o cálculo automático."
+        },
+        habits: {
+          title: "Hábitos e Rotinas",
+          water: "Água (ml)",
+          steps: "Passos",
+          sleep: "Sono (horas)",
+          workout: "Treino feito",
+          meditation: "Meditação",
+          stretch: "Alongamento",
+          save_today: "Salvar Hoje",
+          streak_workout: "Sequência de Treino (dias)",
+          streak_meditation: "Sequência de Meditação (dias)",
+          streak_stretch: "Sequência de Alongamento (dias)",
+          steps_7days: "Passos (Últimos 7 dias)"
+        },
+        progress_i18n: {
+          upload_photo: "Enviar Foto de Progresso",
+          start_logging_weight: "Comece a registrar seu peso para ver o gráfico aqui.",
+          weight_history: "Histórico de Peso"
         }
       },
       home: {
@@ -950,6 +1022,42 @@
           progress_photo: "Foto de progreso subida",
           weight_logged: "Peso registrado",
           measurements: "Medidas actualizadas"
+        },
+        macros: {
+          title: "Macronutrientes",
+          goal: "Objetivo",
+          activity_level: "Nivel de Actividad",
+          calories: "Calorías Diarias",
+          auto: "Auto",
+          split_title: "División de Macros (%)",
+          protein_pct: "Proteína %",
+          carbs_pct: "Carbohidratos %",
+          fats_pct: "Grasas %",
+          targets_title: "Metas (por día)",
+          protein: "Proteína",
+          carbs: "Carbohidratos",
+          fats: "Grasas",
+          save: "Guardar Macros",
+          tip: "Consejo: completa peso, altura y meta en Métricas para mejorar el cálculo automático."
+        },
+        habits: {
+          title: "Hábitos y Rutinas",
+          water: "Agua (ml)",
+          steps: "Pasos",
+          sleep: "Sueño (horas)",
+          workout: "Entrenamiento hecho",
+          meditation: "Meditación",
+          stretch: "Estiramientos",
+          save_today: "Guardar Hoy",
+          streak_workout: "Racha de Entrenamientos (días)",
+          streak_meditation: "Racha de Meditación (días)",
+          streak_stretch: "Racha de Estiramientos (días)",
+          steps_7days: "Pasos (Últimos 7 días)"
+        },
+        progress_i18n: {
+          upload_photo: "Subir Foto de Progreso",
+          start_logging_weight: "Empieza a registrar tu peso para ver el gráfico aquí.",
+          weight_history: "Histórico de Peso"
         }
       },
       home: {

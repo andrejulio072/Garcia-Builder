@@ -53,10 +53,14 @@
                                selectedPeriod === 'annual' ? 12 : 1;
 
         // Update price display
+        const totalSavings = (() => {
+          const p = parseFloat(pricing.savings.replace(/[£€$]/g, ''));
+          return pricing.savings.charAt(0) + Math.round(p * periodMultiplier);
+        })();
         priceTag.innerHTML = `
           <div class="original-price">${pricing.original}/mo</div>
           <div class="discounted-price">${pricing.discounted}/mo</div>
-          <small>Save ${pricing.savings}/mo</small>
+          <small>Save ${pricing.savings}/mo • Total save ${totalSavings}</small>
         `;
 
         // Add discount indicator

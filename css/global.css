@@ -402,9 +402,40 @@ section#contact.section.has-bg.contact-bg {
 }
 
 @media (max-width: 768px) {
+  /* Navbar mobile responsiveness */
+  .navbar .inner {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    gap: 4px;
+  }
+
+  .nav a {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .brand {
+    font-size: 1.1rem;
+  }
+
+  .brand img {
+    height: 35px;
+    width: 35px;
+  }
+
+  /* Auth buttons mobile */
   #auth-buttons {
     margin-left: 0;
     margin-right: 8px;
+    gap: 0.5rem;
   }
 
   #auth-buttons .btn {
@@ -419,5 +450,23 @@ section#contact.section.has-bg.contact-bg {
 
   #auth-buttons .btn i {
     margin: 0;
+  }
+
+  /* Container adjustments */
+  .container {
+    padding: 16px;
+  }
+
+  /* General mobile improvements */
+  .section {
+    padding: 48px 0;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .grid {
+    gap: 1rem;
   }
 }

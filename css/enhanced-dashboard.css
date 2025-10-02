@@ -22,6 +22,51 @@
     font-family: 'Inter', sans-serif;
 }
 
+/* Mobile Header */
+.mobile-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(135deg, rgba(246, 200, 78, 0.15) 0%, rgba(0, 0, 0, 0.95) 100%);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-gold);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    z-index: 1001;
+}
+
+.mobile-menu-toggle {
+    background: transparent;
+    border: 2px solid var(--primary-gold);
+    color: var(--primary-gold);
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle:hover {
+    background: var(--primary-gold);
+    color: var(--dark-bg);
+}
+
+.mobile-logo {
+    color: var(--primary-gold);
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 .dashboard-sidebar {
     position: fixed;
     left: 0;
@@ -425,6 +470,7 @@
 @media (max-width: 768px) {
     .dashboard-sidebar {
         transform: translateX(-100%);
+        z-index: 1002;
     }
 
     .dashboard-sidebar.show {
@@ -434,19 +480,63 @@
     .dashboard-main {
         margin-left: 0;
         padding: 1rem;
+        padding-top: 80px; /* Account for mobile header */
     }
 
     .dashboard-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
     .user-welcome {
         flex-direction: column;
         align-items: flex-start;
+        gap: 1rem;
     }
 
     .profile-tabs {
         flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+    .quick-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .btn-quick {
+        flex: 1;
+        margin: 0 0.25rem;
+        text-align: center;
+    }
+
+    .stats-card {
+        text-align: center;
+    }
+
+    .activity-item {
+        padding: 0.75rem;
+    }
+}
+
+/* Mobile sidebar overlay */
+@media (max-width: 768px) {
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1001;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-overlay.show {
+        opacity: 1;
+        visibility: visible;
     }
 }
 

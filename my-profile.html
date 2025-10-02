@@ -455,8 +455,19 @@
         }
 
         @media (max-width: 768px) {
+            .profile-container {
+                padding-top: 80px;
+            }
+
             .profile-header {
-                padding: 1.5rem;
+                padding: 1.5rem 1rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .profile-info {
+                align-items: center;
             }
 
             .main-avatar {
@@ -466,10 +477,71 @@
 
             .metrics-grid {
                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1rem;
             }
 
             .tab-buttons {
                 justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .tab-button {
+                flex: 1;
+                min-width: 120px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .save-button {
+                width: 100%;
+                margin-top: 1rem;
+            }
+
+            /* Navbar adjustments for profile page */
+            .navbar .nav {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 4px;
+            }
+
+            .navbar .nav a {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tab-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .tab-button {
+                width: 100%;
+                max-width: none;
+            }
+
+            .profile-header {
+                padding: 1rem;
+            }
+
+            .main-avatar {
+                width: 100px;
+                height: 100px;
             }
         }
 

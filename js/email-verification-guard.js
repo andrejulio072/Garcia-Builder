@@ -9,10 +9,10 @@
 
         async init() {
             console.log('🔐 Initializing Email Verification Guard...');
-            
+
             // Check if user needs email verification
             const needsVerification = await this.checkEmailVerification();
-            
+
             if (needsVerification) {
                 this.showEmailVerificationRequired();
             } else {
@@ -53,7 +53,7 @@
 
                 // Get current user from Supabase
                 const { data: { user }, error } = await window.supabaseClient.auth.getUser();
-                
+
                 if (error) {
                     console.error('Error getting user:', error);
                     // Redirect to login if there's an auth error
@@ -240,7 +240,7 @@
 
                 messageDiv.innerHTML = `
                     <div style="color: #28a745;">
-                        <i class="fas fa-check-circle"></i> 
+                        <i class="fas fa-check-circle"></i>
                         ${t('verification_email_sent')}<br>
                         ${t('verification_check_inbox')}
                     </div>
@@ -250,7 +250,7 @@
                 console.error('Error resending verification:', error);
                 document.getElementById('verification-message').innerHTML = `
                     <div style="color: #dc3545;">
-                        <i class="fas fa-exclamation-circle"></i> 
+                        <i class="fas fa-exclamation-circle"></i>
                         Error: ${error.message}
                     </div>
                 `;
@@ -273,17 +273,17 @@
 
                 // Refresh user data from Supabase
                 const { data: { user }, error } = await window.supabaseClient.auth.getUser();
-                
+
                 if (error) throw error;
 
                 if (user && user.email_confirmed_at) {
                     messageDiv.innerHTML = `
                         <div style="color: #28a745;">
-                            <i class="fas fa-check-circle"></i> 
+                            <i class="fas fa-check-circle"></i>
                             ${t('email_verified_success')}
                         </div>
                     `;
-                    
+
                     // Remove overlay and reload page
                     setTimeout(() => {
                         document.getElementById('email-verification-overlay')?.remove();
@@ -292,7 +292,7 @@
                 } else {
                     messageDiv.innerHTML = `
                         <div style="color: #ffc107;">
-                            <i class="fas fa-clock"></i> 
+                            <i class="fas fa-clock"></i>
                             ${t('email_not_verified_yet')}
                         </div>
                     `;
@@ -302,7 +302,7 @@
                 console.error('Error checking verification:', error);
                 document.getElementById('verification-message').innerHTML = `
                     <div style="color: #dc3545;">
-                        <i class="fas fa-exclamation-circle"></i> 
+                        <i class="fas fa-exclamation-circle"></i>
                         Error: ${error.message}
                     </div>
                 `;
@@ -314,14 +314,14 @@
                 if (window.supabaseClient && window.supabaseClient.auth) {
                     await window.supabaseClient.auth.signOut();
                 }
-                
+
                 // Clear local storage
                 localStorage.removeItem('garcia_current_user');
                 localStorage.removeItem('gb_current_user');
-                
+
                 // Redirect to login
                 window.location.href = 'login.html';
-                
+
             } catch (error) {
                 console.error('Error logging out:', error);
                 window.location.href = 'login.html';

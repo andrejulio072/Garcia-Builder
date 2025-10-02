@@ -20,6 +20,9 @@
 </head>
 <body class="enhanced-dashboard">
 
+    <!-- Mobile Sidebar Overlay -->
+    <div class="sidebar-overlay d-md-none" id="sidebarOverlay"></div>
+
     <!-- Enhanced Sidebar -->
     <div class="dashboard-sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -104,6 +107,17 @@
 
     <!-- Main Content -->
     <div class="dashboard-main">
+        <!-- Mobile Header with Menu Toggle -->
+        <div class="mobile-header d-md-none">
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="mobile-logo">
+                <i class="fas fa-dumbbell"></i>
+                Garcia Builder
+            </div>
+        </div>
+
         <!-- Header -->
         <div class="dashboard-header">
             <div class="user-welcome">
@@ -505,6 +519,37 @@
             accent-color: var(--primary-gold);
         }
     </style>
+
+    <script>
+        // Mobile Menu Control
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileToggle = document.getElementById('mobileMenuToggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            if (mobileToggle && sidebar && overlay) {
+                // Toggle sidebar
+                mobileToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                    overlay.classList.toggle('show');
+                });
+
+                // Close sidebar when clicking overlay
+                overlay.addEventListener('click', function() {
+                    sidebar.classList.remove('show');
+                    overlay.classList.remove('show');
+                });
+
+                // Close sidebar on window resize if desktop
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth >= 768) {
+                        sidebar.classList.remove('show');
+                        overlay.classList.remove('show');
+                    }
+                });
+            }
+        });
+    </script>
 
     <!-- I18n Script -->
     <script src="assets/i18n.js"></script>

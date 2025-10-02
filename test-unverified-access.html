@@ -65,7 +65,7 @@
                 <!-- Test Actions -->
                 <div class="test-card">
                     <h3><i class="fas fa-flask me-2"></i>Test Actions</h3>
-                    
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <button class="btn btn-test w-100" onclick="createUnverifiedUser()">
@@ -104,7 +104,7 @@
                 <div class="test-card">
                     <h3><i class="fas fa-envelope-open me-2"></i>Manual Verification Test</h3>
                     <p class="text-muted">Manually test the verification process</p>
-                    
+
                     <div class="row">
                         <div class="col-md-8">
                             <input type="email" class="form-control mb-2" id="testEmailManual" placeholder="Enter email to test verification" value="test.unverified@example.com">
@@ -141,11 +141,11 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
-    
+
     <script>
         async function checkCurrentStatus() {
             const statusDiv = document.getElementById('status-display');
-            
+
             try {
                 if (!window.supabaseClient) {
                     statusDiv.innerHTML = '<div style="color: #dc3545;"><i class="fas fa-exclamation-triangle me-2"></i>Supabase not initialized</div>';
@@ -153,7 +153,7 @@
                 }
 
                 const { data: { user }, error } = await window.supabaseClient.auth.getUser();
-                
+
                 if (error) {
                     statusDiv.innerHTML = `<div style="color: #dc3545;"><i class="fas fa-exclamation-triangle me-2"></i>Auth Error: ${error.message}</div>`;
                     return;
@@ -166,7 +166,7 @@
 
                 const isVerified = user.email_confirmed_at ? true : false;
                 const verifiedAt = user.email_confirmed_at ? new Date(user.email_confirmed_at).toLocaleDateString() : 'Not verified';
-                
+
                 if (isVerified) {
                     statusDiv.innerHTML = `
                         <div style="color: #28a745;">
@@ -221,7 +221,7 @@
                         });
 
                         if (signInError) throw signInError;
-                        
+
                         alert('✅ Signed in existing unverified user!\nNow try accessing a protected page.');
                     } else {
                         throw error;
@@ -241,13 +241,13 @@
         async function clearCurrentUser() {
             try {
                 await window.supabaseClient.auth.signOut();
-                
+
                 // Clear local storage
                 localStorage.removeItem('garcia_current_user');
                 localStorage.removeItem('gb_current_user');
-                
+
                 alert('✅ User cleared!\nNow try accessing a protected page.');
-                
+
                 // Refresh status
                 setTimeout(checkCurrentStatus, 1000);
 

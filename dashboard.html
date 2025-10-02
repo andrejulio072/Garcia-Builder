@@ -197,16 +197,100 @@
         }
 
         @media (max-width: 768px) {
+            .dashboard-container {
+                padding-top: 80px; /* Less padding on mobile */
+            }
+
             .dashboard-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
             }
 
             .welcome-text {
                 text-align: center;
+                flex-direction: column;
+                gap: 1.5rem;
             }
 
             .user-info {
                 justify-content: center;
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .quick-actions {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .btn-quick {
+                flex: 1;
+                min-width: 120px;
+                max-width: 150px;
+            }
+
+            .dashboard-header {
+                padding: 1.5rem 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .stats-card {
+                padding: 1rem;
+            }
+
+            .activity-card, .goals-card {
+                padding: 1.5rem;
+            }
+
+            /* Navbar responsiveness */
+            .navbar .inner {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .nav {
+                display: none; /* Hide navigation links on mobile */
+            }
+
+            .nav-actions {
+                width: 100%;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            .nav-actions .btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+
+        /* Additional mobile improvements */
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .user-avatar {
+                width: 50px;
+                height: 50px;
+            }
+
+            .quick-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-quick {
+                max-width: none;
+                width: 100%;
             }
         }
 

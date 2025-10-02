@@ -44,7 +44,7 @@
                 <div class="test-card">
                     <h3><i class="fas fa-user me-2"></i>Test 1: Current User Status</h3>
                     <p>Check if a user is logged in and email verification status</p>
-                    
+
                     <button class="btn btn-test" onclick="checkCurrentUser()">
                         <i class="fas fa-user-check me-2"></i>Check Current User
                     </button>
@@ -55,7 +55,7 @@
                 <div class="test-card">
                     <h3><i class="fas fa-user-plus me-2"></i>Test 2: User Registration</h3>
                     <p>Test creating a new account with email verification</p>
-                    
+
                     <div class="row">
                         <div class="col-md-4">
                             <input type="text" class="form-control mb-2" id="testName" placeholder="Full Name" value="Test User">
@@ -77,7 +77,7 @@
                 <div class="test-card">
                     <h3><i class="fas fa-sign-in-alt me-2"></i>Test 3: Login with Unverified Email</h3>
                     <p>Test what happens when user tries to login without verifying email</p>
-                    
+
                     <div class="row">
                         <div class="col-md-6">
                             <input type="email" class="form-control mb-2" id="loginEmail" placeholder="Email" value="test.user@example.com">
@@ -96,7 +96,7 @@
                 <div class="test-card">
                     <h3><i class="fas fa-redo me-2"></i>Test 4: Resend Verification Email</h3>
                     <p>Test resending verification email to user</p>
-                    
+
                     <div class="row">
                         <div class="col-md-8">
                             <input type="email" class="form-control mb-2" id="resendEmail" placeholder="Email" value="test.user@example.com">
@@ -133,11 +133,11 @@
     <!-- Scripts -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
-    
+
     <script>
         function showResult(elementId, message, status = 'info') {
             const element = document.getElementById(elementId);
-            const statusClass = status === 'success' ? 'status-success' : 
+            const statusClass = status === 'success' ? 'status-success' :
                                status === 'error' ? 'status-error' : 'status-warning';
             element.innerHTML = `<div class="alert alert-dark ${statusClass}">
                 <i class="fas fa-${status === 'success' ? 'check-circle' : status === 'error' ? 'exclamation-circle' : 'info-circle'} me-2"></i>
@@ -148,28 +148,28 @@
         async function checkCurrentUser() {
             try {
                 showResult('currentUserResult', 'Checking current user...', 'warning');
-                
+
                 if (!window.supabaseClient) {
                     throw new Error('Supabase client not initialized');
                 }
 
                 const { data: { user }, error } = await window.supabaseClient.auth.getUser();
-                
+
                 if (error) throw error;
-                
+
                 if (user) {
                     const emailConfirmed = user.email_confirmed_at ? 'Yes' : 'No';
-                    showResult('currentUserResult', 
+                    showResult('currentUserResult',
                         `✅ User logged in!<br>
                          <strong>Email:</strong> ${user.email}<br>
                          <strong>Email Confirmed:</strong> ${emailConfirmed}<br>
                          <strong>Confirmed At:</strong> ${user.email_confirmed_at || 'Not confirmed'}<br>
-                         <strong>Created:</strong> ${new Date(user.created_at).toLocaleDateString()}`, 
+                         <strong>Created:</strong> ${new Date(user.created_at).toLocaleDateString()}`,
                         'success');
                 } else {
                     showResult('currentUserResult', '❌ No user logged in', 'error');
                 }
-                    
+
             } catch (error) {
                 showResult('currentUserResult', `❌ Error: ${error.message}`, 'error');
             }
@@ -179,7 +179,7 @@
             const name = document.getElementById('testName').value.trim();
             const email = document.getElementById('testEmail').value.trim();
             const password = document.getElementById('testPassword').value.trim();
-            
+
             if (!name || !email || !password) {
                 showResult('registrationResult', '❌ Please fill all fields', 'error');
                 return;
@@ -187,7 +187,7 @@
 
             try {
                 showResult('registrationResult', `🔄 Creating account for ${email}...`, 'warning');
-                
+
                 const { data, error } = await window.supabaseClient.auth.signUp({
                     email,
                     password,
@@ -202,21 +202,21 @@
                 if (error) throw error;
 
                 if (data.user && !data.user.email_confirmed_at) {
-                    showResult('registrationResult', 
+                    showResult('registrationResult',
                         `✅ Account created successfully!<br>
                          <strong>User ID:</strong> ${data.user.id}<br>
                          <strong>Email:</strong> ${data.user.email}<br>
                          <strong>Status:</strong> Email verification required<br>
-                         <strong>Action:</strong> Check your email to verify account`, 
+                         <strong>Action:</strong> Check your email to verify account`,
                         'success');
                 } else {
-                    showResult('registrationResult', 
+                    showResult('registrationResult',
                         `✅ Account created and verified!<br>
                          <strong>User ID:</strong> ${data.user.id}<br>
-                         <strong>Email:</strong> ${data.user.email}`, 
+                         <strong>Email:</strong> ${data.user.email}`,
                         'success');
                 }
-                    
+
             } catch (error) {
                 showResult('registrationResult', `❌ Registration failed: ${error.message}`, 'error');
             }
@@ -225,7 +225,7 @@
         async function testLogin() {
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
-            
+
             if (!email || !password) {
                 showResult('loginResult', '❌ Please enter email and password', 'error');
                 return;
@@ -233,7 +233,7 @@
 
             try {
                 showResult('loginResult', `🔄 Attempting login for ${email}...`, 'warning');
-                
+
                 const { data, error } = await window.supabaseClient.auth.signInWithPassword({
                     email,
                     password
@@ -244,20 +244,20 @@
                 if (data.user) {
                     const emailConfirmed = data.user.email_confirmed_at ? 'Yes' : 'No';
                     const status = data.user.email_confirmed_at ? 'success' : 'warning';
-                    const message = data.user.email_confirmed_at 
-                        ? '✅ Login successful!' 
+                    const message = data.user.email_confirmed_at
+                        ? '✅ Login successful!'
                         : '⚠️ Login successful but email not verified!';
-                    
-                    showResult('loginResult', 
+
+                    showResult('loginResult',
                         `${message}<br>
                          <strong>Email:</strong> ${data.user.email}<br>
                          <strong>Email Confirmed:</strong> ${emailConfirmed}<br>
-                         <strong>Session:</strong> Active`, 
+                         <strong>Session:</strong> Active`,
                         status);
                 } else {
                     showResult('loginResult', '❌ Login failed - no user data', 'error');
                 }
-                    
+
             } catch (error) {
                 showResult('loginResult', `❌ Login failed: ${error.message}`, 'error');
             }
@@ -265,7 +265,7 @@
 
         async function resendVerification() {
             const email = document.getElementById('resendEmail').value.trim();
-            
+
             if (!email) {
                 showResult('resendResult', '❌ Please enter email address', 'error');
                 return;
@@ -273,7 +273,7 @@
 
             try {
                 showResult('resendResult', `🔄 Resending verification email to ${email}...`, 'warning');
-                
+
                 const { data, error } = await window.supabaseClient.auth.resend({
                     type: 'signup',
                     email: email,
@@ -284,12 +284,12 @@
 
                 if (error) throw error;
 
-                showResult('resendResult', 
+                showResult('resendResult',
                     `✅ Verification email sent!<br>
                      <strong>Email:</strong> ${email}<br>
-                     <strong>Action:</strong> Check your inbox and click the verification link`, 
+                     <strong>Action:</strong> Check your inbox and click the verification link`,
                     'success');
-                    
+
             } catch (error) {
                 showResult('resendResult', `❌ Failed to resend: ${error.message}`, 'error');
             }

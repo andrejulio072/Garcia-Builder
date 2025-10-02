@@ -1,2 +1,5 @@
 User-agent: *
 Allow: /
+
+# Sitemap para descoberta de URLs
+Sitemap: https://www.garcia-builder.com/sitemap.xml

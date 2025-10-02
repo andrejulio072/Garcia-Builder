@@ -398,6 +398,18 @@ docs/testing/
 
 ---
 
+## 🧭 Próximos Passos para Vender de Verdade
+
+- Guia de publicação com domínio real e Render/Vercel/Netlify: `docs/GO-LIVE.md`
+- Ações rápidas de SEO para aparecer no Google: `docs/SEO-QUICK-WINS.md`
+- Gerar sitemap com seu domínio:
+
+```powershell
+$env:SITE_URL="https://www.garcia-builder.com"; npm run sitemap
+```
+
+Depois faça commit do `sitemap.xml` e envie no Google Search Console.
+
 ## 📚 Documentation & Support
 
 ### Setup Guides

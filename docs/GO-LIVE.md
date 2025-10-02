@@ -1,0 +1,147 @@
+# Go-Live: publicar online, domínio real e visibilidade
+
+Este guia traz caminhos práticos para começar a vender de verdade, com opções de publicação, domínio próprio e melhorias de visibilidade (SEO/Analytics/Anúncios).
+
+## Visão rápida
+
+- Backend de pagamentos (Stripe) já pronto em `api/stripe-server-premium.js`.
+- Frontend é estático (HTML/CSS/JS) e pode ser servido pelo próprio backend Express (opção simples) ou por um CDN (Vercel/Netlify/GitHub Pages).
+- Domínio pode apontar direto para o host do backend (Render) ou para o CDN (com CORS liberado no backend).
+
+---
+
+## Opção 1 (mais simples): Render (backend + frontend juntos)
+
+Tudo em um único serviço Node no Render — serve o site estático e expõe a API Stripe.
+
+1) Criar serviço no Render
+   - Conecte o repositório (GitHub).
+   - Ele vai detectar Node (usa `package.json`).
+   - Build Command: `npm install`
+   - Start Command: `node api/stripe-server-premium.js`
+   - Variáveis de ambiente (Environment → Add Environment Variable):
+     - `STRIPE_SECRET_KEY` (live)
+     - `STRIPE_PUBLISHABLE_KEY` (live)
+   - Health check path: `/health`
+   - Plano: Free/Starter (iniciar), escalar depois.
+
+2) Domínio customizado no Render
+   - Em Settings → Custom Domains → Add Custom Domain → informe `garcia-builder.com` e `www.garcia-builder.com`.
+   - Siga as instruções de DNS (CNAME para o subdomínio ou A/ALIAS para o apex) no seu provedor (Namecheap/GoDaddy/Cloudflare).
+   - Render provisiona SSL automaticamente (Let's Encrypt).
+
+3) CORS e URLs
+   - Em `api/stripe-server-premium.js` já há CORS permitindo:
+     - `https://garcia-builder.com` e `https://www.garcia-builder.com`
+   - Se usar outro domínio, adicione-o na lista `origin`.
+
+4) Pagamentos live
+   - No Dashboard Stripe, pegue as chaves Live e salve no Render (Environment Variables).
+   - Faça um checkout real em `pricing.html` e confirme recebimento no Stripe.
+
+---
+
+## Opção 2: Frontend em Vercel/Netlify + Backend no Render
+
+Mantém o backend seguro no Render e o frontend em CDN global.
+
+1) Backend (Render)
+   - Igual à Opção 1 (passos 1 e 4).
+
+2) Frontend (Vercel ou Netlify)
+   - Vercel: importe o repositório → framework “Other” (estático) → sem build → output `/`.
+   - Netlify: arraste e solte ou conecte Git → Publish directory `/`.
+
+3) Domínio
+   - Configure o domínio no provedor do frontend (Vercel/Netlify) — ambos emitem SSL.
+   - Backend continua no domínio do Render (ex.: `https://garcia-builder.onrender.com`).
+   - Garanta que o CORS do backend permite o domínio final do frontend.
+
+4) Configurar URLs do frontend
+   - Se houver código que chama o backend, aponte para a URL do Render (ex.: `https://garcia-builder.onrender.com`).
+
+---
+
+## Opção 3: Frontend no GitHub Pages + Backend no Render
+
+Mais econômico, porém sem server-side no Pages.
+
+1) Pages
+   - Ative GitHub Pages no repositório (Branch `main`, pasta `/`).
+   - Coloque o arquivo `CNAME` com o domínio (opcional) se for usar domínio próprio no Pages.
+
+2) Backend no Render
+   - Igual à Opção 1 (passos 1 e 4).
+
+3) DNS
+   - Aponte `www` para Pages e crie subdomínio `api.garcia-builder.com` apontando para o Render.
+   - Garanta CORS para `https://garcia-builder.com` e `https://www.garcia-builder.com` no backend.
+
+---
+
+## Domínio e DNS (resumo prático)
+
+- Compre o domínio (Namecheap/GoDaddy/Cloudflare Registrar).
+- Decida onde vai hospedar (Render, Vercel/Netlify + Render, Pages + Render).
+- Crie registros:
+  - `A`/`ALIAS` para raiz (apex) quando exigido pelo host.
+  - `CNAME` para `www` apontando ao host.
+  - Para API dedicada: `api.garcia-builder.com` como `CNAME` para o host do backend.
+- Ative/espere SSL (automático na maioria). Sempre use HTTPS nas URLs.
+
+---
+
+## SEO e visibilidade (rápido e direto)
+
+1) Sitemap e robots
+   - Gere o sitemap automaticamente: `npm run sitemap` (defina `SITE_URL` antes).
+   - `robots.txt` já preparado com linha `Sitemap: https://www.garcia-builder.com/sitemap.xml` — ajuste o domínio se necessário.
+
+2) Search Console e Bing
+   - Google Search Console: verifique o domínio (DNS) e envie o sitemap.
+   - Bing Webmaster Tools: repita o processo.
+
+3) Titles, meta e Open Graph
+   - Garanta títulos únicos por página, meta description clara e tags OG/Twitter para social.
+   - Opcional: adicionar JSON-LD (Organization/Website/Breadcrumbs) na `index.html`.
+
+4) Performance e Core Web Vitals
+   - Comprima imagens (WebP), lazy-load onde possível.
+   - Lighthouse (Chrome) e PageSpeed Insights para diagnóstico.
+
+5) Analytics e Pixels
+   - Instale GA4 (Google Analytics) e opcionalmente Meta Pixel/LinkedIn Insight.
+
+6) Conteúdo e confiança
+   - Depoimentos, antes/depois, perguntas frequentes (já existem páginas).
+   - Políticas (privacidade/termos) e informações de contato claras.
+
+7) Anúncios e canais
+   - Google Ads com palavras-chave long-tail + correspondência de intenção (ex.: “personal trainer online Londres”).
+   - Instagram/TikTok com CTAs para `pricing.html`.
+   - Campanhas de e-mail (lista de newsletter).
+
+---
+
+## Checklist de publicação
+
+- [ ] Chaves STRIPE (Live) configuradas no host.
+- [ ] CORS liberado para o domínio final.
+- [ ] `SITE_URL` definido e `npm run sitemap` executado (commit o `sitemap.xml`).
+- [ ] `robots.txt` aponta para o sitemap do domínio final.
+- [ ] Search Console e Bing verificados + sitemap enviado.
+- [ ] Teste de checkout real concluído e confirmado no Stripe.
+- [ ] Páginas principais revisadas (title/description/OG/Links).
+
+---
+
+## Problemas comuns
+
+- CORS bloqueando requests do frontend → adicionar domínio na lista `origin` do backend.
+- SSL pendente → aguarde emissão (pode levar alguns minutos após DNS).
+- Sitemap com URLs antigas (GitHub Pages) → gere novamente e faça deploy.
+- Checkout em modo test → confirme que as chaves Live foram salvas no host.
+
+---
+
+Dúvidas? Ver também `docs/SEO-QUICK-WINS.md` para ações rápidas de visibilidade.

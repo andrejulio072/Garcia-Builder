@@ -49,14 +49,26 @@ const limiter = rateLimit({
 
 app.use('/api/', limiter);
 
-// CORS configurado para produção
+// CORS configurado para produção (dinâmico via env)
+const defaultCorsOrigins = [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'https://garcia-builder.com',
+    'https://www.garcia-builder.com'
+];
+const envCors = (process.env.CORS_ORIGINS || '')
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
+const allowedCorsOrigins = envCors.length ? envCors : defaultCorsOrigins;
+
 app.use(cors({
-    origin: [
-        'http://localhost:3000',
-        'http://localhost:3001',
-        'https://garcia-builder.com',
-        'https://www.garcia-builder.com'
-    ],
+    origin: function(origin, callback) {
+        // Permitir chamadas sem origin (ex: curl, mobile app) e checar lista quando houver origin
+        if (!origin) return callback(null, true);
+        if (allowedCorsOrigins.includes(origin)) return callback(null, true);
+        return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']

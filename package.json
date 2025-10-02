@@ -8,7 +8,8 @@
     "dev": "nodemon api/stripe-server-premium.js",
     "legacy": "node api/stripe-server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "node tools/static-server.js"
+    "serve": "node tools/static-server.js",
+    "sitemap": "node tools/generate-sitemap.js"
   },
   "keywords": [
     "stripe",

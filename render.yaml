@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: garcia-builder
+    env: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: node api/stripe-server-premium.js
+    autoDeploy: true
+    envVars:
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_PUBLISHABLE_KEY
+        sync: false
+    healthCheckPath: /health
+    headers:
+      - path: /*
+        name: Strict-Transport-Security
+        value: max-age=31536000; includeSubDomains; preload
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff

@@ -3,8 +3,10 @@
 3)transformations: para fotos com grande width poder deslizar ou ampliar imagem para poder ver inteira, 
 4)comecar a vendas reais: maneiras de publicar online, aparecer para vendas, colocar um dominio real, maneiras de melhorar a visibilidade
 5)resolver parte de my fitness plan and get my free consultation, resolver pop up problema.
+6)implementar trainer message direto no site. conversas entre trainer e aluno.
 
 opcoes futuras:
-1) conectar com trainarize blogs,
+1) conectar com trainarize blogs, talvez criar novo aba so para blogs.
 2) criar newsletter para email recorrente e captar leads. melhorar pop up
-3) e-book gratuito
+3) criar e desenvolver e-book gratuito
+4) criar um online shop com conteudo digital: treino, receitas, vegatarianos, veganos, dieta,etc.

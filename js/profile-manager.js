@@ -207,8 +207,40 @@
         Object.assign(profileData.macros, currentUser.user_metadata.macros);
       }
 
+      // Preferred: fetch weight history from body_metrics table
+      await fetchWeightHistoryFromTable();
+
+      // Fallback: if still empty, use metadata
+      if ((!profileData.body_metrics.weight_history || profileData.body_metrics.weight_history.length === 0) && currentUser.user_metadata?.body_metrics?.weight_history?.length) {
+        profileData.body_metrics.weight_history = currentUser.user_metadata.body_metrics.weight_history;
+      }
+
     } catch (error) {
       console.error('Error loading from Supabase:', error);
+    }
+  };
+
+  // Fetch weight history rows from body_metrics table
+  const fetchWeightHistoryFromTable = async () => {
+    try {
+      if (!window.supabaseClient) return;
+      const { data, error } = await window.supabaseClient
+        .from('body_metrics')
+        .select('date, weight')
+        .eq('user_id', currentUser.id)
+        .order('date', { ascending: true })
+        .limit(365);
+      if (error) {
+        console.warn('Could not fetch body_metrics:', error.message || error);
+        return;
+      }
+      if (Array.isArray(data)) {
+        profileData.body_metrics.weight_history = data
+          .filter(r => r.date && r.weight != null)
+          .map(r => ({ date: new Date(r.date).toISOString(), weight: Number(r.weight) }));
+      }
+    } catch (e) {
+      console.warn('Failed to load weight history from table:', e?.message || e);
     }
   };
 
@@ -1392,6 +1424,36 @@
 
       // Update chart
       renderWeightHistoryChart();
+
+      // Also upsert into body_metrics table (preferred)
+      upsertWeightRowToTable(parseFloat(newWeight)).catch(() => {});
+    }
+  };
+
+  // Upsert a weight row for today into body_metrics using unique client_id per date
+  const upsertWeightRowToTable = async (weight) => {
+    try {
+      if (!window.supabaseClient) return;
+      const today = new Date().toISOString().slice(0,10);
+      const clientId = `wh-${today}`;
+      const heightNum = Number(profileData.body_metrics.height || 0) || null;
+      const bodyFatNum = Number(profileData.body_metrics.body_fat_percentage || 0) || null;
+      const { data: { user } } = await window.supabaseClient.auth.getUser();
+      const payload = {
+        user_id: user?.id,
+        date: today,
+        weight,
+        height: heightNum,
+        body_fat: bodyFatNum,
+        client_id: clientId,
+        updated_at: new Date().toISOString()
+      };
+      const { error } = await window.supabaseClient
+        .from('body_metrics')
+        .upsert(payload, { onConflict: 'user_id,client_id' });
+      if (error) console.warn('Upsert weight to table failed:', error.message || error);
+    } catch (e) {
+      console.warn('Upsert weight error:', e?.message || e);
     }
   };
 

@@ -1,7 +1,8 @@
 1) conectar com trainerize e otimizar/automatizar processo dos clientes e perfil❌
 2)melhorar e padronizar coloracao dos cards em pricing, todos os 3,6,12 meses devem seguir o mesmo padrao
-
-
+3)transformations: para fotos com grande width poder deslizar ou ampliar imagem para poder ver inteira, 
+4)comecar a vendas reais: maneiras de publicar online, aparecer para vendas, colocar um dominio real, maneiras de melhorar a visibilidade
+5)resolver parte de my fitness plan and get my free consultation, resolver pop up problema.
 
 opcoes futuras:
 1) conectar com trainarize blogs,

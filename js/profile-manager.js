@@ -108,6 +108,18 @@
             progress_visible: false
           }
         },
+        macros: {
+          goal: 'maintain',
+          activity_level: 'moderate',
+          calories: '',
+          protein_pct: 30,
+          carbs_pct: 40,
+          fats_pct: 30,
+          protein_g: '',
+          carbs_g: '',
+          fats_g: '',
+          updated_at: new Date().toISOString()
+        },
         activity: {
           workouts_completed: 0,
           total_sessions: 0,
@@ -179,6 +191,11 @@
       // Load preferences from user metadata
       if (currentUser.user_metadata?.preferences) {
         Object.assign(profileData.preferences, currentUser.user_metadata.preferences);
+      }
+
+      // Load macros from user metadata
+      if (currentUser.user_metadata?.macros) {
+        Object.assign(profileData.macros, currentUser.user_metadata.macros);
       }
 
     } catch (error) {
@@ -387,7 +404,7 @@
         }
       }
 
-      // Save preferences to user metadata
+  // Save preferences to user metadata
       if (section === 'preferences' || !section) {
         try {
           const preferencesData = {
@@ -409,6 +426,35 @@
         } catch (error) {
           console.error('Error saving preferences:', error);
           // Don't throw error for preferences, just log it
+        }
+      }
+
+      // Save macros to user metadata
+      if (section === 'macros' || !section) {
+        try {
+          const macrosData = {
+            goal: profileData.macros.goal || 'maintain',
+            activity_level: profileData.macros.activity_level || 'moderate',
+            calories: profileData.macros.calories ? Number(profileData.macros.calories) : null,
+            protein_pct: Number(profileData.macros.protein_pct) || 0,
+            carbs_pct: Number(profileData.macros.carbs_pct) || 0,
+            fats_pct: Number(profileData.macros.fats_pct) || 0,
+            protein_g: profileData.macros.protein_g ? Number(profileData.macros.protein_g) : null,
+            carbs_g: profileData.macros.carbs_g ? Number(profileData.macros.carbs_g) : null,
+            fats_g: profileData.macros.fats_g ? Number(profileData.macros.fats_g) : null,
+            updated_at: new Date().toISOString()
+          };
+
+          const { error: macrosError } = await window.supabaseClient.auth.updateUser({
+            data: { macros: macrosData }
+          });
+
+          if (macrosError) {
+            console.warn('Failed to save macros to user metadata:', macrosError);
+          }
+
+        } catch (error) {
+          console.error('Error saving macros:', error);
         }
       }
 
@@ -446,6 +492,9 @@
 
   // Render any existing progress photos
   updateProgressPhotos();
+
+    // Setup Macros form
+    setupMacrosForm();
 
     console.log('UI initialized');
   };
@@ -659,6 +708,154 @@
 
     // Setup automatic calculations
     setupAutoCalculations();
+
+    // Macros auto calculations
+    setupMacrosAutoCalculations();
+  };
+
+  // Setup Macros form population
+  const setupMacrosForm = () => {
+    const form = document.getElementById('macros-form');
+    if (!form) return;
+
+    // Populate
+    const f = profileData.macros || {};
+    const map = new Map([
+      ['goal','macros_goal'],
+      ['activity_level','macros_activity'],
+      ['calories','macros_calories'],
+      ['protein_pct','macros_protein_pct'],
+      ['carbs_pct','macros_carbs_pct'],
+      ['fats_pct','macros_fats_pct']
+    ]);
+    map.forEach((elId,key) => {
+      const el = document.getElementById(elId);
+      if (el && f[key] !== undefined && f[key] !== '') el.value = f[key];
+    });
+
+    // Render targets
+    renderMacroTargets();
+
+    // Auto-calc calories button
+    document.getElementById('btn-auto-calc-calories')?.addEventListener('click', () => {
+      const cals = autoCalculateCalories();
+      const input = document.getElementById('macros_calories');
+      if (cals && input) {
+        input.value = Math.round(cals);
+        profileData.macros.calories = Math.round(cals);
+        renderMacroTargets();
+      } else {
+        document.getElementById('macros-tip')?.setAttribute('style','display:block');
+      }
+    });
+  };
+
+  // Setup listeners for macros auto updates
+  const setupMacrosAutoCalculations = () => {
+    const form = document.getElementById('macros-form');
+    if (!form) return;
+
+    const inputs = ['macros_goal','macros_activity','macros_calories','macros_protein_pct','macros_carbs_pct','macros_fats_pct'];
+    inputs.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', () => {
+        // Update model
+        const nameMap = {
+          'macros_goal':'goal',
+          'macros_activity':'activity_level',
+          'macros_calories':'calories',
+          'macros_protein_pct':'protein_pct',
+          'macros_carbs_pct':'carbs_pct',
+          'macros_fats_pct':'fats_pct'
+        };
+        const key = nameMap[id];
+        profileData.macros[key] = el.type === 'number' ? Number(el.value) : el.value;
+
+        // Keep split to 100%
+        enforceMacroSplit();
+        renderMacroTargets();
+      });
+    });
+  };
+
+  // Ensure macro split total equals 100%
+  const enforceMacroSplit = () => {
+    const p = Number(document.getElementById('macros_protein_pct')?.value || 0);
+    const c = Number(document.getElementById('macros_carbs_pct')?.value || 0);
+    const f = Number(document.getElementById('macros_fats_pct')?.value || 0);
+    const total = p + c + f;
+    if (!total) return;
+    if (total !== 100) {
+      // Normalize proportionally
+      const np = Math.round((p / total) * 100);
+      const nc = Math.round((c / total) * 100);
+      let nf = 100 - np - nc;
+      // Update UI
+      ['macros_protein_pct','macros_carbs_pct','macros_fats_pct'].forEach((id, idx) => {
+        const val = idx === 0 ? np : idx === 1 ? nc : nf;
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+      });
+      // Update model
+      profileData.macros.protein_pct = np;
+      profileData.macros.carbs_pct = nc;
+      profileData.macros.fats_pct = nf;
+    }
+  };
+
+  // Auto-calc calories based on BMR, activity and goal
+  const autoCalculateCalories = () => {
+    const weight = Number(profileData.body_metrics.current_weight || 0);
+    const height = Number(profileData.body_metrics.height || 0);
+    if (!weight || !height) return null;
+
+    // Reuse BMR function (assume age 30, male)
+    const bmr = calculateBMR(weight, height);
+    const activityMap = { sedentary:1.2, light:1.375, moderate:1.55, very:1.725, athlete:1.9 };
+    const factor = activityMap[profileData.macros.activity_level || 'moderate'] || 1.55;
+    let tdee = bmr * factor;
+
+    // Adjust for goal
+    const goal = profileData.macros.goal || 'maintain';
+    if (goal === 'cut') tdee *= 0.85; // ~15% deficit
+    if (goal === 'bulk') tdee *= 1.10; // ~10% surplus
+    return tdee;
+  };
+
+  // Compute grams from calories and split
+  const renderMacroTargets = () => {
+    const calories = Number(document.getElementById('macros_calories')?.value || profileData.macros.calories || 0);
+    const p = Number(document.getElementById('macros_protein_pct')?.value || profileData.macros.protein_pct || 0);
+    const c = Number(document.getElementById('macros_carbs_pct')?.value || profileData.macros.carbs_pct || 0);
+    const f = Number(document.getElementById('macros_fats_pct')?.value || profileData.macros.fats_pct || 0);
+    if (!calories || (p + c + f) !== 100) {
+      ['display-protein-g','display-carbs-g','display-fats-g'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '--g';
+      });
+      return;
+    }
+
+    const proteinCal = calories * (p/100);
+    const carbsCal = calories * (c/100);
+    const fatsCal = calories * (f/100);
+    const proteinG = Math.round(proteinCal / 4);
+    const carbsG = Math.round(carbsCal / 4);
+    const fatsG = Math.round(fatsCal / 9);
+
+    profileData.macros.protein_g = proteinG;
+    profileData.macros.carbs_g = carbsG;
+    profileData.macros.fats_g = fatsG;
+
+    const map = new Map([
+      ['display-protein-g', proteinG + 'g'],
+      ['display-carbs-g', carbsG + 'g'],
+      ['display-fats-g', fatsG + 'g']
+    ]);
+    map.forEach((val,id) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    });
   };
 
   // Setup automatic calculations for body metrics
@@ -994,7 +1191,7 @@
           profileData.body_metrics[key] = value;
         }
       });
-    } else if (section === 'preferences') {
+  } else if (section === 'preferences') {
       // Selects
       const units = formData.get('units');
       const language = formData.get('language');
@@ -1014,6 +1211,17 @@
         profile_visible: !!formData.get('profile_visible'),
         progress_visible: !!formData.get('progress_visible')
       };
+    } else if (section === 'macros') {
+      const obj = Object.fromEntries(formData);
+      profileData.macros.goal = obj.goal || 'maintain';
+      profileData.macros.activity_level = obj.activity_level || 'moderate';
+      profileData.macros.calories = obj.calories ? Number(obj.calories) : '';
+      profileData.macros.protein_pct = obj.protein_pct ? Number(obj.protein_pct) : 30;
+      profileData.macros.carbs_pct = obj.carbs_pct ? Number(obj.carbs_pct) : 40;
+      profileData.macros.fats_pct = obj.fats_pct ? Number(obj.fats_pct) : 30;
+      // Recompute and write displays
+      enforceMacroSplit();
+      renderMacroTargets();
     }
 
     await saveProfileData(section);

@@ -1014,9 +1014,84 @@
                         <i class="fas fa-balance-scale"></i>
                         Macronutrients
                     </h3>
-                    <div class="alert-custom">
+
+                    <form id="macros-form" data-profile-section="macros">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="macros_goal" class="form-label">Goal</label>
+                                <select class="form-select" id="macros_goal" name="goal">
+                                    <option value="maintain">Maintain</option>
+                                    <option value="cut">Cut (fat loss)</option>
+                                    <option value="bulk">Bulk (gain)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="macros_activity" class="form-label">Activity Level</label>
+                                <select class="form-select" id="macros_activity" name="activity_level">
+                                    <option value="sedentary">Sedentary (1.2)</option>
+                                    <option value="light">Lightly Active (1.375)</option>
+                                    <option value="moderate">Moderately Active (1.55)</option>
+                                    <option value="very">Very Active (1.725)</option>
+                                    <option value="athlete">Athlete (1.9)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="macros_calories" class="form-label">Daily Calories</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="macros_calories" name="calories" step="10" placeholder="2000">
+                                    <button class="btn btn-secondary-custom" type="button" id="btn-auto-calc-calories">Auto</button>
+                                </div>
+                                <small class="text-muted">Auto uses your weight/height + activity</small>
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <h5 class="text-light mb-2"><i class="fas fa-sliders-h me-2"></i> Macro Split (%)</h5>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="macros_protein_pct" class="form-label">Protein %</label>
+                                        <input type="number" class="form-control" id="macros_protein_pct" name="protein_pct" min="0" max="100" step="1" placeholder="30">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="macros_carbs_pct" class="form-label">Carbs %</label>
+                                        <input type="number" class="form-control" id="macros_carbs_pct" name="carbs_pct" min="0" max="100" step="1" placeholder="40">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="macros_fats_pct" class="form-label">Fats %</label>
+                                        <input type="number" class="form-control" id="macros_fats_pct" name="fats_pct" min="0" max="100" step="1" placeholder="30">
+                                    </div>
+                                </div>
+                                <small class="text-muted">Total must be 100%</small>
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <h5 class="text-light mb-2"><i class="fas fa-scale-balanced me-2"></i> Targets (per day)</h5>
+                                <div class="metrics-grid">
+                                    <div class="metric-card" data-metric="protein-g">
+                                        <div class="metric-number" id="display-protein-g">--g</div>
+                                        <div class="metric-label">Protein</div>
+                                    </div>
+                                    <div class="metric-card" data-metric="carbs-g">
+                                        <div class="metric-number" id="display-carbs-g">--g</div>
+                                        <div class="metric-label">Carbs</div>
+                                    </div>
+                                    <div class="metric-card" data-metric="fats-g">
+                                        <div class="metric-number" id="display-fats-g">--g</div>
+                                        <div class="metric-label">Fats</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Save Macros
+                            </button>
+                        </div>
+                    </form>
+
+                    <div id="macros-tip" class="alert-custom mt-3" style="display:none">
                         <i class="fas fa-info-circle me-2"></i>
-                        Configure your daily macro targets and see suggested splits here. (Coming soon)
+                        Tip: set weight, height and target weight in Body Metrics to improve auto-calculation.
                     </div>
                 </div>
             </div>

@@ -493,6 +493,9 @@
   // Render any existing progress photos
   updateProgressPhotos();
 
+    // Render weight chart if data exists
+    renderWeightHistoryChart();
+
     // Setup Macros form
     setupMacrosForm();
 
@@ -639,6 +642,12 @@
 
       await saveProfileData('body_metrics');
       updateProgressPhotos();
+      // Persist progress photos in metadata as well
+      try {
+        await window.supabaseClient?.auth?.updateUser({
+          data: { body_metrics: { ...profileData.body_metrics, progress_photos: profileData.body_metrics.progress_photos } }
+        });
+      } catch (e) { console.warn('Could not persist progress photos to metadata', e); }
     } catch (error) {
       console.error('Error uploading photo:', error);
       showNotification('Error uploading photo. Please try again.', 'error');
@@ -1241,6 +1250,14 @@
       if (profileData.body_metrics.weight_history.length > 50) {
         profileData.body_metrics.weight_history = profileData.body_metrics.weight_history.slice(-50);
       }
+
+      // Save to metadata (best effort)
+      window.supabaseClient?.auth?.updateUser({
+        data: { body_metrics: { ...profileData.body_metrics, weight_history: profileData.body_metrics.weight_history } }
+      }).catch(() => {});
+
+      // Update chart
+      renderWeightHistoryChart();
     }
   };
 
@@ -1274,6 +1291,69 @@
       `;
       container.appendChild(photoElement);
     });
+  };
+
+  // Render weight history chart using Chart.js
+  let weightChartInstance = null;
+  const renderWeightHistoryChart = () => {
+    try {
+      const entries = profileData.body_metrics?.weight_history || [];
+      const empty = document.getElementById('weight-chart-empty');
+      const canvas = document.getElementById('weight-history-canvas');
+      if (!canvas) return;
+
+      if (!entries.length) {
+        if (empty) empty.style.display = '';
+        canvas.style.display = 'none';
+        return;
+      }
+
+      // Prepare data
+      const sorted = [...entries].sort((a,b) => new Date(a.date) - new Date(b.date));
+      const labels = sorted.map(e => new Date(e.date).toLocaleDateString());
+      const data = sorted.map(e => e.weight);
+
+      if (empty) empty.style.display = 'none';
+      canvas.style.display = '';
+
+      const ctx = canvas.getContext('2d');
+      if (weightChartInstance) {
+        weightChartInstance.data.labels = labels;
+        weightChartInstance.data.datasets[0].data = data;
+        weightChartInstance.update();
+        return;
+      }
+
+      weightChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Weight (kg)',
+            data,
+            borderColor: 'rgba(246, 200, 78, 1)',
+            backgroundColor: 'rgba(246, 200, 78, 0.15)',
+            tension: 0.3,
+            fill: true,
+            pointRadius: 3,
+            pointHoverRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: '#fff' } }
+          },
+          scales: {
+            x: { ticks: { color: '#ddd' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+            y: { ticks: { color: '#ddd' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+          }
+        }
+      });
+    } catch (e) {
+      console.warn('Could not render weight chart:', e);
+    }
   };
 
   // Utility functions

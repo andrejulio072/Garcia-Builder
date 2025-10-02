@@ -215,6 +215,10 @@
     overflow: hidden;
   }
 
+  .price.discounted {
+    border: 2px solid rgba(246, 200, 78, 0.55);
+    box-shadow: 0 12px 36px rgba(246, 200, 78, 0.22);
+  }
   .price.discounted::after {
     content: '';
     position: absolute;
@@ -222,10 +226,10 @@
     left: -2px;
     right: -2px;
     bottom: -2px;
-    background: linear-gradient(45deg, #10b981, #06d6a0);
+    background: linear-gradient(45deg, #F6C84E, #FFD700);
     border-radius: inherit;
     z-index: -1;
-    opacity: 0.3;
+    opacity: 0.25;
     animation: pulse 2s ease-in-out infinite;
   }
 
@@ -236,9 +240,7 @@
     margin-right: 0.5rem;
   }
 
-  .discounted-price {
-    color: #10b981;
-  }
+  .discounted-price { color: #F6C84E; }
 </style>
 </head>
 
@@ -423,10 +425,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.pricing-card.discounted {
-  border: 2px solid #32CD32;
-  box-shadow: 0 10px 30px rgba(50,205,50,0.3);
-}
+.pricing-card.discounted { border: 2px solid rgba(246,200,78,.55); box-shadow: 0 10px 30px rgba(246,200,78,.25); }
 
 .original-price {
   text-decoration: line-through;
@@ -444,13 +443,13 @@
   position: absolute;
   top: -10px;
   right: -10px;
-  background: linear-gradient(135deg, #32CD32 0%, #228B22 100%);
-  color: white;
+  background: linear-gradient(135deg, #F6C84E 0%, #FFD700 100%);
+  color: #0a0f1e;
   padding: 0.5rem;
   border-radius: 50%;
   font-size: 0.8rem;
-  font-weight: 700;
-  box-shadow: 0 3px 10px rgba(50,205,50,0.4);
+  font-weight: 800;
+  box-shadow: 0 3px 10px rgba(246,200,78,0.35);
   animation: pulse 2s infinite;
 }
 

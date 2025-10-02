@@ -25,6 +25,8 @@
         if (!error && user) {
           currentUser = user;
           await loadBodyMetrics();
+          // attempt sync of any local entries to cloud
+          trySyncLocalMetrics();
         }
       }
     } catch (error) {
@@ -306,7 +308,8 @@
           thighs: parseFloat(document.getElementById('entry-thighs').value) || null
         },
         notes: document.getElementById('entry-notes').value.trim() || null,
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
+        client_id: `${Date.now()}-${Math.random().toString(36).slice(2,8)}`
       };
 
       // Validar pelo menos um campo preenchido
@@ -410,6 +413,37 @@
       throw new Error('Failed to save metrics online. Saved locally and will sync later.');
     }
   };
+
+  // Try to sync any locally stored metrics to Supabase when online
+  async function trySyncLocalMetrics() {
+    try {
+      if (!window.supabaseClient || !currentUser) return;
+      const key = `gb_body_metrics_${currentUser.id}`;
+      const stored = JSON.parse(localStorage.getItem(key) || '[]');
+      if (!stored.length) return;
+
+      // Fetch existing client_ids to avoid duplicates
+      const { data: cloudRows } = await window.supabaseClient
+        .from('body_metrics')
+        .select('client_id')
+        .eq('user_id', currentUser.id);
+      const cloudIds = new Set((cloudRows || []).map(r => r.client_id).filter(Boolean));
+
+      const toPush = stored.filter(row => row.client_id && !cloudIds.has(row.client_id));
+      if (!toPush.length) return;
+
+      const { error } = await window.supabaseClient.from('body_metrics').insert(toPush);
+      if (!error) {
+        // After push, refresh and clear local duplicates
+        await loadBodyMetrics();
+        const stillLocal = stored.filter(row => row.client_id && !cloudIds.has(row.client_id));
+        localStorage.setItem(key, JSON.stringify(stillLocal));
+        console.log(`✅ Synced ${toPush.length} local metrics to cloud`);
+      }
+    } catch (e) {
+      console.warn('Metrics sync skipped:', e?.message || e);
+    }
+  }
 
   const loadCurrentMetrics = () => {
     if (!bodyMetrics.length) {

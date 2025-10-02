@@ -1104,9 +1104,69 @@
                         <i class="fas fa-list-check"></i>
                         Habits & Routines
                     </h3>
-                    <div class="alert-custom">
-                        <i class="fas fa-info-circle me-2"></i>
-                        Track steps, sleep, hydration and more. (Coming soon)
+
+                    <form id="habits-form" data-profile-section="habits">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="habits_water" class="form-label">Water (ml)</label>
+                                <input type="number" class="form-control" id="habits_water" name="water_ml" placeholder="2500" min="0" step="50">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="habits_steps" class="form-label">Steps</label>
+                                <input type="number" class="form-control" id="habits_steps" name="steps" placeholder="8000" min="0" step="100">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="habits_sleep" class="form-label">Sleep (hours)</label>
+                                <input type="number" class="form-control" id="habits_sleep" name="sleep_hours" placeholder="7.5" min="0" max="24" step="0.1">
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="habits_workout" name="workout">
+                                    <label class="form-check-label" for="habits_workout">Workout done</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="habits_meditation" name="meditation">
+                                    <label class="form-check-label" for="habits_meditation">Meditation</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="habits_stretch" name="stretch">
+                                    <label class="form-check-label" for="habits_stretch">Stretching</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Save Today
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="metrics-grid mt-4">
+                        <div class="metric-card">
+                            <div class="metric-number" id="streak-workout">0</div>
+                            <div class="metric-label">Workout Streak (days)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number" id="streak-meditation">0</div>
+                            <div class="metric-label">Meditation Streak (days)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number" id="streak-stretch">0</div>
+                            <div class="metric-label">Stretching Streak (days)</div>
+                        </div>
+                    </div>
+
+                    <h5 class="text-light mt-4 mb-2"><i class="fas fa-shoe-prints me-2"></i> Steps (Last 7 days)</h5>
+                    <div style="height:180px">
+                        <canvas id="habits-steps-canvas"></canvas>
                     </div>
                 </div>
             </div>

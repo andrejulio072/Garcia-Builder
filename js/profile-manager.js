@@ -120,6 +120,11 @@
           fats_g: '',
           updated_at: new Date().toISOString()
         },
+        habits: {
+          // keyed by yyyy-mm-dd
+          daily: {},
+          updated_at: new Date().toISOString()
+        },
         activity: {
           workouts_completed: 0,
           total_sessions: 0,
@@ -191,6 +196,10 @@
       // Load preferences from user metadata
       if (currentUser.user_metadata?.preferences) {
         Object.assign(profileData.preferences, currentUser.user_metadata.preferences);
+      }
+      // Load habits from user metadata
+      if (currentUser.user_metadata?.habits) {
+        Object.assign(profileData.habits, currentUser.user_metadata.habits);
       }
 
       // Load macros from user metadata
@@ -458,6 +467,20 @@
         }
       }
 
+      // Save habits to user metadata
+      if (section === 'habits' || !section) {
+        try {
+          const habitsData = {
+            daily: profileData.habits.daily || {},
+            updated_at: new Date().toISOString()
+          };
+          const { error: habitsError } = await window.supabaseClient.auth.updateUser({ data: { habits: habitsData } });
+          if (habitsError) console.warn('Failed to save habits to user metadata:', habitsError);
+        } catch (e) {
+          console.error('Error saving habits:', e);
+        }
+      }
+
     } catch (error) {
       console.error('Error saving to Supabase:', error);
       throw error;
@@ -495,6 +518,11 @@
 
     // Render weight chart if data exists
     renderWeightHistoryChart();
+
+  // Habits
+  setupHabitsForm();
+  renderHabitsStreaks();
+  renderHabitsStepsChart();
 
     // Setup Macros form
     setupMacrosForm();
@@ -720,6 +748,98 @@
 
     // Macros auto calculations
     setupMacrosAutoCalculations();
+
+    // Auto-save habits on change
+    const habitsForm = document.getElementById('habits-form');
+    if (habitsForm) {
+      habitsForm.querySelectorAll('input').forEach(input => {
+        input.addEventListener('change', () => {
+          const evt = { target: habitsForm, preventDefault: () => {} };
+          handleFormSubmit(evt);
+        });
+      });
+    }
+  };
+
+  // Habits helpers
+  const todayKey = () => new Date().toISOString().slice(0,10);
+
+  const setupHabitsForm = () => {
+    const form = document.getElementById('habits-form');
+    if (!form) return;
+
+    const t = profileData.habits.daily[todayKey()] || {};
+    const map = {
+      water_ml: 'habits_water',
+      steps: 'habits_steps',
+      sleep_hours: 'habits_sleep',
+      workout: 'habits_workout',
+      meditation: 'habits_meditation',
+      stretch: 'habits_stretch'
+    };
+    Object.entries(map).forEach(([k,id]) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (el.type === 'checkbox') el.checked = !!t[k];
+      else if (t[k] !== undefined) el.value = t[k];
+    });
+  };
+
+  const renderHabitsStreaks = () => {
+    const metrics = ['workout','meditation','stretch'];
+    metrics.forEach(m => {
+      const n = computeStreak(m);
+      const el = document.getElementById(`streak-${m}`);
+      if (el) el.textContent = n;
+    });
+  };
+
+  const computeStreak = (metric) => {
+    const entries = profileData.habits.daily || {};
+    // Count consecutive days backwards from today
+    let streak = 0;
+    for (let i=0; i<365; i++) {
+      const d = new Date();
+      d.setDate(d.getDate()-i);
+      const key = d.toISOString().slice(0,10);
+      if (entries[key]?.[metric]) streak++; else break;
+    }
+    return streak;
+  };
+
+  let habitsStepsChartInstance = null;
+  const renderHabitsStepsChart = () => {
+    const canvas = document.getElementById('habits-steps-canvas');
+    if (!canvas) return;
+    const entries = profileData.habits.daily || {};
+    const labels = [];
+    const data = [];
+    for (let i=6; i>=0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate()-i);
+      const key = d.toISOString().slice(0,10);
+      labels.push(d.toLocaleDateString());
+      data.push(entries[key]?.steps || 0);
+    }
+    const ctx = canvas.getContext('2d');
+    if (habitsStepsChartInstance) {
+      habitsStepsChartInstance.data.labels = labels;
+      habitsStepsChartInstance.data.datasets[0].data = data;
+      habitsStepsChartInstance.update();
+      return;
+    }
+    habitsStepsChartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: { labels, datasets: [{ label: 'Steps', data, backgroundColor: 'rgba(246,200,78,0.55)' }] },
+      options: {
+        responsive: true,
+        plugins: { legend: { labels: { color: '#fff' } } },
+        scales: {
+          x: { ticks: { color: '#ddd' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+          y: { ticks: { color: '#ddd' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+        }
+      }
+    });
   };
 
   // Setup Macros form population
@@ -1220,7 +1340,7 @@
         profile_visible: !!formData.get('profile_visible'),
         progress_visible: !!formData.get('progress_visible')
       };
-    } else if (section === 'macros') {
+  } else if (section === 'macros') {
       const obj = Object.fromEntries(formData);
       profileData.macros.goal = obj.goal || 'maintain';
       profileData.macros.activity_level = obj.activity_level || 'moderate';
@@ -1231,6 +1351,20 @@
       // Recompute and write displays
       enforceMacroSplit();
       renderMacroTargets();
+    } else if (section === 'habits') {
+      const obj = Object.fromEntries(formData);
+      const key = todayKey();
+      profileData.habits.daily[key] = {
+        water_ml: obj.water_ml ? Number(obj.water_ml) : 0,
+        steps: obj.steps ? Number(obj.steps) : 0,
+        sleep_hours: obj.sleep_hours ? Number(obj.sleep_hours) : 0,
+        workout: !!obj.workout,
+        meditation: !!obj.meditation,
+        stretch: !!obj.stretch
+      };
+      profileData.habits.updated_at = new Date().toISOString();
+      renderHabitsStreaks();
+      renderHabitsStepsChart();
     }
 
     await saveProfileData(section);

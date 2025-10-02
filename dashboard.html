@@ -384,19 +384,19 @@
                     <div class="user-info">
                         <img id="user-avatar" src="https://via.placeholder.com/70/333/fff?text=U" alt="User Avatar" class="user-avatar">
                         <div class="user-details">
-                            <h2>Welcome back, <span id="user-name">User</span>!</h2>
-                            <p>Last login: <span id="last-login">Today</span> • Member since: <span id="member-since">2024</span></p>
+                            <h2><span data-i18n="dashboard.welcome_back">Welcome back</span>, <span id="user-name">User</span>!</h2>
+                            <p><span data-i18n="dashboard.last_login">Last login</span>: <span id="last-login">Today</span> • <span data-i18n="dashboard.member_since">Member since</span>: <span id="member-since">2024</span></p>
                         </div>
                     </div>
                     <div class="quick-actions">
                         <a href="my-profile.html" class="btn-quick">
-                            <i class="fas fa-user-edit"></i> Edit Profile
+                            <i class="fas fa-user-edit"></i> <span data-i18n="dashboard.edit_profile">Edit Profile</span>
                         </a>
                         <a href="#" class="btn-quick" id="log-weight-btn">
-                            <i class="fas fa-weight"></i> Log Weight
+                            <i class="fas fa-weight"></i> <span data-i18n="dashboard.log_weight">Log Weight</span>
                         </a>
                         <a href="contact.html" class="btn-quick">
-                            <i class="fas fa-comment"></i> Get Support
+                            <i class="fas fa-comment"></i> <span data-i18n="dashboard.get_support">Get Support</span>
                         </a>
                     </div>
                 </div>
@@ -409,8 +409,8 @@
                         <i class="fas fa-weight-hanging"></i>
                     </div>
                     <div class="stats-number" id="current-weight">--</div>
-                    <div class="stats-label">Current Weight</div>
-                    <span class="stats-trend trend-neutral" id="weight-trend">Not set</span>
+                    <div class="stats-label" data-i18n="dashboard.current_weight">Current Weight</div>
+                    <span class="stats-trend trend-neutral" id="weight-trend" data-i18n="dashboard.not_set">Not set</span>
                 </div>
 
                 <div class="stats-card" data-metric="bmi">

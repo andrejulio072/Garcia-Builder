@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Dashboard - Garcia Builder</title>
+    <title data-i18n="dashboard.enhanced_dashboard">Enhanced Dashboard - Garcia Builder</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -31,7 +31,7 @@
 
         <nav class="sidebar-nav">
             <div class="nav-section">
-                <div class="nav-section-title">Dashboard</div>
+                <div class="nav-section-title" data-i18n="nav.dashboard">Dashboard</div>
                 <a href="#overview" class="nav-item active" data-tab="overview">
                     <i class="fas fa-home"></i>
                     Overview
@@ -85,18 +85,18 @@
             </div>
 
             <div class="nav-section">
-                <div class="nav-section-title">Account</div>
+                <div class="nav-section-title" data-i18n="dashboard.account">Account</div>
                 <a href="#profile" class="nav-item" data-tab="profile">
                     <i class="fas fa-user-cog"></i>
-                    Profile Settings
+                    <span data-i18n="dashboard.profile_settings">Profile Settings</span>
                 </a>
                 <a href="#settings" class="nav-item" data-tab="settings">
                     <i class="fas fa-cog"></i>
-                    Settings
+                    <span data-i18n="dashboard.settings">Settings</span>
                 </a>
                 <a href="#" class="nav-item" onclick="enhancedAuth.logout()">
                     <i class="fas fa-sign-out-alt"></i>
-                    Logout
+                    <span data-i18n="dashboard.logout">Logout</span>
                 </a>
             </div>
         </nav>
@@ -307,10 +307,10 @@
         <div id="profile-content" class="tab-content">
             <div class="profile-section">
                 <div class="profile-tabs">
-                    <button class="tab-btn active" data-profile-tab="personal">Personal Info</button>
-                    <button class="tab-btn" data-profile-tab="fitness">Fitness Profile</button>
-                    <button class="tab-btn" data-profile-tab="goals">Goals & Progress</button>
-                    <button class="tab-btn" data-profile-tab="preferences">Preferences</button>
+                    <button class="tab-btn active" data-profile-tab="personal" data-i18n="dashboard.personal_info">Personal Info</button>
+                    <button class="tab-btn" data-profile-tab="fitness" data-i18n="dashboard.fitness_profile">Fitness Profile</button>
+                    <button class="tab-btn" data-profile-tab="goals" data-i18n="dashboard.goals_progress">Goals & Progress</button>
+                    <button class="tab-btn" data-profile-tab="preferences" data-i18n="dashboard.preferences">Preferences</button>
                 </div>
 
                 <!-- Personal Info Tab -->
@@ -359,12 +359,12 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Bio</label>
-                            <textarea class="form-control" name="bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+                            <label class="form-label" data-i18n="dashboard.bio">Bio</label>
+                            <textarea class="form-control" name="bio" rows="3" data-i18n-placeholder="dashboard.bio_placeholder" placeholder="Tell us about yourself..."></textarea>
                         </div>
                         <button type="submit" class="btn-quick">
                             <i class="fas fa-save"></i>
-                            Save Changes
+                            <span data-i18n="dashboard.save_changes">Save Changes</span>
                         </button>
                     </form>
                 </div>
@@ -400,17 +400,17 @@
                         <div class="form-group">
                             <label class="form-label">Fitness Goals</label>
                             <div class="checkbox-group">
-                                <label><input type="checkbox" name="goals" value="Lose Weight"> Lose Weight</label>
-                                <label><input type="checkbox" name="goals" value="Build Muscle"> Build Muscle</label>
-                                <label><input type="checkbox" name="goals" value="Increase Strength"> Increase Strength</label>
-                                <label><input type="checkbox" name="goals" value="Improve Endurance"> Improve Endurance</label>
-                                <label><input type="checkbox" name="goals" value="Better Health"> Better Health</label>
-                                <label><input type="checkbox" name="goals" value="Sport Performance"> Sport Performance</label>
+                                <label><input type="checkbox" name="goals" value="Lose Weight"> <span data-i18n="dashboard.lose_weight">Lose Weight</span></label>
+                                <label><input type="checkbox" name="goals" value="Build Muscle"> <span data-i18n="dashboard.build_muscle">Build Muscle</span></label>
+                                <label><input type="checkbox" name="goals" value="Increase Strength"> <span data-i18n="dashboard.increase_strength">Increase Strength</span></label>
+                                <label><input type="checkbox" name="goals" value="Improve Endurance"> <span data-i18n="dashboard.improve_endurance">Improve Endurance</span></label>
+                                <label><input type="checkbox" name="goals" value="Better Health"> <span data-i18n="dashboard.better_health">Better Health</span></label>
+                                <label><input type="checkbox" name="goals" value="Sport Performance"> <span data-i18n="dashboard.sport_performance">Sport Performance</span></label>
                             </div>
                         </div>
                         <button type="submit" class="btn-quick">
                             <i class="fas fa-save"></i>
-                            Save Fitness Profile
+                            <span data-i18n="dashboard.save_changes">Save Changes</span>
                         </button>
                     </form>
                 </div>
@@ -502,5 +502,8 @@
             accent-color: var(--primary-gold);
         }
     </style>
+
+    <!-- I18n Script -->
+    <script src="assets/i18n.js"></script>
 </body>
 </html>

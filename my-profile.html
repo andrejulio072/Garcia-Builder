@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile - Garcia Builder</title>
+    <title data-i18n="dashboard.profile_title">My Profile - Garcia Builder</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -526,7 +526,7 @@
                     </div>
                     <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
                 </div>
-                <h1 id="profile-name">Your Profile</h1>
+                <h1 id="profile-name" data-i18n="dashboard.your_profile">Your Profile</h1>
                 <p class="lead" id="profile-email">user@example.com</p>
                 <p class="text-muted">Member since <span id="member-since-display">2024</span></p>
             </div>
@@ -555,18 +555,18 @@
                 <div class="profile-card">
                     <h3 class="card-title">
                         <i class="fas fa-user-edit"></i>
-                        Personal Information
+                        <span data-i18n="dashboard.personal_information">Personal Information</span>
                     </h3>
 
                     <form id="basic-info-form" data-profile-section="basic">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label for="full_name" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Your full name">
+                                <label for="full_name" class="form-label" data-i18n="dashboard.full_name">Full Name</label>
+                                <input type="text" class="form-control" id="full_name" name="full_name" data-i18n-placeholder="dashboard.full_name_placeholder" placeholder="Your full name">
                             </div>
                             <div class="col-md-6">
-                                <label for="phone" class="form-label">Phone Number</label>
-                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="+1 (555) 123-4567">
+                                <label for="phone" class="form-label" data-i18n="dashboard.phone_number">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" data-i18n-placeholder="dashboard.phone_placeholder" placeholder="+1 (555) 123-4567">
                             </div>
                             <div class="col-md-6">
                                 <label for="birthday" class="form-label">Birthday</label>
@@ -1089,5 +1089,8 @@
             }
         }
     </script>
+
+    <!-- I18n Script -->
+    <script src="assets/i18n.js"></script>
 </body>
  </html>

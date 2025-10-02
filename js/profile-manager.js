@@ -640,6 +640,9 @@
     renderWeightHistoryChart();
   // Render body fat chart (async fetch)
   renderBodyFatHistoryChart();
+  // Render waist and muscle charts
+  renderWaistHistoryChart();
+  renderMuscleHistoryChart();
 
   // Habits
   setupHabitsForm();
@@ -868,6 +871,26 @@
     const bodyFatInput = document.getElementById('body_fat_percentage');
     if (bodyFatInput) {
       bodyFatInput.addEventListener('change', handleBodyFatChange);
+    }
+    // Waist tracking
+    const waistInput = document.getElementById('measurements_waist');
+    if (waistInput) {
+      waistInput.addEventListener('change', (e) => {
+        const val = e.target.value;
+        if (val) {
+          upsertMeasurementsToTable({ waist: Number(val) }).then(renderWaistHistoryChart).catch(()=>{});
+        }
+      });
+    }
+    // Muscle mass tracking
+    const muscleInput = document.getElementById('muscle_mass');
+    if (muscleInput) {
+      muscleInput.addEventListener('change', (e) => {
+        const val = e.target.value;
+        if (val) {
+          upsertMeasurementsToTable({ muscle_mass: Number(val) }).then(renderMuscleHistoryChart).catch(()=>{});
+        }
+      });
     }
 
     // Setup automatic calculations
@@ -1563,6 +1586,30 @@
     }
   };
 
+  // Merge updates into today's measurements JSON and upsert
+  const upsertMeasurementsToTable = async (partial) => {
+    try {
+      if (!window.supabaseClient) return;
+      const today = new Date().toISOString().slice(0,10);
+      const { data: existing, error: selErr } = await window.supabaseClient
+        .from('body_metrics')
+        .select('measurements')
+        .eq('user_id', currentUser.id)
+        .eq('date', today)
+        .maybeSingle();
+      if (selErr) { /* continue best-effort */ }
+      const base = existing?.measurements || {};
+      const measurements = { ...base, ...partial };
+      const payload = { user_id: currentUser.id, date: today, measurements, client_id: `bm-${today}`, updated_at: new Date().toISOString() };
+      const { error: upErr } = await window.supabaseClient
+        .from('body_metrics')
+        .upsert(payload, { onConflict: 'user_id,client_id' });
+      if (upErr) console.warn('Failed to upsert measurements:', upErr);
+    } catch (e) {
+      console.warn('upsertMeasurementsToTable error:', e?.message || e);
+    }
+  };
+
   // Upsert a weight row for today into body_metrics using unique client_id per date
   const upsertWeightRowToTable = async (weight) => {
     try {
@@ -1756,6 +1803,94 @@
     } catch (e) {
       console.warn('Could not render body fat chart:', e);
     }
+  };
+
+  // Waist history chart from measurements.waist
+  let waistChartInstance = null;
+  const renderWaistHistoryChart = async () => {
+    try {
+      const empty = document.getElementById('waist-chart-empty');
+      const canvas = document.getElementById('waist-history-canvas');
+      if (!canvas) return;
+      let rows = [];
+      try {
+        if (window.supabaseClient) {
+          const { data, error } = await window.supabaseClient
+            .from('body_metrics')
+            .select('date, measurements')
+            .eq('user_id', currentUser.id)
+            .order('date', { ascending: true })
+            .limit(180);
+          if (!error && Array.isArray(data)) rows = data.filter(r => r.measurements?.waist != null);
+        }
+      } catch (e) { /* noop */ }
+
+      if (!rows.length) {
+        if (empty) empty.style.display = '';
+        canvas.style.display = 'none';
+        return;
+      }
+      const labels = rows.map(r => new Date(r.date).toLocaleDateString());
+      const values = rows.map(r => Number(r.measurements.waist));
+      if (empty) empty.style.display = 'none';
+      canvas.style.display = '';
+      const ctx = canvas.getContext('2d');
+      if (waistChartInstance) {
+        waistChartInstance.data.labels = labels;
+        waistChartInstance.data.datasets[0].data = values;
+        waistChartInstance.update();
+        return;
+      }
+      waistChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets: [{ label: 'Waist (cm)', data: values, borderColor: 'rgba(246, 200, 78, 1)', backgroundColor: 'rgba(246, 200, 78, 0.15)', tension: 0.3, fill: true, pointRadius: 3, pointHoverRadius: 5 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#fff' } } }, scales: { x: { ticks: { color: '#ddd' }, grid: { color: 'rgba(255,255,255,0.1)' } }, y: { ticks: { color: '#ddd' }, grid: { color: 'rgba(255,255,255,0.1)' } } } }
+      });
+    } catch (e) { console.warn('Could not render waist chart:', e); }
+  };
+
+  // Muscle mass history chart from measurements.muscle_mass
+  let muscleChartInstance = null;
+  const renderMuscleHistoryChart = async () => {
+    try {
+      const empty = document.getElementById('muscle-chart-empty');
+      const canvas = document.getElementById('muscle-history-canvas');
+      if (!canvas) return;
+      let rows = [];
+      try {
+        if (window.supabaseClient) {
+          const { data, error } = await window.supabaseClient
+            .from('body_metrics')
+            .select('date, measurements')
+            .eq('user_id', currentUser.id)
+            .order('date', { ascending: true })
+            .limit(180);
+          if (!error && Array.isArray(data)) rows = data.filter(r => r.measurements?.muscle_mass != null);
+        }
+      } catch (e) { /* noop */ }
+
+      if (!rows.length) {
+        if (empty) empty.style.display = '';
+        canvas.style.display = 'none';
+        return;
+      }
+      const labels = rows.map(r => new Date(r.date).toLocaleDateString());
+      const values = rows.map(r => Number(r.measurements.muscle_mass));
+      if (empty) empty.style.display = 'none';
+      canvas.style.display = '';
+      const ctx = canvas.getContext('2d');
+      if (muscleChartInstance) {
+        muscleChartInstance.data.labels = labels;
+        muscleChartInstance.data.datasets[0].data = values;
+        muscleChartInstance.update();
+        return;
+      }
+      muscleChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets: [{ label: 'Muscle Mass (kg)', data: values, borderColor: 'rgba(16, 185, 129, 1)', backgroundColor: 'rgba(16, 185, 129, 0.15)', tension: 0.3, fill: true, pointRadius: 3, pointHoverRadius: 5 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#fff' } } }, scales: { x: { ticks: { color: '#ddd' }, grid: { color: 'rgba(255,255,255,0.1)' } }, y: { ticks: { color: '#ddd' }, grid: { color: 'rgba(255,255,255,0.1)' } } } }
+      });
+    } catch (e) { console.warn('Could not render muscle chart:', e); }
   };
 
   // Utility functions

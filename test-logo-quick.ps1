@@ -37,7 +37,7 @@ $cssContent = Get-Content "css\global.css" -Raw -ErrorAction SilentlyContinue
 $whiteBgFound = $false
 if ($cssContent) {
     # Check for white backgrounds in brand or footer img sections
-    if ($cssContent -match "\.brand\s+img[^}]*background:\s*#fff" -or 
+    if ($cssContent -match "\.brand\s+img[^}]*background:\s*#fff" -or
         $cssContent -match "\.footer\s+img[^}]*background:\s*#fff") {
         Write-Host "⚠️  Found white backgrounds in logo CSS" -ForegroundColor Yellow
         $whiteBgFound = $true
@@ -107,7 +107,7 @@ if (Test-Path $logoPath) {
     $logoSize = (Get-Item $logoPath).Length
     $logoSizeKB = [math]::Round($logoSize / 1024, 2)
     Write-Host "📏 Logo file size: $logoSizeKB KB" -ForegroundColor Cyan
-    
+
     if ($logoSizeKB -lt 100) {
         Write-Host "✅ Logo file size is optimized" -ForegroundColor Green
     } elseif ($logoSizeKB -lt 200) {

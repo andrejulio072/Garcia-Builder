@@ -28,7 +28,7 @@ class LogoTestSuite {
     async testLogoFileExists() {
         console.log('🧪 Testing logo file existence...');
         const logoPath = 'Logo Files/For Web/logo-nobackground-500.png';
-        
+
         try {
             const response = await fetch(logoPath);
             if (response.ok) {
@@ -47,7 +47,7 @@ class LogoTestSuite {
     // Test 2: Check CSS classes for transparent background
     testCSSTransparency() {
         console.log('🧪 Testing CSS transparency...');
-        
+
         // Create test elements
         const testContainer = document.createElement('div');
         testContainer.style.position = 'absolute';
@@ -83,14 +83,14 @@ class LogoTestSuite {
 
         // Cleanup
         document.body.removeChild(testContainer);
-        
+
         return passed;
     }
 
     // Test 3: Check for old logo references
     testOldLogoReferences() {
         console.log('🧪 Testing for old logo references...');
-        
+
         const pageContent = document.documentElement.innerHTML;
         const oldReferences = [
             'assets/logo.png',
@@ -100,7 +100,7 @@ class LogoTestSuite {
         ];
 
         let foundOldRefs = [];
-        
+
         oldReferences.forEach(ref => {
             if (pageContent.includes(ref)) {
                 foundOldRefs.push(ref);
@@ -121,13 +121,13 @@ class LogoTestSuite {
     // Test 4: Check logo loading performance
     async testLogoLoadingPerformance() {
         console.log('🧪 Testing logo loading performance...');
-        
+
         const logoImages = document.querySelectorAll('img[src*="logo-nobackground-500.png"]');
         const loadPromises = [];
 
         logoImages.forEach((img, index) => {
             const startTime = performance.now();
-            
+
             const loadPromise = new Promise((resolve) => {
                 if (img.complete) {
                     const loadTime = performance.now() - startTime;
@@ -137,14 +137,14 @@ class LogoTestSuite {
                         const loadTime = performance.now() - startTime;
                         resolve({ index, loadTime, status: 'loaded' });
                     });
-                    
+
                     img.addEventListener('error', () => {
                         const loadTime = performance.now() - startTime;
                         resolve({ index, loadTime, status: 'error' });
                     });
                 }
             });
-            
+
             loadPromises.push(loadPromise);
         });
 
@@ -169,7 +169,7 @@ class LogoTestSuite {
     // Test 5: Visual consistency check
     testVisualConsistency() {
         console.log('🧪 Testing visual consistency...');
-        
+
         const logoImages = document.querySelectorAll('img[src*="logo-nobackground-500.png"]');
         const navbarLogos = document.querySelectorAll('.navbar img[src*="logo-nobackground-500.png"], .brand img[src*="logo-nobackground-500.png"]');
         const footerLogos = document.querySelectorAll('.footer img[src*="logo-nobackground-500.png"]');
@@ -180,7 +180,7 @@ class LogoTestSuite {
         navbarLogos.forEach((img, index) => {
             const computedStyle = window.getComputedStyle(img);
             const height = parseInt(computedStyle.height);
-            
+
             if (height >= 40 && height <= 60) {
                 this.logPass(`Navbar logo ${index + 1} has correct size: ${height}px`);
             } else {
@@ -193,7 +193,7 @@ class LogoTestSuite {
         footerLogos.forEach((img, index) => {
             const computedStyle = window.getComputedStyle(img);
             const height = parseInt(computedStyle.height);
-            
+
             if (height >= 30 && height <= 45) {
                 this.logPass(`Footer logo ${index + 1} has correct size: ${height}px`);
             } else {
@@ -285,7 +285,7 @@ class LogoTestSuite {
         `;
 
         const successRate = ((this.results.passed / (this.results.passed + this.results.failed)) * 100).toFixed(1);
-        
+
         reportDiv.innerHTML = `
             <h5 style="margin: 0 0 15px 0; color: ${this.results.failed === 0 ? '#28a745' : '#dc3545'};">
                 ${this.results.failed === 0 ? '🎉' : '⚠️'} Test Results

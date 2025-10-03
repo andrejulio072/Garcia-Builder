@@ -33,6 +33,18 @@ Complete multilingual fitness coaching platform for **Andre Garcia (Garcia Build
 
 ---
 
+## 🌐 Production Domains
+
+- Primary (recommended): [https://www.garciabuilder.fitness](https://www.garciabuilder.fitness)
+- Alternate: [https://www.garciabuilder.uk](https://www.garciabuilder.uk)
+
+DNS setup and go-live checklists:
+
+- DNS + Render (Namecheap): [docs/DNS-NAMECHEAP.md](docs/DNS-NAMECHEAP.md)
+- Full Go-Live guide: [docs/GO-LIVE.md](docs/GO-LIVE.md)
+
+---
+
 ## ✨ Project Highlights
 
 ### 🎨 **Frontend & UX**

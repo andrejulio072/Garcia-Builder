@@ -26,17 +26,23 @@ Tudo em um único serviço Node no Render — serve o site estático e expõe a 
    - Plano: Free/Starter (iniciar), escalar depois.
 
 2) Domínio customizado no Render
-   - Em Settings → Custom Domains → Add Custom Domain → informe `garcia-builder.com` e `www.garcia-builder.com`.
-   - Siga as instruções de DNS (CNAME para o subdomínio ou A/ALIAS para o apex) no seu provedor (Namecheap/GoDaddy/Cloudflare).
+   - Em Settings → Custom Domains → Add Custom Domain → informe os seus domínios reais:
+     - `garciabuilder.fitness` e `www.garciabuilder.fitness`
+     - `garciabuilder.uk` e `www.garciabuilder.uk`
+   - Siga as instruções de DNS (A/AAAA para o apex; CNAME para `www`) no seu provedor (Namecheap/GoDaddy/Cloudflare).
    - Render provisiona SSL automaticamente (Let's Encrypt).
+   - Guia completo de DNS (Namecheap + Render): veja `docs/DNS-NAMECHEAP.md`.
 
 3) CORS e URLs
-   - Em `api/stripe-server-premium.js` já há CORS permitindo:
-     - `https://garcia-builder.com` e `https://www.garcia-builder.com`
-   - Se usar outro domínio, adicione-o na lista `origin`.
+    - Garanta que o backend (ou configuração no Render) permite os domínios finais. Exemplo de lista:
+       - `https://garciabuilder.fitness`, `https://www.garciabuilder.fitness`
+       - `https://garciabuilder.uk`, `https://www.garciabuilder.uk`
+       - `https://garcia-builder.onrender.com`
+    - Se usar outro domínio, adicione-o na lista `origin`/`CORS_ORIGINS`.
 
 4) Pagamentos live
    - No Dashboard Stripe, pegue as chaves Live e salve no Render (Environment Variables).
+   - Atualize URLs de sucesso/cancelamento e webhooks para o domínio primário (ex.: `https://www.garciabuilder.fitness/success.html`).
    - Faça um checkout real em `pricing.html` e confirme recebimento no Stripe.
 
 ---
@@ -56,6 +62,7 @@ Mantém o backend seguro no Render e o frontend em CDN global.
    - Configure o domínio no provedor do frontend (Vercel/Netlify) — ambos emitem SSL.
    - Backend continua no domínio do Render (ex.: `https://garcia-builder.onrender.com`).
    - Garanta que o CORS do backend permite o domínio final do frontend.
+   - Se optar por usar `garciabuilder.fitness`/`garciabuilder.uk` no frontend CDN, mantenha `api` apontando ao Render.
 
 4) Configurar URLs do frontend
    - Se houver código que chama o backend, aponte para a URL do Render (ex.: `https://garcia-builder.onrender.com`).
@@ -74,8 +81,8 @@ Mais econômico, porém sem server-side no Pages.
    - Igual à Opção 1 (passos 1 e 4).
 
 3) DNS
-   - Aponte `www` para Pages e crie subdomínio `api.garcia-builder.com` apontando para o Render.
-   - Garanta CORS para `https://garcia-builder.com` e `https://www.garcia-builder.com` no backend.
+   - Aponte `www` para Pages e crie subdomínio `api.garciabuilder.fitness`/`api.garciabuilder.uk` apontando para o Render.
+   - Garanta CORS para `https://garciabuilder.fitness`, `https://www.garciabuilder.fitness`, `https://garciabuilder.uk`, `https://www.garciabuilder.uk` no backend.
 
 ---
 
@@ -84,9 +91,9 @@ Mais econômico, porém sem server-side no Pages.
 - Compre o domínio (Namecheap/GoDaddy/Cloudflare Registrar).
 - Decida onde vai hospedar (Render, Vercel/Netlify + Render, Pages + Render).
 - Crie registros:
-  - `A`/`ALIAS` para raiz (apex) quando exigido pelo host.
-  - `CNAME` para `www` apontando ao host.
-  - Para API dedicada: `api.garcia-builder.com` como `CNAME` para o host do backend.
+      - `A`/`AAAA` para raiz (apex) quando exigido pelo host (Render indica os IPs).
+      - `CNAME` para `www` apontando ao host `.onrender.com`.
+      - Para API dedicada: `api.garciabuilder.fitness`/`api.garciabuilder.uk` como `CNAME` para o host do backend.
 - Ative/espere SSL (automático na maioria). Sempre use HTTPS nas URLs.
 
 ---
@@ -95,7 +102,7 @@ Mais econômico, porém sem server-side no Pages.
 
 1) Sitemap e robots
    - Gere o sitemap automaticamente: `npm run sitemap` (defina `SITE_URL` antes).
-   - `robots.txt` já preparado com linha `Sitemap: https://www.garcia-builder.com/sitemap.xml` — ajuste o domínio se necessário.
+   - `robots.txt` já preparado com linha `Sitemap: https://www.garciabuilder.fitness/sitemap.xml` — ajuste para o primário real.
 
 2) Search Console e Bing
    - Google Search Console: verifique o domínio (DNS) e envie o sitemap.
@@ -126,9 +133,11 @@ Mais econômico, porém sem server-side no Pages.
 ## Checklist de publicação
 
 - [ ] Chaves STRIPE (Live) configuradas no host.
-- [ ] CORS liberado para o domínio final.
+- [ ] CORS liberado para: `https://garciabuilder.fitness`, `https://www.garciabuilder.fitness`, `https://garciabuilder.uk`, `https://www.garciabuilder.uk`, `https://garcia-builder.onrender.com`.
+- [ ] Supabase → Auth → `Site URL` (primário) e `Additional Redirect URLs` (todos os domínios + `.onrender.com`).
+- [ ] Stripe → success/cancel/webhooks usando domínio primário.
 - [ ] `SITE_URL` definido e `npm run sitemap` executado (commit o `sitemap.xml`).
-- [ ] `robots.txt` aponta para o sitemap do domínio final.
+- [ ] `robots.txt` aponta para o sitemap do domínio primário.
 - [ ] Search Console e Bing verificados + sitemap enviado.
 - [ ] Teste de checkout real concluído e confirmado no Stripe.
 - [ ] Páginas principais revisadas (title/description/OG/Links).

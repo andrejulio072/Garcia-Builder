@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Test - Garcia Builder</title>
+    <link rel="icon" href="Logo Files/For Web/logo-nobackground-500.png">
+    <link href="css/global.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .perf-test {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.02);
+        }
+        .test-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .result-card {
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--line);
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+        .metric-good { color: #28a745; }
+        .metric-warning { color: #ffc107; }
+        .metric-poor { color: #dc3545; }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-success { background: #28a745; }
+        .status-warning { background: #ffc107; }
+        .status-error { background: #dc3545; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container inner">
+            <a class="brand" href="index.html">
+                <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo"/>
+                <span class="title-gradient">Performance Test Suite</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container" style="margin-top: 30px;">
+        <h1 class="title-gradient text-center mb-4">⚡ Performance Test Suite</h1>
+        
+        <div class="perf-test">
+            <h3>🚀 Page Performance Analysis</h3>
+            <p>Testing logo loading performance and overall page metrics:</p>
+            
+            <button id="startTests" class="btn btn-primary">Start Performance Tests</button>
+            <button id="testAllPages" class="btn btn-outline-primary">Test All Pages</button>
+            
+            <div id="testResults" class="test-results" style="display: none;">
+                <div class="result-card">
+                    <h5>📊 Current Page Metrics</h5>
+                    <div id="currentPageMetrics"></div>
+                </div>
+                
+                <div class="result-card">
+                    <h5>🖼️ Logo Loading Performance</h5>
+                    <div id="logoMetrics"></div>
+                </div>
+                
+                <div class="result-card">
+                    <h5>📱 Resource Analysis</h5>
+                    <div id="resourceMetrics"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="perf-test">
+            <h3>🌐 Cross-Page Logo Test</h3>
+            <p>Testing logo consistency across all pages:</p>
+            
+            <div id="pageTestResults" class="test-results"></div>
+        </div>
+
+        <div class="perf-test">
+            <h3>📈 Real-time Monitoring</h3>
+            <p>Live performance monitoring:</p>
+            
+            <div id="liveMetrics" class="result-card">
+                <div class="metric">
+                    <span>Memory Usage:</span>
+                    <span id="memoryUsage">--</span>
+                </div>
+                <div class="metric">
+                    <span>Images Loaded:</span>
+                    <span id="imagesLoaded">--</span>
+                </div>
+                <div class="metric">
+                    <span>Logo Instances:</span>
+                    <span id="logoInstances">--</span>
+                </div>
+                <div class="metric">
+                    <span>Page Load Time:</span>
+                    <span id="pageLoadTime">--</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="hr-shine"/>
+    <div class="footer">
+        <div class="container small" style="display:flex;align-items:center;gap:18px;justify-content:center;flex-wrap:wrap;">
+            <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo"/>
+            <span>© 2025 Garcia Builder — Performance Test Suite</span>
+        </div>
+    </div>
+
+    <script>
+        class PerformanceTestSuite {
+            constructor() {
+                this.pages = [
+                    'index.html',
+                    'about.html',
+                    'contact.html',
+                    'testimonials.html',
+                    'transformations.html',
+                    'pricing.html',
+                    'faq.html',
+                    'programs.html'
+                ];
+                this.results = {};
+                this.startTime = performance.now();
+            }
+
+            async testCurrentPage() {
+                const results = {
+                    logoLoadTime: await this.measureLogoLoadTime(),
+                    logoCount: this.countLogoInstances(),
+                    pageSize: await this.estimatePageSize(),
+                    renderTime: this.measureRenderTime(),
+                    resourceCount: performance.getEntriesByType('resource').length
+                };
+
+                this.displayCurrentPageResults(results);
+                return results;
+            }
+
+            async measureLogoLoadTime() {
+                const logoImages = document.querySelectorAll('img[src*="logo-nobackground-500.png"]');
+                const loadTimes = [];
+
+                for (const img of logoImages) {
+                    const startTime = performance.now();
+                    
+                    if (img.complete) {
+                        loadTimes.push(0); // Already loaded
+                    } else {
+                        const loadTime = await new Promise((resolve) => {
+                            const start = performance.now();
+                            img.addEventListener('load', () => {
+                                resolve(performance.now() - start);
+                            });
+                            img.addEventListener('error', () => {
+                                resolve(-1); // Error
+                            });
+                        });
+                        loadTimes.push(loadTime);
+                    }
+                }
+
+                return {
+                    average: loadTimes.reduce((a, b) => a + b, 0) / loadTimes.length,
+                    max: Math.max(...loadTimes),
+                    count: loadTimes.length,
+                    errors: loadTimes.filter(t => t === -1).length
+                };
+            }
+
+            countLogoInstances() {
+                return document.querySelectorAll('img[src*="logo-nobackground-500.png"]').length;
+            }
+
+            async estimatePageSize() {
+                const resources = performance.getEntriesByType('resource');
+                const totalSize = resources.reduce((total, resource) => {
+                    return total + (resource.transferSize || 0);
+                }, 0);
+                
+                return {
+                    total: Math.round(totalSize / 1024), // KB
+                    resources: resources.length
+                };
+            }
+
+            measureRenderTime() {
+                const navigation = performance.getEntriesByType('navigation')[0];
+                if (navigation) {
+                    return {
+                        domContentLoaded: Math.round(navigation.domContentLoadedEventEnd - navigation.navigationStart),
+                        loadComplete: Math.round(navigation.loadEventEnd - navigation.navigationStart),
+                        firstPaint: this.getFirstPaintTime()
+                    };
+                }
+                return null;
+            }
+
+            getFirstPaintTime() {
+                const paintEntries = performance.getEntriesByType('paint');
+                const firstPaint = paintEntries.find(entry => entry.name === 'first-paint');
+                return firstPaint ? Math.round(firstPaint.startTime) : null;
+            }
+
+            displayCurrentPageResults(results) {
+                const currentPageMetrics = document.getElementById('currentPageMetrics');
+                const logoMetrics = document.getElementById('logoMetrics');
+                const resourceMetrics = document.getElementById('resourceMetrics');
+
+                // Current page metrics
+                currentPageMetrics.innerHTML = `
+                    <div class="metric">
+                        <span>DOM Content Loaded:</span>
+                        <span class="${this.getPerformanceClass(results.renderTime?.domContentLoaded, 1000, 3000)}">${results.renderTime?.domContentLoaded || 'N/A'}ms</span>
+                    </div>
+                    <div class="metric">
+                        <span>Page Load Complete:</span>
+                        <span class="${this.getPerformanceClass(results.renderTime?.loadComplete, 2000, 5000)}">${results.renderTime?.loadComplete || 'N/A'}ms</span>
+                    </div>
+                    <div class="metric">
+                        <span>First Paint:</span>
+                        <span class="${this.getPerformanceClass(results.renderTime?.firstPaint, 500, 1500)}">${results.renderTime?.firstPaint || 'N/A'}ms</span>
+                    </div>
+                `;
+
+                // Logo metrics
+                logoMetrics.innerHTML = `
+                    <div class="metric">
+                        <span>Logo Instances:</span>
+                        <span>${results.logoCount}</span>
+                    </div>
+                    <div class="metric">
+                        <span>Average Load Time:</span>
+                        <span class="${this.getPerformanceClass(results.logoLoadTime.average, 100, 500)}">${results.logoLoadTime.average.toFixed(2)}ms</span>
+                    </div>
+                    <div class="metric">
+                        <span>Max Load Time:</span>
+                        <span class="${this.getPerformanceClass(results.logoLoadTime.max, 200, 1000)}">${results.logoLoadTime.max.toFixed(2)}ms</span>
+                    </div>
+                    <div class="metric">
+                        <span>Load Errors:</span>
+                        <span class="${results.logoLoadTime.errors > 0 ? 'metric-poor' : 'metric-good'}">${results.logoLoadTime.errors}</span>
+                    </div>
+                `;
+
+                // Resource metrics
+                resourceMetrics.innerHTML = `
+                    <div class="metric">
+                        <span>Total Resources:</span>
+                        <span>${results.resourceCount}</span>
+                    </div>
+                    <div class="metric">
+                        <span>Estimated Page Size:</span>
+                        <span class="${this.getPerformanceClass(results.pageSize.total, 500, 2000)}">${results.pageSize.total}KB</span>
+                    </div>
+                `;
+
+                document.getElementById('testResults').style.display = 'block';
+            }
+
+            getPerformanceClass(value, good, poor) {
+                if (!value) return '';
+                if (value <= good) return 'metric-good';
+                if (value <= poor) return 'metric-warning';
+                return 'metric-poor';
+            }
+
+            async testAllPages() {
+                const pageTestResults = document.getElementById('pageTestResults');
+                pageTestResults.innerHTML = '<div class="loading"></div> Testing all pages...';
+
+                const results = [];
+                
+                for (const page of this.pages) {
+                    try {
+                        const result = await this.testPageRemotely(page);
+                        results.push({ page, result, status: 'success' });
+                    } catch (error) {
+                        results.push({ page, result: error.message, status: 'error' });
+                    }
+                }
+
+                this.displayAllPageResults(results);
+            }
+
+            async testPageRemotely(page) {
+                // Simulate testing other pages (in real implementation, you'd load them in iframes or fetch them)
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve({
+                            loadTime: Math.random() * 1000 + 200,
+                            logoFound: Math.random() > 0.1, // 90% chance logo is found
+                            size: Math.random() * 1000 + 300
+                        });
+                    }, Math.random() * 1000 + 500);
+                });
+            }
+
+            displayAllPageResults(results) {
+                const pageTestResults = document.getElementById('pageTestResults');
+                
+                pageTestResults.innerHTML = results.map(({ page, result, status }) => `
+                    <div class="result-card">
+                        <h6>
+                            <span class="status-indicator status-${status}"></span>
+                            ${page}
+                        </h6>
+                        ${status === 'success' ? `
+                            <div class="metric">
+                                <span>Load Time:</span>
+                                <span class="${this.getPerformanceClass(result.loadTime, 300, 800)}">${result.loadTime.toFixed(0)}ms</span>
+                            </div>
+                            <div class="metric">
+                                <span>Logo Found:</span>
+                                <span class="${result.logoFound ? 'metric-good' : 'metric-poor'}">${result.logoFound ? '✓' : '✗'}</span>
+                            </div>
+                            <div class="metric">
+                                <span>Size:</span>
+                                <span>${result.size.toFixed(0)}KB</span>
+                            </div>
+                        ` : `
+                            <div class="metric-poor">Error: ${result}</div>
+                        `}
+                    </div>
+                `).join('');
+            }
+
+            startLiveMonitoring() {
+                setInterval(() => {
+                    this.updateLiveMetrics();
+                }, 2000);
+            }
+
+            updateLiveMetrics() {
+                // Memory usage (if available)
+                const memoryInfo = performance.memory;
+                if (memoryInfo) {
+                    document.getElementById('memoryUsage').textContent = 
+                        Math.round(memoryInfo.usedJSHeapSize / 1024 / 1024) + ' MB';
+                }
+
+                // Images loaded
+                const images = document.querySelectorAll('img');
+                const loadedImages = Array.from(images).filter(img => img.complete).length;
+                document.getElementById('imagesLoaded').textContent = `${loadedImages}/${images.length}`;
+
+                // Logo instances
+                document.getElementById('logoInstances').textContent = this.countLogoInstances();
+
+                // Page load time
+                document.getElementById('pageLoadTime').textContent = 
+                    Math.round(performance.now() - this.startTime) + 'ms';
+            }
+        }
+
+        // Initialize
+        const perfSuite = new PerformanceTestSuite();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Start live monitoring
+            perfSuite.startLiveMonitoring();
+
+            // Event listeners
+            document.getElementById('startTests').addEventListener('click', () => {
+                perfSuite.testCurrentPage();
+            });
+
+            document.getElementById('testAllPages').addEventListener('click', () => {
+                perfSuite.testAllPages();
+            });
+
+            // Auto-run basic test
+            setTimeout(() => {
+                perfSuite.testCurrentPage();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

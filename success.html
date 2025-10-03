@@ -233,6 +233,38 @@
                 `;
                 document.getElementById('payment-details').innerHTML = detailsHtml;
             }
+
+                        // ---- Tracking (GA4 + Meta Pixel) ----
+                        try {
+                                window.dataLayer = window.dataLayer || [];
+                                const planKey = paymentData.plan_key || paymentData.plan || 'unknown_plan';
+                                const grossValue = paymentData.amount_total ? (paymentData.amount_total/100) : (paymentData.amount/100) || 0;
+                                const currency = (paymentData.currency || 'GBP').toUpperCase();
+                                const items = [{
+                                    item_id: planKey,
+                                    item_name: paymentData.plan_name || planKey,
+                                    price: grossValue,
+                                    quantity: 1
+                                }];
+                                window.dataLayer.push({
+                                    event: 'purchase',
+                                    transaction_id: paymentData.session_id || paymentData.subscription_id || paymentData.invoice_id || ('txn_'+Date.now()),
+                                    value: grossValue,
+                                    currency: currency,
+                                    items: items
+                                });
+                        } catch(e){ console.warn('GA4 purchase push failed', e); }
+
+                        try {
+                            if (typeof fbq === 'function') {
+                                fbq('track', 'Purchase', {
+                                    value: (paymentData.amount_total ? (paymentData.amount_total/100) : (paymentData.amount/100) || 0),
+                                    currency: (paymentData.currency || 'GBP').toUpperCase(),
+                                    contents: [{id: paymentData.plan_key || paymentData.plan || 'unknown_plan', quantity:1}],
+                                    content_type: 'coaching_plan'
+                                });
+                            }
+                        } catch(e){ console.warn('Pixel purchase failed', e); }
         }
 
         function showError(message) {

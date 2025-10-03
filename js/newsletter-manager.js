@@ -799,16 +799,41 @@
   };
 
   const trackConversion = (event, source) => {
-    // Google Analytics or other analytics
+    // Map internal event names to GA4-friendly events
+    const map = {
+      'newsletter_signup': { gaEvent: 'sign_up', params: { method: 'newsletter', source } },
+      'lead_capture': { gaEvent: 'generate_lead', params: { lead_type: 'general', source } },
+      'consultation_request': { gaEvent: 'generate_lead', params: { lead_type: 'consultation', source } },
+      'guide_download': { gaEvent: 'download_guide', params: { source } }
+    };
+
+    const mapped = map[event];
+    try {
+      // Use dataLayer (preferred via GTM)
+      window.dataLayer = window.dataLayer || [];
+      if (mapped) {
+        window.dataLayer.push({ event: mapped.gaEvent, ...mapped.params });
+      } else {
+        window.dataLayer.push({ event: 'conversion_generic', conv_event: event, source });
+      }
+    } catch(e) { console.warn('dataLayer push failed', e); }
+
+    // Legacy direct gtag fallback (in case still present anywhere)
     if (typeof gtag !== 'undefined') {
-      gtag('event', 'conversion', {
-        event_category: 'Lead Generation',
-        event_label: source,
-        value: 1
-      });
+      const evName = mapped ? mapped.gaEvent : 'conversion';
+      const params = mapped ? mapped.params : { event_category: 'Lead Generation', event_label: source, value: 1 };
+      gtag('event', evName, params);
     }
 
-    console.log('Conversion tracked:', event, source);
+    // Meta Pixel basic mapping (optional enhancement later)
+    try {
+      if (typeof fbq === 'function') {
+        if (event === 'newsletter_signup') fbq('track', 'CompleteRegistration', { content_name: 'newsletter', source });
+        else if (event === 'lead_capture' || event === 'consultation_request') fbq('track', 'Lead', { content_name: event, source });
+      }
+    } catch(e){ console.warn('fbq track fail', e); }
+
+    console.log('Conversion tracked:', event, source, mapped);
   };
 
   const trackEvent = (event) => {

@@ -124,8 +124,15 @@
         // Desabilitar todos os botões de payment
         document.querySelectorAll('.payment-btn').forEach(btn => {
             btn.disabled = show;
-            if (show) {
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processando...';
+                if (show) {
+                    // Get current language for internationalized text
+                    const currentLang = localStorage.getItem('gb_lang') || 'en';
+                    const processingText = {
+                        en: 'Processing...',
+                        pt: 'Processando...',
+                        es: 'Procesando...'
+                    }[currentLang] || 'Processing...';
+                    btn.innerHTML = `<i class="fas fa-spinner fa-spin me-2"></i>${processingText}`;
             }
         });
     }
@@ -155,7 +162,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        </div>
+                                    processing: "Processing your payment...",
                     </div>
                 </div>
             </div>
@@ -166,6 +173,13 @@
         modalContainer.innerHTML = modalHtml;
         document.body.appendChild(modalContainer);
 
+                                },
+                                es: {
+                                    title: "Procesando Pago",
+                                    processing: "Procesando su pago...",
+                                    success: "¡Pago exitoso! Redirigiendo...",
+                                    error: "Error en el pago. Inténtelo de nuevo.",
+                                    redirect: "Redirigiendo a su panel..."
         // Mostrar modal
         const modal = new window.bootstrap.Modal(document.getElementById('paymentErrorModal'));
         modal.show();
@@ -216,15 +230,24 @@
         const messages = {
             en: {
                 processing: "Processing your payment...",
-                redirecting: "You will be redirected to Stripe"
+                redirecting: "You will be redirected to Stripe",
+                success: "Payment Successful! Redirecting...",
+                error: "Payment failed. Please try again.",
+                title: "Payment Processing"
             },
             pt: {
                 processing: "Processando seu pagamento...",
-                redirecting: "Você será redirecionado para o Stripe"
+                redirecting: "Você será redirecionado para o Stripe",
+                success: "Pagamento realizado com sucesso! Redirecionando...",
+                error: "Falha no pagamento. Tente novamente.",
+                title: "Processando Pagamento"
             },
             es: {
                 processing: "Procesando su pago...",
-                redirecting: "Será redirigido a Stripe"
+                redirecting: "Será redirigido a Stripe",
+                success: "¡Pago exitoso! Redirigiendo...",
+                error: "Error en el pago. Inténtelo de nuevo.",
+                title: "Procesando Pago"
             }
         };
         

@@ -231,8 +231,8 @@
         .from('body_metrics')
         .select('date, weight')
         .eq('user_id', currentUser.id)
-        .order('date', { ascending: true })
-        .limit(365);
+        .order('date', { ascending: false })
+        .limit(30); // Limit to last 30 entries to prevent performance issues
       if (error) {
         console.warn('Could not fetch body_metrics:', error.message || error);
         return;
@@ -240,7 +240,8 @@
       if (Array.isArray(data)) {
         profileData.body_metrics.weight_history = data
           .filter(r => r.date && r.weight != null)
-          .map(r => ({ date: new Date(r.date).toISOString(), weight: Number(r.weight) }));
+          .map(r => ({ date: new Date(r.date).toISOString(), weight: Number(r.weight) }))
+          .reverse(); // Reverse to get chronological order
       }
     } catch (e) {
       console.warn('Failed to load weight history from table:', e?.message || e);
@@ -1671,6 +1672,7 @@
 
   // Render weight history chart using Chart.js
   let weightChartInstance = null;
+    let lastWeightDataLength = 0;
   const renderWeightHistoryChart = () => {
     try {
       const entries = profileData.body_metrics?.weight_history || [];
@@ -1684,20 +1686,24 @@
         return;
       }
 
-      // Prepare data
+        // Prevent infinite re-rendering if data hasn't changed
+        if (entries.length === lastWeightDataLength && weightChartInstance) {
+          return;
+        }
+        lastWeightDataLength = entries.length;
+
+        // Prepare data - limit to last 20 entries for performance
       const sorted = [...entries].sort((a,b) => new Date(a.date) - new Date(b.date));
-      const labels = sorted.map(e => new Date(e.date).toLocaleDateString());
-      const data = sorted.map(e => e.weight);
+        const limitedData = sorted.slice(-20); // Show only last 20 entries
+        const labels = limitedData.map(e => new Date(e.date).toLocaleDateString());
+        const data = limitedData.map(e => e.weight);
 
       if (empty) empty.style.display = 'none';
       canvas.style.display = '';
 
       const ctx = canvas.getContext('2d');
       if (weightChartInstance) {
-        weightChartInstance.data.labels = labels;
-        weightChartInstance.data.datasets[0].data = data;
-        weightChartInstance.update();
-        return;
+          weightChartInstance.destroy(); // Destroy previous chart to prevent memory leaks
       }
 
       weightChartInstance = new Chart(ctx, {

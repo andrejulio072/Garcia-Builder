@@ -3,7 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>FAQ – Garcia Builder</title>
+<!-- ✅ Unified SEO / FAQ Page -->
+<title>FAQ – Garcia Builder Coaching</title>
+<meta name="description" content="Perguntas frequentes sobre coaching online, planos, nutrição, resultados, app usado e metodologia Garcia Builder." />
+<link rel="canonical" href="https://garciabuilder.fitness/faq.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="FAQ – Garcia Builder"/>
+<meta property="og:description" content="Tire suas dúvidas sobre personal online, nutrição, tempo de resultados e planos."/>
+<meta property="og:url" content="https://garciabuilder.fitness/faq.html"/>
+<meta property="og:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg"/>
+<meta property="og:site_name" content="Garcia Builder"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="FAQ – Garcia Builder"/>
+<meta name="twitter:description" content="Tudo sobre planos, metodologia, resultados e suporte no coaching online."/>
+<meta name="twitter:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg"/>
 <link rel="icon" href="Logo Files/For Web/logo-nobackground-500.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -275,5 +288,19 @@ window.addEventListener('load', () => {
 <script defer src="js/app-optimizations.js"></script>
 <script defer src="js/auth.js"></script>
 <script defer src="js/auth-guard.js"></script>
+<!-- Structured Data: FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"How does online coaching work?","acceptedAnswer":{"@type":"Answer","text":"Initial assessment + personalized program in app, weekly check-ins and continuous adjustments."}},
+    {"@type":"Question","name":"Do I need a gym membership?","acceptedAnswer":{"@type":"Answer","text":"No. Home training with minimal or improvised equipment is supported."}},
+    {"@type":"Question","name":"Is nutrition included?","acceptedAnswer":{"@type":"Answer","text":"Yes. Flexible guidelines (calories/macros) aligned to lifestyle and culture."}},
+    {"@type":"Question","name":"How fast will I see results?","acceptedAnswer":{"@type":"Answer","text":"Energy and performance often improve in weeks 2–3; visible changes by weeks 6–8 with consistency."}},
+    {"@type":"Question","name":"What if I have injuries?","acceptedAnswer":{"@type":"Answer","text":"Exercises and loading are adapted—focus on safe mechanics and progression."}}
+  ]
+}
+</script>
 </body>
 </html>

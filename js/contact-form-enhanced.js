@@ -205,6 +205,31 @@ Garcia Builder - Online Coaching
         // Show success popup and send confirmation email
         showSuccessPopup(userName, userEmail);
         sendConfirmationEmail(userName, userEmail);
+
+        // ---- Analytics / Tracking ----
+        try {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: 'generate_lead',
+            form_id: 'contact_form_main',
+            form_name: 'Contact Coaching Inquiry',
+            lead_email_domain: userEmail.split('@')[1] || '',
+            goal: goalEl.value || '',
+            timeline: timelineEl.value || '',
+            experience: experienceEl.value || ''
+          });
+        } catch(e){ console.warn('dataLayer push failed', e); }
+
+        // Meta Pixel Lead event (guard if fbq present)
+        try {
+          if (typeof fbq === 'function') {
+            fbq('track', 'Lead', {
+              content_name: 'contact_form_main',
+              goal: goalEl.value || '',
+              timeline: timelineEl.value || ''
+            });
+          }
+        } catch(e){ console.warn('fbq lead track failed', e); }
       } else {
         alertBox.classList.remove('visually-hidden');
         alertBox.textContent = 'Hmm, something went wrong. You can also email me at: coach@garciabuilder.com';

@@ -18,6 +18,19 @@ const cors = require('cors');
 
 const app = express();
 
+// Middleware para forçar HTTPS e domínio canônico sem www
+app.use((req, res, next) => {
+    // Força HTTPS
+    if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'] !== 'https') {
+        return res.redirect(301, `https://${req.headers.host}${req.url}`);
+    }
+    // Remove www do domínio
+    if (req.headers.host === 'www.garciabuilder.fitness') {
+        return res.redirect(301, `https://garciabuilder.fitness${req.url}`);
+    }
+    next();
+});
+
 // Middleware
 app.use(express.json());
 app.use(cors({

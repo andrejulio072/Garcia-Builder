@@ -497,27 +497,64 @@
       document.body.style.overflow = 'hidden';
     }
 
+    const lang = (localStorage.getItem('gb_lang') || 'en').toLowerCase();
+    const popupI18n = {
+      en: {
+        badge: '🔥 WAIT!',
+        title: 'Don’t leave empty-handed!',
+        subtitle: 'Download your FREE training guide before you go',
+        email: 'Enter your email',
+        button: 'Download Free Guide',
+        benefit1: '7-day training plan',
+        benefit2: 'Nutrition basics',
+        benefit3: 'Coaching tips',
+        close: 'Close popup'
+      },
+      pt: {
+        badge: '🔥 ESPERA!',
+        title: 'Não saia de mãos vazias!',
+        subtitle: 'Baixe seu guia de treino GRATUITO antes de ir',
+        email: 'Digite seu email',
+        button: 'Baixar Guia Grátis',
+        benefit1: 'Plano de treino de 7 dias',
+        benefit2: 'Básicos da nutrição',
+        benefit3: 'Dicas de acompanhamento',
+        close: 'Fechar popup'
+      },
+      es: {
+        badge: '🔥 ¡ESPERA!',
+        title: '¡No te vayas con las manos vacías!',
+        subtitle: 'Descarga tu guía de entrenamiento GRATIS antes de irte',
+        email: 'Introduce tu correo',
+        button: 'Descargar Guía Gratis',
+        benefit1: 'Plan de entrenamiento de 7 días',
+        benefit2: 'Conceptos básicos de nutrición',
+        benefit3: 'Consejos de seguimiento',
+        close: 'Cerrar popup'
+      }
+    };
+    const t = popupI18n[lang] || popupI18n.en;
     popup.innerHTML = `
       <div class="exit-intent-popup">
-        <button class="exit-intent-close" aria-label="Fechar popup">&times;</button>
+        <button class="exit-intent-close" aria-label="${t.close}">&times;</button>
         <div class="exit-intent-content">
           <div class="exit-intent-header">
-            <span class="exit-intent-badge">🔥 ESPERA!</span>
-            <h3>Não saia de mãos vazias!</h3>
-            <p>Baixe seu guia de treino GRATUITO antes de ir</p>
+            <span class="exit-intent-badge">${t.badge}</span>
+            <h3>${t.title}</h3>
+            <p>${t.subtitle}</p>
           </div>
           <form class="exit-intent-form download-form" data-source="Exit Intent">
-            <input type="email" name="email" placeholder="Digite seu email" required autocomplete="email">
+            <input type="email" name="email" placeholder="${t.email}" required autocomplete="email">
             <input type="hidden" name="goal" value="Transformation Guide">
             <button type="submit">
-              <i class="fas fa-download"></i> Baixar Guia Grátis
+              <i class="fas fa-download"></i> ${t.button}
             </button>
           </form>
           <div class="exit-intent-benefits">
             <ul>
-              <li><i class="fas fa-check"></i> Plano de treino de 7 dias</li>
-              <li><i class="fas fa-check"></i> Básicos da nutrição</li>
-              <li><i class="fas fa-check"></i> Dicas de acompanhamento</li>
+              <li><i class="fas fa-check"></i> ${t.benefit1}</li>
+              <li><i class="fas fa-check"></i> ${t.benefit2}</li>
+              <li><i class="fas fa-check"></i> ${t.benefit3}</li>
             </ul>
           </div>
         </div>

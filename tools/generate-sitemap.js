@@ -1,10 +1,10 @@
 // Simple sitemap generator for static pages
-// Usage: SITE_URL=https://www.garcia-builder.com node tools/generate-sitemap.js
+// Usage: SITE_URL=https://www.garciabuilder.fitness node tools/generate-sitemap.js
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const SITE_URL = process.env.SITE_URL || 'https://www.garcia-builder.com';
+const SITE_URL = process.env.SITE_URL || 'https://www.garciabuilder.fitness';
 
 // Basic discovery: include top-level .html files only (adjust as needed)
 const all = fs.readdirSync(ROOT)

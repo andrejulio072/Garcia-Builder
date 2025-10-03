@@ -53,8 +53,10 @@ app.use('/api/', limiter);
 const defaultCorsOrigins = [
     'http://localhost:3000',
     'http://localhost:3001',
-    'https://garcia-builder.com',
-    'https://www.garcia-builder.com'
+    'https://garciabuilder.fitness',
+    'https://www.garciabuilder.fitness',
+    'https://garciabuilder.uk',
+    'https://www.garciabuilder.uk'
 ];
 const envCors = (process.env.CORS_ORIGINS || '')
     .split(',')
@@ -487,7 +489,76 @@ app.get('/api/session/:sessionId', validateStripeReady, async (req, res) => {
     }
 });
 
-// 🚫 404 Handler
+// � STRIPE WEBHOOK (validação de assinatura)
+// Importante: usamos req.rawBody (definido no express.json verify) para validar a assinatura
+app.post('/api/stripe-webhook', async (req, res) => {
+    if (!isStripeReady) {
+        return res.status(503).json({ error: 'Stripe not ready' });
+    }
+
+    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    if (!endpointSecret) {
+        console.error('⚠️ STRIPE_WEBHOOK_SECRET não configurado');
+        return res.status(500).json({ error: 'Webhook not configured' });
+    }
+
+    const sig = req.headers['stripe-signature'];
+    let event;
+    try {
+        const raw = req.rawBody || Buffer.from(JSON.stringify(req.body || {}));
+        event = stripe.webhooks.constructEvent(raw, sig, endpointSecret);
+    } catch (err) {
+        console.error('❌ Webhook signature verification failed:', err.message);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    try {
+        // Trate os eventos principais para assinaturas
+        switch (event.type) {
+            case 'checkout.session.completed': {
+                const session = event.data.object;
+                console.log('✅ checkout.session.completed:', {
+                    id: session.id,
+                    customer_email: session.customer_details?.email,
+                    subscription: session.subscription,
+                    payment_status: session.payment_status
+                });
+                break;
+            }
+            case 'customer.subscription.created':
+            case 'customer.subscription.updated':
+            case 'customer.subscription.deleted': {
+                const sub = event.data.object;
+                console.log(`📦 ${event.type}:`, {
+                    id: sub.id,
+                    status: sub.status,
+                    current_period_end: sub.current_period_end
+                });
+                break;
+            }
+            case 'invoice.paid': {
+                const invoice = event.data.object;
+                console.log('💸 invoice.paid:', { id: invoice.id, total: invoice.total });
+                break;
+            }
+            case 'invoice.payment_failed': {
+                const invoice = event.data.object;
+                console.log('⚠️ invoice.payment_failed:', { id: invoice.id, total: invoice.total });
+                break;
+            }
+            default:
+                console.log(`ℹ️ Unhandled event type: ${event.type}`);
+        }
+
+        // Responda 200 rapidamente para evitar reenvios
+        res.json({ received: true });
+    } catch (handlerErr) {
+        console.error('💥 Erro ao processar webhook:', handlerErr);
+        res.status(500).json({ error: 'Webhook handler error' });
+    }
+});
+
+// �🚫 404 Handler
 app.use('*', (req, res) => {
     res.status(404).json({
         error: 'Not Found',

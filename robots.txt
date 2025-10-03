@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Sitemap para descoberta de URLs
-Sitemap: https://www.garcia-builder.com/sitemap.xml
+Sitemap: https://www.garciabuilder.fitness/sitemap.xml

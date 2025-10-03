@@ -405,7 +405,7 @@ docs/testing/
 - Gerar sitemap com seu domínio:
 
 ```powershell
-$env:SITE_URL="https://www.garcia-builder.com"; npm run sitemap
+$env:SITE_URL="https://www.garciabuilder.fitness"; npm run sitemap
 ```
 
 Depois faça commit do `sitemap.xml` e envie no Google Search Console.

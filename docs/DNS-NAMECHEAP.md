@@ -67,7 +67,7 @@ Salve → `Save, rebuild, and deploy`.
   - `Site URL`: use seu domínio primário (ex.: `https://www.garciabuilder.fitness`)
   - `Additional Redirect URLs`: adicione todos os domínios acima e o `.onrender.com`.
 - Stripe:
-  - Atualize URLs de sucesso/cancelamento e webhooks para o domínio primário (ex.: `https://www.garciabuilder.fitness/success`).
+  - Atualize URLs de sucesso/cancelamento e webhooks para o domínio primário (ex.: `https://www.garciabuilder.fitness/success.html`).
 
 ## Testes rápidos
 

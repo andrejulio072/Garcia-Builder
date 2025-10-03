@@ -142,6 +142,16 @@ Mais econômico, porém sem server-side no Pages.
 - [ ] Teste de checkout real concluído e confirmado no Stripe.
 - [ ] Páginas principais revisadas (title/description/OG/Links).
 
+### Stripe (Live)
+
+- Set STRIPE_SECRET_KEY (live) and STRIPE_PUBLISHABLE_KEY (live)
+- Configure webhook endpoint to [https://garciabuilder.fitness/api/stripe-webhook](https://garciabuilder.fitness/api/stripe-webhook) and add events
+- Add STRIPE_WEBHOOK_SECRET from Stripe to Render and redeploy
+- In Stripe Dashboard → Settings → Public details, set your Terms of Service URL and Privacy Policy URL:
+   - Terms of Service: <https://garciabuilder.fitness/terms.html>
+   - Privacy Policy: <https://garciabuilder.fitness/privacy.html>
+   This is required to enable consent collection during Checkout and avoid 400 errors.
+
 ---
 
 ## Problemas comuns

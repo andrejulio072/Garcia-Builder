@@ -99,10 +99,12 @@ function initializeStripe() {
     try {
         // Validação das chaves de ambiente
         const secretKey = process.env.STRIPE_SECRET_KEY;
-        const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY;
+        const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY; // opcional no servidor
 
-        if (!secretKey || !publishableKey) {
-            throw new Error('❌ Chaves Stripe não encontradas no .env');
+        if (!secretKey) {
+            console.warn('⚠️ STRIPE_SECRET_KEY não configurada. O servidor iniciará sem Stripe (modo "not ready").');
+            isStripeReady = false;
+            return false;
         }
 
         // Validação do formato das chaves
@@ -110,8 +112,8 @@ function initializeStripe() {
             throw new Error('❌ STRIPE_SECRET_KEY inválida - deve começar com sk_');
         }
 
-        if (!publishableKey.startsWith('pk_')) {
-            throw new Error('❌ STRIPE_PUBLISHABLE_KEY inválida - deve começar com pk_');
+        if (publishableKey && !publishableKey.startsWith('pk_')) {
+            console.warn('⚠️ STRIPE_PUBLISHABLE_KEY inválida - deve começar com pk_. Ignorando no servidor.');
         }
 
         // Verificar se estamos em modo live ou test
@@ -255,7 +257,8 @@ app.get('/health', (req, res) => {
         memory: process.memoryUsage()
     };
 
-    res.status(isStripeReady ? 200 : 503).json(healthStatus);
+    // Sempre retornar 200 para manter o serviço saudável no Render; refletir readiness em payload
+    res.status(200).json(healthStatus);
 });
 
 // 💳 ENDPOINT PRINCIPAL - Criar Checkout Session
@@ -591,27 +594,32 @@ async function startServer() {
     try {
         // Inicializar Stripe
         const stripeInitialized = initializeStripe();
-
         if (!stripeInitialized) {
-            console.error('❌ Falha ao inicializar Stripe - Servidor não será iniciado');
-            process.exit(1);
+            console.warn('⚠️ Stripe não inicializado. Continuando com o servidor para servir site e API públicas.');
         }
 
         // Testar conexão com Stripe
-        console.log('🔄 Testando conexão com Stripe...');
-        await stripe.accounts.retrieve();
-        console.log('✅ Conexão com Stripe verificada!');
+        try {
+            if (stripeInitialized) {
+                console.log('🔄 Testando conexão com Stripe...');
+                await stripe.accounts.retrieve();
+                console.log('✅ Conexão com Stripe verificada!');
+            }
+        } catch (connErr) {
+            console.warn('⚠️ Não foi possível verificar conexão com Stripe agora:', connErr.message);
+            isStripeReady = false;
+        }
 
         // Iniciar servidor
         const server = app.listen(PORT, () => {
             console.log('🚀 SERVIDOR GARCIA BUILDER INICIADO');
-            console.log('=' .repeat(50));
+            console.log('='.repeat(50));
             console.log(`✅ Porta: ${PORT}`);
             console.log(`✅ Ambiente: ${process.env.NODE_ENV || 'development'}`);
             console.log(`✅ URL Local: http://localhost:${PORT}`);
             console.log(`✅ Health Check: http://localhost:${PORT}/health`);
             console.log(`✅ API Docs: http://localhost:${PORT}/api/plans`);
-            console.log('=' .repeat(50));
+            console.log('='.repeat(50));
             console.log('🎯 Sistema pronto para receber pagamentos!');
         });
 

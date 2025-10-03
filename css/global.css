@@ -58,10 +58,10 @@ a{color:var(--text);text-decoration:none}
 .brand img {
   height: 48px;
   width: 48px;
-  border-radius: 16px;
+  border-radius: 50%;
   box-shadow: 0 2px 12px #0005;
   object-fit: contain;
-  background: #fff;
+  background: transparent;
   border: none;
   display: inline-block;
   vertical-align: middle;
@@ -70,9 +70,9 @@ a{color:var(--text);text-decoration:none}
 .footer img {
   height: 38px;
   width: 38px;
-  border-radius: 12px;
+  border-radius: 50%;
   box-shadow: 0 1px 6px #0003;
-  background: #fff;
+  background: transparent;
   object-fit: contain;
   border: none;
   display: inline-block;
@@ -506,6 +506,8 @@ section#contact.section.has-bg.contact-bg {
   .brand img {
     height: 35px;
     width: 35px;
+    border-radius: 50%;
+    background: transparent;
   }
 
   /* Auth buttons mobile */

@@ -31,3 +31,18 @@ coverage/
 # Build
 dist/
 build/
+
+# Test files (desenvolvimento)
+test-*.html
+test-*.ps1
+test-*.sh
+**/test-*.js
+!js/testimonials-*.js
+
+# Archive/backup folders
+archive/
+archive-backup-*/
+improved/
+
+# Analysis files
+CLEANUP-ANALYSIS.md

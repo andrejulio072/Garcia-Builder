@@ -1,8 +1,0 @@
-Site URL:
-https://andrejulio072.github.io/Garcia-Builder
-
-Redirect URLs (uma por linha):
-https://andrejulio072.github.io/Garcia-Builder/dashboard.html
-https://andrejulio072.github.io/Garcia-Builder/login.html
-http://localhost:3000/dashboard.html
-http://localhost:3000/login.html

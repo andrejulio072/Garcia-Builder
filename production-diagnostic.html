@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Diagnóstico Produção - Garcia Builder</title>
+    <link rel="stylesheet" href="css/global.css?v=20251003">
+    <style>
+        body {
+            padding: 20px;
+            background: #0e1626;
+            font-family: 'Inter', system-ui;
+        }
+        .diagnostic {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(18, 28, 47, 0.8);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+        }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .success { background: rgba(56, 242, 165, 0.2); color: #38f2a5; }
+        .error { background: rgba(255, 69, 58, 0.2); color: #ff453a; }
+        .warning { background: rgba(255, 204, 0, 0.2); color: #ffcc00; }
+        .info { background: rgba(108, 199, 255, 0.2); color: #6bc7ff; }
+        h1, h2 { color: var(--gold); }
+        .brand-test { 
+            background: rgba(18, 28, 47, 0.5); 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin: 20px 0;
+        }
+        .nav-test {
+            background: rgba(9,14,24,.82);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--line);
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="diagnostic">
+        <h1>🔍 Diagnóstico de Produção - Garcia Builder</h1>
+        
+        <div class="status info">
+            <strong>📊 Status do Deploy:</strong> Testando sincronização local vs produção
+        </div>
+
+        <!-- Teste da Logo Navbar -->
+        <h2>🔍 Teste Logo Navbar</h2>
+        <div class="nav-test">
+            <div class="nav-inner">
+                <div class="brand">
+                    <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo"/>
+                    <span style="color: white;">Garcia Builder</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teste da Logo Footer -->
+        <h2>🔍 Teste Logo Footer</h2>
+        <div class="brand-test">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" class="footer"/>
+                <span style="color: white;">Footer Logo Test</span>
+            </div>
+        </div>
+
+        <!-- Checklist Visual -->
+        <h2>✅ Checklist de Verificação</h2>
+        <div id="checklist" style="color: white; line-height: 1.8;"></div>
+
+        <!-- Informações do Deploy -->
+        <h2>📊 Informações do Deploy</h2>
+        <div style="color: #c7d3ea; font-size: 14px;">
+            <div><strong>Timestamp:</strong> <span id="timestamp"></span></div>
+            <div><strong>User Agent:</strong> <span id="userAgent"></span></div>
+            <div><strong>URL:</strong> <span id="currentUrl"></span></div>
+            <div><strong>CSS Cache Buster:</strong> ?v=20251003</div>
+        </div>
+
+        <!-- CSS Debug -->
+        <h2>🔧 Debug CSS</h2>
+        <div id="cssDebug" style="background: #121c2f; padding: 15px; border-radius: 8px; color: #c7d3ea; font-size: 12px;"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Timestamp
+            document.getElementById('timestamp').textContent = new Date().toLocaleString();
+            document.getElementById('userAgent').textContent = navigator.userAgent;
+            document.getElementById('currentUrl').textContent = window.location.href;
+
+            // Verificar CSS da logo
+            const brandImg = document.querySelector('.brand img');
+            const footerImg = document.querySelector('.footer img, img.footer');
+            
+            let checklistHtml = '';
+            let cssDebugHtml = '';
+
+            if (brandImg) {
+                const styles = window.getComputedStyle(brandImg);
+                const backgroundColor = styles.backgroundColor;
+                const borderRadius = styles.borderRadius;
+                const height = styles.height;
+                const width = styles.width;
+
+                cssDebugHtml += `<strong>Navbar Logo Styles:</strong><br>`;
+                cssDebugHtml += `background: ${backgroundColor}<br>`;
+                cssDebugHtml += `border-radius: ${borderRadius}<br>`;
+                cssDebugHtml += `height: ${height}<br>`;
+                cssDebugHtml += `width: ${width}<br><br>`;
+
+                // Checklist navbar
+                checklistHtml += backgroundColor === 'rgba(0, 0, 0, 0)' || backgroundColor === 'transparent' 
+                    ? '<div class="status success">✅ Logo navbar: Background transparente</div>'
+                    : '<div class="status error">❌ Logo navbar: Background ainda com cor!</div>';
+                
+                checklistHtml += borderRadius.includes('50%') || borderRadius === height
+                    ? '<div class="status success">✅ Logo navbar: Formato circular</div>'
+                    : '<div class="status error">❌ Logo navbar: Não está circular!</div>';
+
+                checklistHtml += height === '48px' && width === '48px'
+                    ? '<div class="status success">✅ Logo navbar: Tamanho correto (48px)</div>'
+                    : '<div class="status warning">⚠️ Logo navbar: Tamanho inesperado</div>';
+            }
+
+            if (footerImg) {
+                const styles = window.getComputedStyle(footerImg);
+                const backgroundColor = styles.backgroundColor;
+                const borderRadius = styles.borderRadius;
+
+                cssDebugHtml += `<strong>Footer Logo Styles:</strong><br>`;
+                cssDebugHtml += `background: ${backgroundColor}<br>`;
+                cssDebugHtml += `border-radius: ${borderRadius}<br>`;
+
+                checklistHtml += backgroundColor === 'rgba(0, 0, 0, 0)' || backgroundColor === 'transparent'
+                    ? '<div class="status success">✅ Logo footer: Background transparente</div>'
+                    : '<div class="status error">❌ Logo footer: Background ainda com cor!</div>';
+            }
+
+            // Cache info
+            checklistHtml += `<div class="status info">📄 Cache Buster ativo: CSS carregado com ?v=20251003</div>`;
+            
+            // Deploy info
+            checklistHtml += `<div class="status info">🚀 Deploy: Commit e9484d4 - Force redeploy triggered</div>`;
+
+            document.getElementById('checklist').innerHTML = checklistHtml;
+            document.getElementById('cssDebug').innerHTML = cssDebugHtml;
+
+            // Log no console para debug
+            console.log('🔍 Garcia Builder - Diagnóstico de Produção');
+            console.log('Commit atual: e9484d4');
+            console.log('CSS cache buster: v=20251003');
+            if (brandImg) {
+                console.log('Navbar logo styles:', window.getComputedStyle(brandImg));
+            }
+        });
+    </script>
+</body>
+</html>

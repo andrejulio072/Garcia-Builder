@@ -297,20 +297,49 @@
         document.addEventListener('DOMContentLoaded', init);
 
         async function init() {
+            // Check for current user but don't force login immediately
             currentUser = await getCurrentUser();
-            if (!currentUser) {
-                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
-                return;
+            
+            if (currentUser) {
+                // Pre-fill user information if user is logged in
+                prefillUserInfo();
+                // Check if user already has a pending application
+                await checkExistingApplication();
+            } else {
+                // Show login prompt in the form area but allow browsing
+                showLoginPrompt();
             }
-
-            // Pre-fill user information
-            prefillUserInfo();
-
-            // Check if user already has a pending application
-            await checkExistingApplication();
 
             // Setup form handlers
             setupFormHandlers();
+        }
+
+        function showLoginPrompt() {
+            const applicationForm = document.querySelector('#trainer-application-form');
+            if (applicationForm) {
+                const loginPrompt = document.createElement('div');
+                loginPrompt.className = 'alert alert-info mb-4';
+                loginPrompt.innerHTML = `
+                    <h5><i class="fas fa-info-circle me-2"></i>Login Required</h5>
+                    <p>To submit a trainer application, you need to create an account or login to your existing account.</p>
+                    <div class="d-flex gap-2">
+                        <a href="login.html?action=register&redirect=${encodeURIComponent(window.location.pathname)}" class="btn btn-warning">
+                            <i class="fas fa-user-plus me-2"></i>Create Account
+                        </a>
+                        <a href="login.html?action=login&redirect=${encodeURIComponent(window.location.pathname)}" class="btn btn-outline-light">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    </div>
+                `;
+                applicationForm.parentNode.insertBefore(loginPrompt, applicationForm);
+                
+                // Disable form inputs
+                const inputs = applicationForm.querySelectorAll('input, textarea, select, button');
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    input.style.opacity = '0.6';
+                });
+            }
         }
 
         async function getCurrentUser() {
@@ -420,6 +449,13 @@
 
         async function handleSubmit(event) {
             event.preventDefault();
+
+            // Check if user is logged in before processing
+            if (!currentUser || !currentUser.id) {
+                alert('Please login or create an account to submit your application.');
+                window.location.href = 'login.html?action=register&redirect=' + encodeURIComponent(window.location.pathname);
+                return;
+            }
 
             const submitBtn = event.target.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;

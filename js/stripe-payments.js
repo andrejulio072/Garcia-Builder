@@ -209,12 +209,33 @@
 
     // Adicionar loading overlay ao HTML
     function addPaymentLoadingOverlay() {
+        // Get current language for i18n support
+        const currentLang = (window.GB_I18N && window.GB_I18N.getLang && window.GB_I18N.getLang()) || 
+                           localStorage.getItem('gb_lang') || 'en';
+        
+        const messages = {
+            en: {
+                processing: "Processing your payment...",
+                redirecting: "You will be redirected to Stripe"
+            },
+            pt: {
+                processing: "Processando seu pagamento...",
+                redirecting: "Você será redirecionado para o Stripe"
+            },
+            es: {
+                processing: "Procesando su pago...",
+                redirecting: "Será redirigido a Stripe"
+            }
+        };
+        
+        const msg = messages[currentLang] || messages.en;
+        
         const loadingHtml = `
             <div id="payment-loading" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 9999; color: white;">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
                     <i class="fas fa-spinner fa-spin" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                    <p style="font-size: 1.2rem;">Processando seu pagamento...</p>
-                    <p style="font-size: 1rem; opacity: 0.8;">Você será redirecionado para o Stripe</p>
+                    <p style="font-size: 1.2rem;">${msg.processing}</p>
+                    <p style="font-size: 1rem; opacity: 0.8;">${msg.redirecting}</p>
                 </div>
             </div>
         `;

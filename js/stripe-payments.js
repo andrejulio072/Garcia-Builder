@@ -224,9 +224,9 @@
     // Adicionar loading overlay ao HTML
     function addPaymentLoadingOverlay() {
         // Get current language for i18n support
-        const currentLang = (window.GB_I18N && window.GB_I18N.getLang && window.GB_I18N.getLang()) || 
+        const currentLang = (window.GB_I18N && window.GB_I18N.getLang && window.GB_I18N.getLang()) ||
                            localStorage.getItem('gb_lang') || 'en';
-        
+
         const messages = {
             en: {
                 processing: "Processing your payment...",
@@ -250,9 +250,9 @@
                 title: "Procesando Pago"
             }
         };
-        
+
         const msg = messages[currentLang] || messages.en;
-        
+
         const loadingHtml = `
             <div id="payment-loading" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 9999; color: white;">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">

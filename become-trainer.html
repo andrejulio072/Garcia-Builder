@@ -299,7 +299,7 @@
         async function init() {
             // Check for current user but don't force login immediately
             currentUser = await getCurrentUser();
-            
+
             if (currentUser) {
                 // Pre-fill user information if user is logged in
                 prefillUserInfo();
@@ -332,7 +332,7 @@
                     </div>
                 `;
                 applicationForm.parentNode.insertBefore(loginPrompt, applicationForm);
-                
+
                 // Disable form inputs
                 const inputs = applicationForm.querySelectorAll('input, textarea, select, button');
                 inputs.forEach(input => {

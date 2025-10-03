@@ -241,6 +241,9 @@ function validateRequestData(req, res, next) {
     next();
 }
 
+// Flag para exigir consentimento de Termos no Checkout (requer ToS URL no Stripe Settings)
+const REQUIRE_TOS_CONSENT = (process.env.STRIPE_REQUIRE_TOS_CONSENT || 'false').toLowerCase() === 'true';
+
 // 📊 HEALTH CHECK ENDPOINT
 app.get('/health', (req, res) => {
     const healthStatus = {
@@ -252,6 +255,9 @@ app.get('/health', (req, res) => {
         stripe: {
             ready: isStripeReady,
             mode: process.env.STRIPE_SECRET_KEY?.includes('live') ? 'live' : 'test'
+        },
+        features: {
+            requireTosConsent: REQUIRE_TOS_CONSENT
         },
         uptime: process.uptime(),
         memory: process.memoryUsage()
@@ -359,10 +365,15 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
             // Configurações de experiência
             locale: 'en',
             allow_promotion_codes: true,
-            consent_collection: {
-                terms_of_service: 'required'
-            }
+            // Coleta de consentimento dos Termos (exige ToS URL no Stripe Dashboard → Settings → Public details)
+            // Habilite via env STRIPE_REQUIRE_TOS_CONSENT=true após configurar os links no Stripe.
         };
+
+        if (REQUIRE_TOS_CONSENT) {
+            sessionConfig.consent_collection = {
+                terms_of_service: 'required'
+            };
+        }
 
         // Criar a sessão
         const session = await stripe.checkout.sessions.create(sessionConfig);

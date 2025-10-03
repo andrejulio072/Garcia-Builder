@@ -58,10 +58,10 @@ a{color:var(--text);text-decoration:none}
 .brand img {
   height: 48px;
   width: 48px;
-  border-radius: 50%;
+  border-radius: 50% !important;
   box-shadow: 0 2px 12px #0005;
   object-fit: contain;
-  background: transparent;
+  background: transparent !important;
   border: none;
   display: inline-block;
   vertical-align: middle;
@@ -70,9 +70,15 @@ a{color:var(--text);text-decoration:none}
 .footer img {
   height: 38px;
   width: 38px;
-  border-radius: 50%;
+  border-radius: 50% !important;
   box-shadow: 0 1px 6px #0003;
-  background: transparent;
+  background: transparent !important;
+  object-fit: contain;
+  border: none;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0;
+}
   object-fit: contain;
   border: none;
   display: inline-block;

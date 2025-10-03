@@ -11,4 +11,8 @@ services:
         sync: false
       - key: STRIPE_PUBLISHABLE_KEY
         sync: false
+      - key: CORS_ORIGINS
+        value: https://garciabuilder.fitness,https://www.garciabuilder.fitness,https://garciabuilder.uk,https://www.garciabuilder.uk,https://garcia-builder.onrender.com
+      - key: NODE_ENV
+        value: production
     healthCheckPath: /health

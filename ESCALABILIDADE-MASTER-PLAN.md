@@ -168,7 +168,7 @@ D14: Case study detalhado
 ### **WhatsApp Automation:**
 ```
 Resposta automática:
-"Oi! Obrigado pelo interesse no Garcia Builder! 
+"Oi! Obrigado pelo interesse no Garcia Builder!
 Em que posso te ajudar?
 🏋️ Dúvidas sobre treino
 💪 Informações sobre coaching

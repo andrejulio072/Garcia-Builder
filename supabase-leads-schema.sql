@@ -14,31 +14,31 @@ CREATE TABLE IF NOT EXISTS leads (
     experience_level TEXT,
     budget_range TEXT,
     message TEXT,
-    
+
     -- UTM Tracking para medir origem
     utm_source TEXT,
-    utm_medium TEXT, 
+    utm_medium TEXT,
     utm_campaign TEXT,
     utm_content TEXT,
     utm_term TEXT,
-    
+
     -- Geolocation e device info
     ip_address INET,
     user_agent TEXT,
     referrer TEXT,
     country TEXT,
     device_type TEXT,
-    
+
     -- Lead scoring e status
     lead_score INTEGER DEFAULT 0,
     status TEXT DEFAULT 'new' CHECK (status IN ('new', 'contacted', 'qualified', 'converted', 'lost')),
     source_page TEXT,
-    
+
     -- Timestamps
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     last_contacted_at TIMESTAMP WITH TIME ZONE,
-    
+
     -- Conversion tracking
     converted_at TIMESTAMP WITH TIME ZONE,
     conversion_value DECIMAL(10,2),
@@ -72,7 +72,7 @@ CREATE POLICY "Only admin can view leads" ON leads
 CREATE POLICY "Only admin can update leads" ON leads
     FOR UPDATE USING (
         auth.jwt() ->> 'email' IN (
-            'andrejulio072@gmail.com', 
+            'andrejulio072@gmail.com',
             'admin@garciabuilder.fitness'
         )
     );
@@ -120,7 +120,7 @@ CREATE POLICY "Only admin can view events" ON lead_events
 
 -- View para dashboard de leads
 CREATE OR REPLACE VIEW leads_dashboard AS
-SELECT 
+SELECT
     l.*,
     COUNT(le.id) as total_events,
     COUNT(CASE WHEN le.event_type = 'page_view' THEN 1 END) as page_views,

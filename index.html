@@ -27,8 +27,22 @@
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id=GTM-GARCIABUILDER'+dl;f.parentNode.insertBefore(j,f);
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-GARCIABUILDER');</script>
+
+<!-- Facebook Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'FACEBOOK_PIXEL_ID');
+fbq('track', 'PageView');
+</script>
 
 <title>Garcia Builder — Online Coaching que Transforma Vidas | Treino + Dieta Personalizada</title>
 <link href="Logo Files/For Web/logo-nobackground-500.png" rel="icon"/>
@@ -70,6 +84,14 @@ img, video { max-width: 100%; height: auto; display: block; }
 }
 </style>
 </head><body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-GARCIABUILDER"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<!-- Facebook Pixel (noscript) -->
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
 <nav class="navbar"><div class="container inner">
 <a class="brand" href="index.html" style="display:flex;align-items:center;gap:14px;min-height:56px;">
     <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" decoding="async" loading="eager"/>
@@ -335,7 +357,7 @@ function showTrainerInfo() {
   },
   "serviceType": [
     "Online Personal Training",
-    "Nutrition Coaching", 
+    "Nutrition Coaching",
     "Fitness Transformation"
   ]
 }
@@ -359,7 +381,7 @@ function showTrainerInfo() {
   "knowsAbout": [
     "Personal Training",
     "Nutrition Coaching",
-    "Body Recomposition", 
+    "Body Recomposition",
     "Fat Loss",
     "Muscle Building",
     "Online Coaching"
@@ -387,7 +409,7 @@ function showTrainerInfo() {
   },
   "serviceType": "Fitness Coaching",
   "areaServed": {
-    "@type": "Country", 
+    "@type": "Country",
     "name": "Ireland"
   },
   "offers": {
@@ -405,6 +427,58 @@ function showTrainerInfo() {
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-GARCIABUILDER"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<!-- Tracking Events -->
+<script>
+// Data Layer Initialization
+window.dataLayer = window.dataLayer || [];
+
+// Track page view
+function trackPageView() {
+    dataLayer.push({
+        event: 'page_view',
+        page_title: document.title,
+        page_location: window.location.href,
+        page_referrer: document.referrer
+    });
+}
+
+// Track coaching inquiry
+function trackCoachingInquiry(type, source) {
+    dataLayer.push({
+        event: 'coaching_inquiry',
+        inquiry_type: type || 'general',
+        inquiry_source: source || 'website',
+        value: 50.00,
+        currency: 'EUR'
+    });
+
+    // Facebook tracking
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'Lead', {
+            value: 50.00,
+            currency: 'EUR'
+        });
+    }
+}
+
+// WhatsApp click tracking
+document.addEventListener('click', function(e) {
+    if (e.target.href && e.target.href.includes('wa.me')) {
+        trackCoachingInquiry('whatsapp', 'homepage');
+    }
+
+    // Track CTA button clicks
+    if (e.target.classList.contains('btn-primary') || e.target.textContent.includes('Começar')) {
+        trackCoachingInquiry('cta_click', 'homepage');
+    }
+});
+
+// Initialize tracking
+document.addEventListener('DOMContentLoaded', function() {
+    trackPageView();
+});
+</script>
 
 <script defer src="js/app.js"></script>
 <script defer src="js/lightbox.js"></script>

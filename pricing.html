@@ -1,4 +1,12 @@
 <!doctype html><html lang="en"><head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-GARCIABUILDER');</script>
+<!-- End Google Tag Manager -->
+
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Coaching plans 3/6/12 meses com descontos progressivos. Pague com segurança pela Stripe." />
 <link rel="canonical" href="https://www.garciabuilder.fitness/pricing.html"/>
@@ -17,6 +25,25 @@
 <script defer src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
 <script defer src="js/i18n-shim.js"></script>
 <script defer src="assets/i18n.js?v=20250926"></script>
+
+<!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'FACEBOOK_PIXEL_ID');
+fbq('track', 'PageView');
+fbq('track', 'ViewContent', {content_type: 'pricing_page'});
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
 
 <style>
   /* ===== Background ===== */
@@ -253,6 +280,10 @@
 </head>
 
 <body class="pricing-bg">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-GARCIABUILDER"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
   <meta name="description" content="Coaching plans 3/6/12 meses com descontos progressivos. Pague com segurança pela Stripe." />
   <link rel="canonical" href="https://www.garciabuilder.fitness/pricing.html"/>
   <meta property="og:type" content="website"/>
@@ -579,4 +610,61 @@
 <script defer src="js/pricing.js"></script>
 <script defer src="js/auth.js"></script>
 <script defer src="js/auth-guard.js"></script>
+
+<!-- Tracking Events -->
+<script>
+// Track page view
+if (typeof dataLayer !== 'undefined') {
+  dataLayer.push({
+    'event': 'page_view',
+    'page_title': 'Pricing',
+    'page_location': window.location.href
+  });
+}
+
+// Track pricing plan selection
+document.addEventListener('change', function(e) {
+  if (e.target.name === 'planDuration') {
+    dataLayer.push({
+      'event': 'plan_selection',
+      'plan_duration': e.target.value,
+      'plan_type': 'coaching'
+    });
+
+    // Facebook Pixel
+    if (typeof fbq !== 'undefined') {
+      fbq('track', 'AddToCart', {
+        content_type: 'coaching_plan',
+        content_name: e.target.value + '_plan'
+      });
+    }
+  }
+});
+
+// Track payment button clicks
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('btn-payment') || e.target.closest('.btn-payment')) {
+    const planType = e.target.dataset.plan || 'unknown';
+    const planDuration = document.querySelector('input[name="planDuration"]:checked')?.value || 'unknown';
+
+    dataLayer.push({
+      'event': 'begin_checkout',
+      'plan_type': planType,
+      'plan_duration': planDuration,
+      'value': parseFloat(e.target.dataset.price) || 0,
+      'currency': 'EUR'
+    });
+
+    // Facebook Pixel
+    if (typeof fbq !== 'undefined') {
+      fbq('track', 'InitiateCheckout', {
+        content_type: 'coaching_plan',
+        content_name: planType + '_' + planDuration,
+        value: parseFloat(e.target.dataset.price) || 0,
+        currency: 'EUR'
+      });
+    }
+  }
+});
+</script>
 </body></html>

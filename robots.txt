@@ -1,5 +1,28 @@
 User-agent: *
 Allow: /
 
-# Sitemap para descoberta de URLs
-Sitemap: https://www.garciabuilder.fitness/sitemap.xml
+# Sitemap location (updated domain)
+Sitemap: https://garciabuilder.fitness/sitemap.xml
+
+# Block unnecessary crawling for better SEO focus
+Disallow: /api/
+Disallow: /archive/
+Disallow: /coverage/
+Disallow: /tools/
+Disallow: /test-*
+Disallow: /improved/
+Disallow: *.sql$
+Disallow: *.md$
+
+# Allow all important pages
+Allow: /index.html
+Allow: /about.html
+Allow: /pricing.html
+Allow: /transformations.html
+Allow: /testimonials.html
+Allow: /contact.html
+Allow: /programs.html
+Allow: /faq.html
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1

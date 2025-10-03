@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obrigado! Seu Ebook Está Pronto - Garcia Builder</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/global.css?v=20251003-2030">
+    
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id=GTM-LEADMAGNET'+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-LEADMAGNET');</script>
+    
+    <style>
+        .success-section {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+        .success-card {
+            background: rgba(255,255,255,0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            color: #333;
+        }
+        .download-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        .social-share {
+            margin: 30px 0;
+        }
+        .social-share a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 50%;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        .social-share a:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+        .social-share a.facebook:hover { background: #3b5998; }
+        .social-share a.instagram:hover { background: #e4405f; }
+        .social-share a.whatsapp:hover { background: #25d366; }
+        .social-share a.linkedin:hover { background: #0077b5; }
+        
+        .next-steps {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+        .step-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .step-item:last-child {
+            border-bottom: none;
+        }
+        .testimonial {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-LEADMAGNET"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <section class="success-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="success-card">
+                        <!-- Success Icon -->
+                        <div class="mb-4">
+                            <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                        </div>
+                        
+                        <h1 class="h2 mb-3">🎉 Parabéns, <span id="userName">Guerreiro(a)</span>!</h1>
+                        <h2 class="h4 text-primary mb-4">Seu ebook está pronto para download!</h2>
+                        
+                        <!-- Download Button -->
+                        <a href="assets/ebook-7-passos-secar-mantendo-massa.pdf" 
+                           class="btn download-btn text-white mb-4" 
+                           download="7-Passos-Secar-Mantendo-Massa-Garcia-Builder.pdf"
+                           id="downloadBtn">
+                            <i class="fas fa-download me-2"></i>
+                            BAIXAR EBOOK AGORA
+                        </a>
+                        
+                        <p class="text-muted mb-4">
+                            <small>
+                                <i class="fas fa-info-circle me-1"></i>
+                                O download começará automaticamente. Se não funcionar, clique no botão acima.
+                            </small>
+                        </p>
+                        
+                        <!-- Email Confirmation -->
+                        <div class="alert alert-info">
+                            <i class="fas fa-envelope me-2"></i>
+                            <strong>Ebook enviado para:</strong> <span id="userEmail">seu email</span>
+                            <br>
+                            <small>Verifique sua caixa de entrada (e spam) em alguns minutos.</small>
+                        </div>
+                        
+                        <!-- Social Share -->
+                        <div class="social-share">
+                            <p><strong>Compartilhe com amigos que também querem resultados:</strong></p>
+                            <a href="#" class="facebook" title="Compartilhar no Facebook" id="shareFacebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="instagram" title="Compartilhar no Instagram" id="shareInstagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="whatsapp" title="Compartilhar no WhatsApp" id="shareWhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                            <a href="#" class="linkedin" title="Compartilhar no LinkedIn" id="shareLinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                        
+                        <!-- Testimonial -->
+                        <div class="testimonial">
+                            <p class="mb-2">
+                                <em>"Esse ebook mudou completamente minha abordagem. Perdi 7kg em 8 semanas sem perder força. Andre sabe do que fala!"</em>
+                            </p>
+                            <small><strong>- Paulo R.</strong> | Perda de 7kg em 8 semanas</small>
+                        </div>
+                        
+                        <!-- Next Steps -->
+                        <div class="next-steps">
+                            <h3 class="h5 mb-3">🚀 Próximos Passos para Turbinar Seus Resultados:</h3>
+                            
+                            <div class="step-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fas fa-book-reader text-primary fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <strong>1. Leia o ebook completo</strong>
+                                        <br><small class="text-muted">Implemente cada passo na ordem apresentada</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fab fa-instagram text-primary fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <strong>2. Siga no Instagram</strong>
+                                        <br><small class="text-muted">Dicas diárias e transformações reais: @garcia.builder</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fab fa-whatsapp text-primary fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <strong>3. Dúvidas? Chama no WhatsApp</strong>
+                                        <br><small class="text-muted">Respondo pessoalmente sobre o ebook</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- CTA Section -->
+                        <div class="mt-4 p-4" style="background: linear-gradient(45deg, #fff3cd, #f8d7da); border-radius: 15px;">
+                            <h4 class="text-dark mb-3">
+                                <i class="fas fa-rocket text-warning me-2"></i>
+                                Quer ACELERAR seus resultados?
+                            </h4>
+                            <p class="text-dark mb-3">
+                                O ebook te dá a base, mas com <strong>coaching personalizado</strong> você tem:
+                            </p>
+                            <div class="row text-start text-dark">
+                                <div class="col-md-6">
+                                    <small>
+                                        ✅ Plano de treino sob medida<br>
+                                        ✅ Dieta calculada para seu corpo<br>
+                                        ✅ Check-ins semanais<br>
+                                    </small>
+                                </div>
+                                <div class="col-md-6">
+                                    <small>
+                                        ✅ Ajustes em tempo real<br>
+                                        ✅ Suporte 24/7 no WhatsApp<br>
+                                        ✅ Garantia de resultados<br>
+                                    </small>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <a href="pricing.html?utm_source=ebook&utm_campaign=thank-you" 
+                                   class="btn btn-warning btn-lg me-2">
+                                    <i class="fas fa-star me-2"></i>
+                                    VER PLANOS DE COACHING
+                                </a>
+                                <a href="https://wa.me/447508497586?text=Oi André! Baixei seu ebook e quero saber mais sobre o coaching personalizado." 
+                                   class="btn btn-success btn-lg" 
+                                   target="_blank">
+                                    <i class="fab fa-whatsapp me-2"></i>
+                                    FALAR NO WHATSAPP
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Footer Links -->
+                        <div class="mt-4">
+                            <a href="index.html" class="btn btn-outline-secondary me-2">
+                                <i class="fas fa-home me-1"></i> Voltar ao Site
+                            </a>
+                            <a href="transformations.html" class="btn btn-outline-primary">
+                                <i class="fas fa-before-after me-1"></i> Ver Transformações
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+        
+        // Set user info
+        document.addEventListener('DOMContentLoaded', function() {
+            const userName = getUrlParameter('name');
+            const userEmail = getUrlParameter('email');
+            
+            if (userName) {
+                document.getElementById('userName').textContent = userName;
+            }
+            if (userEmail) {
+                document.getElementById('userEmail').textContent = userEmail;
+            }
+            
+            // Auto-download after 3 seconds
+            setTimeout(() => {
+                document.getElementById('downloadBtn').click();
+            }, 3000);
+            
+            // Setup social sharing
+            setupSocialSharing();
+            
+            // Track conversion
+            if (typeof dataLayer !== 'undefined') {
+                dataLayer.push({
+                    event: 'ebook_downloaded',
+                    user_email: userEmail,
+                    user_name: userName,
+                    value: 25.00,
+                    currency: 'EUR'
+                });
+            }
+        });
+        
+        function setupSocialSharing() {
+            const shareText = "Acabei de baixar um ebook incrível: '7 Passos para Secar Mantendo Massa' do Garcia Builder. Método científico testado!";
+            const shareUrl = "https://garciabuilder.fitness/lead-magnet.html";
+            
+            document.getElementById('shareFacebook').href = 
+                `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+                
+            document.getElementById('shareWhatsApp').href = 
+                `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`;
+                
+            document.getElementById('shareLinkedIn').href = 
+                `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+                
+            // Instagram doesn't support direct sharing, so open profile
+            document.getElementById('shareInstagram').href = 
+                `https://www.instagram.com/garcia.builder/`;
+        }
+        
+        // Track download clicks
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            if (typeof dataLayer !== 'undefined') {
+                dataLayer.push({
+                    event: 'file_download',
+                    file_name: '7-Passos-Secar-Mantendo-Massa-Garcia-Builder.pdf',
+                    file_extension: 'pdf'
+                });
+            }
+        });
+    </script>
+</body>
+</html>

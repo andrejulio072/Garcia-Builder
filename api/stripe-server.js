@@ -1,3 +1,12 @@
+// Endpoint de diagnóstico para checagem de domínio e protocolo
+app.get('/_whoami', (req, res) => {
+    res.json({
+        host: req.headers.host,
+        proto: req.headers['x-forwarded-proto'] || req.protocol,
+        ip: req.ip,
+        userAgent: req.headers['user-agent']
+    });
+});
 // Backend API para integração com Stripe
 // Este arquivo deve ser executado em um servidor Node.js/Express
 

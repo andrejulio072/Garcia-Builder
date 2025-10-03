@@ -1,8 +1,8 @@
 User-agent: *
 Allow: /
 
-# Sitemap location (updated domain)
-Sitemap: https://garciabuilder.fitness/sitemap.xml
+# Sitemap location (optimized)
+Sitemap: https://garciabuilder.fitness/sitemap-optimized.xml
 
 # Block unnecessary crawling for better SEO focus
 Disallow: /api/

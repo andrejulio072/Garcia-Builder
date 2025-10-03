@@ -1,0 +1,46 @@
+/* Layout Fixes (focused, override-only) 2025-10-03 */
+/* 1. Navbar normalization */
+.navbar .inner { flex-wrap: nowrap; }
+.navbar .brand { flex-shrink: 0; }
+.navbar .nav { flex: 1 1 auto; justify-content: center; gap: 4px 10px; }
+.navbar .nav a { font-weight: 500; letter-spacing: .2px; }
+@media (max-width: 980px){
+  .navbar .inner { flex-wrap: wrap; }
+  .navbar .nav { order: 3; width: 100%; justify-content: center; flex-wrap: wrap; }
+  #auth-buttons { order: 2; margin-left: auto; }
+}
+
+/* 2. FAQ readability & spacing */
+.accordion-button { font-size: 1rem; font-weight: 600; }
+.accordion-body { font-size: .95rem; line-height: 1.55; }
+#faq-search.search { font-size: 1rem; }
+
+/* 3. Contact page structure */
+#contact .container { max-width: 1180px; }
+.contact-card { max-width: 1040px; margin: 32px auto; }
+@media (max-width: 768px){ .contact-card { margin-top: 20px; } }
+
+/* 4. Auth (login/register) spacing & language selector alignment */
+body.auth-page { padding-top: 0; }
+.auth-container { padding-top: 120px; }
+@media (max-width: 576px){ .auth-container { padding-top: 110px; } }
+
+/* 5. Transformations stats row horizontal alignment fix */
+.stats-row .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+.stats-row .row > [class*='col-'] { flex: 1 1 180px; max-width: 220px; }
+.stat-item { background: rgba(255,255,255,0.03); border-radius: 16px; }
+
+/* 6. KPI blocks (if stacked unexpectedly) ensure horizontal on wide */
+@media (min-width: 700px){ .kpis { flex-wrap: nowrap; } }
+
+/* 7. Consistent form element height across pages */
+input.form-control, select.form-select, textarea.form-control { min-height: 48px; }
+
+/* 8. Prevent oversized headings pushing layout */
+h1,h2,h3 { word-break: keep-all; }
+
+/* 9. Utility: hide duplicated modals (safety) */
+.modal.d-none { display: none !important; }
+
+/* 10. Language select minimal width */
+.lang select { min-width: 70px; }

@@ -393,12 +393,21 @@ section#contact.section.has-bg.contact-bg {
   color: #e6b73e !important;
 }
 
-/* Auth buttons positioning */
+/* Auth buttons positioning - lado a lado no desktop */
 #auth-buttons {
   display: flex;
   align-items: center;
+  gap: 8px;
   margin-left: auto;
-  margin-right: 16px;
+}
+
+#auth-buttons .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 14px;
+  white-space: nowrap;
 }
 
 @media (max-width: 768px) {
@@ -434,7 +443,6 @@ section#contact.section.has-bg.contact-bg {
   /* Auth buttons mobile */
   #auth-buttons {
     margin-left: 0;
-    margin-right: 8px;
     gap: 0.5rem;
   }
 

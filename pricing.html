@@ -398,6 +398,85 @@
   position: relative;
   border: none;
   border-radius: 12px;
+}
+
+/* Pricing Grid Consistency - All cards same height and styling */
+.price-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 2rem;
+}
+
+.price {
+  background: linear-gradient(180deg, #101a33, #0c1121);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+  color: var(--text);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 500px;
+}
+
+.price h3 {
+  font-size: 1.5rem;
+  margin: 0 0 16px 0;
+  color: var(--gold);
+  text-align: center;
+}
+
+.price .tag {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--gold);
+  text-align: center;
+  margin: 16px 0;
+}
+
+.price ul {
+  flex-grow: 1;
+  padding-left: 18px;
+  margin: 20px 0;
+  list-style: none;
+}
+
+.price li {
+  margin: 12px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.price li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-weight: bold;
+}
+
+.price .btn {
+  margin-top: auto;
+  width: 100%;
+  padding: 14px;
+  font-weight: 600;
+}
+
+/* Discount badges */
+.discount-badge {
+  background: linear-gradient(90deg, #38f2a5, #2de0ff);
+  color: #061016;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 8px;
+  display: inline-block;
+}
   padding: 1rem 1.5rem;
   transition: all 0.3s ease;
   background: transparent;

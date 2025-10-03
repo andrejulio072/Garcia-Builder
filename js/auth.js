@@ -48,9 +48,10 @@ class AuthSystem {
 
         if (loginForm) {
             loginForm.addEventListener('submit', (e) => {
-                // Permitir OAuth buttons sem validação
-                if (e.submitter && e.submitter.id && (e.submitter.id.includes('google') || e.submitter.id.includes('facebook'))) {
-                    return; // Deixa OAuth passar sem validação
+                // Se for botão social, não validar campos de formulário
+                if (e.submitter && e.submitter.type === 'button' && (e.submitter.id.includes('google') || e.submitter.id.includes('facebook'))) {
+                    e.preventDefault(); // Impedir submit do form
+                    return; // Deixa o event listener específico do botão social tratar
                 }
                 this.handleLogin(e);
             });
@@ -58,9 +59,10 @@ class AuthSystem {
 
         if (registerForm) {
             registerForm.addEventListener('submit', (e) => {
-                // Permitir OAuth buttons sem validação
-                if (e.submitter && e.submitter.id && (e.submitter.id.includes('google') || e.submitter.id.includes('facebook'))) {
-                    return; // Deixa OAuth passar sem validação
+                // Se for botão social, não validar campos de formulário
+                if (e.submitter && e.submitter.type === 'button' && (e.submitter.id.includes('google') || e.submitter.id.includes('facebook'))) {
+                    e.preventDefault(); // Impedir submit do form
+                    return; // Deixa o event listener específico do botão social tratar
                 }
                 this.handleRegister(e);
             });

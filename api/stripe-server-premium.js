@@ -25,11 +25,38 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
+            // Allow inline styles for Bootstrap and our pages, plus Google Fonts
             styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
             fontSrc: ["'self'", "https://fonts.gstatic.com"],
-            scriptSrc: ["'self'", "https://js.stripe.com"],
-            connectSrc: ["'self'", "https://api.stripe.com"],
-            frameSrc: ["https://checkout.stripe.com", "https://js.stripe.com"]
+            // Allow inline scripts (many pages use small inline helpers), and common CDNs we use
+            scriptSrc: [
+                "'self'",
+                "'unsafe-inline'",
+                "https://js.stripe.com",
+                "https://www.googletagmanager.com",
+                "https://www.google-analytics.com",
+                "https://connect.facebook.net"
+            ],
+            // Allow API calls to Stripe, Supabase and Analytics
+            connectSrc: [
+                "'self'",
+                "https://api.stripe.com",
+                "https://*.supabase.co",
+                "https://www.google-analytics.com"
+            ],
+            // Allow external images (testimonials avatars etc.) and data URLs
+            imgSrc: [
+                "'self'",
+                "data:",
+                "https:",
+                "https://www.facebook.com"
+            ],
+            // Checkout + Stripe frames, and GTM if needed
+            frameSrc: [
+                "https://checkout.stripe.com",
+                "https://js.stripe.com",
+                "https://www.googletagmanager.com"
+            ]
         }
     },
     crossOriginEmbedderPolicy: false
@@ -83,6 +110,20 @@ app.use(express.json({
         req.rawBody = buf;
     }
 }));
+
+// URL rewrite helpers for common path issues in production (case sensitivity, spaces)
+app.use((req, res, next) => {
+    try {
+        // Normalize "logo files" (lowercase) to "Logo Files" (actual folder)
+        const decoded = decodeURIComponent(req.url);
+        if (decoded.toLowerCase().startsWith('/logo files/')) {
+            req.url = decoded.replace(/\/logo files\//i, '/Logo Files/');
+        }
+    } catch (e) {
+        // continue without rewrite on decode errors
+    }
+    next();
+});
 
 // Servir arquivos estáticos
 app.use(express.static(path.join(__dirname, '..'), {

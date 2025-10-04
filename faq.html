@@ -288,6 +288,21 @@ window.addEventListener('load', () => {
 <script defer src="js/app-optimizations.js"></script>
 <script defer src="js/auth.js"></script>
 <script defer src="js/auth-guard.js"></script>
+<!-- Breadcrumb structured data -->
+<script type="application/ld+json">{
+ "@context":"https://schema.org",
+ "@type":"BreadcrumbList",
+ "itemListElement":[
+  {"@type":"ListItem","position":1,"name":"Home","item":"https://garciabuilder.fitness/"},
+  {"@type":"ListItem","position":2,"name":"FAQ","item":"https://garciabuilder.fitness/faq.html"}
+ ]
+}</script>
+<!-- Web Vitals (shared util inline) -->
+<script>(()=>{const send=m=>{window.dataLayer=window.dataLayer||[];dataLayer.push({event:'web_vital',metric_name:m.name,metric_id:m.id,value:Math.round(m.value*1000)/1000});};const w=window;function onPerf(fn){if('PerformanceObserver'in w){try{new PerformanceObserver(list=>{for(const e of list.getEntries())fn(e)}).observe({type:'largest-contentful-paint',buffered:true});}catch(e){}}}
+onPerf(e=>{if(e.entryType==='largest-contentful-paint')send({name:'LCP',id:e.id,value:e.renderTime||e.loadTime||e.startTime});});
+if('PerformanceObserver'in w){try{let cls=0;new PerformanceObserver(list=>{for(const e of list.getEntries()){if(!e.hadRecentInput){cls+=e.value;}}}).observe({type:'layout-shift',buffered:true});w.addEventListener('beforeunload',()=>send({name:'CLS',id:'cls-final',value:cls}));}catch(e){}}
+if('PerformanceObserver'in w){try{new PerformanceObserver(list=>{const f=list.getEntries()[0];if(f)send({name:'FID',id:f.id,value:f.processingStart-f.startTime});}).observe({type:'first-input',buffered:true});}catch(e){}}
+})();</script>
 <!-- Structured Data: FAQPage -->
 <script type="application/ld+json">
 {

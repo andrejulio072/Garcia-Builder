@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Exclusão de Dados / Data Deletion – Garcia Builder</title>
+  <meta name="description" content="Procedimento de exclusão de dados pessoais para usuários da plataforma Garcia Builder." />
+  <meta name="robots" content="noindex,follow" />
+  <link rel="icon" type="image/png" href="logo.png" />
+  <style>
+    :root { --gold:#F6C84E; --bg:#0d0f12; --fg:#f5f5f5; --muted:#b5b5b5; }
+    body { font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif; background:var(--bg); color:var(--fg); margin:0; line-height:1.55; }
+    header { padding:32px 20px 12px; text-align:center; }
+    h1 { font-size:clamp(1.9rem,4vw,2.6rem); margin:0 0 8px; background:linear-gradient(90deg,var(--gold),#ffe9a3); -webkit-background-clip:text; color:transparent; }
+    h2 { margin-top:48px; color:var(--gold); }
+    p,li { max-width:900px; }
+    main { max-width:1000px; margin:0 auto; padding:0 20px 80px; }
+    code { background:#1e232b; padding:2px 6px; border-radius:4px; font-size:.9em; }
+    .panel { background:#15191f; border:1px solid #222830; padding:20px 24px; border-radius:12px; margin:28px 0; }
+    .lang-switch { text-align:right; margin:-10px 0 24px; }
+    a { color:var(--gold); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    .steps li { margin-bottom:6px; }
+    footer { text-align:center; font-size:.75rem; padding:40px 10px; color:var(--muted); }
+    .badge { display:inline-block; background:linear-gradient(90deg,var(--gold),#cfa338); color:#000; padding:4px 10px; border-radius:20px; font-size:.7rem; letter-spacing:.5px; font-weight:600; vertical-align:middle; margin-left:6px; }
+    @media (max-width:640px){ .panel { padding:18px 18px; } }
+  </style>
+  <script>
+    // Simple bilingual toggle (PT default / EN optional)
+    function switchLang(lang){
+      document.querySelectorAll('[data-lang-section]').forEach(sec=>{
+        sec.style.display = sec.getAttribute('data-lang-section') === lang ? 'block':'none';
+      });
+      localStorage.setItem('gb_data_del_lang', lang);
+    }
+    document.addEventListener('DOMContentLoaded',()=>{
+      const saved = localStorage.getItem('gb_data_del_lang') || 'pt';
+      switchLang(saved);
+      document.querySelectorAll('[data-lang-btn]').forEach(btn=>{
+        btn.addEventListener('click',()=>switchLang(btn.dataset.langBtn));
+      });
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Exclusão de Dados / Data Deletion</h1>
+    <p style="margin:0;color:var(--muted)">Procedimento oficial para remoção de dados de usuários da plataforma Garcia Builder.</p>
+  </header>
+  <main>
+    <div class="lang-switch">
+      <button data-lang-btn data-lang-btn="pt" style="margin-right:8px">🇧🇷 Português</button>
+      <button data-lang-btn data-lang-btn="en">🇺🇸 English</button>
+    </div>
+
+    <!-- Portuguese Section -->
+    <section data-lang-section="pt">
+      <div class="panel">
+        <h2>1. Escopo</h2>
+        <p>Esta página descreve como você (usuário) pode solicitar a exclusão dos seus dados pessoais coletados através dos seguintes elementos da plataforma:</p>
+        <ul>
+          <li>Conta de autenticação (Supabase Auth – e‑mail, nome, metadados opcionais)</li>
+          <li>Registros de leads / newsletter (nome, e‑mail, objetivo, UTM de origem se disponível)</li>
+          <li>Histórico de pedidos / assinaturas (Stripe – valores, plano, país; <strong>nunca</strong> armazenamos número completo de cartão)</li>
+          <li>Eventos de marketing agregados para métricas (GA4 / Meta Pixel – não usados para identificação direta)</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h2>2. Como Solicitar Exclusão</h2>
+        <ol class="steps">
+          <li>Envie um e‑mail para <code>privacy@garciabuilder.fitness</code> (ou o canal de suporte oficial) com o assunto: <em>“Exclusão de Dados”</em>.</li>
+          <li>Inclua: nome completo cadastrado + e‑mail de login + (opcional) ID de assinatura / último plano.</li>
+          <li>Confirmação: responderemos em até 5 dias úteis confirmando a verificação de identidade.</li>
+          <li>Conclusão: exclusão lógica/definitiva executada em até 30 dias corridos (normalmente &lt; 7 dias).</li>
+        </ol>
+        <p><strong>Importante:</strong> dados fiscais mínimos (registro de transação Stripe) podem precisar ser retidos pelo prazo legal aplicável. Nestes casos, são <em>desvinculados</em> de sua identidade operacional.</p>
+      </div>
+
+      <div class="panel">
+        <h2>3. Exclusões Automáticas (Quando Possível)</h2>
+        <ul>
+          <li>Conta Supabase: remoção na própria base (perfil + metadados).</li>
+          <li>Newsletter / Leads: remoção ou anonimização do registro (substituição por hash).</li>
+          <li>Assinaturas ativas: solicitaremos confirmação extra (excluir pode cancelar acesso).</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h2>4. Dados Não Armazenados Localmente</h2>
+        <p>Não armazenamos localmente: senhas em texto, dados completos de cartão, tokens de sessão de OAuth externos, nem dados sensíveis de saúde. Integrações (Stripe, GA4, Meta) mantêm dados conforme suas políticas individuais.</p>
+      </div>
+
+      <div class="panel">
+        <h2>5. Revogação de Consentimentos</h2>
+        <p>Se desejar revogar consentimento de e‑mails marketing sem excluir a conta, use o link de descadastro incluído nas comunicações ou solicite via e‑mail.</p>
+      </div>
+
+      <div class="panel">
+        <h2>6. Canal de Contato</h2>
+        <p>Central oficial: <code>privacy@garciabuilder.fitness</code>. Alternativamente, WhatsApp conforme página de contato.</p>
+      </div>
+
+      <p style="font-size:.8rem;color:var(--muted);margin-top:40px">Última atualização: <time datetime="2025-10-04">04/10/2025</time></p>
+    </section>
+
+    <!-- English Section -->
+    <section data-lang-section="en" style="display:none">
+      <div class="panel">
+        <h2>1. Scope</h2>
+        <p>This page explains how you can request deletion of personal data collected through:</p>
+        <ul>
+          <li>Authentication account (Supabase Auth – email, name, optional metadata)</li>
+          <li>Lead / newsletter records (name, email, goal, source UTMs if captured)</li>
+          <li>Order / subscription history (Stripe – amount, plan, country; we <strong>never</strong> store full card numbers)</li>
+          <li>Aggregated analytics / marketing events (GA4 / Meta Pixel – not used for direct identification)</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h2>2. How to Request Deletion</h2>
+        <ol class="steps">
+          <li>Send an e‑mail to <code>privacy@garciabuilder.fitness</code> with subject: <em>“Data Deletion Request”.</em></li>
+          <li>Include: full name, login email, and (optional) subscription / plan ID.</li>
+          <li>We will acknowledge within 5 business days and verify identity.</li>
+          <li>Deletion (or irreversible anonymization) completed within 30 days (typically &lt; 7 days).</li>
+        </ol>
+        <p><strong>Note:</strong> Minimal fiscal/financial records (Stripe transaction logs) may be retained for legal compliance; when retained they are detached from operational identity.</p>
+      </div>
+
+      <div class="panel">
+        <h2>3. Automated / Technical Deletions</h2>
+        <ul>
+          <li>Supabase account: removed from authentication & profile tables.</li>
+          <li>Newsletter / leads: record deleted or anonymized (hash replacement).</li>
+          <li>Active subscriptions: we confirm impact (access cancellation) before final deletion.</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h2>4. Data Not Stored</h2>
+        <p>We do not locally store: plaintext passwords, full card data, external OAuth session tokens, nor sensitive health metrics. Third‑party services (Stripe, GA4, Meta) retain data under their own policies.</p>
+      </div>
+
+      <div class="panel">
+        <h2>5. Revoking Marketing Consent</h2>
+        <p>If you only wish to stop marketing emails without deleting your account, use the unsubscribe link or contact us at the same address.</p>
+      </div>
+
+      <div class="panel">
+        <h2>6. Contact Channel</h2>
+        <p>Official channel: <code>privacy@garciabuilder.fitness</code>. WhatsApp alternative is available on the contact page.</p>
+      </div>
+
+      <p style="font-size:.8rem;color:var(--muted);margin-top:40px">Last updated: <time datetime="2025-10-04">2025-10-04</time></p>
+    </section>
+  </main>
+  <footer>
+    © 2025 Garcia Builder – Data Protection & Privacy. | <a href="privacy.html">Política de Privacidade</a> | <a href="terms.html">Termos</a>
+  </footer>
+</body>
+</html>

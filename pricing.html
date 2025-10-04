@@ -6,9 +6,13 @@
 
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Planos de coaching online 1:1 com acompanhamento semanal. Descontos em 3, 6 e 12 meses. Checkout seguro Stripe." />
+<meta name="theme-color" content="#0b1220"/>
 <meta name="robots" content="index,follow,max-image-preview:large" />
 <link rel="canonical" href="https://garciabuilder.fitness/pricing.html"/>
 <meta property="og:type" content="website"/>
+<meta property="og:locale" content="en_IE"/>
+<meta property="og:locale:alternate" content="pt_BR"/>
+<meta property="og:locale:alternate" content="es_ES"/>
 <meta property="og:title" content="Pricing & Plans – Garcia Builder Coaching"/>
 <meta property="og:description" content="Escolha o plano ideal e acelere sua transformação com treino + nutrição personalizados."/>
 <meta property="og:url" content="https://garciabuilder.fitness/pricing.html"/>
@@ -19,6 +23,9 @@
 <meta name="twitter:description" content="Planos flexíveis com suporte profissional e resultados mensuráveis."/>
 <meta name="twitter:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg"/>
 <title>Pricing – Garcia Builder Coaching Plans</title>
+<link rel="preconnect" href="https://www.googletagmanager.com"/>
+<link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+<link rel="preload" as="image" href="assets/bg-fitness.jpg"/>
 <!-- Structured Data: OfferCatalog (coaching plans with duration discounts) -->
 <script type="application/ld+json">
 {
@@ -107,24 +114,10 @@
 <script defer src="js/i18n-shim.js"></script>
 <script defer src="assets/i18n.js?v=20250926"></script>
 
-<!-- Facebook Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', 'FACEBOOK_PIXEL_ID');
-fbq('track', 'PageView');
-fbq('track', 'ViewContent', {content_type: 'pricing_page'});
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Facebook Pixel Code -->
+<!-- Centralized Meta Pixel -->
+<script>window.FB_PIXEL_ID='FACEBOOK_PIXEL_ID';</script>
+<script defer src="js/pixel-init.js"></script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
 
 <style>
   /* ===== Background ===== */
@@ -683,6 +676,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script defer src="js/pricing.js"></script>
 <script defer src="js/auth.js"></script>
 <script defer src="js/auth-guard.js"></script>
+<!-- Breadcrumb structured data -->
+<script type="application/ld+json">{
+ "@context":"https://schema.org",
+ "@type":"BreadcrumbList",
+ "itemListElement":[
+  {"@type":"ListItem","position":1,"name":"Home","item":"https://garciabuilder.fitness/"},
+  {"@type":"ListItem","position":2,"name":"Pricing","item":"https://garciabuilder.fitness/pricing.html"}
+ ]
+}</script>
+<!-- Product style structured data (single highlighted plan) -->
+<script type="application/ld+json">{
+ "@context":"https://schema.org",
+ "@type":"Product",
+ "name":"Full Coaching Plan",
+ "description":"Comprehensive online coaching: periodized training, nutrition guidance, weekly check-ins, form reviews.",
+ "brand":{"@type":"Brand","name":"Garcia Builder"},
+ "offers":{"@type":"AggregateOffer","priceCurrency":"GBP","lowPrice":"56.25","highPrice":"155","offerCount":"4","offers":[
+  {"@type":"Offer","price":"155","priceCurrency":"GBP","url":"https://garciabuilder.fitness/pricing.html#full-monthly","availability":"https://schema.org/InStock"},
+  {"@type":"Offer","price":"139.5","priceCurrency":"GBP","url":"https://garciabuilder.fitness/pricing.html#full-quarterly","availability":"https://schema.org/InStock"},
+  {"@type":"Offer","price":"131.75","priceCurrency":"GBP","url":"https://garciabuilder.fitness/pricing.html#full-biannual","availability":"https://schema.org/InStock"},
+  {"@type":"Offer","price":"116.25","priceCurrency":"GBP","url":"https://garciabuilder.fitness/pricing.html#full-annual","availability":"https://schema.org/InStock"}
+ ]}
+}</script>
+<!-- Web Vitals RUM replicate for pricing page -->
+<script>(()=>{const send=m=>{window.dataLayer=window.dataLayer||[];dataLayer.push({event:'web_vital',metric_name:m.name,metric_id:m.id,value:Math.round(m.value*1000)/1000});};const w=window;function onPerf(fn){if('PerformanceObserver'in w){try{new PerformanceObserver(list=>{for(const e of list.getEntries())fn(e)}).observe({type:'largest-contentful-paint',buffered:true});}catch(e){}}}
+onPerf(e=>{if(e.entryType==='largest-contentful-paint')send({name:'LCP',id:e.id,value:e.renderTime||e.loadTime||e.startTime});});
+if('PerformanceObserver'in w){try{let cls=0;new PerformanceObserver(list=>{for(const e of list.getEntries()){if(!e.hadRecentInput){cls+=e.value;}}}).observe({type:'layout-shift',buffered:true});w.addEventListener('beforeunload',()=>send({name:'CLS',id:'cls-final',value:cls}));}catch(e){}}
+if('PerformanceObserver'in w){try{new PerformanceObserver(list=>{const f=list.getEntries()[0];if(f)send({name:'FID',id:f.id,value:f.processingStart-f.startTime});}).observe({type:'first-input',buffered:true});}catch(e){}}
+})();</script>
 
 <!-- Tracking Events -->
 <script>
@@ -740,4 +762,5 @@ document.addEventListener('click', function(e) {
   }
 });
 </script>
+<script defer src="js/engagement-tracking.js"></script>
 </body></html>

@@ -3,11 +3,17 @@
 <html lang="en"><head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<meta name="description" content="Garcia Builder: Online fitness coaching que transforma vidas. Treino personalizado + dieta sob medida + acompanhamento 1:1. Resultados científicos em 8-12 semanas."/>
+<!-- Primary Meta Description (single – avoid duplicates) -->
+<meta name="description" content="Garcia Builder online coaching: personalized training + simple nutrition + 1:1 accountability. Evidence‑based body recomposition in 8–12 weeks."/>
+<meta name="theme-color" content="#0b1220"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
 <meta name="keywords" content="online coaching, personal trainer, fitness transformation, cutting, muscle gain, nutrition coaching, garcia builder, ireland"/>
 
-<!-- Updated Canonical and Social Meta -->
+<!-- Canonical & Social Meta -->
 <link rel="canonical" href="https://garciabuilder.fitness/"/>
+<meta property="og:locale" content="en_IE"/>
+<meta property="og:locale:alternate" content="pt_BR"/>
+<meta property="og:locale:alternate" content="es_ES"/>
 <meta property="og:type" content="website"/>
 <meta property="og:title" content="Garcia Builder — Online Coaching que Transforma Vidas"/>
 <meta property="og:description" content="Treino personalizado + dieta sob medida + acompanhamento 1:1. Método científico para resultados duradouros em 8-12 semanas."/>
@@ -23,6 +29,11 @@
 <meta name="twitter:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg"/>
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
 
+<!-- Performance Hints -->
+<link rel="preconnect" href="https://www.googletagmanager.com"/>
+<link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+<link rel="preload" as="image" href="assets/hero.jpg" imagesrcset="assets/hero.jpg 1x"/>
+
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -30,22 +41,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
 
-<!-- Facebook Pixel -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', 'FACEBOOK_PIXEL_ID');
-fbq('track', 'PageView');
-</script>
+<!-- Centralized Facebook Pixel Loader -->
+<script>window.FB_PIXEL_ID='FACEBOOK_PIXEL_ID';</script>
+<script defer src="js/pixel-init.js"></script>
 
 <title>Garcia Builder | Online Fitness Coaching & Body Transformations</title>
-<meta name="description" content="Transform your body and mind with online fitness coaching. 10+ years of bodybuilding expertise. Flexible plans, real results."/>
 <link href="Logo Files/For Web/logo-nobackground-500.png" rel="icon"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
@@ -90,9 +90,8 @@ img, video { max-width: 100%; height: auto; display: block; }
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-<!-- Facebook Pixel (noscript) -->
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+<!-- Meta Pixel noscript fallback -->
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
 <nav class="navbar"><div class="container inner">
 <a class="brand" href="index.html" style="display:flex;align-items:center;gap:14px;min-height:56px;">
     <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" decoding="async" loading="eager"/>
@@ -155,7 +154,7 @@ src="https://www.facebook.com/tr?id=FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"/><
 Get your personalized fitness plan and join 127+ successful transformations
 </p>
 </div>
-<form class="hero-lead-form" data-source="Main CTA Form" style="max-width: 600px; margin: 0 auto;">
+<form class="hero-lead-form" data-source="Main CTA Form" data-attr-track style="max-width: 600px; margin: 0 auto;">
 <div class="lead-form-header">
 <span class="badge">🔥 FREE CONSULTATION</span>
 <h3>Get Your Personalized Fitness Plan</h3>
@@ -221,15 +220,15 @@ Get your personalized fitness plan and join 127+ successful transformations
 <a class="btn" data-i18n="cta.strip.ig" href="https://instagram.com/garcia.builder" target="_blank">Follow on Instagram</a>
     <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Garcia Builder Coaching",
-    "url": "https://www.garciabuilder.fitness/",
-    "logo": "https://www.garciabuilder.fitness/Logo Files/For Web/logo-nobackground-500.png",
-        "sameAs": [
-            "https://www.instagram.com/",
-            "https://www.facebook.com/"
-        ]
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Garcia Builder Coaching",
+      "url": "https://garciabuilder.fitness/",
+      "logo": "https://garciabuilder.fitness/assets/logo.png",
+      "sameAs": [
+        "https://www.instagram.com/garcia.builder",
+        "https://www.facebook.com/"
+      ]
     }
     </script>
 </div>
@@ -333,7 +332,7 @@ function showTrainerInfo() {
   "@type": "Organization",
   "name": "Garcia Builder",
   "url": "https://garciabuilder.fitness",
-  "logo": "https://garciabuilder.fitness/logo files/For Web/logo-nobackground-500.png",
+  "logo": "https://garciabuilder.fitness/assets/logo.png",
   "description": "Online fitness coaching com método científico. Treino personalizado, dieta sob medida e acompanhamento 1:1 para transformação corporal.",
   "foundingDate": "2024",
   "founder": {
@@ -361,6 +360,18 @@ function showTrainerInfo() {
     "Nutrition Coaching",
     "Fitness Transformation"
   ]
+}
+}</script>
+
+<!-- WebSite Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Garcia Builder",
+  "url": "https://garciabuilder.fitness/",
+  "inLanguage": ["en","pt","es"],
+  "publisher": {"@type": "Organization", "name": "Garcia Builder"}
 }
 </script>
 
@@ -490,4 +501,26 @@ document.addEventListener('DOMContentLoaded', function() {
 <script defer src="js/auth.js"></script>
 <script defer src="js/auth-guard.js"></script>
 <script defer src="js/navigation-manager.js"></script>
+<script defer src="js/utm-capture.js"></script>
+<script defer src="js/engagement-tracking.js"></script>
+<!-- Web Vitals RUM (lightweight) -->
+<script>
+// Core Web Vitals collection -> dataLayer (CLS, LCP, FID) for GA4 custom events
+(()=>{const send=m=>{window.dataLayer=window.dataLayer||[];dataLayer.push({event:'web_vital',metric_name:m.name,metric_id:m.id,value:Math.round(m.value*1000)/1000});};const w=window;function onPerf(fn){if('PerformanceObserver'in w){try{new PerformanceObserver(list=>{for(const e of list.getEntries())fn(e)}).observe({type:'largest-contentful-paint',buffered:true});}catch(e){}}}
+// LCP
+onPerf(e=>{if(e.entryType==='largest-contentful-paint')send({name:'LCP',id:e.id,value:e.renderTime||e.loadTime||e.startTime});});
+// CLS
+if('PerformanceObserver'in w){try{let cls=0;new PerformanceObserver(list=>{for(const e of list.getEntries()){if(!e.hadRecentInput){cls+=e.value;}}}).observe({type:'layout-shift',buffered:true});w.addEventListener('beforeunload',()=>send({name:'CLS',id:'cls-final',value:cls}));}catch(e){}}
+// FID (fallback to first input delay approximation)
+if('PerformanceObserver'in w){try{new PerformanceObserver(list=>{const f=list.getEntries()[0];if(f)send({name:'FID',id:f.id,value:f.processingStart-f.startTime});}).observe({type:'first-input',buffered:true});}catch(e){}}
+})();
+</script>
+<!-- Breadcrumb structured data -->
+<script type="application/ld+json">{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://garciabuilder.fitness/"}
+  ]
+}</script>
 </body></html>

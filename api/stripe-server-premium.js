@@ -578,6 +578,77 @@ app.post('/api/stripe-webhook', async (req, res) => {
                     subscription: session.subscription,
                     payment_status: session.payment_status
                 });
+                // ===== Server-side Purchase Attribution (GA4 + Meta) =====
+                try {
+                    const email = session.customer_details?.email || 'unknown@unknown';
+                    const currency = (session.currency || 'gbp').toUpperCase();
+                    const value = (session.amount_total || 0) / 100; // Stripe in minor units
+                    const transactionId = session.id;
+                    const planKey = session.metadata?.plan_key || session.metadata?.plan || 'unknown_plan';
+
+                    // GA4 Measurement Protocol
+                    if (process.env.GA4_MEASUREMENT_ID && process.env.GA4_API_SECRET) {
+                        const gaPayload = {
+                            client_id: `srv.${transactionId}`,
+                            events: [{
+                                name: 'purchase',
+                                params: {
+                                    transaction_id: transactionId,
+                                    value,
+                                    currency,
+                                    affiliation: 'stripe_webhook',
+                                    items: [{
+                                        item_id: planKey,
+                                        item_name: session.metadata?.plan_key || 'Coaching Subscription',
+                                        price: value,
+                                        quantity: 1
+                                    }]
+                                }
+                            }]
+                        };
+                        fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${process.env.GA4_MEASUREMENT_ID}&api_secret=${process.env.GA4_API_SECRET}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(gaPayload)
+                        }).then(r => r.text()).then(t => {
+                            console.log('📊 GA4 MP purchase sent:', transactionId, t.slice(0,120));
+                        }).catch(err => console.warn('GA4 MP error:', err.message));
+                    } else {
+                        console.log('ℹ️ GA4_MEASUREMENT_ID or GA4_API_SECRET missing – skipping GA4 server event');
+                    }
+
+                    // Meta Conversions API (optional)
+                    if (process.env.META_PIXEL_ID && process.env.META_CAPI_TOKEN) {
+                        const metaEvent = {
+                            data: [{
+                                event_name: 'Purchase',
+                                event_time: Math.floor(Date.now()/1000),
+                                action_source: 'website',
+                                event_source_url: `https://garciabuilder.fitness/success.html?session_id=${transactionId}`,
+                                user_data: {
+                                    em: [
+                                        require('crypto').createHash('sha256').update(email.trim().toLowerCase()).digest('hex')
+                                    ]
+                                },
+                                custom_data: {
+                                    currency,
+                                    value
+                                }
+                            }]
+                        };
+                        fetch(`https://graph.facebook.com/v19.0/${process.env.META_PIXEL_ID}/events?access_token=${process.env.META_CAPI_TOKEN}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(metaEvent)
+                        }).then(r=>r.json()).then(j=>{
+                            console.log('📈 Meta CAPI purchase sent:', transactionId, j);
+                        }).catch(err => console.warn('Meta CAPI error:', err.message));
+                    } else {
+                        console.log('ℹ️ META_PIXEL_ID or META_CAPI_TOKEN missing – skipping Meta CAPI');
+                    }
+                } catch (attribErr) {
+                    console.warn('⚠️ Attribution dispatch failed:', attribErr.message);
+                }
                 break;
             }
             case 'customer.subscription.created':

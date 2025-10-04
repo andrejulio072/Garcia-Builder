@@ -403,6 +403,16 @@ class AuthSystem {
 
             // Show success
             this.showSuccess('Login successful!', 'Redirecting...');
+            // Tracking login (email/password or local)
+            try {
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: 'user_login',
+                    method: 'password',
+                    auth_provider: (window.supabaseClient ? 'supabase_email' : 'local'),
+                    user_email_domain: (email.split('@')[1]||'')
+                });
+            } catch (e) { console.warn('user_login tracking failed', e); }
 
             // Redirect after success
             setTimeout(() => {
@@ -508,6 +518,19 @@ class AuthSystem {
                 // Save email for convenience
                 localStorage.setItem('gb_remember_user', email);
                 this.showSuccess('Account created successfully!', 'Check your email to verify your account.');
+                // Tracking new Supabase email/password registration
+                try {
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        event: 'sign_up',
+                        method: 'password',
+                        auth_provider: 'supabase_email',
+                        user_email_domain: (email.split('@')[1]||'')
+                    });
+                    if (typeof fbq !== 'undefined') {
+                        fbq('track','CompleteRegistration',{content_name:'account_create',method:'password'});
+                    }
+                } catch(trErr){ console.warn('sign_up tracking (supabase) failed', trErr); }
                 // Switch to login form for when user returns
                 setTimeout(() => this.showForm('login'), 800);
                 return;
@@ -530,6 +553,19 @@ class AuthSystem {
             this.users.push(newUser);
             this.saveUsers();
             this.showSuccess('Account created successfully!', 'Signing you in...');
+            // Tracking local registration fallback
+            try {
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: 'sign_up',
+                    method: 'local_password',
+                    auth_provider: 'local',
+                    user_email_domain: (email.split('@')[1]||'')
+                });
+                if (typeof fbq !== 'undefined') {
+                    fbq('track','CompleteRegistration',{content_name:'account_create',method:'local_password'});
+                }
+            } catch(tr2){ console.warn('sign_up tracking (local) failed', tr2); }
             setTimeout(() => {
                 document.getElementById('loginEmail').value = email;
                 document.getElementById('loginPassword').value = password;
@@ -850,6 +886,29 @@ document.addEventListener('DOMContentLoaded', () => {
                                 lastLogin: new Date().toISOString()
                             };
                             localStorage.setItem('gb_current_user', JSON.stringify(norm));
+                            // OAuth / external provider tracking
+                            try {
+                                window.dataLayer = window.dataLayer || [];
+                                const provider = (su.app_metadata && su.app_metadata.provider) || 'oauth';
+                                window.dataLayer.push({
+                                    event: 'user_login',
+                                    method: provider,
+                                    auth_provider: provider,
+                                    user_email_domain: (su.email||'').split('@')[1] || ''
+                                });
+                                const createdTs = new Date(su.created_at).getTime();
+                                if (Date.now() - createdTs < 10000) { // approx new user window
+                                    window.dataLayer.push({
+                                        event: 'sign_up',
+                                        method: provider,
+                                        auth_provider: provider,
+                                        user_email_domain: (su.email||'').split('@')[1] || ''
+                                    });
+                                    if (typeof fbq !== 'undefined') {
+                                        fbq('track','CompleteRegistration',{content_name:'account_create',method:provider});
+                                    }
+                                }
+                            } catch(oauthErr){ console.warn('OAuth tracking failed', oauthErr); }
 
                             // If on login page, redirect to intended destination
                             if (window.location.pathname.includes('login.html')) {

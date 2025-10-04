@@ -17,6 +17,27 @@
   <meta name="twitter:title" content="Contact – Garcia Builder"/>
   <meta name="twitter:description" content="Envie sua dúvida ou peça uma avaliação gratuita de coaching online."/>
   <meta name="twitter:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg"/>
+  <!-- Breadcrumb structured data -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://garciabuilder.fitness/"},{"@type":"ListItem","position":2,"name":"Contact","item":"https://garciabuilder.fitness/contact.html"}]}</script>
+  <!-- ContactPage schema with Organization & primary contact point -->
+  <script type="application/ld+json">{
+    "@context":"https://schema.org",
+    "@type":"ContactPage",
+    "name":"Contact Garcia Builder Coaching",
+    "url":"https://garciabuilder.fitness/contact.html",
+    "mainEntity":{
+      "@type":"Organization",
+      "name":"Garcia Builder",
+      "contactPoint":{
+        "@type":"ContactPoint",
+        "contactType":"customer support",
+        "availableLanguage":["en","pt","es"],
+        "areaServed":"IE"
+      }
+    }
+  }</script>
+  <!-- Web Vitals RUM -->
+  <script>(()=>{const s=m=>{window.dataLayer=window.dataLayer||[];dataLayer.push({event:'web_vital',metric_name:m.name,metric_id:m.id,value:Math.round(m.value*1000)/1000});};const W=window;function obs(t,fn){if('PerformanceObserver'in W){try{new PerformanceObserver(l=>{for(const e of l.getEntries())fn(e)}).observe({type:t,buffered:true});}catch(_){}}}obs('largest-contentful-paint',e=>s({name:'LCP',id:e.id,value:e.renderTime||e.loadTime||e.startTime}));if('PerformanceObserver'in W){try{let c=0;new PerformanceObserver(l=>{for(const e of l.getEntries())if(!e.hadRecentInput)c+=e.value;}).observe({type:'layout-shift',buffered:true});addEventListener('beforeunload',()=>s({name:'CLS',id:'cls-final',value:c}));}catch(_){}}obs('first-input',e=>s({name:'FID',id:e.id,value:e.processingStart-e.startTime}));})();</script>
 
   <link rel="icon" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -87,11 +108,12 @@
       <p class="page-subtitle text-readable" data-i18n="contact.subtitle">
 Tell me about your goal. I’ll get back within 24–48h.</p>
 
-      <form id="contact-form"
+  <form id="contact-form"
             action="https://formspree.io/f/mldpgrwq"
             method="POST"
-            novalidate
-            class="contact-card">
+    novalidate
+    class="contact-card"
+    data-attr-track>
 
         <!-- a11y live region -->
         <div id="form-alert" class="visually-hidden" role="status" aria-live="polite"></div>
@@ -328,5 +350,7 @@ Tell me about your goal. I’ll get back within 24–48h.</p>
   <script defer src="assets/i18n.js?v=20251003-2030"></script>
   <script defer src="js/auth.js"></script>
   <script defer src="js/auth-guard.js"></script>
+  <script defer src="js/utm-capture.js"></script>
+  <script defer src="js/engagement-tracking.js"></script>
 </body>
 </html>

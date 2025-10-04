@@ -283,7 +283,20 @@ async function handlePlanSelection(planKey, planName, planPrice, buttonElement) 
         customerEmail: getUserEmail && getUserEmail(),
         successUrl: window.location.origin + '/success.html',
         cancelUrl: window.location.origin + '/pricing.html',
-        discountCode: activeDiscount?.code || undefined
+        discountCode: activeDiscount?.code || undefined,
+        // Basic attribution passthrough (server can store or enrich)
+        utm: (function(){
+          try {
+            const a = window.GB_ATTRIBUTION || JSON.parse(localStorage.getItem('gb_attrib_v1')||'{}');
+            return {
+              source: a.utm_source,
+              medium: a.utm_medium,
+              campaign: a.utm_campaign,
+              term: a.utm_term,
+              content: a.utm_content
+            };
+          } catch(e){ return {}; }
+        })()
       })
     });
 

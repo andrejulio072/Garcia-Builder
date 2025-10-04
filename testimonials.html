@@ -585,6 +585,34 @@ img { max-width: 100%; height: auto; display: block; }
 <script defer src="assets/i18n.js?v=20250926"></script>
 <script defer src="js/auth.js"></script>
 <script defer src="js/auth-guard.js"></script>
+<!-- Breadcrumb structured data -->
+<script type="application/ld+json">{
+ "@context":"https://schema.org",
+ "@type":"BreadcrumbList",
+ "itemListElement":[
+  {"@type":"ListItem","position":1,"name":"Home","item":"https://garciabuilder.fitness/"},
+  {"@type":"ListItem","position":2,"name":"Testimonials","item":"https://garciabuilder.fitness/testimonials.html"}
+ ]
+}</script>
+<!-- Review ItemList structured data subset (first 6) -->
+<script type="application/ld+json">{
+ "@context":"https://schema.org",
+ "@type":"ItemList",
+ "itemListElement":[
+  {"@type":"ListItem","position":1,"item":{"@type":"Review","author":{"@type":"Person","name":"Lucas Almeida"},"reviewBody":"I tried every plan on my own and kept quitting after two weeks. Andre gave me structure...","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"}}},
+  {"@type":"ListItem","position":2,"item":{"@type":"Review","author":{"@type":"Person","name":"James Walker"},"reviewBody":"As a busy dad I didn't think I had time. Andre simplified training...","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"}}},
+  {"@type":"ListItem","position":3,"item":{"@type":"Review","author":{"@type":"Person","name":"Thiago Pereira"},"reviewBody":"I used to hide in baggy clothes. Twelve weeks later my friends keep asking...","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"}}},
+  {"@type":"ListItem","position":4,"item":{"@type":"Review","author":{"@type":"Person","name":"Sofia Martins"},"reviewBody":"Nutrition was always my struggle. Andre's flexible approach removed guilt...","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"}}},
+  {"@type":"ListItem","position":5,"item":{"@type":"Review","author":{"@type":"Person","name":"Gustavo Rocha"},"reviewBody":"Came in with knee pain and fear of squats. We rebuilt technique...","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"}}},
+  {"@type":"ListItem","position":6,"item":{"@type":"Review","author":{"@type":"Person","name":"Isabela Nunes"},"reviewBody":"I never imagined online coaching could feel this personal. The weekly video reviews...","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"}}}
+ ]
+}</script>
+<!-- Web Vitals RUM -->
+<script>(()=>{const send=m=>{window.dataLayer=window.dataLayer||[];dataLayer.push({event:'web_vital',metric_name:m.name,metric_id:m.id,value:Math.round(m.value*1000)/1000});};const w=window;function onPerf(fn){if('PerformanceObserver'in w){try{new PerformanceObserver(list=>{for(const e of list.getEntries())fn(e)}).observe({type:'largest-contentful-paint',buffered:true});}catch(e){}}}
+onPerf(e=>{if(e.entryType==='largest-contentful-paint')send({name:'LCP',id:e.id,value:e.renderTime||e.loadTime||e.startTime});});
+if('PerformanceObserver'in w){try{let cls=0;new PerformanceObserver(list=>{for(const e of list.getEntries()){if(!e.hadRecentInput){cls+=e.value;}}}).observe({type:'layout-shift',buffered:true});w.addEventListener('beforeunload',()=>send({name:'CLS',id:'cls-final',value:cls}));}catch(e){}}
+if('PerformanceObserver'in w){try{new PerformanceObserver(list=>{const f=list.getEntries()[0];if(f)send({name:'FID',id:f.id,value:f.processingStart-f.startTime});}).observe({type:'first-input',buffered:true});}catch(e){}}
+})();</script>
 <!-- Structured Data: AggregateRating / Reviews -->
 <script type="application/ld+json">
 {

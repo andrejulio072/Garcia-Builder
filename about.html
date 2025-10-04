@@ -2,17 +2,25 @@
 <html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1">
 
 <meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport-fit=cover"/>
-<meta name="description" content="Conheça a metodologia e a experiência do Garcia Builder: coaching online com resultados reais."/>
+<!-- Primary description only (remove duplicates) -->
+<meta name="description" content="Garcia Builder method: structured online coaching, personalized training blocks, flexible nutrition and sustainable transformation."/>
+<meta name="theme-color" content="#0b1220"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
 <link rel="canonical" href="https://www.garciabuilder.fitness/about.html"/>
 <meta property="og:type" content="website"/>
 <meta property="og:title" content="Sobre — Garcia Builder"/>
 <meta property="og:description" content="Metodologia clara, anos de experiência e foco em resultado."/>
+<meta property="og:locale" content="en_IE"/>
+<meta property="og:locale:alternate" content="pt_BR"/>
+<meta property="og:locale:alternate" content="es_ES"/>
 <meta property="og:url" content="https://www.garciabuilder.fitness/about.html"/>
-<meta property="og:image" content="https://www.garciabuilder.fitness/assets/about1.jpg"/>
+<meta property="og:image" content="https://garciabuilder.fitness/assets/about1.jpg"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <title>About Garcia Builder | Method, Background & Coaching Philosophy</title>
-<meta name="description" content="Learn the Garcia Builder coaching method: disciplined structure, personalized training blocks, flexible nutrition & sustainable transformation."/>
 <link href="assets/logo.png" rel="icon"/>
+<link rel="preconnect" href="https://www.googletagmanager.com"/>
+<link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+<link rel="preload" as="image" href="assets/about1.jpg"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
@@ -25,14 +33,31 @@
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
 <!-- End Google Tag Manager -->
 
-<!-- Facebook / Meta Pixel -->
-<script>
-!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod? n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', 'FACEBOOK_PIXEL_ID');
-fbq('track', 'PageView');
-</script>
+<!-- Centralized Meta Pixel -->
+<script>window.FB_PIXEL_ID='FACEBOOK_PIXEL_ID';</script>
+<script defer src="js/pixel-init.js"></script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
-<!-- End Meta Pixel -->
+<!-- Breadcrumb structured data -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://garciabuilder.fitness/"},{"@type":"ListItem","position":2,"name":"About","item":"https://garciabuilder.fitness/about.html"}]}</script>
+<!-- About Page structured data (Person + Organization reference) -->
+<script type="application/ld+json">{
+  "@context":"https://schema.org",
+  "@type":"AboutPage",
+  "name":"About Garcia Builder Coaching",
+  "url":"https://garciabuilder.fitness/about.html",
+  "primaryImageOfPage":{"@type":"ImageObject","url":"https://garciabuilder.fitness/assets/about1.jpg"},
+  "breadcrumb":"Home > About",
+  "mainEntity":{
+    "@type":"Person",
+    "name":"Andre Garcia",
+    "jobTitle":"Online Fitness Coach",
+    "knowsAbout":["Hypertrophy","Fat Loss","Strength & Conditioning"],
+    "image":"https://garciabuilder.fitness/assets/about1.jpg",
+    "affiliation":{"@type":"Organization","name":"Garcia Builder"}
+  }
+}</script>
+<!-- Web Vitals RUM -->
+<script>(()=>{const s=m=>{window.dataLayer=window.dataLayer||[];dataLayer.push({event:'web_vital',metric_name:m.name,metric_id:m.id,value:Math.round(m.value*1000)/1000});};const W=window;function obs(t,fn){if('PerformanceObserver'in W){try{new PerformanceObserver(l=>{for(const e of l.getEntries())fn(e)}).observe({type:t,buffered:true});}catch(_){}}}obs('largest-contentful-paint',e=>s({name:'LCP',id:e.id,value:e.renderTime||e.loadTime||e.startTime}));if('PerformanceObserver'in W){try{let c=0;new PerformanceObserver(l=>{for(const e of l.getEntries())if(!e.hadRecentInput)c+=e.value;}).observe({type:'layout-shift',buffered:true});addEventListener('beforeunload',()=>s({name:'CLS',id:'cls-final',value:c}));}catch(_){}}obs('first-input',e=>s({name:'FID',id:e.id,value:e.processingStart-e.startTime}));})();</script>
 <style>
 /* About v6 marker */
 .about-block{

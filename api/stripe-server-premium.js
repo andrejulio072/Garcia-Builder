@@ -318,8 +318,24 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
             customerEmail,
             customerName,
             successUrl = `${req.protocol}://${req.get('host')}/success.html`,
-            cancelUrl = `${req.protocol}://${req.get('host')}/pricing.html`
+            cancelUrl = `${req.protocol}://${req.get('host')}/pricing.html`,
+            utm: rawUtm
         } = req.body;
+
+        // --- UTM / Attribution Sanitization ---
+        const allowedUtmKeys = ['source','medium','campaign','term','content'];
+        let utmMeta = {};
+        if (rawUtm && typeof rawUtm === 'object') {
+            for (const k of allowedUtmKeys) {
+                if (rawUtm[k]) {
+                    const val = String(rawUtm[k]).slice(0,60); // trim length for metadata safety
+                    if (val.trim()) utmMeta[`utm_${k}`] = val.trim();
+                }
+            }
+        }
+        if (Object.keys(utmMeta).length === 0) {
+            utmMeta.utm_source = 'direct'; // basic fallback for later reporting
+        }
 
         const plan = SUBSCRIPTION_PLANS[planKey];
 
@@ -394,13 +410,15 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
                 plan_key: planKey,
                 customer_email: customerEmail,
                 service: 'garcia-builder',
-                created_at: new Date().toISOString()
+                created_at: new Date().toISOString(),
+                ...utmMeta
             },
             subscription_data: {
                 metadata: {
                     plan_key: planKey,
                     customer_email: customerEmail,
-                    service: 'garcia-builder'
+                    service: 'garcia-builder',
+                    ...utmMeta
                 }
             },
             // Configurações de experiência
@@ -585,25 +603,42 @@ app.post('/api/stripe-webhook', async (req, res) => {
                     const value = (session.amount_total || 0) / 100; // Stripe in minor units
                     const transactionId = session.id;
                     const planKey = session.metadata?.plan_key || session.metadata?.plan || 'unknown_plan';
+                    const utm = {
+                        source: session.metadata?.utm_source,
+                        medium: session.metadata?.utm_medium,
+                        campaign: session.metadata?.utm_campaign,
+                        term: session.metadata?.utm_term,
+                        content: session.metadata?.utm_content
+                    };
+                    console.log('📎 UTM (session.metadata):', utm);
 
                     // GA4 Measurement Protocol
                     if (process.env.GA4_MEASUREMENT_ID && process.env.GA4_API_SECRET) {
+                        const gaParams = {
+                            transaction_id: transactionId,
+                            value,
+                            currency,
+                            affiliation: 'stripe_webhook',
+                            event_id: transactionId, // dedupe potential client/server sends
+                            items: [{
+                                item_id: planKey,
+                                item_name: session.metadata?.plan_key || 'Coaching Subscription',
+                                price: value,
+                                quantity: 1
+                            }]
+                        };
+                        // Attach UTM params if present
+                        if (utm.source) gaParams.utm_source = utm.source;
+                        if (utm.medium) gaParams.utm_medium = utm.medium;
+                        if (utm.campaign) gaParams.utm_campaign = utm.campaign;
+                        if (utm.term) gaParams.utm_term = utm.term;
+                        if (utm.content) gaParams.utm_content = utm.content;
+
                         const gaPayload = {
                             client_id: `srv.${transactionId}`,
                             events: [{
                                 name: 'purchase',
-                                params: {
-                                    transaction_id: transactionId,
-                                    value,
-                                    currency,
-                                    affiliation: 'stripe_webhook',
-                                    items: [{
-                                        item_id: planKey,
-                                        item_name: session.metadata?.plan_key || 'Coaching Subscription',
-                                        price: value,
-                                        quantity: 1
-                                    }]
-                                }
+                                params: gaParams
                             }]
                         };
                         fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${process.env.GA4_MEASUREMENT_ID}&api_secret=${process.env.GA4_API_SECRET}`, {
@@ -619,21 +654,20 @@ app.post('/api/stripe-webhook', async (req, res) => {
 
                     // Meta Conversions API (optional)
                     if (process.env.META_PIXEL_ID && process.env.META_CAPI_TOKEN) {
+                        const metaCustom = { currency, value };
                         const metaEvent = {
                             data: [{
                                 event_name: 'Purchase',
                                 event_time: Math.floor(Date.now()/1000),
                                 action_source: 'website',
                                 event_source_url: `https://garciabuilder.fitness/success.html?session_id=${transactionId}`,
+                                event_id: transactionId,
                                 user_data: {
                                     em: [
                                         require('crypto').createHash('sha256').update(email.trim().toLowerCase()).digest('hex')
                                     ]
                                 },
-                                custom_data: {
-                                    currency,
-                                    value
-                                }
+                                custom_data: metaCustom
                             }]
                         };
                         fetch(`https://graph.facebook.com/v19.0/${process.env.META_PIXEL_ID}/events?access_token=${process.env.META_CAPI_TOKEN}`, {

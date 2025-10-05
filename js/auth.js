@@ -886,6 +886,20 @@ document.addEventListener('DOMContentLoaded', () => {
                                 lastLogin: new Date().toISOString()
                             };
                             localStorage.setItem('gb_current_user', JSON.stringify(norm));
+                            // Ensure user profile is upserted in Supabase after OAuth/social login
+                            try {
+                                await window.supabaseClient
+                                  .from('user_profiles')
+                                  .upsert({
+                                    user_id: su.id,
+                                    email: su.email,
+                                    full_name: su.user_metadata?.full_name || '',
+                                    joined_date: su.created_at || new Date().toISOString(),
+                                    last_login: new Date().toISOString()
+                                  });
+                            } catch (e) {
+                                console.warn('Profile upsert (OAuth) skipped:', e?.message || e);
+                            }
                             // OAuth / external provider tracking
                             try {
                                 window.dataLayer = window.dataLayer || [];

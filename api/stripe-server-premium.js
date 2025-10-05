@@ -20,6 +20,9 @@ require('dotenv').config({
 
 const app = express();
 
+// In-memory attribution enrichment store (fbp/fbc) – ephemeral (cleared on restart)
+const metaAttributionStore = new Map();
+
 // 🔒 SEGURANÇA - Configurações de nível enterprise
 app.use(helmet({
     contentSecurityPolicy: {
@@ -411,6 +414,8 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
                 customer_email: customerEmail,
                 service: 'garcia-builder',
                 created_at: new Date().toISOString(),
+                client_ip: (req.ip || req.headers['x-forwarded-for'] || '').toString().split(',')[0].trim().slice(0,45),
+                client_ua: (req.headers['user-agent'] || '').slice(0,200),
                 ...utmMeta
             },
             subscription_data: {
@@ -418,6 +423,8 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
                     plan_key: planKey,
                     customer_email: customerEmail,
                     service: 'garcia-builder',
+                    client_ip: (req.ip || req.headers['x-forwarded-for'] || '').toString().split(',')[0].trim().slice(0,45),
+                    client_ua: (req.headers['user-agent'] || '').slice(0,200),
                     ...utmMeta
                 }
             },
@@ -507,6 +514,46 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
         }
 
         res.status(statusCode).json(errorResponse);
+    }
+});
+
+// Store Meta attribution identifiers (fbp/fbc) mapped to sessionId for later CAPI enrichment
+app.post('/api/attrib', (req, res) => {
+    try {
+        const { sessionId, fbp, fbc } = req.body || {};
+        if (!sessionId || typeof sessionId !== 'string' || sessionId.length < 10) {
+            return res.status(400).json({ success:false, error: 'INVALID_SESSION_ID' });
+        }
+        // Basic size limits
+        const safeFbp = (fbp && fbp.length < 128) ? fbp : undefined;
+        const safeFbc = (fbc && fbc.length < 256) ? fbc : undefined;
+        metaAttributionStore.set(sessionId, { fbp: safeFbp, fbc: safeFbc, ts: Date.now() });
+        // Auto-expire after 3 hours
+        setTimeout(()=> metaAttributionStore.delete(sessionId), 3 * 60 * 60 * 1000).unref?.();
+        return res.json({ success:true });
+    } catch (e) {
+        return res.status(500).json({ success:false, error:'INTERNAL', message:e.message });
+    }
+});
+
+// Success page expects /api/payment-status/:sessionId (alias of session status with enriched metadata)
+app.get('/api/payment-status/:sessionId', validateStripeReady, async (req, res) => {
+    try {
+        const { sessionId } = req.params;
+        const session = await stripe.checkout.sessions.retrieve(sessionId, { expand: ['subscription'] });
+        const paid = session.payment_status === 'paid';
+        res.json({
+            status: paid ? 'paid' : session.payment_status,
+            session_id: session.id,
+            amount_total: session.amount_total,
+            currency: session.currency,
+            customer_email: session.customer_details?.email,
+            subscription_id: session.subscription?.id || session.subscription,
+            plan_key: session.metadata?.plan_key,
+            plan_name: session.metadata?.plan_key || 'Coaching Subscription'
+        });
+    } catch (e) {
+        res.status(404).json({ status:'error', error:'NOT_FOUND' });
     }
 });
 
@@ -612,6 +659,12 @@ app.post('/api/stripe-webhook', async (req, res) => {
                     };
                     console.log('📎 UTM (session.metadata):', utm);
 
+                    // Look up Meta attribution identifiers if provided by client
+                    const metaIds = metaAttributionStore.get(transactionId) || {};
+                    if (metaIds.fbp || metaIds.fbc) {
+                        console.log('🔍 Found Meta attribution IDs for session:', metaIds);
+                    }
+
                     // GA4 Measurement Protocol
                     if (process.env.GA4_MEASUREMENT_ID && process.env.GA4_API_SECRET) {
                         const gaParams = {
@@ -655,6 +708,14 @@ app.post('/api/stripe-webhook', async (req, res) => {
                     // Meta Conversions API (optional)
                     if (process.env.META_PIXEL_ID && process.env.META_CAPI_TOKEN) {
                         const metaCustom = { currency, value };
+                        const userData = {
+                            em: [ require('crypto').createHash('sha256').update(email.trim().toLowerCase()).digest('hex') ]
+                        };
+                        if (metaIds.fbp) userData.fbp = metaIds.fbp;
+                        if (metaIds.fbc) userData.fbc = metaIds.fbc;
+                        // Include client IP / UA if captured at checkout creation (from metadata)
+                        if (session.metadata?.client_ip) userData.client_ip_address = session.metadata.client_ip;
+                        if (session.metadata?.client_ua) userData.client_user_agent = session.metadata.client_ua;
                         const metaEvent = {
                             data: [{
                                 event_name: 'Purchase',
@@ -662,20 +723,18 @@ app.post('/api/stripe-webhook', async (req, res) => {
                                 action_source: 'website',
                                 event_source_url: `https://garciabuilder.fitness/success.html?session_id=${transactionId}`,
                                 event_id: transactionId,
-                                user_data: {
-                                    em: [
-                                        require('crypto').createHash('sha256').update(email.trim().toLowerCase()).digest('hex')
-                                    ]
-                                },
+                                user_data: userData,
                                 custom_data: metaCustom
-                            }]
+                            }],
+                            // Provide test_event_code when running in test mode (optional env)
+                            test_event_code: process.env.META_CAPI_TEST_EVENT_CODE || undefined
                         };
                         fetch(`https://graph.facebook.com/v19.0/${process.env.META_PIXEL_ID}/events?access_token=${process.env.META_CAPI_TOKEN}`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(metaEvent)
                         }).then(r=>r.json()).then(j=>{
-                            console.log('📈 Meta CAPI purchase sent:', transactionId, j);
+                            console.log('📈 Meta CAPI purchase sent:', transactionId, JSON.stringify(j).slice(0,500));
                         }).catch(err => console.warn('Meta CAPI error:', err.message));
                     } else {
                         console.log('ℹ️ META_PIXEL_ID or META_CAPI_TOKEN missing – skipping Meta CAPI');

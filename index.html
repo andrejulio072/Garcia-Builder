@@ -69,17 +69,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
 
-<!-- Google Ads Global Site Tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){ dataLayer.push(arguments); }
-  gtag('js', new Date());
-  gtag('config', 'AW-17627402053', { 'allow_enhanced_conversions': true });
-</script>
+<!-- Central consent-aware Ads loader -->
+<script defer src="js/ads-loader.js"></script>
 
 <!-- Centralized Facebook Pixel Loader -->
-<script>window.FB_PIXEL_ID='FACEBOOK_PIXEL_ID';</script>
+<script>window.FB_PIXEL_ID='2504537079929561';</script>
 <script defer src="js/pixel-init.js"></script>
 
 <title>Garcia Builder | Online Fitness Coaching & Body Transformations</title>
@@ -92,9 +86,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link href="css/newsletter.css?v=20251003-2030" rel="stylesheet"/>
 <script defer src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
 <script defer src="assets/i18n.js"></script>
-<script>/* Set this to your Google Ads conversion label (ex: AbCdEfGhIjkLmNoPqR) to enable success page conversion firing */
+<script>
+/* Google Ads Conversion Label
+ * Defina window.AW_CONVERSION_LABEL = 'SUA_LABEL' (ex: AbCdEfGhIjkLmNoPqR)
+ * para habilitar disparo de conversão de compra em success.html
+ * Mantido vazio por enquanto para evitar eventos inválidos. */
 window.AW_CONVERSION_LABEL = window.AW_CONVERSION_LABEL || '';
 </script>
+<script defer src="js/ads-config.js"></script>
 
 <style id="mobile-safe-overrides">
 /* Non-visual mobile safety: prevent horizontal scroll and scale media */
@@ -131,7 +130,7 @@ img, video { max-width: 100%; height: auto; display: block; }
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- Meta Pixel noscript fallback -->
-<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2504537079929561&ev=PageView&noscript=1"/></noscript>
 <nav class="navbar"><div class="container inner">
 <a class="brand" href="index.html" style="display:flex;align-items:center;gap:14px;min-height:56px;">
     <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" decoding="async" loading="eager"/>

@@ -29,9 +29,29 @@
   }
 
   function renderBanner(){
+    const lang = (navigator.language||'en').toLowerCase();
+    const isPT = lang.startsWith('pt');
+    // Textos em inglês (padrão)
+    let t = {
+      title: 'Cookies & Tracking',
+      desc: 'We use cookies for metrics (GA4) and ads (Google Ads / Meta). You can accept all or reject. You can change this later.',
+      accept: 'Accept All',
+      reject: 'Reject',
+      custom: 'Customize'
+    };
+    // Se for português, sobrescreve
+    if(isPT){
+      t = {
+        title: 'Cookies & Tracking',
+        desc: 'Usamos cookies para métricas (GA4) e anúncios (Google Ads / Meta). Você pode aceitar tudo ou recusar. Pode mudar depois.',
+        accept: 'Aceitar Tudo',
+        reject: 'Rejeitar',
+        custom: 'Personalizar'
+      };
+    }
     const div=document.createElement('div');
     div.id='consent-banner';
-    div.innerHTML=`<div class="cb-wrapper"><div class="cb-box"><h4>Cookies & Tracking</h4><p>Usamos cookies para métricas (GA4) e anúncios (Google Ads / Meta). Você pode aceitar tudo ou recusar. Pode mudar depois.</p><div class="cb-actions"><button id="cb-accept" class="cb-btn primary">Aceitar Tudo</button><button id="cb-reject" class="cb-btn">Rejeitar</button><button id="cb-custom" class="cb-link">Personalizar</button></div></div></div>`;
+    div.innerHTML=`<div class="cb-wrapper"><div class="cb-box"><h4>${t.title}</h4><p>${t.desc}</p><div class="cb-actions"><button id="cb-accept" class="cb-btn primary">${t.accept}</button><button id="cb-reject" class="cb-btn">${t.reject}</button><button id="cb-custom" class="cb-link">${t.custom}</button></div></div></div>`;
     document.body.appendChild(div);
     style();
     document.getElementById('cb-accept').onclick=()=>{consentUpdate('granted'); remove(div);};
@@ -41,11 +61,38 @@
 
   function renderPanel(){
     if (document.getElementById('consent-panel')) return;
+    const lang = (navigator.language||'en').toLowerCase();
+    const isPT = lang.startsWith('pt');
+    // Textos em inglês (padrão)
+    let t = {
+      title: 'Cookie Preferences',
+      close: 'Close',
+      analytics: 'Analytics',
+      ad_storage: 'Ads (Ad Storage)',
+      ad_user_data: 'Ads User Data',
+      ad_personalization: 'Ad Personalization',
+      save: 'Save',
+      cancel: 'Cancel',
+      note: 'Functional and security cookies always active.'
+    };
+    if(isPT){
+      t = {
+        title: 'Preferências de Cookies',
+        close: 'Fechar',
+        analytics: 'Analytics',
+        ad_storage: 'Anúncios (Ad Storage)',
+        ad_user_data: 'Ads User Data',
+        ad_personalization: 'Personalização de Anúncios',
+        save: 'Salvar',
+        cancel: 'Cancelar',
+        note: 'Funcionais e segurança sempre ativos.'
+      };
+    }
     const wrap=document.createElement('div');
     wrap.id='consent-panel';
     const current=safeParse(localStorage.getItem(KEY));
     const granted=current?.choices||{};
-    wrap.innerHTML=`<div class="cp-wrapper"><div class="cp-box"><div class="cp-head"><h4>Preferências de Cookies</h4><button id="cp-close" aria-label="Fechar">✕</button></div><form id="cp-form"><label class="cp-row"><input type="checkbox" data-k="analytics_storage" ${granted.analytics_storage==='granted'?'checked':''}/> Analytics</label><label class="cp-row"><input type="checkbox" data-k="ad_storage" ${granted.ad_storage==='granted'?'checked':''}/> Anúncios (Ad Storage)</label><label class="cp-row"><input type="checkbox" data-k="ad_user_data" ${granted.ad_user_data==='granted'?'checked':''}/> Ads User Data</label><label class="cp-row"><input type="checkbox" data-k="ad_personalization" ${granted.ad_personalization==='granted'?'checked':''}/> Personalização de Anúncios</label><div class="cp-actions"><button type="button" id="cp-save" class="cb-btn primary">Salvar</button><button type="button" id="cp-cancel" class="cb-btn">Cancelar</button></div><small class="cp-note">Funcionais e segurança sempre ativos.</small></form></div></div>`;
+    wrap.innerHTML=`<div class="cp-wrapper"><div class="cp-box"><div class="cp-head"><h4>${t.title}</h4><button id="cp-close" aria-label="${t.close}">✕</button></div><form id="cp-form"><label class="cp-row"><input type="checkbox" data-k="analytics_storage" ${granted.analytics_storage==='granted'?'checked':''}/> ${t.analytics}</label><label class="cp-row"><input type="checkbox" data-k="ad_storage" ${granted.ad_storage==='granted'?'checked':''}/> ${t.ad_storage}</label><label class="cp-row"><input type="checkbox" data-k="ad_user_data" ${granted.ad_user_data==='granted'?'checked':''}/> ${t.ad_user_data}</label><label class="cp-row"><input type="checkbox" data-k="ad_personalization" ${granted.ad_personalization==='granted'?'checked':''}/> ${t.ad_personalization}</label><div class="cp-actions"><button type="button" id="cp-save" class="cb-btn primary">${t.save}</button><button type="button" id="cp-cancel" class="cb-btn">${t.cancel}</button></div><small class="cp-note">${t.note}</small></form></div></div>`;
     document.body.appendChild(wrap); style();
     document.getElementById('cp-close').onclick=()=>remove(wrap);
     document.getElementById('cp-cancel').onclick=()=>remove(wrap);

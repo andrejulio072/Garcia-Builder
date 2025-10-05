@@ -27,7 +27,7 @@
  "about":{"@type":"Service","name":"Online Personal Training"}
 }</script>
 <!-- Web Vitals RUM -->
-<script>(()=>{const s=m=>{window.dataLayer=window.dataLayer||[];dataLayer.push({event:'web_vital',metric_name:m.name,metric_id:m.id,value:Math.round(m.value*1000)/1000});};const W=window;function obs(t,fn){if('PerformanceObserver'in W){try{new PerformanceObserver(l=>{for(const e of l.getEntries())fn(e)}).observe({type:t,buffered:true});}catch(_){}}}obs('largest-contentful-paint',e=>s({name:'LCP',id:e.id,value:e.renderTime||e.loadTime||e.startTime}));if('PerformanceObserver'in W){try{let c=0;new PerformanceObserver(l=>{for(const e of l.getEntries())if(!e.hadRecentInput)c+=e.value;}).observe({type:'layout-shift',buffered:true});addEventListener('beforeunload',()=>s({name:'CLS',id:'cls-final',value:c}));}catch(_){}}obs('first-input',e=>s({name:'FID',id:e.id,value:e.processingStart-e.startTime}));})();</script>
+<script defer src="js/web-vitals-rum.js"></script>
 <link rel="icon" href="Logo Files/For Web/logo-nobackground-500.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">

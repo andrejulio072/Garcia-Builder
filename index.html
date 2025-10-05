@@ -503,18 +503,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script defer src="js/navigation-manager.js"></script>
 <script defer src="js/utm-capture.js"></script>
 <script defer src="js/engagement-tracking.js"></script>
-<!-- Web Vitals RUM (lightweight) -->
-<script>
-// Core Web Vitals collection -> dataLayer (CLS, LCP, FID) for GA4 custom events
-(()=>{const send=m=>{window.dataLayer=window.dataLayer||[];dataLayer.push({event:'web_vital',metric_name:m.name,metric_id:m.id,value:Math.round(m.value*1000)/1000});};const w=window;function onPerf(fn){if('PerformanceObserver'in w){try{new PerformanceObserver(list=>{for(const e of list.getEntries())fn(e)}).observe({type:'largest-contentful-paint',buffered:true});}catch(e){}}}
-// LCP
-onPerf(e=>{if(e.entryType==='largest-contentful-paint')send({name:'LCP',id:e.id,value:e.renderTime||e.loadTime||e.startTime});});
-// CLS
-if('PerformanceObserver'in w){try{let cls=0;new PerformanceObserver(list=>{for(const e of list.getEntries()){if(!e.hadRecentInput){cls+=e.value;}}}).observe({type:'layout-shift',buffered:true});w.addEventListener('beforeunload',()=>send({name:'CLS',id:'cls-final',value:cls}));}catch(e){}}
-// FID (fallback to first input delay approximation)
-if('PerformanceObserver'in w){try{new PerformanceObserver(list=>{const f=list.getEntries()[0];if(f)send({name:'FID',id:f.id,value:f.processingStart-f.startTime});}).observe({type:'first-input',buffered:true});}catch(e){}}
-})();
-</script>
+<script defer src="js/web-vitals-rum.js"></script>
 <!-- Breadcrumb structured data -->
 <script type="application/ld+json">{
   "@context":"https://schema.org",

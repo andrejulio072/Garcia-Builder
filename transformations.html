@@ -419,12 +419,15 @@
 }
 </script>
 </head>
+<!-- Consent baseline -->
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}try{const s=JSON.parse(localStorage.getItem('gb_consent_v1')||'null');if(s){const st=s.status==='granted';gtag('consent','default',{ad_storage:st?'granted':'denied',analytics_storage:st?'granted':'denied',ad_user_data:st?'granted':'denied',ad_personalization:st?'granted':'denied',functionality_storage:'granted',security_storage:'granted'});}else{gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});} }catch(e){gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});} </script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
 <!-- End Google Tag Manager -->
 <!-- Centralized Meta Pixel -->
 <script>window.FB_PIXEL_ID='FACEBOOK_PIXEL_ID';</script>
 <script defer src="js/pixel-init.js"></script>
+<script defer src="js/consent-banner.js"></script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
 <body>
 <!-- Google Tag Manager (noscript) -->

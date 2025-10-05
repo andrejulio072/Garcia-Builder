@@ -1,28 +1,41 @@
 User-agent: *
 Allow: /
 
-# Sitemap location (index)
+# Primary sitemap index (only includes optimized sitemap set)
 Sitemap: https://garciabuilder.fitness/sitemap-index.xml
 
-# Block unnecessary crawling for better SEO focus
+# === BLOCK: Internal / admin / utility pages (no value for search) ===
 Disallow: /api/
+Disallow: /admin-dashboard.html
+Disallow: /admin-trainers.html
+Disallow: /admin-setup-complete.html
+Disallow: /check-admin-users.html
+Disallow: /create-admin.html
+Disallow: /dashboard.html
+Disallow: /enhanced-dashboard.html
+Disallow: /enhanced-admin-dashboard.html
+Disallow: /trainer-dashboard.html
+Disallow: /my-profile.html
+Disallow: /profile-manager.html
+Disallow: /profile-system-fix.html
+Disallow: /setup-admin.html
+Disallow: /pricing-payment-links.html
+Disallow: /stripe-oficial.html
+
+# === BLOCK: Build / test / tooling & temporary artifacts ===
 Disallow: /archive/
 Disallow: /coverage/
 Disallow: /tools/
-Disallow: /test-*
 Disallow: /improved/
+Disallow: /test-*
 Disallow: *.sql$
 Disallow: *.md$
 
-# Allow all important pages
-Allow: /index.html
-Allow: /about.html
-Allow: /pricing.html
-Allow: /transformations.html
-Allow: /testimonials.html
-Allow: /contact.html
-Allow: /programs.html
-Allow: /faq.html
-
-# Crawl-delay for respectful crawling
+# (Optional) light crawl pacing (ignored by Google; some bots respect)
 Crawl-delay: 1
+
+# ALLOW: (Implicit — all public content pages listed in sitemap). Explicit lines not required.
+
+# Notes:
+# - Keep sensitive / auth pages out of sitemap & blocked here.
+# - If a public page is removed, update sitemap-index + optimized sitemap.

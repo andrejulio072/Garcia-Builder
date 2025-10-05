@@ -154,6 +154,30 @@
         const planKey = this.getAttribute('data-plan-key');
         const planName = this.getAttribute('data-plan-name');
         const planPrice = this.getAttribute('data-plan-price');
+        const planDuration = document.querySelector('input[name="planDuration"]:checked')?.value || 'unknown';
+
+        // Fire GA4 begin_checkout event
+        if (typeof window.dataLayer !== 'undefined') {
+          window.dataLayer.push({
+            'event': 'begin_checkout',
+            'plan_type': planKey,
+            'plan_name': planName,
+            'plan_duration': planDuration,
+            'value': parseFloat(planPrice) || 0,
+            'currency': 'GBP'
+          });
+        }
+
+        // Fire Meta Pixel InitiateCheckout event
+        if (typeof window.fbq !== 'undefined') {
+          window.fbq('track', 'InitiateCheckout', {
+            content_type: 'coaching_plan',
+            content_name: planName + '_' + planDuration,
+            value: parseFloat(planPrice) || 0,
+            currency: 'GBP'
+          });
+        }
+
         handlePlanSelection(planKey, planName, planPrice, this);
       });
     });

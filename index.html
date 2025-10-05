@@ -35,6 +35,34 @@
 <link rel="preload" as="image" href="assets/hero.jpg" imagesrcset="assets/hero.jpg 1x"/>
 
 <!-- Google Tag Manager -->
+<script>
+// Consent Mode default (must run before GTM / gtag loads)
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+// Check stored preferences
+try {
+  const stored = JSON.parse(localStorage.getItem('gb_consent_v1')||'null');
+  if (stored && stored.status === 'granted') {
+    gtag('consent','default', {
+      ad_storage:'granted', analytics_storage:'granted', ad_user_data:'granted', ad_personalization:'granted',
+      functionality_storage:'granted', security_storage:'granted'
+    });
+  } else if (stored && stored.status === 'denied') {
+    gtag('consent','default', {
+      ad_storage:'denied', analytics_storage:'denied', ad_user_data:'denied', ad_personalization:'denied',
+      functionality_storage:'granted', security_storage:'granted'
+    });
+  } else {
+    // First visit: conservative default
+    gtag('consent','default', {
+      ad_storage:'denied', analytics_storage:'denied', ad_user_data:'denied', ad_personalization:'denied',
+      functionality_storage:'granted', security_storage:'granted'
+    });
+  }
+} catch(e){
+  gtag('consent','default', { ad_storage:'denied', analytics_storage:'denied', ad_user_data:'denied', ad_personalization:'denied', functionality_storage:'granted', security_storage:'granted' });
+}
+</script>
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -253,7 +281,7 @@ Get your personalized fitness plan and join 127+ successful transformations
 <div class="footer">
     <div class="container small" style="display:flex;align-items:center;gap:18px;justify-content:center;flex-wrap:wrap;">
     <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo"/>
-        <span>© 2025 Garcia Builder — Online Coaching</span>
+    <span>© 2025 Garcia Builder — Online Coaching · <a href="#" onclick="openConsentPreferences();return false;">Cookie Preferences</a></span>
         <a href="https://instagram.com/garcia.builder" target="_blank">@garcia.builder</a>
         <a data-i18n="cta.strip.book" href="https://calendly.com/andrenjulio072/consultation" target="_blank">Book a call</a>
         <a href="#" data-open-lead-magnet data-i18n="cta.footer.leadmagnet">Baixar guia de treino</a>
@@ -516,6 +544,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script defer src="js/utm-capture.js"></script>
 <script defer src="js/engagement-tracking.js"></script>
 <script defer src="js/web-vitals-rum.js"></script>
+<script defer src="js/consent-banner.js"></script>
 <!-- Breadcrumb structured data -->
 <script type="application/ld+json">{
   "@context":"https://schema.org",

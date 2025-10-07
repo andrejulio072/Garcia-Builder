@@ -232,6 +232,32 @@ img, video { max-width: 100%; height: auto; display: block; }
   letter-spacing: 0.5px;
 }
 
+/* Category-specific colors */
+.blog-category.rehabilitation {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  color: #fff;
+}
+
+.blog-category.science {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  color: #fff;
+}
+
+.blog-category.health {
+  background: linear-gradient(135deg, #ef4444, #f87171);
+  color: #fff;
+}
+
+.blog-category.mindset {
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+  color: #fff;
+}
+
+.blog-category.nutrition {
+  background: linear-gradient(135deg, #06b6d4, #22d3ee);
+  color: #000;
+}
+
 .blog-content {
   padding: 25px;
   flex-grow: 1;
@@ -451,7 +477,7 @@ Get your personalized fitness plan and join 127+ successful transformations
       <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400">
         <div class="blog-image">
           <img src="assets/about8.jpg" alt="Training and Diabetes" loading="lazy">
-          <div class="blog-category">Health</div>
+          <div class="blog-category health">Health</div>
         </div>
         <div class="blog-content">
           <h3>Training and Nutrition in Diabetes Management</h3>
@@ -468,7 +494,7 @@ Get your personalized fitness plan and join 127+ successful transformations
       <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400">
         <div class="blog-image">
           <img src="assets/about2.1.jpg" alt="Nutrition Myths" loading="lazy">
-          <div class="blog-category">Nutrition</div>
+          <div class="blog-category nutrition">Nutrition</div>
         </div>
         <div class="blog-content">
           <h3>10 Myths and Facts About Nutrition</h3>
@@ -502,7 +528,7 @@ Get your personalized fitness plan and join 127+ successful transformations
       <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400">
         <div class="blog-image">
           <img src="assets/about3.1.jpg" alt="Weight Loss Motivation" loading="lazy">
-          <div class="blog-category">Mindset</div>
+          <div class="blog-category mindset">Mindset</div>
         </div>
         <div class="blog-content">
           <h3>Motivation for Your Weight Loss Journey</h3>
@@ -519,12 +545,46 @@ Get your personalized fitness plan and join 127+ successful transformations
       <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400">
         <div class="blog-image">
           <img src="assets/about7.jpg" alt="Exercise and Cognitive Function" loading="lazy">
-          <div class="blog-category">Science</div>
+          <div class="blog-category science">Science</div>
         </div>
         <div class="blog-content">
           <h3>Exercise and Cognitive Function</h3>
           <p>Exploring the powerful connection between physical exercise and mental performance, focus, and brain health.</p>
           <a href="https://www.trainerize.me/articles/the-link-between-exercise-and-cognitive-function/" target="_blank" class="blog-link">
+            Read Article <i class="fas fa-external-link-alt"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 7 -->
+    <div class="col-md-6 col-lg-4">
+      <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400">
+        <div class="blog-image">
+          <img src="assets/about9.jpg" alt="Vegan Vegetarian Diet" loading="lazy">
+          <div class="blog-category nutrition">Nutrition</div>
+        </div>
+        <div class="blog-content">
+          <h3>Body Strength on a Vegan/Vegetarian Diet</h3>
+          <p>Comprehensive guide to achieving optimal body strength and health while following plant-based nutrition principles.</p>
+          <a href="https://www.trainerize.me/articles/achieving-body-strength-and-health-on-a-vegan-vegetarian-diet/" target="_blank" class="blog-link">
+            Read Article <i class="fas fa-external-link-alt"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 8 -->
+    <div class="col-md-6 col-lg-4">
+      <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400">
+        <div class="blog-image">
+          <img src="assets/about10.jpg" alt="Lower Back Pain Relief" loading="lazy">
+          <div class="blog-category rehabilitation">Rehabilitation</div>
+        </div>
+        <div class="blog-content">
+          <h3>Conquer Lower Back Pain</h3>
+          <p>Proven strategies and evidence-based approaches for lasting relief from lower back pain through targeted exercises.</p>
+          <a href="https://www.trainerize.me/articles/conquer-lower-back-pain-proven-strategies-for-lasting-relief/" target="_blank" class="blog-link">
             Read Article <i class="fas fa-external-link-alt"></i>
           </a>
         </div>
@@ -585,6 +645,61 @@ Get your personalized fitness plan and join 127+ successful transformations
         "name": "Andre Julio Garcia"
       },
       "keywords": "nutrition myths, healthy eating, diet facts, nutrition science"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "The Vital Role of Nutrition in Weight Loss",
+      "description": "Understanding how proper nutrition forms the foundation of sustainable weight loss and body composition changes.",
+      "url": "https://www.trainerize.me/articles/the-vital-role-of-nutrition-in-weight-loss/",
+      "author": {
+        "@type": "Person",
+        "name": "Andre Julio Garcia"
+      },
+      "keywords": "weight loss, nutrition, diet, body composition"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Motivation for Your Weight Loss Journey",
+      "description": "Practical strategies to maintain motivation and overcome challenges during your transformation process.",
+      "url": "https://www.trainerize.me/articles/motivation-for-your-weight-loss-journey/",
+      "author": {
+        "@type": "Person",
+        "name": "Andre Julio Garcia"
+      },
+      "keywords": "motivation, weight loss, mindset, transformation"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "The Link Between Exercise and Cognitive Function",
+      "description": "Exploring the powerful connection between physical exercise and mental performance, focus, and brain health.",
+      "url": "https://www.trainerize.me/articles/the-link-between-exercise-and-cognitive-function/",
+      "author": {
+        "@type": "Person",
+        "name": "Andre Julio Garcia"
+      },
+      "keywords": "exercise, cognitive function, brain health, mental performance"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Achieving Body Strength and Health on a Vegan/Vegetarian Diet",
+      "description": "Comprehensive guide to achieving optimal body strength and health while following plant-based nutrition principles.",
+      "url": "https://www.trainerize.me/articles/achieving-body-strength-and-health-on-a-vegan-vegetarian-diet/",
+      "author": {
+        "@type": "Person",
+        "name": "Andre Julio Garcia"
+      },
+      "keywords": "vegan diet, vegetarian nutrition, plant-based fitness, strength training"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Conquer Lower Back Pain: Proven Strategies for Lasting Relief",
+      "description": "Proven strategies and evidence-based approaches for lasting relief from lower back pain through targeted exercises.",
+      "url": "https://www.trainerize.me/articles/conquer-lower-back-pain-proven-strategies-for-lasting-relief/",
+      "author": {
+        "@type": "Person",
+        "name": "Andre Julio Garcia"
+      },
+      "keywords": "lower back pain, rehabilitation, pain relief, corrective exercise"
     }
   ]
 }

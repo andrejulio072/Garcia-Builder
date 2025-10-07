@@ -20,8 +20,41 @@
     "name": "Garcia Builder",
     "url": "https://garciabuilder.fitness",
     "logo": "https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png",
+    "description": "Professional online fitness coaching with personalized training and nutrition guidance for body transformation",
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Coaching Programs",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Online Personal Training"
+          }
+        }
+      ]
+    },
+    "makesOffer": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Personal Training",
+          "description": "One-on-one online fitness coaching"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Nutrition Coaching",
+          "description": "Personalized nutrition guidance"
+        }
+      }
+    ],
     "sameAs": [
-      "https://www.instagram.com/garcia.builder"
+      "https://www.instagram.com/garcia.builder",
+      "https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia"
     ]
   }
   </script>
@@ -149,6 +182,117 @@ img, video { max-width: 100%; height: auto; display: block; }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
 }
+
+/* Blog Section Styles */
+.blog-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(246, 200, 78, 0.3);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.blog-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.blog-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.blog-card:hover .blog-image img {
+  transform: scale(1.05);
+}
+
+.blog-category {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: linear-gradient(135deg, #F6C84E, #FFD700);
+  color: #000;
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.blog-content {
+  padding: 25px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-content h3 {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  line-height: 1.3;
+}
+
+.blog-content p {
+  color: rgba(255,255,255,0.8);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.blog-link {
+  color: #F6C84E;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+}
+
+.blog-link:hover {
+  color: #FFD700;
+  text-decoration: none;
+}
+
+.blog-link i {
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+.blog-card:hover .blog-link i {
+  transform: translateX(3px);
+}
+
+@media (max-width: 768px) {
+  .blog-card {
+    margin-bottom: 30px;
+  }
+  
+  .blog-image {
+    height: 180px;
+  }
+  
+  .blog-content {
+    padding: 20px;
+  }
+}
 </style>
 </head><body>
 
@@ -169,6 +313,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <a data-i18n="nav.trans" href="transformations.html">Transformations</a>
 <a data-i18n="nav.testi" href="testimonials.html">Testimonials</a>
 <a data-i18n="nav.pricing" href="pricing.html">Pricing</a>
+<a data-i18n="nav.blog" href="#blog">Blog</a>
 <a data-i18n="nav.faq" href="faq.html">FAQ</a>
 <a data-i18n="nav.contact" href="contact.html">Contact</a>
 </nav>
@@ -275,6 +420,175 @@ Get your personalized fitness plan and join 127+ successful transformations
 </div>
 </div>
 </div>
+</section>
+
+<!-- Blog Section -->
+<section id="blog" class="section" style="background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(0,0,0,0.4) 100%); padding: 80px 0;">
+<div class="container">
+  <h2 class="title-gradient text-glow text-center mb-4" data-i18n="blog.title">Latest Articles & Insights</h2>
+  <p class="subtitle text-center mb-5" data-i18n="blog.subtitle">Expert advice on training, nutrition, and lifestyle optimization to accelerate your transformation journey.</p>
+  
+  <div class="row g-4">
+    <!-- Article 1 -->
+    <div class="col-md-6 col-lg-4">
+      <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400">
+        <div class="blog-image">
+          <img src="assets/about4.1.jpg" alt="100 Push-ups Guide" loading="lazy">
+          <div class="blog-category">Training</div>
+        </div>
+        <div class="blog-content">
+          <h3>The Ultimate Guide to Achieving 100 Push-ups</h3>
+          <p>A realistic 20-week plan to build strength progressively and reach the milestone of 100 consecutive push-ups.</p>
+          <a href="https://www.trainerize.me/articles/the-ultimate-guide-to-achieving-100-push-ups-a-realistic-20-week-plan/" target="_blank" class="blog-link">
+            Read Article <i class="fas fa-external-link-alt"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 2 -->
+    <div class="col-md-6 col-lg-4">
+      <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400">
+        <div class="blog-image">
+          <img src="assets/about8.jpg" alt="Training and Diabetes" loading="lazy">
+          <div class="blog-category">Health</div>
+        </div>
+        <div class="blog-content">
+          <h3>Training and Nutrition in Diabetes Management</h3>
+          <p>Evidence-based strategies for using exercise and proper nutrition to manage diabetes effectively.</p>
+          <a href="https://www.trainerize.me/articles/training-and-nutrition-in-diabetes-management/" target="_blank" class="blog-link">
+            Read Article <i class="fas fa-external-link-alt"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 3 -->
+    <div class="col-md-6 col-lg-4">
+      <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400">
+        <div class="blog-image">
+          <img src="assets/about2.1.jpg" alt="Nutrition Myths" loading="lazy">
+          <div class="blog-category">Nutrition</div>
+        </div>
+        <div class="blog-content">
+          <h3>10 Myths and Facts About Nutrition</h3>
+          <p>Debunking common nutrition misconceptions and revealing the science-backed truth about healthy eating.</p>
+          <a href="https://www.trainerize.me/articles/10-myths-and-facts-about-nutrition-and-healthy-eating/" target="_blank" class="blog-link">
+            Read Article <i class="fas fa-external-link-alt"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 4 -->
+    <div class="col-md-6 col-lg-4">
+      <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400">
+        <div class="blog-image">
+          <img src="assets/about5.jpg" alt="Nutrition and Weight Loss" loading="lazy">
+          <div class="blog-category">Weight Loss</div>
+        </div>
+        <div class="blog-content">
+          <h3>The Vital Role of Nutrition in Weight Loss</h3>
+          <p>Understanding how proper nutrition forms the foundation of sustainable weight loss and body composition changes.</p>
+          <a href="https://www.trainerize.me/articles/the-vital-role-of-nutrition-in-weight-loss/" target="_blank" class="blog-link">
+            Read Article <i class="fas fa-external-link-alt"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 5 -->
+    <div class="col-md-6 col-lg-4">
+      <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400">
+        <div class="blog-image">
+          <img src="assets/about3.1.jpg" alt="Weight Loss Motivation" loading="lazy">
+          <div class="blog-category">Mindset</div>
+        </div>
+        <div class="blog-content">
+          <h3>Motivation for Your Weight Loss Journey</h3>
+          <p>Practical strategies to maintain motivation and overcome challenges during your transformation process.</p>
+          <a href="https://www.trainerize.me/articles/motivation-for-your-weight-loss-journey/" target="_blank" class="blog-link">
+            Read Article <i class="fas fa-external-link-alt"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 6 -->
+    <div class="col-md-6 col-lg-4">
+      <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400">
+        <div class="blog-image">
+          <img src="assets/about7.jpg" alt="Exercise and Cognitive Function" loading="lazy">
+          <div class="blog-category">Science</div>
+        </div>
+        <div class="blog-content">
+          <h3>Exercise and Cognitive Function</h3>
+          <p>Exploring the powerful connection between physical exercise and mental performance, focus, and brain health.</p>
+          <a href="https://www.trainerize.me/articles/the-link-between-exercise-and-cognitive-function/" target="_blank" class="blog-link">
+            Read Article <i class="fas fa-external-link-alt"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-5">
+    <a href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia" target="_blank" class="btn btn-outline-light btn-lg">
+      <i class="fas fa-book-open me-2"></i>View All Articles
+    </a>
+  </div>
+</div>
+
+<!-- Dados estruturados para os artigos do blog -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Garcia Builder Fitness Blog",
+  "description": "Expert advice on training, nutrition, and lifestyle optimization",
+  "url": "https://garciabuilder.fitness/#blog",
+  "author": {
+    "@type": "Person",
+    "name": "Andre Julio Garcia",
+    "url": "https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia"
+  },
+  "blogPost": [
+    {
+      "@type": "BlogPosting",
+      "headline": "The Ultimate Guide to Achieving 100 Push-ups",
+      "description": "A realistic 20-week plan to build strength progressively and reach the milestone of 100 consecutive push-ups.",
+      "url": "https://www.trainerize.me/articles/the-ultimate-guide-to-achieving-100-push-ups-a-realistic-20-week-plan/",
+      "author": {
+        "@type": "Person",
+        "name": "Andre Julio Garcia"
+      },
+      "keywords": "push-ups, strength training, fitness goals, workout plan"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Training and Nutrition in Diabetes Management",
+      "description": "Evidence-based strategies for using exercise and proper nutrition to manage diabetes effectively.",
+      "url": "https://www.trainerize.me/articles/training-and-nutrition-in-diabetes-management/",
+      "author": {
+        "@type": "Person",
+        "name": "Andre Julio Garcia"
+      },
+      "keywords": "diabetes, health, nutrition, exercise therapy"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "10 Myths and Facts About Nutrition and Healthy Eating",
+      "description": "Debunking common nutrition misconceptions and revealing the science-backed truth about healthy eating.",
+      "url": "https://www.trainerize.me/articles/10-myths-and-facts-about-nutrition-and-healthy-eating/",
+      "author": {
+        "@type": "Person",
+        "name": "Andre Julio Garcia"
+      },
+      "keywords": "nutrition myths, healthy eating, diet facts, nutrition science"
+    }
+  ]
+}
+</script>
 </section>
 
 <section class="cta-strip">
@@ -549,6 +863,30 @@ document.addEventListener('click', function(e) {
     // Track CTA button clicks
     if (e.target.classList.contains('btn-primary') || e.target.textContent.includes('Começar')) {
         trackCoachingInquiry('cta_click', 'homepage');
+    }
+
+    // Track blog article clicks
+    if (e.target.classList.contains('blog-link') || e.target.closest('.blog-link')) {
+        const link = e.target.classList.contains('blog-link') ? e.target : e.target.closest('.blog-link');
+        const articleTitle = link.closest('.blog-card').querySelector('h3').textContent;
+        
+        // GA4 event
+        if (typeof dataLayer !== 'undefined') {
+            dataLayer.push({
+                'event': 'blog_article_click',
+                'article_title': articleTitle,
+                'article_url': link.href,
+                'location': 'homepage'
+            });
+        }
+
+        // Meta Pixel event
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'ViewContent', {
+                content_type: 'article',
+                content_name: articleTitle
+            });
+        }
     }
 });
 

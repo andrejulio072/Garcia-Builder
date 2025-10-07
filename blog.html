@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Garcia Builder Fitness Blog - Expert Training & Nutrition Articles</title>
+    <meta name="description" content="Read expert fitness articles by Andre Julio Garcia covering training, nutrition, rehabilitation, mindset, and lifestyle optimization. Evidence-based advice for all fitness levels.">
+    <meta name="keywords" content="fitness blog, training articles, nutrition tips, workout plans, rehabilitation, mindset coaching, Andre Julio Garcia, Garcia Builder">
+    <meta name="author" content="Andre Julio Garcia">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://garciabuilder.fitness/blog.html">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Garcia Builder Fitness Blog - Expert Training & Nutrition Articles">
+    <meta property="og:description" content="Read expert fitness articles by Andre Julio Garcia covering training, nutrition, rehabilitation, mindset, and lifestyle optimization.">
+    <meta property="og:image" content="https://garciabuilder.fitness/assets/logo.png">
+    <meta property="og:url" content="https://garciabuilder.fitness/blog.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Garcia Builder Coaching">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Garcia Builder Fitness Blog - Expert Training & Nutrition Articles">
+    <meta name="twitter:description" content="Read expert fitness articles by Andre Julio Garcia covering training, nutrition, rehabilitation, mindset, and lifestyle optimization.">
+    <meta name="twitter:image" content="https://garciabuilder.fitness/assets/logo.png">
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/global.css">
+    
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-W7LZ4XS7');</script>
+
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1102565141856929');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1102565141856929&ev=PageView&noscript=1"
+    /></noscript>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 100%);
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(246, 200, 78, 0.2);
+        }
+
+        .navbar-brand img {
+            height: 40px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff !important;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #F6C84E !important;
+        }
+
+        .hero-section {
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(246, 200, 78, 0.1) 0%, transparent 70%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #F6C84E, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .blog-section {
+            padding: 80px 0;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .blog-card {
+            background: linear-gradient(145deg, rgba(26, 26, 58, 0.8), rgba(15, 15, 35, 0.9));
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(246, 200, 78, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(246, 200, 78, 0.2);
+        }
+
+        .blog-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .blog-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .blog-card:hover .blog-image img {
+            transform: scale(1.05);
+        }
+
+        .blog-category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: linear-gradient(135deg, #F6C84E, #FFD700);
+            color: #000;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Category-specific colors */
+        .blog-category.rehabilitation {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: #fff;
+        }
+
+        .blog-category.science {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            color: #fff;
+        }
+
+        .blog-category.health {
+            background: linear-gradient(135deg, #ef4444, #f87171);
+            color: #fff;
+        }
+
+        .blog-category.mindset {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: #fff;
+        }
+
+        .blog-category.nutrition {
+            background: linear-gradient(135deg, #06b6d4, #22d3ee);
+            color: #000;
+        }
+
+        .blog-category.training {
+            background: linear-gradient(135deg, #F6C84E, #FFD700);
+            color: #000;
+        }
+
+        .blog-category.technology {
+            background: linear-gradient(135deg, #6b7280, #9ca3af);
+            color: #fff;
+        }
+
+        .blog-category.business {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: #000;
+        }
+
+        .blog-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-content h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .blog-content p {
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .blog-link {
+            color: #F6C84E;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s ease;
+            margin-top: auto;
+        }
+
+        .blog-link:hover {
+            color: #FFD700;
+        }
+
+        .filter-section {
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid rgba(246, 200, 78, 0.3);
+            background: transparent;
+            color: #fff;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(135deg, #F6C84E, #FFD700);
+            color: #000;
+            border-color: #F6C84E;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #F6C84E, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 50px;
+        }
+
+        .footer {
+            background: rgba(15, 15, 35, 0.95);
+            padding: 40px 0;
+            border-top: 1px solid rgba(246, 200, 78, 0.2);
+            margin-top: 80px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .blog-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .filter-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W7LZ4XS7"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="programs.html">Programs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="transformations.html">Transformations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="blog.html">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pricing.html">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Fitness Blog</h1>
+                <p class="hero-subtitle">Expert insights on training, nutrition, and lifestyle optimization</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <div class="container">
+        <div class="filter-section">
+            <h2 class="section-title">Browse by Category</h2>
+            <p class="section-subtitle">Find articles that match your fitness goals and interests</p>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Articles</button>
+                <button class="filter-btn" data-filter="training">Training</button>
+                <button class="filter-btn" data-filter="nutrition">Nutrition</button>
+                <button class="filter-btn" data-filter="rehabilitation">Rehabilitation</button>
+                <button class="filter-btn" data-filter="mindset">Mindset</button>
+                <button class="filter-btn" data-filter="health">Health</button>
+                <button class="filter-btn" data-filter="science">Science</button>
+                <button class="filter-btn" data-filter="technology">Technology</button>
+                <button class="filter-btn" data-filter="business">Business</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blog Section -->
+    <section class="blog-section">
+        <div class="container">
+            <div class="blog-grid" id="blogGrid">
+                
+                <!-- Article 1 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="training">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2025/02/pexels-krzysztof-biernat-406313862-15144758.jpg" alt="100 Push-ups Guide" loading="lazy">
+                        <div class="blog-category training">Training</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>The Ultimate Guide to Achieving 100 Push-ups</h3>
+                        <p>A realistic 20-week plan to build strength progressively and reach the milestone of 100 consecutive push-ups.</p>
+                        <a href="https://www.trainerize.me/articles/the-ultimate-guide-to-achieving-100-push-ups-a-realistic-20-week-plan/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 2 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="health">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2025/02/pexels-nataliya-vaitkevich-6942020.jpg" alt="Diabetes Management" loading="lazy">
+                        <div class="blog-category health">Health</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>Training and Nutrition in Diabetes Management</h3>
+                        <p>Evidence-based strategies for using exercise and proper nutrition to manage diabetes effectively.</p>
+                        <a href="https://www.trainerize.me/articles/training-and-nutrition-in-diabetes-management/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 3 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="nutrition">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2025/02/pexels-ella-olsson-572949-1640771.jpg" alt="Nutrition Myths" loading="lazy">
+                        <div class="blog-category nutrition">Nutrition</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>10 Myths and Facts About Nutrition and Healthy Eating</h3>
+                        <p>Debunking common nutrition misconceptions and revealing the science-backed truth about healthy eating.</p>
+                        <a href="https://www.trainerize.me/articles/10-myths-and-facts-about-nutrition-and-healthy-eating/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 4 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="nutrition">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2025/02/pexels-andres-ayrton-6551415.jpg" alt="Weight Loss Nutrition" loading="lazy">
+                        <div class="blog-category">Weight Loss</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>The Vital Role of Nutrition in Weight Loss</h3>
+                        <p>Understanding how proper nutrition forms the foundation of sustainable weight loss and body composition changes.</p>
+                        <a href="https://www.trainerize.me/articles/the-vital-role-of-nutrition-in-weight-loss/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 5 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="mindset">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2025/02/pexels-victor-freitas-841130.jpg" alt="Weight Loss Motivation" loading="lazy">
+                        <div class="blog-category mindset">Mindset</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>Motivation for Your Weight Loss Journey</h3>
+                        <p>Practical strategies to maintain motivation and overcome challenges during your transformation process.</p>
+                        <a href="https://www.trainerize.me/articles/motivation-for-your-weight-loss-journey/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 6 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="science">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2025/02/pexels-pixabay-355952.jpg" alt="Exercise and Cognitive Function" loading="lazy">
+                        <div class="blog-category science">Science</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>The Link Between Exercise and Cognitive Function</h3>
+                        <p>Exploring the powerful connection between physical exercise and mental performance, focus, and brain health.</p>
+                        <a href="https://www.trainerize.me/articles/the-link-between-exercise-and-cognitive-function/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 7 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="nutrition">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2025/02/pexels-ella-olsson-572949-1640777.jpg" alt="Vegan Diet Strength" loading="lazy">
+                        <div class="blog-category nutrition">Nutrition</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>Achieving Body Strength and Health on a Vegan/Vegetarian Diet</h3>
+                        <p>Comprehensive guide to achieving optimal body strength and health while following plant-based nutrition principles.</p>
+                        <a href="https://www.trainerize.me/articles/achieving-body-strength-and-health-on-a-vegan-vegetarian-diet/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 8 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="rehabilitation">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2025/02/pexels-karolina-grabowska-4506109.jpg" alt="Lower Back Pain Relief" loading="lazy">
+                        <div class="blog-category rehabilitation">Rehabilitation</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>Conquer Lower Back Pain</h3>
+                        <p>Proven strategies and evidence-based approaches for lasting relief from lower back pain through targeted exercises.</p>
+                        <a href="https://www.trainerize.me/articles/conquer-lower-back-pain-proven-strategies-for-lasting-relief/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 9 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="mindset">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2023/04/atomic-habits-1024x576.jpg" alt="Atomic Habits" loading="lazy">
+                        <div class="blog-category mindset">Mindset</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>Atomic Habits: Small Changes, Big Results</h3>
+                        <p>Transform your health and fitness through the power of tiny habits that compound into extraordinary results.</p>
+                        <a href="https://www.trainerize.me/articles/atomic-habits-small-changes-big-results/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 10 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="nutrition">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2023/08/shutterstock_1069812634-1024x681.jpg" alt="Fitness Budget" loading="lazy">
+                        <div class="blog-category nutrition">Nutrition</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>Achieving Fitness Goals on a Budget</h3>
+                        <p>Smart strategies for eating healthy and building strength without breaking the bank. Affordable nutrition made simple.</p>
+                        <a href="https://www.trainerize.me/articles/achieving-your-fitness-goals-on-a-budget-smart-nutrition-and-training-strategies/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 11 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="training">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2023/08/shutterstock_1834981347.jpg" alt="Group Fitness" loading="lazy">
+                        <div class="blog-category training">Training</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>The Power of Group Fitness</h3>
+                        <p>Discover how training with others can accelerate your results through motivation, accountability, and community support.</p>
+                        <a href="https://www.trainerize.me/articles/the-power-of-group-fitness-finding-motivation-through-community/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 12 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="technology">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2023/10/ai-technology-1.jpg" alt="AI Technology Fitness" loading="lazy">
+                        <div class="blog-category technology">Technology</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>Leveraging AI Technology in Fitness</h3>
+                        <p>Explore how artificial intelligence is revolutionizing personal training and transforming fitness experiences.</p>
+                        <a href="https://www.trainerize.me/articles/leveraging-ai-technology-in-fitness-transforming-personal-training/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 13 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="rehabilitation">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2023/11/stroke-recovery-exercises.jpg" alt="Stroke Recovery" loading="lazy">
+                        <div class="blog-category rehabilitation">Rehabilitation</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>Exercise Essentials for Stroke Recovery</h3>
+                        <p>Evidence-based exercise protocols to support recovery and improve quality of life after stroke.</p>
+                        <a href="https://www.trainerize.me/articles/exercise-essentials-for-stroke-recovery/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 14 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="training">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2023/12/bodybuilding-competition-prep.jpg" alt="Bodybuilding Competition" loading="lazy">
+                        <div class="blog-category training">Training</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>Your First Bodybuilding Competition</h3>
+                        <p>Complete guide to preparing for your first bodybuilding competition, from training to posing to mindset.</p>
+                        <a href="https://www.trainerize.me/articles/your-first-bodybuilding-competition-a-comprehensive-guide/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 15 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="nutrition">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2024/01/creatine-supplement-guide.jpg" alt="Creatine Supplements" loading="lazy">
+                        <div class="blog-category nutrition">Nutrition</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>Creatine: The Ultimate Performance Supplement</h3>
+                        <p>Science-backed insights on creatine supplementation for enhanced strength, power, and recovery.</p>
+                        <a href="https://www.trainerize.me/articles/creatine-the-ultimate-performance-supplement/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 16 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="business">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2024/02/online-fitness-business.jpg" alt="Online Business" loading="lazy">
+                        <div class="blog-category business">Business</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>Building Your Online Fitness Business</h3>
+                        <p>Essential strategies for personal trainers to build and scale a successful online fitness business.</p>
+                        <a href="https://www.trainerize.me/articles/building-your-online-fitness-business-essential-strategies-for-personal-trainers/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 17 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="mindset">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2024/03/david-goggins-mindset.jpg" alt="David Goggins Mindset" loading="lazy">
+                        <div class="blog-category mindset">Mindset</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>Developing a David Goggins Mindset</h3>
+                        <p>Unlock your potential by adopting the mental toughness and resilience principles of David Goggins.</p>
+                        <a href="https://www.trainerize.me/articles/developing-a-david-goggins-mindset-unlocking-your-potential/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 18 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="rehabilitation">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2024/04/shoulder-pain-relief.jpg" alt="Shoulder Pain Relief" loading="lazy">
+                        <div class="blog-category rehabilitation">Rehabilitation</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>Overcoming Shoulder Pain and Injury</h3>
+                        <p>Comprehensive approach to preventing and treating shoulder pain through targeted exercises and proper form.</p>
+                        <a href="https://www.trainerize.me/articles/overcoming-shoulder-pain-and-injury-a-comprehensive-approach/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 19 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="training">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2023/10/marathon-training-plans.jpg" alt="Marathon Training" loading="lazy">
+                        <div class="blog-category training">Training</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>Your First Half Marathon Training Plan</h3>
+                        <p>Complete 12-week training plan to safely build endurance and successfully complete your first half marathon.</p>
+                        <a href="https://www.trainerize.me/articles/your-first-half-marathon-a-complete-12-week-training-plan/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Article 20 -->
+                <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="training">
+                    <div class="blog-image">
+                        <img src="https://www.trainerize.me/articles/wp-content/uploads/2024/05/hiit-training-guide.jpg" alt="HIIT Training" loading="lazy">
+                        <div class="blog-category training">Training</div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>HIIT: Maximum Results, Minimum Time</h3>
+                        <p>Efficient high-intensity interval training protocols for busy professionals who want maximum fitness results.</p>
+                        <a href="https://www.trainerize.me/articles/hiit-maximum-results-minimum-time/" target="_blank" class="blog-link">
+                            Read Article <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia" target="_blank" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-book-open me-2"></i>View All Articles on Trainerize
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container small" style="display:flex;align-items:center;gap:18px;justify-content:center;flex-wrap:wrap;">
+            <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo"/>
+            <span>© 2025 Garcia Builder — Online Coaching</span>
+            <a href="https://instagram.com/garcia.builder" target="_blank">@garcia.builder</a>
+            <a href="https://calendly.com/andrenjulio072/consultation" target="_blank">Book a call</a>
+        </div>
+    </div>
+
+    <!-- WhatsApp Float -->
+    <a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank">WhatsApp</a>
+
+    <!-- Scripts -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.0/dist/vanilla-tilt.min.js"></script>
+
+    <!-- Blog Filter Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const blogCards = document.querySelectorAll('.blog-card');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+
+                    // Filter blog cards
+                    blogCards.forEach(card => {
+                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+
+                    // Google Analytics event
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'blog_filter_click', {
+                            'category': filter,
+                            'label': 'Blog Filter'
+                        });
+                    }
+
+                    // Meta Pixel event
+                    if (typeof fbq !== 'undefined') {
+                        fbq('track', 'Search', {
+                            search_string: filter
+                        });
+                    }
+                });
+            });
+
+            // Track blog article clicks
+            document.querySelectorAll('.blog-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const articleTitle = this.closest('.blog-card').querySelector('h3').textContent;
+                    
+                    // Google Analytics event
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'blog_article_click', {
+                            'article_title': articleTitle,
+                            'outbound': true
+                        });
+                    }
+
+                    // Meta Pixel event
+                    if (typeof fbq !== 'undefined') {
+                        fbq('track', 'ViewContent', {
+                            content_name: articleTitle,
+                            content_type: 'article'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "Garcia Builder Fitness Blog",
+        "description": "Expert advice on training, nutrition, and lifestyle optimization",
+        "url": "https://garciabuilder.fitness/blog.html",
+        "author": {
+            "@type": "Person",
+            "name": "Andre Julio Garcia",
+            "url": "https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia"
+        }
+    }
+    </script>
+</body>
+</html>

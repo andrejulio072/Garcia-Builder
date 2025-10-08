@@ -63,6 +63,14 @@
             overflow-x: hidden;
         }
 
+        .container.inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
         /* Animated background particles */
         #particles-bg {
             position: fixed;
@@ -85,25 +93,51 @@
             padding: 12px 0;
         }
 
-        .navbar-brand img {
+        .navbar .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-height: 56px;
+            text-decoration: none;
+        }
+
+        .navbar .brand img {
             height: 40px;
         }
 
-        .navbar-nav .nav-link {
+        .navbar .title-gradient {
+            font-size: 2rem;
+            line-height: 1.1;
+            background: linear-gradient(90deg, #F8E08E, #F5B64F 80%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+        }
+
+        .navbar .nav {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .navbar .nav a {
             color: #fff !important;
             font-weight: 500;
             letter-spacing: 0.02em;
             transition: color 0.3s, background 0.3s, border-radius 0.3s;
             border-radius: 8px;
             padding: 8px 16px;
+            text-decoration: none;
         }
 
-        .navbar-nav .nav-link.active, .navbar-nav .nav-link:focus {
+        .navbar .nav a.active,
+        .navbar .nav a:focus {
             color: #F6C84E !important;
             background: rgba(246,200,78,0.08);
         }
 
-        .navbar-nav .nav-link:hover {
+        .navbar .nav a:hover {
             color: #F6C84E !important;
             background: rgba(246,200,78,0.10);
         }
@@ -410,15 +444,28 @@
 
     <!-- Dynamic Navigation (same as index.html) -->
     <nav class="navbar">
-      <div class="container inner" style="display:flex;align-items:center;justify-content:space-between;">
-        <a class="navbar-brand" href="index.html">
-          <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" style="height:40px;">
+      <div class="container inner">
+        <a class="brand" href="index.html" style="display:flex;align-items:center;gap:14px;min-height:56px;">
+          <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" decoding="async" loading="eager"/>
+          <span class="title-gradient" style="font-size:2rem;line-height:1.1;">Garcia Builder</span>
         </a>
-        <nav class="nav"></nav>
+        <nav class="nav">
+          <a data-i18n="nav.home" href="index.html">Home</a>
+          <a data-i18n="nav.about" href="about.html">About</a>
+          <a data-i18n="nav.trans" href="transformations.html">Transformations</a>
+          <a data-i18n="nav.testi" href="testimonials.html">Testimonials</a>
+          <a data-i18n="nav.pricing" href="pricing.html">Pricing</a>
+          <a class="active" data-i18n="nav.blog" href="blog.html">Blog</a>
+          <a data-i18n="nav.faq" href="faq.html">FAQ</a>
+          <a data-i18n="nav.contact" href="contact.html">Contact</a>
+        </nav>
+
+        <!-- Auth buttons will be dynamically inserted here by auth-guard.js -->
+        <div id="auth-buttons"></div>
+
         <div class="lang"><select id="lang-select"><option data-i18n="nav.lang.en" value="en">EN</option><option data-i18n="nav.lang.pt" value="pt">PT</option><option data-i18n="nav.lang.es" value="es">ES</option></select></div>
       </div>
     </nav>
-    <script defer src="js/navigation-manager.js"></script>
 
     <!-- Hero Section -->
     <section class="hero-section">
@@ -906,8 +953,6 @@
     </script>
 </body>
 </html>
-
-                <!-- Internal Article: Consistency -->
                 <div class="blog-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-category="mindset">
                     <div class="blog-image">
                         <img src="assets/about3.1.jpg" alt="Stay Consistent With Fitness" loading="lazy">

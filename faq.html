@@ -122,39 +122,50 @@
 </head>
 <body>
 
-<!-- Top nav (unchanged) -->
+<!-- Top nav (same as other pages) -->
 <nav class="navbar"><div class="container inner">
-  <a class="brand" href="index.html"><img loading="lazy" decoding="async" src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo"><span class="title-gradient" style="font-size:1.6rem;line-height:1;">Garcia&nbsp;Builder</span></a>
+  <a class="brand" href="index.html" style="display:flex;align-items:center;gap:14px;min-height:56px;">
+    <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" decoding="async" loading="eager"/>
+    <span class="title-gradient" style="font-size:2rem;line-height:1.1;">Garcia Builder</span>
+  </a>
   <nav class="nav">
-    <a href="index.html" data-i18n="nav.home">Home</a>
-    <a href="about.html" data-i18n="nav.about">About</a>
-    <a href="transformations.html" data-i18n="nav.trans">Transformations</a>
-    <a href="testimonials.html" data-i18n="nav.testi">Testimonials</a>
-    <a href="blog.html" data-i18n="nav.blog">Blog</a>
-    <a href="pricing.html" data-i18n="nav.pricing">Pricing</a>
-    <a href="faq.html" data-i18n="nav.faq">FAQ</a>
-    <a href="contact.html" data-i18n="nav.contact">Contact</a>
+    <a data-i18n="nav.home" href="index.html">Home</a>
+    <a data-i18n="nav.about" href="about.html">About</a>
+    <a data-i18n="nav.trans" href="transformations.html">Transformations</a>
+    <a data-i18n="nav.testi" href="testimonials.html">Testimonials</a>
+    <a data-i18n="nav.pricing" href="pricing.html">Pricing</a>
+    <a data-i18n="nav.blog" href="blog.html">Blog</a>
+    <a class="is-active" data-i18n="nav.faq" href="faq.html">FAQ</a>
+    <a data-i18n="nav.contact" href="contact.html">Contact</a>
   </nav>
 
   <!-- Auth buttons will be dynamically inserted here by auth-guard.js -->
   <div id="auth-buttons"></div>
 
   <div class="lang">
-    <select id="lang-select"><option value="en">EN</option><option value="pt">PT</option><option value="es">ES</option></select>
+    <select id="lang-select"><option value="en" data-i18n="nav.lang.en">EN</option><option value="pt" data-i18n="nav.lang.pt">PT</option><option value="es" data-i18n="nav.lang.es">ES</option></select>
   </div>
 </div></nav>
 
 <!-- Hero -->
-<section class="section faq-hero">
-<div class="container">
-    <h1 class="title-gradient text-glow" data-i18n="faq.title">FAQ</h1>
-    <input id="faq-search" class="search mt-3" data-i18n-ph="faq.search" placeholder="Search questions…">
+<section class="section faq-hero" style="padding:140px 0 80px 0;text-align:center;position:relative;overflow:hidden;">
+  <div class="container">
+    <div style="position:relative;z-index:2;max-width:800px;margin:0 auto;">
+      <h1 class="title-gradient text-glow" data-i18n="faq.title" style="font-size:3.5rem;font-weight:900;margin-bottom:1.5rem;">FAQ</h1>
+      <p class="lead" style="font-size:1.3rem;opacity:0.9;margin-bottom:2rem;color:rgba(255,255,255,0.9);">Frequently Asked Questions</p>
+      <p style="font-size:1.1rem;opacity:0.85;margin-bottom:2.5rem;">Get answers about online coaching, plans, nutrition, results, and methodology</p>
+      <input id="faq-search" class="search" data-i18n-ph="faq.search" placeholder="Search questions…" style="max-width:700px;margin:0 auto;font-size:1.1rem;">
+    </div>
   </div>
 </section>
 
 <!-- FAQ -->
-<section class="section">
-  <div class="container">
+<section class="section" style="padding:60px 0 80px 0;">
+  <div class="container" style="max-width:900px;">
+    <div style="text-align:center;margin-bottom:50px;">
+      <h2 class="title-gradient" style="font-size:2.2rem;font-weight:800;margin-bottom:1rem;">Common Questions</h2>
+      <p style="font-size:1.1rem;opacity:0.8;color:rgba(255,255,255,0.85);">Find answers to everything you need to know about Garcia Builder coaching</p>
+    </div>
     <div class="accordion" id="faqAccordion"></div>
   </div>
 </section>

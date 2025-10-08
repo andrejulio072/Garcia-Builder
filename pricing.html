@@ -415,18 +415,35 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-<nav class="navbar"><div class="container inner">
-  <a class="brand" href="index.html"><img loading="lazy" decoding="async" src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder logo"/><span class="title-gradient">Garcia&nbsp;Builder</span></a>
-  <nav class="nav">
-    <a href="index.html" data-i18n="nav.home">Home</a>
-    <a href="about.html" data-i18n="nav.about">About</a>
-    <a href="transformations.html" data-i18n="nav.trans">Transformations</a>
-    <a href="testimonials.html" data-i18n="nav.testi">Testimonials</a>
-    <a href="blog.html" data-i18n="nav.blog">Blog</a>
-    <a href="pricing.html" data-i18n="nav.pricing">Pricing</a>
-    <a href="faq.html" data-i18n="nav.faq">FAQ</a>
-    <a href="contact.html" data-i18n="nav.contact">Contact</a>
-  </nav>
+<nav class="navbar">
+  <div class="container inner">
+    <a class="brand" href="index.html" style="display:flex;align-items:center;gap:14px;min-height:56px;">
+      <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" decoding="async" loading="eager" style="height: 48px;"/>
+      <span class="title-gradient" style="font-size:2rem;line-height:1.1;font-weight:800;">Garcia Builder</span>
+    </a>
+    <nav class="nav">
+      <a data-i18n="nav.home" href="index.html">Home</a>
+      <a data-i18n="nav.about" href="about.html">About</a>
+      <a data-i18n="nav.trans" href="transformations.html">Transformations</a>
+      <a data-i18n="nav.testi" href="testimonials.html">Testimonials</a>
+      <a data-i18n="nav.pricing" href="pricing.html" class="active">Pricing</a>
+      <a data-i18n="nav.blog" href="blog.html" style="display:none;">Blog</a>
+      <a data-i18n="nav.faq" href="faq.html">FAQ</a>
+      <a data-i18n="nav.contact" href="contact.html">Contact</a>
+    </nav>
+
+    <!-- Auth buttons will be dynamically inserted here by auth-guard.js -->
+    <div id="auth-buttons"></div>
+
+    <div class="lang">
+      <select id="lang-select">
+        <option data-i18n="nav.lang.en" value="en">EN</option>
+        <option data-i18n="nav.lang.pt" value="pt">PT</option>
+        <option data-i18n="nav.lang.es" value="es">ES</option>
+      </select>
+    </div>
+  </div>
+</nav>
 
   <!-- Auth buttons will be dynamically inserted here by auth-guard.js -->
   <div id="auth-buttons"></div>

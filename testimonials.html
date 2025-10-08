@@ -51,6 +51,48 @@
 <script defer src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
 <script defer src="assets/i18n.js"></script>
 
+<!-- Google Tag Manager -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+try {
+  const stored = JSON.parse(localStorage.getItem('gb_consent_v1')||'null');
+  if (stored && stored.status === 'granted') {
+    gtag('consent','default', {
+      ad_storage:'granted', analytics_storage:'granted', ad_user_data:'granted', ad_personalization:'granted',
+      functionality_storage:'granted', security_storage:'granted'
+    });
+  } else if (stored && stored.status === 'denied') {
+    gtag('consent','default', {
+      ad_storage:'denied', analytics_storage:'denied', ad_user_data:'denied', ad_personalization:'denied',
+      functionality_storage:'granted', security_storage:'granted'
+    });
+  } else {
+    gtag('consent','default', {
+      ad_storage:'denied', analytics_storage:'denied', ad_user_data:'denied', ad_personalization:'denied',
+      functionality_storage:'granted', security_storage:'granted'
+    });
+  }
+} catch(e){
+  gtag('consent','default', { ad_storage:'denied', analytics_storage:'denied', ad_user_data:'denied', ad_personalization:'denied', functionality_storage:'granted', security_storage:'granted' });
+}
+</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
+
+<!-- Google Site Verification -->
+<meta name="google-site-verification" content="google47d3c69666bce37e" />
+
+<!-- Central consent-aware Ads loader -->
+<script defer src="js/ads-loader.js"></script>
+
+<!-- Centralized Facebook Pixel Loader -->
+<script>window.FB_PIXEL_ID='1102565141856929';</script>
+<script defer src="js/pixel-init.js"></script>
+
 <style id="mobile-safe-overrides">
 /* Keep layout consistent on mobile; do not alter theme */
 html, body { max-width: 100%; overflow-x: hidden; }
@@ -161,6 +203,14 @@ img { max-width: 100%; height: auto; display: block; }
 .grid .tcard:nth-child(6) { animation-delay: 0.6s; }
 </style>
 </head><body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<!-- Meta Pixel noscript fallback -->
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1102565141856929&ev=PageView&noscript=1"/></noscript>
+
 <nav class="navbar"><div class="container inner">
 <a class="brand" href="index.html" style="display:flex;align-items:center;gap:14px;min-height:56px;">
   <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" decoding="async" loading="eager"/>
@@ -625,6 +675,82 @@ img { max-width: 100%; height: auto; display: block; }
 <script defer src="assets/i18n.js?v=20250926"></script>
 <script defer src="js/auth.js"></script>
 <script defer src="js/auth-guard.js"></script>
+
+<!-- Google Analytics & Meta Pixel Events Tracking -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Track filter button clicks
+  document.querySelectorAll('.filter-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const category = this.getAttribute('data-filter');
+      
+      // Google Analytics event
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'testimonial_filter', {
+          'category': category,
+          'page_location': window.location.href
+        });
+      }
+      
+      // Meta Pixel event
+      if (typeof fbq !== 'undefined') {
+        fbq('track', 'Search', {
+          search_string: category
+        });
+      }
+    });
+  });
+  
+  // Track testimonial card clicks/interactions
+  document.querySelectorAll('.tcard').forEach(card => {
+    card.addEventListener('click', function() {
+      const name = this.querySelector('.name') ? this.querySelector('.name').textContent : 'Unknown';
+      const category = this.getAttribute('data-category');
+      
+      // Google Analytics event
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'testimonial_view', {
+          'testimonial_name': name,
+          'category': category,
+          'page_location': window.location.href
+        });
+      }
+      
+      // Meta Pixel event
+      if (typeof fbq !== 'undefined') {
+        fbq('track', 'ViewContent', {
+          content_name: name,
+          content_type: 'testimonial',
+          content_category: category
+        });
+      }
+    });
+  });
+  
+  // Track CTA clicks (email and Instagram)
+  document.querySelectorAll('a[href*="mailto"], a[href*="instagram"]').forEach(link => {
+    link.addEventListener('click', function() {
+      const type = this.href.includes('mailto') ? 'email' : 'instagram';
+      
+      // Google Analytics event
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'testimonial_cta_click', {
+          'cta_type': type,
+          'page_location': window.location.href
+        });
+      }
+      
+      // Meta Pixel event
+      if (typeof fbq !== 'undefined') {
+        fbq('track', 'Contact', {
+          contact_type: type
+        });
+      }
+    });
+  });
+});
+</script>
+
 <!-- Breadcrumb structured data -->
 <script type="application/ld+json">{
  "@context":"https://schema.org",

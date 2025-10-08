@@ -117,10 +117,60 @@
   .accordion-body{background:var(--gb-panel);color:var(--gb-txt)}
   .accordion-button::after{filter:invert(1) opacity(.85)}
 </style>
+
+<!-- Google Tag Manager -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+try {
+  const stored = JSON.parse(localStorage.getItem('gb_consent_v1')||'null');
+  if (stored && stored.status === 'granted') {
+    gtag('consent','default', {
+      ad_storage:'granted', analytics_storage:'granted', ad_user_data:'granted', ad_personalization:'granted',
+      functionality_storage:'granted', security_storage:'granted'
+    });
+  } else if (stored && stored.status === 'denied') {
+    gtag('consent','default', {
+      ad_storage:'denied', analytics_storage:'denied', ad_user_data:'denied', ad_personalization:'denied',
+      functionality_storage:'granted', security_storage:'granted'
+    });
+  } else {
+    gtag('consent','default', {
+      ad_storage:'denied', analytics_storage:'denied', ad_user_data:'denied', ad_personalization:'denied',
+      functionality_storage:'granted', security_storage:'granted'
+    });
+  }
+} catch(e){
+  gtag('consent','default', { ad_storage:'denied', analytics_storage:'denied', ad_user_data:'denied', ad_personalization:'denied', functionality_storage:'granted', security_storage:'granted' });
+}
+</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
+
+<!-- Google Site Verification -->
+<meta name="google-site-verification" content="google47d3c69666bce37e" />
+
+<!-- Central consent-aware Ads loader -->
+<script defer src="js/ads-loader.js"></script>
+
+<!-- Centralized Facebook Pixel Loader -->
+<script>window.FB_PIXEL_ID='1102565141856929';</script>
+<script defer src="js/pixel-init.js"></script>
+
 <script defer src="js/i18n-shim.js"></script>
 <script defer src="assets/i18n.js?v=20250926"></script>
 </head>
 <body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<!-- Meta Pixel noscript fallback -->
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1102565141856929&ev=PageView&noscript=1"/></noscript>
 
 <!-- Top nav (same as other pages) -->
 <nav class="navbar"><div class="container inner">
@@ -293,6 +343,22 @@ function setupSearch() {
   search.addEventListener('input', () => {
     const q = search.value.trim().toLowerCase();
     const items = document.querySelectorAll('.accordion-item');
+    
+    // Google Analytics event
+    if (typeof gtag !== 'undefined' && q) {
+      gtag('event', 'faq_search', {
+        'search_term': q,
+        'page_location': window.location.href
+      });
+    }
+    
+    // Meta Pixel event
+    if (typeof fbq !== 'undefined' && q) {
+      fbq('track', 'Search', {
+        search_string: q
+      });
+    }
+    
     items.forEach((item) => {
       const button = item.querySelector('.accordion-button');
       const body = item.querySelector('.accordion-body');
@@ -306,9 +372,36 @@ function setupSearch() {
   });
 }
 
+// Setup accordion click tracking
+function setupAccordionTracking() {
+  document.addEventListener('click', (e) => {
+    const button = e.target.closest('.accordion-button');
+    if (button) {
+      const question = button.textContent.trim();
+      
+      // Google Analytics event
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'faq_click', {
+          'question': question,
+          'page_location': window.location.href
+        });
+      }
+      
+      // Meta Pixel event
+      if (typeof fbq !== 'undefined') {
+        fbq('track', 'ViewContent', {
+          content_name: question,
+          content_type: 'faq'
+        });
+      }
+    }
+  });
+}
+
 // Setup search after FAQ is rendered
 window.addEventListener('load', () => {
   setTimeout(setupSearch, 300);
+  setTimeout(setupAccordionTracking, 300);
 });
 
 /* ---- Hash open (#q12 opens the 12th item) ---- */

@@ -201,24 +201,24 @@ a.btn[style*="background: linear-gradient(135deg, #F6C84E"]:hover {
         flex-wrap: wrap;
         gap: 12px;
     }
-    
+
     .nav {
         width: 100%;
         flex-wrap: wrap;
         justify-content: center;
         gap: 8px;
     }
-    
+
     .nav a {
         padding: 6px 12px;
         font-size: 0.9rem;
     }
-    
+
     #auth-buttons {
         margin-left: 0;
         margin-right: 0;
     }
-    
+
     .dropdown-menu {
         min-width: 250px !important;
     }

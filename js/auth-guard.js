@@ -22,7 +22,7 @@ class AuthGuard {
 
         // Control Blog link visibility based on login status
         const blogLink = document.querySelector('.nav a[href="blog.html"]');
-        
+
         // If not found, fall back to the old method
         if (!userMenu) {
             const navbar = document.querySelector('.navbar .container');
@@ -51,11 +51,11 @@ class AuthGuard {
                 blogLink.style.opacity = '1';
                 blogLink.style.pointerEvents = 'auto';
             }
-            
+
             const firstName = (currentUser.name || currentUser.full_name || currentUser.email || 'User').toString().split(' ')[0];
             const displayName = (currentUser.name || currentUser.full_name || currentUser.email || 'User');
             const displayEmail = currentUser.email || '';
-            
+
             // User is logged in - show enhanced user menu
             userMenu.innerHTML = `
                 <div class="dropdown">
@@ -98,7 +98,7 @@ class AuthGuard {
             if (blogLink) {
                 blogLink.style.display = 'none';
             }
-            
+
             // User not logged in - show enhanced login/register buttons
             const loginText = this.getTranslation('nav.login') || 'Login';
             const registerText = this.getTranslation('nav.register') || 'Register';
@@ -116,7 +116,7 @@ class AuthGuard {
                 </div>
             `;
         }
-        
+
         // Add hover styles dynamically
         const style = document.createElement('style');
         style.textContent = `
@@ -143,11 +143,11 @@ class AuthGuard {
         `;
         document.head.appendChild(style);
     }
-    
+
     static handleLogout(event) {
         event.preventDefault();
         event.stopPropagation();
-        
+
         // Close dropdown
         const dropdown = event.target.closest('.dropdown');
         if (dropdown) {
@@ -156,19 +156,19 @@ class AuthGuard {
                 bsDropdown.hide();
             }
         }
-        
+
         // Show confirmation
         if (confirm('Are you sure you want to logout?')) {
             // Clear all auth data
             localStorage.removeItem('currentUser');
             localStorage.removeItem('auth_token');
             sessionStorage.clear();
-            
+
             // Call AuthSystem logout
             if (typeof AuthSystem !== 'undefined' && AuthSystem.logout) {
                 AuthSystem.logout();
             }
-            
+
             // Redirect to homepage
             setTimeout(() => {
                 window.location.href = 'index.html';

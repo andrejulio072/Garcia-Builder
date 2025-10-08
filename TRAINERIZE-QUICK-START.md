@@ -14,7 +14,7 @@ Crie um webhook simples que salva dados no Supabase:
 
 ```sql
 -- Atualizar tabela user_profiles
-ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS 
+ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS
   trainerize_email_sent BOOLEAN DEFAULT FALSE,
   trainerize_pending BOOLEAN DEFAULT TRUE,
   plan_name TEXT,
@@ -36,10 +36,10 @@ serve(async (req) => {
   )
 
   const payload = await req.json()
-  
+
   if (payload.type === 'checkout.session.completed') {
     const session = payload.data.object
-    
+
     // Salvar cliente no Supabase
     const { data, error } = await supabase
       .from('user_profiles')
@@ -52,7 +52,7 @@ serve(async (req) => {
         trainerize_pending: true,
         subscription_status: 'active'
       })
-    
+
     if (error) {
       console.error('Error:', error)
       return new Response(JSON.stringify({ error: error.message }), {
@@ -60,7 +60,7 @@ serve(async (req) => {
         headers: { 'Content-Type': 'application/json' }
       })
     }
-    
+
     // Enviar email para você com os dados
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -85,7 +85,7 @@ serve(async (req) => {
       })
     })
   }
-  
+
   return new Response(JSON.stringify({ received: true }), {
     headers: { 'Content-Type': 'application/json' }
   })
@@ -110,10 +110,10 @@ supabase functions deploy stripe-webhook-simple --no-verify-jwt
 4. Salvar webhook secret
 
 ### **Resultado:**
-✅ Você recebe email automático quando alguém pagar  
-✅ Dados salvos no Supabase  
-✅ Você adiciona manualmente no Trainerize (5 minutos)  
-✅ Cliente recebe email de boas-vindas manual  
+✅ Você recebe email automático quando alguém pagar
+✅ Dados salvos no Supabase
+✅ Você adiciona manualmente no Trainerize (5 minutos)
+✅ Cliente recebe email de boas-vindas manual
 
 **Tempo de implementação:** 2-3 horas
 
@@ -217,9 +217,9 @@ curl -X POST https://[SEU_PROJETO].supabase.co/functions/v1/stripe-webhook-simpl
 ### **Erro no Supabase:**
 ```sql
 -- Ver logs de erro
-SELECT * FROM supabase_functions.logs 
-WHERE function_name = 'stripe-webhook-simple' 
-ORDER BY created_at DESC 
+SELECT * FROM supabase_functions.logs
+WHERE function_name = 'stripe-webhook-simple'
+ORDER BY created_at DESC
 LIMIT 10;
 ```
 
@@ -230,16 +230,16 @@ LIMIT 10;
 **Escolha seu caminho:**
 
 ### **Caminho 1: Rápido e Manual**
-→ Siga a **OPÇÃO 1** acima  
-→ Leva 2-3 horas  
-→ Funciona hoje mesmo  
-→ Upgrade depois para automático  
+→ Siga a **OPÇÃO 1** acima
+→ Leva 2-3 horas
+→ Funciona hoje mesmo
+→ Upgrade depois para automático
 
 ### **Caminho 2: Completo e Automático**
-→ Siga o **TRAINERIZE-INTEGRATION-PLAN.md** completo  
-→ Leva 7-10 dias  
-→ 100% automatizado  
-→ Zero trabalho manual  
+→ Siga o **TRAINERIZE-INTEGRATION-PLAN.md** completo
+→ Leva 7-10 dias
+→ 100% automatizado
+→ Zero trabalho manual
 
 **Recomendação:** Comece com Caminho 1 hoje, upgrade para Caminho 2 esta semana.
 

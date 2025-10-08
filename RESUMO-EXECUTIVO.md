@@ -1,6 +1,6 @@
 # 📋 RESUMO EXECUTIVO - GARCIA BUILDER
 
-**Data:** 8 de Outubro de 2025  
+**Data:** 8 de Outubro de 2025
 **Status:** ✅ Prioridades Definidas
 
 ---
@@ -10,7 +10,7 @@
 ### ✅ **PRIORIDADE #1: INTEGRAÇÃO TRAINERIZE**
 **Decisão:** Focar 100% em automatizar o onboarding de clientes via Trainerize
 
-**Motivo:** 
+**Motivo:**
 - Economiza 2-4 horas de trabalho manual por cliente
 - Melhora experiência do cliente (acesso instantâneo)
 - Reduz erros e esquecimentos

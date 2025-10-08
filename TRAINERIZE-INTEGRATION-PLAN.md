@@ -1,7 +1,7 @@
 # 🔗 PLANO DE INTEGRAÇÃO TRAINERIZE - GARCIA BUILDER
 
-**Data:** 8 de Outubro de 2025  
-**Prioridade:** 🔥 ALTA  
+**Data:** 8 de Outubro de 2025
+**Prioridade:** 🔥 ALTA
 **Status:** 📋 PLANEJAMENTO
 
 ---
@@ -104,7 +104,7 @@ import Stripe from 'https://esm.sh/stripe@12.0.0'
 serve(async (req) => {
   const signature = req.headers.get('stripe-signature')
   const body = await req.text()
-  
+
   // Verificar assinatura Stripe
   const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'))
   const event = stripe.webhooks.constructEvent(
@@ -112,10 +112,10 @@ serve(async (req) => {
     signature,
     Deno.env.get('STRIPE_WEBHOOK_SECRET')
   )
-  
+
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object
-    
+
     // 1. Criar usuário no Supabase
     const { data: user } = await supabaseAdmin
       .from('user_profiles')
@@ -127,7 +127,7 @@ serve(async (req) => {
       })
       .select()
       .single()
-    
+
     // 2. Criar cliente no Trainerize
     const trainerizeResponse = await fetch('https://api.trainerize.com/v1/clients', {
       method: 'POST',
@@ -143,22 +143,22 @@ serve(async (req) => {
         plan_id: getTrainerizePlanId(session.metadata.plan_type)
       })
     })
-    
+
     const trainerizeClient = await trainerizeResponse.json()
-    
+
     // 3. Atualizar Supabase com ID do Trainerize
     await supabaseAdmin
       .from('user_profiles')
       .update({ trainerize_id: trainerizeClient.id })
       .eq('id', user.id)
-    
+
     // 4. Enviar email de boas-vindas
     await sendWelcomeEmail(user, trainerizeClient)
-    
+
     // 5. Notificar WhatsApp
     await sendWhatsAppNotification(user)
   }
-  
+
   return new Response(JSON.stringify({ received: true }), {
     headers: { 'Content-Type': 'application/json' },
   })
@@ -183,7 +183,7 @@ serve(async (req) => {
 #### 3.1 Atualizar schema do Supabase
 ```sql
 -- Adicionar coluna trainerize_id
-ALTER TABLE user_profiles 
+ALTER TABLE user_profiles
 ADD COLUMN trainerize_id TEXT UNIQUE;
 
 -- Criar tabela de sincronização
@@ -214,7 +214,7 @@ serve(async (req) => {
     .select('*')
     .eq('subscription_status', 'active')
     .not('trainerize_id', 'is', null)
-  
+
   for (const client of clients) {
     // Buscar dados atualizados no Trainerize
     const response = await fetch(
@@ -225,9 +225,9 @@ serve(async (req) => {
         }
       }
     )
-    
+
     const trainerizeData = await response.json()
-    
+
     // Atualizar Supabase com dados do Trainerize
     await supabaseAdmin
       .from('user_profiles')
@@ -237,7 +237,7 @@ serve(async (req) => {
         current_weight: trainerizeData.current_weight
       })
       .eq('id', client.id)
-    
+
     // Registrar sincronização
     await supabaseAdmin
       .from('trainerize_sync')
@@ -248,7 +248,7 @@ serve(async (req) => {
         sync_data: trainerizeData
       })
   }
-  
+
   return new Response(JSON.stringify({ synced: clients.length }))
 })
 ```
@@ -398,8 +398,8 @@ SELECT cron.schedule(
     .header { text-align: center; padding: 30px 0; }
     .logo { width: 100px; }
     .title { font-size: 28px; color: #f5b64f; margin: 20px 0; }
-    .button { background: linear-gradient(135deg, #f8e08e, #f5b64f); 
-              color: #0b1220; padding: 15px 30px; text-decoration: none; 
+    .button { background: linear-gradient(135deg, #f8e08e, #f5b64f);
+              color: #0b1220; padding: 15px 30px; text-decoration: none;
               border-radius: 8px; display: inline-block; margin: 20px 0; }
     .section { background: #0f172a; padding: 20px; border-radius: 12px; margin: 20px 0; }
   </style>
@@ -407,18 +407,18 @@ SELECT cron.schedule(
 <body>
   <div class="container">
     <div class="header">
-      <img src="https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png" 
+      <img src="https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png"
            alt="Garcia Builder" class="logo">
       <h1 class="title">Welcome to Garcia Builder! 🎉</h1>
     </div>
-    
+
     <div class="section">
       <h2>Your Account is Ready</h2>
       <p>Hi {{first_name}},</p>
       <p>I'm excited to start this transformation journey with you!</p>
       <p>Your Trainerize account has been created. Here's what to do next:</p>
     </div>
-    
+
     <div class="section">
       <h3>📱 Step 1: Download the App</h3>
       <p>Download Trainerize on your phone:</p>
@@ -429,14 +429,14 @@ SELECT cron.schedule(
         Google Play
       </a>
     </div>
-    
+
     <div class="section">
       <h3>🔑 Step 2: Login Credentials</h3>
       <p><strong>Email:</strong> {{email}}</p>
       <p><strong>Temporary Password:</strong> {{temp_password}}</p>
       <p><em>(Change it after first login)</em></p>
     </div>
-    
+
     <div class="section">
       <h3>📋 Step 3: Complete Your Profile</h3>
       <ul>
@@ -445,7 +445,7 @@ SELECT cron.schedule(
         <li>Fill out the intake questionnaire</li>
       </ul>
     </div>
-    
+
     <div class="section">
       <h3>💬 Step 4: Connect on WhatsApp</h3>
       <p>I'll add you to the client support group within 24h.</p>
@@ -453,7 +453,7 @@ SELECT cron.schedule(
         Message Me
       </a>
     </div>
-    
+
     <div class="section">
       <h3>🎯 What Happens Next?</h3>
       <p>Within 48 hours, you'll receive:</p>
@@ -463,7 +463,7 @@ SELECT cron.schedule(
         <li>✅ Weekly check-in schedule</li>
       </ul>
     </div>
-    
+
     <p style="text-align: center; margin-top: 40px;">
       Let's build something great together! 💪<br>
       <strong>Andre Garcia</strong>

@@ -1,0 +1,274 @@
+/* Enhanced Navbar Styles - User-Friendly Authentication UI */
+
+/* Navbar Container */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: linear-gradient(135deg, rgba(11, 18, 32, 0.98) 0%, rgba(6, 10, 18, 0.98) 100%);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(246, 200, 78, 0.1);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Navigation Links */
+.nav a {
+    position: relative;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav a:hover {
+    background: linear-gradient(135deg, rgba(246, 200, 78, 0.1) 0%, rgba(246, 200, 78, 0.05) 100%);
+    color: #F6C84E !important;
+    transform: translateY(-2px);
+}
+
+.nav a.active {
+    background: linear-gradient(135deg, rgba(246, 200, 78, 0.15) 0%, rgba(246, 200, 78, 0.08) 100%);
+    color: #F6C84E !important;
+    font-weight: 600;
+}
+
+.nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #F6C84E, transparent);
+    transition: transform 0.3s ease;
+}
+
+.nav a:hover::after,
+.nav a.active::after {
+    transform: translateX(-50%) scaleX(1);
+}
+
+/* Auth Buttons Container */
+#auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    margin-right: 16px;
+}
+
+/* Login Button */
+.btn-outline-light {
+    border: 2px solid #F6C84E !important;
+    color: #F6C84E !important;
+    background: transparent;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.btn-outline-light:hover {
+    background: linear-gradient(135deg, rgba(246, 200, 78, 0.15) 0%, rgba(246, 200, 78, 0.08) 100%);
+    border-color: #ffd966 !important;
+    color: #ffd966 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(246, 200, 78, 0.3);
+}
+
+/* Register Button */
+.btn-gold,
+a.btn[style*="background: linear-gradient(135deg, #F6C84E"] {
+    background: linear-gradient(135deg, #F6C84E 0%, #e6b73e 100%) !important;
+    border: none !important;
+    color: #000 !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(246, 200, 78, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-gold:hover,
+a.btn[style*="background: linear-gradient(135deg, #F6C84E"]:hover {
+    background: linear-gradient(135deg, #ffd966 0%, #F6C84E 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(246, 200, 78, 0.5) !important;
+}
+
+/* User Dropdown */
+.dropdown-menu {
+    min-width: 280px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(246, 200, 78, 0.2) !important;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+    padding: 8px 0 !important;
+    margin-top: 8px !important;
+}
+
+.dropdown-menu .dropdown-item {
+    padding: 10px 16px !important;
+    transition: all 0.2s ease !important;
+    border-radius: 6px !important;
+    margin: 2px 8px !important;
+    color: #e0e0e0 !important;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background: linear-gradient(135deg, rgba(246, 200, 78, 0.1) 0%, rgba(246, 200, 78, 0.05) 100%) !important;
+    color: #F6C84E !important;
+    transform: translateX(4px) !important;
+}
+
+.dropdown-menu .dropdown-item i {
+    width: 20px !important;
+    color: #F6C84E !important;
+    text-align: center !important;
+}
+
+.dropdown-menu .dropdown-item.text-danger:hover {
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.05) 100%) !important;
+    color: #dc3545 !important;
+}
+
+.dropdown-menu .dropdown-item.text-danger:hover i {
+    color: #dc3545 !important;
+}
+
+.dropdown-divider {
+    border-color: rgba(246, 200, 78, 0.1) !important;
+    margin: 8px 0 !important;
+}
+
+.dropdown-item-text {
+    padding: 12px 16px !important;
+    border-bottom: 1px solid rgba(246, 200, 78, 0.1) !important;
+}
+
+.text-gold {
+    color: #F6C84E !important;
+}
+
+/* User Button */
+.btn-gold.dropdown-toggle {
+    background: linear-gradient(135deg, #F6C84E 0%, #e6b73e 100%) !important;
+    border: none !important;
+    color: #000 !important;
+    font-weight: 600 !important;
+    padding: 8px 16px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(246, 200, 78, 0.3) !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.btn-gold.dropdown-toggle:hover {
+    background: linear-gradient(135deg, #ffd966 0%, #F6C84E 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(246, 200, 78, 0.5) !important;
+}
+
+.btn-gold.dropdown-toggle i {
+    font-size: 1.2rem !important;
+}
+
+/* Language Selector */
+.lang select {
+    background: rgba(246, 200, 78, 0.1);
+    border: 1px solid rgba(246, 200, 78, 0.3);
+    color: #F6C84E;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.lang select:hover {
+    background: rgba(246, 200, 78, 0.15);
+    border-color: #F6C84E;
+}
+
+.lang select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(246, 200, 78, 0.2);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .navbar .container.inner {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    .nav {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .nav a {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+    
+    #auth-buttons {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    .dropdown-menu {
+        min-width: 250px !important;
+    }
+}
+
+/* Smooth Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-menu.show {
+    animation: fadeIn 0.3s ease;
+}
+
+/* Accessibility */
+.btn:focus,
+.dropdown-toggle:focus {
+    outline: 2px solid #F6C84E;
+    outline-offset: 2px;
+}
+
+/* Loading State */
+.auth-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.auth-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #F6C84E;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}

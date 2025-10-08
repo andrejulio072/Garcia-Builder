@@ -683,7 +683,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.filter-btn').forEach(button => {
     button.addEventListener('click', function() {
       const category = this.getAttribute('data-filter');
-      
+
       // Google Analytics event
       if (typeof gtag !== 'undefined') {
         gtag('event', 'testimonial_filter', {
@@ -691,7 +691,7 @@ document.addEventListener('DOMContentLoaded', function() {
           'page_location': window.location.href
         });
       }
-      
+
       // Meta Pixel event
       if (typeof fbq !== 'undefined') {
         fbq('track', 'Search', {
@@ -700,13 +700,13 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
-  
+
   // Track testimonial card clicks/interactions
   document.querySelectorAll('.tcard').forEach(card => {
     card.addEventListener('click', function() {
       const name = this.querySelector('.name') ? this.querySelector('.name').textContent : 'Unknown';
       const category = this.getAttribute('data-category');
-      
+
       // Google Analytics event
       if (typeof gtag !== 'undefined') {
         gtag('event', 'testimonial_view', {
@@ -715,7 +715,7 @@ document.addEventListener('DOMContentLoaded', function() {
           'page_location': window.location.href
         });
       }
-      
+
       // Meta Pixel event
       if (typeof fbq !== 'undefined') {
         fbq('track', 'ViewContent', {
@@ -726,12 +726,12 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
-  
+
   // Track CTA clicks (email and Instagram)
   document.querySelectorAll('a[href*="mailto"], a[href*="instagram"]').forEach(link => {
     link.addEventListener('click', function() {
       const type = this.href.includes('mailto') ? 'email' : 'instagram';
-      
+
       // Google Analytics event
       if (typeof gtag !== 'undefined') {
         gtag('event', 'testimonial_cta_click', {
@@ -739,7 +739,7 @@ document.addEventListener('DOMContentLoaded', function() {
           'page_location': window.location.href
         });
       }
-      
+
       // Meta Pixel event
       if (typeof fbq !== 'undefined') {
         fbq('track', 'Contact', {

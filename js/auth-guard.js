@@ -9,6 +9,7 @@ class AuthGuard {
         this.addUserMenuToNavbar();
         this.protectRestrictedContent();
         this.addLoginPrompts();
+        this.setupCompactNavbar();
     }
 
     addUserMenuToNavbar() {
@@ -94,9 +95,11 @@ class AuthGuard {
                 </div>
             `;
         } else {
-            // Hide blog link for non-logged-in users
+            // Ensure blog link remains visible for all visitors
             if (blogLink) {
-                blogLink.style.display = 'none';
+                blogLink.style.display = '';
+                blogLink.style.opacity = '1';
+                blogLink.style.pointerEvents = 'auto';
             }
 
             // User not logged in - show enhanced login/register buttons
@@ -304,6 +307,86 @@ class AuthGuard {
             return false;
         }
         return true;
+    }
+
+    // Compact navbar: keep Home + Pricing inline; move others into a hamburger menu
+    setupCompactNavbar() {
+        try {
+            const navbar = document.querySelector('.navbar .inner')
+                || document.querySelector('.navbar .container.inner')
+                || document.querySelector('.navbar .container');
+            if (!navbar || navbar.dataset.compactInit === '1') return;
+            const nav = navbar.querySelector('.nav');
+            if (!nav) return;
+
+            const links = Array.from(nav.querySelectorAll('a'));
+            if (!links.length) return;
+
+            const isPrimary = (a) => {
+                const href = (a.getAttribute('href') || '').toLowerCase();
+                const i18n = a.getAttribute('data-i18n') || '';
+                return /index\.html$/.test(href) || i18n === 'nav.home' ||
+                       /pricing\.html$/.test(href) || i18n === 'nav.pricing';
+            };
+
+            const moreLinks = links.filter(a => !isPrimary(a));
+            if (!moreLinks.length) {
+                navbar.dataset.compactInit = '1';
+                return;
+            }
+
+            // Remove extra links from the inline nav (they will appear in the slide-out menu)
+            moreLinks.forEach(a => a.remove());
+
+            // Create hamburger button
+            const btn = document.createElement('button');
+            btn.className = 'hamburger-btn';
+            btn.setAttribute('type', 'button');
+            btn.setAttribute('aria-label', 'Open menu');
+            btn.innerHTML = '<span class="hamburger-lines"></span>';
+
+            // Insert before language selector if present, otherwise at end
+            const lang = navbar.querySelector('.lang');
+            if (lang) {
+                navbar.insertBefore(btn, lang);
+            } else {
+                navbar.appendChild(btn);
+            }
+
+            // Build slide-out menu
+            if (!document.getElementById('gb-more-menu')) {
+                const overlay = document.createElement('div');
+                overlay.id = 'gb-more-menu';
+                overlay.className = 'gb-more-menu';
+                overlay.innerHTML = `
+                    <div class="gb-more-content">
+                        <div class="gb-more-header">
+                            <strong>Menu</strong>
+                            <button class="gb-close" aria-label="Close">&times;</button>
+                        </div>
+                        <nav class="gb-more-nav"></nav>
+                    </div>`;
+                document.body.appendChild(overlay);
+
+                const moreNav = overlay.querySelector('.gb-more-nav');
+                moreLinks.forEach(a => {
+                    const item = document.createElement('div');
+                    item.className = 'gb-item';
+                    item.appendChild(a.cloneNode(true));
+                    moreNav.appendChild(item);
+                });
+
+                const close = () => overlay.classList.remove('open');
+                overlay.querySelector('.gb-close').addEventListener('click', close);
+                overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+
+                btn.addEventListener('click', () => overlay.classList.add('open'));
+            }
+
+            navbar.dataset.compactInit = '1';
+        } catch (e) {
+            console.warn('Compact navbar setup failed', e);
+        }
     }
 }
 

@@ -21,8 +21,7 @@ class AuthGuard {
         let userMenu = document.querySelector('#auth-buttons');
         console.log('AuthGuard: Found #auth-buttons container:', !!userMenu);
 
-        // Control Blog link visibility based on login status
-        const blogLink = document.querySelector('.nav a[href="blog.html"]');
+    // Note: Compact navbar will control which links stay inline; no special-case visibility here
 
         // If not found, fall back to the old method
         if (!userMenu) {
@@ -46,12 +45,6 @@ class AuthGuard {
         }
 
         if (currentUser) {
-            // Show blog link for logged-in users
-            if (blogLink) {
-                blogLink.style.display = '';
-                blogLink.style.opacity = '1';
-                blogLink.style.pointerEvents = 'auto';
-            }
 
             const firstName = (currentUser.name || currentUser.full_name || currentUser.email || 'User').toString().split(' ')[0];
             const displayName = (currentUser.name || currentUser.full_name || currentUser.email || 'User');
@@ -95,12 +88,6 @@ class AuthGuard {
                 </div>
             `;
         } else {
-            // Ensure blog link remains visible for all visitors
-            if (blogLink) {
-                blogLink.style.display = '';
-                blogLink.style.opacity = '1';
-                blogLink.style.pointerEvents = 'auto';
-            }
 
             // User not logged in - show enhanced login/register buttons
             const loginText = this.getTranslation('nav.login') || 'Login';
@@ -312,12 +299,30 @@ class AuthGuard {
     // Compact navbar: keep Home + Pricing inline on small screens; full navbar on desktop
     setupCompactNavbar() {
         try {
-            const navbar = document.querySelector('.navbar .inner')
-                || document.querySelector('.navbar .container.inner')
-                || document.querySelector('.navbar .container');
+            const navbarEl = document.querySelector('.navbar');
+            if (!navbarEl) return;
+            const navbar = navbarEl.querySelector('.inner')
+                || navbarEl.querySelector('.container.inner')
+                || navbarEl.querySelector('.container')
+                || navbarEl;
             if (!navbar || navbar.dataset.compactInit === '1') return;
-            const nav = navbar.querySelector('.nav') || navbar.querySelector('.nav-links');
-            if (!nav) return;
+            let nav = navbar.querySelector('.nav') || navbar.querySelector('.nav-links');
+            // If no nav group exists, create a minimal one with 3 primary links
+            if (!nav) {
+                nav = document.createElement('div');
+                nav.className = 'nav';
+                const home = document.createElement('a'); home.href = 'index.html'; home.textContent = this.getTranslation('nav.home') || 'Home';
+                const pricing = document.createElement('a'); pricing.href = 'pricing.html'; pricing.textContent = this.getTranslation('nav.pricing') || 'Pricing';
+                const login = document.createElement('a'); login.href = 'login.html'; login.textContent = this.getTranslation('nav.login') || 'Login';
+                nav.append(home, pricing, login);
+                // Insert after brand if present, else append to navbar
+                const brand = navbar.querySelector('.brand');
+                if (brand && brand.parentNode === navbar) {
+                    brand.insertAdjacentElement('afterend', nav);
+                } else {
+                    navbar.appendChild(nav);
+                }
+            }
 
             const links = Array.from(nav.querySelectorAll('a'));
             if (!links.length) return;
@@ -328,8 +333,6 @@ class AuthGuard {
                 return (
                     /index\.html$/.test(href) || i18n === 'nav.home' ||
                     /pricing\.html$/.test(href) || i18n === 'nav.pricing' ||
-                    /about\.html$/.test(href) || i18n === 'nav.about' ||
-                    /transformations\.html$/.test(href) || i18n === 'nav.trans' ||
                     /login\.html$/.test(href)   || i18n === 'nav.login'
                 );
             };
@@ -367,7 +370,6 @@ class AuthGuard {
 
             const moreNav = overlay.querySelector('.gb-more-nav');
 
-            const breakpoint = 992; // collapse below 992px (Bootstrap lg)
             const rebuildMoreMenu = () => {
                 // Populate slide-out with non-primary links
                 moreNav.innerHTML = '';
@@ -383,15 +385,10 @@ class AuthGuard {
             };
 
             const applyLayout = () => {
-                const w = window.innerWidth;
-                if (w < breakpoint) {
-                    navbar.classList.add('is-collapsed');
-                    rebuildMoreMenu();
-                    btn.onclick = () => overlay.classList.add('open');
-                } else {
-                    navbar.classList.remove('is-collapsed');
-                    overlay.classList.remove('open');
-                }
+                // Always keep navbar collapsed to show only primary links (Home, Pricing, Login)
+                navbar.classList.add('is-collapsed');
+                rebuildMoreMenu();
+                btn.onclick = () => overlay.classList.add('open');
             };
 
             // Initial and on-resize (debounced)

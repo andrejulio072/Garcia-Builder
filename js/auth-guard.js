@@ -316,7 +316,7 @@ class AuthGuard {
                 || document.querySelector('.navbar .container.inner')
                 || document.querySelector('.navbar .container');
             if (!navbar || navbar.dataset.compactInit === '1') return;
-            const nav = navbar.querySelector('.nav');
+            const nav = navbar.querySelector('.nav') || navbar.querySelector('.nav-links');
             if (!nav) return;
 
             const links = Array.from(nav.querySelectorAll('a'));
@@ -325,8 +325,13 @@ class AuthGuard {
             const isPrimary = (a) => {
                 const href = (a.getAttribute('href') || '').toLowerCase();
                 const i18n = a.getAttribute('data-i18n') || '';
-                return /index\.html$/.test(href) || i18n === 'nav.home' ||
-                       /pricing\.html$/.test(href) || i18n === 'nav.pricing';
+                return (
+                    /index\.html$/.test(href) || i18n === 'nav.home' ||
+                    /pricing\.html$/.test(href) || i18n === 'nav.pricing' ||
+                    /about\.html$/.test(href) || i18n === 'nav.about' ||
+                    /transformations\.html$/.test(href) || i18n === 'nav.trans' ||
+                    /login\.html$/.test(href)   || i18n === 'nav.login'
+                );
             };
 
             // Mark primary links for CSS control

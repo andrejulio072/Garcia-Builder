@@ -106,10 +106,11 @@ a{color:var(--text);text-decoration:none}
 /* Collapse behavior: only on small/medium screens */
 @media (min-width: 992px){
   .hamburger-btn{ display:none; }
-  .navbar .nav a{ display:inline-block; }
+  .navbar .nav a, .navbar .nav-links a{ display:inline-block; }
 }
 @media (max-width: 991.98px){
-  .navbar.is-collapsed .nav a:not(.gb-primary){ display:none; }
+  .navbar.is-collapsed .nav a:not(.gb-primary),
+  .navbar.is-collapsed .nav-links a:not(.gb-primary){ display:none; }
   .hamburger-btn{ display:inline-grid; }
 }
 

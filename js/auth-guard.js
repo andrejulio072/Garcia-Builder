@@ -277,7 +277,11 @@ class AuthGuard {
                 'nav.register': 'Register',
                 'nav.logout': 'Logout',
                 'nav.profile': 'My Profile',
-                'nav.dashboard': 'Dashboard'
+                'nav.dashboard': 'Dashboard',
+                'nav.home': 'Home',
+                'nav.pricing': 'Pricing',
+                'nav.more': 'More',
+                'nav.menu': 'Menu'
             };
             return fallbacks[key] || null;
         } catch (error) {
@@ -355,10 +359,11 @@ class AuthGuard {
                 overlay = document.createElement('div');
                 overlay.id = 'gb-more-menu';
                 overlay.className = 'gb-more-menu';
+                const headerLabel = this.getTranslation('nav.more') || this.getTranslation('nav.menu') || 'Menu';
                 overlay.innerHTML = `
                     <div class="gb-more-content">
                         <div class="gb-more-header">
-                            <strong>Menu</strong>
+                            <strong>${headerLabel}</strong>
                             <button class="gb-close" aria-label="Close">&times;</button>
                         </div>
                         <nav class="gb-more-nav"></nav>
@@ -374,11 +379,38 @@ class AuthGuard {
                 // Populate slide-out with non-primary links
                 moreNav.innerHTML = '';
                 const nonPrimary = Array.from(nav.querySelectorAll('a')).filter(a => !a.classList.contains('gb-primary'));
+                const hasFA = !!document.querySelector('link[href*="font-awesome"],link[href*="fontawesome"],script[src*="fontawesome"]');
+                const iconFor = (a) => {
+                    const href = (a.getAttribute('href')||'').toLowerCase();
+                    if (/index\.html$/.test(href)) return 'fa-home';
+                    if (/pricing/.test(href)) return 'fa-tags';
+                    if (/login/.test(href)) return 'fa-right-to-bracket';
+                    if (/blog/.test(href)) return 'fa-newspaper';
+                    if (/transformations/.test(href)) return 'fa-dumbbell';
+                    if (/about/.test(href)) return 'fa-circle-info';
+                    if (/contact/.test(href)) return 'fa-envelope';
+                    if (/faq/.test(href)) return 'fa-circle-question';
+                    if (/testimonials/.test(href)) return 'fa-comments';
+                    if (/programs/.test(href)) return 'fa-list-ul';
+                    if (/dashboard|profile/.test(href)) return 'fa-gauge';
+                    if (/admin/.test(href)) return 'fa-toolbox';
+                    return 'fa-link';
+                };
                 nonPrimary.forEach((a, idx) => {
                     const item = document.createElement('div');
                     item.className = 'gb-item';
                     item.style.setProperty('--i', String(idx));
                     const clone = a.cloneNode(true);
+                    if (hasFA) {
+                        const i = document.createElement('i');
+                        i.className = `fas ${iconFor(clone)}`;
+                        i.style.width = '20px';
+                        i.style.marginRight = '8px';
+                        const text = clone.textContent;
+                        clone.textContent = '';
+                        clone.appendChild(i);
+                        clone.appendChild(document.createTextNode(text));
+                    }
                     item.appendChild(clone);
                     moreNav.appendChild(item);
                 });

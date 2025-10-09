@@ -427,7 +427,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a data-i18n="nav.trans" href="transformations.html">Transformations</a>
       <a data-i18n="nav.testi" href="testimonials.html">Testimonials</a>
       <a data-i18n="nav.pricing" href="pricing.html" class="active">Pricing</a>
-      <a data-i18n="nav.blog" href="blog.html" style="display:none;">Blog</a>
+      <a data-i18n="nav.blog" href="blog.html">Blog</a>
       <a data-i18n="nav.faq" href="faq.html">FAQ</a>
       <a data-i18n="nav.contact" href="contact.html">Contact</a>
     </nav>
@@ -435,8 +435,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Auth buttons will be dynamically inserted here by auth-guard.js -->
     <div id="auth-buttons"></div>
 
-    <div class="lang">
-      <select id="lang-select">
+    <div class="lang" style="display:flex; gap:8px; align-items:center;">
+      <select id="currency-select-nav" style="background:rgba(255,255,255,0.1);border:1px solid rgba(246,200,78,0.3);color:#fff;border-radius:6px;padding:6px 10px;font-size:0.9rem;cursor:pointer;" title="Currency">
+        <option value="GBP" selected>£ GBP</option>
+        <option value="EUR">€ EUR</option>
+        <option value="USD">$ USD</option>
+        <option value="BRL">R$ BRL</option>
+        <option value="CAD">C$ CAD</option>
+        <option value="AUD">A$ AUD</option>
+      </select>
+      <select id="lang-select" style="background:rgba(255,255,255,0.1);border:1px solid rgba(246,200,78,0.3);color:#fff;border-radius:6px;padding:6px 10px;font-size:0.9rem;cursor:pointer;">
         <option data-i18n="nav.lang.en" value="en">EN</option>
         <option data-i18n="nav.lang.pt" value="pt">PT</option>
         <option data-i18n="nav.lang.es" value="es">ES</option>
@@ -444,24 +452,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 </nav>
-
-  <!-- Auth buttons will be dynamically inserted here by auth-guard.js -->
-  <div id="auth-buttons"></div>
-
-  <div class="lang" style="display:flex; gap:.5rem; align-items:center;">
-    <div class="currency-nav">
-      <select id="currency-select-nav" class="currency-select-input" title="Currency">
-        <option value="GBP" selected>£ British Pound (GBP)</option>
-        <option value="EUR">€ Euro (EUR)</option>
-        <option value="USD">$ US Dollar (USD)</option>
-        <option value="BRL">R$ Brazilian Real (BRL)</option>
-        <option value="CAD">C$ Canadian Dollar (CAD)</option>
-        <option value="AUD">A$ Australian Dollar (AUD)</option>
-      </select>
-    </div>
-    <select id="lang-select"><option value="en">EN</option><option value="pt">PT</option><option value="es">ES</option></select>
-  </div>
-</div></nav>
 
 <section class="section">
   <div class="container">

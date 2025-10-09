@@ -103,6 +103,22 @@ a{color:var(--text);text-decoration:none}
 .gb-item a{display:block;padding:12px 14px;margin:6px 0;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.05)}
 .gb-item a:hover{background:rgba(255,255,255,.08)}
 
+/* Collapse behavior: only on small/medium screens */
+@media (min-width: 992px){
+  .hamburger-btn{ display:none; }
+  .navbar .nav a{ display:inline-block; }
+}
+@media (max-width: 991.98px){
+  .navbar.is-collapsed .nav a:not(.gb-primary){ display:none; }
+  .hamburger-btn{ display:inline-grid; }
+}
+
+/* Slide-out animations */
+.gb-more-content{ animation: slideIn .25s ease both; }
+@keyframes slideIn{ from{ transform:translateX(100%); } to{ transform:none; } }
+.gb-item{ opacity:0; transform: translateX(12px); animation: itemIn .35s ease forwards; animation-delay: calc(var(--i, 0) * 40ms); }
+@keyframes itemIn{ to{ opacity:1; transform:none; } }
+
 /* Global select styling for dark theme */
 select {
     background: #1a1a1a !important;

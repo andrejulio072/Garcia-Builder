@@ -309,7 +309,7 @@ class AuthGuard {
         return true;
     }
 
-    // Compact navbar: keep Home + Pricing inline; move others into a hamburger menu
+    // Compact navbar: keep Home + Pricing inline on small screens; full navbar on desktop
     setupCompactNavbar() {
         try {
             const navbar = document.querySelector('.navbar .inner')
@@ -329,33 +329,22 @@ class AuthGuard {
                        /pricing\.html$/.test(href) || i18n === 'nav.pricing';
             };
 
-            const moreLinks = links.filter(a => !isPrimary(a));
-            if (!moreLinks.length) {
-                navbar.dataset.compactInit = '1';
-                return;
-            }
+            // Mark primary links for CSS control
+            links.forEach(a => { if (isPrimary(a)) a.classList.add('gb-primary'); });
 
-            // Remove extra links from the inline nav (they will appear in the slide-out menu)
-            moreLinks.forEach(a => a.remove());
-
-            // Create hamburger button
+            // Create hamburger button (initially hidden via CSS on desktop)
             const btn = document.createElement('button');
             btn.className = 'hamburger-btn';
             btn.setAttribute('type', 'button');
             btn.setAttribute('aria-label', 'Open menu');
             btn.innerHTML = '<span class="hamburger-lines"></span>';
-
-            // Insert before language selector if present, otherwise at end
             const lang = navbar.querySelector('.lang');
-            if (lang) {
-                navbar.insertBefore(btn, lang);
-            } else {
-                navbar.appendChild(btn);
-            }
+            if (lang) navbar.insertBefore(btn, lang); else navbar.appendChild(btn);
 
-            // Build slide-out menu
-            if (!document.getElementById('gb-more-menu')) {
-                const overlay = document.createElement('div');
+            // Build slide-out menu once
+            let overlay = document.getElementById('gb-more-menu');
+            if (!overlay) {
+                overlay = document.createElement('div');
                 overlay.id = 'gb-more-menu';
                 overlay.className = 'gb-more-menu';
                 overlay.innerHTML = `
@@ -367,21 +356,43 @@ class AuthGuard {
                         <nav class="gb-more-nav"></nav>
                     </div>`;
                 document.body.appendChild(overlay);
+                overlay.querySelector('.gb-close').addEventListener('click', () => overlay.classList.remove('open'));
+                overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+            }
 
-                const moreNav = overlay.querySelector('.gb-more-nav');
-                moreLinks.forEach(a => {
+            const moreNav = overlay.querySelector('.gb-more-nav');
+
+            const breakpoint = 992; // collapse below 992px (Bootstrap lg)
+            const rebuildMoreMenu = () => {
+                // Populate slide-out with non-primary links
+                moreNav.innerHTML = '';
+                const nonPrimary = Array.from(nav.querySelectorAll('a')).filter(a => !a.classList.contains('gb-primary'));
+                nonPrimary.forEach((a, idx) => {
                     const item = document.createElement('div');
                     item.className = 'gb-item';
-                    item.appendChild(a.cloneNode(true));
+                    item.style.setProperty('--i', String(idx));
+                    const clone = a.cloneNode(true);
+                    item.appendChild(clone);
                     moreNav.appendChild(item);
                 });
+            };
 
-                const close = () => overlay.classList.remove('open');
-                overlay.querySelector('.gb-close').addEventListener('click', close);
-                overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+            const applyLayout = () => {
+                const w = window.innerWidth;
+                if (w < breakpoint) {
+                    navbar.classList.add('is-collapsed');
+                    rebuildMoreMenu();
+                    btn.onclick = () => overlay.classList.add('open');
+                } else {
+                    navbar.classList.remove('is-collapsed');
+                    overlay.classList.remove('open');
+                }
+            };
 
-                btn.addEventListener('click', () => overlay.classList.add('open'));
-            }
+            // Initial and on-resize (debounced)
+            applyLayout();
+            let t;
+            window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(applyLayout, 120); });
 
             navbar.dataset.compactInit = '1';
         } catch (e) {

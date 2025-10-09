@@ -9,6 +9,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/global.css?v=20251003-2030">
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-17627402053');
+    </script>
+
+    <!-- Event snippet for Visualização de página conversion page -->
+    <script>
+      function gtag_report_conversion(url) {
+        var callback = function () {
+          if (typeof(url) != 'undefined') {
+            window.location = url;
+          }
+        };
+        gtag('event', 'conversion', {
+            'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
+            'value': 1.0,
+            'currency': 'GBP',
+            'event_callback': callback
+        });
+        return false;
+      }
+    </script>
+
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -229,7 +256,7 @@
                                 </a>
                                 <a href="https://wa.me/447508497586?text=Oi André! Baixei seu ebook e quero saber mais sobre o coaching personalizado."
                                    class="btn btn-success btn-lg"
-                                   target="_blank">
+                                   target="_blank" onclick="return gtag_report_conversion(this.href)">
                                     <i class="fab fa-whatsapp me-2"></i>
                                     FALAR NO WHATSAPP
                                 </a>

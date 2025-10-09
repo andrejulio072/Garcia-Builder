@@ -3,6 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-17627402053');
+  </script>
+
+  <!-- Event snippet for Visualização de página conversion page -->
+  <script>
+    function gtag_report_conversion(url) {
+      var callback = function () {
+        if (typeof(url) != 'undefined') {
+          window.location = url;
+        }
+      };
+      gtag('event', 'conversion', {
+          'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
+          'value': 1.0,
+          'currency': 'GBP',
+          'event_callback': callback
+      });
+      return false;
+    }
+  </script>
+
   <title>Privacy Policy | Garcia Builder</title>
   <link rel="stylesheet" href="css/global.css" />
   <meta name="robots" content="noindex" />

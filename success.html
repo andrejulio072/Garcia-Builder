@@ -39,6 +39,25 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'AW-1762742053');
+      gtag('config', 'AW-17627402053');
+    </script>
+
+    <!-- Event snippet for Visualização de página conversion page -->
+    <script>
+      function gtag_report_conversion(url) {
+        var callback = function () {
+          if (typeof(url) != 'undefined') {
+            window.location = url;
+          }
+        };
+        gtag('event', 'conversion', {
+            'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
+            'value': 1.0,
+            'currency': 'GBP',
+            'event_callback': callback
+        });
+        return false;
+      }
     </script>
 
     <!-- Central consent-aware Ads loader -->
@@ -201,7 +220,7 @@
                             <span data-i18n="success.go_to_dashboard">Ir para Dashboard</span>
                         </a>
                         <a href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20just%20completed%20my%20payment%20and%20I%27m%20ready%20to%20start!"
-                           target="_blank" class="btn btn-success btn-lg">
+                           target="_blank" class="btn btn-success btn-lg" onclick="return gtag_report_conversion(this.href)">
                             <i class="fab fa-whatsapp me-2"></i>
                             <span data-i18n="success.contact_coach">Falar com o Coach</span>
                         </a>

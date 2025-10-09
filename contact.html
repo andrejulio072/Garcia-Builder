@@ -80,6 +80,25 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'AW-1762742053');
+    gtag('config', 'AW-17627402053');
+  </script>
+
+  <!-- Event snippet for Visualização de página conversion page -->
+  <script>
+    function gtag_report_conversion(url) {
+      var callback = function () {
+        if (typeof(url) != 'undefined') {
+          window.location = url;
+        }
+      };
+      gtag('event', 'conversion', {
+          'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
+          'value': 1.0,
+          'currency': 'GBP',
+          'event_callback': callback
+      });
+      return false;
+    }
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -386,9 +405,9 @@ Tell me about your goal. I’ll get back within 24–48h.</p>
 
   <hr class="hr-shine">
   <div class="footer">
-  <div class="container small">© 2025 Garcia Builder — Online Coaching • <a href="https://instagram.com/garcia.builder" target="_blank">@garcia.builder</a> • <a data-i18n="cta.strip.book" href="https://calendly.com/andrenjulio072/consultation" target="_blank">Book a call</a> • <a href="assets/empty-guide.pdf" download>Download Training Guide (PDF)</a></div>
+  <div class="container small">© 2025 Garcia Builder — Online Coaching • <a href="https://instagram.com/garcia.builder" target="_blank" onclick="return gtag_report_conversion(this.href)">@garcia.builder</a> • <a data-i18n="cta.strip.book" href="https://calendly.com/andrenjulio072/consultation" target="_blank" onclick="return gtag_report_conversion(this.href)">Book a call</a> • <a href="assets/empty-guide.pdf" download>Download Training Guide (PDF)</a></div>
   </div>
-  <a class="whatsapp-float" data-i18n="footer.whatsapp" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank">WhatsApp</a>
+  <a class="whatsapp-float" data-i18n="footer.whatsapp" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" onclick="return gtag_report_conversion(this.href)">WhatsApp</a>
 
   <!-- Scripts -->
   <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

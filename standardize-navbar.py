@@ -52,23 +52,23 @@ CSS_LINK = '<link rel="stylesheet" href="css/enhanced-navbar.css?v=20251008">'
 
 def standardize_navbar(html_content, page_name):
     """Replace existing navbar with standard one"""
-    
+
     # Find and replace navbar (pattern matches from <nav class="navbar"> to </nav>)
     pattern = r'<nav class="navbar">.*?</nav>'
-    
+
     # Add active class to current page
     navbar = STANDARD_NAVBAR
     page_key = page_name.replace('.html', '')
-    
+
     # Add active class based on page
     if page_key == 'index':
         navbar = navbar.replace('href="index.html">Home', 'href="index.html" class="active">Home')
     elif page_key in navbar:
         navbar = navbar.replace(f'href="{page_name}"', f'href="{page_name}" class="active"')
-    
+
     # Replace navbar
     html_content = re.sub(pattern, navbar, html_content, flags=re.DOTALL)
-    
+
     return html_content
 
 def ensure_css_linked(html_content):
@@ -91,33 +91,33 @@ def ensure_css_linked(html_content):
 
 def main():
     updated_files = []
-    
+
     for page in PAGES:
         if not os.path.exists(page):
             print(f"⚠️  {page} not found")
             continue
-        
+
         print(f"📝 Processing {page}...")
-        
+
         try:
             with open(page, 'r', encoding='utf-8') as f:
                 content = f.read()
-            
+
             # Standardize navbar
             content = standardize_navbar(content, page)
-            
+
             # Ensure CSS is linked
             content = ensure_css_linked(content)
-            
+
             with open(page, 'w', encoding='utf-8') as f:
                 f.write(content)
-            
+
             updated_files.append(page)
             print(f"✅ {page} updated!")
-            
+
         except Exception as e:
             print(f"❌ Error processing {page}: {e}")
-    
+
     print(f"\n🎉 Successfully updated {len(updated_files)} files:")
     for file in updated_files:
         print(f"   - {file}")

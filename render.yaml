@@ -30,4 +30,8 @@ services:
         sync: false
       - key: FROM_EMAIL
         sync: false
+      - key: BOOKING_URL
+        sync: false
+      - key: FIRST_WORKOUT_URL
+        value: https://garciabuilder.fitness/first-workout.html
     healthCheckPath: /health

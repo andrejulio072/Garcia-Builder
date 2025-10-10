@@ -33,6 +33,8 @@
     <title>Payment Success - Garcia Builder</title>
     <!-- Optional: set a Trainerize invite link without code changes -->
     <meta name="trainerize:invite" content="">
+    <!-- Optional: Booking URL for onboarding consult -->
+    <meta name="booking:url" content="">
 
     <!-- Google Ads Global Site Tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-1762742053"></script>
@@ -181,6 +183,18 @@
                                 <a id="trainerize-cta" href="#" target="_blank" class="btn btn-warning w-100 fw-bold" style="color:#0b1220">
                                     <i class="fas fa-bolt me-2"></i>
                                     <span data-i18n="success.next_steps.trainerize_invite">Acessar convite do Trainerize</span>
+                                </a>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <a id="book-cta" href="#" target="_blank" class="btn btn-outline-light w-100">
+                                    <i class="fas fa-calendar-check me-2"></i>
+                                    <span data-i18n="success.next_steps.book">Agendar consulta de onboarding</span>
+                                </a>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <a href="first-workout.html" class="btn btn-outline-warning w-100">
+                                    <i class="fas fa-dumbbell me-2"></i>
+                                    <span data-i18n="success.next_steps.first_workout">Fazer o primeiro treino (Dia 1)</span>
                                 </a>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -389,6 +403,17 @@
                     cta.style.display = 'none';
                 }
             } catch(e){ console.warn('Trainerize CTA config failed', e); }
+
+            // Configure Booking CTA if provided via meta
+            try {
+                const booking = (document.querySelector('meta[name="booking:url"]')?.getAttribute('content')) || '';
+                const book = document.getElementById('book-cta');
+                if (book && booking) {
+                    book.href = booking;
+                } else if (book) {
+                    book.style.display = 'none';
+                }
+            } catch(e){ console.warn('Booking CTA config failed', e); }
         }
 
         function showError(message) {

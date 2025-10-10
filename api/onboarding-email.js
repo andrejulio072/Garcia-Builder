@@ -38,6 +38,8 @@ function renderEmailHtml({ name, planName, trainerizeLink, locale = 'en' }) {
   };
   const steps = nextSteps[locale] || nextSteps.en;
   const header = titles[locale] || titles.en;
+  const bookingUrl = process.env.BOOKING_URL || '';
+  const firstWorkoutUrl = process.env.FIRST_WORKOUT_URL || 'https://garciabuilder.fitness/first-workout.html';
 
   return `
   <div style="font-family:Inter,Arial,sans-serif;color:#0b1220">
@@ -49,6 +51,8 @@ function renderEmailHtml({ name, planName, trainerizeLink, locale = 'en' }) {
         Open Trainerize Invite
       </a>
     </p>
+    ${bookingUrl ? `<p><a href="${bookingUrl}">Schedule your onboarding consult</a></p>` : ''}
+    <p><a href="${firstWorkoutUrl}">Start your first workout now</a></p>
     <ol>
       ${steps.map(s => `<li>${s}</li>`).join('')}
     </ol>

@@ -83,6 +83,8 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
 <link rel="preconnect" href="https://www.googletagmanager.com"/>
 <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
 <link rel="preload" as="image" href="assets/bg-fitness.jpg"/>
+<!-- Optional: booking URL for scheduling consult on pricing/success/first-workout -->
+<meta name="booking:url" content="">
 <!-- Structured Data: OfferCatalog (coaching plans with duration discounts) -->
 <script type="application/ld+json">
 {
@@ -829,4 +831,20 @@ document.addEventListener('change', function(e) {
 // (Funnel tracking for checkout is now handled in js/pricing.js for .btn.btn-gold)
 </script>
 <script defer src="js/engagement-tracking.js"></script>
+<script>
+  // Inject onboarding CTAs near the bottom of the page
+  (function(){
+    try {
+      var container = document.body;
+      var section = document.createElement('section');
+      section.className = 'container my-4';
+      section.innerHTML = '\n        <div class="alert alert-dark" role="alert" style="background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#e9ecef;">\n          <div class="d-flex flex-wrap align-items-center">\n            <div class="me-3 mb-2"><i class="fas fa-flag-checkered text-warning me-2"></i><strong>After purchase:</strong></div>\n            <a id="book-pricing" href="#" target="_blank" class="btn btn-outline-warning btn-sm me-2 mb-2">Schedule consult</a>\n            <a href="first-workout.html" class="btn btn-outline-light btn-sm mb-2">Preview the first workout</a>\n          </div>\n        </div>';
+      container.appendChild(section);
+      var meta = document.querySelector('meta[name="booking:url"]');
+      var url = (meta && meta.getAttribute('content')) || '';
+      var book = section.querySelector('#book-pricing');
+      if (book) { if (url) book.href = url; else book.style.display = 'none'; }
+    } catch(e) { console.warn('Onboarding CTAs injection failed', e); }
+  })();
+  </script>
 </body></html>

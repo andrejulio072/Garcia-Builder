@@ -53,7 +53,9 @@
                     planName: planName,
                     customerEmail: userEmail,
                     successUrl: STRIPE_CONFIG.successUrl + '?session_id={CHECKOUT_SESSION_ID}',
-                    cancelUrl: STRIPE_CONFIG.cancelUrl
+                    cancelUrl: STRIPE_CONFIG.cancelUrl,
+                    // Optional Trainerize invite passthrough
+                    trainerizeInvite: (document.querySelector('meta[name="trainerize:invite"]')?.getAttribute('content')) || (window.GB_TRAINERIZE_INVITE) || undefined
                 })
             });
 
@@ -162,7 +164,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                                    processing: "Processing your payment...",
+                        </div>
                     </div>
                 </div>
             </div>
@@ -173,13 +175,6 @@
         modalContainer.innerHTML = modalHtml;
         document.body.appendChild(modalContainer);
 
-                                },
-                                es: {
-                                    title: "Procesando Pago",
-                                    processing: "Procesando su pago...",
-                                    success: "¡Pago exitoso! Redirigiendo...",
-                                    error: "Error en el pago. Inténtelo de nuevo.",
-                                    redirect: "Redirigiendo a su panel..."
         // Mostrar modal
         const modal = new window.bootstrap.Modal(document.getElementById('paymentErrorModal'));
         modal.show();

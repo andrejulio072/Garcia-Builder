@@ -31,6 +31,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Success - Garcia Builder</title>
+    <!-- Optional: set a Trainerize invite link without code changes -->
+    <meta name="trainerize:invite" content="">
 
     <!-- Google Ads Global Site Tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-1762742053"></script>
@@ -175,6 +177,12 @@
                     <div class="next-steps">
                         <h4 class="mb-3" data-i18n="success.next_steps.title">Próximos Passos:</h4>
                         <div class="row text-start">
+                            <div class="col-12 mb-3">
+                                <a id="trainerize-cta" href="#" target="_blank" class="btn btn-warning w-100 fw-bold" style="color:#0b1220">
+                                    <i class="fas fa-bolt me-2"></i>
+                                    <span data-i18n="success.next_steps.trainerize_invite">Acessar convite do Trainerize</span>
+                                </a>
+                            </div>
                             <div class="col-md-6 mb-3">
                                 <div class="d-flex align-items-start">
                                     <i class="fas fa-envelope text-primary me-3 mt-1"></i>
@@ -369,6 +377,18 @@
                                 } catch(metaErr){ console.warn('Meta attribution enrichment failed', metaErr); }
                             }
                         } catch(e){ console.warn('Pixel purchase failed', e); }
+
+            // Configure Trainerize invite CTA
+            try {
+                const invite = paymentData.trainerize_invite || (document.querySelector('meta[name="trainerize:invite"]')?.getAttribute('content')) || '';
+                const cta = document.getElementById('trainerize-cta');
+                if (cta && invite) {
+                    cta.href = invite;
+                    cta.onclick = null;
+                } else if (cta) {
+                    cta.style.display = 'none';
+                }
+            } catch(e){ console.warn('Trainerize CTA config failed', e); }
         }
 
         function showError(message) {

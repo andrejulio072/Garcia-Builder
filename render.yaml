@@ -11,8 +11,23 @@ services:
         sync: false
       - key: STRIPE_PUBLISHABLE_KEY
         sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
       - key: CORS_ORIGINS
         value: https://garciabuilder.fitness,https://www.garciabuilder.fitness,https://garciabuilder.uk,https://www.garciabuilder.uk,https://garcia-builder.onrender.com
       - key: NODE_ENV
         value: production
+      # Optional onboarding configuration
+      - key: TRAINERIZE_INVITE_URL
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: FROM_EMAIL
+        sync: false
     healthCheckPath: /health

@@ -308,6 +308,8 @@ async function handlePlanSelection(planKey, planName, planPrice, buttonElement) 
         successUrl: window.location.origin + '/success.html',
         cancelUrl: window.location.origin + '/pricing.html',
         discountCode: activeDiscount?.code || undefined,
+        // Optional Trainerize invite passthrough, if configured on page/global
+        trainerizeInvite: (document.querySelector('meta[name="trainerize:invite"]')?.getAttribute('content')) || (window.GB_TRAINERIZE_INVITE) || undefined,
         // Basic attribution passthrough (server can store or enrich)
         utm: (function(){
           try {

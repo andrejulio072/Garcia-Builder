@@ -320,6 +320,7 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
             planKey,
             customerEmail,
             customerName,
+            trainerizeInvite, // optional Trainerize invite URL
             successUrl = `${req.protocol}://${req.get('host')}/success.html`,
             cancelUrl = `${req.protocol}://${req.get('host')}/pricing.html`,
             utm: rawUtm
@@ -416,6 +417,7 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
                 created_at: new Date().toISOString(),
                 client_ip: (req.ip || req.headers['x-forwarded-for'] || '').toString().split(',')[0].trim().slice(0,45),
                 client_ua: (req.headers['user-agent'] || '').slice(0,200),
+                trainerize_invite: trainerizeInvite || process.env.TRAINERIZE_INVITE_URL || '',
                 ...utmMeta
             },
             subscription_data: {
@@ -425,6 +427,7 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
                     service: 'garcia-builder',
                     client_ip: (req.ip || req.headers['x-forwarded-for'] || '').toString().split(',')[0].trim().slice(0,45),
                     client_ua: (req.headers['user-agent'] || '').slice(0,200),
+                    trainerize_invite: trainerizeInvite || process.env.TRAINERIZE_INVITE_URL || '',
                     ...utmMeta
                 }
             },
@@ -542,16 +545,17 @@ app.get('/api/payment-status/:sessionId', validateStripeReady, async (req, res) 
         const { sessionId } = req.params;
         const session = await stripe.checkout.sessions.retrieve(sessionId, { expand: ['subscription'] });
         const paid = session.payment_status === 'paid';
-        res.json({
-            status: paid ? 'paid' : session.payment_status,
-            session_id: session.id,
-            amount_total: session.amount_total,
-            currency: session.currency,
-            customer_email: session.customer_details?.email,
-            subscription_id: session.subscription?.id || session.subscription,
-            plan_key: session.metadata?.plan_key,
-            plan_name: session.metadata?.plan_key || 'Coaching Subscription'
-        });
+            res.json({
+                status: paid ? 'paid' : session.payment_status,
+                session_id: session.id,
+                amount_total: session.amount_total,
+                currency: session.currency,
+                customer_email: session.customer_details?.email,
+                subscription_id: session.subscription?.id || session.subscription,
+                plan_key: session.metadata?.plan_key,
+                plan_name: session.metadata?.plan_key || 'Coaching Subscription',
+                trainerize_invite: session.metadata?.trainerize_invite || null
+            });
     } catch (e) {
         res.status(404).json({ status:'error', error:'NOT_FOUND' });
     }
@@ -741,6 +745,22 @@ app.post('/api/stripe-webhook', async (req, res) => {
                     }
                 } catch (attribErr) {
                     console.warn('⚠️ Attribution dispatch failed:', attribErr.message);
+                }
+                // Onboarding email (optional; depends on SMTP env)
+                try {
+                    const { sendOnboardingEmail } = require('./onboarding-email');
+                    const email = session.customer_details?.email;
+                    const planName = session.metadata?.plan_name || session.metadata?.plan_key || 'Coaching Plan';
+                    const trainerizeLink = session.metadata?.trainerize_invite || process.env.TRAINERIZE_INVITE_URL;
+                    const locale = (session.locale || session.customer_details?.address?.country === 'BR') ? 'pt' : 'en';
+                    if (email && trainerizeLink) {
+                        await sendOnboardingEmail({ to: email, name: session.customer_details?.name, planName, trainerizeLink, locale });
+                        console.log('✉️ Onboarding email queued/sent to', email);
+                    } else {
+                        console.log('ℹ️ Skipping onboarding email (missing email or trainerize link)');
+                    }
+                } catch (mailErr) {
+                    console.warn('⚠️ Onboarding email failed/skipped:', mailErr.message);
                 }
                 break;
             }

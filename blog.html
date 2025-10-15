@@ -131,7 +131,7 @@
         }
 
         .navbar .brand img {
-            height: 40px;
+            height: 56px;
         }
 
         .navbar .title-gradient {
@@ -474,8 +474,8 @@
     <!-- Dynamic Navigation (same as all pages) -->
     <nav class="navbar">
   <div class="container inner">
-    <a class="brand" href="index.html" style="display:flex;align-items:center;gap:14px;min-height:56px;">
-      <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" decoding="async" loading="eager" style="height: 48px;"/>
+        <a class="brand" href="index.html" style="display:flex;align-items:center;gap:14px;min-height:56px;">
+            <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" decoding="async" loading="eager"/>
       <span class="title-gradient" style="font-size:2rem;line-height:1.1;font-weight:800;">Garcia Builder</span>
     </a>
     <nav class="nav">
@@ -500,12 +500,6 @@
       </select>
     </div>
 
-    <!-- Hamburger for mobile -->
-    <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
   </div>
 </nav>
 
@@ -846,7 +840,6 @@
             </div>
 
             <div class="text-center mt-5">
-                <a href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia" target="_blank" class="btn btn-outline-light btn-lg">
                 <a href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia" target="_blank" class="btn btn-outline-light btn-lg" onclick="return gtag_report_conversion(this.href)">
                     <i class="fas fa-book-open me-2"></i>View All Articles on Trainerize
                 </a>
@@ -859,18 +852,13 @@
         <div class="container small" style="display:flex;align-items:center;gap:18px;justify-content:center;flex-wrap:wrap;">
             <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo"/>
             <span>© 2025 Garcia Builder — Online Coaching · <a href="#" onclick="openConsentPreferences();return false;">Manage Cookies</a></span>
-            <a href="https://instagram.com/garcia.builder" target="_blank">@garcia.builder</a>
             <a href="https://instagram.com/garcia.builder" target="_blank" onclick="return gtag_report_conversion(this.href)">@garcia.builder</a>
-            <a href="https://calendly.com/andrenjulio072/consultation" target="_blank">Book a call</a>
             <a href="https://calendly.com/andrenjulio072/consultation" target="_blank" onclick="return gtag_report_conversion(this.href)">Book a call</a>
             <a href="assets/empty-guide.pdf" download>Download Training Guide (PDF)</a>
         </div>
     </div>
 
     <!-- WhatsApp Float -->
-    <a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre!%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank">WhatsApp</a>
-    <a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre!%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" onclick="return gtag_report_conversion(this.href)">WhatsApp</a>
-    <a class="whatsapp-float" style="background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;box-shadow:0 2px 12px 0 #128c7e80;right:24px;bottom:24px;z-index:1000;" href="https://wa.me/447508497586?text=Hi%20Andre!%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" aria-label="WhatsApp">WhatsApp</a>
     <a class="whatsapp-float" style="background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;box-shadow:0 2px 12px 0 #128c7e80;right:24px;bottom:24px;z-index:1000;" href="https://wa.me/447508497586?text=Hi%20Andre!%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" aria-label="WhatsApp" onclick="return gtag_report_conversion(this.href)">WhatsApp</a>
 
     <!-- Scripts -->
@@ -978,36 +966,7 @@
 
     <!-- Mobile Navigation Script -->
     <script>
-      // Hamburger menu toggle
-      const hamburger = document.querySelector('.hamburger');
-      const nav = document.querySelector('.navbar .nav');
 
-      if (hamburger && nav) {
-        hamburger.addEventListener('click', () => {
-          const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
-          hamburger.setAttribute('aria-expanded', !isExpanded);
-          hamburger.classList.toggle('active');
-          nav.classList.toggle('active');
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-          if (!hamburger.contains(e.target) && !nav.contains(e.target)) {
-            hamburger.classList.remove('active');
-            nav.classList.remove('active');
-            hamburger.setAttribute('aria-expanded', 'false');
-          }
-        });
-
-        // Close menu when clicking a link
-        nav.querySelectorAll('a').forEach(link => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            nav.classList.remove('active');
-            hamburger.setAttribute('aria-expanded', 'false');
-          });
-        });
-      }
     </script>
 </body>
 </html>

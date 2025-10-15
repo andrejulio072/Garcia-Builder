@@ -24,7 +24,7 @@
     <nav class="navbar">
       <div class="container inner">
         <a class="brand" href="index.html" style="display:flex;align-items:center;gap:14px;min-height:56px;">
-          <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" decoding="async" loading="eager" style="height: 48px;"/>
+          <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" decoding="async" loading="eager"/>
           <span class="title-gradient" style="font-size:2rem;line-height:1.1;font-weight:800;">Garcia Builder</span>
         </a>
         <nav class="nav">
@@ -49,12 +49,6 @@
           </select>
         </div>
 
-        <!-- Hamburger for mobile -->
-        <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
       </div>
     </nav>
 
@@ -290,39 +284,7 @@
     <script src="js/auth.js" defer></script>
     <script src="js/auth-guard.js?v=20251009" defer></script>
 
-    <!-- Mobile Navigation Script -->
-    <script>
-      // Hamburger menu toggle
-      const hamburger = document.querySelector('.hamburger');
-      const nav = document.querySelector('.navbar .nav');
 
-      if (hamburger && nav) {
-        hamburger.addEventListener('click', () => {
-          const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
-          hamburger.setAttribute('aria-expanded', !isExpanded);
-          hamburger.classList.toggle('active');
-          nav.classList.toggle('active');
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-          if (!hamburger.contains(e.target) && !nav.contains(e.target)) {
-            hamburger.classList.remove('active');
-            nav.classList.remove('active');
-            hamburger.setAttribute('aria-expanded', 'false');
-          }
-        });
-
-        // Close menu when clicking a link
-        nav.querySelectorAll('a').forEach(link => {
-          link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            nav.classList.remove('active');
-            hamburger.setAttribute('aria-expanded', 'false');
-          });
-        });
-      }
-    </script>
 
 
 </body>

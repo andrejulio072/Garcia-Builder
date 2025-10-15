@@ -1,30 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trainer Dashboard - Garcia Builder</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/global.css" />
-  <style>
-    body{background:#0f0f0f;color:#fff}
-    .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
-    .badge-soft{background:rgba(246,200,78,.15);color:#F6C84E;border:1px solid rgba(246,200,78,.3)}
-    .session-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08)!important}
-    .session-item:hover{background:rgba(255,255,255,.08)}
-    .list-group-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);cursor:pointer}
-    .list-group-item:hover{background:rgba(255,255,255,.08)}
-    .text-success{color:#28a745!important}
-    .text-danger{color:#dc3545!important}
-    .text-warning{color:#ffc107!important}
-    .btn-outline-success{border-color:#28a745;color:#28a745}
-    .btn-outline-success:hover{background-color:#28a745;color:#fff}
-    .btn-outline-danger{border-color:#dc3545;color:#dc3545}
-    .btn-outline-danger:hover{background-color:#dc3545;color:#fff}
-  </style>
-  </head>
-<body>
-  <style>
+"""
+Script para atualizar navbars nas páginas restantes (trainer, admin, etc)
+"""
+
+import os
+import re
+
+BASE_DIR = r"c:\Users\andre\OneDrive\Área de Trabalho\Garcia-Builder\Garcia-Builder"
+
+# Páginas adicionais
+ADDITIONAL_PAGES = [
+    'trainer-dashboard.html',
+    'become-trainer.html',
+    'admin-dashboard.html',
+    'admin-trainers.html',
+    'admin-setup-complete.html',
+    'certificacao-completa.html',
+    'success.html',
+    'thanks-ebook.html',
+    'lead-magnet.html',
+    'programs.html',
+]
+
+NEW_NAVBAR_CSS = '''<style>
 /* ===== NAVBAR ENHANCED - HAMBURGER SEMPRE VISÍVEL ===== */
 .gb-navbar {
     position: sticky;
@@ -306,7 +303,9 @@
 }
 </style>
 
-<nav class="gb-navbar" role="navigation" aria-label="Main navigation">
+'''
+
+NEW_NAVBAR_HTML = '''<nav class="gb-navbar" role="navigation" aria-label="Main navigation">
     <div class="container">
         <div class="gb-navbar-content">
             <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
@@ -413,72 +412,71 @@
         }
     });
 })();
-</script>
-    </div>
-  </nav>
+</script>'''
 
-  <div class="container py-5" style="padding-top:110px;">
-    <h1 class="mb-4">Trainer Dashboard</h1>
-    <div class="row g-3">
-      <div class="col-12 col-lg-4">
-        <div class="card p-3 mb-3">
-          <h5 class="mb-3">Your Clients</h5>
-          <input id="client-search" class="form-control mb-3" placeholder="Search by name or email" />
-          <ul id="client-list" class="list-group list-group-flush"></ul>
-        </div>
-        <div class="card p-3">
-          <h5 class="mb-3">Sessions</h5>
-          <div id="sessions-list" style="max-height: 400px; overflow-y: auto;">
-            <div class="text-muted">Loading sessions...</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-12 col-lg-8">
-        <div class="card p-3 mb-3">
-          <h5 class="mb-3">Client Details</h5>
-          <div id="client-details" class="text-muted">Select a client to view details</div>
-        </div>
-        <div class="card p-3">
-          <h5 class="mb-3">Schedule Session</h5>
-          <form id="session-form">
-            <div class="row g-2">
-              <div class="col-md-6"><input type="datetime-local" id="scheduled_at" class="form-control" required></div>
-              <div class="col-md-6"><input type="text" id="title" class="form-control" placeholder="Session title" required></div>
-              <div class="col-12"><input type="text" id="notes" class="form-control" placeholder="Notes (optional)"></div>
-              <div class="col-12 text-end"><button type="submit" class="btn btn-warning">Create Session</button></div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+def update_navbar_in_file(filepath):
+    """Atualiza ou adiciona navbar em um arquivo"""
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Verifica se já tem a nova navbar
+        if 'gb-navbar' in content:
+            print(f"✓ {os.path.basename(filepath)} - já tem a nova navbar")
+            return True
+        
+        # Pattern para encontrar navbar antiga
+        old_navbar_pattern = r'<nav class="navbar">.*?</nav>'
+        
+        if re.search(old_navbar_pattern, content, re.DOTALL):
+            # Tem navbar antiga - substituir
+            if NEW_NAVBAR_CSS not in content:
+                content = re.sub(r'(<nav class="navbar">)', NEW_NAVBAR_CSS + r'\1', content, count=1)
+            content = re.sub(old_navbar_pattern, NEW_NAVBAR_HTML, content, flags=re.DOTALL, count=1)
+            
+            with open(filepath, 'w', encoding='utf-8') as f:
+                f.write(content)
+            
+            print(f"✅ {os.path.basename(filepath)} - navbar atualizada")
+            return True
+        else:
+            # Não tem navbar - adicionar após <body>
+            body_pattern = r'(<body[^>]*>)'
+            if re.search(body_pattern, content):
+                content = re.sub(body_pattern, r'\1\n' + NEW_NAVBAR_CSS + NEW_NAVBAR_HTML, content, count=1)
+                
+                with open(filepath, 'w', encoding='utf-8') as f:
+                    f.write(content)
+                
+                print(f"✅ {os.path.basename(filepath)} - navbar adicionada")
+                return True
+            else:
+                print(f"⚠️  {os.path.basename(filepath)} - tag <body> não encontrada")
+                return False
+            
+    except Exception as e:
+        print(f"❌ Erro em {os.path.basename(filepath)}: {str(e)}")
+        return False
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase.js"></script>
-  <script src="js/trainer-dashboard.js"></script>
-  <script defer src="js/auth-guard.js?v=20251009"></script>
+def main():
+    print("🚀 Atualizando páginas adicionais...\n")
+    
+    updated = 0
+    failed = 0
+    
+    for page in ADDITIONAL_PAGES:
+        filepath = os.path.join(BASE_DIR, page)
+        if os.path.exists(filepath):
+            if update_navbar_in_file(filepath):
+                updated += 1
+            else:
+                failed += 1
+        else:
+            print(f"⚠️  {page} - arquivo não encontrado")
+    
+    print(f"\n📊 Resumo:")
+    print(f"   ✅ Páginas atualizadas: {updated}")
+    print(f"   ❌ Falhas: {failed}")
 
-<!-- Footer Section -->
-<hr class="hr-shine"/>
-<footer class="text-center py-4" style="background: rgba(15, 15, 15, 0.8); backdrop-filter: blur(10px);" role="contentinfo" aria-label="Site footer">
-    <div class="container">
-        <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" style="height: 50px; margin-bottom: 1rem;" loading="lazy">
-        <div class="mb-3">
-            <a href="privacy.html" class="text-decoration-none mx-2" style="color: #F6C84E;" rel="noopener" aria-label="Privacy Policy">Privacy</a>
-            <a href="terms.html" class="text-decoration-none mx-2" style="color: #F6C84E;" rel="noopener" aria-label="Terms of Service">Terms</a>
-            <a href="contact.html" class="text-decoration-none mx-2" style="color: #F6C84E;" rel="noopener" aria-label="Contact Us">Contact</a>
-        </div>
-        <p class="mb-0" style="color: rgba(255, 255, 255, 0.7);">
-            © 2025 Garcia Builder — Online Coaching •
-            <a href="https://instagram.com/garcia.builder" target="_blank" rel="noopener" style="color: #F6C84E;" aria-label="Follow us on Instagram">@garcia.builder</a>
-        </p>
-    </div>
-</footer>
-
-<!-- WhatsApp Float Button -->
-<a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener" aria-label="Contact via WhatsApp">
-    <i class="fab fa-whatsapp"></i>
-</a>
-</body>
-</html>
+if __name__ == "__main__":
+    main()

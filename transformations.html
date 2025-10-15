@@ -488,22 +488,402 @@
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-<nav class="navbar">
-  <div class="container inner">
-    <a class="brand" href="index.html" style="display:flex;align-items:center;gap:14px;min-height:56px;">
-      <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" decoding="async" loading="eager" style="height: 48px;"/>
-      <span class="title-gradient" style="font-size:2rem;line-height:1.1;font-weight:800;">Garcia Builder</span>
-    </a>
-    <nav class="nav">
-      <a data-i18n="nav.home" href="index.html">Home</a>
-      <a data-i18n="nav.about" href="about.html">About</a>
-      <a data-i18n="nav.trans" href="transformations.html" class="active">Transformations</a>
-      <a data-i18n="nav.testi" href="testimonials.html">Testimonials</a>
-      <a data-i18n="nav.pricing" href="pricing.html">Pricing</a>
-      <a data-i18n="nav.blog" href="blog.html">Blog</a>
-      <a data-i18n="nav.faq" href="faq.html">FAQ</a>
-      <a data-i18n="nav.contact" href="contact.html">Contact</a>
-    </nav>
+<style>
+/* ===== NAVBAR ENHANCED - HAMBURGER SEMPRE VISÍVEL ===== */
+.gb-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(9, 14, 24, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(246, 200, 78, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.gb-navbar .container {
+    padding: 0.75rem 1rem;
+}
+
+.gb-navbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+/* Logo Section - MAIOR E MAIS VISÍVEL */
+.gb-logo-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.gb-logo-section:hover {
+    transform: scale(1.05);
+}
+
+.gb-logo-img {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+}
+
+.gb-logo-text {
+    background: linear-gradient(135deg, #F6C84E 0%, #FFD700 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.75rem;
+    font-weight: 900;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+/* Hamburger Button - SEMPRE VISÍVEL */
+.gb-hamburger {
+    background: rgba(246, 200, 78, 0.15);
+    border: 1px solid rgba(246, 200, 78, 0.3);
+    border-radius: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    min-height: 50px;
+}
+
+.gb-hamburger:hover {
+    background: rgba(246, 200, 78, 0.25);
+    border-color: #F6C84E;
+    transform: scale(1.05);
+}
+
+.gb-hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 24px;
+}
+
+.gb-hamburger-line {
+    width: 100%;
+    height: 3px;
+    background: #F6C84E;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.gb-hamburger.active .gb-hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(7px, 7px);
+}
+
+.gb-hamburger.active .gb-hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.gb-hamburger.active .gb-hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* Menu Dropdown - OTIMIZADO SEM FLUTUAÇÃO */
+.gb-menu {
+    position: fixed;
+    top: 92px;
+    left: 0;
+    right: 0;
+    background: rgba(15, 15, 15, 0.98);
+    backdrop-filter: blur(20px);
+    border-bottom: 2px solid rgba(246, 200, 78, 0.3);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.gb-menu.active {
+    max-height: calc(100vh - 92px);
+    overflow-y: auto;
+}
+
+.gb-menu-inner {
+    padding: 1.5rem 1rem;
+}
+
+.gb-menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.gb-menu-link {
+    display: block;
+    padding: 1rem 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.gb-menu-link:hover,
+.gb-menu-link.active {
+    background: rgba(246, 200, 78, 0.15);
+    color: #F6C84E;
+    border-color: rgba(246, 200, 78, 0.3);
+    transform: translateX(8px);
+}
+
+/* Auth & Language Section */
+.gb-menu-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gb-lang-select {
+    padding: 0.75rem 1rem;
+    background: rgba(246, 200, 78, 0.1);
+    border: 1px solid rgba(246, 200, 78, 0.3);
+    border-radius: 10px;
+    color: #F6C84E;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.gb-lang-select:hover {
+    background: rgba(246, 200, 78, 0.2);
+}
+
+/* Desktop Optimization - TUDO VIA HAMBURGER */
+@media (min-width: 1024px) {
+    .gb-logo-img {
+        height: 70px;
+    }
+    
+    .gb-logo-text {
+        font-size: 2rem;
+    }
+    
+    .gb-hamburger {
+        min-width: 60px;
+        min-height: 60px;
+    }
+    
+    .gb-menu {
+        top: 102px;
+    }
+    
+    .gb-menu.active {
+        max-height: calc(100vh - 102px);
+    }
+    
+    .gb-menu-inner {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+    
+    .gb-menu-link {
+        font-size: 1.25rem;
+        padding: 1.25rem 1.5rem;
+    }
+}
+
+/* Mobile Specific - SEM FLUTUAÇÃO */
+@media (max-width: 768px) {
+    .gb-logo-img {
+        height: 50px;
+    }
+    
+    .gb-logo-text {
+        font-size: 1.5rem;
+    }
+    
+    .gb-hamburger {
+        min-width: 45px;
+        min-height: 45px;
+        padding: 8px 12px;
+    }
+    
+    .gb-menu-link {
+        font-size: 1rem;
+        padding: 0.875rem 1rem;
+    }
+}
+
+.gb-menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+.gb-menu::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.gb-menu::-webkit-scrollbar-thumb {
+    background: rgba(246, 200, 78, 0.5);
+    border-radius: 4px;
+}
+
+.gb-menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(246, 200, 78, 0.7);
+}
+
+#auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+#auth-buttons .btn {
+    padding: 0.875rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+#auth-buttons .btn-primary {
+    background: linear-gradient(135deg, #F6C84E 0%, #FFD700 100%);
+    color: #000;
+    border: none;
+}
+
+#auth-buttons .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(246, 200, 78, 0.4);
+}
+
+#auth-buttons .btn-outline {
+    background: transparent;
+    border: 1px solid rgba(246, 200, 78, 0.5);
+    color: #F6C84E;
+}
+
+#auth-buttons .btn-outline:hover {
+    background: rgba(246, 200, 78, 0.15);
+}
+</style>
+
+<nav class="gb-navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+        <div class="gb-navbar-content">
+            <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
+                <img src="Logo Files/For Web/logo-nobackground-500.png" 
+                     alt="Garcia Builder Logo" 
+                     class="gb-logo-img"
+                     loading="eager"
+                     decoding="async">
+                <span class="gb-logo-text">Garcia Builder</span>
+            </a>
+
+            <button class="gb-hamburger" 
+                    id="gb-menu-toggle" 
+                    aria-label="Toggle navigation menu"
+                    aria-expanded="false"
+                    aria-controls="gb-menu">
+                <div class="gb-hamburger-icon">
+                    <span class="gb-hamburger-line"></span>
+                    <span class="gb-hamburger-line"></span>
+                    <span class="gb-hamburger-line"></span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <div class="gb-menu" id="gb-menu" role="menu">
+        <div class="gb-menu-inner">
+            <nav class="gb-menu-links" role="menubar">
+                <a href="index.html" class="gb-menu-link" data-i18n="nav.home" role="menuitem">Home</a>
+                <a href="about.html" class="gb-menu-link" data-i18n="nav.about" role="menuitem">About</a>
+                <a href="transformations.html" class="gb-menu-link" data-i18n="nav.trans" role="menuitem">Transformations</a>
+                <a href="testimonials.html" class="gb-menu-link" data-i18n="nav.testi" role="menuitem">Testimonials</a>
+                <a href="pricing.html" class="gb-menu-link" data-i18n="nav.pricing" role="menuitem">Pricing</a>
+                <a href="blog.html" class="gb-menu-link" data-i18n="nav.blog" role="menuitem">Blog</a>
+                <a href="faq.html" class="gb-menu-link" data-i18n="nav.faq" role="menuitem">FAQ</a>
+                <a href="contact.html" class="gb-menu-link" data-i18n="nav.contact" role="menuitem">Contact</a>
+            </nav>
+
+            <div class="gb-menu-footer">
+                <div id="auth-buttons"></div>
+
+                <select id="lang-select" class="gb-lang-select" aria-label="Select language">
+                    <option value="en">🇬🇧 English</option>
+                    <option value="pt">🇧🇷 Português</option>
+                    <option value="es">🇪🇸 Español</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+(function() {
+    'use strict';
+    
+    const menuToggle = document.getElementById('gb-menu-toggle');
+    const menu = document.getElementById('gb-menu');
+    
+    if (!menuToggle || !menu) return;
+    
+    menuToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const isActive = menu.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+        menuToggle.setAttribute('aria-expanded', isActive);
+        document.body.style.overflow = isActive ? 'hidden' : '';
+    });
+    
+    document.addEventListener('click', function(e) {
+        if (!menu.contains(e.target) && !menuToggle.contains(e.target)) {
+            menu.classList.remove('active');
+            menuToggle.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
+    });
+    
+    const menuLinks = menu.querySelectorAll('.gb-menu-link');
+    menuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            menu.classList.remove('active');
+            menuToggle.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        });
+    });
+    
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    menuLinks.forEach(link => {
+        const linkPage = link.getAttribute('href');
+        if (linkPage === currentPage) {
+            link.classList.add('active');
+        }
+    });
+    
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && menu.classList.contains('active')) {
+            menu.classList.remove('active');
+            menuToggle.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
+    });
+})();
+</script>
 
     <!-- Auth buttons will be dynamically inserted here by auth-guard.js -->
     <div id="auth-buttons"></div>
@@ -584,224 +964,8 @@
 
     <!-- Transformations Grid -->
   <div class="transformations-grid" id="transformations-grid">
-      <!-- James R. - 6 Months Weight Loss -->
-  <div class="transformation-item" data-category="weight-loss">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="James R. (35)" data-story="Lost 15kg in 6 months through consistent training and nutrition"
-             data-before="assets/t1.png" data-after="assets/t1.png"
-             data-weight-lost="15" data-timeline="6 months" data-age="35"
-             data-squat="120kg" data-deadlift="140kg" data-bench="85kg" data-run-time="28:45">
-          <div class="before-after-container">
-            <div class="transformation-overlay">-15kg</div>
-            <div class="before-after-slider">
-              <img src="assets/t1.png" alt="Client 1 body recomposition: waist reduction and improved posture (before and after)" class="before-img">
-            </div>
-          </div>
-          <div class="transformation-info">
-            <h3 class="client-name">James R. (35)</h3>
-            <div class="timeline-badge">6 Months</div>
-            <div class="transformation-stats">
-              <div class="stat-item-small">
-                <div class="stat-value">-15</div>
-                <div class="stat-unit">kg Lost</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">35</div>
-                <div class="stat-unit">Years Old</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">24</div>
-                <div class="stat-unit">Weeks</div>
-              </div>
-            </div>
-            <p class="transformation-story">
-              "At 35, I thought it was too late to get in shape. Garcia Builder proved me wrong with sustainable habits that fit my busy lifestyle."
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Marcus K. - Body Recomposition -->
-  <div class="transformation-item" data-category="body-recomp">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="Marcus K. (20)" data-story="Amazing body recomposition - lost 20% body fat in 14 months"
-             data-before="assets/t2.png" data-after="assets/t2.png"
-             data-body-fat="-20%" data-timeline="14 months" data-age="20"
-             data-pull-ups="15" data-push-ups="50" data-squat="100kg" data-marathon="4:15:30">
-          <div class="before-after-container">
-            <div class="transformation-overlay">-20% BF</div>
-            <div class="before-after-slider">
-              <img src="assets/t2.png" alt="Client 2 fat loss and lean muscle definition progress (before and after)" class="before-img">
-            </div>
-          </div>
-          <div class="transformation-info">
-            <h3 class="client-name">Marcus K. (20)</h3>
-            <div class="timeline-badge">14 Months</div>
-            <div class="transformation-stats">
-              <div class="stat-item-small">
-                <div class="stat-value">-20%</div>
-                <div class="stat-unit">Body Fat</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">20</div>
-                <div class="stat-unit">Years Old</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">60</div>
-                <div class="stat-unit">Weeks</div>
-              </div>
-            </div>
-            <p class="transformation-story">
-              "Young but determined! Complete body transformation with 20% body fat reduction while building lean muscle mass."
-            </p>
-          </div>
-        </div>
-      </div>      <!-- Sarah T. - 2 Years Transformation -->
-      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="Sarah T. (29)" data-story="Incredible 20kg transformation over 2 years with sustainable habits"
-             data-before="assets/t3.png" data-after="assets/t3.png"
-             data-weight-lost="20" data-timeline="2 years" data-age="29"
-             data-miles="10km" data-run-time="45:20" data-push-ups="30">
-          <div class="before-after-container">
-            <div class="transformation-overlay">-20kg</div>
-            <div class="before-after-slider">
-              <img src="assets/t3.png" alt="Client 3 physique tightening and muscle gain (before and after)" class="before-img">
-            </div>
-          </div>
-          <div class="transformation-info">
-            <h3 class="client-name">Sarah T. (29)</h3>
-            <div class="timeline-badge">2 Years</div>
-            <div class="transformation-stats">
-              <div class="stat-item-small">
-                <div class="stat-value">-20</div>
-                <div class="stat-unit">kg Lost</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">29</div>
-                <div class="stat-unit">Years Old</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">104</div>
-                <div class="stat-unit">Weeks</div>
-              </div>
-            </div>
-            <p class="transformation-story">
-              "Slow and sustainable wins the race! 20kg lost over 2 years with lifestyle changes that became second nature."
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Alex M. - 16 Weeks Body Recomp -->
-      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="Alex M. (23)" data-story="Rapid body recomposition in just 16 weeks - 8% body fat reduction plus muscle gain"
-             data-before="assets/t4.png" data-after="assets/t4.png"
-             data-body-fat="-8%" data-timeline="16 weeks" data-age="23"
-             data-deadlift="160kg" data-squat="130kg" data-bench="95kg" data-pull-ups="12">
-          <div class="before-after-container">
-            <div class="transformation-overlay">-8% BF + Muscle</div>
-            <div class="before-after-slider">
-              <img src="assets/t4.png" alt="Client 4 abdominal fat loss and upper body shape improvement (before and after)" class="before-img">
-            </div>
-          </div>
-          <div class="transformation-info">
-            <h3 class="client-name">Alex M. (23)</h3>
-            <div class="timeline-badge">16 Weeks</div>
-            <div class="transformation-stats">
-              <div class="stat-item-small">
-                <div class="stat-value">-8%</div>
-                <div class="stat-unit">Body Fat</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">+Muscle</div>
-                <div class="stat-unit">Mass</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">23</div>
-                <div class="stat-unit">Years Old</div>
-              </div>
-            </div>
-            <p class="transformation-story">
-              "Young and focused! Amazing body recomposition in just 16 weeks - lost fat while building quality muscle mass."
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Maria P. - 6 Months Transformation -->
-      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="Maria P. (60)" data-story="Proof that age is just a number - 30lb transformation at 60"
-             data-before="assets/t5.jpg" data-after="assets/t5.jpg"
-             data-weight-lost="30" data-timeline="6 months" data-age="60">
-          <div class="before-after-container">
-            <div class="transformation-overlay">-30lb at 60</div>
-            <div class="before-after-slider">
-              <img src="assets/t5.jpg" alt="Client 5 midsection definition and back leanness (before and after)" class="before-img">
-            </div>
-          </div>
-          <div class="transformation-info">
-            <h3 class="client-name">Maria P. (60)</h3>
-            <div class="timeline-badge">6 Months</div>
-            <div class="transformation-stats">
-              <div class="stat-item-small">
-                <div class="stat-value">-30</div>
-                <div class="stat-unit">lbs Lost</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">60</div>
-                <div class="stat-unit">Years Old</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">24</div>
-                <div class="stat-unit">Weeks</div>
-              </div>
-            </div>
-            <p class="transformation-story">
-              "At 60, I thought my best days were behind me. Garcia Builder showed me that transformation has no age limit!"
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Carlos R. - 12 Weeks Quick Results -->
-      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="Carlos R. (27)" data-story="Quick and effective - 8kg lost in just 12 weeks"
-             data-before="assets/t6.jpg" data-after="assets/t6.jpg"
-             data-weight-lost="8" data-timeline="12 weeks" data-age="27"
-             data-run-time="22:15" data-miles="5km" data-push-ups="40" data-squat="105kg">
-          <div class="before-after-container">
-            <div class="transformation-overlay">-8kg in 12w</div>
-            <div class="before-after-slider">
-              <img src="assets/t6.jpg" alt="Client 6 posture correction and muscle tone improvement (before and after)" class="before-img">
-            </div>
-          </div>
-          <div class="transformation-info">
-            <h3 class="client-name">Carlos R. (27)</h3>
-            <div class="timeline-badge">12 Weeks</div>
-            <div class="transformation-stats">
-              <div class="stat-item-small">
-                <div class="stat-value">-8</div>
-                <div class="stat-unit">kg Lost</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">27</div>
-                <div class="stat-unit">Years Old</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">12</div>
-                <div class="stat-unit">Weeks</div>
-              </div>
-            </div>
-            <p class="transformation-story">
-              "Perfect timing for summer! 8kg down in 12 weeks with a program that fit my demanding work schedule."
-            </p>
-          </div>
-        </div>
-      </div>
+    <!-- All transformation-item cards will be rendered here by JS, no duplicates, unified grid. -->
+  </div>
       <!-- Elena S. - 18 Weeks Body Recomp -->
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
@@ -1019,225 +1183,7 @@
       </div>
     </div>
 
-    <!-- Hidden Load More Section -->
-    <div class="row" id="additional-transformations" style="display: none;">
-      <!-- Amanda C. - 6 Weeks Body Recomp -->
-      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="Amanda C. (27)" data-story="Amazing 6-week body recomp - 4kg lost while building muscle"
-             data-before="assets/t13.jpg" data-after="assets/t13.jpg"
-             data-weight-lost="4" data-timeline="6 weeks" data-age="27" data-muscle="+">
-          <div class="before-after-container">
-            <div class="transformation-overlay">-4kg +Muscle</div>
-            <div class="before-after-slider">
-              <img src="assets/t13.jpg" alt="Client 13 upper body muscular development and leanness (before and after)" class="before-img">
-            </div>
-          </div>
-          <div class="transformation-info">
-            <h3 class="client-name">Amanda C. (27)</h3>
-            <div class="timeline-badge">6 Weeks</div>
-            <div class="transformation-stats">
-              <div class="stat-item-small">
-                <div class="stat-value">-4</div>
-                <div class="stat-unit">kg Lost</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">+Muscle</div>
-                <div class="stat-unit">Mass</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">27</div>
-                <div class="stat-unit">Years Old</div>
-              </div>
-            </div>
-            <p class="transformation-story">
-              "6 weeks of perfection! Lost 4kg while building lean muscle - the ideal short-term transformation."
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Diego M. - 20 Day Challenge -->
-      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="Diego M. (25)" data-story="Incredible 20-day challenge - 5kg lost plus muscle gain"
-             data-before="assets/t14.jpg" data-after="assets/t14.jpg"
-             data-weight-lost="5" data-timeline="20 days" data-age="25" data-muscle="+"
-             data-push-ups="35" data-pull-ups="8" data-squat="90kg" data-run-time="26:30">
-          <div class="before-after-container">
-            <div class="transformation-overlay">-5kg in 20d</div>
-            <div class="before-after-slider">
-              <img src="assets/t14.jpg" alt="Client 14 torso and core tightening with better definition (before and after)" class="before-img">
-            </div>
-          </div>
-          <div class="transformation-info">
-            <h3 class="client-name">Diego M. (25)</h3>
-            <div class="timeline-badge">20 Days</div>
-            <div class="transformation-stats">
-              <div class="stat-item-small">
-                <div class="stat-value">-5</div>
-                <div class="stat-unit">kg Lost</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">+Muscle</div>
-                <div class="stat-unit">Mass</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">25</div>
-                <div class="stat-unit">Years Old</div>
-              </div>
-            </div>
-            <p class="transformation-story">
-              "20-day transformation challenge! Proof that with dedication, incredible results are possible in short time."
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Rachel B. - 1 Year Journey -->
-      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="Rachel B. (35)" data-story="One year body recomposition journey - 8kg lost while building muscle"
-             data-before="assets/t15.jpg" data-after="assets/t15.jpg"
-             data-weight-lost="8" data-timeline="1 year" data-age="35" data-muscle="+">
-          <div class="before-after-container">
-            <div class="transformation-overlay">-8kg +Muscle</div>
-            <div class="before-after-slider">
-              <img src="assets/t15.jpg" alt="Client 15 abdominal definition and posture refinement (before and after)" class="before-img">
-            </div>
-          </div>
-          <div class="transformation-info">
-            <h3 class="client-name">Rachel B. (35)</h3>
-            <div class="timeline-badge">1 Year</div>
-            <div class="transformation-stats">
-              <div class="stat-item-small">
-                <div class="stat-value">-8</div>
-                <div class="stat-unit">kg Lost</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">+Muscle</div>
-                <div class="stat-unit">Mass</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">35</div>
-                <div class="stat-unit">Years Old</div>
-              </div>
-            </div>
-            <p class="transformation-story">
-              "A year of transformation at 35! Sustainable approach led to 8kg fat loss while building strength and muscle."
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Patricia S. - 12 Weeks Success -->
-      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="Patricia S. (37)" data-story="12 weeks to new me - 10kg transformation"
-             data-before="assets/t16.jpg" data-after="assets/t16.jpg"
-             data-weight-lost="10" data-timeline="12 weeks" data-age="37">
-          <div class="before-after-container">
-            <div class="transformation-overlay">-10kg in 12w</div>
-            <div class="before-after-slider">
-              <img src="assets/t16.jpg" alt="Client 16 lean mass increase with reduced midsection (before and after)" class="before-img">
-            </div>
-          </div>
-          <div class="transformation-info">
-            <h3 class="client-name">Patricia S. (37)</h3>
-            <div class="timeline-badge">12 Weeks</div>
-            <div class="transformation-stats">
-              <div class="stat-item-small">
-                <div class="stat-value">-10</div>
-                <div class="stat-unit">kg Lost</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">37</div>
-                <div class="stat-unit">Years Old</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">12</div>
-                <div class="stat-unit">Weeks</div>
-              </div>
-            </div>
-            <p class="transformation-story">
-              "12 weeks that changed everything! 10kg transformation while maintaining energy for work and family."
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Roberto F. - 16 Weeks Transformation -->
-      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="Roberto F. (41)" data-story="Mid-life transformation - 10kg lost in 16 weeks"
-             data-before="assets/t17.jpg" data-after="assets/t17.jpg"
-             data-weight-lost="10" data-timeline="16 weeks" data-age="41">
-          <div class="before-after-container">
-            <div class="transformation-overlay">-10kg at 41</div>
-            <div class="before-after-slider">
-              <img src="assets/t17.jpg" alt="Client 17 muscular shape enhancement and fat loss (before and after)" class="before-img">
-            </div>
-          </div>
-          <div class="transformation-info">
-            <h3 class="client-name">Roberto F. (41)</h3>
-            <div class="timeline-badge">16 Weeks</div>
-            <div class="transformation-stats">
-              <div class="stat-item-small">
-                <div class="stat-value">-10</div>
-                <div class="stat-unit">kg Lost</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">41</div>
-                <div class="stat-unit">Years Old</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">16</div>
-                <div class="stat-unit">Weeks</div>
-              </div>
-            </div>
-            <p class="transformation-story">
-              "Never too late at 41! 16 weeks of dedication led to 10kg weight loss and renewed confidence."
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sofia T. - 20 Day Challenge -->
-      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
-        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
-             data-client="Sofia T. (25)" data-story="20-day intensive challenge - 5.5kg transformation"
-             data-before="assets/t18.jpg" data-after="assets/t18.jpg"
-             data-weight-lost="5.5" data-timeline="20 days" data-age="25">
-          <div class="before-after-container">
-            <div class="transformation-overlay">-5.5kg in 20d</div>
-            <div class="before-after-slider">
-              <img src="assets/t18.jpg" alt="Client 18 overall recomposition and waist taper (before and after)" class="before-img">
-            </div>
-          </div>
-          <div class="transformation-info">
-            <h3 class="client-name">Sofia T. (25)</h3>
-            <div class="timeline-badge">20 Days</div>
-            <div class="transformation-stats">
-              <div class="stat-item-small">
-                <div class="stat-value">-5.5</div>
-                <div class="stat-unit">kg Lost</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">25</div>
-                <div class="stat-unit">Years Old</div>
-              </div>
-              <div class="stat-item-small">
-                <div class="stat-value">20</div>
-                <div class="stat-unit">Days</div>
-              </div>
-            </div>
-            <p class="transformation-story">
-              "20-day intensive challenge success! 5.5kg lost with a focused, sustainable approach that actually worked."
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Load More Section removido: cards agora são renderizados dinamicamente, sem duplicidade. -->
 
     <!-- Load More Button -->
     <div class="text-center mt-5">

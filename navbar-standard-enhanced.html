@@ -1,30 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trainer Dashboard - Garcia Builder</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/global.css" />
-  <style>
-    body{background:#0f0f0f;color:#fff}
-    .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
-    .badge-soft{background:rgba(246,200,78,.15);color:#F6C84E;border:1px solid rgba(246,200,78,.3)}
-    .session-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08)!important}
-    .session-item:hover{background:rgba(255,255,255,.08)}
-    .list-group-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);cursor:pointer}
-    .list-group-item:hover{background:rgba(255,255,255,.08)}
-    .text-success{color:#28a745!important}
-    .text-danger{color:#dc3545!important}
-    .text-warning{color:#ffc107!important}
-    .btn-outline-success{border-color:#28a745;color:#28a745}
-    .btn-outline-success:hover{background-color:#28a745;color:#fff}
-    .btn-outline-danger{border-color:#dc3545;color:#dc3545}
-    .btn-outline-danger:hover{background-color:#dc3545;color:#fff}
-  </style>
-  </head>
-<body>
-  <style>
+<!-- NAVBAR PADRÃO GARCIA BUILDER - VERSÃO OTIMIZADA 2025 -->
+<!-- Copie este código para todas as páginas -->
+
+<style>
 /* ===== NAVBAR ENHANCED - HAMBURGER SEMPRE VISÍVEL ===== */
 .gb-navbar {
     position: sticky;
@@ -47,6 +24,7 @@
     gap: 1rem;
 }
 
+/* Logo Section - MAIOR E MAIS VISÍVEL */
 .gb-logo-section {
     display: flex;
     align-items: center;
@@ -76,6 +54,7 @@
     white-space: nowrap;
 }
 
+/* Hamburger Button - SEMPRE VISÍVEL */
 .gb-hamburger {
     background: rgba(246, 200, 78, 0.15);
     border: 1px solid rgba(246, 200, 78, 0.3);
@@ -123,6 +102,7 @@
     transform: rotate(-45deg) translate(7px, -7px);
 }
 
+/* Menu Dropdown - OTIMIZADO SEM FLUTUAÇÃO */
 .gb-menu {
     position: fixed;
     top: 92px;
@@ -174,6 +154,7 @@
     transform: translateX(8px);
 }
 
+/* Auth & Language Section */
 .gb-menu-footer {
     display: flex;
     flex-direction: column;
@@ -198,61 +179,64 @@
     background: rgba(246, 200, 78, 0.2);
 }
 
+/* Desktop Optimization - TUDO VIA HAMBURGER */
 @media (min-width: 1024px) {
     .gb-logo-img {
         height: 70px;
     }
-    
+
     .gb-logo-text {
         font-size: 2rem;
     }
-    
+
     .gb-hamburger {
         min-width: 60px;
         min-height: 60px;
     }
-    
+
     .gb-menu {
         top: 102px;
     }
-    
+
     .gb-menu.active {
         max-height: calc(100vh - 102px);
     }
-    
+
     .gb-menu-inner {
         max-width: 500px;
         margin: 0 auto;
         padding: 2rem 1rem;
     }
-    
+
     .gb-menu-link {
         font-size: 1.25rem;
         padding: 1.25rem 1.5rem;
     }
 }
 
+/* Mobile Specific - SEM FLUTUAÇÃO */
 @media (max-width: 768px) {
     .gb-logo-img {
         height: 50px;
     }
-    
+
     .gb-logo-text {
         font-size: 1.5rem;
     }
-    
+
     .gb-hamburger {
         min-width: 45px;
         min-height: 45px;
         padding: 8px 12px;
     }
-    
+
     .gb-menu-link {
         font-size: 1rem;
         padding: 0.875rem 1rem;
     }
 }
 
+/* Scrollbar Styling para Menu */
 .gb-menu::-webkit-scrollbar {
     width: 8px;
 }
@@ -270,6 +254,7 @@
     background: rgba(246, 200, 78, 0.7);
 }
 
+/* Auth Buttons Styling */
 #auth-buttons {
     display: flex;
     flex-direction: column;
@@ -306,20 +291,23 @@
 }
 </style>
 
+<!-- NAVBAR HTML -->
 <nav class="gb-navbar" role="navigation" aria-label="Main navigation">
     <div class="container">
         <div class="gb-navbar-content">
+            <!-- Logo Section -->
             <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
-                <img src="Logo Files/For Web/logo-nobackground-500.png" 
-                     alt="Garcia Builder Logo" 
+                <img src="Logo Files/For Web/logo-nobackground-500.png"
+                     alt="Garcia Builder Logo"
                      class="gb-logo-img"
                      loading="eager"
                      decoding="async">
                 <span class="gb-logo-text">Garcia Builder</span>
             </a>
 
-            <button class="gb-hamburger" 
-                    id="gb-menu-toggle" 
+            <!-- Hamburger Menu Button -->
+            <button class="gb-hamburger"
+                    id="gb-menu-toggle"
                     aria-label="Toggle navigation menu"
                     aria-expanded="false"
                     aria-controls="gb-menu">
@@ -332,8 +320,10 @@
         </div>
     </div>
 
+    <!-- Dropdown Menu -->
     <div class="gb-menu" id="gb-menu" role="menu">
         <div class="gb-menu-inner">
+            <!-- Navigation Links -->
             <nav class="gb-menu-links" role="menubar">
                 <a href="index.html" class="gb-menu-link" data-i18n="nav.home" role="menuitem">Home</a>
                 <a href="about.html" class="gb-menu-link" data-i18n="nav.about" role="menuitem">About</a>
@@ -345,9 +335,12 @@
                 <a href="contact.html" class="gb-menu-link" data-i18n="nav.contact" role="menuitem">Contact</a>
             </nav>
 
+            <!-- Footer Section (Auth + Language) -->
             <div class="gb-menu-footer">
+                <!-- Auth Buttons (populated by auth-guard.js) -->
                 <div id="auth-buttons"></div>
 
+                <!-- Language Selector -->
                 <select id="lang-select" class="gb-lang-select" aria-label="Select language">
                     <option value="en">🇬🇧 English</option>
                     <option value="pt">🇧🇷 Português</option>
@@ -358,25 +351,30 @@
     </div>
 </nav>
 
+<!-- NAVBAR JAVASCRIPT -->
 <script>
 (function() {
     'use strict';
-    
+
     const menuToggle = document.getElementById('gb-menu-toggle');
     const menu = document.getElementById('gb-menu');
-    
+
     if (!menuToggle || !menu) return;
-    
+
+    // Toggle menu
     menuToggle.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        
+
         const isActive = menu.classList.toggle('active');
         menuToggle.classList.toggle('active');
         menuToggle.setAttribute('aria-expanded', isActive);
+
+        // Prevent body scroll when menu is open
         document.body.style.overflow = isActive ? 'hidden' : '';
     });
-    
+
+    // Close menu when clicking outside
     document.addEventListener('click', function(e) {
         if (!menu.contains(e.target) && !menuToggle.contains(e.target)) {
             menu.classList.remove('active');
@@ -385,7 +383,8 @@
             document.body.style.overflow = '';
         }
     });
-    
+
+    // Close menu when clicking a link
     const menuLinks = menu.querySelectorAll('.gb-menu-link');
     menuLinks.forEach(link => {
         link.addEventListener('click', function() {
@@ -395,7 +394,8 @@
             document.body.style.overflow = '';
         });
     });
-    
+
+    // Highlight active page
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     menuLinks.forEach(link => {
         const linkPage = link.getAttribute('href');
@@ -403,7 +403,8 @@
             link.classList.add('active');
         }
     });
-    
+
+    // Close menu on ESC key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && menu.classList.contains('active')) {
             menu.classList.remove('active');
@@ -414,71 +415,3 @@
     });
 })();
 </script>
-    </div>
-  </nav>
-
-  <div class="container py-5" style="padding-top:110px;">
-    <h1 class="mb-4">Trainer Dashboard</h1>
-    <div class="row g-3">
-      <div class="col-12 col-lg-4">
-        <div class="card p-3 mb-3">
-          <h5 class="mb-3">Your Clients</h5>
-          <input id="client-search" class="form-control mb-3" placeholder="Search by name or email" />
-          <ul id="client-list" class="list-group list-group-flush"></ul>
-        </div>
-        <div class="card p-3">
-          <h5 class="mb-3">Sessions</h5>
-          <div id="sessions-list" style="max-height: 400px; overflow-y: auto;">
-            <div class="text-muted">Loading sessions...</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-12 col-lg-8">
-        <div class="card p-3 mb-3">
-          <h5 class="mb-3">Client Details</h5>
-          <div id="client-details" class="text-muted">Select a client to view details</div>
-        </div>
-        <div class="card p-3">
-          <h5 class="mb-3">Schedule Session</h5>
-          <form id="session-form">
-            <div class="row g-2">
-              <div class="col-md-6"><input type="datetime-local" id="scheduled_at" class="form-control" required></div>
-              <div class="col-md-6"><input type="text" id="title" class="form-control" placeholder="Session title" required></div>
-              <div class="col-12"><input type="text" id="notes" class="form-control" placeholder="Notes (optional)"></div>
-              <div class="col-12 text-end"><button type="submit" class="btn btn-warning">Create Session</button></div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase.js"></script>
-  <script src="js/trainer-dashboard.js"></script>
-  <script defer src="js/auth-guard.js?v=20251009"></script>
-
-<!-- Footer Section -->
-<hr class="hr-shine"/>
-<footer class="text-center py-4" style="background: rgba(15, 15, 15, 0.8); backdrop-filter: blur(10px);" role="contentinfo" aria-label="Site footer">
-    <div class="container">
-        <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" style="height: 50px; margin-bottom: 1rem;" loading="lazy">
-        <div class="mb-3">
-            <a href="privacy.html" class="text-decoration-none mx-2" style="color: #F6C84E;" rel="noopener" aria-label="Privacy Policy">Privacy</a>
-            <a href="terms.html" class="text-decoration-none mx-2" style="color: #F6C84E;" rel="noopener" aria-label="Terms of Service">Terms</a>
-            <a href="contact.html" class="text-decoration-none mx-2" style="color: #F6C84E;" rel="noopener" aria-label="Contact Us">Contact</a>
-        </div>
-        <p class="mb-0" style="color: rgba(255, 255, 255, 0.7);">
-            © 2025 Garcia Builder — Online Coaching •
-            <a href="https://instagram.com/garcia.builder" target="_blank" rel="noopener" style="color: #F6C84E;" aria-label="Follow us on Instagram">@garcia.builder</a>
-        </p>
-    </div>
-</footer>
-
-<!-- WhatsApp Float Button -->
-<a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener" aria-label="Contact via WhatsApp">
-    <i class="fab fa-whatsapp"></i>
-</a>
-</body>
-</html>

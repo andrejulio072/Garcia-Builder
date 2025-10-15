@@ -156,6 +156,55 @@ img { max-width: 100%; height: auto; display: block; }
   pointer-events: none;
 }
 
+/* Avatar fallback system */
+.tcard img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1rem;
+}
+.tcard img[src*="randomuser"] {
+  display: none; /* Hide external images */
+}
+.testimonial-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  margin: 0 auto 1rem;
+  text-transform: uppercase;
+}
+/* Color variants for avatars */
+.avatar-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.avatar-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+.avatar-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.avatar-4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+.avatar-5 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+.avatar-6 { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+.avatar-7 { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+.avatar-8 { background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%); }
+.avatar-9 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+.avatar-10 { background: linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%); }
+
+.tcard .name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+  color: var(--text-color);
+}
+.tcard .badge {
+  color: #fbbf24;
+  font-size: 0.9rem;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
 /* Filter buttons */
 .testimonial-filters {
   display: flex;
@@ -306,162 +355,162 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <div class="grid grid-3 mt-3">
-  <!-- 1 (BR, male, real photo) -->
+  <!-- 1 (BR, male) -->
   <div class="card tcard" data-category="weight-loss transformation">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Lucas Almeida"/>
+    <div class="testimonial-avatar avatar-1">LA</div>
     <div>
       <div class="name">Lucas Almeida</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t1">I tried every plan on my own and kept quitting after two weeks. Andre gave me structure, habits I could actually follow and honest feedback. I lost inches from my waist and, more importantly, I feel capable again.</p>
     </div>
   </div>
-  <!-- 2 (EN, male, real photo) -->
+  <!-- 2 (EN, male) -->
   <div class="card tcard" data-category="health muscle-gain">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/men/33.jpg" alt="James Walker"/>
+    <div class="testimonial-avatar avatar-2">JW</div>
     <div>
       <div class="name">James Walker</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t2">As a busy dad I didn't think I had time. Andre simplified training to four sessions and taught me how to hit protein without overthinking. My energy is up, posture improved and I finally enjoy training.</p>
     </div>
   </div>
-  <!-- 3 (BR, male, real photo) -->
+  <!-- 3 (BR, male) -->
   <div class="card tcard" data-category="transformation weight-loss">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/men/34.jpg" alt="Thiago Pereira"/>
+    <div class="testimonial-avatar avatar-3">TP</div>
     <div>
       <div class="name">Thiago Pereira</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t3">I used to hide in baggy clothes. Twelve weeks later my friends keep asking what I changed. The check‑ins and tiny weekly goals kept me on track even during travel. Best investment I've made in myself.</p>
     </div>
   </div>
-  <!-- 4 (BR, female, real photo) -->
+  <!-- 4 (BR, female) -->
   <div class="card tcard" data-category="weight-loss health">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sofia Martins"/>
+    <div class="testimonial-avatar avatar-4">SM</div>
     <div>
       <div class="name">Sofia Martins</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t4">Nutrition was always my struggle. Andre's flexible approach removed guilt and taught me how to eat out without losing progress. I'm stronger, lighter and my relationship with food is healthy.</p>
     </div>
   </div>
-  <!-- 5 (BR, male, real photo) -->
+  <!-- 5 (BR, male) -->
   <div class="card tcard" data-category="health muscle-gain">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/men/35.jpg" alt="Gustavo Rocha"/>
+    <div class="testimonial-avatar avatar-5">GR</div>
     <div>
       <div class="name">Gustavo Rocha</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t5">Came in with knee pain and fear of squats. We rebuilt technique from the ground up and used smart progressions. Zero pain, new PRs and a body I'm proud of. I wish I had started sooner.</p>
     </div>
   </div>
-  <!-- 6 (BR, female, real photo) -->
+  <!-- 6 (BR, female) -->
   <div class="card tcard" data-category="transformation muscle-gain">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/women/33.jpg" alt="Isabela Nunes"/>
+    <div class="testimonial-avatar avatar-6">IN</div>
     <div>
       <div class="name">Isabela Nunes</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t6">I never imagined online coaching could feel this personal. The weekly video reviews are gold — I fix mistakes quickly and stay confident. I'm leaner, stronger and far more consistent.</p>
     </div>
   </div>
-  <!-- 7 (BR, male, real photo) -->
+  <!-- 7 (BR, male) -->
   <div class="card tcard" data-category="weight-loss health">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/men/36.jpg" alt="Rafael Moreira"/>
+    <div class="testimonial-avatar avatar-7">RM</div>
     <div>
       <div class="name">Rafael Moreira</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t7">Work stress used to derail me. Now training is the anchor of my week. The plan adapts to my travel and Andre's messages keep me accountable. Down 9 kg and sleeping better than ever.</p>
     </div>
   </div>
-  <!-- 8 (BR, female, real photo) -->
+  <!-- 8 (BR, female) -->
   <div class="card tcard" data-category="transformation muscle-gain">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/women/34.jpg" alt="Camila Duarte"/>
+    <div class="testimonial-avatar avatar-8">CD</div>
     <div>
       <div class="name">Camila Duarte</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t8">I wanted definition without giving up dinners with friends. We focused on steps, protein and progressive overload. I kept my social life and still transformed — including visible abs for the first time.</p>
     </div>
   </div>
-  <!-- 9 (EN, male, real photo) -->
+  <!-- 9 (EN, male) -->
   <div class="card tcard" data-category="weight-loss health">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/men/37.jpg" alt="Ethan Collins"/>
+    <div class="testimonial-avatar avatar-9">EC</div>
     <div>
       <div class="name">Ethan Collins</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t9">I'm in my 40s and thought results would be slow. With Andre the changes were steady and realistic. Clothes fit better, my confidence is back and my daughter now asks to train with me.</p>
     </div>
   </div>
-  <!-- 10 (EN, female, real photo) -->
+  <!-- 10 (EN, female) -->
   <div class="card tcard" data-category="health performance">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/women/35.jpg" alt="Emily Carter"/>
+    <div class="testimonial-avatar avatar-10">EC</div>
     <div>
       <div class="name">Emily Carter</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t10">What surprised me is the simplicity. No magic foods, just systems that fit my business schedule. My lower back pain is gone and I'm deadlifting with good form for the first time.</p>
     </div>
   </div>
-  <!-- 11 (Mixed, male, real photo) -->
+  <!-- 11 (Mixed, male) -->
   <div class="card tcard" data-category="weight-loss health">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/men/38.jpg" alt="Dmitri Ivanov"/>
+    <div class="testimonial-avatar avatar-1">DI</div>
     <div>
       <div class="name">Dmitri Ivanov</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t11">I joined for weight loss and stayed for the mindset. Andre celebrates small wins and reminds me to be patient. I've lost 7 kg and, more importantly, built habits I can keep forever.</p>
     </div>
   </div>
-  <!-- 12 (ES, female, real photo) -->
+  <!-- 12 (ES, female) -->
   <div class="card tcard" data-category="transformation health">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/women/36.jpg" alt="Valeria Álvarez"/>
+    <div class="testimonial-avatar avatar-2">VA</div>
     <div>
       <div class="name">Valeria Álvarez</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t12">The plan meets you where you are. We started with three short workouts and daily walks. I now love strength training and feel athletic again. My friends noticed before I did.</p>
     </div>
   </div>
-  <!-- 13 (ES, male, real photo) -->
+  <!-- 13 (ES, male) -->
   <div class="card tcard" data-category="lifestyle health">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/men/39.jpg" alt="Javier Castillo"/>
+    <div class="testimonial-avatar avatar-3">JC</div>
     <div>
       <div class="name">Javier Castillo</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t13">I used to binge after restrictive diets. Andre's approach removed the all‑or‑nothing thinking. I learned balance and still hit my targets. The scale went down and my confidence went up.</p>
     </div>
   </div>
-  <!-- 14 (EN, female, real photo) -->
+  <!-- 14 (EN, female) -->
   <div class="card tcard" data-category="lifestyle health">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/women/37.jpg" alt="Ava Mitchell"/>
+    <div class="testimonial-avatar avatar-4">AM</div>
     <div>
       <div class="name">Ava Mitchell</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t14">From zero to consistent. I look forward to check‑ins because they keep me honest and motivated. My blood work improved and I have energy for my kids after work.</p>
     </div>
   </div>
-  <!-- 15 (EN, male, real photo) -->
+  <!-- 15 (EN, male) -->
   <div class="card tcard" data-category="muscle-gain lifestyle">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/men/40.jpg" alt="Liam Turner"/>
+    <div class="testimonial-avatar avatar-5">LT</div>
     <div>
       <div class="name">Liam Turner</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t15">I'm a student with a tight budget and time. Andre made every session count and taught me how to eat well in the cafeteria. I built muscle and finally see a clear path forward.</p>
     </div>
   </div>
-  <!-- 16 (ES, female, real photo) -->
+  <!-- 16 (ES, female) -->
   <div class="card tcard" data-category="transformation health">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/women/38.jpg" alt="María Pérez"/>
+    <div class="testimonial-avatar avatar-6">MP</div>
     <div>
       <div class="name">María Pérez</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t16">I was afraid to start after years off. Andre's positive coaching style made it safe to learn again. I'm stronger, my posture changed and I'm proud to see my progress photos.</p>
     </div>
   </div>
-  <!-- 17 (EN, female, real photo) -->
+  <!-- 17 (EN, female) -->
   <div class="card tcard" data-category="health lifestyle">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/women/39.jpg" alt="Charlotte Evans"/>
+    <div class="testimonial-avatar avatar-7">CE</div>
     <div>
       <div class="name">Charlotte Evans</div>
       <span class="badge">★★★★★</span>
       <p data-i18n="testimonials.t17">English isn't my first language but coaching in Portuguese/English made everything easy. Clear videos, simple targets and a lot of encouragement. I feel in control of my health.</p>
     </div>
   </div>
-  <!-- 18 (ES, male, real photo) -->
+  <!-- 18 (ES, male) -->
   <div class="card tcard" data-category="muscle-gain performance">
-  <img loading="lazy" decoding="async" src="https://randomuser.me/api/portraits/men/41.jpg" alt="Diego Navarro"/>
+    <div class="testimonial-avatar avatar-8">DN</div>
     <div>
       <div class="name">Diego Navarro</div>
       <span class="badge">★★★★★</span>

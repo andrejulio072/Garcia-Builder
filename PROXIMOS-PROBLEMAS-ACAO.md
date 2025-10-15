@@ -8,8 +8,8 @@
 ## 🔥 PROBLEMAS PRIORITÁRIOS IDENTIFICADOS
 
 ### 1. ⚠️ **Logo Não Carrega em Várias Páginas** [CRÍTICO]
-**Prioridade:** 🔴 URGENTE  
-**Impacto:** UX negativo, branding quebrado  
+**Prioridade:** 🔴 URGENTE
+**Impacto:** UX negativo, branding quebrado
 **Arquivo Referência:** `PROXIMAS-OTIMIZACOES-PRIORIDADES.md` (linha 8-10)
 
 **Descrição:**
@@ -40,8 +40,8 @@ grep -r "logo" --include="*.html" | grep -i "src="
 ---
 
 ### 2. 🖼️ **Testimonials: Cards Sem Imagem** [ALTA]
-**Prioridade:** 🟡 ALTA  
-**Impacto:** Credibilidade reduzida, UX quebrada  
+**Prioridade:** 🟡 ALTA
+**Impacto:** Credibilidade reduzida, UX quebrada
 **Arquivo Referência:** `PROXIMAS-OTIMIZACOES-PRIORIDADES.md` (linha 11-13)
 
 **Descrição:**
@@ -67,8 +67,8 @@ grep -r "logo" --include="*.html" | grep -i "src="
 ---
 
 ### 3. 📝 **Contact Form: Layout e UX Quebrados** [ALTA]
-**Prioridade:** 🟡 ALTA  
-**Impacto:** Conversão reduzida, leads perdidos  
+**Prioridade:** 🟡 ALTA
+**Impacto:** Conversão reduzida, leads perdidos
 **Arquivo Referência:** `PROXIMAS-OTIMIZACOES-PRIORIDADES.md` (linha 14-15)
 
 **Descrição:**
@@ -98,8 +98,8 @@ grep -r "logo" --include="*.html" | grep -i "src="
 ---
 
 ### 4. ❓ **FAQ: Perguntas Não Aparecem** [MÉDIA]
-**Prioridade:** 🟢 MÉDIA  
-**Impacto:** Suporte reduzido, mais tickets  
+**Prioridade:** 🟢 MÉDIA
+**Impacto:** Suporte reduzido, mais tickets
 **Arquivo Referência:** `PROXIMAS-OTIMIZACOES-PRIORIDADES.md` (linha 16-18)
 
 **Descrição:**
@@ -126,8 +126,8 @@ grep -r "logo" --include="*.html" | grep -i "src="
 ---
 
 ### 5. 🔐 **Login: Logo e Layout Quebrados** [CRÍTICA]
-**Prioridade:** 🔴 URGENTE  
-**Impacto:** Primeira impressão negativa, conversão reduzida  
+**Prioridade:** 🔴 URGENTE
+**Impacto:** Primeira impressão negativa, conversão reduzida
 **Arquivo Referência:** `PROXIMAS-OTIMIZACOES-PRIORIDADES.md` (linha 19-21)
 
 **Descrição:**
@@ -274,5 +274,5 @@ Após resolver Problemas #1 e #5:
 
 ---
 
-**Próxima Ação:** Iniciar diagnóstico do Problema #1 (Logo Path)  
+**Próxima Ação:** Iniciar diagnóstico do Problema #1 (Logo Path)
 **Comando Inicial:** `grep -r "logo" --include="*.html" | grep -i "src="`

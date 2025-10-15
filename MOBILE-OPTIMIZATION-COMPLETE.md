@@ -268,6 +268,6 @@ git push origin main
 
 ---
 
-**Status**: ✅ Pronto para deploy  
-**Testing**: Requer validação em dispositivos reais  
+**Status**: ✅ Pronto para deploy
+**Testing**: Requer validação em dispositivos reais
 **Documentation**: Completa

@@ -199,30 +199,30 @@ NEW_NAVBAR_CSS = '''<style>
     .gb-logo-img {
         height: 70px;
     }
-    
+
     .gb-logo-text {
         font-size: 2rem;
     }
-    
+
     .gb-hamburger {
         min-width: 60px;
         min-height: 60px;
     }
-    
+
     .gb-menu {
         top: 102px;
     }
-    
+
     .gb-menu.active {
         max-height: calc(100vh - 102px);
     }
-    
+
     .gb-menu-inner {
         max-width: 500px;
         margin: 0 auto;
         padding: 2rem 1rem;
     }
-    
+
     .gb-menu-link {
         font-size: 1.25rem;
         padding: 1.25rem 1.5rem;
@@ -233,17 +233,17 @@ NEW_NAVBAR_CSS = '''<style>
     .gb-logo-img {
         height: 50px;
     }
-    
+
     .gb-logo-text {
         font-size: 1.5rem;
     }
-    
+
     .gb-hamburger {
         min-width: 45px;
         min-height: 45px;
         padding: 8px 12px;
     }
-    
+
     .gb-menu-link {
         font-size: 1rem;
         padding: 0.875rem 1rem;
@@ -309,16 +309,16 @@ NEW_NAVBAR_HTML = '''<nav class="gb-navbar" role="navigation" aria-label="Main n
     <div class="container">
         <div class="gb-navbar-content">
             <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
-                <img src="Logo Files/For Web/logo-nobackground-500.png" 
-                     alt="Garcia Builder Logo" 
+                <img src="Logo Files/For Web/logo-nobackground-500.png"
+                     alt="Garcia Builder Logo"
                      class="gb-logo-img"
                      loading="eager"
                      decoding="async">
                 <span class="gb-logo-text">Garcia Builder</span>
             </a>
 
-            <button class="gb-hamburger" 
-                    id="gb-menu-toggle" 
+            <button class="gb-hamburger"
+                    id="gb-menu-toggle"
                     aria-label="Toggle navigation menu"
                     aria-expanded="false"
                     aria-controls="gb-menu">
@@ -360,22 +360,22 @@ NEW_NAVBAR_HTML = '''<nav class="gb-navbar" role="navigation" aria-label="Main n
 <script>
 (function() {
     'use strict';
-    
+
     const menuToggle = document.getElementById('gb-menu-toggle');
     const menu = document.getElementById('gb-menu');
-    
+
     if (!menuToggle || !menu) return;
-    
+
     menuToggle.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        
+
         const isActive = menu.classList.toggle('active');
         menuToggle.classList.toggle('active');
         menuToggle.setAttribute('aria-expanded', isActive);
         document.body.style.overflow = isActive ? 'hidden' : '';
     });
-    
+
     document.addEventListener('click', function(e) {
         if (!menu.contains(e.target) && !menuToggle.contains(e.target)) {
             menu.classList.remove('active');
@@ -384,7 +384,7 @@ NEW_NAVBAR_HTML = '''<nav class="gb-navbar" role="navigation" aria-label="Main n
             document.body.style.overflow = '';
         }
     });
-    
+
     const menuLinks = menu.querySelectorAll('.gb-menu-link');
     menuLinks.forEach(link => {
         link.addEventListener('click', function() {
@@ -394,7 +394,7 @@ NEW_NAVBAR_HTML = '''<nav class="gb-navbar" role="navigation" aria-label="Main n
             document.body.style.overflow = '';
         });
     });
-    
+
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     menuLinks.forEach(link => {
         const linkPage = link.getAttribute('href');
@@ -402,7 +402,7 @@ NEW_NAVBAR_HTML = '''<nav class="gb-navbar" role="navigation" aria-label="Main n
             link.classList.add('active');
         }
     });
-    
+
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && menu.classList.contains('active')) {
             menu.classList.remove('active');
@@ -419,24 +419,24 @@ def update_navbar_in_file(filepath):
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
-        
+
         # Verifica se já tem a nova navbar
         if 'gb-navbar' in content:
             print(f"✓ {os.path.basename(filepath)} - já tem a nova navbar")
             return True
-        
+
         # Pattern para encontrar navbar antiga
         old_navbar_pattern = r'<nav class="navbar">.*?</nav>'
-        
+
         if re.search(old_navbar_pattern, content, re.DOTALL):
             # Tem navbar antiga - substituir
             if NEW_NAVBAR_CSS not in content:
                 content = re.sub(r'(<nav class="navbar">)', NEW_NAVBAR_CSS + r'\1', content, count=1)
             content = re.sub(old_navbar_pattern, NEW_NAVBAR_HTML, content, flags=re.DOTALL, count=1)
-            
+
             with open(filepath, 'w', encoding='utf-8') as f:
                 f.write(content)
-            
+
             print(f"✅ {os.path.basename(filepath)} - navbar atualizada")
             return True
         else:
@@ -444,26 +444,26 @@ def update_navbar_in_file(filepath):
             body_pattern = r'(<body[^>]*>)'
             if re.search(body_pattern, content):
                 content = re.sub(body_pattern, r'\1\n' + NEW_NAVBAR_CSS + NEW_NAVBAR_HTML, content, count=1)
-                
+
                 with open(filepath, 'w', encoding='utf-8') as f:
                     f.write(content)
-                
+
                 print(f"✅ {os.path.basename(filepath)} - navbar adicionada")
                 return True
             else:
                 print(f"⚠️  {os.path.basename(filepath)} - tag <body> não encontrada")
                 return False
-            
+
     except Exception as e:
         print(f"❌ Erro em {os.path.basename(filepath)}: {str(e)}")
         return False
 
 def main():
     print("🚀 Atualizando páginas adicionais...\n")
-    
+
     updated = 0
     failed = 0
-    
+
     for page in ADDITIONAL_PAGES:
         filepath = os.path.join(BASE_DIR, page)
         if os.path.exists(filepath):
@@ -473,7 +473,7 @@ def main():
                 failed += 1
         else:
             print(f"⚠️  {page} - arquivo não encontrado")
-    
+
     print(f"\n📊 Resumo:")
     print(f"   ✅ Páginas atualizadas: {updated}")
     print(f"   ❌ Falhas: {failed}")

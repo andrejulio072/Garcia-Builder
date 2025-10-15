@@ -88,10 +88,21 @@ a{color:var(--text);text-decoration:none}
 .lang select{background:#0b1220;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
 
 /* Compact Navbar: Hamburger + Slide-out */
-.hamburger-btn{background:#1a1f2e;border:1px solid var(--line);border-radius:10px;width:42px;height:42px;display:inline-grid;place-items:center;cursor:pointer;transition:.2s}
-.hamburger-btn:hover{background:#1d2434}
+.hamburger-btn{
+  background:#1a1f2e;
+  border:1px solid var(--line);
+  border-radius:10px;
+  width:44px;
+  height:44px;
+  display:inline-grid;
+  place-items:center;
+  cursor:pointer;
+  transition:.2s;
+  flex-shrink:0;
+}
+.hamburger-btn:hover{background:#1d2434;border-color:var(--gold)}
 .hamburger-lines{position:relative;display:block;width:20px;height:2px;background:#eaf1ff}
-.hamburger-lines::before,.hamburger-lines::after{content:"";position:absolute;left:0;width:20px;height:2px;background:#eaf1ff}
+.hamburger-lines::before,.hamburger-lines::after{content:"";position:absolute;left:0;width:20px;height:2px;background:#eaf1ff;transition:.2s}
 .hamburger-lines::before{top:-6px}
 .hamburger-lines::after{top:6px}
 .gb-more-menu{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:.2s;z-index:1200}
@@ -99,15 +110,32 @@ a{color:var(--text);text-decoration:none}
 .gb-more-content{position:absolute;top:0;right:0;width:min(86vw,360px);height:100%;background:linear-gradient(180deg,var(--panel),var(--panel2));border-left:1px solid var(--line);box-shadow:-20px 0 60px rgba(0,0,0,.45);transform:translateX(100%);transition:transform .25s ease}
 .gb-more-menu.open .gb-more-content{transform:none}
 .gb-more-header{display:flex;align-items:center;justify-content:space-between;padding:18px;border-bottom:1px solid var(--line)}
-.gb-close{background:transparent;border:0;color:#eaf1ff;font-size:28px;line-height:1;cursor:pointer}
+.gb-close{background:transparent;border:0;color:#eaf1ff;font-size:28px;line-height:1;cursor:pointer;padding:4px 12px}
 .gb-more-nav{display:flex;flex-direction:column;padding:10px}
-.gb-item a{display:block;padding:12px 14px;margin:6px 0;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.05)}
-.gb-item a:hover{background:rgba(255,255,255,.08)}
+.gb-item a{display:block;padding:12px 14px;margin:6px 0;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.05);transition:.15s}
+.gb-item a:hover{background:rgba(255,255,255,.08);border-color:var(--gold)}
 
-/* Collapse behavior: always show only primary links; hamburger always visible */
-.navbar.is-collapsed .nav a:not(.gb-primary),
-.navbar.is-collapsed .nav-links a:not(.gb-primary){ display:none !important; }
-.hamburger-btn{ display:inline-grid; }
+/* Mobile/Tablet: esconder TODOS os links nav e mostrar APENAS hamburger */
+@media (max-width: 1024px) {
+  .navbar .nav,
+  .navbar .nav-links {
+    display: none !important;
+  }
+  .hamburger-btn {
+    display: inline-grid !important;
+  }
+}
+
+/* Desktop: mostrar nav completa, esconder hamburguer */
+@media (min-width: 1025px) {
+  .hamburger-btn {
+    display: none !important;
+  }
+  .navbar .nav,
+  .navbar .nav-links {
+    display: flex !important;
+  }
+}
 
 /* Slide-out animations */
 .gb-more-content{ animation: slideIn .25s ease both; }
@@ -508,24 +536,25 @@ section#contact.section.has-bg.contact-bg {
 }
 
 @media (max-width: 768px) {
-  /* Navbar mobile responsiveness */
+  /* Navbar mobile: APENAS hamburger visível */
   .navbar .inner {
-    flex-wrap: wrap;
-    gap: 1rem;
+    flex-wrap: nowrap;
+    gap: 12px;
+    justify-content: space-between;
   }
 
-  .nav {
-    order: 3;
-    width: 100%;
-    justify-content: center;
-    padding-top: 1rem;
-    border-top: 1px solid var(--line);
-    gap: 4px;
+  /* ESCONDER completamente nav e auth buttons em mobile/tablet */
+  .nav,
+  .navbar .nav,
+  .navbar .nav-links,
+  #auth-buttons {
+    display: none !important;
   }
 
-  .nav a {
-    padding: 8px 12px;
-    font-size: 0.9rem;
+  /* MOSTRAR apenas hamburger */
+  .hamburger-btn {
+    display: inline-grid !important;
+    margin-left: auto;
   }
 
   .brand {
@@ -537,26 +566,6 @@ section#contact.section.has-bg.contact-bg {
     width: 35px;
     border-radius: 50%;
     background: transparent;
-  }
-
-  /* Auth buttons mobile */
-  #auth-buttons {
-    margin-left: 0;
-    gap: 0.5rem;
-  }
-
-  #auth-buttons .btn {
-    font-size: 0.875rem;
-    padding: 6px 10px;
-  }
-
-  /* Keep button text visible on small screens for clarity */
-  #auth-buttons .btn span {
-    display: inline;
-  }
-
-  #auth-buttons .btn i {
-    margin: 0;
   }
 
   /* Container adjustments */

@@ -1,7 +1,7 @@
 # 🚀 DEPLOY TRIGGER - GARCIA BUILDER
 
-**Deploy Timestamp:** 2025-10-15 23:45:00  
-**Commit:** 6324684  
+**Deploy Timestamp:** 2025-10-15 23:45:00
+**Commit:** 6324684
 **Status:** 🔴 NAVBAR OVERHAUL - FORCE REDEPLOY REQUIRED
 
 ## 🔄 Forçando Redeploy no Render.com
@@ -30,5 +30,5 @@ index, transformations, testimonials, pricing, about, contact, faq, blog, login,
 
 ---
 
-**Deploy anterior:** 2025-10-03 18:00:00 (commit eaf486d)  
+**Deploy anterior:** 2025-10-03 18:00:00 (commit eaf486d)
 **Deploy atual:** 2025-10-15 23:45:00 (commit 6324684)

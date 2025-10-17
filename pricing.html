@@ -702,9 +702,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="gb-navbar-controls">
                 <div id="auth-buttons-navbar"></div>
                 <select id="currency-select-nav" aria-label="Select Currency" title="Select Currency">
-                    <option value="GBP">£</option>
-                    <option value="EUR">€</option>
-                    <option value="USD">$</option>
+                    <option value="GBP" selected>£ GBP</option>
+                    <option value="EUR">€ EUR</option>
+                    <option value="USD">$ USD</option>
+                    <option value="BRL">R$ BRL</option>
+                    <option value="CAD">C$ CAD</option>
+                    <option value="AUD">A$ AUD</option>
                 </select>
                 <select id="lang-select-navbar" aria-label="Select Language" title="Select Language">
                     <option value="en">EN</option>
@@ -742,6 +745,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             <div class="gb-menu-footer">
                 <div id="auth-buttons"></div>
+
+                <select id="currency-select" class="gb-lang-select" aria-label="Select currency">
+                    <option value="GBP" selected>£ GBP</option>
+                    <option value="EUR">€ EUR</option>
+                    <option value="USD">$ USD</option>
+                    <option value="BRL">R$ BRL</option>
+                    <option value="CAD">C$ CAD</option>
+                    <option value="AUD">A$ AUD</option>
+                </select>
 
                 <select id="lang-select" class="gb-lang-select" aria-label="Select language">
                     <option value="en">🇬🇧 English</option>
@@ -809,22 +821,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
 })();
 </script>
-
-    <!-- Auth buttons will be dynamically inserted here by auth-guard.js -->
-    <div id="auth-buttons"></div>
-
-    <div class="currency-selector" style="display:flex; gap:8px; align-items:center;">
-      <select id="currency-select-nav" style="background:rgba(255,255,255,0.1);border:1px solid rgba(246,200,78,0.3);color:#fff;border-radius:6px;padding:6px 10px;font-size:0.9rem;cursor:pointer;" title="Currency">
-        <option value="GBP" selected>£ GBP</option>
-        <option value="EUR">€ EUR</option>
-        <option value="USD">$ USD</option>
-        <option value="BRL">R$ BRL</option>
-        <option value="CAD">C$ CAD</option>
-        <option value="AUD">A$ AUD</option>
-      </select>
-    </div>
-  </div>
-</nav>
 
 <section class="section">
   <div class="container">

@@ -542,61 +542,99 @@ section#contact.section.has-bg.contact-bg {
   white-space: nowrap;
 }
 
-/* Desktop: mostrar auth buttons ao lado do hamburger */
+/* Navbar controls container - visible outside hamburger */
+.gb-navbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+/* Language and currency selector styling */
+#lang-select-navbar, #currency-select-nav {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(246,200,78,0.3);
+  color: #fff;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#lang-select-navbar:hover, #currency-select-nav:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(246,200,78,0.5);
+}
+
+#lang-select-navbar option, #currency-select-nav option {
+  background: #0b1220;
+  color: #fff;
+}
+
+/* Desktop: mostrar auth buttons e language selector ao lado do hamburger */
 @media (min-width: 769px) {
-  .navbar .inner {
+  .gb-navbar-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
   }
 
-  #auth-buttons {
+  .gb-navbar-controls {
     display: flex !important;
-    order: 2;
   }
 
-  .hamburger-btn {
-    order: 3;
-    margin-left: 0;
+  #auth-buttons-navbar {
+    display: flex !important;
   }
 
-  .brand {
-    order: 1;
+  #lang-select-navbar {
+    display: block !important;
+  }
+
+  .gb-hamburger {
+    margin-left: 16px;
   }
 }
 
 @media (max-width: 768px) {
-  /* Navbar mobile: APENAS hamburger visível */
-  .navbar .inner {
-    flex-wrap: nowrap;
-    gap: 12px;
+  /* Navbar mobile: mostrar auth buttons e lang selector ao lado do hamburger */
+  .gb-navbar-content {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
+    gap: 12px;
   }
 
-  /* ESCONDER completamente nav e auth buttons em mobile/tablet */
-  .nav,
-  .navbar .nav,
-  .navbar .nav-links,
-  #auth-buttons {
-    display: none !important;
+  .gb-navbar-controls {
+    display: flex !important;
+    gap: 8px;
   }
 
-  /* MOSTRAR apenas hamburger */
-  .hamburger-btn {
-    display: inline-grid !important;
-    margin-left: auto;
+  #auth-buttons-navbar {
+    display: flex !important;
+    gap: 6px;
   }
 
-  .brand {
+  #auth-buttons-navbar .btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  #lang-select-navbar {
+    display: block !important;
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  .gb-logo-text {
     font-size: 1.1rem;
   }
 
-  .brand img {
+  .gb-logo-img {
     height: 35px;
     width: 35px;
-    border-radius: 50%;
-    background: transparent;
   }
 
   /* Container adjustments */

@@ -17,18 +17,20 @@ class AuthGuard {
         const currentUser = AuthSystem.getCurrentUser();
         console.log('AuthGuard: Current user:', currentUser);
 
-        // Try to find the auth-buttons container first
-        let userMenu = document.querySelector('#auth-buttons');
-        console.log('AuthGuard: Found #auth-buttons container:', !!userMenu);
+        // Find both auth-buttons containers (navbar and menu)
+        const authContainers = [
+            document.querySelector('#auth-buttons'),
+            document.querySelector('#auth-buttons-navbar')
+        ].filter(Boolean); // Remove null values
 
-    // Note: Compact navbar will control which links stay inline; no special-case visibility here
+        console.log('AuthGuard: Found auth containers:', authContainers.length);
 
-        // If not found, fall back to the old method
-        if (!userMenu) {
+        // If no containers found, fall back to the old method
+        if (authContainers.length === 0) {
             const navbar = document.querySelector('.navbar .container');
             if (!navbar) return;
 
-            userMenu = navbar.querySelector('.user-menu');
+            let userMenu = navbar.querySelector('.user-menu');
 
             if (!userMenu) {
                 userMenu = document.createElement('div');
@@ -42,70 +44,76 @@ class AuthGuard {
                     navbar.appendChild(userMenu);
                 }
             }
+            authContainers.push(userMenu);
         }
 
-        if (currentUser) {
+        // Populate all containers with the same content
+        authContainers.forEach(userMenu => {
+            if (!userMenu) return;
 
-            const firstName = (currentUser.name || currentUser.full_name || currentUser.email || 'User').toString().split(' ')[0];
-            const displayName = (currentUser.name || currentUser.full_name || currentUser.email || 'User');
-            const displayEmail = currentUser.email || '';
+            if (currentUser) {
 
-            // User is logged in - show enhanced user menu
-            userMenu.innerHTML = `
-                <div class="dropdown">
-                    <button class="btn btn-gold btn-sm dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-weight: 600; padding: 8px 16px;">
-                        <i class="fas fa-user-circle" style="font-size: 1.2rem;"></i>
-                        <span class="d-none d-sm-inline">${firstName}</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-lg" style="min-width: 280px; border-radius: 12px; border: 1px solid rgba(246, 200, 78, 0.2); background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);">
-                        <li>
-                            <div class="dropdown-item-text" style="padding: 12px 16px; border-bottom: 1px solid rgba(246, 200, 78, 0.1);">
-                                <div class="fw-bold text-gold" style="font-size: 1.05rem; margin-bottom: 4px;">${displayName}</div>
-                                <small class="text-muted" style="font-size: 0.85rem;">${displayEmail}</small>
-                            </div>
-                        </li>
-                        <li><hr class="dropdown-divider" style="border-color: rgba(246, 200, 78, 0.1); margin: 0;"></li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center gap-2" href="dashboard.html" style="padding: 10px 16px; transition: all 0.2s;">
-                                <i class="fas fa-tachometer-alt" style="width: 20px; color: #F6C84E;"></i>
-                                <span>${this.getTranslation('nav.dashboard') || 'Dashboard'}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center gap-2" href="my-profile.html" style="padding: 10px 16px; transition: all 0.2s;">
-                                <i class="fas fa-user" style="width: 20px; color: #F6C84E;"></i>
-                                <span>${this.getTranslation('nav.profile') || 'My Profile'}</span>
-                            </a>
-                        </li>
-                        <li><hr class="dropdown-divider" style="border-color: rgba(246, 200, 78, 0.1); margin: 8px 0;"></li>
-                        <li>
-                            <button class="dropdown-item d-flex align-items-center gap-2 text-danger" onclick="AuthGuard.handleLogout(event)" style="padding: 10px 16px; transition: all 0.2s;">
-                                <i class="fas fa-sign-out-alt" style="width: 20px;"></i>
-                                <span>${this.getTranslation('nav.logout') || 'Logout'}</span>
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            `;
-        } else {
+                const firstName = (currentUser.name || currentUser.full_name || currentUser.email || 'User').toString().split(' ')[0];
+                const displayName = (currentUser.name || currentUser.full_name || currentUser.email || 'User');
+                const displayEmail = currentUser.email || '';
 
-            // User not logged in - show enhanced login/register buttons
-            const loginText = this.getTranslation('nav.login') || 'Login';
-            const registerText = this.getTranslation('nav.register') || 'Register';
+                // User is logged in - show enhanced user menu
+                userMenu.innerHTML = `
+                    <div class="dropdown">
+                        <button class="btn btn-gold btn-sm dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-weight: 600; padding: 8px 16px;">
+                            <i class="fas fa-user-circle" style="font-size: 1.2rem;"></i>
+                            <span class="d-none d-sm-inline">${firstName}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg" style="min-width: 280px; border-radius: 12px; border: 1px solid rgba(246, 200, 78, 0.2); background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);">
+                            <li>
+                                <div class="dropdown-item-text" style="padding: 12px 16px; border-bottom: 1px solid rgba(246, 200, 78, 0.1);">
+                                    <div class="fw-bold text-gold" style="font-size: 1.05rem; margin-bottom: 4px;">${displayName}</div>
+                                    <small class="text-muted" style="font-size: 0.85rem;">${displayEmail}</small>
+                                </div>
+                            </li>
+                            <li><hr class="dropdown-divider" style="border-color: rgba(246, 200, 78, 0.1); margin: 0;"></li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center gap-2" href="dashboard.html" style="padding: 10px 16px; transition: all 0.2s;">
+                                    <i class="fas fa-tachometer-alt" style="width: 20px; color: #F6C84E;"></i>
+                                    <span>${this.getTranslation('nav.dashboard') || 'Dashboard'}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center gap-2" href="my-profile.html" style="padding: 10px 16px; transition: all 0.2s;">
+                                    <i class="fas fa-user" style="width: 20px; color: #F6C84E;"></i>
+                                    <span>${this.getTranslation('nav.profile') || 'My Profile'}</span>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider" style="border-color: rgba(246, 200, 78, 0.1); margin: 8px 0;"></li>
+                            <li>
+                                <button class="dropdown-item d-flex align-items-center gap-2 text-danger" onclick="AuthGuard.handleLogout(event)" style="padding: 10px 16px; transition: all 0.2s;">
+                                    <i class="fas fa-sign-out-alt" style="width: 20px;"></i>
+                                    <span>${this.getTranslation('nav.logout') || 'Logout'}</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                `;
+            } else {
 
-            userMenu.innerHTML = `
-                <div class="d-flex gap-2 align-items-center">
-                    <a href="login.html?action=login" class="btn btn-outline-light btn-sm d-flex align-items-center gap-2" style="border-color: #F6C84E; color: #F6C84E; padding: 8px 16px; font-weight: 500; transition: all 0.3s; border-radius: 8px;">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <span>${loginText}</span>
-                    </a>
-                    <a href="login.html?action=register" class="btn btn-sm d-flex align-items-center gap-2" style="background: linear-gradient(135deg, #F6C84E 0%, #e6b73e 100%); border: none; color: #000; font-weight: 600; padding: 8px 16px; transition: all 0.3s; border-radius: 8px; box-shadow: 0 2px 8px rgba(246, 200, 78, 0.3);">
-                        <i class="fas fa-user-plus"></i>
-                        <span>${registerText}</span>
-                    </a>
-                </div>
-            `;
-        }
+                // User not logged in - show enhanced login/register buttons
+                const loginText = this.getTranslation('nav.login') || 'Login';
+                const registerText = this.getTranslation('nav.register') || 'Register';
+
+                userMenu.innerHTML = `
+                    <div class="d-flex gap-2 align-items-center">
+                        <a href="login.html?action=login" class="btn btn-outline-light btn-sm d-flex align-items-center gap-2" style="border-color: #F6C84E; color: #F6C84E; padding: 8px 16px; font-weight: 500; transition: all 0.3s; border-radius: 8px;">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>${loginText}</span>
+                        </a>
+                        <a href="login.html?action=register" class="btn btn-sm d-flex align-items-center gap-2" style="background: linear-gradient(135deg, #F6C84E 0%, #e6b73e 100%); border: none; color: #000; font-weight: 600; padding: 8px 16px; transition: all 0.3s; border-radius: 8px; box-shadow: 0 2px 8px rgba(246, 200, 78, 0.3);">
+                            <i class="fas fa-user-plus"></i>
+                            <span>${registerText}</span>
+                        </a>
+                    </div>
+                `;
+            }
+        });
 
         // Add hover styles dynamically
         const style = document.createElement('style');

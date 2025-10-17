@@ -1,45 +1,3 @@
-  <!-- SEO & Social: Favicon, Meta Tags, Open Graph, Twitter Card, Structured Data -->
-  <link rel="icon" href="Logo Files/For Web/logo-nobackground-500.png" type="image/png">
-  <link rel="apple-touch-icon" href="Logo Files/For Web/logo-nobackground-500.png">
-  <title>Garcia Builder | Online Coaching for Training & Nutrition</title>
-  <meta name="description" content="Personalized online fitness coaching to transform your body and performance in 8-12 weeks. 1:1 support and real results.">
-  <meta name="keywords" content="online coaching, personal trainer, fitness transformation, muscle gain, fat loss, nutrition, body recomposition, Garcia Builder, Ireland, results, custom training, health, performance, accountability, evidence-based, sustainable habits">
-  <meta name="robots" content="index, follow">
-  <meta property="og:title" content="Garcia Builder - Online Coaching">
-  <meta property="og:description" content="Personalized training, custom nutrition, and 1:1 support. Transform your body with science-based coaching.">
-  <meta property="og:image" content="https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png">
-  <meta property="og:url" content="https://garciabuilder.fitness">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Garcia Builder - Online Coaching">
-  <meta name="twitter:description" content="Personalized training, custom nutrition, and 1:1 support. Transform your body with science-based coaching.">
-  <meta name="twitter:image" content="https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png">
-  <!-- Structured data for rich results -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Garcia Builder",
-    "url": "https://garciabuilder.fitness",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://garciabuilder.fitness/?s={search_term_string}",
-      "query-input": "required name=search_term_string"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Garcia Builder",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png"
-      }
-    },
-    "sameAs": [
-      "https://www.instagram.com/garcia.builder",
-      "https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia"
-    ]
-  }
-  </script>
 <!DOCTYPE html>
 
 <html lang="en"><head>
@@ -115,14 +73,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
 
-<!-- Google Ads Global Site Tag -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-1762742053"></script>
+<!-- Google Ads Global Site Tag (standardized) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'AW-1762742053');
-  gtag('config', 'AW-17627402053');
+    gtag('config', 'AW-17627402053');
 </script>
 
 <!-- Event snippet for Visualização de página conversion page -->
@@ -334,7 +291,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     right: 0;
     background: rgba(15, 15, 15, 0.98);
     backdrop-filter: blur(20px);
-    border-bottom: 2px solid rgba(246, 200, 78, 0.3);
+    /* Remove persistent border to avoid double line; show it only when menu opens */
+    border-bottom: 0;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -344,6 +302,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 .gb-menu.active {
     max-height: calc(100vh - 92px);
     overflow-y: auto;
+    border-bottom: 2px solid rgba(246, 200, 78, 0.3);
 }
 
 .gb-menu-inner {
@@ -922,10 +881,6 @@ function showTrainerInfo() {
 }
 </script>
 
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-
 <!-- Tracking Events -->
 <script>
 // Data Layer Initialization
@@ -1015,6 +970,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script defer src="js/engagement-tracking.js"></script>
 <script defer src="js/web-vitals-rum.js"></script>
 <script defer src="js/consent-banner.js"></script>
+<script defer src="js/conversion-helper.js"></script>
 <!-- Breadcrumb structured data -->
 <script type="application/ld+json">{
   "@context":"https://schema.org",

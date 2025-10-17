@@ -240,7 +240,7 @@ select option {
 .accordion-button:not(.collapsed){box-shadow:none;color:#fff!important}
 .accordion-body{background:#0d1629;border:1px solid var(--line);border-radius:12px;color:#eaf0ff}
 /* TESTIMONIALS */
-.tcard{display:flex;gap:14px;padding:18px}
+.tcard{display:flex;gap:14px;padding:18px;align-items:flex-start;min-height:140px}
 .tcard img{width:56px;height:56px;border-radius:50%;border:1px solid var(--line)}
 .tcard .name{font-weight:800}
 /* Floating WhatsApp */

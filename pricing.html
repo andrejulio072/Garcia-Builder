@@ -1,43 +1,3 @@
-  <!-- SEO & Social: Favicon, Meta Tags, Open Graph, Twitter Card, Structured Data -->
-  <link rel="icon" href="Logo Files/For Web/logo-nobackground-500.png" type="image/png">
-  <link rel="apple-touch-icon" href="Logo Files/For Web/logo-nobackground-500.png">
-  <title>Pricing & Plans | Garcia Builder Coaching</title>
-  <meta name="description" content="Planos de coaching online 1:1 com acompanhamento semanal. Descontos em 3, 6 e 12 meses. Checkout seguro Stripe.">
-  <meta name="keywords" content="pricing, plans, coaching, online, personal trainer, discount, monthly plans, transformation, Garcia Builder, Ireland, fitness, nutrition, training, support, results">
-  <meta name="robots" content="index, follow">
-  <meta property="og:title" content="Pricing & Plans | Garcia Builder Coaching">
-  <meta property="og:description" content="Choose the ideal plan and accelerate your transformation with personalized training and nutrition.">
-  <meta property="og:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg">
-  <meta property="og:url" content="https://garciabuilder.fitness/pricing.html">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Pricing & Plans | Garcia Builder Coaching">
-  <meta name="twitter:description" content="Flexible plans with professional support and measurable results.">
-  <meta name="twitter:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg">
-  <!-- Dados estruturados para rich results -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "OfferCatalog",
-    "name": "Garcia Builder Coaching Plans",
-    "url": "https://garciabuilder.fitness/pricing.html",
-    "description": "Online 1:1 coaching plans with progressive discounts for 3, 6 and 12 month commitments.",
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "itemOffered": {"@type": "Service", "name": "Starter Coaching"},
-        "price": "75",
-        "priceCurrency": "GBP"
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {"@type": "Service", "name": "Transformation Coaching"},
-        "price": "199",
-        "priceCurrency": "GBP"
-      }
-    ]
-  }
-  </script>
 <!doctype html><html lang="en"><head>
 <!-- ✅ Unified SEO / Pricing Page -->
 <!-- Consent Mode baseline BEFORE any tags -->
@@ -48,13 +8,34 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
 <!-- End Google Tag Manager -->
 
-<!-- Google Ads Global Site Tag -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-1762742053"></script>
+<!-- Google Ads Global Site Tag (standardized) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'AW-1762742053');
+  gtag('config', 'AW-17627402053');
+</script>
+
+<!-- Event snippet for link/button click conversions -->
+<script>
+  function gtag_report_conversion(url){
+    try{
+      if (typeof gtag === 'function') {
+        var callback = function(){ if(typeof url !== 'undefined'){ window.location = url; } };
+        gtag('event','conversion',{
+          'send_to':'AW-17627402053/mdOMCOTV3acbEMWes9VB',
+          'value':1.0,
+          'currency':'GBP',
+          'event_callback':callback
+        });
+        return false;
+      }
+    }catch(e){}
+    if (typeof url !== 'undefined') { window.location = url; }
+    return false;
+  }
+  window.gtag_report_conversion = window.gtag_report_conversion || gtag_report_conversion;
 </script>
 
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -525,8 +506,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     left: 0;
     right: 0;
     background: rgba(15, 15, 15, 0.98);
-    backdrop-filter: blur(20px);
-    border-bottom: 2px solid rgba(246, 200, 78, 0.3);
+  backdrop-filter: blur(20px);
+  border-bottom: 0;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -536,6 +517,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 .gb-menu.active {
     max-height: calc(100vh - 92px);
     overflow-y: auto;
+  border-bottom: 2px solid rgba(246, 200, 78, 0.3);
 }
 
 .gb-menu-inner {
@@ -600,30 +582,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     .gb-logo-img {
         height: 70px;
     }
-    
+
     .gb-logo-text {
         font-size: 2rem;
     }
-    
+
     .gb-hamburger {
         min-width: 60px;
         min-height: 60px;
     }
-    
+
     .gb-menu {
         top: 102px;
     }
-    
+
     .gb-menu.active {
         max-height: calc(100vh - 102px);
     }
-    
+
     .gb-menu-inner {
         max-width: 500px;
         margin: 0 auto;
         padding: 2rem 1rem;
     }
-    
+
     .gb-menu-link {
         font-size: 1.25rem;
         padding: 1.25rem 1.5rem;
@@ -635,17 +617,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     .gb-logo-img {
         height: 50px;
     }
-    
+
     .gb-logo-text {
         font-size: 1.5rem;
     }
-    
+
     .gb-hamburger {
         min-width: 45px;
         min-height: 45px;
         padding: 8px 12px;
     }
-    
+
     .gb-menu-link {
         font-size: 1rem;
         padding: 0.875rem 1rem;
@@ -709,16 +691,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="container">
         <div class="gb-navbar-content">
             <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
-                <img src="Logo Files/For Web/logo-nobackground-500.png" 
-                     alt="Garcia Builder Logo" 
+                <img src="Logo Files/For Web/logo-nobackground-500.png"
+                     alt="Garcia Builder Logo"
                      class="gb-logo-img"
                      loading="eager"
                      decoding="async">
                 <span class="gb-logo-text">Garcia Builder</span>
             </a>
 
-            <button class="gb-hamburger" 
-                    id="gb-menu-toggle" 
+            <button class="gb-hamburger"
+                    id="gb-menu-toggle"
                     aria-label="Toggle navigation menu"
                     aria-expanded="false"
                     aria-controls="gb-menu">
@@ -760,22 +742,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 (function() {
     'use strict';
-    
+
     const menuToggle = document.getElementById('gb-menu-toggle');
     const menu = document.getElementById('gb-menu');
-    
+
     if (!menuToggle || !menu) return;
-    
+
     menuToggle.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        
+
         const isActive = menu.classList.toggle('active');
         menuToggle.classList.toggle('active');
         menuToggle.setAttribute('aria-expanded', isActive);
         document.body.style.overflow = isActive ? 'hidden' : '';
     });
-    
+
     document.addEventListener('click', function(e) {
         if (!menu.contains(e.target) && !menuToggle.contains(e.target)) {
             menu.classList.remove('active');
@@ -784,7 +766,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             document.body.style.overflow = '';
         }
     });
-    
+
     const menuLinks = menu.querySelectorAll('.gb-menu-link');
     menuLinks.forEach(link => {
         link.addEventListener('click', function() {
@@ -794,7 +776,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             document.body.style.overflow = '';
         });
     });
-    
+
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     menuLinks.forEach(link => {
         const linkPage = link.getAttribute('href');
@@ -802,7 +784,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             link.classList.add('active');
         }
     });
-    
+
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && menu.classList.contains('active')) {
             menu.classList.remove('active');
@@ -1159,6 +1141,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }</script>
 <script defer src="js/web-vitals-rum.js"></script>
 <script defer src="js/consent-banner.js"></script>
+<script defer src="js/conversion-helper.js"></script>
 
 <!-- Tracking Events -->
 <script>

@@ -216,7 +216,7 @@
     right: 0;
     background: rgba(15, 15, 15, 0.98);
     backdrop-filter: blur(20px);
-    border-bottom: 2px solid rgba(246, 200, 78, 0.3);
+    border-bottom: 0;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -226,6 +226,7 @@
 .gb-menu.active {
     max-height: calc(100vh - 92px);
     overflow-y: auto;
+    border-bottom: 2px solid rgba(246, 200, 78, 0.3);
 }
 
 .gb-menu-inner {
@@ -288,30 +289,30 @@
     .gb-logo-img {
         height: 70px;
     }
-    
+
     .gb-logo-text {
         font-size: 2rem;
     }
-    
+
     .gb-hamburger {
         min-width: 60px;
         min-height: 60px;
     }
-    
+
     .gb-menu {
         top: 102px;
     }
-    
+
     .gb-menu.active {
         max-height: calc(100vh - 102px);
     }
-    
+
     .gb-menu-inner {
         max-width: 500px;
         margin: 0 auto;
         padding: 2rem 1rem;
     }
-    
+
     .gb-menu-link {
         font-size: 1.25rem;
         padding: 1.25rem 1.5rem;
@@ -322,17 +323,17 @@
     .gb-logo-img {
         height: 50px;
     }
-    
+
     .gb-logo-text {
         font-size: 1.5rem;
     }
-    
+
     .gb-hamburger {
         min-width: 45px;
         min-height: 45px;
         padding: 8px 12px;
     }
-    
+
     .gb-menu-link {
         font-size: 1rem;
         padding: 0.875rem 1rem;
@@ -396,16 +397,16 @@
     <div class="container">
         <div class="gb-navbar-content">
             <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
-                <img src="Logo Files/For Web/logo-nobackground-500.png" 
-                     alt="Garcia Builder Logo" 
+                <img src="Logo Files/For Web/logo-nobackground-500.png"
+                     alt="Garcia Builder Logo"
                      class="gb-logo-img"
                      loading="eager"
                      decoding="async">
                 <span class="gb-logo-text">Garcia Builder</span>
             </a>
 
-            <button class="gb-hamburger" 
-                    id="gb-menu-toggle" 
+            <button class="gb-hamburger"
+                    id="gb-menu-toggle"
                     aria-label="Toggle navigation menu"
                     aria-expanded="false"
                     aria-controls="gb-menu">
@@ -447,22 +448,22 @@
 <script>
 (function() {
     'use strict';
-    
+
     const menuToggle = document.getElementById('gb-menu-toggle');
     const menu = document.getElementById('gb-menu');
-    
+
     if (!menuToggle || !menu) return;
-    
+
     menuToggle.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        
+
         const isActive = menu.classList.toggle('active');
         menuToggle.classList.toggle('active');
         menuToggle.setAttribute('aria-expanded', isActive);
         document.body.style.overflow = isActive ? 'hidden' : '';
     });
-    
+
     document.addEventListener('click', function(e) {
         if (!menu.contains(e.target) && !menuToggle.contains(e.target)) {
             menu.classList.remove('active');
@@ -471,7 +472,7 @@
             document.body.style.overflow = '';
         }
     });
-    
+
     const menuLinks = menu.querySelectorAll('.gb-menu-link');
     menuLinks.forEach(link => {
         link.addEventListener('click', function() {
@@ -481,7 +482,7 @@
             document.body.style.overflow = '';
         });
     });
-    
+
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     menuLinks.forEach(link => {
         const linkPage = link.getAttribute('href');
@@ -489,7 +490,7 @@
             link.classList.add('active');
         }
     });
-    
+
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && menu.classList.contains('active')) {
             menu.classList.remove('active');

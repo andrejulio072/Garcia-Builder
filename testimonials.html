@@ -278,6 +278,9 @@ img { max-width: 100%; height: auto; display: block; }
 .grid .tcard:nth-child(4) { animation-delay: 0.4s; }
 .grid .tcard:nth-child(5) { animation-delay: 0.5s; }
 .grid .tcard:nth-child(6) { animation-delay: 0.6s; }
+
+/* Ensure equal height cards and consistent layout in testimonials grid only */
+#testimonials-grid .card.tcard { display:flex; flex-direction:row; height:100%; align-items:flex-start; }
 </style>
 </head><body>
 
@@ -397,7 +400,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     right: 0;
     background: rgba(15, 15, 15, 0.98);
     backdrop-filter: blur(20px);
-    border-bottom: 2px solid rgba(246, 200, 78, 0.3);
+  /* Avoid a persistent extra line under the navbar; only show border when menu is open */
+  border-bottom: 0;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -407,6 +411,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 .gb-menu.active {
     max-height: calc(100vh - 92px);
     overflow-y: auto;
+  border-bottom: 2px solid rgba(246, 200, 78, 0.3);
 }
 
 .gb-menu-inner {
@@ -471,30 +476,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     .gb-logo-img {
         height: 70px;
     }
-    
+
     .gb-logo-text {
         font-size: 2rem;
     }
-    
+
     .gb-hamburger {
         min-width: 60px;
         min-height: 60px;
     }
-    
+
     .gb-menu {
         top: 102px;
     }
-    
+
     .gb-menu.active {
         max-height: calc(100vh - 102px);
     }
-    
+
     .gb-menu-inner {
         max-width: 500px;
         margin: 0 auto;
         padding: 2rem 1rem;
     }
-    
+
     .gb-menu-link {
         font-size: 1.25rem;
         padding: 1.25rem 1.5rem;
@@ -506,17 +511,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     .gb-logo-img {
         height: 50px;
     }
-    
+
     .gb-logo-text {
         font-size: 1.5rem;
     }
-    
+
     .gb-hamburger {
         min-width: 45px;
         min-height: 45px;
         padding: 8px 12px;
     }
-    
+
     .gb-menu-link {
         font-size: 1rem;
         padding: 0.875rem 1rem;
@@ -580,16 +585,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="container">
         <div class="gb-navbar-content">
             <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
-                <img src="Logo Files/For Web/logo-nobackground-500.png" 
-                     alt="Garcia Builder Logo" 
+                <img src="Logo Files/For Web/logo-nobackground-500.png"
+                     alt="Garcia Builder Logo"
                      class="gb-logo-img"
                      loading="eager"
                      decoding="async">
                 <span class="gb-logo-text">Garcia Builder</span>
             </a>
 
-            <button class="gb-hamburger" 
-                    id="gb-menu-toggle" 
+            <button class="gb-hamburger"
+                    id="gb-menu-toggle"
                     aria-label="Toggle navigation menu"
                     aria-expanded="false"
                     aria-controls="gb-menu">
@@ -631,22 +636,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 (function() {
     'use strict';
-    
+
     const menuToggle = document.getElementById('gb-menu-toggle');
     const menu = document.getElementById('gb-menu');
-    
+
     if (!menuToggle || !menu) return;
-    
+
     menuToggle.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        
+
         const isActive = menu.classList.toggle('active');
         menuToggle.classList.toggle('active');
         menuToggle.setAttribute('aria-expanded', isActive);
         document.body.style.overflow = isActive ? 'hidden' : '';
     });
-    
+
     document.addEventListener('click', function(e) {
         if (!menu.contains(e.target) && !menuToggle.contains(e.target)) {
             menu.classList.remove('active');
@@ -655,7 +660,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             document.body.style.overflow = '';
         }
     });
-    
+
     const menuLinks = menu.querySelectorAll('.gb-menu-link');
     menuLinks.forEach(link => {
         link.addEventListener('click', function() {
@@ -665,7 +670,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             document.body.style.overflow = '';
         });
     });
-    
+
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     menuLinks.forEach(link => {
         const linkPage = link.getAttribute('href');
@@ -673,7 +678,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             link.classList.add('active');
         }
     });
-    
+
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && menu.classList.contains('active')) {
             menu.classList.remove('active');
@@ -685,18 +690,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 })();
 </script>
 
-    <!-- Auth buttons will be dynamically inserted here by auth-guard.js -->
-    <div id="auth-buttons"></div>
-
-    <div class="lang">
-      <select id="lang-select">
-        <option data-i18n="nav.lang.en" value="en">EN</option>
-        <option data-i18n="nav.lang.pt" value="pt">PT</option>
-        <option data-i18n="nav.lang.es" value="es">ES</option>
-      </select>
-    </div>
-  </div>
-</nav>
 
 <section class="section"><div class="container">
 <h1 class="title-gradient text-glow" data-i18n="testimonials.title">Testimonials</h1>
@@ -732,155 +725,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <button class="filter-btn" data-filter="muscle-gain">Muscle Gain</button>
   <button class="filter-btn" data-filter="transformation">Body Recomposition</button>
   <button class="filter-btn" data-filter="health">Health & Wellness</button>
+  <button class="filter-btn" data-filter="performance">Performance</button>
+  <button class="filter-btn" data-filter="lifestyle">Lifestyle</button>
+  <button class="filter-btn" data-filter="anonymous">Anonymous</button>
+  <button class="filter-btn" data-filter="identified">Identified</button>
+
+  <!-- View toggles -->
+  <div style="flex-basis:100%;height:0"></div>
+  <div class="btn-group" role="group" aria-label="View options" style="display:flex;gap:.5rem;justify-content:center;margin-top:.5rem;">
+    <button class="btn btn-sm" id="view-compact" type="button" aria-pressed="true">Compact</button>
+    <button class="btn btn-sm" id="view-comfy" type="button">Comfy</button>
+  </div>
+
+  <style>
+    /* Compact/comfy view helpers */
+    .grid.grid-3.compact .tcard{ padding:14px }
+    .grid.grid-3.comfy .tcard{ padding:22px }
+    .grid.grid-3 .card{ height:100% }
+  </style>
 </div>
 
-<div class="grid grid-3 mt-3" role="list" aria-label="Client testimonials">
-  <!-- Unified testimonial cards start -->
-  <!-- All testimonial cards from both grids will be merged here, deduplicated, and ordered for consistency. -->
-  <!-- Each card will have a unique avatar (initials + color), proper ARIA labels, and semantic structure. -->
-  <!-- Example card: -->
-  <div class="card tcard" data-category="weight-loss transformation" role="listitem" tabindex="0" aria-label="Testimonial from Lucas Almeida">
-    <div class="testimonial-avatar avatar-1" aria-hidden="true">LA</div>
-    <div>
-      <div class="name">Lucas Almeida</div>
-      <span class="badge" aria-label="5 star rating">★★★★★</span>
-      <p data-i18n="testimonials.t1">I tried every plan on my own and kept quitting after two weeks. Andre gave me structure, habits I could actually follow and honest feedback. I lost inches from my waist and, more importantly, I feel capable again.</p>
-    </div>
-  </div>
-  <!-- Repeat for all unique testimonials, using consistent avatar logic and removing any duplicates. -->
-  <!-- ... (all other testimonial cards from both grids, deduplicated and standardized) ... -->
-</div>
+<!-- Dynamic testimonials grid (40 cards injected via JS) -->
+<div id="testimonials-grid" class="grid grid-3 mt-3 compact" role="list" aria-label="Client testimonials"></div>
 </div></section>
-
-<!-- Additional testimonials -->
-
-        <div>
-          <div class="name">Daniela Castro</div>
-          <span class="badge">★★★★★</span>
-          <p>I appreciate the honest, data-driven approach. No gimmicks—just a plan tailored to me that I could actually follow.</p>
-        </div>
-      </div>
-
-      <div class="card tcard" data-category="lifestyle health">
-    <div class="testimonial-avatar avatar-10">NW</div>
-        <div>
-          <div class="name">Noah Williams</div>
-          <span class="badge">★★★★★</span>
-          <p>Sleep, stress, and steps became part of the plan. The holistic view is what finally made my results stick.</p>
-        </div>
-      </div>
-
-      <!-- Newly added to reach 40 -->
-      <div class="card tcard" data-category="weight-loss health">
-    <div class="testimonial-avatar avatar-1">LM</div>
-        <div>
-          <div class="name">Lucía Martínez</div>
-          <span class="badge">★★★★★</span>
-          <p>After two pregnancies I thought my body wouldn’t respond. With gentle progressions and nutrition coaching, I’m stronger and more confident than before.</p>
-        </div>
-      </div>
-
-      <div class="card tcard" data-category="muscle-gain performance">
-    <div class="testimonial-avatar avatar-2">AM</div>
-        <div>
-          <div class="name">Arjun Mehta</div>
-          <span class="badge">★★★★★</span>
-          <p>The technique cues on videos changed everything. I added 20kg to my squat while fixing depth and my knees feel great.</p>
-        </div>
-      </div>
-
-      <div class="card tcard" data-category="lifestyle transformation">
-    <div class="testimonial-avatar avatar-3">SD</div>
-        <div>
-          <div class="name">Sophie Dubois</div>
-          <span class="badge">★★★★★</span>
-          <p>Travel used to derail me. Now I land, check the plan and keep momentum. The flexibility is the reason I finally stayed consistent.</p>
-        </div>
-      </div>
-
-      <div class="card tcard" data-category="health lifestyle">
-    <div class="testimonial-avatar avatar-4">CN</div>
-        <div>
-          <div class="name">Chi Nguyen</div>
-          <span class="badge">★★★★★</span>
-          <p>My blood pressure normalized and I have energy after work. Small daily habits were the difference maker for me.</p>
-        </div>
-      </div>
-
-      <div class="card tcard" data-category="transformation weight-loss">
-    <div class="testimonial-avatar avatar-5">MG</div>
-        <div>
-          <div class="name">Mateo González</div>
-          <span class="badge">★★★★★</span>
-          <p>I lost 11kg without cutting entire food groups. The balanced approach removed the guilt and made weekends manageable.</p>
-        </div>
-      </div>
-
-      <div class="card tcard" data-category="muscle-gain health">
-    <div class="testimonial-avatar avatar-6">AM</div>
-        <div>
-          <div class="name">Ana Morales</div>
-          <span class="badge">★★★★★</span>
-          <p>We fixed my shoulder impingement while building my first pull-up. Coaching is detailed and encouraging at the same time.</p>
-        </div>
-      </div>
-
-      <div class="card tcard" data-category="lifestyle health">
-    <div class="testimonial-avatar avatar-7">JM</div>
-        <div>
-          <div class="name">Jonas Müller</div>
-          <span class="badge">★★★★★</span>
-          <p>The accountability made me show up even on tough weeks. I built routines that finally feel automatic.</p>
-        </div>
-      </div>
-
-      <div class="card tcard" data-category="performance conditioning">
-    <div class="testimonial-avatar avatar-8">PO</div>
-        <div>
-          <div class="name">Peter Okoye</div>
-          <span class="badge">★★★★★</span>
-          <p>Conditioning improved for football season without burning me out. The plan fits around school and part-time work.</p>
-        </div>
-      </div>
-
-      <div class="card tcard" data-category="weight-loss health">
-    <div class="testimonial-avatar avatar-9">EJ</div>
-        <div>
-          <div class="name">Emma Johansson</div>
-          <span class="badge">★★★★★</span>
-          <p>I finally enjoy cooking again. The weekly recipes and shopping lists took away decision fatigue and helped me stay on track.</p>
-        </div>
-      </div>
-
-      <div class="card tcard" data-category="muscle-gain transformation">
-    <div class="testimonial-avatar avatar-10">AH</div>
-        <div>
-          <div class="name">Ahmed Hassan</div>
-          <span class="badge">★★★★★</span>
-          <p>Lean bulk done right. I gained size with minimal fat and learned to manage phases with clear targets.</p>
-        </div>
-      </div>
-
-      <div class="card tcard" data-category="health lifestyle">
-    <div class="testimonial-avatar avatar-1">ZA</div>
-        <div>
-          <div class="name">Zara Ali</div>
-          <span class="badge">★★★★★</span>
-          <p>Sleep hygiene and step goals were the game changers. I feel calm, productive, and my body reflects that.</p>
-        </div>
-      </div>
-
-      <div class="card tcard" data-category="transformation lifestyle">
-    <div class="testimonial-avatar avatar-2">MP</div>
-        <div>
-          <div class="name">Mina Patel</div>
-          <span class="badge">★★★★★</span>
-          <p>Started for aesthetics, stayed for the confidence. The check-ins made me feel seen and supported every week.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- Testimonial Submission CTA - Moved to end of page -->
 <section class="section" style="padding: 80px 0; position: relative; overflow: hidden;">
@@ -934,9 +801,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 <a class="whatsapp-float" data-i18n="footer.whatsapp" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" onclick="return gtag_report_conversion(this.href)">WhatsApp</a>
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script defer src="js/testimonials-data.js"></script>
+<script defer src="js/testimonials-render.js"></script>
 <script defer src="js/app.js"></script>
 <script defer src="js/lightbox.js"></script>
-<script defer src="js/testimonials-filter.js"></script>
+<!-- testimonials-filter.js replaced by testimonials-render.js dynamic filtering -->
 <script defer src="js/user-reviews.js"></script>
 <script defer src="js/number-animate.js"></script>
 <script defer src="js/testimonials-visual.js"></script>
@@ -970,13 +839,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Track testimonial card clicks/interactions
-  document.querySelectorAll('.tcard').forEach(card => {
-    card.addEventListener('click', function() {
-      const name = this.querySelector('.name') ? this.querySelector('.name').textContent : 'Unknown';
-      const category = this.getAttribute('data-category');
+  // Delegate testimonial card clicks/interactions (cards are dynamic)
+  const grid = document.getElementById('testimonials-grid');
+  if (grid) {
+    grid.addEventListener('click', function(e){
+      const card = e.target.closest('.tcard');
+      if(!card) return;
+      const name = card.querySelector('.name') ? card.querySelector('.name').textContent : 'Unknown';
+      const category = card.getAttribute('data-category');
 
-      // Google Analytics event
       if (typeof gtag !== 'undefined') {
         gtag('event', 'testimonial_view', {
           'testimonial_name': name,
@@ -984,8 +855,6 @@ document.addEventListener('DOMContentLoaded', function() {
           'page_location': window.location.href
         });
       }
-
-      // Meta Pixel event
       if (typeof fbq !== 'undefined') {
         fbq('track', 'ViewContent', {
           content_name: name,
@@ -994,7 +863,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
       }
     });
-  });
+  }
 
   // Track CTA clicks (email and Instagram)
   document.querySelectorAll('a[href*="mailto"], a[href*="instagram"]').forEach(link => {

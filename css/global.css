@@ -542,6 +542,30 @@ section#contact.section.has-bg.contact-bg {
   white-space: nowrap;
 }
 
+/* Desktop: mostrar auth buttons ao lado do hamburger */
+@media (min-width: 769px) {
+  .navbar .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  
+  #auth-buttons {
+    display: flex !important;
+    order: 2;
+  }
+  
+  .hamburger-btn {
+    order: 3;
+    margin-left: 0;
+  }
+  
+  .brand {
+    order: 1;
+  }
+}
+
 @media (max-width: 768px) {
   /* Navbar mobile: APENAS hamburger visível */
   .navbar .inner {

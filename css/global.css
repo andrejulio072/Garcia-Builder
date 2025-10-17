@@ -550,17 +550,17 @@ section#contact.section.has-bg.contact-bg {
     justify-content: space-between;
     gap: 16px;
   }
-  
+
   #auth-buttons {
     display: flex !important;
     order: 2;
   }
-  
+
   .hamburger-btn {
     order: 3;
     margin-left: 0;
   }
-  
+
   .brand {
     order: 1;
   }

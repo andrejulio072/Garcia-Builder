@@ -118,7 +118,8 @@
     z-index: 1000;
     background: rgba(9, 14, 24, 0.95);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(246, 200, 78, 0.2);
+    /* Avoid double line: border appears only when menu is active */
+    border-bottom: 0;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
@@ -822,8 +823,11 @@
 </footer>
 
 <!-- WhatsApp Float Button -->
-<a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener" aria-label="Contact via WhatsApp">
+<a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener" aria-label="Contact via WhatsApp" onclick="return (window.gtag_report_conversion ? gtag_report_conversion(this.href) : true)">
     <i class="fab fa-whatsapp"></i>
 </a>
+
+<!-- Shared conversion helper for unified tracking -->
+<script defer src="js/conversion-helper.js"></script>
 </body>
 </html>

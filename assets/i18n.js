@@ -296,8 +296,8 @@
         subtitle: "Real people. Real results. See what's possible with the right guidance."
       },
       testimonials: {
-        title: "Testimonials",
-        subtitle: "What clients say about their Garcia Builder experience.",
+  title: "What Clients Say",
+  subtitle: "Real stories from real transformations",
         t1: "I tried every plan on my own and kept quitting after two weeks. Andre gave me structure, habits I could actually follow and honest feedback. I lost inches from my waist and, more importantly, I feel capable again.",
         t2: "As a busy dad I didn't think I had time. Andre simplified training to four sessions and taught me how to hit protein without overthinking. My energy is up, posture improved and I finally enjoy training.",
         t3: "I used to hide in baggy clothes. Twelve weeks later my friends keep asking what I changed. The check‑ins and tiny weekly goals kept me on track even during travel. Best investment I've made in myself.",
@@ -820,8 +820,8 @@
         subtitle: "Pessoas reais. Resultados reais. Veja o que é possível com a orientação certa."
       },
       testimonials: {
-        title: "Depoimentos",
-        subtitle: "O que os clientes dizem sobre sua experiência com Garcia Builder.",
+  title: "Depoimentos",
+  subtitle: "Histórias reais de transformações reais",
         t1: "Tentei todos os planos sozinha e sempre desistia após duas semanas. Andre me deu estrutura, hábitos que eu conseguia seguir e feedback honesto. Perdi centímetros da cintura e, mais importante, me sinto capaz novamente.",
         t2: "Como pai ocupado, não achava que tivesse tempo. Andre simplificou o treino para quatro sessões e me ensinou como atingir proteína sem complicar. Minha energia aumentou, postura melhorou e finalmente gosto de treinar.",
         t3: "Costumava me esconder em roupas largas. Doze semanas depois meus amigos perguntam o que mudei. Os check-ins e pequenas metas semanais me mantiveram no caminho mesmo durante viagens. Melhor investimento que fiz em mim mesma.",
@@ -1332,8 +1332,11 @@
         subtitle: "Personas reales. Resultados reales. Ve lo que es posible con la orientación correcta."
       },
       testimonials: {
-        title: "Testimonios",
-        subtitle: "Lo que dicen los clientes sobre su experiencia con Garcia Builder.",
+  title: "Testimonios",
+  subtitle: "Historias reales de transformaciones reales",
+  cta: "See All Testimonials →",
+  cta: "Ver todos os depoimentos →",
+  cta: "Ver todos los testimonios →",
         t1: "Probé todos los planes por mi cuenta y siempre dejaba después de dos semanas. Andre me dio estructura, hábitos que realmente podía seguir y feedback honesto. Perdí centímetros de mi cintura y, más importante, me siento capaz otra vez.",
         t2: "Como padre ocupado no pensé que tuviera tiempo. Andre simplificó el entrenamiento a cuatro sesiones y me enseñó cómo conseguir proteína sin complicar. Mi energía subió, postura mejoró y finalmente disfruto entrenar.",
         t3: "Solía esconderme en ropa holgada. Doce semanas después mis amigos siguen preguntando qué cambié. Los check-ins y pequeñas metas semanales me mantuvieron en curso incluso durante viajes. Mejor inversión que he hecho en mí misma.",

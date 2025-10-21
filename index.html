@@ -655,6 +655,55 @@ window.addEventListener('scroll', () => {
 </div>
 </div>
 </section>
+</section>
+
+<!-- Testimonials Block - Real Clients -->
+<section class="section" style="background: linear-gradient(135deg, rgba(246,200,78,0.04) 0%, rgba(0,0,0,0.85) 100%);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="title-gradient text-glow mb-3" data-i18n="testimonials.title">What Clients Say</h2>
+      <p class="lead" data-i18n="testimonials.subtitle">Real stories from real transformations</p>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-4">
+        <div class="card h-100 shadow-lg border-0" style="background: rgba(255,255,255,0.03); border-radius: 16px;">
+          <div class="card-body">
+            <i class="fas fa-quote-left fa-2x text-warning mb-3"></i>
+            <p class="card-text" data-i18n="testimonials.t1">I tried every plan on my own and kept quitting after two weeks. Andre gave me structure, habits I could actually follow and honest feedback. I lost inches from my waist and, more importantly, I feel capable again.</p>
+            <div class="mt-3">
+              <span class="fw-bold text-warning">— Emily R.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 shadow-lg border-0" style="background: rgba(255,255,255,0.03); border-radius: 16px;">
+          <div class="card-body">
+            <i class="fas fa-quote-left fa-2x text-warning mb-3"></i>
+            <p class="card-text" data-i18n="testimonials.t2">As a busy dad I didn't think I had time. Andre simplified training to four sessions and taught me how to hit protein without overthinking. My energy is up, posture improved and I finally enjoy training.</p>
+            <div class="mt-3">
+              <span class="fw-bold text-warning">— Mark S.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 shadow-lg border-0" style="background: rgba(255,255,255,0.03); border-radius: 16px;">
+          <div class="card-body">
+            <i class="fas fa-quote-left fa-2x text-warning mb-3"></i>
+            <p class="card-text" data-i18n="testimonials.t3">I used to hide in baggy clothes. Twelve weeks later my friends keep asking what I changed. The check‑ins and tiny weekly goals kept me on track even during travel. Best investment I've made in myself.</p>
+            <div class="mt-3">
+              <span class="fw-bold text-warning">— Sarah M.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-5">
+      <a href="testimonials.html" class="btn btn-outline-warning btn-lg" data-i18n="testimonials.cta">See All Testimonials →</a>
+    </div>
+  </div>
+</section>
 <section class="section"><div class="container">
 <h2 class="title-gradient text-glow" data-i18n="home.why.title">Why Garcia Builder</h2>
 <div class="grid grid-3 mt-3">
@@ -719,29 +768,35 @@ window.addEventListener('scroll', () => {
 <p class="lead" data-i18n="featured.subtitle">Join 127+ clients who transformed their bodies and lives</p>
 </div>
 <div class="row align-items-center g-4">
-<div class="col-lg-6">
-<div class="position-relative" style="border-radius: 15px; overflow: hidden; box-shadow: 0 15px 40px rgba(246,200,78,0.2);">
-<img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80"
-  alt="Client transformation showcase"
-  class="img-fluid"
-  loading="lazy" decoding="async" width="800" height="500"
-  style="width: 100%; height: 500px; object-fit: cover;">
-<div class="position-absolute bottom-0 start-0 p-3 bg-dark bg-opacity-75 rounded" style="margin: 10px;">
-<p class="mb-0 text-warning fw-bold" data-i18n="featured.result">-15kg · 12 weeks</p>
-</div>
-</div>
-</div>
-<div class="col-lg-6">
-<blockquote class="blockquote">
-<p class="fs-4 mb-3" data-i18n="featured.quote">
-"I never thought online coaching could be this personal. The weekly check-ins and constant support kept me accountable. Best investment in myself I've ever made."
-</p>
-<footer class="blockquote-footer text-warning" data-i18n="featured.author">Sarah M., Dublin</footer>
-</blockquote>
-<div class="mt-4">
-<a href="transformations.html" class="btn btn-gold" data-i18n="featured.cta">See More Transformations →</a>
-</div>
-</div>
+  <div class="col-lg-6">
+    <div class="position-relative d-flex justify-content-center align-items-center" style="border-radius: 15px; overflow: hidden; box-shadow: 0 15px 40px rgba(246,200,78,0.2); background: #181c22; min-height: 500px;">
+      <!-- Before/After effect -->
+      <div style="display: flex; width: 100%; height: 100%;">
+        <div style="flex:1; position: relative;">
+          <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?w=400&q=80" alt="Before transformation" class="img-fluid" loading="lazy" decoding="async" width="400" height="500" style="width: 100%; height: 500px; object-fit: cover; filter: grayscale(0.7) brightness(0.8); border-right: 4px solid #F6C84E;">
+          <span style="position: absolute; top: 15px; left: 15px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 14px; border-radius: 8px; font-weight: 600; font-size: 1rem; letter-spacing: 1px;">Before</span>
+        </div>
+        <div style="flex:1; position: relative;">
+          <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=400&q=80" alt="After transformation" class="img-fluid" loading="lazy" decoding="async" width="400" height="500" style="width: 100%; height: 500px; object-fit: cover;">
+          <span style="position: absolute; top: 15px; right: 15px; background: #F6C84E; color: #222; padding: 4px 14px; border-radius: 8px; font-weight: 700; font-size: 1rem; letter-spacing: 1px;">After</span>
+        </div>
+      </div>
+      <div class="position-absolute bottom-0 start-50 translate-middle-x p-3 bg-dark bg-opacity-75 rounded shadow-lg" style="margin-bottom: 18px; min-width: 220px; border: 2px solid #F6C84E;">
+        <p class="mb-0 text-warning fw-bold fs-4" data-i18n="featured.result">-15kg · 12 weeks</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <blockquote class="blockquote">
+      <p class="fs-4 mb-3" data-i18n="featured.quote">
+        "I never thought online coaching could be this personal. The weekly check-ins and constant support kept me accountable. Best investment in myself I've ever made."
+      </p>
+      <footer class="blockquote-footer text-warning" data-i18n="featured.author">Sarah M., Dublin</footer>
+    </blockquote>
+    <div class="mt-4">
+      <a href="transformations.html" class="btn btn-gold btn-lg" data-i18n="featured.cta">See More Transformations →</a>
+    </div>
+  </div>
 </div>
 </div>
 </section>
@@ -936,63 +991,57 @@ window.addEventListener('scroll', () => {
 </section>
 
 <!-- Latest Blog Posts Section -->
-<section class="section" style="background: rgba(0,0,0,0.3);">
-<div class="container">
-<div class="text-center mb-5">
-<h2 class="title-gradient text-glow mb-3" data-i18n="blog.section.title">Expert Tips & Guides</h2>
-<p class="lead" data-i18n="blog.section.subtitle">Science-backed advice to accelerate your transformation</p>
-</div>
-<div class="row g-4">
-<div class="col-md-4">
-<div class="card h-100" style="overflow: hidden;">
-<img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80"
-  alt="Gym training" class="card-img-top" loading="lazy" decoding="async" width="600" height="200"
-  style="height: 200px; object-fit: cover;">
-<div class="card-body">
-<div class="mb-2">
-<span class="badge bg-warning text-dark" data-i18n="blog.category.training">TRAINING</span>
-</div>
-<h4 class="mb-3" data-i18n="blog.post1.title">5 Mistakes Killing Your Gym Progress</h4>
-<p class="mb-3" data-i18n="blog.post1.excerpt">Stop spinning your wheels. Learn the most common training errors and how to fix them for faster results.</p>
-<a href="blog-gym-mistakes.html" class="btn btn-outline-warning btn-sm" data-i18n="blog.readmore">Read More →</a>
-</div>
-</div>
-</div>
-<div class="col-md-4">
-<div class="card h-100" style="overflow: hidden;">
-<img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&q=80"
-  alt="Healthy nutrition" class="card-img-top" loading="lazy" decoding="async" width="600" height="200"
-  style="height: 200px; object-fit: cover;">
-<div class="card-body">
-<div class="mb-2">
-<span class="badge bg-warning text-dark" data-i18n="blog.category.nutrition">NUTRITION</span>
-</div>
-<h4 class="mb-3" data-i18n="blog.post2.title">The Truth About Fat Loss Nutrition</h4>
-<p class="mb-3" data-i18n="blog.post2.excerpt">Cut through the noise and discover what actually works for sustainable, science-based fat loss.</p>
-<a href="blog-nutrition-fat-loss.html" class="btn btn-outline-warning btn-sm" data-i18n="blog.readmore">Read More →</a>
-</div>
-</div>
-</div>
-<div class="col-md-4">
-<div class="card h-100" style="overflow: hidden;">
-<img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&q=80"
-  alt="Fitness mindset" class="card-img-top" loading="lazy" decoding="async" width="600" height="200"
-  style="height: 200px; object-fit: cover;">
-<div class="card-body">
-<div class="mb-2">
-<span class="badge bg-warning text-dark" data-i18n="blog.category.mindset">MINDSET</span>
-</div>
-<h4 class="mb-3" data-i18n="blog.post3.title">Why Consistency Beats Motivation</h4>
-<p class="mb-3" data-i18n="blog.post3.excerpt">Build unbreakable habits and systems that keep you on track even when motivation fades.</p>
-<a href="blog-consistency.html" class="btn btn-outline-warning btn-sm" data-i18n="blog.readmore">Read More →</a>
-</div>
-</div>
-</div>
-</div>
-<div class="text-center mt-4">
-<a href="blog.html" class="btn btn-warning" data-i18n="blog.viewall">View All Articles →</a>
-</div>
-</div>
+<section class="section" style="background: linear-gradient(135deg, rgba(246,200,78,0.04) 0%, rgba(0,0,0,0.85) 100%);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="title-gradient text-glow mb-3" data-i18n="blog.section.title">Expert Tips & Guides</h2>
+      <p class="lead" data-i18n="blog.section.subtitle">Science-backed advice to accelerate your transformation</p>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-4">
+        <div class="card blog-card h-100 shadow-lg border-0" style="border-radius: 18px; overflow: hidden; background: rgba(255,255,255,0.03);">
+          <div class="blog-image" style="height: 210px; background: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80') center/cover no-repeat;"></div>
+          <div class="card-body blog-content d-flex flex-column">
+            <div class="mb-2">
+              <span class="badge bg-warning text-dark" data-i18n="blog.category.training">TRAINING</span>
+            </div>
+            <h4 class="mb-2" data-i18n="blog.post1.title">5 Mistakes Killing Your Gym Progress</h4>
+            <p class="mb-3 flex-grow-1" data-i18n="blog.post1.excerpt">Stop spinning your wheels. Learn the most common training errors and how to fix them for faster results.</p>
+            <a href="blog-gym-mistakes.html" class="btn btn-outline-warning btn-sm blog-link align-self-start" data-i18n="blog.readmore">Read More → <i class="fas fa-arrow-right ms-1"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card blog-card h-100 shadow-lg border-0" style="border-radius: 18px; overflow: hidden; background: rgba(255,255,255,0.03);">
+          <div class="blog-image" style="height: 210px; background: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&q=80') center/cover no-repeat;"></div>
+          <div class="card-body blog-content d-flex flex-column">
+            <div class="mb-2">
+              <span class="badge bg-warning text-dark" data-i18n="blog.category.nutrition">NUTRITION</span>
+            </div>
+            <h4 class="mb-2" data-i18n="blog.post2.title">The Truth About Fat Loss Nutrition</h4>
+            <p class="mb-3 flex-grow-1" data-i18n="blog.post2.excerpt">Cut through the noise and discover what actually works for sustainable, science-based fat loss.</p>
+            <a href="blog-nutrition-fat-loss.html" class="btn btn-outline-warning btn-sm blog-link align-self-start" data-i18n="blog.readmore">Read More → <i class="fas fa-arrow-right ms-1"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card blog-card h-100 shadow-lg border-0" style="border-radius: 18px; overflow: hidden; background: rgba(255,255,255,0.03);">
+          <div class="blog-image" style="height: 210px; background: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&q=80') center/cover no-repeat;"></div>
+          <div class="card-body blog-content d-flex flex-column">
+            <div class="mb-2">
+              <span class="badge bg-warning text-dark" data-i18n="blog.category.mindset">MINDSET</span>
+            </div>
+            <h4 class="mb-2" data-i18n="blog.post3.title">Why Consistency Beats Motivation</h4>
+            <p class="mb-3 flex-grow-1" data-i18n="blog.post3.excerpt">Build unbreakable habits and systems that keep you on track even when motivation fades.</p>
+            <a href="blog-consistency.html" class="btn btn-outline-warning btn-sm blog-link align-self-start" data-i18n="blog.readmore">Read More → <i class="fas fa-arrow-right ms-1"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-5">
+      <a href="blog.html" class="btn btn-warning btn-lg px-5 fw-bold shadow" data-i18n="blog.viewall" style="letter-spacing: 0.5px;">View All Articles →</a>
+    </div>
+  </div>
 </section>
 
 <!-- Social Proof Gallery Section -->

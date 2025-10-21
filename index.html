@@ -591,6 +591,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
     });
 })();
+
+// Hero Parallax Effect
+let lastScrollY = 0;
+const heroSection = document.querySelector('.hero');
+
+function handleScroll() {
+    if (!heroSection) return;
+    
+    const scrollY = window.scrollY;
+    const parallaxSpeed = 0.5;
+    
+    if (scrollY < window.innerHeight) {
+        heroSection.style.backgroundPositionY = `${scrollY * parallaxSpeed}px`;
+    }
+    
+    lastScrollY = scrollY;
+}
+
+// Throttle scroll for performance
+let ticking = false;
+window.addEventListener('scroll', () => {
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            handleScroll();
+            ticking = false;
+        });
+        ticking = true;
+    }
+});
 </script>
 
 <section class="hero">
@@ -598,10 +627,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="row align-items-center">
 <div class="col-lg-12">
 <h1 class="title-gradient text-glow" data-i18n="home.hero.headline" style="font-size:56px">Online Coaching. Real Results.</h1>
-<p class="mt-2" data-i18n="hero.p">Precision training, simple nutrition and relentless accountability — 100% online via Trainerize and WhatsApp.</p>
+<p class="mt-2" data-i18n="hero.p" style="font-size: 1.15rem; opacity: 0.95;">Precision training, simple nutrition and relentless accountability — 100% online via Trainerize and WhatsApp.</p>
 <div class="d-flex gap-2 justify-content-center mt-3">
-<a class="btn btn-gold" data-i18n="cta.start" href="contact.html">Start Today</a>
-<a class="btn" data-i18n="cta.plans" href="pricing.html">See Plans</a>
+<a class="btn btn-gold pulse-hover" data-i18n="cta.start" href="contact.html" style="padding: 14px 32px; font-size: 1.1rem; font-weight: 600;">Start Today</a>
+<a class="btn" data-i18n="cta.plans" href="pricing.html" style="padding: 14px 32px; font-size: 1.1rem;">See Plans</a>
 </div>
 <div class="kpis">
 <div class="kpi"><div class="num">127</div><div data-i18n="kpi.transforms">Transformations</div></div>
@@ -611,12 +640,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- Google Reviews -->
 <div class="text-center mt-4">
-<span class="fs-5 text-warning">
-<i class="fas fa-star"></i>
-<i class="fas fa-star"></i>
-<i class="fas fa-star"></i>
-<i class="fas fa-star"></i>
-<i class="fas fa-star"></i>
+<span class="fs-5 text-warning google-stars">
+<i class="fas fa-star" style="animation: starPop 0.5s ease 0.1s both;"></i>
+<i class="fas fa-star" style="animation: starPop 0.5s ease 0.2s both;"></i>
+<i class="fas fa-star" style="animation: starPop 0.5s ease 0.3s both;"></i>
+<i class="fas fa-star" style="animation: starPop 0.5s ease 0.4s both;"></i>
+<i class="fas fa-star" style="animation: starPop 0.5s ease 0.5s both;"></i>
 </span>
 <span class="fw-bold ms-2" data-i18n="reviews.google">Rated 5.0 on Google</span>
 <span class="text-muted ms-2" data-i18n="reviews.count">(87 reviews)</span>
@@ -864,37 +893,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="row g-4">
 <div class="col-md-6 col-lg-3">
 <a href="transformations.html" class="text-decoration-none">
-<div class="card h-100 text-center p-4" style="transition: transform 0.3s ease;">
-<div style="font-size: 2.5rem;" class="mb-2">🏋️‍♂️</div>
-<h4 class="mb-2" data-i18n="explore.transformations">Transformations</h4>
-<p class="small mb-0" data-i18n="explore.transformations.desc">127+ client results</p>
+<div class="card h-100 text-center p-4 quick-nav-card" style="transition: transform 0.3s ease; position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(246,200,78,0.08) 0%, rgba(11,18,32,0.95) 100%);">
+<div style="position: absolute; top: 10px; right: 10px; font-size: 4rem; opacity: 0.1; transform: rotate(-15deg);">🏋️‍♂️</div>
+<div style="font-size: 2.5rem; position: relative; z-index: 2;" class="mb-2">🏋️‍♂️</div>
+<h4 class="mb-2" style="position: relative; z-index: 2;" data-i18n="explore.transformations">Transformations</h4>
+<p class="small mb-0" style="position: relative; z-index: 2;" data-i18n="explore.transformations.desc">127+ client results</p>
 </div>
 </a>
 </div>
 <div class="col-md-6 col-lg-3">
 <a href="testimonials.html" class="text-decoration-none">
-<div class="card h-100 text-center p-4" style="transition: transform 0.3s ease;">
-<div style="font-size: 2.5rem;" class="mb-2">💬</div>
-<h4 class="mb-2" data-i18n="explore.testimonials">Testimonials</h4>
-<p class="small mb-0" data-i18n="explore.testimonials.desc">Client success stories</p>
+<div class="card h-100 text-center p-4 quick-nav-card" style="transition: transform 0.3s ease; position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(246,200,78,0.08) 0%, rgba(11,18,32,0.95) 100%);">
+<div style="position: absolute; top: 10px; right: 10px; font-size: 4rem; opacity: 0.1; transform: rotate(-15deg);">💬</div>
+<div style="font-size: 2.5rem; position: relative; z-index: 2;" class="mb-2">💬</div>
+<h4 class="mb-2" style="position: relative; z-index: 2;" data-i18n="explore.testimonials">Testimonials</h4>
+<p class="small mb-0" style="position: relative; z-index: 2;" data-i18n="explore.testimonials.desc">Client success stories</p>
 </div>
 </a>
 </div>
 <div class="col-md-6 col-lg-3">
 <a href="pricing.html" class="text-decoration-none">
-<div class="card h-100 text-center p-4" style="transition: transform 0.3s ease;">
-<div style="font-size: 2.5rem;" class="mb-2">💰</div>
-<h4 class="mb-2" data-i18n="explore.pricing">Pricing</h4>
-<p class="small mb-0" data-i18n="explore.pricing.desc">Flexible coaching plans</p>
+<div class="card h-100 text-center p-4 quick-nav-card" style="transition: transform 0.3s ease; position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(246,200,78,0.08) 0%, rgba(11,18,32,0.95) 100%);">
+<div style="position: absolute; top: 10px; right: 10px; font-size: 4rem; opacity: 0.1; transform: rotate(-15deg);">💰</div>
+<div style="font-size: 2.5rem; position: relative; z-index: 2;" class="mb-2">💰</div>
+<h4 class="mb-2" style="position: relative; z-index: 2;" data-i18n="explore.pricing">Pricing</h4>
+<p class="small mb-0" style="position: relative; z-index: 2;" data-i18n="explore.pricing.desc">Flexible coaching plans</p>
 </div>
 </a>
 </div>
 <div class="col-md-6 col-lg-3">
 <a href="blog.html" class="text-decoration-none">
-<div class="card h-100 text-center p-4" style="transition: transform 0.3s ease;">
-<div style="font-size: 2.5rem;" class="mb-2">📚</div>
-<h4 class="mb-2" data-i18n="explore.blog">Blog & Tips</h4>
-<p class="small mb-0" data-i18n="explore.blog.desc">Expert resources</p>
+<div class="card h-100 text-center p-4 quick-nav-card" style="transition: transform 0.3s ease; position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(246,200,78,0.08) 0%, rgba(11,18,32,0.95) 100%);">
+<div style="position: absolute; top: 10px; right: 10px; font-size: 4rem; opacity: 0.1; transform: rotate(-15deg);">📚</div>
+<div style="font-size: 2.5rem; position: relative; z-index: 2;" class="mb-2">📚</div>
+<h4 class="mb-2" style="position: relative; z-index: 2;" data-i18n="explore.blog">Blog & Tips</h4>
+<p class="small mb-0" style="position: relative; z-index: 2;" data-i18n="explore.blog.desc">Expert resources</p>
 </div>
 </a>
 </div>
@@ -1092,6 +1125,65 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   /* Fallback for browsers that don't support background-clip */
   color: #F6C84E !important;
   display: inline-block;
+}
+
+/* Star Pop Animation */
+@keyframes starPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Stats Counter Animation */
+[data-count] {
+  transition: all 0.5s ease;
+}
+
+/* Quick Nav Card Enhanced Hover */
+.quick-nav-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.quick-nav-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(246,200,78,0.25);
+}
+
+/* CTA Button Pulse Hover */
+.pulse-hover {
+  position: relative;
+  overflow: hidden;
+}
+.pulse-hover::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+.pulse-hover:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Hero Background Parallax */
+.hero {
+  background-size: cover;
+  background-position: center center;
+  background-attachment: scroll;
+  will-change: background-position;
 }
 
 /* Ensure text is visible on all browsers */
@@ -1668,6 +1760,70 @@ document.addEventListener('click', function(e) {
 // Initialize tracking
 document.addEventListener('DOMContentLoaded', function() {
     trackPageView();
+});
+
+// Stats Counter Animation with Intersection Observer
+function animateCounter(element, target, duration = 2000) {
+    const start = 0;
+    const increment = target / (duration / 16); // 60fps
+    let current = start;
+    
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            element.textContent = target >= 1000 ? Math.floor(target).toLocaleString() + '+' : target.toFixed(1);
+            clearInterval(timer);
+        } else {
+            element.textContent = target >= 1000 ? Math.floor(current).toLocaleString() + '+' : current.toFixed(1);
+        }
+    }, 16);
+}
+
+// Observe stats section for scroll-triggered animation
+const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+            entry.target.classList.add('animated');
+            const statElements = entry.target.querySelectorAll('[data-count]');
+            
+            statElements.forEach(el => {
+                const targetValue = parseFloat(el.getAttribute('data-count'));
+                animateCounter(el, targetValue);
+            });
+            
+            statsObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.3 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const statsSection = document.querySelector('[data-count]')?.closest('section');
+    if (statsSection) {
+        statsObserver.observe(statsSection);
+    }
+});
+
+// Scroll Reveal for Feature Cards
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting && !entry.target.classList.contains('revealed')) {
+            setTimeout(() => {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                entry.target.classList.add('revealed');
+            }, index * 100); // Stagger effect
+        }
+    });
+}, { threshold: 0.1 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const featureCards = document.querySelectorAll('.card.feature');
+    featureCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+        revealObserver.observe(card);
+    });
 });
 </script>
 

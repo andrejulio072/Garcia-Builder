@@ -1418,13 +1418,31 @@
 
     const sel = document.getElementById('lang-select');
     if (sel && sel.value !== lang) sel.value = lang;
+
+    // Keep navbar selector in sync as well
+    const selNav = document.getElementById('lang-select-navbar');
+    if (selNav && selNav.value !== lang) selNav.value = lang;
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     const lang = getLang(); // EN by default
     apply(lang);
+
     const sel = document.getElementById('lang-select');
-    if (sel) sel.addEventListener('change', () => setLang(sel.value));
+    const selNav = document.getElementById('lang-select-navbar');
+
+    // Change handlers that set language and mirror value in the other select (without triggering change loops)
+    if (sel) sel.addEventListener('change', () => {
+      const newLang = sel.value;
+      if (selNav && selNav.value !== newLang) selNav.value = newLang;
+      setLang(newLang);
+    });
+
+    if (selNav) selNav.addEventListener('change', () => {
+      const newLang = selNav.value;
+      if (sel && sel.value !== newLang) sel.value = newLang;
+      setLang(newLang);
+    });
   });
 
   // Expose APIs and raw dictionaries for legacy consumers

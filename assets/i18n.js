@@ -152,6 +152,66 @@
           title: "Why Garcia Builder"
         }
       },
+      featured: {
+        title: "Real People. Real Results.",
+        subtitle: "Join 127+ clients who transformed their bodies and lives",
+        result: "-15kg · 12 weeks",
+        quote: "I never thought online coaching could be this personal. The weekly check-ins and constant support kept me accountable. Best investment in myself I've ever made.",
+        author: "Sarah M., Dublin",
+        cta: "See More Transformations →"
+      },
+      howitworks: {
+        title: "How It Works",
+        subtitle: "Your transformation journey in 4 simple steps",
+        step1: { title: "Free Consultation", desc: "We discuss your goals, experience, and create your personalized plan." },
+        step2: { title: "Custom Program", desc: "Receive your tailored training and nutrition plan via Trainerize app." },
+        step3: { title: "Weekly Check-ins", desc: "Progress reviews, adjustments, and direct WhatsApp support throughout." },
+        step4: { title: "Achieve Results", desc: "Hit your goals in 8-12 weeks with sustainable habits that last." },
+        cta: "Start Your Journey Today →"
+      },
+      video: {
+        title: "See The Garcia Builder Method In Action",
+        subtitle: "Watch how our personalized approach delivers results that last",
+        point1: "Evidence-based training protocols",
+        point2: "Custom nutrition without restrictions",
+        point3: "24/7 support via WhatsApp",
+        point4: "Weekly progress reviews and adjustments",
+        cta: "Get Started Now →"
+      },
+      blog: {
+        section: { title: "Expert Tips & Guides", subtitle: "Science-backed advice to accelerate your transformation" },
+        category: { training: "TRAINING", nutrition: "NUTRITION", mindset: "MINDSET" },
+        post1: { title: "5 Mistakes Killing Your Gym Progress", excerpt: "Stop spinning your wheels. Learn the most common training errors and how to fix them for faster results." },
+        post2: { title: "The Truth About Fat Loss Nutrition", excerpt: "Cut through the noise and discover what actually works for sustainable, science-based fat loss." },
+        post3: { title: "Why Consistency Beats Motivation", excerpt: "Build unbreakable habits and systems that keep you on track even when motivation fades." },
+        readmore: "Read More →",
+        viewall: "View All Articles →"
+      },
+      socialproof: {
+        title: "Join Our Community",
+        subtitle: "127+ people transformed their lives with Garcia Builder",
+        cta: "See All Success Stories →"
+      },
+      stats: {
+        clients: "Clients Transformed",
+        workouts: "Workouts Completed",
+        success: "Success Rate",
+        rating: "Average Rating"
+      },
+      guarantee: {
+        certified: "Certified Professional",
+        "certified.desc": "Qualified personal trainer with 12+ years experience",
+        privacy: "100% Private",
+        "privacy.desc": "Your data is secure and never shared",
+        support: "24/7 Support",
+        "support.desc": "WhatsApp access for questions anytime",
+        flexible: "Cancel Anytime",
+        "flexible.desc": "No long-term contracts or commitments"
+      },
+      reviews: {
+        google: "Rated 5.0 on Google",
+        count: "(87 reviews)"
+      },
       hero: {
         p: "Precision training, simple nutrition and relentless accountability — 100% online via Trainerize and WhatsApp."
       },
@@ -616,6 +676,66 @@
           title: "Por que Garcia Builder"
         }
       },
+      featured: {
+        title: "Pessoas Reais. Resultados Reais.",
+        subtitle: "Junte-se a 127+ clientes que transformaram seus corpos e suas vidas",
+        result: "-15kg · 12 semanas",
+        quote: "Nunca imaginei que coaching online pudesse ser tão pessoal. Os check-ins semanais e o suporte constante me mantiveram responsável. Melhor investimento que já fiz em mim.",
+        author: "Sarah M., Dublin",
+        cta: "Ver Mais Transformações →"
+      },
+      howitworks: {
+        title: "Como Funciona",
+        subtitle: "Sua jornada de transformação em 4 passos simples",
+        step1: { title: "Consulta Gratuita", desc: "Conversamos sobre seus objetivos e experiência para criar seu plano personalizado." },
+        step2: { title: "Programa Personalizado", desc: "Receba seu treino e nutrição sob medida via app Trainerize." },
+        step3: { title: "Check-ins Semanais", desc: "Revisões de progresso, ajustes e suporte direto via WhatsApp." },
+        step4: { title: "Alcance Resultados", desc: "Bata suas metas em 8–12 semanas com hábitos sustentáveis." },
+        cta: "Comece Sua Jornada Hoje →"
+      },
+      video: {
+        title: "Veja o Método Garcia Builder na Prática",
+        subtitle: "Assista como nossa abordagem personalizada gera resultados que duram",
+        point1: "Protocolos de treino baseados em evidência",
+        point2: "Nutrição sob medida sem restrições",
+        point3: "Suporte 24/7 via WhatsApp",
+        point4: "Revisões semanais e ajustes contínuos",
+        cta: "Começar Agora →"
+      },
+      blog: {
+        section: { title: "Dicas & Guias de Especialistas", subtitle: "Orientação com base científica para acelerar sua transformação" },
+        category: { training: "TREINO", nutrition: "NUTRIÇÃO", mindset: "MENTALIDADE" },
+        post1: { title: "5 Erros que Travam seu Progresso na Academia", excerpt: "Pare de patinar. Aprenda os erros mais comuns e como corrigi-los para evoluir mais rápido." },
+        post2: { title: "A Verdade sobre Nutrição para Perda de Gordura", excerpt: "Corte o ruído e descubra o que realmente funciona para um emagrecimento sustentável." },
+        post3: { title: "Por que Consistência vence Motivação", excerpt: "Crie hábitos e sistemas que te mantêm no caminho mesmo sem motivação." },
+        readmore: "Ler Mais →",
+        viewall: "Ver Todos os Artigos →"
+      },
+      socialproof: {
+        title: "Junte-se à Nossa Comunidade",
+        subtitle: "127+ pessoas transformaram suas vidas com Garcia Builder",
+        cta: "Ver Todas as Histórias de Sucesso →"
+      },
+      stats: {
+        clients: "Clientes Transformados",
+        workouts: "Treinos Completos",
+        success: "Taxa de Sucesso",
+        rating: "Avaliação Média"
+      },
+      guarantee: {
+        certified: "Profissional Certificado",
+        "certified.desc": "Personal trainer qualificado com 12+ anos de experiência",
+        privacy: "100% Privado",
+        "privacy.desc": "Seus dados são seguros e nunca compartilhados",
+        support: "Suporte 24/7",
+        "support.desc": "Acesso via WhatsApp para dúvidas a qualquer hora",
+        flexible: "Cancele a Qualquer Momento",
+        "flexible.desc": "Sem contratos de longo prazo"
+      },
+      reviews: {
+        google: "Avaliado 5.0 no Google",
+        count: "(87 avaliações)"
+      },
       hero: {
         p: "Treino preciso, nutrição simples e responsabilidade implacável — 100% online via Trainerize e WhatsApp."
       },
@@ -1067,6 +1187,66 @@
         why: {
           title: "Por qué Garcia Builder"
         }
+      },
+      featured: {
+        title: "Personas Reales. Resultados Reales.",
+        subtitle: "Únete a 127+ clientes que transformaron sus cuerpos y vidas",
+        result: "-15kg · 12 semanas",
+        quote: "Nunca pensé que el coaching online pudiera ser tan personal. Los check-ins semanales y el apoyo constante me mantuvieron responsable. La mejor inversión que he hecho en mí.",
+        author: "Sarah M., Dublín",
+        cta: "Ver Más Transformaciones →"
+      },
+      howitworks: {
+        title: "Cómo Funciona",
+        subtitle: "Tu viaje de transformación en 4 pasos simples",
+        step1: { title: "Consulta Gratuita", desc: "Hablamos de tus objetivos y experiencia para crear tu plan personalizado." },
+        step2: { title: "Programa Personalizado", desc: "Recibe tu plan de entrenamiento y nutrición en el app Trainerize." },
+        step3: { title: "Check-ins Semanales", desc: "Revisiones de progreso, ajustes y soporte directo por WhatsApp." },
+        step4: { title: "Alcanza Resultados", desc: "Logra tus metas en 8–12 semanas con hábitos sostenibles." },
+        cta: "Empieza Tu Viaje Hoy →"
+      },
+      video: {
+        title: "Mira el Método Garcia Builder en Acción",
+        subtitle: "Observa cómo nuestro enfoque personalizado entrega resultados duraderos",
+        point1: "Protocolos de entrenamiento basados en evidencia",
+        point2: "Nutrición personalizada sin restricciones",
+        point3: "Soporte 24/7 por WhatsApp",
+        point4: "Revisiones semanales y ajustes continuos",
+        cta: "Empezar Ahora →"
+      },
+      blog: {
+        section: { title: "Consejos & Guías de Expertos", subtitle: "Consejos basados en ciencia para acelerar tu transformación" },
+        category: { training: "ENTRENAMIENTO", nutrition: "NUTRICIÓN", mindset: "MENTALIDAD" },
+        post1: { title: "5 Errores que Destruyen tu Progreso en el Gym", excerpt: "Deja de dar vueltas. Aprende los errores más comunes y cómo corregirlos para avanzar más rápido." },
+        post2: { title: "La Verdad sobre la Nutrición para Pérdida de Grasa", excerpt: "Corta el ruido y descubre lo que realmente funciona para perder grasa de manera sostenible." },
+        post3: { title: "Por qué la Consistencia Supera a la Motivación", excerpt: "Construye hábitos y sistemas que te mantienen en camino incluso sin motivación." },
+        readmore: "Leer Más →",
+        viewall: "Ver Todos los Artículos →"
+      },
+      socialproof: {
+        title: "Únete a Nuestra Comunidad",
+        subtitle: "127+ personas transformaron sus vidas con Garcia Builder",
+        cta: "Ver Todas las Historias de Éxito →"
+      },
+      stats: {
+        clients: "Clientes Transformados",
+        workouts: "Entrenamientos Completados",
+        success: "Tasa de Éxito",
+        rating: "Calificación Promedio"
+      },
+      guarantee: {
+        certified: "Profesional Certificado",
+        "certified.desc": "Entrenador personal calificado con 12+ años de experiencia",
+        privacy: "100% Privado",
+        "privacy.desc": "Tus datos son seguros y nunca compartidos",
+        support: "Soporte 24/7",
+        "support.desc": "Acceso por WhatsApp para preguntas en cualquier momento",
+        flexible: "Cancela en Cualquier Momento",
+        "flexible.desc": "Sin contratos a largo plazo"
+      },
+      reviews: {
+        google: "Calificado 5.0 en Google",
+        count: "(87 reseñas)"
       },
       hero: {
         p: "Entrenamiento preciso, nutrición simple y responsabilidad implacable — 100% online vía Trainerize y WhatsApp."

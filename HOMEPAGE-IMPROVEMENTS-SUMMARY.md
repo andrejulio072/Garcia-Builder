@@ -1,7 +1,7 @@
 # 🚀 Homepage Improvements - Resumo Completo
 
-**Branch:** `homepage-improvements`  
-**Data:** 21 de Outubro de 2025  
+**Branch:** `homepage-improvements`
+**Data:** 21 de Outubro de 2025
 **Status:** ✅ Pronto para revisão e merge
 
 ---

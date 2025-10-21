@@ -598,14 +598,14 @@ const heroSection = document.querySelector('.hero');
 
 function handleScroll() {
     if (!heroSection) return;
-    
+
     const scrollY = window.scrollY;
     const parallaxSpeed = 0.5;
-    
+
     if (scrollY < window.innerHeight) {
         heroSection.style.backgroundPositionY = `${scrollY * parallaxSpeed}px`;
     }
-    
+
     lastScrollY = scrollY;
 }
 
@@ -1312,11 +1312,11 @@ Get your personalized fitness plan and join 127+ successful transformations
 <h3 class="accordion-header">
 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" style="background: transparent; color: white; font-weight: 600;">
 <i class="fas fa-question-circle text-warning me-2"></i>
-<span data-i18n="faq.q1">How does online coaching work?</span>
+<span data-i18n="faq.q1.q">How does online coaching work?</span>
 </button>
 </h3>
 <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-<div class="accordion-body" data-i18n="faq.a1">
+<div class="accordion-body" data-i18n="faq.q1.a">
 You get a personalized training program and nutrition plan delivered via the Trainerize app. Weekly check-ins track your progress, and I'm available 24/7 via WhatsApp for support and questions.
 </div>
 </div>
@@ -1325,11 +1325,11 @@ You get a personalized training program and nutrition plan delivered via the Tra
 <h3 class="accordion-header">
 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" style="background: transparent; color: white; font-weight: 600;">
 <i class="fas fa-question-circle text-warning me-2"></i>
-<span data-i18n="faq.q2">What equipment do I need?</span>
+<span data-i18n="faq.q2.q">What equipment do I need?</span>
 </button>
 </h3>
 <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-<div class="accordion-body" data-i18n="faq.a2">
+<div class="accordion-body" data-i18n="faq.q2.a">
 Your program is customized to your available equipment. Whether you have a full gym, home setup, or minimal equipment, we'll design a plan that works for you.
 </div>
 </div>
@@ -1338,11 +1338,11 @@ Your program is customized to your available equipment. Whether you have a full 
 <h3 class="accordion-header">
 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" style="background: transparent; color: white; font-weight: 600;">
 <i class="fas fa-question-circle text-warning me-2"></i>
-<span data-i18n="faq.q3">How long until I see results?</span>
+<span data-i18n="faq.q3.q">How long until I see results?</span>
 </button>
 </h3>
 <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-<div class="accordion-body" data-i18n="faq.a3">
+<div class="accordion-body" data-i18n="faq.q3.a">
 Most clients see noticeable changes in 4-6 weeks and achieve their primary goals within 8-12 weeks with consistent effort and adherence to the program.
 </div>
 </div>
@@ -1351,11 +1351,11 @@ Most clients see noticeable changes in 4-6 weeks and achieve their primary goals
 <h3 class="accordion-header">
 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" style="background: transparent; color: white; font-weight: 600;">
 <i class="fas fa-question-circle text-warning me-2"></i>
-<span data-i18n="faq.q4">Can I cancel anytime?</span>
+<span data-i18n="faq.q4.q">Can I cancel anytime?</span>
 </button>
 </h3>
 <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-<div class="accordion-body" data-i18n="faq.a4">
+<div class="accordion-body" data-i18n="faq.q4.a">
 Yes. All plans are month-to-month with no long-term commitments. Cancel anytime with 7 days notice. However, best results come with 12+ weeks of consistent training.
 </div>
 </div>
@@ -1364,11 +1364,11 @@ Yes. All plans are month-to-month with no long-term commitments. Cancel anytime 
 <h3 class="accordion-header">
 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" style="background: transparent; color: white; font-weight: 600;">
 <i class="fas fa-question-circle text-warning me-2"></i>
-<span data-i18n="faq.q5">What if I have injuries or pain?</span>
+<span data-i18n="faq.q5.q">What if I have injuries or pain?</span>
 </button>
 </h3>
 <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-<div class="accordion-body" data-i18n="faq.a5">
+<div class="accordion-body" data-i18n="faq.q5.a">
 We adapt exercises, tempo, and range of motion. I can coordinate with physio/GP guidance when needed.
 </div>
 </div>
@@ -1377,11 +1377,11 @@ We adapt exercises, tempo, and range of motion. I can coordinate with physio/GP 
 <h3 class="accordion-header">
 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6" style="background: transparent; color: white; font-weight: 600;">
 <i class="fas fa-question-circle text-warning me-2"></i>
-<span data-i18n="faq.q6">How fast will I see results?</span>
+<span data-i18n="faq.q6.q">How fast will I see results?</span>
 </button>
 </h3>
 <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-<div class="accordion-body" data-i18n="faq.a6">
+<div class="accordion-body" data-i18n="faq.q6.a">
 Most feel better in 2–3 weeks, notice visible changes by 6–8 weeks, and strong transformations from 12+ weeks with consistency.
 </div>
 </div>
@@ -1390,11 +1390,11 @@ Most feel better in 2–3 weeks, notice visible changes by 6–8 weeks, and stro
 <h3 class="accordion-header">
 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7" style="background: transparent; color: white; font-weight: 600;">
 <i class="fas fa-question-circle text-warning me-2"></i>
-<span data-i18n="faq.q7">How do weekly check-ins work?</span>
+<span data-i18n="faq.q7.q">How do weekly check-ins work?</span>
 </button>
 </h3>
 <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-<div class="accordion-body" data-i18n="faq.a7">
+<div class="accordion-body" data-i18n="faq.q7.a">
 Short form in the app + optional photos/measurements. I review adherence and trends, then update your plan.
 </div>
 </div>
@@ -1403,11 +1403,11 @@ Short form in the app + optional photos/measurements. I review adherence and tre
 <h3 class="accordion-header">
 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq8" style="background: transparent; color: white; font-weight: 600;">
 <i class="fas fa-question-circle text-warning me-2"></i>
-<span data-i18n="faq.q8">Which app do you use?</span>
+<span data-i18n="faq.q8.q">Which app do you use?</span>
 </button>
 </h3>
 <div id="faq8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-<div class="accordion-body" data-i18n="faq.a8">
+<div class="accordion-body" data-i18n="faq.q8.a">
 Trainerize—plans, videos, habits, messages, and progress tracking in one place (iOS/Android).
 </div>
 </div>
@@ -1767,7 +1767,7 @@ function animateCounter(element, target, duration = 2000) {
     const start = 0;
     const increment = target / (duration / 16); // 60fps
     let current = start;
-    
+
     const timer = setInterval(() => {
         current += increment;
         if (current >= target) {
@@ -1785,12 +1785,12 @@ const statsObserver = new IntersectionObserver((entries) => {
         if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
             entry.target.classList.add('animated');
             const statElements = entry.target.querySelectorAll('[data-count]');
-            
+
             statElements.forEach(el => {
                 const targetValue = parseFloat(el.getAttribute('data-count'));
                 animateCounter(el, targetValue);
             });
-            
+
             statsObserver.unobserve(entry.target);
         }
     });

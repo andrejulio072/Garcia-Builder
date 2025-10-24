@@ -728,3 +728,174 @@ html, body {
         text-align: center;
     }
 }
+
+/* ===== MOBILE SAFETY & ACCESSIBILITY ===== */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img, video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ===== ENHANCED HOVER EFFECTS ===== */
+.quick-nav-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.quick-nav-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(246, 200, 78, 0.25);
+}
+
+.section a .card {
+    transition: all 0.3s ease;
+}
+
+.section a .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(246, 200, 78, 0.3);
+}
+
+.card:hover img {
+    transform: scale(1.03);
+    transition: transform 0.4s ease;
+}
+
+.card img {
+    transition: transform 0.4s ease;
+}
+
+.col-md-6.col-lg-3:hover .text-center {
+    transform: translateY(-5px);
+}
+
+.col-md-6.col-lg-3 .text-center {
+    transition: all 0.3s ease;
+}
+
+.col-6.col-md-3:hover div {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(246, 200, 78, 0.3) !important;
+}
+
+.col-6.col-md-3 div {
+    transition: all 0.3s ease;
+}
+
+.fas.fa-play:hover {
+    transform: scale(1.1);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes starPop {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(246, 200, 78, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 6px rgba(246, 200, 78, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(246, 200, 78, 0);
+    }
+}
+
+.btn-gold:hover,
+.btn-warning:hover {
+    animation: pulse 2.5s ease-in-out infinite;
+}
+
+[data-count] {
+    transition: all 0.5s ease;
+}
+
+/* ===== CTA BUTTON PULSE HOVER ===== */
+.pulse-hover {
+    position: relative;
+    overflow: hidden;
+}
+
+.pulse-hover::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.pulse-hover:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* ===== HERO BACKGROUND PARALLAX ===== */
+.hero {
+    background-size: cover;
+    background-position: center center;
+    background-attachment: scroll;
+    will-change: background-position;
+}
+
+/* ===== SMOOTH SCROLL ===== */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ===== BLOG CARD EFFECTS ===== */
+.blog-card:hover .blog-link i {
+    transform: translateX(3px);
+}
+
+@media (max-width: 768px) {
+    .blog-card {
+        margin-bottom: 30px;
+    }
+
+    .blog-image {
+        height: 180px;
+    }
+
+    .blog-content {
+        padding: 20px;
+    }
+}
+
+/* ===== TEXT GRADIENT FALLBACK ===== */
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+    .title-gradient {
+        color: #F6C84E !important;
+        background: none !important;
+    }
+}

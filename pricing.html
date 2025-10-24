@@ -152,7 +152,8 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
 <link rel="stylesheet" href="css/global.css?v=20251003-2030">
 <script defer src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
 <script defer src="js/core/i18n-shim.js"></script>
-<script defer src="assets/i18n.js?v=20250926"></script>
+<script defer src="assets/i18n.js?v=20251025"></script>
+<script defer src="js/utils/component-loader.js?v=20251025"></script>
 
 <!-- Centralized Meta Pixel -->
 <script>window.FB_PIXEL_ID='1102565141856929';</script>
@@ -687,140 +688,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 </style>
 
-<nav class="gb-navbar" role="navigation" aria-label="Main navigation">
-    <div class="container">
-        <div class="gb-navbar-content">
-            <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
-                <img src="Logo Files/For Web/logo-nobackground-500.png"
-                     alt="Garcia Builder Logo"
-                     class="gb-logo-img"
-                     loading="eager"
-                     decoding="async">
-                <span class="gb-logo-text">Garcia Builder</span>
-            </a>
-
-            <div class="gb-navbar-controls">
-                <div id="auth-buttons-navbar"></div>
-                <select id="currency-select-nav" aria-label="Select Currency" title="Select Currency">
-                    <option value="GBP" selected>£ GBP</option>
-                    <option value="EUR">€ EUR</option>
-                    <option value="USD">$ USD</option>
-                    <option value="BRL">R$ BRL</option>
-                    <option value="CAD">C$ CAD</option>
-                    <option value="AUD">A$ AUD</option>
-                </select>
-                <select id="lang-select-navbar" aria-label="Select Language" title="Select Language">
-                    <option value="en">EN</option>
-                    <option value="pt">PT</option>
-                    <option value="es">ES</option>
-                </select>
-            </div>
-
-            <button class="gb-hamburger"
-                    id="gb-menu-toggle"
-                    aria-label="Toggle navigation menu"
-                    aria-expanded="false"
-                    aria-controls="gb-menu">
-                <div class="gb-hamburger-icon">
-                    <span class="gb-hamburger-line"></span>
-                    <span class="gb-hamburger-line"></span>
-                    <span class="gb-hamburger-line"></span>
-                </div>
-            </button>
-        </div>
-    </div>
-
-    <div class="gb-menu" id="gb-menu" role="menu">
-        <div class="gb-menu-inner">
-            <nav class="gb-menu-links" role="menubar">
-                <a href="index.html" class="gb-menu-link" data-i18n="nav.home" role="menuitem">Home</a>
-                <a href="about.html" class="gb-menu-link" data-i18n="nav.about" role="menuitem">About</a>
-                <a href="transformations.html" class="gb-menu-link" data-i18n="nav.trans" role="menuitem">Transformations</a>
-                <a href="testimonials.html" class="gb-menu-link" data-i18n="nav.testi" role="menuitem">Testimonials</a>
-                <a href="pricing.html" class="gb-menu-link" data-i18n="nav.pricing" role="menuitem">Pricing</a>
-                <a href="blog.html" class="gb-menu-link" data-i18n="nav.blog" role="menuitem">Blog</a>
-                <a href="faq.html" class="gb-menu-link" data-i18n="nav.faq" role="menuitem">FAQ</a>
-                <a href="contact.html" class="gb-menu-link" data-i18n="nav.contact" role="menuitem">Contact</a>
-            </nav>
-
-            <div class="gb-menu-footer">
-                <div id="auth-buttons"></div>
-
-                <select id="currency-select" class="gb-lang-select" aria-label="Select currency">
-                    <option value="GBP" selected>£ GBP</option>
-                    <option value="EUR">€ EUR</option>
-                    <option value="USD">$ USD</option>
-                    <option value="BRL">R$ BRL</option>
-                    <option value="CAD">C$ CAD</option>
-                    <option value="AUD">A$ AUD</option>
-                </select>
-
-                <select id="lang-select" class="gb-lang-select" aria-label="Select language">
-                    <option value="en">🇬🇧 English</option>
-                    <option value="pt">🇧🇷 Português</option>
-                    <option value="es">🇪🇸 Español</option>
-                </select>
-            </div>
-        </div>
-    </div>
-</nav>
-
-<script>
-(function() {
-    'use strict';
-
-    const menuToggle = document.getElementById('gb-menu-toggle');
-    const menu = document.getElementById('gb-menu');
-
-    if (!menuToggle || !menu) return;
-
-    menuToggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const isActive = menu.classList.toggle('active');
-        menuToggle.classList.toggle('active');
-        menuToggle.setAttribute('aria-expanded', isActive);
-        document.body.style.overflow = isActive ? 'hidden' : '';
-    });
-
-    document.addEventListener('click', function(e) {
-        if (!menu.contains(e.target) && !menuToggle.contains(e.target)) {
-            menu.classList.remove('active');
-            menuToggle.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
-        }
-    });
-
-    const menuLinks = menu.querySelectorAll('.gb-menu-link');
-    menuLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            menu.classList.remove('active');
-            menuToggle.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
-        });
-    });
-
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    menuLinks.forEach(link => {
-        const linkPage = link.getAttribute('href');
-        if (linkPage === currentPage) {
-            link.classList.add('active');
-        }
-    });
-
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && menu.classList.contains('active')) {
-            menu.classList.remove('active');
-            menuToggle.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
-        }
-    });
-})();
-</script>
+<!-- Navbar Component (loaded dynamically) -->
+<div data-component="navbar"></div>
 
 <section class="section">
   <div class="container">
@@ -1212,4 +1081,8 @@ document.addEventListener('change', function(e) {
     } catch(e) { console.warn('Onboarding CTAs injection failed', e); }
   })();
   </script>
+
+<!-- Footer Component (loaded dynamically) -->
+<div data-component="footer"></div>
+
 </body></html>

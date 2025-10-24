@@ -29,40 +29,66 @@ app.use(helmet({
         directives: {
             defaultSrc: ["'self'"],
             // Allow inline styles for Bootstrap and our pages, plus Google Fonts
-            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            styleSrc: [
+                "'self'", 
+                "'unsafe-inline'", 
+                "https://fonts.googleapis.com",
+                "https://cdn.jsdelivr.net",
+                "https://cdnjs.cloudflare.com"
+            ],
+            fontSrc: [
+                "'self'", 
+                "https://fonts.gstatic.com",
+                "https://cdnjs.cloudflare.com"
+            ],
             // Allow inline scripts (many pages use small inline helpers), and common CDNs we use
             scriptSrc: [
                 "'self'",
                 "'unsafe-inline'",
+                "'unsafe-eval'", // Required for some dynamic functionality
                 "https://js.stripe.com",
                 "https://www.googletagmanager.com",
                 "https://www.google-analytics.com",
-                "https://connect.facebook.net"
+                "https://connect.facebook.net",
+                "https://cdn.jsdelivr.net",
+                "https://cdnjs.cloudflare.com"
             ],
             // Allow API calls to Stripe, Supabase and Analytics
             connectSrc: [
                 "'self'",
                 "https://api.stripe.com",
                 "https://*.supabase.co",
-                "https://www.google-analytics.com"
+                "https://www.google-analytics.com",
+                "https://analytics.google.com",
+                "https://stats.g.doubleclick.net"
             ],
             // Allow external images (testimonials avatars etc.) and data URLs
             imgSrc: [
                 "'self'",
                 "data:",
                 "https:",
-                "https://www.facebook.com"
+                "http:", // Allow HTTP images for development/external sources
+                "https://www.facebook.com",
+                "https://images.pexels.com"
             ],
             // Checkout + Stripe frames, and GTM if needed
             frameSrc: [
                 "https://checkout.stripe.com",
                 "https://js.stripe.com",
-                "https://www.googletagmanager.com"
-            ]
+                "https://www.googletagmanager.com",
+                "https://www.youtube.com",
+                "https://www.youtube-nocookie.com"
+            ],
+            // Allow object/embed for potential future use
+            objectSrc: ["'none'"],
+            // Base URI restriction
+            baseUri: ["'self'"],
+            // Form action restriction
+            formAction: ["'self'", "https://checkout.stripe.com"]
         }
     },
-    crossOriginEmbedderPolicy: false
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
 // Rate limiting - proteção contra ataques

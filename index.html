@@ -82,30 +82,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     gtag('config', 'AW-17627402053');
 </script>
 
-<!-- Event snippet for Visualização de página conversion page -->
-<script>
-  function gtag_report_conversion(url) {
-    var callback = function () {
-      if (typeof(url) != 'undefined') {
-        window.location = url;
-      }
-    };
-    gtag('event', 'conversion', {
-        'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
-        'value': 1.0,
-        'currency': 'GBP',
-        'event_callback': callback
-    });
-    return false;
-  }
-</script>
+<!-- Conversion Tracking Configuration -->
+<script src="js/tracking/conversion-tracking.js?v=20251024-2400"></script>
 
 <!-- Central consent-aware Ads loader -->
-<script defer src="js/tracking/ads-loader.js"></script>
+<script defer src="js/tracking/ads-loader.js?v=20251024-2400"></script>
 
 <!-- Centralized Facebook Pixel Loader -->
-<script>window.FB_PIXEL_ID='1102565141856929';</script>
-<script defer src="js/tracking/pixel-init.js"></script>
+<script defer src="js/tracking/pixel-init.js?v=20251024-2400"></script>
 
 <title>Garcia Builder | Online Fitness Coaching & Body Transformations</title>
 <link href="Logo Files/For Web/logo-nobackground-500.png" rel="icon"/>
@@ -113,21 +97,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
-<link href="css/global.css?v=20251024-2345" rel="stylesheet"/>
-<link href="css/components/enhanced-navbar.css?v=20251024-2345" rel="stylesheet"/>
-<link href="css/components/newsletter.css?v=20251024-2345" rel="stylesheet"/>
-<link href="css/pages/homepage.css?v=20251024-2345" rel="stylesheet"/>
+<link href="css/global.css?v=20251024-2400" rel="stylesheet"/>
+<link href="css/components/enhanced-navbar.css?v=20251024-2400" rel="stylesheet"/>
+<link href="css/components/newsletter.css?v=20251024-2400" rel="stylesheet"/>
+<link href="css/pages/homepage.css?v=20251024-2400" rel="stylesheet"/>
 <script defer src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
-<script defer src="assets/i18n.js"></script>
-<script defer src="js/components/navbar.js?v=20251024-2345"></script>
-<script>
-/* Google Ads Conversion Label
- * Defina window.AW_CONVERSION_LABEL = 'SUA_LABEL' (ex: AbCdEfGhIjkLmNoPqR)
- * para habilitar disparo de conversão de compra em success.html
- * Mantido vazio por enquanto para evitar eventos inválidos. */
-window.AW_CONVERSION_LABEL = window.AW_CONVERSION_LABEL || '';
-</script>
-<script defer src="js/tracking/ads-config.js?v=20251024-2345"></script>
+<script defer src="assets/i18n.js?v=20251024-2400"></script>
+<script defer src="js/components/navbar.js?v=20251024-2400"></script>
+<script defer src="js/tracking/ads-config.js?v=20251024-2400"></script>
 </head><body>
 
 <!-- Google Tag Manager (noscript) -->
@@ -201,101 +178,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 </nav>
 
-<script>
-(function() {
-    'use strict';
-
-    const menuToggle = document.getElementById('gb-menu-toggle');
-    const menu = document.getElementById('gb-menu');
-
-    if (!menuToggle || !menu) return;
-
-    menuToggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const isActive = menu.classList.toggle('active');
-        menuToggle.classList.toggle('active');
-        menuToggle.setAttribute('aria-expanded', isActive);
-        document.body.style.overflow = isActive ? 'hidden' : '';
-    });
-
-    document.addEventListener('click', function(e) {
-        if (!menu.contains(e.target) && !menuToggle.contains(e.target)) {
-            menu.classList.remove('active');
-            menuToggle.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
-        }
-    });
-
-    const menuLinks = menu.querySelectorAll('.gb-menu-link');
-    menuLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            menu.classList.remove('active');
-            menuToggle.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
-        });
-    });
-
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    menuLinks.forEach(link => {
-        const linkPage = link.getAttribute('href');
-        if (linkPage === currentPage) {
-            link.classList.add('active');
-        }
-    });
-
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && menu.classList.contains('active')) {
-            menu.classList.remove('active');
-            menuToggle.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
-        }
-    });
-})();
-
-// Hero Parallax Effect
-let lastScrollY = 0;
-const heroSection = document.querySelector('.hero');
-
-function handleScroll() {
-    if (!heroSection) return;
-
-    const scrollY = window.scrollY;
-    const parallaxSpeed = 0.5;
-
-    if (scrollY < window.innerHeight) {
-        heroSection.style.backgroundPositionY = `${scrollY * parallaxSpeed}px`;
-    }
-
-    lastScrollY = scrollY;
-}
-
-// Throttle scroll for performance
-let ticking = false;
-window.addEventListener('scroll', () => {
-    if (!ticking) {
-        window.requestAnimationFrame(() => {
-            handleScroll();
-            ticking = false;
-        });
-        ticking = true;
-    }
-});
-</script>
+<!-- Navbar and Hero Parallax now handled by js/components/navbar.js -->
 
 <section class="hero">
 <div class="content container">
 <div class="row align-items-center">
 <div class="col-lg-12">
-<h1 class="title-gradient text-glow" data-i18n="home.hero.headline" style="font-size:56px">Online Coaching. Real Results.</h1>
-<p class="mt-2" data-i18n="hero.p" style="font-size: 1.15rem; opacity: 0.95;">Precision training, simple nutrition and relentless accountability — 100% online via Trainerize and WhatsApp.</p>
+<h1 class="title-gradient text-glow hero-headline" data-i18n="home.hero.headline">Online Coaching. Real Results.</h1>
+<p class="mt-2 hero-subtitle" data-i18n="hero.p">Precision training, simple nutrition and relentless accountability — 100% online via Trainerize and WhatsApp.</p>
 <div class="d-flex gap-2 justify-content-center mt-3">
-<a class="btn btn-gold pulse-hover" data-i18n="cta.start" href="contact.html" style="padding: 14px 32px; font-size: 1.1rem; font-weight: 600;">Start Today</a>
-<a class="btn" data-i18n="cta.plans" href="pricing.html" style="padding: 14px 32px; font-size: 1.1rem;">See Plans</a>
+<a class="btn btn-gold pulse-hover btn-hero-primary" data-i18n="cta.start" href="contact.html">Start Today</a>
+<a class="btn btn-hero-secondary" data-i18n="cta.plans" href="pricing.html">See Plans</a>
 </div>
 <div class="kpis">
 <div class="kpi"><div class="num">127</div><div data-i18n="kpi.transforms">Transformations</div></div>
@@ -306,11 +199,11 @@ window.addEventListener('scroll', () => {
 <!-- Google Reviews -->
 <div class="text-center mt-4">
 <span class="fs-5 text-warning google-stars">
-<i class="fas fa-star" style="animation: starPop 0.5s ease 0.1s both;"></i>
-<i class="fas fa-star" style="animation: starPop 0.5s ease 0.2s both;"></i>
-<i class="fas fa-star" style="animation: starPop 0.5s ease 0.3s both;"></i>
-<i class="fas fa-star" style="animation: starPop 0.5s ease 0.4s both;"></i>
-<i class="fas fa-star" style="animation: starPop 0.5s ease 0.5s both;"></i>
+<i class="fas fa-star star-1"></i>
+<i class="fas fa-star star-2"></i>
+<i class="fas fa-star star-3"></i>
+<i class="fas fa-star star-4"></i>
+<i class="fas fa-star star-5"></i>
 </span>
 <span class="fw-bold ms-2" data-i18n="reviews.google">Rated 5.0 on Google</span>
 <span class="text-muted ms-2" data-i18n="reviews.count">(87 reviews)</span>
@@ -333,13 +226,13 @@ window.addEventListener('scroll', () => {
 </div></section>
 
 <!-- Impact Stats Section -->
-<section class="section" style="background: linear-gradient(135deg, rgba(246,200,78,0.1) 0%, rgba(0,0,0,0.9) 100%); padding: 60px 0;">
+<section class="section stats-section-bg">
 <div class="container">
 <div class="row g-4 text-center">
 <div class="col-6 col-md-3">
 <div class="p-4">
 <div class="mb-3">
-<i class="fas fa-users" style="font-size: 3rem; color: #F6C84E;"></i>
+<i class="fas fa-users stats-icon"></i>
 </div>
 <div class="display-4 fw-bold text-warning" data-count="127">127+</div>
 <p class="mt-2 text-uppercase small" data-i18n="stats.clients">Clients Transformed</p>
@@ -348,7 +241,7 @@ window.addEventListener('scroll', () => {
 <div class="col-6 col-md-3">
 <div class="p-4">
 <div class="mb-3">
-<i class="fas fa-dumbbell" style="font-size: 3rem; color: #F6C84E;"></i>
+<i class="fas fa-dumbbell stats-icon"></i>
 </div>
 <div class="display-4 fw-bold text-warning" data-count="15000">15,000+</div>
 <p class="mt-2 text-uppercase small" data-i18n="stats.workouts">Workouts Completed</p>
@@ -357,7 +250,7 @@ window.addEventListener('scroll', () => {
 <div class="col-6 col-md-3">
 <div class="p-4">
 <div class="mb-3">
-<i class="fas fa-trophy" style="font-size: 3rem; color: #F6C84E;"></i>
+<i class="fas fa-trophy stats-icon"></i>
 </div>
 <div class="display-4 fw-bold text-warning" data-count="95">95%</div>
 <p class="mt-2 text-uppercase small" data-i18n="stats.success">Success Rate</p>
@@ -366,7 +259,7 @@ window.addEventListener('scroll', () => {
 <div class="col-6 col-md-3">
 <div class="p-4">
 <div class="mb-3">
-<i class="fas fa-star" style="font-size: 3rem; color: #F6C84E;"></i>
+<i class="fas fa-star stats-icon"></i>
 </div>
 <div class="display-4 fw-bold text-warning" data-count="5">5.0</div>
 <p class="mt-2 text-uppercase small" data-i18n="stats.rating">Average Rating</p>
@@ -377,7 +270,7 @@ window.addEventListener('scroll', () => {
 </section>
 
 <!-- Featured Transformation Section -->
-<section class="section" style="background: linear-gradient(135deg, rgba(246,200,78,0.03) 0%, rgba(0,0,0,0.8) 100%);">
+<section class="section video-section-bg">
 <div class="container">
 <div class="text-center mb-5">
 <h2 class="title-gradient text-glow mb-3" data-i18n="featured.title">Real People. Real Results.</h2>
@@ -385,13 +278,12 @@ window.addEventListener('scroll', () => {
 </div>
 <div class="row align-items-center g-4">
 <div class="col-lg-6">
-<div class="position-relative" style="border-radius: 15px; overflow: hidden; box-shadow: 0 15px 40px rgba(246,200,78,0.2);">
+<div class="position-relative video-container-wrapper">
 <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80"
   alt="Client transformation showcase"
-  class="img-fluid"
-  loading="lazy" decoding="async" width="800" height="500"
-  style="width: 100%; height: 500px; object-fit: cover;">
-<div class="position-absolute bottom-0 start-0 p-3 bg-dark bg-opacity-75 rounded" style="margin: 10px;">
+  class="img-fluid video-thumbnail"
+  loading="lazy" decoding="async" width="800" height="500">
+<div class="position-absolute bottom-0 start-0 p-3 bg-dark bg-opacity-75 rounded video-overlay-badge">
 <p class="mb-0 text-warning fw-bold" data-i18n="featured.result">-15kg · 12 weeks</p>
 </div>
 </div>
@@ -412,7 +304,7 @@ window.addEventListener('scroll', () => {
 </section>
 
 <!-- How It Works Section -->
-<section class="section" style="background: rgba(0,0,0,0.4);">
+<section class="section process-section-bg">
 <div class="container">
 <div class="text-center mb-5">
 <h2 class="title-gradient text-glow mb-3" data-i18n="howitworks.title">How It Works</h2>
@@ -420,60 +312,56 @@ window.addEventListener('scroll', () => {
 </div>
 <div class="row g-4">
 <div class="col-md-6 col-lg-3">
-<div class="text-center p-3" style="transition: all 0.3s ease;">
+<div class="text-center p-3 process-card-wrapper">
 <div class="mb-3">
-<div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold" style="width: 70px; height: 70px; font-size: 1.75rem; box-shadow: 0 5px 15px rgba(246,200,78,0.3);">1</div>
+<div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold process-number">1</div>
 </div>
 <div class="mb-3">
 <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
   alt="Free consultation" loading="lazy" decoding="async" width="400" height="150"
-  class="img-fluid rounded"
-  style="height: 150px; width: 100%; object-fit: cover; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+  class="img-fluid rounded process-image">
 </div>
 <h4 class="mb-2" data-i18n="howitworks.step1.title">Free Consultation</h4>
 <p class="small" data-i18n="howitworks.step1.desc">We discuss your goals, experience, and create your personalized plan.</p>
 </div>
 </div>
 <div class="col-md-6 col-lg-3">
-<div class="text-center p-3" style="transition: all 0.3s ease;">
+<div class="text-center p-3 process-card-wrapper">
 <div class="mb-3">
-<div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold" style="width: 70px; height: 70px; font-size: 1.75rem; box-shadow: 0 5px 15px rgba(246,200,78,0.3);">2</div>
+<div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold process-number">2</div>
 </div>
 <div class="mb-3">
 <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=400&q=80"
   alt="Custom program" loading="lazy" decoding="async" width="400" height="150"
-  class="img-fluid rounded"
-  style="height: 150px; width: 100%; object-fit: cover; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+  class="img-fluid rounded process-image">
 </div>
 <h4 class="mb-2" data-i18n="howitworks.step2.title">Custom Program</h4>
 <p class="small" data-i18n="howitworks.step2.desc">Receive your tailored training and nutrition plan via Trainerize app.</p>
 </div>
 </div>
 <div class="col-md-6 col-lg-3">
-<div class="text-center p-3" style="transition: all 0.3s ease;">
+<div class="text-center p-3 process-card-wrapper">
 <div class="mb-3">
-<div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold" style="width: 70px; height: 70px; font-size: 1.75rem; box-shadow: 0 5px 15px rgba(246,200,78,0.3);">3</div>
+<div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold process-number">3</div>
 </div>
 <div class="mb-3">
 <img src="https://images.unsplash.com/photo-1611672585731-fa10603fb9e0?w=400&q=80"
   alt="Weekly check-ins" loading="lazy" decoding="async" width="400" height="150"
-  class="img-fluid rounded"
-  style="height: 150px; width: 100%; object-fit: cover; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+  class="img-fluid rounded process-image">
 </div>
 <h4 class="mb-2" data-i18n="howitworks.step3.title">Weekly Check-ins</h4>
 <p class="small" data-i18n="howitworks.step3.desc">Progress reviews, adjustments, and direct WhatsApp support throughout.</p>
 </div>
 </div>
 <div class="col-md-6 col-lg-3">
-<div class="text-center p-3" style="transition: all 0.3s ease;">
+<div class="text-center p-3 process-card-wrapper">
 <div class="mb-3">
-<div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold" style="width: 70px; height: 70px; font-size: 1.75rem; box-shadow: 0 5px 15px rgba(246,200,78,0.3);">4</div>
+<div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold process-number">4</div>
 </div>
 <div class="mb-3">
 <img src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?w=400&q=80"
   alt="Achieve results" loading="lazy" decoding="async" width="400" height="150"
-  class="img-fluid rounded"
-  style="height: 150px; width: 100%; object-fit: cover; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+  class="img-fluid rounded process-image">
 </div>
 <h4 class="mb-2" data-i18n="howitworks.step4.title">Achieve Results</h4>
 <p class="small" data-i18n="howitworks.step4.desc">Hit your goals in 8-12 weeks with sustainable habits that last.</p>
@@ -487,14 +375,14 @@ window.addEventListener('scroll', () => {
 </section>
 
 <!-- Video/Proof Section -->
-<section class="section" style="background: rgba(0,0,0,0.5);">
+<section class="section method-section-bg">
 <div class="container">
 <div class="row align-items-center g-5">
 <div class="col-lg-6">
 <div class="text-center text-lg-start">
 <h2 class="title-gradient text-glow mb-4" data-i18n="video.title">See The Garcia Builder Method In Action</h2>
 <p class="lead mb-4" data-i18n="video.subtitle">Watch how our personalized approach delivers results that last</p>
-<ul class="list-unstyled" style="font-size: 1.1rem;">
+<ul class="list-unstyled method-list">
 <li class="mb-3"><i class="fas fa-check-circle text-warning me-2"></i> <span data-i18n="video.point1">Evidence-based training protocols</span></li>
 <li class="mb-3"><i class="fas fa-check-circle text-warning me-2"></i> <span data-i18n="video.point2">Custom nutrition without restrictions</span></li>
 <li class="mb-3"><i class="fas fa-check-circle text-warning me-2"></i> <span data-i18n="video.point3">24/7 support via WhatsApp</span></li>
@@ -504,17 +392,16 @@ window.addEventListener('scroll', () => {
 </div>
 </div>
 <div class="col-lg-6">
-<div style="border-radius: 15px; overflow: hidden; box-shadow: 0 20px 60px rgba(246,200,78,0.2);">
-  <div id="gb-video" class="gb-video" data-video-id="IODxDxX7oi4" aria-label="Play video" role="button" tabindex="0" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+<div class="method-video-wrapper">
+  <div id="gb-video" class="gb-video gb-video-container" data-video-id="IODxDxX7oi4" aria-label="Play video" role="button" tabindex="0">
     <img src="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=800&q=80"
          alt="Training demonstration placeholder"
-         class="img-fluid" loading="lazy" decoding="async" width="800" height="450"
-         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
-    <div class="gb-video-play" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: rgba(246,200,78,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 5px 20px rgba(0,0,0,0.3);">
-      <i class="fas fa-play" style="font-size: 2rem; color: #000; margin-left: 5px;"></i>
+         class="img-fluid gb-video-thumbnail" loading="lazy" decoding="async" width="800" height="450">
+    <div class="gb-video-play gb-video-play-button">
+      <i class="fas fa-play gb-video-play-icon"></i>
     </div>
     <noscript>
-      <img src="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=800&q=80" alt="Training demonstration" width="800" height="450" style="width: 100%; height: auto; object-fit: cover;"/>
+      <img src="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=800&q=80" alt="Training demonstration" width="800" height="450" class="video-fallback-img"/>
     </noscript>
   </div>
   <script>
@@ -552,47 +439,47 @@ window.addEventListener('scroll', () => {
 </section>
 
 <!-- Quick Navigation Section -->
-<section class="section" style="background: linear-gradient(135deg, rgba(246,200,78,0.05) 0%, rgba(0,0,0,0.5) 100%);">
+<section class="section quick-nav-section-bg">
 <div class="container">
 <h2 class="title-gradient text-glow text-center mb-4" data-i18n="home.explore.title">Explore Your Journey</h2>
 <div class="row g-4">
 <div class="col-md-6 col-lg-3">
 <a href="transformations.html" class="text-decoration-none">
-<div class="card h-100 text-center p-4 quick-nav-card" style="transition: transform 0.3s ease; position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(246,200,78,0.08) 0%, rgba(11,18,32,0.95) 100%);">
-<div style="position: absolute; top: 10px; right: 10px; font-size: 4rem; opacity: 0.1; transform: rotate(-15deg);">🏋️‍♂️</div>
-<div style="font-size: 2.5rem; position: relative; z-index: 2;" class="mb-2">🏋️‍♂️</div>
-<h4 class="mb-2" style="position: relative; z-index: 2;" data-i18n="explore.transformations">Transformations</h4>
-<p class="small mb-0" style="position: relative; z-index: 2;" data-i18n="explore.transformations.desc">127+ client results</p>
+<div class="card h-100 text-center p-4 quick-nav-card">
+<div class="quick-nav-emoji-bg">🏋️‍♂️</div>
+<div class="quick-nav-emoji mb-2">🏋️‍♂️</div>
+<h4 class="mb-2 quick-nav-title" data-i18n="explore.transformations">Transformations</h4>
+<p class="small mb-0 quick-nav-desc" data-i18n="explore.transformations.desc">127+ client results</p>
 </div>
 </a>
 </div>
 <div class="col-md-6 col-lg-3">
 <a href="testimonials.html" class="text-decoration-none">
-<div class="card h-100 text-center p-4 quick-nav-card" style="transition: transform 0.3s ease; position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(246,200,78,0.08) 0%, rgba(11,18,32,0.95) 100%);">
-<div style="position: absolute; top: 10px; right: 10px; font-size: 4rem; opacity: 0.1; transform: rotate(-15deg);">💬</div>
-<div style="font-size: 2.5rem; position: relative; z-index: 2;" class="mb-2">💬</div>
-<h4 class="mb-2" style="position: relative; z-index: 2;" data-i18n="explore.testimonials">Testimonials</h4>
-<p class="small mb-0" style="position: relative; z-index: 2;" data-i18n="explore.testimonials.desc">Client success stories</p>
+<div class="card h-100 text-center p-4 quick-nav-card">
+<div class="quick-nav-emoji-bg">💬</div>
+<div class="quick-nav-emoji mb-2">💬</div>
+<h4 class="mb-2 quick-nav-title" data-i18n="explore.testimonials">Testimonials</h4>
+<p class="small mb-0 quick-nav-desc" data-i18n="explore.testimonials.desc">Client success stories</p>
 </div>
 </a>
 </div>
 <div class="col-md-6 col-lg-3">
 <a href="pricing.html" class="text-decoration-none">
-<div class="card h-100 text-center p-4 quick-nav-card" style="transition: transform 0.3s ease; position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(246,200,78,0.08) 0%, rgba(11,18,32,0.95) 100%);">
-<div style="position: absolute; top: 10px; right: 10px; font-size: 4rem; opacity: 0.1; transform: rotate(-15deg);">💰</div>
-<div style="font-size: 2.5rem; position: relative; z-index: 2;" class="mb-2">💰</div>
-<h4 class="mb-2" style="position: relative; z-index: 2;" data-i18n="explore.pricing">Pricing</h4>
-<p class="small mb-0" style="position: relative; z-index: 2;" data-i18n="explore.pricing.desc">Flexible coaching plans</p>
+<div class="card h-100 text-center p-4 quick-nav-card">
+<div class="quick-nav-emoji-bg">💰</div>
+<div class="quick-nav-emoji mb-2">💰</div>
+<h4 class="mb-2 quick-nav-title" data-i18n="explore.pricing">Pricing</h4>
+<p class="small mb-0 quick-nav-desc" data-i18n="explore.pricing.desc">Flexible coaching plans</p>
 </div>
 </a>
 </div>
 <div class="col-md-6 col-lg-3">
 <a href="blog.html" class="text-decoration-none">
-<div class="card h-100 text-center p-4 quick-nav-card" style="transition: transform 0.3s ease; position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(246,200,78,0.08) 0%, rgba(11,18,32,0.95) 100%);">
-<div style="position: absolute; top: 10px; right: 10px; font-size: 4rem; opacity: 0.1; transform: rotate(-15deg);">📚</div>
-<div style="font-size: 2.5rem; position: relative; z-index: 2;" class="mb-2">📚</div>
-<h4 class="mb-2" style="position: relative; z-index: 2;" data-i18n="explore.blog">Blog & Tips</h4>
-<p class="small mb-0" style="position: relative; z-index: 2;" data-i18n="explore.blog.desc">Expert resources</p>
+<div class="card h-100 text-center p-4 quick-nav-card">
+<div class="quick-nav-emoji-bg">📚</div>
+<div class="quick-nav-emoji mb-2">📚</div>
+<h4 class="mb-2 quick-nav-title" data-i18n="explore.blog">Blog & Tips</h4>
+<p class="small mb-0 quick-nav-desc" data-i18n="explore.blog.desc">Expert resources</p>
 </div>
 </a>
 </div>

@@ -83,13 +83,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </script>
 
 <!-- Conversion Tracking Configuration -->
-<script src="js/tracking/conversion-tracking.js?v=20251024-2400"></script>
+<script src="js/tracking/conversion-tracking.js?v=20251025"></script>
 
 <!-- Central consent-aware Ads loader -->
-<script defer src="js/tracking/ads-loader.js?v=20251024-2400"></script>
+<script defer src="js/tracking/ads-loader.js?v=20251025"></script>
 
 <!-- Centralized Facebook Pixel Loader -->
-<script defer src="js/tracking/pixel-init.js?v=20251024-2400"></script>
+<script defer src="js/tracking/pixel-init.js?v=20251025"></script>
 
 <title>Garcia Builder | Online Fitness Coaching & Body Transformations</title>
 <link href="Logo Files/For Web/logo-nobackground-500.png" rel="icon"/>
@@ -97,14 +97,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
-<link href="css/global.css?v=20251024-2400" rel="stylesheet"/>
-<link href="css/components/enhanced-navbar.css?v=20251024-2400" rel="stylesheet"/>
-<link href="css/components/newsletter.css?v=20251024-2400" rel="stylesheet"/>
-<link href="css/pages/homepage.css?v=20251024-2400" rel="stylesheet"/>
+<link href="css/global.css?v=20251025" rel="stylesheet"/>
+<link href="css/components/enhanced-navbar.css?v=20251025" rel="stylesheet"/>
+<link href="css/components/newsletter.css?v=20251025" rel="stylesheet"/>
+<link href="css/pages/homepage.css?v=20251025" rel="stylesheet"/>
 <script defer src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
-<script defer src="assets/i18n.js?v=20251024-2400"></script>
-<script defer src="js/components/navbar.js?v=20251024-2400"></script>
-<script defer src="js/tracking/ads-config.js?v=20251024-2400"></script>
+<script defer src="assets/i18n.js?v=20251025"></script>
+<script defer src="js/components/navbar.js?v=20251025"></script>
+<script defer src="js/tracking/ads-config.js?v=20251025"></script>
+
+<!-- New Modular Components (Phase 3: World-Class Architecture) -->
+<script defer src="js/utils/component-loader.js?v=20251025"></script>
+<script defer src="js/components/video-player.js?v=20251025"></script>
+<script defer src="js/components/trainer-modal.js?v=20251025"></script>
+<script defer src="js/modules/event-tracking.js?v=20251025"></script>
+<script defer src="js/modules/scroll-effects.js?v=20251025"></script>
 </head><body>
 
 <!-- Google Tag Manager (noscript) -->
@@ -114,69 +121,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- Meta Pixel noscript fallback -->
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1102565141856929&ev=PageView&noscript=1"/></noscript>
 
-<nav class="gb-navbar" role="navigation" aria-label="Main navigation">
-    <div class="container">
-        <div class="gb-navbar-content">
-            <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
-                <img src="Logo Files/For Web/logo-nobackground-500.png"
-                     alt="Garcia Builder Logo"
-                     class="gb-logo-img"
-                     loading="eager"
-                     decoding="async">
-                <span class="gb-logo-text">Garcia Builder</span>
-            </a>
-
-            <div class="gb-navbar-controls">
-                <!-- Auth buttons will be dynamically inserted here -->
-                <div id="auth-buttons-navbar"></div>
-
-                <!-- Language selector -->
-                <select id="lang-select-navbar" aria-label="Select language">
-                    <option value="en">EN</option>
-                    <option value="pt">PT</option>
-                    <option value="es">ES</option>
-                </select>
-            </div>
-
-            <button class="gb-hamburger"
-                    id="gb-menu-toggle"
-                    aria-label="Toggle navigation menu"
-                    aria-expanded="false"
-                    aria-controls="gb-menu">
-                <div class="gb-hamburger-icon">
-                    <span class="gb-hamburger-line"></span>
-                    <span class="gb-hamburger-line"></span>
-                    <span class="gb-hamburger-line"></span>
-                </div>
-            </button>
-        </div>
-    </div>
-
-    <div class="gb-menu" id="gb-menu" role="menu">
-        <div class="gb-menu-inner">
-            <nav class="gb-menu-links" role="menubar">
-                <a href="index.html" class="gb-menu-link active" data-i18n="nav.home" role="menuitem">Home</a>
-                <a href="about.html" class="gb-menu-link" data-i18n="nav.about" role="menuitem">About</a>
-                <a href="transformations.html" class="gb-menu-link" data-i18n="nav.trans" role="menuitem">Transformations</a>
-                <a href="testimonials.html" class="gb-menu-link" data-i18n="nav.testi" role="menuitem">Testimonials</a>
-                <a href="pricing.html" class="gb-menu-link" data-i18n="nav.pricing" role="menuitem">Pricing</a>
-                <a href="blog.html" class="gb-menu-link" data-i18n="nav.blog" role="menuitem">Blog</a>
-                <a href="faq.html" class="gb-menu-link" data-i18n="nav.faq" role="menuitem">FAQ</a>
-                <a href="contact.html" class="gb-menu-link" data-i18n="nav.contact" role="menuitem">Contact</a>
-            </nav>
-
-            <div class="gb-menu-footer">
-                <div id="auth-buttons"></div>
-
-                <select id="lang-select" class="gb-lang-select" aria-label="Select language">
-                    <option value="en">🇬🇧 English</option>
-                    <option value="pt">🇧🇷 Português</option>
-                    <option value="es">🇪🇸 Español</option>
-                </select>
-            </div>
-        </div>
-    </div>
-</nav>
+<!-- Navbar Component (loaded dynamically by component-loader.js) -->
+<div data-component="navbar"></div>
 
 <!-- Navbar and Hero Parallax now handled by js/components/navbar.js -->
 
@@ -404,34 +350,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <img src="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=800&q=80" alt="Training demonstration" width="800" height="450" class="video-fallback-img"/>
     </noscript>
   </div>
-  <script>
-    (function(){
-      const container = document.getElementById('gb-video');
-      if(!container) return;
-      const play = container.querySelector('.gb-video-play');
-      const videoId = container.getAttribute('data-video-id');
-      function activate(){
-        if(!videoId) return;
-        const iframe = document.createElement('iframe');
-        iframe.setAttribute('allowfullscreen', '');
-        iframe.setAttribute('title', 'Garcia Builder Method');
-        iframe.setAttribute('frameborder', '0');
-        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-        iframe.style.position = 'absolute';
-        iframe.style.top = '0';
-        iframe.style.left = '0';
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(videoId) + '?autoplay=1&rel=0&modestbranding=1';
-        container.innerHTML = '';
-        container.appendChild(iframe);
-        try { if (window.gtag) gtag('event', 'play_video', { event_category: 'engagement', event_label: 'homepage_demo' }); } catch(e){}
-      }
-      function onKey(e){ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } }
-      if(play){ play.addEventListener('click', activate); }
-      container.addEventListener('keydown', onKey);
-    })();
-  </script>
+  <!-- Video player now handled by js/components/video-player.js -->
 </div>
 </div>
 </div>
@@ -886,138 +805,17 @@ Trainerize—plans, videos, habits, messages, and progress tracking in one place
 
 
 <!-- Modern, Refined Footer (Homepage) -->
-<footer class="gb-footer" aria-label="Site footer">
-  <div class="gb-footer-main gb-footer-ref">
-    <div class="gb-footer-col gb-footer-brand-col">
-      <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" width="56" height="56" loading="lazy" style="margin-bottom:10px;"/>
-      <div class="footer-title footer-title-ref">Garcia Builder</div>
-      <div class="footer-bio-ref" style="margin-bottom:8px;">Online Coaching — Evidence-based fitness, nutrition & accountability.<br/>Transform your body, sustainably.</div>
-      <div class="footer-contact-ref" style="margin-top:14px;">
-        <div><a href="mailto:andre@garciabuilder.fitness"><i class="fas fa-envelope"></i> andre@garciabuilder.fitness</a></div>
-        <div><a href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a></div>
-      </div>
-    </div>
-    <div class="gb-footer-col">
-      <span class="footer-title footer-title-ref">Links</span>
-      <ul style="margin-top:2px;">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="transformations.html">Results</a></li>
-        <li><a href="faq.html">FAQ</a></li>
-        <li><a href="pricing.html">Pricing</a></li>
-        <li><a href="become-trainer.html">Apply as Trainer</a></li>
-      </ul>
-    </div>
-    <div class="gb-footer-col">
-      <span class="footer-title footer-title-ref">Resources</span>
-      <ul style="margin-top:2px;">
-        <li><a href="assets/empty-guide.pdf" download>Download Guide (PDF)</a></li>
-        <li><a href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Book a Call</a></li>
-      </ul>
-      <div class="footer-follow">
-        <span class="footer-subhead">Follow us</span>
-        <a href="https://instagram.com/garcia.builder" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-      </div>
-    </div>
-    <div class="gb-footer-col gb-footer-newsletter">
-      <span class="footer-title footer-title-ref">Newsletter</span>
-      <form class="newsletter-form-ref">
-        <input type="email" class="newsletter-input-ref" placeholder="Email address" required />
-        <label class="newsletter-checkbox-ref"><input type="checkbox"/> I would like to receive updates and tips from Garcia Builder.</label>
-        <button type="submit" class="newsletter-btn-ref">Subscribe</button>
-      </form>
-      <div class="newsletter-privacy-ref">You can unsubscribe at any time and your information will be treated according to our Privacy Policy.</div>
-    </div>
-  </div>
-  <div class="gb-footer-bottom gb-footer-bottom-ref">
-    <div class="gb-footer-legal small">
-      <span>© 2025 Garcia Builder</span>
-      <a href="#" onclick="openConsentPreferences();return false;">Cookie Preferences</a>
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="#">Terms & Conditions</a>
-    </div>
-    <div class="gb-footer-disclaimer-ref">*DISCLAIMER: Results may vary. Results are based on individual circumstances. Timeframes for results are not guaranteed. Willpower is always required!</div>
-  </div>
-</footer>
+<!-- Footer Component (loaded dynamically by component-loader.js) -->
+<div data-component="footer"></div>
+
 <!-- End Modern Footer -->
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
 <script defer src="js/core/supabase-config.js"></script>
 <script defer src="js/components/newsletter-manager.js"></script>
-<script>
-function showTrainerInfo() {
-    const modal = document.createElement('div');
-    modal.className = 'modal fade';
-    modal.innerHTML = `
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="background: #1a1a1a; color: #fff; border: 1px solid rgba(255,255,255,0.1);">
-                <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                    <h5 class="modal-title text-warning">
-                        <i class="fas fa-star me-2"></i>Garcia Builder Trainer Program
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <h6 class="text-warning mb-3">
-                                <i class="fas fa-tools me-2"></i>What You Get
-                            </h6>
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Advanced client management dashboard</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Session scheduling & tracking tools</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Progress monitoring & analytics</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Automated payment processing</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Marketing materials & support</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Ongoing education & certification</li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-warning mb-3">
-                                <i class="fas fa-user-check me-2"></i>Requirements
-                            </h6>
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><i class="fas fa-certificate text-info me-2"></i>Valid fitness certification (NASM, ACE, ACSM, etc.)</li>
-                                <li class="mb-2"><i class="fas fa-clock text-info me-2"></i>Minimum 2 years training experience</li>
-                                <li class="mb-2"><i class="fas fa-heart text-info me-2"></i>Passion for helping clients achieve results</li>
-                                <li class="mb-2"><i class="fas fa-laptop text-info me-2"></i>Comfortable with digital platforms</li>
-                                <li class="mb-2"><i class="fas fa-comments text-info me-2"></i>Excellent communication skills</li>
-                                <li class="mb-2"><i class="fas fa-handshake text-info me-2"></i>Professional demeanor & reliability</li>
-                            </ul>
-                        </div>
-                        <div class="col-12">
-                            <div class="alert" style="background: rgba(246,200,78,0.1); border: 1px solid rgba(246,200,78,0.3); color: #F6C84E;">
-                                <h6><i class="fas fa-rocket me-2"></i>Application Process</h6>
-                                <p class="mb-2">1. Complete our comprehensive trainer application</p>
-                                <p class="mb-2">2. Upload certification documents and portfolio</p>
-                                <p class="mb-2">3. Professional review (24-48 hours)</p>
-                                <p class="mb-0">4. Welcome to the Garcia Builder family!</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer" style="border-top: 1px solid rgba(255,255,255,0.1);">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <a href="become-trainer.html" class="btn btn-warning">
-                        <i class="fas fa-paper-plane me-2"></i>Apply Now
-                    </a>
-                </div>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    const bootstrapModal = new bootstrap.Modal(modal);
-    bootstrapModal.show();
+<!-- Trainer modal now handled by js/components/trainer-modal.js -->
 
-    // Remove modal from DOM when hidden
-    modal.addEventListener('hidden.bs.modal', () => {
-        document.body.removeChild(modal);
-    });
-}
-</script>
 
 <!-- Schema.org Structured Data for SEO -->
 <script type="application/ld+json">
@@ -1130,145 +928,9 @@ function showTrainerInfo() {
 }
 </script>
 
-<!-- Tracking Events -->
-<script>
-// Data Layer Initialization
-window.dataLayer = window.dataLayer || [];
-
-// Track page view
-function trackPageView() {
-    dataLayer.push({
-        event: 'page_view',
-        page_title: document.title,
-        page_location: window.location.href,
-        page_referrer: document.referrer
-    });
-}
-
-// Track coaching inquiry
-function trackCoachingInquiry(type, source) {
-    dataLayer.push({
-        event: 'coaching_inquiry',
-        inquiry_type: type || 'general',
-        inquiry_source: source || 'website',
-        value: 50.00,
-        currency: 'EUR'
-    });
-
-    // Facebook tracking
-    if (typeof fbq !== 'undefined') {
-        fbq('track', 'Lead', {
-            value: 50.00,
-            currency: 'EUR'
-        });
-    }
-}
-
-// WhatsApp click tracking
-document.addEventListener('click', function(e) {
-    if (e.target.href && e.target.href.includes('wa.me')) {
-        trackCoachingInquiry('whatsapp', 'homepage');
-    }
-
-    // Track CTA button clicks
-    if (e.target.classList.contains('btn-primary') || e.target.textContent.includes('Começar')) {
-        trackCoachingInquiry('cta_click', 'homepage');
-    }
-
-    // Track blog article clicks
-    if (e.target.classList.contains('blog-link') || e.target.closest('.blog-link')) {
-        const link = e.target.classList.contains('blog-link') ? e.target : e.target.closest('.blog-link');
-        const articleTitle = link.closest('.blog-card').querySelector('h3').textContent;
-
-        // GA4 event
-        if (typeof dataLayer !== 'undefined') {
-            dataLayer.push({
-                'event': 'blog_article_click',
-                'article_title': articleTitle,
-                'article_url': link.href,
-                'location': 'homepage'
-            });
-        }
-
-        // Meta Pixel event
-        if (typeof fbq !== 'undefined') {
-            fbq('track', 'ViewContent', {
-                content_type: 'article',
-                content_name: articleTitle
-            });
-        }
-    }
-});
-
-// Initialize tracking
-document.addEventListener('DOMContentLoaded', function() {
-    trackPageView();
-});
-
-// Stats Counter Animation with Intersection Observer
-function animateCounter(element, target, duration = 2000) {
-    const start = 0;
-    const increment = target / (duration / 16); // 60fps
-    let current = start;
-
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-            element.textContent = target >= 1000 ? Math.floor(target).toLocaleString() + '+' : target.toFixed(1);
-            clearInterval(timer);
-        } else {
-            element.textContent = target >= 1000 ? Math.floor(current).toLocaleString() + '+' : current.toFixed(1);
-        }
-    }, 16);
-}
-
-// Observe stats section for scroll-triggered animation
-const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
-            entry.target.classList.add('animated');
-            const statElements = entry.target.querySelectorAll('[data-count]');
-
-            statElements.forEach(el => {
-                const targetValue = parseFloat(el.getAttribute('data-count'));
-                animateCounter(el, targetValue);
-            });
-
-            statsObserver.unobserve(entry.target);
-        }
-    });
-}, { threshold: 0.3 });
-
-document.addEventListener('DOMContentLoaded', function() {
-    const statsSection = document.querySelector('[data-count]')?.closest('section');
-    if (statsSection) {
-        statsObserver.observe(statsSection);
-    }
-});
-
-// Scroll Reveal for Feature Cards
-const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
-        if (entry.isIntersecting && !entry.target.classList.contains('revealed')) {
-            setTimeout(() => {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-                entry.target.classList.add('revealed');
-            }, index * 100); // Stagger effect
-        }
-    });
-}, { threshold: 0.1 });
-
-document.addEventListener('DOMContentLoaded', function() {
-    const featureCards = document.querySelectorAll('.card.feature');
-    featureCards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-        revealObserver.observe(card);
-    });
-});
-</script>
+<!-- Event Tracking and Animations now handled by modular JS -->
+<!-- js/modules/event-tracking.js - Analytics and conversion tracking -->
+<!-- js/modules/scroll-effects.js - Stats counter and card reveal animations -->
 
 <script defer src="js/components/app.js"></script>
 <script defer src="js/components/lightbox.js"></script>

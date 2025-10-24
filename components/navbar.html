@@ -1,0 +1,63 @@
+<nav class="gb-navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+        <div class="gb-navbar-content">
+            <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
+                <img src="Logo Files/For Web/logo-nobackground-500.png"
+                     alt="Garcia Builder Logo"
+                     class="gb-logo-img"
+                     loading="eager"
+                     decoding="async">
+                <span class="gb-logo-text">Garcia Builder</span>
+            </a>
+
+            <div class="gb-navbar-controls">
+                <!-- Auth buttons will be dynamically inserted here -->
+                <div id="auth-buttons-navbar"></div>
+
+                <!-- Language selector -->
+                <select id="lang-select-navbar" aria-label="Select language">
+                    <option value="en">EN</option>
+                    <option value="pt">PT</option>
+                    <option value="es">ES</option>
+                </select>
+            </div>
+
+            <button class="gb-hamburger"
+                    id="gb-menu-toggle"
+                    aria-label="Toggle navigation menu"
+                    aria-expanded="false"
+                    aria-controls="gb-menu">
+                <div class="gb-hamburger-icon">
+                    <span class="gb-hamburger-line"></span>
+                    <span class="gb-hamburger-line"></span>
+                    <span class="gb-hamburger-line"></span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <div class="gb-menu" id="gb-menu" role="menu">
+        <div class="gb-menu-inner">
+            <nav class="gb-menu-links" role="menubar">
+                <a href="index.html" class="gb-menu-link active" data-i18n="nav.home" role="menuitem">Home</a>
+                <a href="about.html" class="gb-menu-link" data-i18n="nav.about" role="menuitem">About</a>
+                <a href="transformations.html" class="gb-menu-link" data-i18n="nav.trans" role="menuitem">Transformations</a>
+                <a href="testimonials.html" class="gb-menu-link" data-i18n="nav.testi" role="menuitem">Testimonials</a>
+                <a href="pricing.html" class="gb-menu-link" data-i18n="nav.pricing" role="menuitem">Pricing</a>
+                <a href="blog.html" class="gb-menu-link" data-i18n="nav.blog" role="menuitem">Blog</a>
+                <a href="faq.html" class="gb-menu-link" data-i18n="nav.faq" role="menuitem">FAQ</a>
+                <a href="contact.html" class="gb-menu-link" data-i18n="nav.contact" role="menuitem">Contact</a>
+            </nav>
+
+            <div class="gb-menu-footer">
+                <div id="auth-buttons"></div>
+
+                <select id="lang-select" class="gb-lang-select" aria-label="Select language">
+                    <option value="en">🇬🇧 English</option>
+                    <option value="pt">🇧🇷 Português</option>
+                    <option value="es">🇪🇸 Español</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</nav>

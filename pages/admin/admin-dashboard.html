@@ -1,0 +1,1001 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Garcia Builder</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/admin/dashboard-admin.css">
+</head>
+<body>
+<style>
+/* ===== NAVBAR ENHANCED - HAMBURGER SEMPRE VISÍVEL ===== */
+.gb-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(9, 14, 24, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(246, 200, 78, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.gb-navbar .container {
+    padding: 0.75rem 1rem;
+}
+
+.gb-navbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.gb-logo-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.gb-logo-section:hover {
+    transform: scale(1.05);
+}
+
+.gb-logo-img {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+}
+
+.gb-logo-text {
+    background: linear-gradient(135deg, #F6C84E 0%, #FFD700 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.75rem;
+    font-weight: 900;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.gb-hamburger {
+    background: rgba(246, 200, 78, 0.15);
+    border: 1px solid rgba(246, 200, 78, 0.3);
+    border-radius: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    min-height: 50px;
+}
+
+.gb-hamburger:hover {
+    background: rgba(246, 200, 78, 0.25);
+    border-color: #F6C84E;
+    transform: scale(1.05);
+}
+
+.gb-hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 24px;
+}
+
+.gb-hamburger-line {
+    width: 100%;
+    height: 3px;
+    background: #F6C84E;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.gb-hamburger.active .gb-hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(7px, 7px);
+}
+
+.gb-hamburger.active .gb-hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.gb-hamburger.active .gb-hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+.gb-menu {
+    position: fixed;
+    top: 92px;
+    left: 0;
+    right: 0;
+    background: rgba(15, 15, 15, 0.98);
+    backdrop-filter: blur(20px);
+    border-bottom: 2px solid rgba(246, 200, 78, 0.3);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.gb-menu.active {
+    max-height: calc(100vh - 92px);
+    overflow-y: auto;
+}
+
+.gb-menu-inner {
+    padding: 1.5rem 1rem;
+}
+
+.gb-menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.gb-menu-link {
+    display: block;
+    padding: 1rem 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.gb-menu-link:hover,
+.gb-menu-link.active {
+    background: rgba(246, 200, 78, 0.15);
+    color: #F6C84E;
+    border-color: rgba(246, 200, 78, 0.3);
+    transform: translateX(8px);
+}
+
+.gb-menu-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gb-lang-select {
+    padding: 0.75rem 1rem;
+    background: rgba(246, 200, 78, 0.1);
+    border: 1px solid rgba(246, 200, 78, 0.3);
+    border-radius: 10px;
+    color: #F6C84E;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.gb-lang-select:hover {
+    background: rgba(246, 200, 78, 0.2);
+}
+
+@media (min-width: 1024px) {
+    .gb-logo-img {
+        height: 70px;
+    }
+    
+    .gb-logo-text {
+        font-size: 2rem;
+    }
+    
+    .gb-hamburger {
+        min-width: 60px;
+        min-height: 60px;
+    }
+    
+    .gb-menu {
+        top: 102px;
+    }
+    
+    .gb-menu.active {
+        max-height: calc(100vh - 102px);
+    }
+    
+    .gb-menu-inner {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+    
+    .gb-menu-link {
+        font-size: 1.25rem;
+        padding: 1.25rem 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .gb-logo-img {
+        height: 50px;
+    }
+    
+    .gb-logo-text {
+        font-size: 1.5rem;
+    }
+    
+    .gb-hamburger {
+        min-width: 45px;
+        min-height: 45px;
+        padding: 8px 12px;
+    }
+    
+    .gb-menu-link {
+        font-size: 1rem;
+        padding: 0.875rem 1rem;
+    }
+}
+
+.gb-menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+.gb-menu::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.gb-menu::-webkit-scrollbar-thumb {
+    background: rgba(246, 200, 78, 0.5);
+    border-radius: 4px;
+}
+
+.gb-menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(246, 200, 78, 0.7);
+}
+
+#auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+#auth-buttons .btn {
+    padding: 0.875rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+#auth-buttons .btn-primary {
+    background: linear-gradient(135deg, #F6C84E 0%, #FFD700 100%);
+    color: #000;
+    border: none;
+}
+
+#auth-buttons .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(246, 200, 78, 0.4);
+}
+
+#auth-buttons .btn-outline {
+    background: transparent;
+    border: 1px solid rgba(246, 200, 78, 0.5);
+    color: #F6C84E;
+}
+
+#auth-buttons .btn-outline:hover {
+    background: rgba(246, 200, 78, 0.15);
+}
+</style>
+
+<nav class="gb-navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+        <div class="gb-navbar-content">
+            <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
+                <img src="Logo Files/For Web/logo-nobackground-500.png" 
+                     alt="Garcia Builder Logo" 
+                     class="gb-logo-img"
+                     loading="eager"
+                     decoding="async">
+                <span class="gb-logo-text">Garcia Builder</span>
+            </a>
+
+            <button class="gb-hamburger" 
+                    id="gb-menu-toggle" 
+                    aria-label="Toggle navigation menu"
+                    aria-expanded="false"
+                    aria-controls="gb-menu">
+                <div class="gb-hamburger-icon">
+                    <span class="gb-hamburger-line"></span>
+                    <span class="gb-hamburger-line"></span>
+                    <span class="gb-hamburger-line"></span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <div class="gb-menu" id="gb-menu" role="menu">
+        <div class="gb-menu-inner">
+            <nav class="gb-menu-links" role="menubar">
+                <a href="index.html" class="gb-menu-link" data-i18n="nav.home" role="menuitem">Home</a>
+                <a href="about.html" class="gb-menu-link" data-i18n="nav.about" role="menuitem">About</a>
+                <a href="transformations.html" class="gb-menu-link" data-i18n="nav.trans" role="menuitem">Transformations</a>
+                <a href="testimonials.html" class="gb-menu-link" data-i18n="nav.testi" role="menuitem">Testimonials</a>
+                <a href="pricing.html" class="gb-menu-link" data-i18n="nav.pricing" role="menuitem">Pricing</a>
+                <a href="blog.html" class="gb-menu-link" data-i18n="nav.blog" role="menuitem">Blog</a>
+                <a href="faq.html" class="gb-menu-link" data-i18n="nav.faq" role="menuitem">FAQ</a>
+                <a href="contact.html" class="gb-menu-link" data-i18n="nav.contact" role="menuitem">Contact</a>
+            </nav>
+
+            <div class="gb-menu-footer">
+                <div id="auth-buttons"></div>
+
+                <select id="lang-select" class="gb-lang-select" aria-label="Select language">
+                    <option value="en">🇬🇧 English</option>
+                    <option value="pt">🇧🇷 Português</option>
+                    <option value="es">🇪🇸 Español</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+(function() {
+    'use strict';
+    
+    const menuToggle = document.getElementById('gb-menu-toggle');
+    const menu = document.getElementById('gb-menu');
+    
+    if (!menuToggle || !menu) return;
+    
+    menuToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const isActive = menu.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+        menuToggle.setAttribute('aria-expanded', isActive);
+        document.body.style.overflow = isActive ? 'hidden' : '';
+    });
+    
+    document.addEventListener('click', function(e) {
+        if (!menu.contains(e.target) && !menuToggle.contains(e.target)) {
+            menu.classList.remove('active');
+            menuToggle.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
+    });
+    
+    const menuLinks = menu.querySelectorAll('.gb-menu-link');
+    menuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            menu.classList.remove('active');
+            menuToggle.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        });
+    });
+    
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    menuLinks.forEach(link => {
+        const linkPage = link.getAttribute('href');
+        if (linkPage === currentPage) {
+            link.classList.add('active');
+        }
+    });
+    
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && menu.classList.contains('active')) {
+            menu.classList.remove('active');
+            menuToggle.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
+    });
+})();
+</script>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-chart-line me-2"></i>
+                Garcia Builder Admin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#dashboard" data-tab="dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#leads" data-tab="leads">
+                            <i class="fas fa-users me-1"></i>Leads
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#newsletter" data-tab="newsletter">
+                            <i class="fas fa-envelope me-1"></i>Newsletter
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#campaigns" data-tab="campaigns">
+                            <i class="fas fa-bullhorn me-1"></i>Campanhas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#analytics" data-tab="analytics">
+                            <i class="fas fa-chart-bar me-1"></i>Analytics
+                        </a>
+                    </li>
+                </ul>
+                <div class="navbar-nav">
+                    <a class="nav-link" href="dashboard.html">
+                        <i class="fas fa-home me-1"></i>Voltar ao Site
+                    </a>
+                    <a class="nav-link" href="#" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt me-1"></i>Sair
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid main-content">
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard-content" class="tab-content active">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="page-title">
+                        <i class="fas fa-tachometer-alt me-2"></i>
+                        Dashboard Administrativo
+                    </h1>
+                    <p class="text-muted">Visão geral do sistema de leads e newsletter</p>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stats-card stats-card-primary">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="stats-title">Total de Leads</div>
+                                    <div class="stats-number" id="totalLeads">0</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-users stats-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stats-card stats-card-success">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="stats-title">Conversões</div>
+                                    <div class="stats-number" id="totalConversions">0</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-check-circle stats-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stats-card stats-card-warning">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="stats-title">Newsletter</div>
+                                    <div class="stats-number" id="totalSubscribers">0</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-envelope stats-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stats-card stats-card-info">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="stats-title">Taxa de Conversão</div>
+                                    <div class="stats-number" id="conversionRate">0%</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-percentage stats-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row mb-4">
+                <div class="col-xl-8 col-lg-7">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-chart-line me-2"></i>
+                                Leads por Período
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="leadsChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-chart-pie me-2"></i>
+                                Fontes de Leads
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="sourcesChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-clock me-2"></i>
+                                Leads Recentes
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="recentLeads" class="activity-list">
+                                <!-- Leads recentes serão carregados aqui -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-newspaper me-2"></i>
+                                Inscrições Newsletter
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="recentSubscribers" class="activity-list">
+                                <!-- Inscrições recentes serão carregadas aqui -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leads Tab -->
+        <div id="leads-content" class="tab-content">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="page-title">
+                        <i class="fas fa-users me-2"></i>
+                        Gerenciamento de Leads
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Leads Filters -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="filterStatus" class="form-label">Status</label>
+                            <select class="form-select" id="filterStatus">
+                                <option value="">Todos</option>
+                                <option value="new">Novo</option>
+                                <option value="contacted">Contatado</option>
+                                <option value="qualified">Qualificado</option>
+                                <option value="converted">Convertido</option>
+                                <option value="closed">Fechado</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="filterSource" class="form-label">Fonte</label>
+                            <select class="form-select" id="filterSource">
+                                <option value="">Todas</option>
+                                <option value="Hero Form">Formulário Hero</option>
+                                <option value="Exit Intent">Exit Intent</option>
+                                <option value="Contact Form">Formulário Contato</option>
+                                <option value="Download">Download</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="filterDate" class="form-label">Período</label>
+                            <select class="form-select" id="filterDate">
+                                <option value="">Todos</option>
+                                <option value="today">Hoje</option>
+                                <option value="week">Esta Semana</option>
+                                <option value="month">Este Mês</option>
+                                <option value="quarter">Este Trimestre</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="searchLeads" class="form-label">Buscar</label>
+                            <input type="text" class="form-control" id="searchLeads" placeholder="Nome ou email...">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-auto">
+                            <button class="btn btn-primary" id="applyFilters">
+                                <i class="fas fa-filter me-1"></i>Aplicar Filtros
+                            </button>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-success" id="exportLeads">
+                                <i class="fas fa-download me-1"></i>Exportar CSV
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leads Table -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="leadsTable">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Objetivo</th>
+                                    <th>Fonte</th>
+                                    <th>Status</th>
+                                    <th>Data</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leadsTableBody">
+                                <!-- Leads serão carregados aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav aria-label="Leads pagination">
+                        <ul class="pagination justify-content-center" id="leadsPagination">
+                            <!-- Paginação será gerada aqui -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+                    <script defer src="js/core/auth-guard.js?v=20251009"></script>
+        </div>
+
+        <!-- Newsletter Tab -->
+        <div id="newsletter-content" class="tab-content">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="page-title">
+                        <i class="fas fa-envelope me-2"></i>
+                        Newsletter & Inscritos
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Newsletter Stats -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card stats-card-sm">
+                        <div class="card-body text-center">
+                            <div class="stats-number text-primary" id="activeSubscribers">0</div>
+                            <div class="stats-title">Inscritos Ativos</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card-sm">
+                        <div class="card-body text-center">
+                            <div class="stats-number text-success" id="newSubscribersMonth">0</div>
+                            <div class="stats-title">Novos Este Mês</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card-sm">
+                        <div class="card-body text-center">
+                            <div class="stats-number text-warning" id="unsubscribedMonth">0</div>
+                            <div class="stats-title">Cancelamentos</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card-sm">
+                        <div class="card-body text-center">
+                            <div class="stats-number text-info" id="growthRate">0%</div>
+                            <div class="stats-title">Taxa de Crescimento</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Newsletter Filters and Actions -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="filterSubscriberStatus" class="form-label">Status</label>
+                            <select class="form-select" id="filterSubscriberStatus">
+                                <option value="">Todos</option>
+                                <option value="subscribed">Inscrito</option>
+                                <option value="unsubscribed">Cancelado</option>
+                                <option value="bounced">Bounced</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="filterSubscriberSource" class="form-label">Fonte</label>
+                            <select class="form-select" id="filterSubscriberSource">
+                                <option value="">Todas</option>
+                                <option value="Newsletter Form">Formulário Newsletter</option>
+                                <option value="Footer Newsletter">Footer Newsletter</option>
+                                <option value="Exit Intent">Exit Intent</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="searchSubscribers" class="form-label">Buscar</label>
+                            <input type="text" class="form-control" id="searchSubscribers" placeholder="Nome ou email...">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-auto">
+                            <button class="btn btn-primary" id="applySubscriberFilters">
+                                <i class="fas fa-filter me-1"></i>Aplicar Filtros
+                            </button>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-success" id="exportSubscribers">
+                                <i class="fas fa-download me-1"></i>Exportar CSV
+                            </button>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-info" id="createCampaign">
+                                <i class="fas fa-plus me-1"></i>Nova Campanha
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscribers Table -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="subscribersTable">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Fonte</th>
+                                    <th>Status</th>
+                                    <th>Data Inscrição</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="subscribersTableBody">
+                                <!-- Inscritos serão carregados aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav aria-label="Subscribers pagination">
+                        <ul class="pagination justify-content-center" id="subscribersPagination">
+                            <!-- Paginação será gerada aqui -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Campaigns Tab -->
+        <div id="campaigns-content" class="tab-content">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="page-title">
+                        <i class="fas fa-bullhorn me-2"></i>
+                        Campanhas de Email
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Create Campaign Button -->
+            <div class="row mb-4">
+                <div class="col-auto">
+                    <button class="btn btn-primary btn-lg" id="newCampaignBtn">
+                        <i class="fas fa-plus me-2"></i>Nova Campanha
+                    </button>
+                </div>
+            </div>
+
+            <!-- Campaigns List -->
+            <div class="row" id="campaignsList">
+                <!-- Campanhas serão carregadas aqui -->
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div id="analytics-content" class="tab-content">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="page-title">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Analytics & Relatórios
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Analytics Charts -->
+            <div class="row mb-4">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Conversão por Fonte</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="conversionBySourceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Performance Newsletter</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="newsletterPerformanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Tables -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Relatório de Performance</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="performanceTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Métrica</th>
+                                            <th>Hoje</th>
+                                            <th>Esta Semana</th>
+                                            <th>Este Mês</th>
+                                            <th>Trimestre</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="performanceTableBody">
+                                        <!-- Dados de performance serão carregados aqui -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modals -->
+
+    <!-- Lead Details Modal -->
+    <div class="modal fade" id="leadDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-user me-2"></i>Detalhes do Lead
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="leadDetailsContent">
+                    <!-- Conteúdo será carregado dinamicamente -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" id="updateLeadBtn">Salvar Alterações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Campaign Modal -->
+    <div class="modal fade" id="campaignModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-bullhorn me-2"></i>Nova Campanha
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="campaignModalContent">
+                    <!-- Conteúdo será carregado dinamicamente -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveCampaignBtn">Salvar Campanha</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
+    <script src="js/core/supabase-config.js"></script>
+
+    <!-- Custom JS -->
+    <script src="js/admin/admin-dashboard.js"></script>
+
+<!-- Footer Section -->
+<hr class="hr-shine"/>
+<footer class="text-center py-4" style="background: rgba(15, 15, 15, 0.8); backdrop-filter: blur(10px);" role="contentinfo" aria-label="Site footer">
+    <div class="container">
+        <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" style="height: 50px; margin-bottom: 1rem;" loading="lazy">
+        <div class="mb-3">
+            <a href="privacy.html" class="text-decoration-none mx-2" style="color: #F6C84E;" rel="noopener" aria-label="Privacy Policy">Privacy</a>
+            <a href="terms.html" class="text-decoration-none mx-2" style="color: #F6C84E;" rel="noopener" aria-label="Terms of Service">Terms</a>
+            <a href="contact.html" class="text-decoration-none mx-2" style="color: #F6C84E;" rel="noopener" aria-label="Contact Us">Contact</a>
+        </div>
+        <p class="mb-0" style="color: rgba(255, 255, 255, 0.7);">
+            © 2025 Garcia Builder — Online Coaching •
+            <a href="https://instagram.com/garcia.builder" target="_blank" rel="noopener" style="color: #F6C84E;" aria-label="Follow us on Instagram">@garcia.builder</a>
+        </p>
+    </div>
+</footer>
+
+<!-- WhatsApp Float Button -->
+<a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener" aria-label="Contact via WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+</a>
+</body>
+</html>

@@ -1,0 +1,688 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="dashboard.enhanced_dashboard">Enhanced Dashboard - Garcia Builder</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/admin/enhanced-dashboard.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="enhanced-dashboard">
+
+    <!-- Mobile Sidebar Overlay -->
+    <div class="sidebar-overlay d-md-none" id="sidebarOverlay"></div>
+
+    <!-- Enhanced Sidebar -->
+    <div class="dashboard-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="sidebar-logo">
+                <i class="fas fa-dumbbell"></i>
+                Garcia Builder
+            </a>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title" data-i18n="nav.dashboard">Dashboard</div>
+                <a href="#overview" class="nav-item active" data-tab="overview">
+                    <i class="fas fa-home"></i>
+                    Overview
+                </a>
+                <a href="#workouts" class="nav-item" data-tab="workouts">
+                    <i class="fas fa-dumbbell"></i>
+                    My Workouts
+                    <span class="badge-notification">3</span>
+                </a>
+                <a href="#nutrition" class="nav-item" data-tab="nutrition">
+                    <i class="fas fa-apple-alt"></i>
+                    Nutrition
+                </a>
+                <a href="#progress" class="nav-item" data-tab="progress">
+                    <i class="fas fa-chart-line"></i>
+                    Progress
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Training</div>
+                <a href="#programs" class="nav-item" data-tab="programs">
+                    <i class="fas fa-list-alt"></i>
+                    Programs
+                </a>
+                <a href="#exercises" class="nav-item" data-tab="exercises">
+                    <i class="fas fa-play-circle"></i>
+                    Exercise Library
+                </a>
+                <a href="#calendar" class="nav-item" data-tab="calendar">
+                    <i class="fas fa-calendar-alt"></i>
+                    Calendar
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Communication</div>
+                <a href="#messages" class="nav-item" data-tab="messages">
+                    <i class="fas fa-comments"></i>
+                    Messages
+                    <span class="badge-notification">2</span>
+                </a>
+                <a href="#meetings" class="nav-item" data-tab="meetings">
+                    <i class="fas fa-video"></i>
+                    Meetings
+                </a>
+                <a href="#support" class="nav-item" data-tab="support">
+                    <i class="fas fa-life-ring"></i>
+                    Support
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title" data-i18n="dashboard.account">Account</div>
+                <a href="#profile" class="nav-item" data-tab="profile">
+                    <i class="fas fa-user-cog"></i>
+                    <span data-i18n="dashboard.profile_settings">Profile Settings</span>
+                </a>
+                <a href="#settings" class="nav-item" data-tab="settings">
+                    <i class="fas fa-cog"></i>
+                    <span data-i18n="dashboard.settings">Settings</span>
+                </a>
+                <a href="#" class="nav-item" onclick="enhancedAuth.logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span data-i18n="dashboard.logout">Logout</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="dashboard-main">
+        <!-- Mobile Header with Menu Toggle -->
+        <div class="mobile-header d-md-none">
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="mobile-logo">
+                <i class="fas fa-dumbbell"></i>
+                Garcia Builder
+            </div>
+        </div>
+
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="user-welcome">
+                <div class="user-info">
+                    <img src="assets/avatar-default.jpg" alt="User Avatar" class="user-avatar" data-user-avatar>
+                    <div class="user-details">
+                        <h2>Welcome back, <span data-user-name>User</span>! 👋</h2>
+                        <p>Ready to crush your fitness goals today?</p>
+                        <span class="user-role-badge" data-user-role>Client</span>
+                    </div>
+                </div>
+                <div class="quick-actions">
+                    <a href="#" class="btn-quick">
+                        <i class="fas fa-play"></i>
+                        Start Workout
+                    </a>
+                    <a href="#" class="btn-quick">
+                        <i class="fas fa-calendar-plus"></i>
+                        Book Session
+                    </a>
+                    <a href="#" class="btn-quick">
+                        <i class="fas fa-comments"></i>
+                        Message Trainer
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Content Tabs -->
+
+        <!-- Overview Tab -->
+        <div id="overview-content" class="tab-content active">
+            <div class="dashboard-grid">
+                <!-- Today's Workout -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Today's Workout</h3>
+                            <p class="card-subtitle">Upper Body Strength</p>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>Progress</span>
+                                <span>3/5 exercises</span>
+                            </div>
+                            <div class="progress-bar-custom">
+                                <div class="progress-fill" style="width: 60%"></div>
+                            </div>
+                        </div>
+                        <div class="quick-actions">
+                            <a href="#" class="btn-quick">
+                                <i class="fas fa-play"></i>
+                                Continue
+                            </a>
+                            <a href="#" class="btn-quick">
+                                <i class="fas fa-eye"></i>
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nutrition Summary -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-apple-alt"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Today's Nutrition</h3>
+                            <p class="card-subtitle">Calories & Macros</p>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="stat-number">1,847</div>
+                        <div class="stat-label">calories consumed</div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>Daily Goal</span>
+                                <span>1,847 / 2,200</span>
+                            </div>
+                            <div class="progress-bar-custom">
+                                <div class="progress-fill" style="width: 84%"></div>
+                            </div>
+                        </div>
+                        <div class="quick-actions">
+                            <a href="#" class="btn-quick">
+                                <i class="fas fa-plus"></i>
+                                Log Food
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Stats -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Weekly Progress</h3>
+                            <p class="card-subtitle">This week's summary</p>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="stat-number">4/5</div>
+                        <div class="stat-label">workouts completed</div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>Weekly Goal</span>
+                                <span>80% complete</span>
+                            </div>
+                            <div class="progress-bar-custom">
+                                <div class="progress-fill" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next Session -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Next Session</h3>
+                            <p class="card-subtitle">Upcoming appointment</p>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="stat-number">Tomorrow</div>
+                        <div class="stat-label">2:00 PM - Video Call</div>
+                        <p style="color: var(--text-secondary); margin: 1rem 0;">Weekly check-in with Andre Garcia</p>
+                        <div class="quick-actions">
+                            <a href="#" class="btn-quick">
+                                <i class="fas fa-video"></i>
+                                Join Meeting
+                            </a>
+                            <a href="#" class="btn-quick">
+                                <i class="fas fa-calendar-times"></i>
+                                Reschedule
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                        <h3 class="card-title">Recent Activity</h3>
+                        <p class="card-subtitle">Your latest achievements</p>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="activity-feed">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-trophy" style="color: var(--primary-gold);"></i>
+                            </div>
+                            <div class="activity-content">
+                                <strong>Personal Record!</strong> Deadlift - 180kg
+                                <span class="activity-time">2 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-check-circle" style="color: var(--success-green);"></i>
+                            </div>
+                            <div class="activity-content">
+                                <strong>Workout Completed:</strong> Upper Body Strength
+                                <span class="activity-time">Yesterday</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-comment" style="color: var(--primary-gold);"></i>
+                            </div>
+                            <div class="activity-content">
+                                <strong>Message from Andre:</strong> "Great progress this week! Keep it up!"
+                                <span class="activity-time">2 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Tab -->
+        <div id="profile-content" class="tab-content">
+            <div class="profile-section">
+                <div class="profile-tabs">
+                    <button class="tab-btn active" data-profile-tab="personal" data-i18n="dashboard.personal_info">Personal Info</button>
+                    <button class="tab-btn" data-profile-tab="fitness" data-i18n="dashboard.fitness_profile">Fitness Profile</button>
+                    <button class="tab-btn" data-profile-tab="goals" data-i18n="dashboard.goals_progress">Goals & Progress</button>
+                    <button class="tab-btn" data-profile-tab="preferences" data-i18n="dashboard.preferences">Preferences</button>
+                </div>
+
+                <!-- Personal Info Tab -->
+                <div id="personal-tab" class="tab-content active">
+                    <form id="personalInfoForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-control" name="first_name" placeholder="Enter first name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" name="last_name" placeholder="Enter last name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="email" placeholder="Enter email">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" class="form-control" name="phone" placeholder="Enter phone number">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Birthday</label>
+                                    <input type="date" class="form-control" name="birthday">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Location</label>
+                                    <input type="text" class="form-control" name="location" placeholder="City, Country">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="dashboard.bio">Bio</label>
+                            <textarea class="form-control" name="bio" rows="3" data-i18n-placeholder="dashboard.bio_placeholder" placeholder="Tell us about yourself..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-quick">
+                            <i class="fas fa-save"></i>
+                            <span data-i18n="dashboard.save_changes">Save Changes</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Fitness Profile Tab -->
+                <div id="fitness-tab" class="tab-content">
+                    <form id="fitnessProfileForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Experience Level</label>
+                                    <select class="form-control" name="experience_level">
+                                        <option value="Beginner">Beginner</option>
+                                        <option value="Intermediate">Intermediate</option>
+                                        <option value="Advanced">Advanced</option>
+                                        <option value="Expert">Expert</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Activity Level</label>
+                                    <select class="form-control" name="activity_level">
+                                        <option value="Sedentary">Sedentary</option>
+                                        <option value="Lightly Active">Lightly Active</option>
+                                        <option value="Moderately Active">Moderately Active</option>
+                                        <option value="Very Active">Very Active</option>
+                                        <option value="Extremely Active">Extremely Active</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Fitness Goals</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="goals" value="Lose Weight"> <span data-i18n="dashboard.lose_weight">Lose Weight</span></label>
+                                <label><input type="checkbox" name="goals" value="Build Muscle"> <span data-i18n="dashboard.build_muscle">Build Muscle</span></label>
+                                <label><input type="checkbox" name="goals" value="Increase Strength"> <span data-i18n="dashboard.increase_strength">Increase Strength</span></label>
+                                <label><input type="checkbox" name="goals" value="Improve Endurance"> <span data-i18n="dashboard.improve_endurance">Improve Endurance</span></label>
+                                <label><input type="checkbox" name="goals" value="Better Health"> <span data-i18n="dashboard.better_health">Better Health</span></label>
+                                <label><input type="checkbox" name="goals" value="Sport Performance"> <span data-i18n="dashboard.sport_performance">Sport Performance</span></label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-quick">
+                            <i class="fas fa-save"></i>
+                            <span data-i18n="dashboard.save_changes">Save Changes</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other tabs would be implemented similarly -->
+        <div id="workouts-content" class="tab-content">
+            <h2>My Workouts</h2>
+            <p>Workout content coming soon...</p>
+        </div>
+
+        <div id="nutrition-content" class="tab-content">
+            <h2>Nutrition Tracking</h2>
+            <p>Nutrition content coming soon...</p>
+        </div>
+
+        <div id="messages-content" class="tab-content">
+            <h2>Messages</h2>
+            <p>Messages content coming soon...</p>
+        </div>
+
+        <div id="settings-content" class="tab-content">
+            <h2>Settings</h2>
+            <p>Settings content coming soon...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/email-verification-guard.js"></script>
+    <script src="js/core/enhanced-auth.js"></script>
+    <script src="js/admin/enhanced-dashboard.js"></script>
+
+    <style>
+        .activity-feed {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+    <!-- FOOTER: Premium Reference-Inspired, Brand-Adapted -->
+    <footer class="gb-footer gb-footer-ref" role="contentinfo" aria-label="Site footer">
+        <div class="gb-footer-main container">
+            <div class="gb-footer-col gb-footer-brand">
+                <a href="index.html" class="gb-footer-logo-link" aria-label="Garcia Builder Home">
+                    <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" class="gb-footer-logo" loading="lazy" decoding="async"/>
+                </a>
+                <p class="gb-footer-bio">Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.</p>
+            </div>
+            <div class="gb-footer-col gb-footer-nav">
+                <h4 class="gb-footer-title">Navigation</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="transformations.html">Transformations</a></li>
+                    <li><a href="testimonials.html">Testimonials</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="gb-footer-col gb-footer-resources">
+                <h4 class="gb-footer-title">Resources</h4>
+                <ul>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="lead-magnet.html">Free Guide</a></li>
+                    <li><a href="newsletter-database-schema.sql">Newsletter DB Schema</a></li>
+                </ul>
+            </div>
+            <div class="gb-footer-col gb-footer-contact">
+                <h4 class="gb-footer-title">Contact</h4>
+                <ul>
+                    <li><a href="mailto:privacy@garciabuilder.fitness"><i class="fa fa-envelope"></i> privacy@garciabuilder.fitness</a></li>
+                    <li><a href="https://wa.me/447508497586" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+                    <li><a href="contact.html"><i class="fa fa-id-badge"></i> Contact Form</a></li>
+                </ul>
+                <div class="gb-footer-social">
+                    <a href="https://instagram.com/garcia.builder" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/garciabuilder" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.youtube.com/@garciabuilder" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="gb-footer-col gb-footer-newsletter">
+                <h4 class="gb-footer-title">Newsletter</h4>
+                <form class="gb-footer-newsletter-form" action="#" method="post" autocomplete="off">
+                    <input type="email" name="email" placeholder="Your email" aria-label="Email" required>
+                    <button type="submit" aria-label="Subscribe"><i class="fa fa-paper-plane"></i></button>
+                </form>
+                <p class="gb-footer-newsletter-desc">Get tips, recipes, and exclusive offers. No spam.</p>
+            </div>
+        </div>
+        <div class="gb-footer-legal container">
+            <span>© 2025 Garcia Builder. All rights reserved.</span>
+            <span class="gb-footer-legal-links">
+                <a href="privacy.html">Privacy</a> |
+                <a href="terms.html">Terms</a>
+            </span>
+        </div>
+    </footer>
+    <!-- WhatsApp Float Button -->
+    <a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener" aria-label="Contact via WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+    </a>
+    </body>
+    </html>
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-time {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            accent-color: var(--primary-gold);
+        }
+    </style>
+
+    <script>
+        // Mobile Menu Control
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileToggle = document.getElementById('mobileMenuToggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            if (mobileToggle && sidebar && overlay) {
+                // Toggle sidebar
+                mobileToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                    overlay.classList.toggle('show');
+                });
+
+                // Close sidebar when clicking overlay
+                overlay.addEventListener('click', function() {
+                    sidebar.classList.remove('show');
+                    overlay.classList.remove('show');
+                });
+
+                // Close sidebar on window resize if desktop
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth >= 768) {
+                        sidebar.classList.remove('show');
+                        overlay.classList.remove('show');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- I18n Script -->
+
+        <script src="assets/i18n.js"></script>
+
+<!-- FOOTER: Premium Reference-Inspired, Brand-Adapted -->
+<footer class="gb-footer gb-footer-ref" role="contentinfo" aria-label="Site footer">
+    <div class="gb-footer-main container">
+        <div class="gb-footer-col gb-footer-brand">
+            <a href="index.html" class="gb-footer-logo-link" aria-label="Garcia Builder Home">
+                <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" class="gb-footer-logo" loading="lazy" decoding="async"/>
+            </a>
+            <p class="gb-footer-bio">Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.</p>
+        </div>
+        <div class="gb-footer-col gb-footer-nav">
+            <h4 class="gb-footer-title">Navigation</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="transformations.html">Transformations</a></li>
+                <li><a href="testimonials.html">Testimonials</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+        <div class="gb-footer-col gb-footer-resources">
+            <h4 class="gb-footer-title">Resources</h4>
+            <ul>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="terms.html">Terms of Service</a></li>
+                <li><a href="lead-magnet.html">Free Guide</a></li>
+                <li><a href="newsletter-database-schema.sql">Newsletter DB Schema</a></li>
+            </ul>
+        </div>
+        <div class="gb-footer-col gb-footer-contact">
+            <h4 class="gb-footer-title">Contact</h4>
+            <ul>
+                <li><a href="mailto:privacy@garciabuilder.fitness"><i class="fa fa-envelope"></i> privacy@garciabuilder.fitness</a></li>
+                <li><a href="https://wa.me/447508497586" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+                <li><a href="contact.html"><i class="fa fa-id-badge"></i> Contact Form</a></li>
+            </ul>
+            <div class="gb-footer-social">
+                <a href="https://instagram.com/garcia.builder" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/garciabuilder" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.youtube.com/@garciabuilder" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+        <div class="gb-footer-col gb-footer-newsletter">
+            <h4 class="gb-footer-title">Newsletter</h4>
+            <form class="gb-footer-newsletter-form" action="#" method="post" autocomplete="off">
+                <input type="email" name="email" placeholder="Your email" aria-label="Email" required>
+                <button type="submit" aria-label="Subscribe"><i class="fa fa-paper-plane"></i></button>
+            </form>
+            <p class="gb-footer-newsletter-desc">Get tips, recipes, and exclusive offers. No spam.</p>
+        </div>
+    </div>
+    <div class="gb-footer-legal container">
+        <span>© 2025 Garcia Builder. All rights reserved.</span>
+        <span class="gb-footer-legal-links">
+            <a href="privacy.html">Privacy</a> |
+            <a href="terms.html">Terms</a>
+        </span>
+    </div>
+</footer>
+<!-- WhatsApp Float Button -->
+<a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener" aria-label="Contact via WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+</a>
+</html>

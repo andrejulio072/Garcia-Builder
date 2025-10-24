@@ -1,0 +1,807 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Manager - Garcia Builder</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/global.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .profile-container {
+            padding-top: 120px;
+            min-height: 100vh;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, rgba(246, 200, 78, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(246, 200, 78, 0.2);
+            text-align: center;
+        }
+
+        .main-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #F6C84E;
+            object-fit: cover;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .main-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(246, 200, 78, 0.4);
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            padding: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: #F6C84E;
+            box-shadow: 0 0 0 0.2rem rgba(246, 200, 78, 0.25);
+            color: #fff;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #F6C84E 0%, #f4b942 100%);
+            border: none;
+            color: #000;
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #f4b942 0%, #F6C84E 100%);
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid #F6C84E;
+            color: #F6C84E;
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background: #F6C84E;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        .avatar-upload-area {
+            border: 2px dashed rgba(246, 200, 78, 0.5);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .avatar-upload-area:hover {
+            border-color: #F6C84E;
+            background: rgba(246, 200, 78, 0.05);
+        }
+
+        .avatar-preview {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 50%;
+            margin: 1rem auto;
+            display: block;
+        }
+
+        .text-readable {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .text-muted-readable {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        .form-label {
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container inner">
+            <a class="brand" href="index.html">
+                <img loading="lazy" decoding="async" src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder">
+                <span class="title-gradient">Garcia Builder</span>
+            </a>
+
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="transformations.html">Transformations</a>
+                <a href="testimonials.html">Testimonials</a>
+            <script defer src="js/core/auth-guard.js?v=20251009"></script>
+                <a href="pricing.html">Pricing</a>
+                <a href="blog.html">Blog</a>
+                <a href="faq.html">FAQ</a>
+                <a href="contact.html">Contact</a>
+                <a href="dashboard.html">Dashboard</a>
+            </nav>
+
+            <div id="auth-buttons"></div>
+        </div>
+    </nav>
+
+    <!-- Profile Manager -->
+    <div class="profile-container">
+        <div class="container">
+            <!-- Header -->
+            <div class="profile-header">
+                <h1 class="title-gradient mb-2">
+                    <i class="fas fa-user-cog me-2"></i>
+                    Profile Manager
+                </h1>
+                <p class="text-muted-readable">Manage your account information and preferences</p>
+                <a href="dashboard.html" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+
+            <div class="row">
+                <!-- Avatar Upload Section -->
+                <div class="col-lg-4">
+                    <div class="profile-card">
+                        <h5 class="text-readable mb-4">
+                            <i class="fas fa-camera me-2"></i>Profile Picture
+                        </h5>
+
+                        <div class="text-center mb-4">
+                            <img id="current-avatar" class="main-avatar"
+                                 src="https://ui-avatars.com/api/?name=User&background=F6C84E&color=000&size=150"
+                                 alt="Current Avatar">
+                        </div>
+
+                        <div class="avatar-upload-area" onclick="selectImage()">
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: #F6C84E; margin-bottom: 1rem;"></i>
+                            <h6 class="text-readable">Upload New Avatar</h6>
+                            <p class="text-muted-readable mb-0">Click here or drag & drop</p>
+                            <small class="text-muted-readable">Supports: JPG, PNG, GIF (Max: 5MB)</small>
+                        </div>
+
+                        <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+
+                        <div id="upload-preview" class="text-center" style="display: none;">
+                            <img id="preview-image" class="avatar-preview">
+                            <div class="d-flex gap-2 justify-content-center mt-3">
+                                <button class="btn btn-primary" onclick="saveAvatar()">
+                                    <i class="fas fa-save me-2"></i>Save Photo
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="cancelUpload()">
+                                    <i class="fas fa-times me-2"></i>Cancel
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <button class="btn btn-outline-primary w-100" onclick="generateAvatar()">
+                                <i class="fas fa-magic me-2"></i>Generate Avatar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Information -->
+                <div class="col-lg-8">
+                    <div class="profile-card">
+                        <h5 class="text-readable mb-4">
+                            <i class="fas fa-user me-2"></i>Personal Information
+                        </h5>
+
+                        <form id="profile-form">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-user me-1 text-warning"></i>First Name
+                                    </label>
+                                    <input type="text" class="form-control" id="first-name" placeholder="Enter your first name">
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-user me-1 text-warning"></i>Last Name
+                                    </label>
+                                    <input type="text" class="form-control" id="last-name" placeholder="Enter your last name">
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-envelope me-1 text-warning"></i>Email Address
+                                    </label>
+                                    <input type="email" class="form-control" id="email" readonly>
+                                    <small class="text-muted-readable">Email cannot be changed</small>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-phone me-1 text-warning"></i>Phone Number
+                                    </label>
+                                    <input type="tel" class="form-control" id="phone" placeholder="(555) 123-4567">
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-birthday-cake me-1 text-warning"></i>Date of Birth
+                                    </label>
+                                    <input type="date" class="form-control" id="dob">
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-map-marker-alt me-1 text-warning"></i>City
+                                    </label>
+                                    <input type="text" class="form-control" id="city" placeholder="Your city">
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-globe me-1 text-warning"></i>Country
+                                    </label>
+                                    <select class="form-control" id="country">
+                                        <option value="">Select Country</option>
+                                        <option value="US">United States</option>
+                                        <option value="BR">Brazil</option>
+                                        <option value="CA">Canada</option>
+                                        <option value="UK">United Kingdom</option>
+                                        <option value="AU">Australia</option>
+                                        <option value="DE">Germany</option>
+                                        <option value="FR">France</option>
+                                        <option value="IT">Italy</option>
+                                        <option value="ES">Spain</option>
+                                        <option value="MX">Mexico</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-clock me-1 text-warning"></i>Timezone
+                                    </label>
+                                    <select class="form-control" id="timezone">
+                                        <option value="">Select Timezone</option>
+                                        <option value="America/New_York">Eastern Time (ET)</option>
+                                        <option value="America/Chicago">Central Time (CT)</option>
+                                        <option value="America/Denver">Mountain Time (MT)</option>
+                                        <option value="America/Los_Angeles">Pacific Time (PT)</option>
+                                        <option value="America/Sao_Paulo">Brasília Time (BRT)</option>
+                                        <option value="Europe/London">Greenwich Mean Time (GMT)</option>
+                                        <option value="Europe/Paris">Central European Time (CET)</option>
+                                        <option value="Asia/Tokyo">Japan Standard Time (JST)</option>
+                                        <option value="Australia/Sydney">Australian Eastern Time (AEST)</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-info-circle me-1 text-warning"></i>Bio / About You
+                                    </label>
+                                    <textarea class="form-control" id="bio" rows="4"
+                                              placeholder="Tell us about yourself, your fitness goals, interests..."></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Fitness Preferences -->
+                    <div class="profile-card">
+                        <h5 class="text-readable mb-4">
+                            <i class="fas fa-dumbbell me-2"></i>Fitness Preferences
+                        </h5>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Primary Goal</label>
+                                <select class="form-control" id="fitness-goal">
+                                    <option value="">Select Goal</option>
+                                    <option value="weight-loss">Weight Loss</option>
+                                    <option value="muscle-gain">Muscle Gain</option>
+                                    <option value="strength">Build Strength</option>
+                                    <option value="endurance">Improve Endurance</option>
+                                    <option value="maintenance">Maintain Current Form</option>
+                                    <option value="rehabilitation">Rehabilitation</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Experience Level</label>
+                                <select class="form-control" id="experience-level">
+                                    <option value="">Select Level</option>
+                                    <option value="beginner">Beginner (0-6 months)</option>
+                                    <option value="intermediate">Intermediate (6-24 months)</option>
+                                    <option value="advanced">Advanced (2+ years)</option>
+                                    <option value="expert">Expert/Competitive</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Weekly Frequency</label>
+                                <select class="form-control" id="workout-frequency">
+                                    <option value="">Select Frequency</option>
+                                    <option value="1-2">1-2 times per week</option>
+                                    <option value="3-4">3-4 times per week</option>
+                                    <option value="5-6">5-6 times per week</option>
+                                    <option value="daily">Daily workouts</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Preferred Workout Time</label>
+                                <select class="form-control" id="workout-time">
+                                    <option value="">Select Time</option>
+                                    <option value="early-morning">Early Morning (5-7 AM)</option>
+                                    <option value="morning">Morning (7-10 AM)</option>
+                                    <option value="midday">Midday (10 AM-2 PM)</option>
+                                    <option value="afternoon">Afternoon (2-6 PM)</option>
+                                    <option value="evening">Evening (6-9 PM)</option>
+                                    <option value="night">Night (9 PM+)</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Equipment Access</label>
+                                <select class="form-control" id="equipment">
+                                    <option value="">Select Equipment</option>
+                                    <option value="home-basic">Home - Basic Equipment</option>
+                                    <option value="home-full">Home - Full Gym Setup</option>
+                                    <option value="gym-commercial">Commercial Gym</option>
+                                    <option value="bodyweight">Bodyweight Only</option>
+                                    <option value="outdoor">Outdoor Training</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="profile-card">
+                        <div class="d-flex gap-3 justify-content-end">
+                            <button class="btn btn-secondary" onclick="resetForm()">
+                                <i class="fas fa-undo me-2"></i>Reset Changes
+                            </button>
+                            <button class="btn btn-outline-primary" onclick="exportProfile()">
+                                <i class="fas fa-download me-2"></i>Export Profile
+                            </button>
+                            <button class="btn btn-primary" onclick="saveProfile()">
+                                <i class="fas fa-save me-2"></i>Save All Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+        <script src="js/core/auth.js"></script>
+        <script src="js/admin/profile-manager.js"></script>
+
+    <script>
+        let currentUser = null;
+        let currentProfile = null;
+        let uploadedImage = null;
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            await initializeProfile();
+        });
+
+        async function initializeProfile() {
+            try {
+                // Wait for Supabase
+                if (!window.supabaseClient) {
+                    if (window.supabase) {
+                        window.supabaseClient = window.supabase.createClient(
+                            window.SUPABASE_URL,
+                            window.SUPABASE_ANON_KEY
+                        );
+                    } else {
+                        throw new Error('Supabase not loaded');
+                    }
+                }
+
+                // Check authentication
+                const { data, error } = await window.supabaseClient.auth.getUser();
+
+                if (error || !data.user) {
+                    window.location.href = 'login.html?redirect=profile-manager.html';
+                    return;
+                }
+
+                currentUser = data.user;
+
+                // Load profile data
+                const { data: profile } = await window.supabaseClient
+                    .from('user_profiles')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .single();
+
+                currentProfile = profile;
+
+                // Update UI
+                loadProfileData();
+                setupAuthButtons();
+
+            } catch (error) {
+                console.error('Profile initialization error:', error);
+                showToast('Failed to load profile data', 'error');
+            }
+        }
+
+        function loadProfileData() {
+            // Basic info
+            document.getElementById('email').value = currentUser.email;
+
+            if (currentProfile) {
+                const fullName = currentProfile.full_name || '';
+                const names = fullName.split(' ');
+                document.getElementById('first-name').value = names[0] || '';
+                document.getElementById('last-name').value = names.slice(1).join(' ') || '';
+
+                document.getElementById('phone').value = currentProfile.phone || '';
+                document.getElementById('dob').value = currentProfile.date_of_birth || '';
+                document.getElementById('city').value = currentProfile.city || '';
+                document.getElementById('country').value = currentProfile.country || '';
+                document.getElementById('timezone').value = currentProfile.timezone || '';
+                document.getElementById('bio').value = currentProfile.bio || '';
+
+                // Fitness preferences
+                document.getElementById('fitness-goal').value = currentProfile.fitness_goal || '';
+                document.getElementById('experience-level').value = currentProfile.experience_level || '';
+                document.getElementById('workout-frequency').value = currentProfile.workout_frequency || '';
+                document.getElementById('workout-time').value = currentProfile.workout_time || '';
+                document.getElementById('equipment').value = currentProfile.equipment || '';
+            }
+
+            // Update avatar
+            const displayName = currentProfile?.full_name || currentUser.email.split('@')[0];
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=F6C84E&color=000&size=150`;
+            document.getElementById('current-avatar').src = avatarUrl;
+        }
+
+        function setupAuthButtons() {
+            const authButtons = document.getElementById('auth-buttons');
+            const displayName = currentProfile?.full_name || currentUser.email.split('@')[0];
+
+            authButtons.innerHTML = `
+                <div class="dropdown">
+                    <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user me-1"></i> ${displayName}
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="dashboard.html">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a></li>
+                        <li><a class="dropdown-item" href="profile-manager.html">
+                            <i class="fas fa-user-cog me-2"></i>Profile Manager
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </a></li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        // Avatar functions
+        function selectImage() {
+            document.getElementById('avatar-upload').click();
+        }
+
+        document.getElementById('avatar-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast('File size must be less than 5MB', 'error');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview-image').src = e.target.result;
+                    document.getElementById('upload-preview').style.display = 'block';
+                    uploadedImage = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function saveAvatar() {
+            if (uploadedImage) {
+                document.getElementById('current-avatar').src = uploadedImage;
+                document.getElementById('upload-preview').style.display = 'none';
+                showToast('Avatar updated successfully!', 'success');
+                uploadedImage = null;
+            }
+        }
+
+        function cancelUpload() {
+            document.getElementById('upload-preview').style.display = 'none';
+            document.getElementById('avatar-upload').value = '';
+            uploadedImage = null;
+        }
+
+        function generateAvatar() {
+            const firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
+            const name = `${firstName} ${lastName}`.trim() || currentUser.email.split('@')[0];
+
+            const colors = ['F6C84E', '28a745', '007bff', 'dc3545', '6f42c1', 'fd7e14', '20c997'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${randomColor}&color=fff&size=150&bold=true`;
+            document.getElementById('current-avatar').src = avatarUrl;
+
+            showToast('New avatar generated!', 'success');
+        }
+
+        function resetForm() {
+            if (confirm('Are you sure you want to reset all changes?')) {
+                loadProfileData();
+                showToast('Form reset to original values', 'info');
+            }
+        }
+
+        async function saveProfile() {
+            try {
+                const firstName = document.getElementById('first-name').value;
+                const lastName = document.getElementById('last-name').value;
+                const fullName = `${firstName} ${lastName}`.trim();
+
+                const profileData = {
+                    user_id: currentUser.id,
+                    email: currentUser.email,
+                    full_name: fullName,
+                    phone: document.getElementById('phone').value,
+                    date_of_birth: document.getElementById('dob').value,
+                    city: document.getElementById('city').value,
+                    country: document.getElementById('country').value,
+                    timezone: document.getElementById('timezone').value,
+                    bio: document.getElementById('bio').value,
+                    fitness_goal: document.getElementById('fitness-goal').value,
+                    experience_level: document.getElementById('experience-level').value,
+                    workout_frequency: document.getElementById('workout-frequency').value,
+                    workout_time: document.getElementById('workout-time').value,
+                    equipment: document.getElementById('equipment').value,
+                    updated_at: new Date().toISOString()
+                };
+
+                // Save to database (here you would actually save to Supabase)
+                console.log('Saving profile data:', profileData);
+
+                showToast('Profile saved successfully!', 'success');
+
+                // Redirect to dashboard after save
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
+
+            } catch (error) {
+                console.error('Save profile error:', error);
+                showToast('Failed to save profile', 'error');
+            }
+        }
+
+        function exportProfile() {
+            const profileData = {
+                name: `${document.getElementById('first-name').value} ${document.getElementById('last-name').value}`.trim(),
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                dateOfBirth: document.getElementById('dob').value,
+                city: document.getElementById('city').value,
+                country: document.getElementById('country').value,
+                timezone: document.getElementById('timezone').value,
+                bio: document.getElementById('bio').value,
+                fitnessGoal: document.getElementById('fitness-goal').value,
+                experienceLevel: document.getElementById('experience-level').value,
+                workoutFrequency: document.getElementById('workout-frequency').value,
+                workoutTime: document.getElementById('workout-time').value,
+                equipment: document.getElementById('equipment').value,
+                exportDate: new Date().toISOString()
+            };
+
+            const dataStr = JSON.stringify(profileData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'garcia_builder_profile_complete.json';
+            link.click();
+
+            showToast('Profile data exported successfully!', 'success');
+        }
+
+        async function handleLogout() {
+            try {
+                await window.supabaseClient.auth.signOut();
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+                window.location.href = 'index.html';
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            const bgClass = type === 'success' ? 'alert-success' : type === 'error' ? 'alert-danger' : 'alert-info';
+            const icon = type === 'success' ? 'check' : type === 'error' ? 'exclamation' : 'info';
+
+            toast.className = `alert ${bgClass} position-fixed`;
+            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; border-radius: 10px;';
+            toast.innerHTML = `
+                <i class="fas fa-${icon}-circle me-2"></i>
+                ${message}
+                <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
+            `;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                if (toast.parentElement) toast.remove();
+            }, 4000);
+        }
+
+        // Drag and drop functionality
+        const uploadArea = document.querySelector('.avatar-upload-area');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            uploadArea.style.borderColor = '#F6C84E';
+            uploadArea.style.backgroundColor = 'rgba(246, 200, 78, 0.1)';
+        }
+
+        function unhighlight(e) {
+            uploadArea.style.borderColor = 'rgba(246, 200, 78, 0.5)';
+            uploadArea.style.backgroundColor = 'transparent';
+        }
+
+        uploadArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type.startsWith('image/')) {
+                    document.getElementById('avatar-upload').files = files;
+                    document.getElementById('avatar-upload').dispatchEvent(new Event('change'));
+                } else {
+                    showToast('Please drop an image file', 'error');
+                }
+            }
+        }
+
+        </script>
+
+<!-- Premium Reference-Inspired Footer Start -->
+<footer class="gb-footer gb-footer-ref">
+    <div class="container">
+        <div class="gb-footer-row">
+            <div class="gb-footer-col brand-col">
+                <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" class="footer-logo" loading="lazy" decoding="async" width="120" height="120">
+                <div class="footer-bio" data-i18n="footer.bio">Transforming bodies and lives with science-based coaching, accountability, and real results. Online coaching for busy professionals.</div>
+            </div>
+            <div class="gb-footer-col nav-col">
+                <div class="footer-title" data-i18n="footer.navigation">Navigation</div>
+                <ul class="footer-links">
+                    <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                    <li><a href="programs.html" data-i18n="nav.programs">Programs</a></li>
+                    <li><a href="pricing.html" data-i18n="nav.pricing">Pricing</a></li>
+                    <li><a href="transformations.html" data-i18n="nav.transformations">Transformations</a></li>
+                    <li><a href="testimonials.html" data-i18n="nav.testimonials">Testimonials</a></li>
+                    <li><a href="blog.html" data-i18n="nav.blog">Blog</a></li>
+                    <li><a href="about.html" data-i18n="nav.about">About</a></li>
+                    <li><a href="faq.html" data-i18n="nav.faq">FAQ</a></li>
+                    <li><a href="contact.html" data-i18n="nav.contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="gb-footer-col resources-col">
+                <div class="footer-title" data-i18n="footer.resources">Resources</div>
+                <ul class="footer-links">
+                    <li><a href="blog-nutrition-fat-loss.html" data-i18n="footer.nutrition">Nutrition for Fat Loss</a></li>
+                    <li><a href="blog-gym-mistakes.html" data-i18n="footer.gymmistakes">Gym Mistakes</a></li>
+                    <li><a href="blog-consistency.html" data-i18n="footer.consistency">Consistency</a></li>
+                    <li><a href="faq.html" data-i18n="footer.faq">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="gb-footer-col contact-col">
+                <div class="footer-title" data-i18n="footer.contact">Contact</div>
+                <ul class="footer-links">
+                    <li><a href="mailto:contato@garciabuilder.fitness"><i class="fas fa-envelope"></i> contato@garciabuilder.fitness</a></li>
+                    <li><a href="https://www.instagram.com/garciabuilder/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="https://wa.me/5511949494949" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+                </ul>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/garciabuilder/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/5511949494949" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="gb-footer-row legal-row">
+            <div class="footer-legal">&copy; 2025 Garcia Builder — Online Coaching</div>
+            <div class="footer-links-legal">
+                <a href="privacy.html" data-i18n="footer.privacy">Privacy Policy</a>
+                <span class="divider">|</span>
+                <a href="data-deletion.html" data-i18n="footer.datadeletion">Data Deletion</a>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Premium Reference-Inspired Footer End -->
+
+</body>
+</html>

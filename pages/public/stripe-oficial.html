@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✅ Stripe Oficial - Implementação Correta</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .header {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .official-badge {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .test-button {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .status.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .status.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        .code-block {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            border-left: 4px solid #007bff;
+            margin: 15px 0;
+        }
+        .docs-info {
+            background-color: #e7f3ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="official-badge">
+            📚 Implementação Seguindo Documentação Oficial
+        </div>
+
+        <div class="header">
+            <h1>✅ Stripe Checkout - Padrão Oficial</h1>
+            <p>Sistema implementado seguindo docs.stripe.com</p>
+        </div>
+
+        <div id="status" class="status info">
+            ℹ️ Sistema configurado com Test Keys (modo desenvolvimento)
+        </div>
+
+        <div class="docs-info">
+            <h3>📋 Configuração Seguindo Documentação:</h3>
+            <ul>
+                <li>✅ <strong>Test Keys:</strong> Seguras para desenvolvimento</li>
+                <li>✅ <strong>Server-side:</strong> Chave secreta no servidor apenas</li>
+                <li>✅ <strong>Client-side:</strong> Chave publicável no cliente</li>
+                <li>✅ <strong>Checkout Sessions:</strong> Criadas no servidor</li>
+                <li>✅ <strong>Redirect:</strong> Para página hospedada pelo Stripe</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <h3>🧪 Testes com Test Keys Oficiais:</h3>
+            <button class="test-button" onclick="testCheckout('starter')">
+                🚀 Teste Starter - £75/mês
+            </button>
+            <button class="test-button" onclick="testCheckout('beginner')">
+                📈 Teste Beginner - £95/mês
+            </button>
+            <button class="test-button" onclick="testCheckout('essentials')">
+                💪 Teste Essentials - £115/mês
+            </button>
+        </div>
+
+        <div class="code-block">
+            <h4>🔑 Configuração Atual:</h4>
+            <div id="configInfo">Carregando configuração...</div>
+        </div>
+
+        <div style="background-color: #d4edda; padding: 15px; border-radius: 8px; margin: 20px 0;">
+            <h4>💳 Cartões de Teste (Documentação Oficial):</h4>
+            <ul>
+                <li><strong>Sucesso:</strong> 4242 4242 4242 4242</li>
+                <li><strong>Requer autenticação:</strong> 4000 0025 0000 3155</li>
+                <li><strong>Falha:</strong> 4000 0000 0000 9995</li>
+                <li><strong>Data:</strong> Qualquer data futura</li>
+                <li><strong>CVC:</strong> Qualquer 3 dígitos</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="js/core/stripe-config.js"></script>
+    <script>
+        // Inicializar Stripe com configuração oficial
+        const stripe = Stripe(STRIPE_CONFIG.publishableKey);
+
+        function updateStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = `status ${type}`;
+            statusDiv.innerHTML = message;
+        }
+
+        function showConfig() {
+            const configDiv = document.getElementById('configInfo');
+            configDiv.innerHTML = `
+                <strong>Publishable Key:</strong> ${STRIPE_CONFIG.publishableKey.substring(0, 30)}...<br>
+                <strong>Tipo:</strong> ${STRIPE_CONFIG.publishableKey.startsWith('pk_test_') ? 'Test Key (Desenvolvimento)' : 'Live Key (Produção)'}<br>
+                <strong>API URL:</strong> ${STRIPE_CONFIG.apiUrl}
+            `;
+        }
+
+        async function testCheckout(planKey) {
+            try {
+                updateStatus('⏳ Criando Checkout Session...', 'info');
+
+                // Criar checkout session no servidor (seguindo documentação)
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        planKey: planKey,
+                        customerEmail: 'teste@stripe-oficial.com',
+                        planName: `Teste ${planKey}`,
+                        successUrl: window.location.origin + '/success.html',
+                        cancelUrl: window.location.origin + '/pricing.html'
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const session = await response.json();
+
+                updateStatus('✅ Sessão criada! Redirecionando para Stripe...', 'success');
+
+                // Redirecionar para Stripe Checkout (padrão oficial)
+                const { error } = await stripe.redirectToCheckout({
+                    sessionId: session.sessionId
+                });
+
+                if (error) {
+                    throw error;
+                }
+
+            } catch (error) {
+                console.error('Erro no checkout:', error);
+                updateStatus(`❌ Erro: ${error.message}`, 'error');
+            }
+        }
+
+        // Mostrar configuração ao carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            showConfig();
+            console.log('🔧 Sistema carregado seguindo documentação oficial do Stripe');
+            console.log('📚 Referência: https://docs.stripe.com/checkout/quickstart');
+        });
+    </script>
+</body>
+</html>

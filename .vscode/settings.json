@@ -1,4 +1,5 @@
 {
     "chat.agent.maxRequests": 100,
-    "deepscan.enable": true
+    "deepscan.enable": true,
+    "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }

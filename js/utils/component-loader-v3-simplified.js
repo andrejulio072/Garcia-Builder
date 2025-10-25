@@ -24,12 +24,12 @@ async function loadComponent(componentName) {
     try {
         const url = `${COMPONENTS_PATH}${componentName}.html`;
         console.log(`[Component Loader] Fetching ${url}...`);
-        
+
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
-        
+
         const html = await response.text();
         CACHE[componentName] = html;
         console.log(`[Component Loader] ✓ Loaded ${componentName} (${html.length} chars)`);
@@ -56,65 +56,102 @@ function executeScripts(container) {
 }
 
 /**
- * Initialize navbar functionality
+ * Initialize navbar functionality - ULTRA ROBUST VERSION
  */
 function initializeNavbar() {
-    const menuToggle = document.getElementById('gb-menu-toggle');
-    const menu = document.getElementById('gb-menu');
+    console.log('[Component Loader] Attempting to initialize navbar...');
 
-    if (!menuToggle || !menu) {
-        console.warn('[Component Loader] Navbar elements not found');
-        return;
-    }
+    // Wait for navbar to be fully in DOM
+    let attempts = 0;
+    const maxAttempts = 10;
 
-    console.log('[Component Loader] Initializing navbar...');
+    const tryInit = function() {
+        attempts++;
+        const menuToggle = document.getElementById('gb-menu-toggle');
+        const menu = document.getElementById('gb-menu');
 
-    menuToggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        const isActive = menu.classList.toggle('active');
-        menuToggle.classList.toggle('active');
-        menuToggle.setAttribute('aria-expanded', isActive);
-        document.body.style.overflow = isActive ? 'hidden' : '';
-    });
-
-    document.addEventListener('click', function(e) {
-        if (!menu.contains(e.target) && !menuToggle.contains(e.target)) {
-            menu.classList.remove('active');
-            menuToggle.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
+        if (!menuToggle || !menu) {
+            console.warn(`[Component Loader] Navbar elements not found (attempt ${attempts}/${maxAttempts})`);
+            if (attempts < maxAttempts) {
+                setTimeout(tryInit, 100);
+            } else {
+                console.error('[Component Loader] ❌ Failed to find navbar elements after 10 attempts!');
+            }
+            return;
         }
-    });
 
-    const menuLinks = menu.querySelectorAll('.gb-menu-link');
-    menuLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            menu.classList.remove('active');
-            menuToggle.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
+        console.log('[Component Loader] ✓ Navbar elements found! Initializing...');
+
+        // Remove any existing listeners (prevent duplicates)
+        const newMenuToggle = menuToggle.cloneNode(true);
+        menuToggle.parentNode.replaceChild(newMenuToggle, menuToggle);
+
+        newMenuToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const currentMenu = document.getElementById('gb-menu');
+            const isActive = currentMenu.classList.toggle('active');
+            newMenuToggle.classList.toggle('active');
+            newMenuToggle.setAttribute('aria-expanded', isActive);
+            document.body.style.overflow = isActive ? 'hidden' : '';
+            console.log('[Navbar] Menu toggled:', isActive ? 'OPEN' : 'CLOSED');
         });
-    });
 
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    menuLinks.forEach(link => {
-        const linkPage = link.getAttribute('href');
-        if (linkPage === currentPage) {
-            link.classList.add('active');
-        }
-    });
+        document.addEventListener('click', function(e) {
+            const currentMenu = document.getElementById('gb-menu');
+            const currentToggle = document.getElementById('gb-menu-toggle');
+            if (currentMenu && currentToggle && !currentMenu.contains(e.target) && !currentToggle.contains(e.target)) {
+                currentMenu.classList.remove('active');
+                currentToggle.classList.remove('active');
+                currentToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+        });
 
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && menu.classList.contains('active')) {
-            menu.classList.remove('active');
-            menuToggle.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
-        }
-    });
+        const menuLinks = menu.querySelectorAll('.gb-menu-link');
+        console.log('[Component Loader] Found', menuLinks.length, 'menu links');
 
-    console.log('[Component Loader] ✓ Navbar initialized');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                const currentMenu = document.getElementById('gb-menu');
+                const currentToggle = document.getElementById('gb-menu-toggle');
+                if (currentMenu) currentMenu.classList.remove('active');
+                if (currentToggle) {
+                    currentToggle.classList.remove('active');
+                    currentToggle.setAttribute('aria-expanded', 'false');
+                }
+                document.body.style.overflow = '';
+            });
+        });
+
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        menuLinks.forEach(link => {
+            const linkPage = link.getAttribute('href');
+            if (linkPage === currentPage) {
+                link.classList.add('active');
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const currentMenu = document.getElementById('gb-menu');
+                const currentToggle = document.getElementById('gb-menu-toggle');
+                if (currentMenu && currentMenu.classList.contains('active')) {
+                    currentMenu.classList.remove('active');
+                    if (currentToggle) {
+                        currentToggle.classList.remove('active');
+                        currentToggle.setAttribute('aria-expanded', 'false');
+                    }
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+
+        console.log('[Component Loader] ✅ Navbar fully initialized!');
+    };
+
+    // Start initialization
+    tryInit();
 }
 
 /**
@@ -134,13 +171,15 @@ async function injectComponent(element) {
 
     element.outerHTML = html;
     executeScripts(document.body);
-    
+
     if (componentName === 'navbar') {
+        // Give extra time for DOM to settle before initializing navbar
         setTimeout(() => {
+            console.log('[Component Loader] Starting navbar initialization after injection...');
             initializeNavbar();
-        }, 50);
+        }, 200);
     }
-    
+
     document.dispatchEvent(new CustomEvent('componentLoaded', {
         detail: { componentName, timestamp: Date.now() }
     }));
@@ -154,7 +193,7 @@ async function injectComponent(element) {
 async function initComponents() {
     const elements = document.querySelectorAll('[data-component]');
     console.log(`[Component Loader] Found ${elements.length} components to load`);
-    
+
     if (elements.length === 0) {
         console.warn('[Component Loader] No components found on page');
         return;
@@ -163,7 +202,7 @@ async function initComponents() {
     for (const el of elements) {
         await injectComponent(el);
     }
-    
+
     console.log(`[Component Loader] ✓ All ${elements.length} components loaded!`);
 }
 

@@ -6,7 +6,7 @@ function initLightbox() {
   const lb = document.createElement('div');
   lb.id = 'garcia-lightbox';
   lb.style.cssText = 'position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.85);z-index:1000';
-  lb.innerHTML = '<div class="lb-viewport" style="position:relative;max-width:92vw;max-height:92vh;overflow:hidden;border-radius:12px"><img loading="lazy" decoding="async" style="transform:translate(0px,0px) scale(1);cursor:grab;transform-origin:center center;user-select:none;-webkit-user-drag:none"></div><div class="lb-close" style="position:absolute;top:20px;right:30px;font-size:26px;cursor:pointer;color:white">✕</div><div class="lb-prev" style="position:absolute;left:20px;top:50%;transform:translateY(-50%);font-size:28px;color:#fff;cursor:pointer">‹</div><div class="lb-next" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:28px;color:#fff;cursor:pointer">›</div><div class="lb-fit" style="position:absolute;bottom:20px;right:30px;font-size:14px;color:#000;background:#F6C84E;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700">Fit</div>';
+  lb.innerHTML = '<div class="lb-viewport" style="position:relative;max-width:92vw;max-height:92vh;overflow:hidden;border-radius:12px"><img loading="lazy" decoding="async" alt="" style="transform:translate(0px,0px) scale(1);cursor:grab;transform-origin:center center;user-select:none;-webkit-user-drag:none"></div><div class="lb-close" style="position:absolute;top:20px;right:30px;font-size:26px;cursor:pointer;color:white" aria-label="Close image viewer">✕</div><div class="lb-prev" style="position:absolute;left:20px;top:50%;transform:translateY(-50%);font-size:28px;color:#fff;cursor:pointer" aria-label="View previous image">‹</div><div class="lb-next" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:28px;color:#fff;cursor:pointer" aria-label="View next image">›</div><div class="lb-fit" style="position:absolute;bottom:20px;right:30px;font-size:14px;color:#000;background:#F6C84E;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700" aria-label="Toggle fit mode">Fit</div>';
   document.body.appendChild(lb);
 
   const viewport = lb.querySelector('.lb-viewport');
@@ -89,6 +89,13 @@ function initLightbox() {
     currentIndex = idx;
     const a = galleryLinks[idx];
     img.onload = () => { resetView(); };
+    const linkedImage = a.querySelector('img');
+    const altText = a.getAttribute('data-alt')
+      || a.getAttribute('aria-label')
+      || a.getAttribute('title')
+      || (linkedImage ? linkedImage.getAttribute('alt') : '')
+      || 'Expanded gallery image';
+    img.alt = altText;
     img.src = a.getAttribute('href');
     lb.style.display = 'grid';
   };

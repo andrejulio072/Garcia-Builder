@@ -129,9 +129,11 @@ const INLINE_FALLBACKS = {
         </div>
         <div class="gb-footer-col gb-footer-newsletter">
             <span class="footer-title footer-title-ref">Newsletter</span>
-            <form class="newsletter-form-ref">
-                <input type="email" class="newsletter-input-ref" placeholder="Email address" required />
-                <label class="newsletter-checkbox-ref"><input type="checkbox"/> I would like to receive updates and tips from Garcia Builder.</label>
+            <form class="newsletter-form-ref" aria-label="Footer newsletter signup">
+                <input type="email" class="newsletter-input-ref" id="footer-newsletter-email-fallback" name="email" placeholder="Email address" required autocomplete="email" />
+                <label class="newsletter-checkbox-ref" for="footer-newsletter-consent-fallback">
+                    <input type="checkbox" id="footer-newsletter-consent-fallback" name="consent" value="yes" required /> I would like to receive updates and tips from Garcia Builder.
+                </label>
                 <button type="submit" class="newsletter-btn-ref">Subscribe</button>
             </form>
             <div class="newsletter-privacy-ref">You can unsubscribe at any time and your information will be treated according to our Privacy Policy.</div>

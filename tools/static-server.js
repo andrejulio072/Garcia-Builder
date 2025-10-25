@@ -3,15 +3,33 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
+app.disable('x-powered-by');
 let port = Number(process.env.PORT || 5173);
 const root = path.resolve(__dirname, '..');
 
+// Global basic headers for local dev (not production security hardening)
 app.use((req, res, next) => {
   res.setHeader('Cache-Control', 'no-store');
+  // Help browsers avoid MIME sniffing warnings in the Issues panel
+  res.setHeader('X-Content-Type-Options', 'nosniff');
   next();
 });
 
-app.use(express.static(root));
+// Serve static with content-type tweaks for some assets
+app.use(express.static(root, {
+  setHeaders: (res, filePath) => {
+    const ext = path.extname(filePath).toLowerCase();
+    // Ensure correct mime types for common fonts on older environments
+    if (ext === '.woff2') res.setHeader('Content-Type', 'font/woff2');
+    else if (ext === '.woff') res.setHeader('Content-Type', 'font/woff');
+    else if (ext === '.ttf') res.setHeader('Content-Type', 'font/ttf');
+    else if (ext === '.otf') res.setHeader('Content-Type', 'font/otf');
+    // Be explicit for CSS/JS
+    else if (ext === '.css') res.setHeader('Content-Type', 'text/css; charset=utf-8');
+    else if (ext === '.js') res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+    else if (ext === '.svg') res.setHeader('Content-Type', 'image/svg+xml');
+  }
+}));
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(root, 'index.html'));

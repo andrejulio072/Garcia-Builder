@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Component Loader Test - Garcia Builder</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #0b1220;
+            color: #fff;
+        }
+        h1 { color: #00d4ff; }
+        .test { 
+            background: #1a2332; 
+            padding: 20px; 
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #00d4ff;
+        }
+        .error { border-left-color: #ff4444; }
+        .success { border-left-color: #44ff44; }
+        pre {
+            background: #0a0f1a;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        code { color: #00d4ff; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Garcia Builder - Component Loader Diagnostic</h1>
+    
+    <div class="test" id="test-1">
+        <h2>Test 1: Load navbar.html via fetch</h2>
+        <pre id="result-1">Testing...</pre>
+    </div>
+
+    <div class="test" id="test-2">
+        <h2>Test 2: Load footer.html via fetch</h2>
+        <pre id="result-2">Testing...</pre>
+    </div>
+
+    <div class="test" id="test-3">
+        <h2>Test 3: Load component-loader.js</h2>
+        <pre id="result-3">Testing...</pre>
+    </div>
+
+    <div class="test" id="test-4">
+        <h2>Test 4: Component loader system</h2>
+        <div id="navbar-container" data-component="navbar"></div>
+        <pre id="result-4">Waiting for component-loader.js...</pre>
+    </div>
+
+    <script>
+        console.log('[Diagnostic] Starting tests...');
+
+        // Test 1: Fetch navbar.html
+        fetch('components/navbar.html')
+            .then(response => {
+                const status = `Status: ${response.status} ${response.statusText}`;
+                document.getElementById('test-1').className = response.ok ? 'test success' : 'test error';
+                return response.text().then(text => {
+                    document.getElementById('result-1').textContent = 
+                        status + '\n' + 
+                        `Size: ${text.length} bytes\n` +
+                        `Preview: ${text.substring(0, 200)}...`;
+                });
+            })
+            .catch(error => {
+                document.getElementById('test-1').className = 'test error';
+                document.getElementById('result-1').textContent = `ERROR: ${error.message}`;
+            });
+
+        // Test 2: Fetch footer.html
+        fetch('components/footer.html')
+            .then(response => {
+                const status = `Status: ${response.status} ${response.statusText}`;
+                document.getElementById('test-2').className = response.ok ? 'test success' : 'test error';
+                return response.text().then(text => {
+                    document.getElementById('result-2').textContent = 
+                        status + '\n' + 
+                        `Size: ${text.length} bytes\n` +
+                        `Preview: ${text.substring(0, 200)}...`;
+                });
+            })
+            .catch(error => {
+                document.getElementById('test-2').className = 'test error';
+                document.getElementById('result-2').textContent = `ERROR: ${error.message}`;
+            });
+
+        // Test 3: Check component-loader.js
+        fetch('js/utils/component-loader.js')
+            .then(response => {
+                const status = `Status: ${response.status} ${response.statusText}`;
+                document.getElementById('test-3').className = response.ok ? 'test success' : 'test error';
+                return response.text().then(text => {
+                    document.getElementById('result-3').textContent = 
+                        status + '\n' + 
+                        `Size: ${text.length} bytes\n` +
+                        `Has initializeNavbar: ${text.includes('initializeNavbar') ? 'YES' : 'NO'}`;
+                });
+            })
+            .catch(error => {
+                document.getElementById('test-3').className = 'test error';
+                document.getElementById('result-3').textContent = `ERROR: ${error.message}`;
+            });
+
+        // Test 4: Load component-loader.js and test system
+        setTimeout(() => {
+            if (typeof window.ComponentLoader !== 'undefined') {
+                document.getElementById('test-4').className = 'test success';
+                document.getElementById('result-4').textContent = 
+                    'Component Loader: LOADED\n' +
+                    'Check if navbar appeared above.';
+            } else {
+                document.getElementById('test-4').className = 'test error';
+                document.getElementById('result-4').textContent = 
+                    'Component Loader: NOT FOUND\n' +
+                    'Check console for errors.';
+            }
+        }, 3000);
+    </script>
+
+    <!-- Load component-loader.js -->
+    <script defer src="js/utils/component-loader.js?v=20251025"></script>
+</body>
+</html>

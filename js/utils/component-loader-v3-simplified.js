@@ -12,6 +12,15 @@ console.log('[Component Loader v3.0] Initializing...');
 const COMPONENTS_PATH = 'components/';
 const CACHE = {};
 
+// Resolve the best URL for a component and provide robust fallbacks
+function resolveComponentURLs(componentName) {
+    // Absolute root path works reliably on Vercel regardless of the current page path
+    const absolute = `/components/${componentName}.html`;
+    // Relative path for local file viewing (file://) or simple static servers
+    const relative = `${COMPONENTS_PATH}${componentName}.html`;
+    return [absolute, relative];
+}
+
 /**
  * Load HTML component from external file
  */
@@ -22,18 +31,28 @@ async function loadComponent(componentName) {
     }
 
     try {
-        const url = `${COMPONENTS_PATH}${componentName}.html`;
-        console.log(`[Component Loader] Fetching ${url}...`);
+        const urls = resolveComponentURLs(componentName);
+        let lastError = null;
 
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        for (const url of urls) {
+            try {
+                console.log(`[Component Loader] Fetching ${url}...`);
+                const response = await fetch(url, { cache: 'no-store' });
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const html = await response.text();
+                CACHE[componentName] = html;
+                console.log(`[Component Loader] ✓ Loaded ${componentName} from ${url} (${html.length} chars)`);
+                return html;
+            } catch (err) {
+                lastError = err;
+                console.warn(`[Component Loader] Failed from ${url}: ${err.message}`);
+                // try next URL
+            }
         }
 
-        const html = await response.text();
-        CACHE[componentName] = html;
-        console.log(`[Component Loader] ✓ Loaded ${componentName} (${html.length} chars)`);
-        return html;
+        throw lastError || new Error('Unknown fetch error');
     } catch (error) {
         console.error(`[Component Loader] ✗ Failed to load ${componentName}:`, error);
         return `<!-- Component ${componentName} failed to load: ${error.message} -->`;

@@ -1,0 +1,30 @@
+# Vercel Static Configuration
+# Force Vercel to serve these files as-is without processing
+
+[build]
+  command = ""
+
+[build.environment]
+  NODE_ENV = "production"
+
+[[headers]]
+  for = "/js/**/*.js"
+  [headers.values]
+    Content-Type = "application/javascript; charset=utf-8"
+    X-Content-Type-Options = "nosniff"
+    Cache-Control = "public, max-age=31536000, immutable"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/components/**/*.html"
+  [headers.values]
+    Content-Type = "text/html; charset=utf-8"
+    X-Content-Type-Options = "nosniff"
+    Cache-Control = "public, max-age=3600"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Content-Type = "text/html; charset=utf-8"
+    Cache-Control = "public, max-age=0, must-revalidate"

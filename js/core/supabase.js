@@ -9,15 +9,27 @@ console.log('🔧 Loading Supabase configuration...');
 window.SUPABASE_URL = "https://qejtjcaldnuokoofpqap.supabase.co";
 window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlanRqY2FsZG51b2tvb2ZwcWFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5OTY2MjgsImV4cCI6MjA3NDU3MjYyOH0.-4KmNNRpmNLu4-xPtnC4-FJJTBbvrSk03v2WCaT5Kyw";
 
-// Criar cliente Supabase
-if (typeof supabase !== 'undefined') {
-    window.supabaseClient = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
-    console.log('✅ Supabase client initialized successfully');
-} else if (window.supabase) {
-    window.supabaseClient = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
-    console.log('✅ Supabase client initialized successfully');
+const isFileProtocol = typeof window !== 'undefined' && window.location && window.location.protocol === 'file:';
+const isOffline = typeof navigator !== 'undefined' && navigator.onLine === false;
+
+if (isFileProtocol || isOffline) {
+    const reasons = [];
+    if (isFileProtocol) reasons.push('file protocol');
+    if (isOffline) reasons.push('offline mode');
+    console.info(`[Supabase] Legacy initializer skipped (${reasons.join(' + ')}).`);
+    window.supabaseClient = null;
 } else {
-    console.error('❌ Supabase library not loaded');
+
+    // Criar cliente Supabase
+    if (typeof supabase !== 'undefined') {
+        window.supabaseClient = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+        console.log('✅ Supabase client initialized successfully');
+    } else if (window.supabase) {
+        window.supabaseClient = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+        console.log('✅ Supabase client initialized successfully');
+    } else {
+        console.error('❌ Supabase library not loaded');
+    }
 }
 
 // OAuth Providers Configuration

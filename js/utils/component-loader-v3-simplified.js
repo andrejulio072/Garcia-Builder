@@ -12,6 +12,14 @@ console.log('[Component Loader v3.0] Initializing...');
 const COMPONENTS_PATH = 'components/';
 const CACHE = {};
 
+function isFileProtocol() {
+    return typeof window !== 'undefined' && window.location && window.location.protocol === 'file:';
+}
+
+function isOffline() {
+    return typeof navigator !== 'undefined' && navigator.onLine === false;
+}
+
 // Inline copies of critical components to provide full-fidelity fallbacks when
 // browsers block fetch requests (e.g., file:// protocol or offline previews).
 const INLINE_FALLBACKS = {
@@ -41,7 +49,7 @@ const INLINE_FALLBACKS = {
                                 </select>
                         </div>
 
-                        <button class="gb-hamburger"
+                    <button type="button" class="gb-hamburger"
                                         id="gb-menu-toggle"
                                         aria-label="Toggle navigation menu"
                                         aria-expanded="false"
@@ -55,7 +63,7 @@ const INLINE_FALLBACKS = {
                 </div>
         </div>
 
-        <div class="gb-menu" id="gb-menu" role="menu">
+        <div class="gb-menu" id="gb-menu">
                 <div class="gb-menu-inner">
                         <nav class="gb-menu-links" role="menubar">
                                 <a href="index.html" class="gb-menu-link active" data-i18n="nav.home" role="menuitem">Home</a>
@@ -202,19 +210,22 @@ async function loadComponent(componentName) {
                 return html;
             } catch (err) {
                 lastError = err;
-                console.warn(`[Component Loader] Failed from ${url}: ${err.message}`);
+                const warnFn = (isFileProtocol() || isOffline()) ? console.info : console.warn;
+                warnFn(`[Component Loader] Failed from ${url}: ${err.message}`);
                 // try next URL
             }
         }
         // If we reach here, all fetch attempts failed. Provide a helpful error and continue.
         throw lastError || new Error('Unknown fetch error');
     } catch (error) {
-        console.error(`[Component Loader] ✗ Failed to load ${componentName}:`, error);
+        const fallbackLog = (isFileProtocol() || isOffline()) ? console.info : console.error;
+        fallbackLog(`[Component Loader] ✗ Failed to load ${componentName}:`, error);
 
-        // If we're running from file:// it's very common for fetch to fail in browsers.
-        if (window.location && window.location.protocol === 'file:') {
-            console.warn('[Component Loader] Running from file:// — fetch may be blocked by the browser.\n' +
-                'Recommended: run the local static server (see tools/static-server.js) and open http://localhost:5173');
+        if (isFileProtocol()) {
+            console.info('[Component Loader] Running from file:// — browsers often block fetch in this context.\n' +
+                'Recommended: use the local static server (tools/static-server.js) and open http://localhost:5173');
+        } else if (isOffline()) {
+            console.info('[Component Loader] Browser reports offline mode — component fetch skipped until connection resumes.');
         }
 
         return `<!-- Component ${componentName} failed to load: ${error.message} -->`;
@@ -345,8 +356,9 @@ async function injectComponent(element) {
     console.log(`[Component Loader] Injecting ${componentName}...`);
 
     const html = await loadComponent(componentName);
-        if (!html || html.includes('failed to load')) {
-                console.error(`[Component Loader] ✗ Cannot inject ${componentName} — applying inline fallback`);
+    if (!html || html.includes('failed to load')) {
+        const injectLog = (isFileProtocol() || isOffline()) ? console.info : console.warn;
+        injectLog(`[Component Loader] ✗ Cannot inject ${componentName} — applying inline fallback`);
 
                 const fallback = INLINE_FALLBACKS[componentName] || `<!-- No fallback for ${componentName} -->`;
 
@@ -359,7 +371,8 @@ async function injectComponent(element) {
                 }
 
                 document.dispatchEvent(new CustomEvent('componentLoaded', { detail: { componentName, fallback: true, timestamp: Date.now() } }));
-                console.warn(`[Component Loader] Fallback injected for ${componentName}`);
+                const fallbackInfo = (isFileProtocol() || isOffline()) ? console.info : console.warn;
+                fallbackInfo(`[Component Loader] Fallback injected for ${componentName}`);
                 return;
         }
 

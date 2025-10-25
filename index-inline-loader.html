@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Garcia Builder | Coaching Fitness Online Premium</title>
+    <meta name="description" content="Transforme seu corpo com coaching online personalizado. Resultados comprovados em 12 anos. Experimente 7 dias grátis!">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- INLINE COMPONENT LOADER - SOLUÇÃO ALTERNATIVA -->
+    <script>
+    (function() {
+        'use strict';
+        const COMPONENTS_PATH = 'components/';
+        const CACHE = {};
+
+        async function loadComponent(componentName) {
+            if (CACHE[componentName]) {
+                console.log(`[Component Loader] Using cached ${componentName}`);
+                return CACHE[componentName];
+            }
+
+            try {
+                const url = `${COMPONENTS_PATH}${componentName}.html`;
+                console.log(`[Component Loader] Fetching ${url}...`);
+                
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const html = await response.text();
+                CACHE[componentName] = html;
+                console.log(`[Component Loader] ✓ Loaded ${componentName} (${html.length} chars)`);
+                return html;
+            } catch (error) {
+                console.error(`[Component Loader] ✗ Failed to load ${componentName}:`, error);
+                return `<!-- Component ${componentName} failed to load: ${error.message} -->`;
+            }
+        }
+
+        function executeScripts(container) {
+            const scripts = container.querySelectorAll('script');
+            scripts.forEach(oldScript => {
+                const newScript = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(attr => {
+                    newScript.setAttribute(attr.name, attr.value);
+                });
+                newScript.textContent = oldScript.textContent;
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+        }
+
+        function initializeNavbar() {
+            const menuToggle = document.getElementById('gb-menu-toggle');
+            const menu = document.getElementById('gb-menu');
+
+            if (!menuToggle || !menu) {
+                console.warn('[Component Loader] Navbar elements not found');
+                return;
+            }
+
+            console.log('[Component Loader] Initializing navbar functionality...');
+
+            menuToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const isActive = menu.classList.toggle('active');
+                menuToggle.classList.toggle('active');
+                menuToggle.setAttribute('aria-expanded', isActive);
+                document.body.style.overflow = isActive ? 'hidden' : '';
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!menu.contains(e.target) && !menuToggle.contains(e.target)) {
+                    menu.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            const menuLinks = menu.querySelectorAll('.gb-menu-link');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    menu.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                });
+            });
+
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            menuLinks.forEach(link => {
+                const linkPage = link.getAttribute('href');
+                if (linkPage === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && menu.classList.contains('active')) {
+                    menu.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            console.log('[Component Loader] ✓ Navbar initialized');
+        }
+
+        async function injectComponent(element) {
+            const componentName = element.getAttribute('data-component');
+            if (!componentName) return;
+
+            console.log(`[Component Loader] Injecting ${componentName}...`);
+
+            const html = await loadComponent(componentName);
+            if (!html || html.includes('failed to load')) {
+                console.error(`[Component Loader] ✗ Cannot inject ${componentName}`);
+                return;
+            }
+
+            element.outerHTML = html;
+            executeScripts(document.body);
+            
+            if (componentName === 'navbar') {
+                setTimeout(() => {
+                    initializeNavbar();
+                }, 50);
+            }
+            
+            document.dispatchEvent(new CustomEvent('componentLoaded', {
+                detail: { componentName, timestamp: Date.now() }
+            }));
+
+            console.log(`[Component Loader] ✓ Injected ${componentName}`);
+        }
+
+        async function initComponents() {
+            const elements = document.querySelectorAll('[data-component]');
+            console.log(`[Component Loader] Found ${elements.length} components to load`);
+            
+            if (elements.length === 0) {
+                console.warn('[Component Loader] No components found on page');
+                return;
+            }
+
+            for (const el of elements) {
+                await injectComponent(el);
+            }
+            
+            console.log(`[Component Loader] ✓ All ${elements.length} components loaded successfully`);
+        }
+
+        window.ComponentLoader = {
+            load: loadComponent,
+            init: initComponents,
+            cache: CACHE
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initComponents);
+        } else {
+            initComponents();
+        }
+
+    })();
+    </script>
+</head>
+<body class="gb-body">
+    
+    <!-- ==================== NAVBAR (COMPONENT) ==================== -->
+    <div data-component="navbar"></div>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="gb-hero-section">
+        <div class="gb-container">
+            <div class="gb-hero-content">
+                <h1 class="gb-hero-title">
+                    Transforme Seu Corpo<br>
+                    <span class="gb-hero-highlight">Em 90 Dias</span>
+                </h1>
+                <p class="gb-hero-subtitle">
+                    Coaching fitness online personalizado com resultados comprovados.<br>
+                    Junte-se a mais de 127 transformações bem-sucedidas.
+                </p>
+                <div class="gb-hero-cta">
+                    <a href="pricing.html" class="gb-btn-primary">
+                        Começar Agora - 7 Dias Grátis
+                    </a>
+                    <a href="about.html" class="gb-btn-secondary">
+                        Conheça o Garcia
+                    </a>
+                </div>
+            </div>
+            <div class="gb-hero-image">
+                <img src="https://i.postimg.cc/YStBxLCy/foto-garcia-hero.jpg" alt="Garcia Builder - Personal Trainer">
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== STATS SECTION ==================== -->
+    <section class="gb-stats-section">
+        <div class="gb-container">
+            <div class="gb-stats-grid">
+                <div class="gb-stat-card">
+                    <div class="gb-stat-number">127+</div>
+                    <div class="gb-stat-label">Transformações</div>
+                </div>
+                <div class="gb-stat-card">
+                    <div class="gb-stat-number">12</div>
+                    <div class="gb-stat-label">Anos de Experiência</div>
+                </div>
+                <div class="gb-stat-card">
+                    <div class="gb-stat-number">3</div>
+                    <div class="gb-stat-label">Idiomas</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER (COMPONENT) ==================== -->
+    <div data-component="footer"></div>
+
+    <!-- External JS -->
+    <script src="js/main.js"></script>
+</body>
+</html>

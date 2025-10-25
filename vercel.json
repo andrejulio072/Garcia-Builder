@@ -20,11 +20,19 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=3600, must-revalidate"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, OPTIONS"
         }
       ]
     },
     {
-      "source": "/js/(.*)",
+      "source": "/js/**/*.js",
       "headers": [
         {
           "key": "Content-Type",
@@ -37,11 +45,15 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
         }
       ]
     },
     {
-      "source": "/components/(.*)",
+      "source": "/components/**/*.html",
       "headers": [
         {
           "key": "Content-Type",
@@ -54,8 +66,27 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=3600"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/css/**/*.css",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/css; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     }
-  ]
+  ],
+  "trailingSlash": false,
+  "cleanUrls": false
 }

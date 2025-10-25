@@ -203,13 +203,39 @@
         cache: CACHE // Expose cache for debugging
     };
 
-    // Auto-initialize on DOM ready
+    // MULTI-TRIGGER INITIALIZATION - Force execution in all scenarios
+    console.log('[Component Loader] Initializing with readyState:', document.readyState);
+    
+    // Trigger 1: DOMContentLoaded
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initComponents);
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('[Component Loader] Trigger 1: DOMContentLoaded fired');
+            initComponents();
+        });
     } else {
+        // Trigger 2: Already loaded - run immediately
+        console.log('[Component Loader] Trigger 2: Document already ready, running immediately');
         initComponents();
     }
-
-})();
+    
+    // Trigger 3: Window load (fallback)
+    window.addEventListener('load', () => {
+        console.log('[Component Loader] Trigger 3: Window load event');
+        // Check if components were already loaded
+        const unloadedComponents = document.querySelectorAll('[data-component]');
+        if (unloadedComponents.length > 0) {
+            console.warn('[Component Loader] Found unloaded components, retrying...');
+            initComponents();
+        }
+    });
+    
+    // Trigger 4: Immediate check after 100ms (safety net)
+    setTimeout(() => {
+        const unloadedComponents = document.querySelectorAll('[data-component]');
+        if (unloadedComponents.length > 0) {
+            console.warn('[Component Loader] Trigger 4: Safety check - components not loaded, forcing...');
+            initComponents();
+        }
+    }, 100);
 
 })();

@@ -1,0 +1,44 @@
+# Garcia Builder - Apache Configuration
+# Force correct MIME types for components and scripts
+
+<IfModule mod_mime.c>
+    # JavaScript
+    AddType application/javascript .js
+    AddType application/javascript .mjs
+    
+    # HTML Components
+    AddType text/html .html
+    
+    # CSS
+    AddType text/css .css
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Security Headers
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+    
+    # CORS for components
+    <FilesMatch "\.(html|js|css)$">
+        Header set Access-Control-Allow-Origin "*"
+        Header set Access-Control-Allow-Methods "GET, OPTIONS"
+    </FilesMatch>
+    
+    # Cache Control
+    <FilesMatch "\.(js|css)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    
+    <FilesMatch "\.html$">
+        Header set Cache-Control "public, max-age=3600, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# Enable CORS
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Handle OPTIONS requests
+    RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteRule ^(.*)$ $1 [R=200,L]
+</IfModule>

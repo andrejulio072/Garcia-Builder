@@ -107,11 +107,55 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script defer src="js/tracking/ads-config.js?v=20251025"></script>
 
 <!-- New Modular Components (Phase 3: World-Class Architecture) -->
-<script defer src="js/utils/component-loader.js?v=20251025"></script>
+<!-- MULTIPLE LOADING STRATEGIES: defer + async fallback + manual trigger -->
+<script defer src="js/utils/component-loader.js?v=20251026"></script>
+<script async src="js/utils/component-loader.js?v=20251026"></script>
 <script defer src="js/components/video-player.js?v=20251025"></script>
 <script defer src="js/components/trainer-modal.js?v=20251025"></script>
 <script defer src="js/modules/event-tracking.js?v=20251025"></script>
 <script defer src="js/modules/scroll-effects.js?v=20251025"></script>
+
+<!-- EMERGENCY FALLBACK: Manual component loader initialization -->
+<script>
+(function() {
+    console.log('[Emergency Loader] Checking component loader...');
+    
+    // Wait for either defer or async to load
+    let checkCount = 0;
+    const checkInterval = setInterval(function() {
+        checkCount++;
+        
+        if (window.ComponentLoader) {
+            console.log('[Emergency Loader] ✓ ComponentLoader found!');
+            clearInterval(checkInterval);
+            
+            // Double-check components are loading
+            setTimeout(function() {
+                const unloaded = document.querySelectorAll('[data-component]');
+                if (unloaded.length > 0) {
+                    console.warn('[Emergency Loader] Components not loaded, forcing init...');
+                    window.ComponentLoader.init();
+                }
+            }, 200);
+        } else if (checkCount > 50) {
+            console.error('[Emergency Loader] ComponentLoader not found after 5 seconds!');
+            clearInterval(checkInterval);
+            
+            // Last resort: Load script manually
+            console.warn('[Emergency Loader] Loading component-loader.js manually...');
+            const script = document.createElement('script');
+            script.src = 'js/utils/component-loader.js?v=20251026&emergency=1';
+            script.onload = function() {
+                console.log('[Emergency Loader] Manual load successful!');
+            };
+            script.onerror = function() {
+                console.error('[Emergency Loader] Manual load FAILED!');
+            };
+            document.head.appendChild(script);
+        }
+    }, 100);
+})();
+</script>
 </head><body>
 
 <!-- Google Tag Manager (noscript) -->

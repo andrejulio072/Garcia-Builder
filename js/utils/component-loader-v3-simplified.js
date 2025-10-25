@@ -12,6 +12,135 @@ console.log('[Component Loader v3.0] Initializing...');
 const COMPONENTS_PATH = 'components/';
 const CACHE = {};
 
+// Inline copies of critical components to provide full-fidelity fallbacks when
+// browsers block fetch requests (e.g., file:// protocol or offline previews).
+const INLINE_FALLBACKS = {
+        navbar: `
+<nav class="gb-navbar" role="navigation" aria-label="Main navigation (offline fallback)">
+        <div class="container">
+                <div class="gb-navbar-content">
+                        <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
+                                <img src="Logo Files/For Web/logo-nobackground-500.png"
+                                         alt="Garcia Builder Logo"
+                                         class="gb-logo-img"
+                                         loading="eager"
+                                         decoding="async">
+                                <span class="gb-logo-text">Garcia Builder</span>
+                        </a>
+
+                        <div class="gb-navbar-controls">
+                                <div id="auth-buttons-navbar" class="gb-auth-buttons">
+                                        <a href="pages/auth/login.html" class="gb-btn-link" data-i18n="nav.login">Login</a>
+                                        <a href="pricing.html" class="gb-btn-primary-small" data-i18n="nav.register">Register</a>
+                                </div>
+
+                                <select id="lang-select-navbar" aria-label="Select language">
+                                        <option value="en">EN</option>
+                                        <option value="pt">PT</option>
+                                        <option value="es">ES</option>
+                                </select>
+                        </div>
+
+                        <button class="gb-hamburger"
+                                        id="gb-menu-toggle"
+                                        aria-label="Toggle navigation menu"
+                                        aria-expanded="false"
+                                        aria-controls="gb-menu">
+                                <div class="gb-hamburger-icon">
+                                        <span class="gb-hamburger-line"></span>
+                                        <span class="gb-hamburger-line"></span>
+                                        <span class="gb-hamburger-line"></span>
+                                </div>
+                        </button>
+                </div>
+        </div>
+
+        <div class="gb-menu" id="gb-menu" role="menu">
+                <div class="gb-menu-inner">
+                        <nav class="gb-menu-links" role="menubar">
+                                <a href="index.html" class="gb-menu-link active" data-i18n="nav.home" role="menuitem">Home</a>
+                                <a href="about.html" class="gb-menu-link" data-i18n="nav.about" role="menuitem">About</a>
+                                <a href="transformations.html" class="gb-menu-link" data-i18n="nav.trans" role="menuitem">Transformations</a>
+                                <a href="testimonials.html" class="gb-menu-link" data-i18n="nav.testi" role="menuitem">Testimonials</a>
+                                <a href="pricing.html" class="gb-menu-link" data-i18n="nav.pricing" role="menuitem">Pricing</a>
+                                <a href="blog.html" class="gb-menu-link" data-i18n="nav.blog" role="menuitem">Blog</a>
+                                <a href="faq.html" class="gb-menu-link" data-i18n="nav.faq" role="menuitem">FAQ</a>
+                                <a href="contact.html" class="gb-menu-link" data-i18n="nav.contact" role="menuitem">Contact</a>
+                        </nav>
+
+                        <div class="gb-menu-footer">
+                                <div id="auth-buttons" class="gb-auth-buttons-mobile">
+                                        <a href="pages/auth/login.html" class="gb-btn-secondary" data-i18n="nav.login">Login</a>
+                                        <a href="pricing.html" class="gb-btn-primary" data-i18n="nav.register">Register</a>
+                                </div>
+
+                                <select id="lang-select" class="gb-lang-select" aria-label="Select language">
+                                        <option value="en">🇬🇧 English</option>
+                                        <option value="pt">🇧🇷 Português</option>
+                                        <option value="es">🇪🇸 Español</option>
+                                </select>
+                        </div>
+                </div>
+        </div>
+</nav>`.trim(),
+        footer: `
+<footer class="gb-footer" aria-label="Site footer (offline fallback)">
+    <div class="gb-footer-main gb-footer-ref">
+        <div class="gb-footer-col gb-footer-brand-col">
+            <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" width="56" height="56" loading="lazy" style="margin-bottom:10px;"/>
+            <div class="footer-title footer-title-ref">Garcia Builder</div>
+            <div class="footer-bio-ref" style="margin-bottom:8px;">Online Coaching — Evidence-based fitness, nutrition & accountability.<br/>Transform your body, sustainably.</div>
+            <div class="footer-contact-ref" style="margin-top:14px;">
+                <div><a href="mailto:andre@garciabuilder.fitness"><i class="fas fa-envelope"></i> andre@garciabuilder.fitness</a></div>
+                <div><a href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a></div>
+            </div>
+        </div>
+        <div class="gb-footer-col">
+            <span class="footer-title footer-title-ref">Links</span>
+            <ul style="margin-top:2px;">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="transformations.html">Results</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="become-trainer.html">Apply as Trainer</a></li>
+            </ul>
+        </div>
+        <div class="gb-footer-col">
+            <span class="footer-title footer-title-ref">Resources</span>
+            <ul style="margin-top:2px;">
+                <li><a href="assets/empty-guide.pdf" download>Download Guide (PDF)</a></li>
+                <li><a href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Book a Call</a></li>
+            </ul>
+            <div class="footer-follow">
+                <span class="footer-subhead">Follow us</span>
+                <a href="https://instagram.com/garcia.builder" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+        <div class="gb-footer-col gb-footer-newsletter">
+            <span class="footer-title footer-title-ref">Newsletter</span>
+            <form class="newsletter-form-ref">
+                <input type="email" class="newsletter-input-ref" placeholder="Email address" required />
+                <label class="newsletter-checkbox-ref"><input type="checkbox"/> I would like to receive updates and tips from Garcia Builder.</label>
+                <button type="submit" class="newsletter-btn-ref">Subscribe</button>
+            </form>
+            <div class="newsletter-privacy-ref">You can unsubscribe at any time and your information will be treated according to our Privacy Policy.</div>
+        </div>
+    </div>
+    <div class="gb-footer-bottom gb-footer-bottom-ref">
+        <div class="gb-footer-legal small">
+            <span>© 2025 Garcia Builder</span>
+            <a href="#" onclick="openConsentPreferences();return false;">Cookie Preferences</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+        </div>
+        <div class="gb-footer-disclaimer-ref">*DISCLAIMER: Results may vary. Results are based on individual circumstances. Timeframes for results are not guaranteed. Willpower is always required!</div>
+    </div>
+</footer>`.trim()
+};
+
 // Resolve the best URL for a component and provide robust fallbacks.
 // We try multiple strategies so the loader works when served from a host
 // or when someone (for testing) opens the HTML file directly from disk.
@@ -219,28 +348,7 @@ async function injectComponent(element) {
         if (!html || html.includes('failed to load')) {
                 console.error(`[Component Loader] ✗ Cannot inject ${componentName} — applying inline fallback`);
 
-                // Provide a lightweight, safe inline fallback so opening files directly still shows a usable UI.
-                const fallback = (function(name) {
-                        if (name === 'navbar') {
-                                return `
-<nav class="gb-navbar gb-navbar-fallback" role="navigation" aria-label="Main navigation (fallback)">
-    <div class="container">
-        <a href="index.html" class="gb-logo-section">Garcia Builder</a>
-        <div class="gb-navbar-controls">
-            <a href="pages/auth/login.html" class="gb-btn-link">Login</a>
-            <a href="pricing.html" class="gb-btn-primary-small">Register</a>
-        </div>
-    </div>
-</nav>`;
-                        }
-                        if (name === 'footer') {
-                                return `
-<footer class="gb-footer gb-footer-fallback" aria-label="Site footer (fallback)">
-    <div class="container"><div style="padding:16px;text-align:center;color:#ddd;font-size:14px;">Garcia Builder — <a href="contact.html">Contact</a> · <a href="privacy.html">Privacy</a></div></div>
-</footer>`;
-                        }
-                        return `<!-- No fallback for ${name} -->`;
-                })(componentName);
+                const fallback = INLINE_FALLBACKS[componentName] || `<!-- No fallback for ${componentName} -->`;
 
                 element.outerHTML = fallback;
                 // still execute any scripts on the page

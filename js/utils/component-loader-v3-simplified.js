@@ -12,13 +12,39 @@ console.log('[Component Loader v3.0] Initializing...');
 const COMPONENTS_PATH = 'components/';
 const CACHE = {};
 
-// Resolve the best URL for a component and provide robust fallbacks
+// Resolve the best URL for a component and provide robust fallbacks.
+// We try multiple strategies so the loader works when served from a host
+// or when someone (for testing) opens the HTML file directly from disk.
 function resolveComponentURLs(componentName) {
-    // Absolute root path works reliably on Vercel regardless of the current page path
-    const absolute = `/components/${componentName}.html`;
-    // Relative path for local file viewing (file://) or simple static servers
-    const relative = `${COMPONENTS_PATH}${componentName}.html`;
-    return [absolute, relative];
+    const list = [];
+
+    // 1) Prefer origin-aware absolute path when origin is available (http/https)
+    try {
+        if (window.location && window.location.origin && !window.location.origin.includes('null')) {
+            list.push(window.location.origin + `/components/${componentName}.html`);
+        }
+    } catch (e) {
+        // ignore
+    }
+
+    // 2) Root-absolute path (works on most hosted environments)
+    list.push(`/components/${componentName}.html`);
+
+    // 3) Simple relative path (works when served from a static server and sometimes with file://)
+    list.push(`${COMPONENTS_PATH}${componentName}.html`);
+
+    // 4) Base-directory resolution: use the current document base to build a components URL.
+    //    This helps when pages are opened as file:///.../path/index.html
+    try {
+        const docBase = document.baseURI || window.location.href;
+        const baseDir = docBase.replace(/[^/]+$/, '');
+        list.push(baseDir + `components/${componentName}.html`);
+    } catch (e) {
+        // ignore
+    }
+
+    // Deduplicate while keeping order
+    return Array.from(new Set(list));
 }
 
 /**
@@ -51,10 +77,17 @@ async function loadComponent(componentName) {
                 // try next URL
             }
         }
-
+        // If we reach here, all fetch attempts failed. Provide a helpful error and continue.
         throw lastError || new Error('Unknown fetch error');
     } catch (error) {
         console.error(`[Component Loader] ✗ Failed to load ${componentName}:`, error);
+
+        // If we're running from file:// it's very common for fetch to fail in browsers.
+        if (window.location && window.location.protocol === 'file:') {
+            console.warn('[Component Loader] Running from file:// — fetch may be blocked by the browser.\n' +
+                'Recommended: run the local static server (see tools/static-server.js) and open http://localhost:5173');
+        }
+
         return `<!-- Component ${componentName} failed to load: ${error.message} -->`;
     }
 }
@@ -183,12 +216,46 @@ async function injectComponent(element) {
     console.log(`[Component Loader] Injecting ${componentName}...`);
 
     const html = await loadComponent(componentName);
-    if (!html || html.includes('failed to load')) {
-        console.error(`[Component Loader] ✗ Cannot inject ${componentName}`);
-        return;
-    }
+        if (!html || html.includes('failed to load')) {
+                console.error(`[Component Loader] ✗ Cannot inject ${componentName} — applying inline fallback`);
 
-    element.outerHTML = html;
+                // Provide a lightweight, safe inline fallback so opening files directly still shows a usable UI.
+                const fallback = (function(name) {
+                        if (name === 'navbar') {
+                                return `
+<nav class="gb-navbar gb-navbar-fallback" role="navigation" aria-label="Main navigation (fallback)">
+    <div class="container">
+        <a href="index.html" class="gb-logo-section">Garcia Builder</a>
+        <div class="gb-navbar-controls">
+            <a href="pages/auth/login.html" class="gb-btn-link">Login</a>
+            <a href="pricing.html" class="gb-btn-primary-small">Register</a>
+        </div>
+    </div>
+</nav>`;
+                        }
+                        if (name === 'footer') {
+                                return `
+<footer class="gb-footer gb-footer-fallback" aria-label="Site footer (fallback)">
+    <div class="container"><div style="padding:16px;text-align:center;color:#ddd;font-size:14px;">Garcia Builder — <a href="contact.html">Contact</a> · <a href="privacy.html">Privacy</a></div></div>
+</footer>`;
+                        }
+                        return `<!-- No fallback for ${name} -->`;
+                })(componentName);
+
+                element.outerHTML = fallback;
+                // still execute any scripts on the page
+                executeScripts(document.body);
+
+                if (componentName === 'navbar') {
+                        setTimeout(() => initializeNavbar(), 200);
+                }
+
+                document.dispatchEvent(new CustomEvent('componentLoaded', { detail: { componentName, fallback: true, timestamp: Date.now() } }));
+                console.warn(`[Component Loader] Fallback injected for ${componentName}`);
+                return;
+        }
+
+        element.outerHTML = html;
     executeScripts(document.body);
 
     if (componentName === 'navbar') {

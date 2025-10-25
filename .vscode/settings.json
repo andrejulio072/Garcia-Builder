@@ -2,5 +2,8 @@
     "chat.agent.maxRequests": 100,
     "deepscan.enable": true,
     "CodeGPT.apiKey": "CodeGPT Plus Beta",
-    "nextflow.telemetry.enabled": true
+    "nextflow.telemetry.enabled": true,
+    "cSpell.words": [
+        "Almeida"
+    ]
 }

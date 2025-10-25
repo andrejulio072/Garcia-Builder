@@ -113,7 +113,7 @@
   <!-- Scripts -->
   <script defer src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
   <script defer src="assets/i18n.js"></script>
-<script defer src="js/utils/component-loader-v3-simplified.js?v=20251027"></script>
+<script src="js/utils/component-loader-v3-simplified.js?v=20251027"></script>
   <script defer src="js/tracking/consent-banner.js"></script>
 
   <!-- Hardening mobile: não altera cores/tema -->
@@ -127,6 +127,26 @@
       * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
     }
   </style>
+
+<!-- EMERGENCY: Component Loader Fallback -->
+<script>
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        const unloaded = document.querySelectorAll('[data-component]');
+        if (unloaded.length > 0) {
+            console.error('[EMERGENCY] Components NOT loaded! Found:', unloaded.length);
+            if (window.ComponentLoader && window.ComponentLoader.init) {
+                console.warn('[EMERGENCY] Forcing ComponentLoader.init()...');
+                window.ComponentLoader.init();
+            } else {
+                console.error('[EMERGENCY] ComponentLoader NOT FOUND!');
+            }
+        } else {
+            console.log('[SUCCESS] All components loaded correctly!');
+        }
+    }, 500);
+});
+</script>
 </head>
 <body>
 

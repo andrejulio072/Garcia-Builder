@@ -461,6 +461,26 @@
             100% { opacity: 1; transform: none; }
         }
     </style>
+
+<!-- EMERGENCY: Component Loader Fallback -->
+<script>
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        const unloaded = document.querySelectorAll('[data-component]');
+        if (unloaded.length > 0) {
+            console.error('[EMERGENCY] Components NOT loaded! Found:', unloaded.length);
+            if (window.ComponentLoader && window.ComponentLoader.init) {
+                console.warn('[EMERGENCY] Forcing ComponentLoader.init()...');
+                window.ComponentLoader.init();
+            } else {
+                console.error('[EMERGENCY] ComponentLoader NOT FOUND!');
+            }
+        } else {
+            console.log('[SUCCESS] All components loaded correctly!');
+        }
+    }, 500);
+});
+</script>
 </head>
 <body>
 

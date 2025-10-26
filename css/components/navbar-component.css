@@ -106,12 +106,33 @@
 }
 
 @media (max-width: 640px) {
-    .gb-navbar-controls {
-        display: none;
-    }
-
     .gb-navbar-actions {
         gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .gb-navbar-controls {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .gb-auth-buttons {
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .gb-btn-link,
+    .gb-btn-primary-small {
+        padding: 6px 14px;
+        font-size: 0.82rem;
+    }
+
+    #lang-select-navbar {
+        padding: 6px 9px;
+        font-size: 0.8rem;
+        min-width: 70px;
     }
 }
 

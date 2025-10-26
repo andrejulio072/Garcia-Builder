@@ -129,6 +129,33 @@
   color: #bfcbe6;
   margin-bottom: 2px;
 }
+.gb-footer-language {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+.gb-footer-lang-select {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(246, 200, 78, 0.35);
+  background: rgba(12, 18, 32, 0.92);
+  color: #f6c84e;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.gb-footer-lang-select:hover,
+.gb-footer-lang-select:focus {
+  border-color: #f6c84e;
+  background: rgba(246, 200, 78, 0.15);
+  box-shadow: 0 0 0 3px rgba(246, 200, 78, 0.15);
+  outline: none;
+}
+.gb-footer-language-note {
+  font-size: 0.85em;
+  color: #bfcbe6;
+}
 .gb-footer-bottom-ref {
   width: 100%;
   max-width: 1400px;
@@ -1020,7 +1047,14 @@ section#contact.section.has-bg.contact-bg {
 
 @media (max-width: 640px) {
   .gb-navbar-controls {
-    display: none;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  #lang-select-navbar {
+    min-width: 70px;
   }
 
   /* General mobile improvements */

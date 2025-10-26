@@ -1699,15 +1699,15 @@
   const selNav = document.getElementById('lang-select-navbar');
   if (selNav && selNav.value !== lang) selNav.value = lang;
 
-  const selNavMobile = document.getElementById('lang-select-navbar-mobile');
-  if (selNavMobile && selNavMobile.value !== lang) selNavMobile.value = lang;
+  const selFooter = document.getElementById('lang-select-footer');
+  if (selFooter && selFooter.value !== lang) selFooter.value = lang;
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     const lang = getLang(); // EN by default
     apply(lang);
 
-    const languageSelectIds = ['lang-select', 'lang-select-navbar', 'lang-select-navbar-mobile'];
+  const languageSelectIds = ['lang-select', 'lang-select-navbar', 'lang-select-footer'];
     const languageSelects = languageSelectIds
       .map(id => document.getElementById(id))
       .filter(Boolean);

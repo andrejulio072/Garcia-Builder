@@ -23,73 +23,75 @@ function isOffline() {
 // Inline copies of critical components to provide full-fidelity fallbacks when
 // browsers block fetch requests (e.g., file:// protocol or offline previews).
 const INLINE_FALLBACKS = {
-        navbar: `
+    navbar: `
 <nav class="gb-navbar" role="navigation" aria-label="Main navigation (offline fallback)">
-        <div class="container">
-                <div class="gb-navbar-content">
-                        <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
-                                <img src="Logo Files/For Web/logo-nobackground-500.png"
-                                         alt="Garcia Builder Logo"
-                                         class="gb-logo-img"
-                                         loading="eager"
-                                         decoding="async">
-                                <span class="gb-logo-text">Garcia Builder</span>
-                        </a>
+    <div class="container">
+        <div class="gb-navbar-content">
+            <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
+                <img src="Logo Files/For Web/logo-nobackground-500.png"
+                     alt="Garcia Builder Logo"
+                     class="gb-logo-img"
+                     loading="eager"
+                     decoding="async">
+                <span class="gb-logo-text">Garcia Builder</span>
+            </a>
 
-                        <div class="gb-navbar-controls">
-                                <div id="auth-buttons-navbar" class="gb-auth-buttons">
-                                        <a href="pages/auth/login.html" class="gb-btn-link" data-i18n="nav.login">Login</a>
-                                        <a href="pricing.html" class="gb-btn-primary-small" data-i18n="nav.register">Register</a>
-                                </div>
+            <div class="gb-navbar-actions">
+                <div class="gb-navbar-controls">
+                    <div id="auth-buttons-navbar" class="gb-auth-buttons">
+                        <a href="pages/auth/login.html" class="gb-btn-link" data-i18n="nav.login">Login</a>
+                        <a href="pages/auth/login.html?action=register" class="gb-btn-primary-small" data-i18n="nav.register">Register</a>
+                    </div>
 
-                                <select id="lang-select-navbar" aria-label="Select language">
-                                        <option value="en">EN</option>
-                                        <option value="pt">PT</option>
-                                        <option value="es">ES</option>
-                                </select>
-                        </div>
-
-                    <button type="button" class="gb-hamburger"
-                                        id="gb-menu-toggle"
-                                        aria-label="Toggle navigation menu"
-                                        aria-expanded="false"
-                                        aria-controls="gb-menu">
-                                <div class="gb-hamburger-icon">
-                                        <span class="gb-hamburger-line"></span>
-                                        <span class="gb-hamburger-line"></span>
-                                        <span class="gb-hamburger-line"></span>
-                                </div>
-                        </button>
+                    <select id="lang-select-navbar" aria-label="Select language" title="Select language">
+                        <option value="en">EN</option>
+                        <option value="pt">PT</option>
+                        <option value="es">ES</option>
+                    </select>
                 </div>
+
+                <button type="button" class="gb-hamburger"
+                        id="gb-menu-toggle"
+                        aria-label="Toggle navigation menu"
+                        aria-expanded="false"
+                        aria-controls="gb-menu">
+                    <div class="gb-hamburger-icon">
+                        <span class="gb-hamburger-line"></span>
+                        <span class="gb-hamburger-line"></span>
+                        <span class="gb-hamburger-line"></span>
+                    </div>
+                </button>
+            </div>
         </div>
+    </div>
 
-        <div class="gb-menu" id="gb-menu">
-                <div class="gb-menu-inner">
-                        <nav class="gb-menu-links" role="menubar">
-                                <a href="index.html" class="gb-menu-link active" data-i18n="nav.home" role="menuitem">Home</a>
-                                <a href="about.html" class="gb-menu-link" data-i18n="nav.about" role="menuitem">About</a>
-                                <a href="transformations.html" class="gb-menu-link" data-i18n="nav.trans" role="menuitem">Transformations</a>
-                                <a href="testimonials.html" class="gb-menu-link" data-i18n="nav.testi" role="menuitem">Testimonials</a>
-                                <a href="pricing.html" class="gb-menu-link" data-i18n="nav.pricing" role="menuitem">Pricing</a>
-                                <a href="blog.html" class="gb-menu-link" data-i18n="nav.blog" role="menuitem">Blog</a>
-                                <a href="faq.html" class="gb-menu-link" data-i18n="nav.faq" role="menuitem">FAQ</a>
-                                <a href="contact.html" class="gb-menu-link" data-i18n="nav.contact" role="menuitem">Contact</a>
-                        </nav>
+    <div class="gb-menu" id="gb-menu">
+        <div class="gb-menu-inner">
+            <nav class="gb-menu-links" role="menubar">
+                <a href="index.html" class="gb-menu-link active" data-i18n="nav.home" role="menuitem">Home</a>
+                <a href="about.html" class="gb-menu-link" data-i18n="nav.about" role="menuitem">About</a>
+                <a href="transformations.html" class="gb-menu-link" data-i18n="nav.trans" role="menuitem">Transformations</a>
+                <a href="testimonials.html" class="gb-menu-link" data-i18n="nav.testi" role="menuitem">Testimonials</a>
+                <a href="pricing.html" class="gb-menu-link" data-i18n="nav.pricing" role="menuitem">Pricing</a>
+                <a href="blog.html" class="gb-menu-link" data-i18n="nav.blog" role="menuitem">Blog</a>
+                <a href="faq.html" class="gb-menu-link" data-i18n="nav.faq" role="menuitem">FAQ</a>
+                <a href="contact.html" class="gb-menu-link" data-i18n="nav.contact" role="menuitem">Contact</a>
+            </nav>
 
-                        <div class="gb-menu-footer">
-                                <div id="auth-buttons" class="gb-auth-buttons-mobile">
-                                        <a href="pages/auth/login.html" class="gb-btn-secondary" data-i18n="nav.login">Login</a>
-                                        <a href="pricing.html" class="gb-btn-primary" data-i18n="nav.register">Register</a>
-                                </div>
-
-                                <select id="lang-select" class="gb-lang-select" aria-label="Select language">
-                                        <option value="en">🇬🇧 English</option>
-                                        <option value="pt">🇧🇷 Português</option>
-                                        <option value="es">🇪🇸 Español</option>
-                                </select>
-                        </div>
+            <div class="gb-menu-footer">
+                <div id="auth-buttons" class="gb-auth-buttons-mobile">
+                    <a href="pages/auth/login.html" class="gb-btn-secondary" data-i18n="nav.login">Login</a>
+                    <a href="pages/auth/login.html?action=register" class="gb-btn-primary" data-i18n="nav.register">Register</a>
                 </div>
+
+                <select id="lang-select-navbar-mobile" class="gb-lang-select" aria-label="Select language" title="Select language">
+                    <option value="en">EN</option>
+                    <option value="pt">PT</option>
+                    <option value="es">ES</option>
+                </select>
+            </div>
         </div>
+    </div>
 </nav>`.trim(),
         footer: `
 <footer class="gb-footer" aria-label="Site footer (offline fallback)">

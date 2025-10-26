@@ -43,9 +43,18 @@
         });
 
         // Highlight current page
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const normalizePath = (rawPath) => {
+            if (!rawPath) return '/index.html';
+            const [pathWithoutQuery] = rawPath.split('?');
+            if (pathWithoutQuery === '/' || pathWithoutQuery === '') {
+                return '/index.html';
+            }
+            return pathWithoutQuery.startsWith('/') ? pathWithoutQuery : `/${pathWithoutQuery}`;
+        };
+
+        const currentPage = normalizePath(window.location.pathname);
         menuLinks.forEach(link => {
-            const linkPage = link.getAttribute('href');
+            const linkPage = normalizePath(link.getAttribute('href'));
             if (linkPage === currentPage) {
                 link.classList.add('active');
             }

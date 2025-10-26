@@ -27,8 +27,8 @@ const INLINE_FALLBACKS = {
 <nav class="gb-navbar" role="navigation" aria-label="Main navigation (offline fallback)">
     <div class="container">
         <div class="gb-navbar-content">
-            <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
-                <img src="Logo Files/For Web/logo-nobackground-500.png"
+            <a href="/index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
+                <img src="/Logo Files/For Web/logo-nobackground-500.png"
                      alt="Garcia Builder Logo"
                      class="gb-logo-img"
                      loading="eager"
@@ -39,8 +39,8 @@ const INLINE_FALLBACKS = {
             <div class="gb-navbar-actions">
                 <div class="gb-navbar-controls">
                     <div id="auth-buttons-navbar" class="gb-auth-buttons">
-                        <a href="pages/auth/login.html" class="gb-btn-link" data-i18n="nav.login">Login</a>
-                        <a href="pages/auth/login.html?action=register" class="gb-btn-primary-small" data-i18n="nav.register">Register</a>
+                        <a href="/pages/auth/login.html" class="gb-btn-link" data-i18n="nav.login">Login</a>
+                        <a href="/pages/auth/login.html?action=register" class="gb-btn-primary-small" data-i18n="nav.register">Register</a>
                     </div>
 
                     <select id="lang-select-navbar" aria-label="Select language" title="Select language">
@@ -68,20 +68,20 @@ const INLINE_FALLBACKS = {
     <div class="gb-menu" id="gb-menu">
         <div class="gb-menu-inner">
             <nav class="gb-menu-links" role="menubar">
-                <a href="index.html" class="gb-menu-link active" data-i18n="nav.home" role="menuitem">Home</a>
-                <a href="about.html" class="gb-menu-link" data-i18n="nav.about" role="menuitem">About</a>
-                <a href="transformations.html" class="gb-menu-link" data-i18n="nav.trans" role="menuitem">Transformations</a>
-                <a href="testimonials.html" class="gb-menu-link" data-i18n="nav.testi" role="menuitem">Testimonials</a>
-                <a href="pricing.html" class="gb-menu-link" data-i18n="nav.pricing" role="menuitem">Pricing</a>
-                <a href="blog.html" class="gb-menu-link" data-i18n="nav.blog" role="menuitem">Blog</a>
-                <a href="faq.html" class="gb-menu-link" data-i18n="nav.faq" role="menuitem">FAQ</a>
-                <a href="contact.html" class="gb-menu-link" data-i18n="nav.contact" role="menuitem">Contact</a>
+                <a href="/index.html" class="gb-menu-link" data-i18n="nav.home" role="menuitem">Home</a>
+                <a href="/about.html" class="gb-menu-link" data-i18n="nav.about" role="menuitem">About</a>
+                <a href="/transformations.html" class="gb-menu-link" data-i18n="nav.trans" role="menuitem">Transformations</a>
+                <a href="/testimonials.html" class="gb-menu-link" data-i18n="nav.testi" role="menuitem">Testimonials</a>
+                <a href="/pricing.html" class="gb-menu-link" data-i18n="nav.pricing" role="menuitem">Pricing</a>
+                <a href="/blog.html" class="gb-menu-link" data-i18n="nav.blog" role="menuitem">Blog</a>
+                <a href="/faq.html" class="gb-menu-link" data-i18n="nav.faq" role="menuitem">FAQ</a>
+                <a href="/contact.html" class="gb-menu-link" data-i18n="nav.contact" role="menuitem">Contact</a>
             </nav>
 
             <div class="gb-menu-footer">
                 <div id="auth-buttons" class="gb-auth-buttons-mobile">
-                    <a href="pages/auth/login.html" class="gb-btn-secondary" data-i18n="nav.login">Login</a>
-                    <a href="pages/auth/login.html?action=register" class="gb-btn-primary" data-i18n="nav.register">Register</a>
+                    <a href="/pages/auth/login.html" class="gb-btn-secondary" data-i18n="nav.login">Login</a>
+                    <a href="/pages/auth/login.html?action=register" class="gb-btn-primary" data-i18n="nav.register">Register</a>
                 </div>
 
                 <select id="lang-select-navbar-mobile" class="gb-lang-select" aria-label="Select language" title="Select language">
@@ -97,7 +97,7 @@ const INLINE_FALLBACKS = {
 <footer class="gb-footer" aria-label="Site footer (offline fallback)">
     <div class="gb-footer-main gb-footer-ref">
         <div class="gb-footer-col gb-footer-brand-col">
-            <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" width="56" height="56" loading="lazy" style="margin-bottom:10px;"/>
+            <img src="/Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" width="56" height="56" loading="lazy" style="margin-bottom:10px;"/>
             <div class="footer-title footer-title-ref">Garcia Builder</div>
             <div class="footer-bio-ref" style="margin-bottom:8px;">Online Coaching — Evidence-based fitness, nutrition & accountability.<br/>Transform your body, sustainably.</div>
             <div class="footer-contact-ref" style="margin-top:14px;">
@@ -108,19 +108,19 @@ const INLINE_FALLBACKS = {
         <div class="gb-footer-col">
             <span class="footer-title footer-title-ref">Links</span>
             <ul style="margin-top:2px;">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="transformations.html">Results</a></li>
-                <li><a href="faq.html">FAQ</a></li>
-                <li><a href="pricing.html">Pricing</a></li>
-                <li><a href="become-trainer.html">Apply as Trainer</a></li>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/blog.html">Blog</a></li>
+                <li><a href="/transformations.html">Results</a></li>
+                <li><a href="/faq.html">FAQ</a></li>
+                <li><a href="/pricing.html">Pricing</a></li>
+                <li><a href="/pages/public/become-trainer.html">Apply as Trainer</a></li>
             </ul>
         </div>
         <div class="gb-footer-col">
             <span class="footer-title footer-title-ref">Resources</span>
             <ul style="margin-top:2px;">
-                <li><a href="assets/empty-guide.pdf" download>Download Guide (PDF)</a></li>
+                <li><a href="/assets/empty-guide.pdf" download>Download Guide (PDF)</a></li>
                 <li><a href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Book a Call</a></li>
             </ul>
             <div class="footer-follow">
@@ -320,9 +320,18 @@ function initializeNavbar() {
             });
         });
 
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const normalizePath = (rawPath) => {
+            if (!rawPath) return '/index.html';
+            const [pathWithoutQuery] = rawPath.split('?');
+            if (pathWithoutQuery === '/' || pathWithoutQuery === '') {
+                return '/index.html';
+            }
+            return pathWithoutQuery.startsWith('/') ? pathWithoutQuery : `/${pathWithoutQuery}`;
+        };
+
+        const currentPage = normalizePath(window.location.pathname);
         menuLinks.forEach(link => {
-            const linkPage = link.getAttribute('href');
+            const linkPage = normalizePath(link.getAttribute('href'));
             if (linkPage === currentPage) {
                 link.classList.add('active');
             }

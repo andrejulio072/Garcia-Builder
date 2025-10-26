@@ -9,7 +9,9 @@
     "legacy": "node api/stripe-server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node tools/static-server.js",
-    "sitemap": "node tools/generate-sitemap.js"
+    "sitemap": "node tools/generate-sitemap.js",
+    "build:env": "node scripts/generate-env-config.js",
+    "postinstall": "node scripts/generate-env-config.js"
   },
   "keywords": [
     "stripe",

@@ -4,6 +4,42 @@
   const isFileProtocol = isBrowser && window.location && window.location.protocol === 'file:';
   const isOffline = typeof navigator !== 'undefined' && navigator.onLine === false;
 
+  const loadEnv = () => {
+    if (!isBrowser) {
+      return Promise.reject(new Error('Supabase client requires browser environment.'));
+    }
+
+    if (window.__ENV) {
+      return Promise.resolve(window.__ENV);
+    }
+
+    if (window.__ENV_PROMISE) {
+      return window.__ENV_PROMISE;
+    }
+
+    window.__ENV_PROMISE = fetch('/env-config.json', { cache: 'no-store' })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to load env-config.json (${response.status})`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (!data?.SUPABASE_URL || !data?.SUPABASE_ANON_KEY) {
+          throw new Error('Supabase env config is missing SUPABASE_URL or SUPABASE_ANON_KEY.');
+        }
+        window.__ENV = Object.freeze(data);
+        return window.__ENV;
+      })
+      .catch((error) => {
+        console.error('[Supabase] Failed to load env config:', error);
+        delete window.__ENV_PROMISE;
+        throw error;
+      });
+
+    return window.__ENV_PROMISE;
+  };
+
   if (isFileProtocol || isOffline) {
     const reasons = [];
     if (isFileProtocol) reasons.push('file protocol');
@@ -15,17 +51,25 @@
     return;
   }
 
-  if (typeof supabase !== 'undefined') {
-    try {
-      window.supabaseClient = supabase.createClient(
-        'https://vxlqshnykoihsxndltjc.supabase.co',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4bHFzaG55a29paHN4bmRsdGpjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxNDMwODcsImV4cCI6MjA3NDcxOTA4N30.sK6BtmbtmL9SsHxBNyagQhyoWcjRZqh6lMxjMu9J71E'
-      );
-      console.log('[Supabase] Client initialized successfully.');
-    } catch (error) {
-      console.error('[Supabase] Failed to initialize client:', error);
-    }
-  } else {
-    console.warn('[Supabase] Library not loaded, using localStorage fallback.');
-  }
+  loadEnv()
+    .then((env) => {
+      const supabaseLib = typeof supabase !== 'undefined' ? supabase : window.supabase;
+
+      if (!supabaseLib) {
+        console.warn('[Supabase] Library not loaded, using local fallback.');
+        return;
+      }
+
+      try {
+        window.supabaseClient = supabaseLib.createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
+        console.log('[Supabase] Client initialized successfully.');
+      } catch (error) {
+        console.error('[Supabase] Failed to initialize client:', error);
+        window.supabaseClient = null;
+      }
+    })
+    .catch(() => {
+      // Errors already logged in loadEnv
+      window.supabaseClient = null;
+    });
 })();

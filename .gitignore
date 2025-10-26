@@ -47,3 +47,6 @@ improved/
 # Analysis files
 CLEANUP-ANALYSIS.md
 .vercel
+
+# Generated environment bundles (contém segredos locais)
+env-config.json

@@ -71,12 +71,31 @@
 }
 
 .stats-row {
-    background: rgba(0,0,0,0.3);
-    border-radius: 20px;
-    padding: 30px;
-    margin: 40px 0;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.1);
+  position: relative;
+  background: linear-gradient(135deg, rgba(246,200,78,0.22) 0%, rgba(246,200,78,0.08) 60%, rgba(255,255,255,0.06) 100%);
+  border-radius: 24px;
+  padding: 30px;
+  margin: 40px 0;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(246,200,78,0.35);
+  box-shadow: 0 24px 48px rgba(12, 18, 32, 0.28);
+  overflow: hidden;
+}
+
+.stats-row::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: radial-gradient(circle at 18% 25%, rgba(255,255,255,0.18), transparent 55%),
+        radial-gradient(circle at 82% 75%, rgba(246,200,78,0.2), transparent 60%);
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.stats-row .row {
+  position: relative;
+  z-index: 1;
 }
 
 .stat-item {
@@ -904,7 +923,6 @@ window.addEventListener('load', function() {
     <!-- Transformations Grid -->
   <div class="transformations-grid" id="transformations-grid">
     <!-- All transformation-item cards will be rendered here by JS, no duplicates, unified grid. -->
-  </div>
       <!-- Elena S. - 18 Weeks Body Recomp -->
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
@@ -1120,7 +1138,7 @@ window.addEventListener('load', function() {
           </div>
         </div>
       </div>
-    </div>
+    </div> <!-- end of transformations-grid -->
 
   <!-- Load More Section removido: cards agora sao renderizados dinamicamente, sem duplicidade. -->
 

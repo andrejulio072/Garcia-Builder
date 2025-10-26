@@ -118,6 +118,57 @@ class TransformationsManager {
         this.updateVisibility();
     }
 
+    updateVisibility(animateFromIndex = 0, options = {}) {
+        const { skipButtonUpdate = false } = options || {};
+        const items = Array.from(document.querySelectorAll('.transformation-item'));
+        let rendered = 0;
+
+        items.forEach((item) => {
+            const matchesFilter = this.currentFilter === 'all' || item.dataset.category === this.currentFilter;
+
+            if (matchesFilter && rendered < this.visibleItems) {
+                const shouldAnimate = rendered >= animateFromIndex;
+                item.style.display = 'block';
+
+                if (shouldAnimate) {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(30px)';
+                    item.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+
+                    const animationOrder = Math.max(0, rendered - animateFromIndex);
+                    const delay = animationOrder * 80;
+
+                    setTimeout(() => {
+                        requestAnimationFrame(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                        });
+                    }, delay);
+                } else {
+                    item.style.opacity = '';
+                    item.style.transform = '';
+                    item.style.transition = '';
+                }
+
+                rendered += 1;
+            } else if (matchesFilter) {
+                item.style.display = 'none';
+                item.style.opacity = '';
+                item.style.transform = '';
+                item.style.transition = '';
+            } else {
+                item.style.display = 'none';
+                item.style.opacity = '';
+                item.style.transform = '';
+                item.style.transition = '';
+            }
+        });
+
+        if (!skipButtonUpdate) {
+            this.updateLoadMoreButton();
+        }
+    }
+
     // Filter transformations by category
     filterTransformations(filter) {
         // Update active filter button
@@ -128,63 +179,43 @@ class TransformationsManager {
 
         this.currentFilter = filter;
         this.visibleItems = 6; // Reset visible items
-
-        // Show/hide items based on filter
-        const items = document.querySelectorAll('.transformation-item');
-        let visibleCount = 0;
-
-        items.forEach((item, index) => {
-            const category = item.dataset.category;
-            const shouldShow = filter === 'all' || category === filter;
-
-            if (shouldShow && visibleCount < this.visibleItems) {
-                item.style.display = 'block';
-                item.style.animation = `fadeInUp 0.6s ease forwards ${index * 0.1}s`;
-                visibleCount++;
-            } else if (shouldShow) {
-                item.style.display = 'none'; // Hidden but will be shown with "Load More"
-            } else {
-                item.style.display = 'none';
-            }
-        });
-
-        this.updateLoadMoreButton();
+        this.updateVisibility();
     }
 
     // Load more transformations
     loadMoreTransformations() {
-        const additionalSection = document.getElementById('additional-transformations');
         const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const items = Array.from(document.querySelectorAll('.transformation-item'));
+        const filteredItems = items.filter(item => this.currentFilter === 'all' || item.dataset.category === this.currentFilter);
 
-        if (additionalSection && additionalSection.style.display === 'none') {
-            // Show additional transformations section with proper display
-            additionalSection.style.display = 'flex';
-            additionalSection.style.flexWrap = 'wrap';
+        if (!filteredItems.length) {
+            if (loadMoreBtn) {
+                loadMoreBtn.style.display = 'none';
+            }
+            return;
+        }
 
-            // Animate each card container (not just the card)
-            const additionalCards = additionalSection.querySelectorAll('.transformation-item');
-            additionalCards.forEach((cardContainer, index) => {
-                const card = cardContainer.querySelector('.transformation-card');
-                if (card) {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(30px)';
+        const previouslyVisible = this.visibleItems;
+        const remaining = filteredItems.length - this.visibleItems;
 
-                    setTimeout(() => {
-                        card.style.transition = 'all 0.6s ease';
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, index * 100);
-                }
-            });
+        if (remaining <= 0) {
+            if (loadMoreBtn) {
+                loadMoreBtn.style.display = 'none';
+            }
+            return;
+        }
 
-            // Update button text and eventually hide it
+        const willComplete = (this.visibleItems + 4) >= filteredItems.length;
+
+        this.visibleItems = Math.min(this.visibleItems + 4, filteredItems.length);
+        this.updateVisibility(previouslyVisible, { skipButtonUpdate: willComplete });
+
+        if (this.visibleItems >= filteredItems.length && loadMoreBtn) {
             loadMoreBtn.innerHTML = '<i class="fas fa-check me-2"></i>All Transformations Loaded';
             loadMoreBtn.disabled = true;
-
-            // Hide button after 2 seconds
             setTimeout(() => {
                 loadMoreBtn.style.display = 'none';
-            }, 2000);
+            }, 1800);
         }
     }
 
@@ -196,19 +227,29 @@ class TransformationsManager {
             return this.currentFilter === 'all' || category === this.currentFilter;
         });
 
-        const visibleItems = filteredItems.filter(item => item.style.display !== 'none').length;
         const loadMoreBtn = document.getElementById('loadMoreBtn');
 
-        if (loadMoreBtn) {
-            if (visibleItems >= filteredItems.length) {
+        if (!loadMoreBtn) {
+            return;
+        }
+
+        const visibleItems = filteredItems.filter(item => item.style.display !== 'none').length;
+
+        if (visibleItems >= filteredItems.length) {
+            if (filteredItems.length <= this.visibleItems) {
                 loadMoreBtn.style.display = 'none';
             } else {
                 loadMoreBtn.style.display = 'inline-block';
-                loadMoreBtn.innerHTML = `
-                    <i class="fas fa-plus me-2"></i>
-                    Load More (${filteredItems.length - visibleItems} remaining)
-                `;
+                loadMoreBtn.disabled = true;
+                loadMoreBtn.innerHTML = '<i class="fas fa-check me-2"></i>All Transformations Loaded';
             }
+        } else {
+            loadMoreBtn.style.display = 'inline-block';
+            loadMoreBtn.disabled = false;
+            loadMoreBtn.innerHTML = `
+                <i class="fas fa-plus me-2"></i>
+                Load More (${filteredItems.length - visibleItems} remaining)
+            `;
         }
     }
 

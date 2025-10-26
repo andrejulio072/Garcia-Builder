@@ -27,8 +27,9 @@ const INLINE_FALLBACKS = {
 <nav class="gb-navbar" role="navigation" aria-label="Main navigation (offline fallback)">
     <div class="container">
         <div class="gb-navbar-content">
-            <a href="/index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
-                <img src="/Logo Files/For Web/logo-nobackground-500.png"
+            <a href="#" class="gb-logo-section" aria-label="Garcia Builder Home" data-gb-nav="index.html">
+                <img src="Logo%20Files/For%20Web/logo-nobackground-500.png"
+                     data-gb-logo-src="Logo Files/For Web/logo-nobackground-500.png"
                      alt="Garcia Builder Logo"
                      class="gb-logo-img"
                      loading="eager"
@@ -36,18 +37,23 @@ const INLINE_FALLBACKS = {
                 <span class="gb-logo-text">Garcia Builder</span>
             </a>
 
+            <nav class="gb-navbar-links" role="menubar" aria-label="Primary">
+                <a href="#" class="gb-navbar-link" data-i18n="nav.home" role="menuitem" data-gb-nav="index.html">Home</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.about" role="menuitem" data-gb-nav="about.html">About</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="transformations.html">Transformations</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.testi" role="menuitem" data-gb-nav="testimonials.html">Testimonials</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.pricing" role="menuitem" data-gb-nav="pricing.html">Pricing</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.blog" role="menuitem" data-gb-nav="blog.html">Blog</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.faq" role="menuitem" data-gb-nav="faq.html">FAQ</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.contact" role="menuitem" data-gb-nav="contact.html">Contact</a>
+            </nav>
+
             <div class="gb-navbar-actions">
                 <div class="gb-navbar-controls">
                     <div id="auth-buttons-navbar" class="gb-auth-buttons">
-                        <a href="/pages/auth/login.html" class="gb-btn-link" data-i18n="nav.login">Login</a>
-                        <a href="/pages/auth/login.html?action=register" class="gb-btn-primary-small" data-i18n="nav.register">Register</a>
+                        <a href="#" class="gb-btn-link" data-i18n="nav.login" data-gb-nav="pages/auth/login.html">Login</a>
+                        <a href="#" class="gb-btn-primary-small" data-i18n="nav.register" data-gb-nav="pages/auth/login.html?action=register">Register</a>
                     </div>
-
-                    <select id="lang-select-navbar" aria-label="Select language" title="Select language">
-                        <option value="en">EN</option>
-                        <option value="pt">PT</option>
-                        <option value="es">ES</option>
-                    </select>
                 </div>
 
                 <button type="button" class="gb-hamburger"
@@ -68,20 +74,20 @@ const INLINE_FALLBACKS = {
     <div class="gb-menu" id="gb-menu">
         <div class="gb-menu-inner">
             <nav class="gb-menu-links" role="menubar">
-                <a href="/index.html" class="gb-menu-link" data-i18n="nav.home" role="menuitem">Home</a>
-                <a href="/about.html" class="gb-menu-link" data-i18n="nav.about" role="menuitem">About</a>
-                <a href="/transformations.html" class="gb-menu-link" data-i18n="nav.trans" role="menuitem">Transformations</a>
-                <a href="/testimonials.html" class="gb-menu-link" data-i18n="nav.testi" role="menuitem">Testimonials</a>
-                <a href="/pricing.html" class="gb-menu-link" data-i18n="nav.pricing" role="menuitem">Pricing</a>
-                <a href="/blog.html" class="gb-menu-link" data-i18n="nav.blog" role="menuitem">Blog</a>
-                <a href="/faq.html" class="gb-menu-link" data-i18n="nav.faq" role="menuitem">FAQ</a>
-                <a href="/contact.html" class="gb-menu-link" data-i18n="nav.contact" role="menuitem">Contact</a>
+                <a href="#" class="gb-menu-link" data-i18n="nav.home" role="menuitem" data-gb-nav="index.html">Home</a>
+                <a href="#" class="gb-menu-link" data-i18n="nav.about" role="menuitem" data-gb-nav="about.html">About</a>
+                <a href="#" class="gb-menu-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="transformations.html">Transformations</a>
+                <a href="#" class="gb-menu-link" data-i18n="nav.testi" role="menuitem" data-gb-nav="testimonials.html">Testimonials</a>
+                <a href="#" class="gb-menu-link" data-i18n="nav.pricing" role="menuitem" data-gb-nav="pricing.html">Pricing</a>
+                <a href="#" class="gb-menu-link" data-i18n="nav.blog" role="menuitem" data-gb-nav="blog.html">Blog</a>
+                <a href="#" class="gb-menu-link" data-i18n="nav.faq" role="menuitem" data-gb-nav="faq.html">FAQ</a>
+                <a href="#" class="gb-menu-link" data-i18n="nav.contact" role="menuitem" data-gb-nav="contact.html">Contact</a>
             </nav>
 
             <div class="gb-menu-footer">
                 <div id="auth-buttons" class="gb-auth-buttons-mobile">
-                    <a href="/pages/auth/login.html" class="gb-btn-secondary" data-i18n="nav.login">Login</a>
-                    <a href="/pages/auth/login.html?action=register" class="gb-btn-primary" data-i18n="nav.register">Register</a>
+                    <a href="#" class="gb-btn-secondary" data-i18n="nav.login" data-gb-nav="pages/auth/login.html">Login</a>
+                    <a href="#" class="gb-btn-primary" data-i18n="nav.register" data-gb-nav="pages/auth/login.html?action=register">Register</a>
                 </div>
                 <div class="gb-menu-language" role="group" aria-label="Site language selector">
                     <label for="lang-select" class="visually-hidden" data-i18n="footer.language_label">Site language</label>
@@ -100,7 +106,7 @@ const INLINE_FALLBACKS = {
 <footer class="gb-footer" aria-label="Site footer (offline fallback)">
     <div class="gb-footer-main gb-footer-ref">
         <div class="gb-footer-col gb-footer-brand-col">
-            <img src="/Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" width="56" height="56" loading="lazy" style="margin-bottom:10px;"/>
+            <img src="Logo%20Files/For%20Web/logo-nobackground-500.png" alt="Garcia Builder Logo" data-gb-logo-src="Logo Files/For Web/logo-nobackground-500.png" width="56" height="56" loading="lazy" style="margin-bottom:10px;"/>
             <div class="footer-title footer-title-ref">Garcia Builder</div>
             <div class="footer-bio-ref" style="margin-bottom:8px;">Online Coaching — Evidence-based fitness, nutrition & accountability.<br/>Transform your body, sustainably.</div>
             <div class="footer-contact-ref" style="margin-top:14px;">
@@ -268,6 +274,11 @@ function initializeNavbar() {
         attempts++;
         const menuToggle = document.getElementById('gb-menu-toggle');
         const menu = document.getElementById('gb-menu');
+        const logo = document.querySelector('.gb-navbar .gb-logo-img');
+        if (logo) {
+            ensureNavbarLogoPath(logo);
+        }
+        ensureNavbarLinks();
 
         if (!menuToggle || !menu) {
             console.warn(`[Component Loader] Navbar elements not found (attempt ${attempts}/${maxAttempts})`);
@@ -299,7 +310,8 @@ function initializeNavbar() {
         document.addEventListener('click', function(e) {
             const currentMenu = document.getElementById('gb-menu');
             const currentToggle = document.getElementById('gb-menu-toggle');
-            if (currentMenu && currentToggle && !currentMenu.contains(e.target) && !currentToggle.contains(e.target)) {
+            const menuPanel = currentMenu ? currentMenu.querySelector('.gb-menu-inner') : null;
+            if (currentMenu && currentToggle && currentMenu.classList.contains('active') && !newMenuToggle.contains(e.target) && (!menuPanel || !menuPanel.contains(e.target))) {
                 currentMenu.classList.remove('active');
                 currentToggle.classList.remove('active');
                 currentToggle.setAttribute('aria-expanded', 'false');
@@ -308,7 +320,8 @@ function initializeNavbar() {
         });
 
         const menuLinks = menu.querySelectorAll('.gb-menu-link');
-        console.log('[Component Loader] Found', menuLinks.length, 'menu links');
+        const desktopLinks = document.querySelectorAll('.gb-navbar-links .gb-navbar-link');
+        console.log('[Component Loader] Found', menuLinks.length, 'menu links and', desktopLinks.length, 'desktop links');
 
         menuLinks.forEach(link => {
             link.addEventListener('click', function() {
@@ -333,7 +346,19 @@ function initializeNavbar() {
         };
 
         const currentPage = normalizePath(window.location.pathname);
-        menuLinks.forEach(link => {
+        const currentProjectPath = getCurrentProjectPath();
+        const highlightLinks = [...menuLinks, ...desktopLinks];
+        highlightLinks.forEach(link => {
+            const navTarget = link.getAttribute('data-gb-nav');
+            if (navTarget) {
+                const sanitizedTarget = navTarget.trim().replace(/^\/+/, '');
+                const targetPath = sanitizedTarget.split('?')[0];
+                if (targetPath && targetPath === currentProjectPath) {
+                    link.classList.add('active');
+                    return;
+                }
+            }
+
             const linkPage = normalizePath(link.getAttribute('href'));
             if (linkPage === currentPage) {
                 link.classList.add('active');
@@ -360,6 +385,188 @@ function initializeNavbar() {
 
     // Start initialization
     tryInit();
+}
+
+function ensureNavbarLogoPath(logoEl) {
+    if (!logoEl || logoEl.dataset.gbLogoResolved === '1') {
+        return;
+    }
+
+    const raw = logoEl.getAttribute('data-gb-logo-src') || logoEl.getAttribute('src');
+    if (!raw) {
+        return;
+    }
+
+    const sanitized = raw.trim().replace(/\\/g, '/');
+    const encoded = sanitized.replace(/ /g, '%20').replace(/^\/+/, '');
+    const relativeBase = encoded.startsWith('Logo%20Files') ? encoded : `Logo%20Files/For%20Web/${encoded}`;
+
+    const candidates = [];
+    const addCandidate = (path) => {
+        if (path && !candidates.includes(path)) {
+            candidates.push(path);
+        }
+    };
+
+    addCandidate(logoEl.getAttribute('src'));
+    addCandidate(relativeBase);
+    addCandidate(`./${relativeBase}`);
+    addCandidate(`../${relativeBase}`);
+    addCandidate(`../../${relativeBase}`);
+    addCandidate(`../../../${relativeBase}`);
+    addCandidate(`../../../../${relativeBase}`);
+    try {
+        const relativePrefix = computeRelativePrefix();
+        if (relativePrefix) {
+            addCandidate(`${relativePrefix}${relativeBase}`);
+        }
+    } catch (err) {
+        // ignore prefix errors
+    }
+    addCandidate(`/${relativeBase}`);
+
+    try {
+        const origin = window.location && window.location.origin;
+        if (origin && origin !== 'null') {
+            addCandidate(`${origin}/${relativeBase}`);
+        }
+    } catch (err) {
+        // ignore origin issues
+    }
+
+    addCandidate(`https://garciabuilder.fitness/${relativeBase}`);
+
+    const tester = new Image();
+    const tryIndex = (idx) => {
+        if (idx >= candidates.length) {
+            console.warn('[Navbar] Failed to resolve logo path after trying', candidates.length, 'candidates');
+            return;
+        }
+        const candidate = candidates[idx];
+        if (!candidate) {
+            tryIndex(idx + 1);
+            return;
+        }
+        tester.onload = () => {
+            logoEl.src = candidate;
+            logoEl.dataset.gbLogoResolved = '1';
+        };
+        tester.onerror = () => {
+            tryIndex(idx + 1);
+        };
+        tester.src = candidate;
+    };
+
+    if (!logoEl.complete || logoEl.naturalWidth === 0) {
+        tryIndex(0);
+    } else {
+        logoEl.dataset.gbLogoResolved = '1';
+    }
+}
+
+function ensureNavbarLinks() {
+    const anchors = document.querySelectorAll('.gb-navbar [data-gb-nav]');
+    if (!anchors.length) {
+        return;
+    }
+
+    anchors.forEach(anchor => {
+        const target = anchor.getAttribute('data-gb-nav');
+        if (!target) {
+            return;
+        }
+        const href = resolveNavHref(target);
+        if (href) {
+            anchor.setAttribute('href', href);
+        }
+    });
+}
+
+function resolveNavHref(target) {
+    if (!target || typeof target !== 'string') {
+        return '#';
+    }
+
+    const trimmed = target.trim();
+    if (!trimmed) {
+        return '#';
+    }
+
+    if (/^[a-z]+:/i.test(trimmed) || trimmed.startsWith('#')) {
+        return trimmed;
+    }
+
+    const normalized = trimmed.replace(/^\/+/, '');
+    const protocol = (typeof window !== 'undefined' && window.location) ? window.location.protocol : '';
+
+    if (protocol === 'file:') {
+        return `${computeRelativePrefix()}${normalized}`;
+    }
+
+    return `/${normalized}`;
+}
+
+function computeRelativePrefix() {
+    try {
+        if (typeof window === 'undefined' || !window.location) {
+            return '';
+        }
+
+        const path = window.location.pathname.replace(/\\/g, '/');
+        const segments = path.split('/').filter(Boolean);
+        if (segments.length === 0) {
+            return '';
+        }
+
+    const lowerSegments = segments.map(seg => seg.toLowerCase());
+    const markerIdx = lowerSegments.lastIndexOf('garcia-builder');
+    const relativeSegments = markerIdx !== -1 ? segments.slice(markerIdx + 1) : segments;
+        if (relativeSegments.length === 0) {
+            return '';
+        }
+
+        const lastSegment = relativeSegments[relativeSegments.length - 1];
+        const isFile = /\.[a-z0-9]+$/i.test(lastSegment || '');
+        const depth = isFile ? relativeSegments.length - 1 : relativeSegments.length;
+
+        if (depth <= 0) {
+            return '';
+        }
+
+        return '../'.repeat(depth);
+    } catch (error) {
+        console.warn('[Navbar] Failed to compute relative prefix:', error);
+        return '';
+    }
+}
+
+function getCurrentProjectPath() {
+    try {
+        if (typeof window === 'undefined' || !window.location) {
+            return 'index.html';
+        }
+
+        const path = window.location.pathname.replace(/\\/g, '/');
+        const segments = path.split('/').filter(Boolean);
+        if (segments.length === 0) {
+            return 'index.html';
+        }
+
+        const lowerSegments = segments.map(seg => seg.toLowerCase());
+        const markerIdx = lowerSegments.lastIndexOf('garcia-builder');
+        const relativeSegments = markerIdx !== -1 ? segments.slice(markerIdx + 1) : segments;
+
+        if (!relativeSegments.length) {
+            return 'index.html';
+        }
+
+        const lastSegment = relativeSegments[relativeSegments.length - 1];
+        const isDirectory = lastSegment && !/\.[a-z0-9]+$/i.test(lastSegment);
+        return isDirectory ? `${relativeSegments.join('/')}/index.html` : relativeSegments.join('/');
+    } catch (error) {
+        console.warn('[Navbar] Failed to compute project path:', error);
+        return window.location ? window.location.pathname : 'index.html';
+    }
 }
 
 /**
@@ -433,7 +640,9 @@ async function initComponents() {
 window.ComponentLoader = {
     load: loadComponent,
     init: initComponents,
-    cache: CACHE
+    cache: CACHE,
+    normalizeNavLinks: ensureNavbarLinks,
+    resolveNavHref
 };
 
 // AUTO-INITIALIZE

@@ -73,13 +73,13 @@ class AuthGuard {
                             </li>
                             <li><hr class="dropdown-divider" style="border-color: rgba(246, 200, 78, 0.1); margin: 0;"></li>
                             <li>
-                                <a class="dropdown-item d-flex align-items-center gap-2" href="dashboard.html" style="padding: 10px 16px; transition: all 0.2s;">
+                                <a class="dropdown-item d-flex align-items-center gap-2" href="#" data-gb-nav="pages/public/dashboard.html" style="padding: 10px 16px; transition: all 0.2s;">
                                     <i class="fas fa-tachometer-alt" style="width: 20px; color: #F6C84E;"></i>
                                     <span>${this.getTranslation('nav.dashboard') || 'Dashboard'}</span>
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-flex align-items-center gap-2" href="my-profile.html" style="padding: 10px 16px; transition: all 0.2s;">
+                                <a class="dropdown-item d-flex align-items-center gap-2" href="#" data-gb-nav="pages/public/my-profile.html" style="padding: 10px 16px; transition: all 0.2s;">
                                     <i class="fas fa-user" style="width: 20px; color: #F6C84E;"></i>
                                     <span>${this.getTranslation('nav.profile') || 'My Profile'}</span>
                                 </a>
@@ -102,11 +102,11 @@ class AuthGuard {
 
                 userMenu.innerHTML = `
                     <div class="d-flex gap-2 align-items-center">
-                        <a href="login.html?action=login" class="btn btn-outline-light btn-sm d-flex align-items-center gap-2" style="border-color: #F6C84E; color: #F6C84E; padding: 8px 16px; font-weight: 500; transition: all 0.3s; border-radius: 8px;">
+                        <a href="#" data-gb-nav="pages/auth/login.html?action=login" class="btn btn-outline-light btn-sm d-flex align-items-center gap-2" style="border-color: #F6C84E; color: #F6C84E; padding: 8px 16px; font-weight: 500; transition: all 0.3s; border-radius: 8px;">
                             <i class="fas fa-sign-in-alt"></i>
                             <span>${loginText}</span>
                         </a>
-                        <a href="login.html?action=register" class="btn btn-sm d-flex align-items-center gap-2" style="background: linear-gradient(135deg, #F6C84E 0%, #e6b73e 100%); border: none; color: #000; font-weight: 600; padding: 8px 16px; transition: all 0.3s; border-radius: 8px; box-shadow: 0 2px 8px rgba(246, 200, 78, 0.3);">
+                        <a href="#" data-gb-nav="pages/auth/login.html?action=register" class="btn btn-sm d-flex align-items-center gap-2" style="background: linear-gradient(135deg, #F6C84E 0%, #e6b73e 100%); border: none; color: #000; font-weight: 600; padding: 8px 16px; transition: all 0.3s; border-radius: 8px; box-shadow: 0 2px 8px rgba(246, 200, 78, 0.3);">
                             <i class="fas fa-user-plus"></i>
                             <span>${registerText}</span>
                         </a>
@@ -140,6 +140,10 @@ class AuthGuard {
             }
         `;
         document.head.appendChild(style);
+
+        if (window.ComponentLoader && typeof window.ComponentLoader.normalizeNavLinks === 'function') {
+            window.ComponentLoader.normalizeNavLinks();
+        }
     }
 
     static handleLogout(event) {
@@ -169,7 +173,7 @@ class AuthGuard {
 
             // Redirect to homepage
             setTimeout(() => {
-                window.location.href = 'index.html';
+                window.location.href = AuthGuard.resolveNavHref('index.html');
             }, 100);
         }
     }
@@ -195,7 +199,8 @@ class AuthGuard {
         pricingButtons.forEach(button => {
             if (!AuthSystem.isLoggedIn()) {
                 const originalHref = button.getAttribute('href');
-                button.setAttribute('href', 'login.html?action=register&plan=' + encodeURIComponent(originalHref));
+                const planTarget = `pages/auth/login.html?action=register&plan=${encodeURIComponent(originalHref || '')}`;
+                button.setAttribute('href', AuthGuard.resolveNavHref(planTarget));
 
                 // Update button text
                 const buttonText = button.querySelector('span');
@@ -222,16 +227,18 @@ class AuthGuard {
     }
 
     getLoginPromptHTML() {
+        const loginHref = AuthGuard.resolveNavHref('pages/auth/login.html?action=login');
+        const registerHref = AuthGuard.resolveNavHref('pages/auth/login.html?action=register');
         return `
             <div class="text-center p-4 border border-warning rounded" style="background: rgba(246, 200, 78, 0.1);">
                 <i class="fas fa-lock text-warning display-4 mb-3"></i>
                 <h4 class="text-warning mb-3">Restricted Content</h4>
                 <p class="text-muted mb-3">Please log in to access this exclusive content</p>
                 <div class="d-flex gap-2 justify-content-center">
-                    <a href="login.html?action=login" class="btn btn-outline-warning btn-sm">
+                    <a href="${loginHref}" class="btn btn-outline-warning btn-sm">
                         <i class="fas fa-sign-in-alt me-1"></i>Login
                     </a>
-                    <a href="login.html?action=register" class="btn btn-warning btn-sm">
+                    <a href="${registerHref}" class="btn btn-warning btn-sm">
                         <i class="fas fa-user-plus me-1"></i>Create Account
                     </a>
                 </div>
@@ -255,10 +262,10 @@ class AuthGuard {
                             <h4>Login Required</h4>
                             <p class="text-muted">You need to log in to access this feature</p>
                             <div class="d-flex gap-2 justify-content-center mt-4">
-                                <a href="login.html?action=login&redirect=${encodeURIComponent(window.location.pathname)}" class="btn btn-outline-primary">
+                                <a href="${AuthGuard.resolveNavHref(`pages/auth/login.html?action=login&redirect=${encodeURIComponent(window.location.pathname)}`)}" class="btn btn-outline-primary">
                                     <i class="fas fa-sign-in-alt me-1"></i>Login
                                 </a>
-                                <a href="login.html?action=register&redirect=${encodeURIComponent(window.location.pathname)}" class="btn btn-primary">
+                                <a href="${AuthGuard.resolveNavHref(`pages/auth/login.html?action=register&redirect=${encodeURIComponent(window.location.pathname)}`)}" class="btn btn-primary">
                                     <i class="fas fa-user-plus me-1"></i>Create Account
                                 </a>
                             </div>
@@ -298,11 +305,76 @@ class AuthGuard {
         }
     }
 
+    resolveNavHref(target) {
+        return AuthGuard.resolveNavHref(target);
+    }
+
+    static resolveNavHref(target) {
+        try {
+            if (window.ComponentLoader && typeof window.ComponentLoader.resolveNavHref === 'function') {
+                return window.ComponentLoader.resolveNavHref(target);
+            }
+
+            if (!target || typeof target !== 'string') {
+                return '#';
+            }
+
+            if (/^[a-z]+:/i.test(target) || target.startsWith('#')) {
+                return target;
+            }
+            const sanitized = target.trim().replace(/^\/+/, '');
+            const protocol = (typeof window !== 'undefined' && window.location) ? window.location.protocol : '';
+
+            if (protocol === 'file:') {
+                return `${AuthGuard.computeRelativePrefix()}${sanitized}`;
+            }
+
+            return `/${sanitized}`;
+        } catch (error) {
+            console.warn('AuthGuard: failed to resolve nav href for', target, error);
+            return target || '#';
+        }
+    }
+
+    static computeRelativePrefix() {
+        try {
+            if (typeof window === 'undefined' || !window.location) {
+                return '';
+            }
+
+            const path = window.location.pathname.replace(/\\/g, '/');
+            const segments = path.split('/').filter(Boolean);
+            if (segments.length === 0) {
+                return '';
+            }
+
+            const lowerSegments = segments.map(seg => seg.toLowerCase());
+            const markerIdx = lowerSegments.lastIndexOf('garcia-builder');
+            const relativeSegments = markerIdx !== -1 ? segments.slice(markerIdx + 1) : segments;
+            if (relativeSegments.length === 0) {
+                return '';
+            }
+
+            const lastSegment = relativeSegments[relativeSegments.length - 1];
+            const isFile = /\.[a-z0-9]+$/i.test(lastSegment || '');
+            const depth = isFile ? relativeSegments.length - 1 : relativeSegments.length;
+
+            if (depth <= 0) {
+                return '';
+            }
+
+            return '../'.repeat(depth);
+        } catch (error) {
+            console.warn('AuthGuard: failed to compute relative prefix', error);
+            return '';
+        }
+    }
+
     // Static method to protect entire pages
     static protectPage() {
         if (!AuthSystem.isLoggedIn()) {
             const currentUrl = encodeURIComponent(window.location.pathname + window.location.search);
-            window.location.href = `login.html?redirect=${currentUrl}`;
+            window.location.href = AuthGuard.resolveNavHref(`pages/auth/login.html?redirect=${currentUrl}`);
             return false;
         }
         return true;
@@ -323,9 +395,9 @@ class AuthGuard {
             if (!nav) {
                 nav = document.createElement('div');
                 nav.className = 'nav';
-                const home = document.createElement('a'); home.href = 'index.html'; home.textContent = this.getTranslation('nav.home') || 'Home';
-                const pricing = document.createElement('a'); pricing.href = 'pricing.html'; pricing.textContent = this.getTranslation('nav.pricing') || 'Pricing';
-                const login = document.createElement('a'); login.href = 'login.html'; login.textContent = this.getTranslation('nav.login') || 'Login';
+                const home = document.createElement('a'); home.href = AuthGuard.resolveNavHref('index.html'); home.textContent = this.getTranslation('nav.home') || 'Home';
+                const pricing = document.createElement('a'); pricing.href = AuthGuard.resolveNavHref('pricing.html'); pricing.textContent = this.getTranslation('nav.pricing') || 'Pricing';
+                const login = document.createElement('a'); login.href = AuthGuard.resolveNavHref('pages/auth/login.html'); login.textContent = this.getTranslation('nav.login') || 'Login';
                 nav.append(home, pricing, login);
                 // Insert after brand if present, else append to navbar
                 const brand = navbar.querySelector('.brand');

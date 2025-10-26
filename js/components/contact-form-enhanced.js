@@ -10,6 +10,8 @@
   const goalEl = document.getElementById('goal');
   const timelineEl = document.getElementById('timeline');
   const experienceEl = document.getElementById('experience');
+  const preferredContactEl = document.getElementById('preferredContact');
+  const budgetEl = document.getElementById('budget');
   const messageEl = document.getElementById('message');
   const consentEl = document.getElementById('consent');
   const charCount = document.getElementById('charCount');
@@ -185,14 +187,32 @@ Garcia Builder - Online Coaching
     }
 
     try {
-      const data = new FormData(form);
-      const res = await fetch(form.action, {
+      const targetUrl = form.getAttribute('action') || '/api/contact';
+      const payload = {
+        name: nameEl.value.trim(),
+        email: emailEl.value.trim(),
+        phone: phoneEl.value.trim() || null,
+        preferred_contact: preferredContactEl ? preferredContactEl.value : null,
+        primary_goal: goalEl.value || null,
+        timeline: timelineEl.value || null,
+        experience: experienceEl.value || null,
+        budget: budgetEl ? budgetEl.value : null,
+        message: messageEl.value.trim(),
+        page_path: window.location.href,
+        user_agent: navigator.userAgent,
+      };
+
+      const res = await fetch(targetUrl, {
         method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
       });
 
-      if (res.ok) {
+      const responseData = await res.json().catch(() => ({}));
+
+      if (res.ok && (responseData?.ok || !responseData?.error)) {
         localStorage.setItem('gb_last_submit', Date.now().toString());
 
         // Store user data for confirmation
@@ -233,7 +253,8 @@ Garcia Builder - Online Coaching
         } catch(e){ console.warn('fbq lead track failed', e); }
       } else {
         alertBox.classList.remove('visually-hidden');
-        alertBox.textContent = 'Hmm, something went wrong. You can also email me at: coach@garciabuilder.com';
+        const apiError = responseData?.error || res.statusText || 'Unknown error';
+        alertBox.textContent = `Hmm, something went wrong (${apiError}). You can also email me at: coach@garciabuilder.com`;
       }
     } catch {
       alertBox.classList.remove('visually-hidden');

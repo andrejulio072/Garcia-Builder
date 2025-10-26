@@ -4,7 +4,7 @@ Agora o sistema possui confirmação de e-mail para usuários que entram em cont
 
 **Como usar:**
 - Inclua o script `assets/js/contact-send.js` no seu formulário de contato.
-- O backend está em `api/contact-confirmation.js`.
+- O backend está em `api/contact.js`.
 - A página de confirmação é `confirm-contact.html`.
 - Veja instruções detalhadas em `docs/confirmacao-contato.md`.
 

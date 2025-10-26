@@ -711,8 +711,49 @@
     }
   };
 
+  const postJson = async (url, payload) => {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || data?.error) {
+      const error = new Error(data?.error || response.statusText || 'Request failed');
+      error.response = data;
+      throw error;
+    }
+    return data;
+  };
+
   // Save lead to database
   const saveLeadToDatabase = async (leadInfo) => {
+    if (!leadInfo || !leadInfo.email) {
+      throw new Error('Lead email is required');
+    }
+
+    const metadata = { ...leadInfo };
+    delete metadata.email;
+    delete metadata.name;
+    delete metadata.source;
+
+    const payload = {
+      email: leadInfo.email,
+      name: leadInfo.name || null,
+      source: leadInfo.source || 'Website',
+    };
+
+    if (Object.keys(metadata).length) {
+      payload.notes = JSON.stringify(metadata);
+    }
+
+    try {
+      await postJson('/api/lead', payload);
+      return;
+    } catch (apiError) {
+      console.warn('Lead API unavailable, falling back to direct client/local storage', apiError);
+    }
+
     if (window.supabaseClient) {
       const { error } = await window.supabaseClient
         .from('leads')
@@ -729,6 +770,23 @@
 
   // Save newsletter subscriber
   const saveNewsletterSubscriber = async (subscriberInfo) => {
+    if (!subscriberInfo || !subscriberInfo.email) {
+      throw new Error('Subscriber email is required');
+    }
+
+    const payload = {
+      email: subscriberInfo.email,
+      name: subscriberInfo.name || null,
+      source: subscriberInfo.source || 'Newsletter Form',
+    };
+
+    try {
+      await postJson('/api/newsletter', payload);
+      return;
+    } catch (apiError) {
+      console.warn('Newsletter API unavailable, falling back to direct client/local storage', apiError);
+    }
+
     if (window.supabaseClient) {
       const { error } = await window.supabaseClient
         .from('newsletter_subscribers')

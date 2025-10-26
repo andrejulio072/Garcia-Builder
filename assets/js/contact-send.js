@@ -3,15 +3,29 @@
 
 async function enviarContato(form) {
   const data = Object.fromEntries(new FormData(form));
+  const payload = {
+    name: data.name || data.nome || null,
+    email: data.email || data.mail || null,
+    phone: data.phone || data.telefone || null,
+    preferred_contact: data.preferred_contact || data.preferredContact || data.contact_preference || null,
+    primary_goal: data.primary_goal || data.goal || data.objetivo || null,
+    timeline: data.timeline || data.timeframe || null,
+    experience: data.experience || data.nivel || null,
+    budget: data.budget || data.orcamento || null,
+    message: data.message || data.mensagem || '',
+    page_path: window.location.href,
+    user_agent: navigator.userAgent
+  };
   const btn = form.querySelector('button[type=submit]');
   btn.disabled = true;
   try {
-    const res = await fetch('/api/contact-confirmation.js', {
+    const res = await fetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify(payload)
     });
-    if (res.ok) {
+    const json = await res.json().catch(() => ({}));
+    if (res.ok && (json?.ok || !json?.error)) {
       form.reset();
       // Hide the form and show the success message
       form.style.display = 'none';
@@ -38,8 +52,7 @@ async function enviarContato(form) {
       `;
       msgDiv.classList.remove('hidden');
     } else {
-      const err = await res.json();
-      alert('Error: ' + (err.error || 'Failed to send.'));
+      alert('Error: ' + (json?.error || res.statusText || 'Failed to send.'));
     }
   } catch (e) {
     alert('Error sending message.');

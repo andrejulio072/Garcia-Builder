@@ -14,7 +14,7 @@
 ## Como usar
 
 - Inclua o script `assets/js/contact-send.js` no formulário de contato.
-- O backend está em `api/contact-confirmation.js`.
+- O backend está em `api/contact.js`.
 - A página de confirmação é `confirm-contact.html`.
 
 ## Exemplo de formulário

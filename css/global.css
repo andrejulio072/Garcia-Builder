@@ -968,7 +968,7 @@ section#contact.section.has-bg.contact-bg {
   color: #fff;
 }
 
-/* Desktop: mostrar auth buttons e language selector ao lado do hamburger */
+/* Desktop and tablet navbar tightening */
 @media (min-width: 769px) {
   .gb-navbar-content {
     display: flex;
@@ -976,26 +976,9 @@ section#contact.section.has-bg.contact-bg {
     justify-content: space-between;
     gap: 16px;
   }
-
-  .gb-navbar-controls {
-    display: flex !important;
-  }
-
-  #auth-buttons-navbar {
-    display: flex !important;
-  }
-
-  #lang-select-navbar {
-    display: block !important;
-  }
-
-  .gb-hamburger {
-    margin-left: 16px;
-  }
 }
 
 @media (max-width: 768px) {
-  /* Navbar mobile: mostrar auth buttons e lang selector ao lado do hamburger */
   .gb-navbar-content {
     display: flex;
     align-items: center;
@@ -1004,12 +987,10 @@ section#contact.section.has-bg.contact-bg {
   }
 
   .gb-navbar-controls {
-    display: flex !important;
     gap: 8px;
   }
 
   #auth-buttons-navbar {
-    display: flex !important;
     gap: 6px;
   }
 
@@ -1019,7 +1000,6 @@ section#contact.section.has-bg.contact-bg {
   }
 
   #lang-select-navbar {
-    display: block !important;
     padding: 6px 8px;
     font-size: 12px;
   }
@@ -1033,9 +1013,14 @@ section#contact.section.has-bg.contact-bg {
     width: 35px;
   }
 
-  /* Container adjustments */
   .container {
     padding: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .gb-navbar-controls {
+    display: none;
   }
 
   /* General mobile improvements */

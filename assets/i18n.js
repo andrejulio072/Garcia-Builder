@@ -1692,32 +1692,39 @@
       if (val !== undefined && val !== null) el.setAttribute('placeholder', val);
     });
 
-    const sel = document.getElementById('lang-select');
-    if (sel && sel.value !== lang) sel.value = lang;
+  const sel = document.getElementById('lang-select');
+  if (sel && sel.value !== lang) sel.value = lang;
 
-    // Keep navbar selector in sync as well
-    const selNav = document.getElementById('lang-select-navbar');
-    if (selNav && selNav.value !== lang) selNav.value = lang;
+  // Keep navbar selectors in sync as well
+  const selNav = document.getElementById('lang-select-navbar');
+  if (selNav && selNav.value !== lang) selNav.value = lang;
+
+  const selNavMobile = document.getElementById('lang-select-navbar-mobile');
+  if (selNavMobile && selNavMobile.value !== lang) selNavMobile.value = lang;
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     const lang = getLang(); // EN by default
     apply(lang);
 
-    const sel = document.getElementById('lang-select');
-    const selNav = document.getElementById('lang-select-navbar');
+    const languageSelectIds = ['lang-select', 'lang-select-navbar', 'lang-select-navbar-mobile'];
+    const languageSelects = languageSelectIds
+      .map(id => document.getElementById(id))
+      .filter(Boolean);
 
-    // Change handlers that set language and mirror value in the other select (without triggering change loops)
-    if (sel) sel.addEventListener('change', () => {
-      const newLang = sel.value;
-      if (selNav && selNav.value !== newLang) selNav.value = newLang;
-      setLang(newLang);
-    });
+    // Keep all language selectors synchronized without causing loops
+    languageSelects.forEach(selectEl => {
+      selectEl.addEventListener('change', () => {
+        const newLang = selectEl.value;
 
-    if (selNav) selNav.addEventListener('change', () => {
-      const newLang = selNav.value;
-      if (sel && sel.value !== newLang) sel.value = newLang;
-      setLang(newLang);
+        languageSelects.forEach(otherSelect => {
+          if (otherSelect !== selectEl && otherSelect.value !== newLang) {
+            otherSelect.value = newLang;
+          }
+        });
+
+        setLang(newLang);
+      });
     });
   });
 

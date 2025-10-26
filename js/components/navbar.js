@@ -24,6 +24,7 @@
             menuToggle.classList.toggle('active');
             menuToggle.setAttribute('aria-expanded', isActive);
             document.body.style.overflow = isActive ? 'hidden' : '';
+            document.body.classList.toggle('gb-menu-open', isActive);
         });
 
         // Close menu when clicking outside
@@ -63,6 +64,7 @@
             menuToggle.classList.remove('active');
             menuToggle.setAttribute('aria-expanded', 'false');
             document.body.style.overflow = '';
+            document.body.classList.remove('gb-menu-open');
         }
     }
 

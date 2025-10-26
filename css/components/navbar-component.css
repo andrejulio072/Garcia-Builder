@@ -31,6 +31,14 @@
     gap: 24px;
 }
 
+.gb-navbar-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-left: auto;
+}
+
 /* Logo Section */
 .gb-logo-section {
     display: flex;
@@ -65,6 +73,7 @@
     display: flex;
     align-items: center;
     gap: 16px;
+    flex-wrap: nowrap;
 }
 
 /* Auth Buttons - Desktop */
@@ -72,11 +81,37 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    flex-wrap: nowrap;
 }
 
-@media (max-width: 768px) {
-    .gb-auth-buttons {
-        display: none; /* Hide on mobile, show in hamburger menu */
+@media (max-width: 900px) {
+    .gb-navbar-actions {
+        gap: 12px;
+    }
+
+    .gb-navbar-controls {
+        gap: 12px;
+    }
+
+    .gb-btn-link,
+    .gb-btn-primary-small {
+        padding: 8px 18px;
+        font-size: 0.9rem;
+    }
+
+    #lang-select-navbar {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .gb-navbar-controls {
+        display: none;
+    }
+
+    .gb-navbar-actions {
+        gap: 8px;
     }
 }
 
@@ -169,6 +204,10 @@
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+.gb-navbar-actions .gb-hamburger {
+    flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
@@ -279,20 +318,21 @@
 
 .gb-auth-buttons-mobile {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-start;
 }
 
 /* Mobile Auth Buttons */
 .gb-btn-secondary {
     display: block;
     width: 100%;
+    text-align: center;
     padding: 14px 20px;
     font-size: 1rem;
     font-weight: 600;
     color: #F6C84E !important;
     text-decoration: none;
-    text-align: center;
     border: 2px solid rgba(246, 200, 78, 0.4);
     border-radius: 8px;
     background: transparent;
@@ -308,12 +348,12 @@
 .gb-btn-primary {
     display: block;
     width: 100%;
+    text-align: center;
     padding: 14px 20px;
     font-size: 1rem;
     font-weight: 700;
     color: #000 !important;
     text-decoration: none;
-    text-align: center;
     background: linear-gradient(135deg, #F6C84E 0%, #e6b73e 100%);
     border: none;
     border-radius: 8px;
@@ -347,6 +387,25 @@
     border-color: #F6C84E;
 }
 
+.gb-auth-buttons-mobile .gb-btn-secondary,
+.gb-auth-buttons-mobile .gb-btn-primary {
+    display: flex;
+    flex: 1 1 calc(50% - 6px);
+    justify-content: center;
+    min-width: 140px;
+}
+
+@media (max-width: 420px) {
+    .gb-auth-buttons-mobile {
+        gap: 10px;
+    }
+
+    .gb-auth-buttons-mobile .gb-btn-secondary,
+    .gb-auth-buttons-mobile .gb-btn-primary {
+        flex: 1 1 100%;
+    }
+}
+
 /* Mobile Menu Backdrop */
 body.gb-menu-open::before {
     content: '';
@@ -358,4 +417,8 @@ body.gb-menu-open::before {
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(2px);
     z-index: 1000;
+}
+
+body.gb-menu-open {
+    overflow: hidden;
 }

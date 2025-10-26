@@ -15,46 +15,48 @@
         programs: "Programs",
         back_to_site: "Back to Site",
         back_to_login: "Back to Login",
-        login: "Login",
-        register: "Register",
-        logout: "Logout",
-        profile: "My Profile",
-        dashboard: "Dashboard",
-        metrics: "Metrics",
-        progress: "Progress",
-        trainer: "Trainer",
-        lang: { en: "EN", pt: "PT", es: "ES" }
-      },
-      dashboard: {
-        welcome: "Welcome back to your dashboard",
-        welcome_back: "Welcome back",
-        last_login: "Last login",
-        member_since: "Member since",
-        edit_profile: "Edit Profile",
-        log_weight: "Log Weight",
-        get_support: "Get Support",
-        current_weight: "Current Weight",
-        not_set: "Not set",
-        // Enhanced dashboard specific
-        enhanced_dashboard: "Enhanced Dashboard",
-        account: "Account",
-        profile_settings: "Profile Settings",
-        settings: "Settings",
-        logout: "Logout",
-        personal_info: "Personal Info",
-        fitness_profile: "Fitness Profile",
-        goals_progress: "Goals & Progress",
-        preferences: "Preferences",
-        bio: "Bio",
-        bio_placeholder: "Tell us about yourself...",
-        save_changes: "Save Changes",
-        lose_weight: "Lose Weight",
-        build_muscle: "Build Muscle",
-        increase_strength: "Increase Strength",
-        improve_endurance: "Improve Endurance",
-        better_health: "Better Health",
-        sport_performance: "Sport Performance",
-        // Reset password specific
+        auth: {
+          login_title: "Login",
+          login_subtitle: "Access your Garcia Builder account",
+          register_title: "Create Account",
+          register_subtitle: "Join Garcia Builder",
+          email: "Email",
+          email_invalid: "Please enter a valid email address.",
+          password: "Password",
+          name: "Full Name",
+          confirm_password: "Confirm Password",
+          phone_optional: "Phone (optional)",
+          date_of_birth: "Date of Birth",
+          email_placeholder: "your@email.com",
+          password_placeholder: "Your password",
+          password_min_placeholder: "Minimum 6 characters",
+          name_placeholder: "Your full name",
+          phone_placeholder: "+1 (555) 123-4567",
+          confirm_password_placeholder: "Confirm your password",
+          remember_me: "Remember me",
+          login_btn: "Sign In",
+          register_btn: "Create Account",
+          no_account: "Don't have an account?",
+          create_account: "Create account",
+          have_account: "Already have an account?",
+          login_link: "Sign in",
+          agree_terms: "I agree to the",
+          terms_link: "Terms of Use",
+          or_continue_with: "or continue with",
+          continue_google: "Continue with Google",
+          continue_facebook: "Continue with Facebook",
+          forgot_password: "Forgot your password?",
+          forgot_password_title: "Forgot Password",
+          forgot_password_subtitle: "Enter your email address and we'll send you a link to reset your password.",
+          send_reset_link: "Send Reset Link",
+          back_to_login: "Back to Login",
+          sending: "Sending...",
+          forgot_email_required: "Please enter your email address.",
+          forgot_success: "✅ Reset link sent! Please check your email ({email}) for the password reset link.",
+          forgot_error_user_not_found: "No account found with this email address.",
+          forgot_error_rate_limit: "Too many reset requests. Please wait a few minutes before trying again.",
+          forgot_error_generic: "Error: {message}"
+        },
         reset_password: "Reset Your Password",
         reset_password_subtitle: "Enter your new password below to complete the reset process.",
         new_password_placeholder: "New password (min 8 characters)",
@@ -242,7 +244,9 @@
         f6: { title: "Mindset & Habits", p: "Systems that keep you consistent." }
       },
       footer: {
-        whatsapp: "WhatsApp"
+        whatsapp: "WhatsApp",
+        language_label: "Site language",
+        language_help: "Change the language used across the site."
       },
       about: {
         title: "About Garcia Builder",
@@ -515,9 +519,10 @@
       auth: {
         login_title: "Login",
         login_subtitle: "Access your Garcia Builder account",
-        register_title: "Create Account",
-        register_subtitle: "Join Garcia Builder",
-        email: "Email",
+    register_title: "Create Account",
+    register_subtitle: "Join Garcia Builder",
+    email: "Email",
+    email_invalid: "Please enter a valid email address.",
         password: "Password",
         name: "Full Name",
         confirm_password: "Confirm Password",
@@ -546,7 +551,12 @@
         forgot_password_subtitle: "Enter your email address and we'll send you a link to reset your password.",
         send_reset_link: "Send Reset Link",
         back_to_login: "Back to Login",
-        sending: "Sending..."
+        sending: "Sending...",
+        forgot_email_required: "Please enter your email address.",
+        forgot_success: "✅ Reset link sent! Please check your email ({email}) for the password reset link.",
+        forgot_error_user_not_found: "No account found with this email address.",
+        forgot_error_rate_limit: "Too many reset requests. Please wait a few minutes before trying again.",
+        forgot_error_generic: "Error: {message}"
       },
       common: {
         ok: "OK",
@@ -580,11 +590,10 @@
         welcome_back: "Bem-vindo de volta",
         last_login: "Último login",
         member_since: "Membro desde",
-        edit_profile: "Editar Perfil",
-        log_weight: "Registrar Peso",
-        get_support: "Obter Suporte",
-        current_weight: "Peso Atual",
-        not_set: "Não definido",
+    edit_profile: "Editar Perfil",
+    log_weight: "Registrar Peso",
+    get_support: "Obter Suporte",
+    current_weight: "Peso Atual",
         // Enhanced dashboard specific
         enhanced_dashboard: "Dashboard Avançado",
         account: "Conta",
@@ -792,7 +801,9 @@
         f6: { title: "Mentalidade e Hábitos", p: "Sistemas que mantêm você consistente." }
       },
       footer: {
-        whatsapp: "WhatsApp"
+        whatsapp: "WhatsApp",
+        language_label: "Idioma do site",
+        language_help: "Altere o idioma utilizado em todo o site."
       },
       about: {
         title: "Sobre Garcia Builder",
@@ -1067,7 +1078,8 @@
         login_subtitle: "Acesse sua conta Garcia Builder",
         register_title: "Criar Conta",
         register_subtitle: "Junte-se à Garcia Builder",
-        email: "Email",
+    email: "Email",
+    email_invalid: "Informe um email válido.",
         password: "Senha",
         name: "Nome Completo",
         confirm_password: "Confirmar Senha",
@@ -1096,7 +1108,12 @@
         forgot_password_subtitle: "Digite seu endereço de email e enviaremos um link para redefinir sua senha.",
         send_reset_link: "Enviar Link de Redefinição",
         back_to_login: "Voltar ao Login",
-        sending: "Enviando..."
+        sending: "Enviando...",
+        forgot_email_required: "Informe seu endereço de email.",
+        forgot_success: "✅ Link enviado! Verifique seu email ({email}) para redefinir sua senha.",
+        forgot_error_user_not_found: "Nenhuma conta encontrada com este email.",
+        forgot_error_rate_limit: "Muitos pedidos de redefinição. Aguarde alguns minutos antes de tentar novamente.",
+        forgot_error_generic: "Erro: {message}"
       },
       common: {
         ok: "OK",
@@ -1339,7 +1356,9 @@
         f6: { title: "Mentalidad y Hábitos", p: "Sistemas que te mantienen consistente." }
       },
       footer: {
-        whatsapp: "WhatsApp"
+        whatsapp: "WhatsApp",
+        language_label: "Idioma del sitio",
+        language_help: "Cambia el idioma utilizado en todo el sitio."
       },
       about: {
         title: "Sobre Garcia Builder",
@@ -1614,7 +1633,8 @@
         login_subtitle: "Accede a tu cuenta Garcia Builder",
         register_title: "Crear Cuenta",
         register_subtitle: "Únete a Garcia Builder",
-        email: "Email",
+    email: "Email",
+    email_invalid: "Ingresa un correo electrónico válido.",
         password: "Contraseña",
         name: "Nombre Completo",
         confirm_password: "Confirmar Contraseña",
@@ -1643,7 +1663,12 @@
         forgot_password_subtitle: "Ingresa tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
         send_reset_link: "Enviar Enlace de Restablecimiento",
         back_to_login: "Volver al Login",
-        sending: "Enviando..."
+        sending: "Enviando...",
+        forgot_email_required: "Ingresa tu dirección de correo electrónico.",
+        forgot_success: "✅ ¡Enlace enviado! Revisa tu correo ({email}) para restablecer tu contraseña.",
+        forgot_error_user_not_found: "No se encontró una cuenta con este correo electrónico.",
+        forgot_error_rate_limit: "Demasiadas solicitudes de restablecimiento. Espera unos minutos antes de intentarlo nuevamente.",
+        forgot_error_generic: "Error: {message}"
       },
       common: {
         ok: "OK",
@@ -1654,6 +1679,7 @@
 
   const KEY = "gb_lang";
   const clamp = (l) => (l==="en"||l==="pt"||l==="es") ? l : "en";
+  const LANGUAGE_SELECT_IDS = ['lang-select', 'lang-select-navbar', 'lang-select-footer'];
 
   function getLang() {
     try { return clamp(localStorage.getItem(KEY) || "en"); } catch { return "en"; }
@@ -1664,6 +1690,30 @@
     apply(lang);
     // Notify listeners (e.g., FAQ page) that language changed
     try { document.dispatchEvent(new Event('languageChanged')); } catch {}
+  }
+
+  function syncLanguageSelectors(lang) {
+    LANGUAGE_SELECT_IDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      if (lang && el.value !== lang) {
+        el.value = lang;
+      }
+
+      if (el.dataset.gbLangBound === '1') {
+        return;
+      }
+
+      el.addEventListener('change', () => {
+        const newLang = clamp(el.value || '');
+        if (newLang && newLang !== getLang()) {
+          setLang(newLang);
+        }
+      });
+
+      el.dataset.gbLangBound = '1';
+    });
   }
 
   const getByPath = (obj, path) => path.split('.').reduce((o,k)=> (o && o[k] !== undefined) ? o[k] : undefined, obj);
@@ -1692,40 +1742,17 @@
       if (val !== undefined && val !== null) el.setAttribute('placeholder', val);
     });
 
-  const sel = document.getElementById('lang-select');
-  if (sel && sel.value !== lang) sel.value = lang;
-
-  // Keep navbar selectors in sync as well
-  const selNav = document.getElementById('lang-select-navbar');
-  if (selNav && selNav.value !== lang) selNav.value = lang;
-
-  const selFooter = document.getElementById('lang-select-footer');
-  if (selFooter && selFooter.value !== lang) selFooter.value = lang;
+    syncLanguageSelectors(lang);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     const lang = getLang(); // EN by default
     apply(lang);
+    syncLanguageSelectors(lang);
+  });
 
-  const languageSelectIds = ['lang-select', 'lang-select-navbar', 'lang-select-footer'];
-    const languageSelects = languageSelectIds
-      .map(id => document.getElementById(id))
-      .filter(Boolean);
-
-    // Keep all language selectors synchronized without causing loops
-    languageSelects.forEach(selectEl => {
-      selectEl.addEventListener('change', () => {
-        const newLang = selectEl.value;
-
-        languageSelects.forEach(otherSelect => {
-          if (otherSelect !== selectEl && otherSelect.value !== newLang) {
-            otherSelect.value = newLang;
-          }
-        });
-
-        setLang(newLang);
-      });
-    });
+  document.addEventListener('componentLoaded', () => {
+    apply(getLang());
   });
 
   // Expose APIs and raw dictionaries for legacy consumers

@@ -83,12 +83,15 @@ const INLINE_FALLBACKS = {
                     <a href="/pages/auth/login.html" class="gb-btn-secondary" data-i18n="nav.login">Login</a>
                     <a href="/pages/auth/login.html?action=register" class="gb-btn-primary" data-i18n="nav.register">Register</a>
                 </div>
-
-                <select id="lang-select-navbar-mobile" class="gb-lang-select" aria-label="Select language" title="Select language">
-                    <option value="en">EN</option>
-                    <option value="pt">PT</option>
-                    <option value="es">ES</option>
-                </select>
+                <div class="gb-menu-language" role="group" aria-label="Site language selector">
+                    <label for="lang-select" class="visually-hidden" data-i18n="footer.language_label">Site language</label>
+                    <select id="lang-select" class="gb-lang-select" aria-label="Select language" title="Select language">
+                        <option value="en">EN • English</option>
+                        <option value="pt">PT • Português</option>
+                        <option value="es">ES • Español</option>
+                    </select>
+                    <small class="gb-menu-language-note" data-i18n="footer.language_help">Change the language used across the site.</small>
+                </div>
             </div>
         </div>
     </div>

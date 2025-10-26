@@ -368,35 +368,68 @@ class SupabaseAuthSystem {
     async handleForgotPassword(e) {
         e.preventDefault();
 
+        const translate = (key, fallback) => {
+            try {
+                const api = window.GBi18n;
+                if (api && typeof api.t === 'function') {
+                    const value = api.t(key);
+                    if (typeof value === 'string' && value.trim()) {
+                        return value;
+                    }
+                }
+            } catch (err) {
+                console.warn('i18n lookup failed for', key, err);
+            }
+            return fallback;
+        };
+
+        const formatMessage = (template, replacements = {}) => {
+            if (typeof template !== 'string') {
+                return '';
+            }
+            return template.replace(/\{(\w+)\}/g, (_, token) => {
+                return Object.prototype.hasOwnProperty.call(replacements, token) ? replacements[token] : `{${token}}`;
+            });
+        };
+
         try {
-            const email = (
+            const emailField = (
                 document.getElementById("signin-email") ||
                 document.getElementById("loginEmail") ||
                 document.querySelector('input[name="email"]')
-            )?.value.trim();
+            );
+
+            const email = emailField ? emailField.value.trim() : '';
 
             if (!email) {
-                this.showMessage("Please enter your email address first.", "warning");
+                this.showMessage(translate('auth.forgot_email_required', 'Please enter your email address.'), "warning");
                 return;
             }
 
             if (!this.isValidEmail(email)) {
-                this.showMessage("Please enter a valid email address.", "warning");
+                this.showMessage(translate('auth.email_invalid', 'Please enter a valid email address.'), "warning");
                 return;
             }
 
             const btn = e.target;
             const originalText = btn.textContent;
-            btn.textContent = 'Sending...';
+            btn.textContent = translate('auth.sending', 'Sending...');
             btn.disabled = true;
 
-            const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, {
-                redirectTo: `${window.location.origin}/Garcia-Builder/reset-password.html`
-            });
+            const redirectTo = new URL('reset-password.html', window.location.href).href;
+            const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, { redirectTo });
 
             if (error) throw error;
 
-            this.showMessage(`📧 Password reset link sent to ${email}. Check your inbox!`, "success");
+            const successMessage = formatMessage(
+                translate(
+                    'auth.forgot_success',
+                    '📧 Password reset link sent to {email}. Check your inbox!'
+                ),
+                { email }
+            );
+
+            this.showMessage(successMessage, "success");
 
             setTimeout(() => {
                 btn.textContent = originalText;
@@ -405,7 +438,30 @@ class SupabaseAuthSystem {
 
         } catch (error) {
             console.error('Password reset error:', error);
-            this.showMessage(error.message, "danger");
+
+            const message = (error && error.message ? error.message : '').toLowerCase();
+
+            if (message.includes('user') && message.includes('not') && message.includes('found')) {
+                this.showMessage(
+                    translate('auth.forgot_error_user_not_found', 'No account found with this email address.'),
+                    "danger"
+                );
+                return;
+            }
+
+            if (message.includes('rate') && message.includes('limit')) {
+                this.showMessage(
+                    translate(
+                        'auth.forgot_error_rate_limit',
+                        'Too many reset requests. Please wait a few minutes before trying again.'
+                    ),
+                    "danger"
+                );
+                return;
+            }
+
+            const fallback = translate('auth.forgot_error_generic', 'Error: {message}');
+            this.showMessage(formatMessage(fallback, { message: error?.message || 'Unknown error' }), "danger");
         }
     }
 

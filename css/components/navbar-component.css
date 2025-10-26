@@ -37,6 +37,8 @@
     justify-content: flex-end;
     gap: 16px;
     margin-left: auto;
+    flex-wrap: nowrap;
+    min-width: 0;
 }
 
 /* Logo Section */
@@ -74,6 +76,7 @@
     align-items: center;
     gap: 16px;
     flex-wrap: nowrap;
+    min-width: 0;
 }
 
 /* Auth Buttons - Desktop */
@@ -84,7 +87,7 @@
     flex-wrap: nowrap;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
     .gb-navbar-actions {
         gap: 12px;
     }
@@ -103,24 +106,28 @@
         padding: 6px 10px;
         font-size: 0.85rem;
     }
+
+    .gb-auth-buttons {
+        display: none;
+    }
 }
 
 @media (max-width: 640px) {
     .gb-navbar-actions {
         gap: 8px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
     }
 
     .gb-navbar-controls {
         display: flex;
         gap: 8px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         justify-content: flex-end;
     }
 
     .gb-auth-buttons {
         gap: 6px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
     }
 
     .gb-btn-link,
@@ -202,6 +209,38 @@
     background: rgba(246, 200, 78, 0.15);
     border-color: #F6C84E;
     box-shadow: 0 0 0 3px rgba(246, 200, 78, 0.15);
+}
+
+.gb-menu-language {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 1.5rem;
+}
+
+.gb-lang-select {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #F6C84E;
+    background: rgba(246, 200, 78, 0.08);
+    border: 1px solid rgba(246, 200, 78, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.gb-lang-select:hover,
+.gb-lang-select:focus {
+    background: rgba(246, 200, 78, 0.2);
+    border-color: #F6C84E;
+    box-shadow: 0 0 0 3px rgba(246, 200, 78, 0.15);
+}
+
+.gb-menu-language-note {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.4;
 }
 
 @media (max-width: 768px) {

@@ -47,23 +47,23 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
 <meta property="og:locale" content="en_IE"/>
 <meta property="og:locale:alternate" content="pt_BR"/>
 <meta property="og:locale:alternate" content="es_ES"/>
-<meta property="og:title" content="Pricing & Plans � Garcia Builder Coaching"/>
+<meta property="og:title" content="Pricing & Plans | Garcia Builder Coaching"/>
 <meta property="og:description" content="Choose the ideal plan and accelerate your transformation with personalized training and nutrition."/>
 <meta property="og:url" content="https://garciabuilder.fitness/pricing.html"/>
 <meta property="og:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg"/>
 <meta property="og:site_name" content="Garcia Builder"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="Pricing � Garcia Builder"/>
+<meta name="twitter:title" content="Pricing | Garcia Builder"/>
 <meta name="twitter:description" content="Flexible plans with professional support and measurable results."/>
 <meta name="twitter:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg"/>
 
 <!-- Central consent-aware Ads loader -->
 <script defer src="js/tracking/ads-loader.js"></script>
 <script defer src="js/tracking/ads-config.js"></script>
-<title>Pricing � Garcia Builder Coaching Plans</title>
+<title>Pricing | Garcia Builder Coaching Plans</title>
 <link rel="preconnect" href="https://www.googletagmanager.com"/>
 <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
-<link rel="preload" as="image" href="assets/bg-fitness.jpg"/>
+<link rel="preload" as="image" href="assets/images/hero/bg-fitness.jpg"/>
 <!-- Optional: booking URL for scheduling consult on pricing/success/first-workout -->
 <meta name="booking:url" content="https://calendly.com/andrenjulio072/consultation">
 <!-- Structured Data: OfferCatalog (coaching plans with duration discounts) -->
@@ -166,7 +166,7 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
   body.pricing-bg{
     background:
       linear-gradient(180deg, rgba(10,12,23,.80), rgba(10,12,23,.88)),
-      url("assets/bg-fitness.jpg") center / cover fixed no-repeat;
+  url("assets/images/hero/bg-fitness.jpg") center / cover fixed no-repeat;
   }
 
   /* ===== Subtitle ===== */
@@ -421,7 +421,7 @@ window.addEventListener('load', function() {
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <style>
-/* ===== NAVBAR ENHANCED - HAMBURGER SEMPRE VIS�VEL ===== */
+/* ===== NAVBAR ENHANCED - HAMBURGER SEMPRE VISIVEL ===== */
 .gb-navbar {
     position: sticky;
     top: 0;
@@ -443,7 +443,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     gap: 1rem;
 }
 
-/* Logo Section - MAIOR E MAIS VIS�VEL */
+/* Logo Section - MAIOR E MAIS VISIVEL */
 .gb-logo-section {
     display: flex;
     align-items: center;
@@ -473,7 +473,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     white-space: nowrap;
 }
 
-/* Hamburger Button - SEMPRE VIS�VEL */
+/* Hamburger Button - SEMPRE VISIVEL */
 .gb-hamburger {
     background: rgba(246, 200, 78, 0.15);
     border: 1px solid rgba(246, 200, 78, 0.3);
@@ -521,7 +521,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     transform: rotate(-45deg) translate(7px, -7px);
 }
 
-/* Menu Dropdown - OTIMIZADO SEM FLUTUA��O */
+/* Menu Dropdown - OTIMIZADO SEM FLUTUACAO */
 .gb-menu {
     position: fixed;
     top: 92px;
@@ -634,7 +634,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
 }
 
-/* Mobile Specific - SEM FLUTUA��O */
+/* Mobile Specific - SEM FLUTUACAO */
 @media (max-width: 768px) {
     .gb-logo-img {
         height: 50px;
@@ -772,11 +772,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Group & Corporate Coaching Coming Soon -->
     <div class="mt-5" id="group-corporate-coaching">
       <div class="alert alert-warning text-center" style="max-width:700px;margin:40px auto 24px auto;font-size:1.15rem;">
-        <strong>Group & Corporate Coaching � Coming Soon!</strong><br>
-        We�re preparing new programs for small groups and corporate teams.<br>
-        <span style="font-size:1rem;">Want early access or to join the waitlist?</span><br>
-        <a href="mailto:andrenjulio072@gmail.com?subject=Group%20or%20Corporate%20Coaching%20Waitlist" class="btn btn-gold mt-2">Join Waitlist</a>
-        <br><span style="font-size:0.95rem;opacity:0.8;">Be the first to know when these offers launch!</span>
+        <strong data-i18n="pricing.group_coaching.title">Group & Corporate Coaching - Coming Soon!</strong><br>
+        <span data-i18n="pricing.group_coaching.subtitle">We're preparing new programs for small groups and corporate teams.</span><br>
+        <span style="font-size:1rem;" data-i18n="pricing.group_coaching.prompt">Want early access or to join the waitlist?</span><br>
+        <a href="mailto:andrenjulio072@gmail.com?subject=Group%20or%20Corporate%20Coaching%20Waitlist" class="btn btn-gold mt-2" data-i18n="pricing.group_coaching.cta">Join Waitlist</a>
+        <br><span style="font-size:0.95rem;opacity:0.8;" data-i18n="pricing.group_coaching.footer">Be the first to know when these offers launch!</span>
       </div>
     </div>
   </div>
@@ -786,7 +786,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="container">
       <div class="discount-section text-center mb-4">
         <button class="btn btn-outline-light" id="show-discount-form" type="button">
-          ?? Have a discount code?
+          <span data-i18n="pricing.discount.prompt">Have a discount code?</span>
         </button>
         <div class="discount-form mt-3" id="discount-form" style="display: none;">
           <div class="row justify-content-center">
@@ -881,7 +881,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 
 .price li::before {
-  content: '?';
+  content: '\2713';
   position: absolute;
   left: 0;
   color: var(--gold);
@@ -1083,22 +1083,34 @@ document.addEventListener('change', function(e) {
 // (Funnel tracking for checkout is now handled in js/pricing.js for .btn.btn-gold)
 </script>
 <script defer src="js/tracking/engagement-tracking.js"></script>
+
+<section class="container my-4" id="post-purchase-cta">
+  <div class="alert alert-dark" role="alert" style="background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#e9ecef;">
+    <div class="d-flex flex-wrap align-items-center">
+      <div class="me-3 mb-2">
+        <i class="fas fa-flag-checkered text-warning me-2" aria-hidden="true"></i>
+        <strong data-i18n="pricing.post_purchase.title">After purchase:</strong>
+      </div>
+      <a id="book-pricing" href="#" target="_blank" class="btn btn-outline-warning btn-sm me-2 mb-2" hidden data-i18n="pricing.post_purchase.schedule">Schedule consult</a>
+      <a href="first-workout.html" class="btn btn-outline-light btn-sm mb-2" data-i18n="pricing.post_purchase.preview">Preview the first workout</a>
+    </div>
+  </div>
+</section>
+
 <script>
-  // Inject onboarding CTAs near the bottom of the page
-  (function(){
-    try {
-      var container = document.body;
-      var section = document.createElement('section');
-      section.className = 'container my-4';
-      section.innerHTML = '\n        <div class="alert alert-dark" role="alert" style="background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#e9ecef;">\n          <div class="d-flex flex-wrap align-items-center">\n            <div class="me-3 mb-2"><i class="fas fa-flag-checkered text-warning me-2"></i><strong>After purchase:</strong></div>\n            <a id="book-pricing" href="#" target="_blank" class="btn btn-outline-warning btn-sm me-2 mb-2">Schedule consult</a>\n            <a href="first-workout.html" class="btn btn-outline-light btn-sm mb-2">Preview the first workout</a>\n          </div>\n        </div>';
-      container.appendChild(section);
-      var meta = document.querySelector('meta[name="booking:url"]');
-      var url = (meta && meta.getAttribute('content')) || '';
-      var book = section.querySelector('#book-pricing');
-      if (book) { if (url) book.href = url; else book.style.display = 'none'; }
-    } catch(e) { console.warn('Onboarding CTAs injection failed', e); }
+  (function() {
+    var link = document.getElementById('book-pricing');
+    if (!link) return;
+    var meta = document.querySelector('meta[name="booking:url"]');
+    var url = meta && meta.getAttribute('content');
+    if (url) {
+      link.href = url;
+      link.hidden = false;
+    } else {
+      link.classList.add('d-none');
+    }
   })();
-  </script>
+</script>
 
 <!-- Footer Component (loaded dynamically) -->
 <div data-component="footer"></div>

@@ -1,4 +1,4 @@
-# � Website Roadmap — Ordem de Execução (Fácil → Difícil)
+# Website Roadmap — Ordem de Execução (Fácil → Difícil)
 
 ## ✅ Já implementado
 - Navbar: melhorar o arredondamento da logo
@@ -26,7 +26,7 @@
 - Conectar com Trainerize Blogs
 - Criar sistema de newsletter para e-mail
 - Criar e-book gratuito
-# �🚧 IMPLEMENTAÇÕES FUTURAS - Garcia Builder
+# 🚧 IMPLEMENTAÇÕES FUTURAS - Garcia Builder
 
 ## 📋 Próximas Melhorias e Correções
 

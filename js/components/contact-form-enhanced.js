@@ -13,6 +13,7 @@
   const messageEl = document.getElementById('message');
   const consentEl = document.getElementById('consent');
   const charCount = document.getElementById('charCount');
+  const btnLabel = btn ? btn.querySelector('[data-i18n="contact.form.submit"]') : null;
 
   // Check if required elements exist
   if (!btn || !alertBox || !nameEl || !emailEl || !goalEl ||
@@ -75,7 +76,7 @@
               <p class="text-muted small">I'll reply within 24-48 hours. Check your spam folder if you don't receive the confirmation email.</p>
             </div>
             <div class="modal-footer border-0 justify-content-center">
-              <button type="button" class="btn btn-gradient px-4" data-bs-dismiss="modal">Got it!</button>
+                <button type="button" class="btn btn-gradient px-4" data-bs-dismiss="modal">Got it!</button>
             </div>
           </div>
         </div>
@@ -179,8 +180,8 @@ Garcia Builder - Online Coaching
     // Send
     btn.disabled = true;
     btn.classList.add('is-loading');
-    if (btn.firstChild && btn.dataset.loading) {
-      btn.firstChild.nodeValue = btn.dataset.loading;
+    if (btnLabel && btn.dataset.loading) {
+      btnLabel.textContent = btn.dataset.loading;
     }
 
     try {
@@ -200,7 +201,7 @@ Garcia Builder - Online Coaching
 
         form.reset(); updateCount();
         alertBox.classList.remove('visually-hidden');
-        alertBox.textContent = 'Thanks! Your message was sent. I'll reply within 24–48h.';
+          alertBox.textContent = 'Thanks! Your message was sent. I\'ll reply within 24-48h.';
 
         // Show success popup and send confirmation email
         showSuccessPopup(userName, userEmail);
@@ -240,8 +241,8 @@ Garcia Builder - Online Coaching
     } finally {
       btn.disabled = false;
       btn.classList.remove('is-loading');
-      if (btn.firstChild && btn.dataset.default) {
-        btn.firstChild.nodeValue = btn.dataset.default;
+      if (btnLabel && btn.dataset.default) {
+        btnLabel.textContent = btn.dataset.default;
       }
     }
   });

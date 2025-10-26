@@ -591,7 +591,7 @@ select option {
 .hero{position:relative;min-height:82vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:0 0 0 0;}
 .hero::before{content:'';position:absolute;inset:0;background:
  linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.86)),
- url('assets/hero-fitness.jpg') center/cover no-repeat;transform:scale(1.02)}
+ url('../assets/images/hero/bg-fitness.jpg') center/cover no-repeat;transform:scale(1.02)}
 .hero .content{position:relative;z-index:1;max-width:900px;margin:0 auto;}
 .kpis{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:18px}
 .kpi{background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:16px;padding:10px 14px;min-width:200px}
@@ -648,7 +648,7 @@ select option {
   opacity:.98;
   background:
     linear-gradient(180deg,rgba(0,0,0,.20),rgba(0,0,0,.58)),
-    url('assets/hero-fitness.jpg') center / cover no-repeat;
+  url('../assets/images/hero/bg-fitness.jpg') center / cover no-repeat;
   will-change: transform, opacity;
   transform: translate(calc(var(--mx)*-6px), calc(var(--my)*-6px)) scale(1.06);
 }
@@ -856,7 +856,7 @@ input, select, textarea { font-size: 1rem; }
   /* 2 camadas: overlay escuro + imagem */
   background:
     linear-gradient(180deg, rgba(0,0,0,.35), transparent 22%),
-    var(--bg, url('assets/bg-contact.jpg'));
+  var(--bg, url('../assets/images/hero/bg-contact.jpg'));
   background-size: cover;
   background-position: var(--bg-pos, center);
   background-repeat: no-repeat;
@@ -885,7 +885,7 @@ input, select, textarea { font-size: 1rem; }
 
 /* Contact page specific background */
 section#contact.section.has-bg.contact-bg {
-  background: linear-gradient(180deg, rgba(0,0,0,.35), transparent 22%), url('assets/bg-contact.jpg') !important;
+  background: linear-gradient(180deg, rgba(0,0,0,.35), transparent 22%), url('../assets/images/hero/bg-contact.jpg') !important;
   background-size: cover !important;
   background-position: center center !important;
   background-repeat: no-repeat !important;

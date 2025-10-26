@@ -19,7 +19,14 @@
       }
       const text = `${prefix}${currentValue}${isPercent ? '%' : ''}${suffix}`;
       el.textContent = text;
-      if (progress < 1) requestAnimationFrame(tick);
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        const finalValue = hasDecimals
+          ? Number(numericTarget.toFixed(Math.min(decimals, 1))).toString()
+          : Math.trunc(numericTarget).toString();
+        el.textContent = `${prefix}${finalValue}${isPercent ? '%' : ''}${suffix}`;
+      }
     };
     requestAnimationFrame(tick);
   };

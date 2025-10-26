@@ -423,11 +423,26 @@
           ],
           description: "As a registered user, you have access to special discount on all long-term plans!",
           cta: "Use Discount"
+        },
+        discount: {
+          prompt: "Have a discount code?"
+        },
+        group_coaching: {
+          title: "Group & Corporate Coaching - Coming Soon!",
+          subtitle: "We're preparing new programs for small groups and corporate teams.",
+          prompt: "Want early access or to join the waitlist?",
+          cta: "Join Waitlist",
+          footer: "Be the first to know when these offers launch!"
+        },
+        post_purchase: {
+          title: "After purchase:",
+          schedule: "Schedule consult",
+          preview: "Preview the first workout"
         }
       },
       contact: {
         title: "Contact",
-        subtitle: "Ready to transform? Let's talk. I coach in EN/PT/ES.",
+  subtitle: "Tell me about your goal. I'll get back within 24–48h.",
         form: {
           name: "Your name",
           email: "Your email",
@@ -438,7 +453,7 @@
           experience: "Training experience",
           budget: "Monthly budget (optional)",
           message: "Tell me about your situation",
-          submit: "Send Message",
+          submit: "Send",
           placeholders: {
             name: "Your name",
             email: "you@example.com",
@@ -484,6 +499,17 @@
           },
           consent: "I agree to be contacted about coaching and understand my data will be used only to respond to this inquiry.",
           footnote: "Average reply time: 24–48h. No spam, ever."
+        },
+        newsletter: {
+          title: "Stay Informed While You Wait",
+          description: "While I review your inquiry, join thousands getting weekly training tips, nutrition insights, and exclusive updates.",
+          cta: "Join Newsletter"
+        },
+        trainer: {
+          lead: "Join our growing network of certified trainers and help transform lives with evidence-based coaching.",
+          qualification: "Professional qualifications required",
+          remote: "Work remotely with global clients",
+          cta: "Apply Now"
         }
       },
       auth: {
@@ -947,11 +973,26 @@
           ],
           description: "Como usuário registrado, você tem acesso a desconto especial em todos os planos de longa duração!",
           cta: "Usar Desconto"
+        },
+        discount: {
+          prompt: "Tem um código de desconto?"
+        },
+        group_coaching: {
+          title: "Coaching em Grupo e Corporativo - Em breve!",
+          subtitle: "Estamos preparando novos programas para pequenos grupos e equipes corporativas.",
+          prompt: "Quer acesso antecipado ou entrar na lista de espera?",
+          cta: "Entrar na lista de espera",
+          footer: "Seja o primeiro a saber quando essas ofertas lançarem!"
+        },
+        post_purchase: {
+          title: "Após a compra:",
+          schedule: "Agendar consultoria",
+          preview: "Ver o primeiro treino"
         }
       },
       contact: {
         title: "Contato",
-        subtitle: "Pronto para se transformar? Vamos conversar. Atendo em PT/EN/ES.",
+        subtitle: "Conte-me sobre o seu objetivo. Respondo em até 24–48h.",
         form: {
           name: "Seu nome",
           email: "Seu email",
@@ -962,7 +1003,7 @@
           experience: "Experiência em treino",
           budget: "Orçamento mensal (opcional)",
           message: "Conte sobre sua situação",
-          submit: "Enviar Mensagem",
+          submit: "Enviar",
           placeholders: {
             name: "Seu nome",
             email: "voce@exemplo.com",
@@ -982,10 +1023,10 @@
             goals: {
               fatLoss: "Perda de gordura",
               muscleGain: "Ganho de massa",
-              recomp: "Recomposição corporal",
+              recomposition: "Recomposição corporal",
               performance: "Performance / Teste físico",
-              rehab: "Dor e Reabilitação (ex: ombro, lombar)",
-              general: "Saúde geral e confiança"
+              rehab: "Dor e reabilitação (ex: ombro, lombar)",
+              health: "Saúde geral e confiança"
             },
             timeline: {
               short: "4–8 semanas",
@@ -997,8 +1038,28 @@
               beginner: "Iniciante",
               intermediate: "Intermediário",
               advanced: "Avançado"
+            },
+            budget: {
+              notSay: "Prefiro não informar",
+              low: "€100–€199",
+              medium: "€200–€299",
+              high: "€300–€499",
+              premium: "€500+"
             }
-          }
+          },
+          consent: "Concordo em ser contatado sobre o coaching e entendo que meus dados serão usados apenas para responder a este contato.",
+          footnote: "Tempo médio de resposta: 24–48h. Sem spam."
+        },
+        newsletter: {
+          title: "Fique Informado Enquanto Aguarda",
+          description: "Enquanto analiso sua mensagem, junte-se a milhares recebendo dicas semanais de treino, nutrição e atualizações exclusivas.",
+          cta: "Assinar newsletter"
+        },
+        trainer: {
+          lead: "Faça parte da nossa rede de treinadores certificados e transforme vidas com coaching baseado em evidências.",
+          qualification: "Requer certificações profissionais",
+          remote: "Trabalhe remotamente com clientes no mundo todo",
+          cta: "Candidatar-se"
         }
       },
       auth: {
@@ -1459,11 +1520,26 @@
           ],
           description: "Como usuario registrado, tienes acceso a descuento especial en todos los planes de larga duración!",
           cta: "Usar Descuento"
+        },
+        discount: {
+          prompt: "¿Tienes un código de descuento?"
+        },
+        group_coaching: {
+          title: "Coaching grupal y corporativo - ¡Próximamente!",
+          subtitle: "Estamos preparando nuevos programas para grupos pequeños y equipos corporativos.",
+          prompt: "¿Quieres acceso anticipado o unirte a la lista de espera?",
+          cta: "Unirme a la lista de espera",
+          footer: "¡Sé el primero en enterarte cuando lancemos estas ofertas!"
+        },
+        post_purchase: {
+          title: "Después de la compra:",
+          schedule: "Agendar consulta",
+          preview: "Ver el primer entrenamiento"
         }
       },
       contact: {
         title: "Contacto",
-        subtitle: "¿Listo para transformarte? Hablemos. Entreno en ES/EN/PT.",
+        subtitle: "Cuéntame tu objetivo. Respondo en 24–48h.",
         form: {
           name: "Tu nombre",
           email: "Tu email",
@@ -1474,7 +1550,7 @@
           experience: "Experiencia en entrenamiento",
           budget: "Presupuesto mensual (opcional)",
           message: "Cuéntame sobre tu situación",
-          submit: "Enviar Mensaje",
+          submit: "Enviar",
           placeholders: {
             name: "Tu nombre",
             email: "tu@ejemplo.com",
@@ -1494,10 +1570,10 @@
             goals: {
               fatLoss: "Pérdida de grasa",
               muscleGain: "Ganancia muscular",
-              recomp: "Recomposición corporal",
+              recomposition: "Recomposición corporal",
               performance: "Rendimiento / Test físico",
-              rehab: "Dolor y Rehabilitación (ej: hombro, lumbar)",
-              general: "Salud general y confianza"
+              rehab: "Dolor y rehabilitación (ej: hombro, lumbar)",
+              health: "Salud general y confianza"
             },
             timeline: {
               short: "4–8 semanas",
@@ -1509,8 +1585,28 @@
               beginner: "Principiante",
               intermediate: "Intermedio",
               advanced: "Avanzado"
+            },
+            budget: {
+              notSay: "Prefiero no decir",
+              low: "€100–€199",
+              medium: "€200–€299",
+              high: "€300–€499",
+              premium: "€500+"
             }
-          }
+          },
+          consent: "Acepto ser contactado sobre el coaching y entiendo que mis datos se usarán solo para responder a esta consulta.",
+          footnote: "Tiempo medio de respuesta: 24–48h. Sin spam."
+        },
+        newsletter: {
+          title: "Mantente Informado Mientras Esperas",
+          description: "Mientras reviso tu mensaje, únete a miles que reciben consejos semanales de entrenamiento, nutrición y novedades exclusivas.",
+          cta: "Unirme al boletín"
+        },
+        trainer: {
+          lead: "Únete a nuestra red de entrenadores certificados y ayuda a transformar vidas con coaching basado en evidencia.",
+          qualification: "Se requieren certificaciones profesionales",
+          remote: "Trabaja de manera remota con clientes globales",
+          cta: "Postularse"
         }
       },
       auth: {

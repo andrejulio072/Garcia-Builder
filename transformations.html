@@ -1,20 +1,20 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Real client body transformations � sustainable fat loss, muscle gain, posture and confidence improvements achieved through personalized online coaching." />
+<meta name="description" content="Real client body transformations - sustainable fat loss, muscle gain, posture and confidence improvements achieved through personalized online coaching." />
 <link rel="canonical" href="https://garciabuilder.fitness/transformations.html" />
 <meta name="robots" content="index,follow,max-image-preview:large" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Body Transformations � Garcia Builder Coaching" />
+<meta property="og:title" content="Body Transformations - Garcia Builder Coaching" />
 <meta property="og:description" content="Before and after progress photos from real clients: fat loss, muscle building, posture fixes and lifestyle change." />
 <meta property="og:url" content="https://garciabuilder.fitness/transformations.html" />
 <meta property="og:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg" />
 <meta property="og:site_name" content="Garcia Builder" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Body Transformations � Garcia Builder" />
+<meta name="twitter:title" content="Body Transformations - Garcia Builder" />
 <meta name="twitter:description" content="Evidence-based online coaching delivering measurable fat loss, muscle gain and confidence improvements." />
 <meta name="twitter:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg" />
-<title>Transformations � Garcia Builder Coaching Results</title>
+<title>Transformations - Garcia Builder Coaching Results</title>
 <!-- Breadcrumb structured data -->
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://garciabuilder.fitness/"},{"@type":"ListItem","position":2,"name":"Transformations","item":"https://garciabuilder.fitness/transformations.html"}]}</script>
 <!-- Gallery / Collection schema -->
@@ -174,6 +174,9 @@
     height: 300px;
     overflow: hidden;
     cursor: zoom-in;
+  border-radius: 18px;
+  border: 1px solid rgba(246,200,78,0.4);
+  box-shadow: 0 18px 35px rgba(0,0,0,0.35);
 }
 
 .before-after-slider {
@@ -181,6 +184,39 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+}
+
+.before-after-slider::before,
+.before-after-slider::after {
+  content: '';
+  position: absolute;
+  bottom: 16px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  backdrop-filter: blur(6px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.before-after-slider::before {
+  content: 'Before';
+  left: 18px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.before-after-slider::after {
+  content: 'After';
+  right: 18px;
+  opacity: 0;
+  transform: translateY(12px);
 }
 
 .before-img, .after-img {
@@ -203,6 +239,31 @@
 
 .transformation-card:hover .before-img {
     transform: scale(1.05);
+}
+
+.transformation-card:hover .before-after-slider::before {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+
+.transformation-card:hover .before-after-slider::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.before-after-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(246,200,78,0.15), transparent 55%),
+        radial-gradient(circle at 80% 80%, rgba(255,107,53,0.15), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.transformation-card:hover .before-after-container::after {
+  opacity: 1;
 }
 
 /* Grid layout fix - cards lado a lado no desktop without gaps */
@@ -400,24 +461,24 @@
   "name": "Client Body Transformations",
   "description": "Collection of real client before and after physique transformation results from Garcia Builder coaching.",
   "itemListElement": [
-    {"@type":"ImageObject","position":1,"contentUrl":"https://garciabuilder.fitness/assets/t1.png","caption":"Client 1 body recomposition: waist reduction and improved posture"},
-    {"@type":"ImageObject","position":2,"contentUrl":"https://garciabuilder.fitness/assets/t2.png","caption":"Client 2 fat loss and lean muscle definition"},
-    {"@type":"ImageObject","position":3,"contentUrl":"https://garciabuilder.fitness/assets/t3.png","caption":"Client 3 physique tightening and muscle gain"},
-    {"@type":"ImageObject","position":4,"contentUrl":"https://garciabuilder.fitness/assets/t4.png","caption":"Client 4 abdominal fat loss and shape improvement"},
-    {"@type":"ImageObject","position":5,"contentUrl":"https://garciabuilder.fitness/assets/t5.jpg","caption":"Client 5 midsection definition and back leanness"},
-    {"@type":"ImageObject","position":6,"contentUrl":"https://garciabuilder.fitness/assets/t6.jpg","caption":"Client 6 posture correction and muscle tone"},
-    {"@type":"ImageObject","position":7,"contentUrl":"https://garciabuilder.fitness/assets/t7.jpg","caption":"Client 7 weight loss and arm definition"},
-    {"@type":"ImageObject","position":8,"contentUrl":"https://garciabuilder.fitness/assets/t8.jpg","caption":"Client 8 leaner torso and waist shape"},
-    {"@type":"ImageObject","position":9,"contentUrl":"https://garciabuilder.fitness/assets/t9.jpg","caption":"Client 9 recomposition results"},
-    {"@type":"ImageObject","position":10,"contentUrl":"https://garciabuilder.fitness/assets/t10.jpg","caption":"Client 10 increased shoulder and back definition"},
-    {"@type":"ImageObject","position":11,"contentUrl":"https://garciabuilder.fitness/assets/t11.jpg","caption":"Client 11 waist slimming and tone"},
-    {"@type":"ImageObject","position":12,"contentUrl":"https://garciabuilder.fitness/assets/t12.jpg","caption":"Client 12 full body slimming and core improvement"},
-    {"@type":"ImageObject","position":13,"contentUrl":"https://garciabuilder.fitness/assets/t13.jpg","caption":"Client 13 muscular development and leanness"},
-    {"@type":"ImageObject","position":14,"contentUrl":"https://garciabuilder.fitness/assets/t14.jpg","caption":"Client 14 torso and core tightening"},
-    {"@type":"ImageObject","position":15,"contentUrl":"https://garciabuilder.fitness/assets/t15.jpg","caption":"Client 15 abdominal definition and posture"},
-    {"@type":"ImageObject","position":16,"contentUrl":"https://garciabuilder.fitness/assets/t16.jpg","caption":"Client 16 lean mass increase with reduced midsection"},
-    {"@type":"ImageObject","position":17,"contentUrl":"https://garciabuilder.fitness/assets/t17.jpg","caption":"Client 17 muscular shape enhancement"},
-    {"@type":"ImageObject","position":18,"contentUrl":"https://garciabuilder.fitness/assets/t18.jpg","caption":"Client 18 overall recomposition and waist taper"}
+  {"@type":"ImageObject","position":1,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t1.png","caption":"Client 1 body recomposition: waist reduction and improved posture"},
+  {"@type":"ImageObject","position":2,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t2.png","caption":"Client 2 fat loss and lean muscle definition"},
+  {"@type":"ImageObject","position":3,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t3.png","caption":"Client 3 physique tightening and muscle gain"},
+  {"@type":"ImageObject","position":4,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t4.png","caption":"Client 4 abdominal fat loss and shape improvement"},
+  {"@type":"ImageObject","position":5,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t5.jpg","caption":"Client 5 midsection definition and back leanness"},
+  {"@type":"ImageObject","position":6,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t6.jpg","caption":"Client 6 posture correction and muscle tone"},
+  {"@type":"ImageObject","position":7,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t7.jpg","caption":"Client 7 weight loss and arm definition"},
+  {"@type":"ImageObject","position":8,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t8.jpg","caption":"Client 8 leaner torso and waist shape"},
+  {"@type":"ImageObject","position":9,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t9.jpg","caption":"Client 9 recomposition results"},
+  {"@type":"ImageObject","position":10,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t10.jpg","caption":"Client 10 increased shoulder and back definition"},
+  {"@type":"ImageObject","position":11,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t11.jpg","caption":"Client 11 waist slimming and tone"},
+  {"@type":"ImageObject","position":12,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t12.jpg","caption":"Client 12 full body slimming and core improvement"},
+  {"@type":"ImageObject","position":13,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t13.jpg","caption":"Client 13 muscular development and leanness"},
+  {"@type":"ImageObject","position":14,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t14.jpg","caption":"Client 14 torso and core tightening"},
+  {"@type":"ImageObject","position":15,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t15.jpg","caption":"Client 15 abdominal definition and posture"},
+  {"@type":"ImageObject","position":16,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t16.jpg","caption":"Client 16 lean mass increase with reduced midsection"},
+  {"@type":"ImageObject","position":17,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t17.jpg","caption":"Client 17 muscular shape enhancement"},
+  {"@type":"ImageObject","position":18,"contentUrl":"https://garciabuilder.fitness/assets/images/transformations/t18.jpg","caption":"Client 18 overall recomposition and waist taper"}
   ]
 }
 </script>
@@ -457,7 +518,7 @@ window.addEventListener('load', function() {
   gtag('config', 'AW-17627402053');
 </script>
 
-<!-- Event snippet for Visualiza��o de p�gina conversion page -->
+<!-- Event snippet for Visualização de página conversion page -->
 <script>
   function gtag_report_conversion(url) {
     var callback = function () {
@@ -485,7 +546,7 @@ window.addEventListener('load', function() {
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <style>
-/* ===== NAVBAR ENHANCED - HAMBURGER SEMPRE VIS�VEL ===== */
+/* ===== NAVBAR ENHANCED - HAMBURGER SEMPRE VISIVEL ===== */
 .gb-navbar {
     position: sticky;
     top: 0;
@@ -507,7 +568,7 @@ window.addEventListener('load', function() {
     gap: 1rem;
 }
 
-/* Logo Section - MAIOR E MAIS VIS�VEL */
+/* Logo Section - MAIOR E MAIS VISIVEL */
 .gb-logo-section {
     display: flex;
     align-items: center;
@@ -537,7 +598,7 @@ window.addEventListener('load', function() {
     white-space: nowrap;
 }
 
-/* Hamburger Button - SEMPRE VIS�VEL */
+/* Hamburger Button - SEMPRE VISIVEL */
 .gb-hamburger {
     background: rgba(246, 200, 78, 0.15);
     border: 1px solid rgba(246, 200, 78, 0.3);
@@ -585,7 +646,7 @@ window.addEventListener('load', function() {
     transform: rotate(-45deg) translate(7px, -7px);
 }
 
-/* Menu Dropdown - OTIMIZADO SEM FLUTUA��O */
+/* Menu Dropdown - OTIMIZADO SEM FLUTUACAO */
 .gb-menu {
     position: fixed;
     top: 92px;
@@ -698,7 +759,7 @@ window.addEventListener('load', function() {
     }
 }
 
-/* Mobile Specific - SEM FLUTUA��O */
+/* Mobile Specific - SEM FLUTUACAO */
 @media (max-width: 768px) {
     .gb-logo-img {
         height: 50px;
@@ -848,7 +909,7 @@ window.addEventListener('load', function() {
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Elena S. (32)" data-story="18 weeks of body recomposition - 8kg lost while building muscle"
-             data-before="assets/t7.jpg" data-after="assets/t7.jpg"
+             data-before="assets/images/transformations/t7.jpg" data-after="assets/images/transformations/t7.jpg"
              data-weight-lost="8" data-timeline="18 weeks" data-age="32">
           <div class="before-after-container">
             <div class="transformation-overlay">-8kg + Muscle</div>
@@ -884,7 +945,7 @@ window.addEventListener('load', function() {
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Tom L. (31)" data-story="Perfect balance - 6kg fat loss with 5% muscle mass increase in 12 weeks"
-             data-before="assets/t8.jpg" data-after="assets/t8.jpg"
+             data-before="assets/images/transformations/t8.jpg" data-after="assets/images/transformations/t8.jpg"
              data-weight-lost="6" data-timeline="12 weeks" data-age="31" data-muscle="+5%">
           <div class="before-after-container">
             <div class="transformation-overlay">-6kg +5% Muscle</div>
@@ -920,7 +981,7 @@ window.addEventListener('load', function() {
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Lisa M. (43)" data-story="8 weeks to summer ready - 5kg transformation"
-             data-before="assets/t9.jpg" data-after="assets/t9.jpg"
+             data-before="assets/images/transformations/t9.jpg" data-after="assets/images/transformations/t9.jpg"
              data-weight-lost="5" data-timeline="8 weeks" data-age="43">
           <div class="before-after-container">
             <div class="transformation-overlay">-5kg in 8w</div>
@@ -956,7 +1017,7 @@ window.addEventListener('load', function() {
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Anna K. (55)" data-story="One year journey - sustainable 10kg transformation at 55"
-             data-before="assets/t10.jpg" data-after="assets/t10.jpg"
+             data-before="assets/images/transformations/t10.jpg" data-after="assets/images/transformations/t10.jpg"
              data-weight-lost="10" data-timeline="1 year" data-age="55">
           <div class="before-after-container">
             <div class="transformation-overlay">-10kg at 55</div>
@@ -992,7 +1053,7 @@ window.addEventListener('load', function() {
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Jessica R. (33)" data-story="Fast and effective - 5kg down in 8 weeks"
-             data-before="assets/t11.jpg" data-after="assets/t11.jpg"
+             data-before="assets/images/transformations/t11.jpg" data-after="assets/images/transformations/t11.jpg"
              data-weight-lost="5" data-timeline="8 weeks" data-age="33">
           <div class="before-after-container">
             <div class="transformation-overlay">-5kg in 8w</div>
@@ -1028,7 +1089,7 @@ window.addEventListener('load', function() {
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Mike S. (22)" data-story="Young and focused - 4kg cut in 8 weeks"
-             data-before="assets/t12.jpg" data-after="assets/t12.jpg"
+             data-before="assets/images/transformations/t12.jpg" data-after="assets/images/transformations/t12.jpg"
              data-weight-lost="4" data-timeline="8 weeks" data-age="22">
           <div class="before-after-container">
             <div class="transformation-overlay">-4kg in 8w</div>
@@ -1061,7 +1122,7 @@ window.addEventListener('load', function() {
       </div>
     </div>
 
-    <!-- Load More Section removido: cards agora s�o renderizados dinamicamente, sem duplicidade. -->
+  <!-- Load More Section removido: cards agora sao renderizados dinamicamente, sem duplicidade. -->
 
     <!-- Load More Button -->
     <div class="text-center mt-5">

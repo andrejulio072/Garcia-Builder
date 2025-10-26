@@ -82,7 +82,7 @@
     gtag('config', 'AW-17627402053');
   </script>
 
-  <!-- Event snippet for Visualiza��o de p�gina conversion page -->
+  <!-- Event snippet for Visualização de página conversion page -->
   <script>
     function gtag_report_conversion(url) {
       var callback = function () {
@@ -117,7 +117,7 @@
 <script src="js/utils/component-loader-v3-simplified.js?v=20251027"></script>
   <script defer src="js/tracking/consent-banner.js"></script>
 
-  <!-- Hardening mobile: n�o altera cores/tema -->
+  <!-- Hardening mobile: nao altera cores/tema -->
   <style id="mobile-safe-overrides">
     html, body { max-width: 100%; overflow-x: hidden; }
     img, video { max-width: 100%; height: auto; display: block; }
@@ -153,7 +153,7 @@ window.addEventListener('load', function() {
 
   <!-- NAV -->
   <style>
-/* ===== NAVBAR ENHANCED - HAMBURGER SEMPRE VIS�VEL ===== */
+/* ===== NAVBAR ENHANCED - HAMBURGER SEMPRE VISIVEL ===== */
 .gb-navbar {
     position: sticky;
     top: 0;
@@ -175,7 +175,7 @@ window.addEventListener('load', function() {
     gap: 1rem;
 }
 
-/* Logo Section - MAIOR E MAIS VIS�VEL */
+/* Logo Section - MAIOR E MAIS VISIVEL */
 .gb-logo-section {
     display: flex;
     align-items: center;
@@ -205,7 +205,7 @@ window.addEventListener('load', function() {
     white-space: nowrap;
 }
 
-/* Hamburger Button - SEMPRE VIS�VEL */
+/* Hamburger Button - SEMPRE VISIVEL */
 .gb-hamburger {
     background: rgba(246, 200, 78, 0.15);
     border: 1px solid rgba(246, 200, 78, 0.3);
@@ -253,7 +253,7 @@ window.addEventListener('load', function() {
     transform: rotate(-45deg) translate(7px, -7px);
 }
 
-/* Menu Dropdown - OTIMIZADO SEM FLUTUA��O */
+/* Menu Dropdown - OTIMIZADO SEM FLUTUACAO */
 .gb-menu {
     position: fixed;
     top: 92px;
@@ -366,7 +366,7 @@ window.addEventListener('load', function() {
     }
 }
 
-/* Mobile Specific - SEM FLUTUA��O */
+/* Mobile Specific - SEM FLUTUACAO */
 @media (max-width: 768px) {
     .gb-logo-img {
         height: 50px;
@@ -446,11 +446,10 @@ window.addEventListener('load', function() {
 
   <!-- CONTACT -->
   <section id="contact" class="section has-bg contact-bg"
-         style="--bg: url('assets/bg-contact.jpg'); --bg-pos: center center; --bg-overlay: rgba(6,10,18,.72); background: linear-gradient(180deg, rgba(0,0,0,.35), transparent 22%), url('assets/bg-contact.jpg') !important; background-size: cover !important; background-position: center center !important; background-repeat: no-repeat !important; min-height: 100vh;">
+         style="--bg: url('assets/images/hero/bg-contact.jpg'); --bg-pos: center center; --bg-overlay: rgba(6,10,18,.72); background: linear-gradient(180deg, rgba(0,0,0,.35), transparent 22%), url('assets/images/hero/bg-contact.jpg') !important; background-size: cover !important; background-position: center center !important; background-repeat: no-repeat !important; min-height: 100vh;">
     <div class="container">
       <h1 class="title-gradient text-glow" data-i18n="contact.title">Contact</h1>
-      <p class="page-subtitle text-readable" data-i18n="contact.subtitle">
-Tell me about your goal. I�ll get back within 24�48h.</p>
+  <p class="page-subtitle text-readable" data-i18n="contact.subtitle">Tell me about your goal. I'll get back within 24-48h.</p>
 
   <form id="contact-form"
             action="https://formspree.io/f/mldpgrwq"
@@ -516,9 +515,9 @@ Tell me about your goal. I�ll get back within 24�48h.</p>
             <label for="timeline" class="form-label" data-i18n="contact.form.timeline">Target timeline</label>
             <select id="timeline" name="timeline" class="form-select" required>
               <option value="" disabled selected data-i18n="contact.form.placeholders.selectTimeline">Select</option>
-              <option data-i18n="contact.form.options.timeline.short">4�8 weeks</option>
-              <option data-i18n="contact.form.options.timeline.medium">8�12 weeks</option>
-              <option data-i18n="contact.form.options.timeline.long">3�6 months</option>
+              <option data-i18n="contact.form.options.timeline.short">4-8 weeks</option>
+              <option data-i18n="contact.form.options.timeline.medium">8-12 weeks</option>
+              <option data-i18n="contact.form.options.timeline.long">3-6 months</option>
               <option data-i18n="contact.form.options.timeline.extended">6+ months</option>
             </select>
           </div>
@@ -539,10 +538,10 @@ Tell me about your goal. I�ll get back within 24�48h.</p>
             <label for="budget" class="form-label" data-i18n="contact.form.budget">Monthly budget (optional)</label>
             <select id="budget" name="budget" class="form-select">
               <option value="" selected data-i18n="contact.form.options.budget.notSay">Prefer not to say</option>
-              <option data-i18n="contact.form.options.budget.low">�100��199</option>
-              <option data-i18n="contact.form.options.budget.medium">�200��299</option>
-              <option data-i18n="contact.form.options.budget.high">�300��499</option>
-              <option data-i18n="contact.form.options.budget.premium">�500+</option>
+              <option data-i18n="contact.form.options.budget.low">GBP 100-199</option>
+              <option data-i18n="contact.form.options.budget.medium">GBP 200-299</option>
+              <option data-i18n="contact.form.options.budget.high">GBP 300-499</option>
+              <option data-i18n="contact.form.options.budget.premium">GBP 500+</option>
             </select>
           </div>
         </div>
@@ -568,14 +567,14 @@ Tell me about your goal. I�ll get back within 24�48h.</p>
         <input type="hidden" name="_subject" value="New inquiry via Garcia Builder">
         <input type="hidden" name="source" value="garcia-builder.github.io">
 
-        <button id="sendBtn" type="submit" class="btn btn-gradient w-100 mt-4"
-                data-default="Send" data-loading="Sending�" data-i18n="contact.form.submit">
-          Send
+  <button id="sendBtn" type="submit" class="btn btn-gradient w-100 mt-4"
+    data-default="Send" data-loading="Sending...">
+    <span data-i18n="contact.form.submit">Send</span>
           <span class="spinner" aria-hidden="true"></span>
         </button>
 
         <p class="form-footnote text-center mt-3" data-i18n="contact.form.footnote">
-          Average reply time: 24�48h. No spam, ever.
+    Average reply time: 24-48h. No spam, ever.
         </p>
       </form>
     </div>
@@ -586,11 +585,8 @@ Tell me about your goal. I�ll get back within 24�48h.</p>
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-8 text-center">
-          <h2 class="newsletter-title">Stay Informed While You Wait</h2>
-          <p class="newsletter-description">
-            While I review your inquiry, why not join thousands of people getting weekly training tips,
-            nutrition insights, and exclusive content? You'll be first to know about new programs and special offers.
-          </p>
+          <h2 class="newsletter-title" data-i18n="contact.newsletter.title">Stay Informed While You Wait</h2>
+          <p class="newsletter-description" data-i18n="contact.newsletter.description">While I review your inquiry, join thousands getting weekly training tips, nutrition insights, and exclusive updates.</p>
 
           <form class="newsletter-form contact-newsletter-form" id="contactNewsletterForm">
             <div class="newsletter-input-group">
@@ -654,25 +650,23 @@ Tell me about your goal. I�ll get back within 24�48h.</p>
       <div class="row justify-content-center text-center">
         <div class="col-lg-8">
           <h2 class="title-gradient mb-3" data-i18n="dashboard.trainer_recruitment_title">Are You a Personal Trainer?</h2>
-          <p class="lead mb-4" style="color: #cfd2d6;">
-            Join our growing network of certified trainers and help transform lives with evidence-based coaching methods.
-          </p>
+          <p class="lead mb-4" style="color: #cfd2d6;" data-i18n="contact.trainer.lead">Join our growing network of certified trainers and help transform lives with evidence-based coaching.</p>
           <div class="row g-3 mb-4">
             <div class="col-md-6">
               <div class="d-flex align-items-center justify-content-center justify-content-md-start">
                 <i class="fas fa-certificate text-warning me-2"></i>
-                <span class="text-white">Professional Qualifications Required</span>
+                <span class="text-white" data-i18n="contact.trainer.qualification">Professional qualifications required</span>
               </div>
             </div>
             <div class="col-md-6">
               <div class="d-flex align-items-center justify-content-center justify-content-md-start">
                 <i class="fas fa-globe text-warning me-2"></i>
-                <span class="text-white">Work Remotely with Global Clients</span>
+                <span class="text-white" data-i18n="contact.trainer.remote">Work remotely with global clients</span>
               </div>
             </div>
           </div>
-          <a href="become-trainer.html" class="btn btn-warning btn-lg px-4 py-3">
-            <i class="fas fa-user-plus me-2"></i>Apply Now
+          <a href="pages/public/become-trainer.html" class="btn btn-warning btn-lg px-4 py-3">
+            <i class="fas fa-user-plus me-2" aria-hidden="true"></i><span data-i18n="contact.trainer.cta">Apply Now</span>
           </a>
         </div>
       </div>
@@ -685,5 +679,10 @@ Tell me about your goal. I�ll get back within 24�48h.</p>
 
 <!-- Footer Component -->
 <div data-component="footer"></div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script defer src="js/components/app.js"></script>
+<script defer src="js/components/contact-form-enhanced.js"></script>
+<script defer src="js/tracking/engagement-tracking.js"></script>
 
 </body></html>

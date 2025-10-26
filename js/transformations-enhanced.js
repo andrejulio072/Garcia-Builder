@@ -16,6 +16,7 @@ class TransformationsManager {
         this.bindEvents();
         this.animateStats();
         this.initializeFilters();
+        this.enhanceBeforeAfter();
         this.setupModal();
         console.log('🎯 Enhanced Transformations System Initialized');
     }
@@ -49,6 +50,32 @@ class TransformationsManager {
 
         // Intersection Observer for animations
         this.setupScrollAnimations();
+    }
+
+    enhanceBeforeAfter() {
+        const cards = document.querySelectorAll('.transformation-card');
+        cards.forEach((card) => {
+            const slider = card.querySelector('.before-after-slider');
+            const beforeImg = slider?.querySelector('.before-img');
+            if (!slider || !beforeImg) return;
+
+            beforeImg.loading = 'lazy';
+            beforeImg.decoding = 'async';
+
+            if (card.dataset.before) {
+                beforeImg.src = card.dataset.before;
+            }
+
+            const afterSrc = card.dataset.after;
+            if (afterSrc && !slider.querySelector('.after-img')) {
+                const afterImg = beforeImg.cloneNode(true);
+                afterImg.classList.remove('before-img');
+                afterImg.classList.add('after-img');
+                afterImg.src = afterSrc;
+                afterImg.alt = `${card.dataset.client || 'Client'} after progress`;
+                slider.appendChild(afterImg);
+            }
+        });
     }
 
     // Animate statistics counter

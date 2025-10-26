@@ -271,8 +271,8 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(11, 18, 32, 0.95) 0%, rgba(0, 0, 0, 0.85) 100%),
-              url('../assets/hero.jpg') center/cover no-repeat;
+    background: linear-gradient(135deg, rgba(11, 18, 32, 0.95) 0%, rgba(0, 0, 0, 0.85) 100%),
+                            url('../../assets/images/hero/hero.jpg') center/cover no-repeat;
   background-attachment: fixed;
   padding: 120px 20px 80px;
   margin: 0;

@@ -733,7 +733,7 @@ function setupOAuthButtons() {
             e.stopPropagation();
             e.stopImmediatePropagation();
 
-            console.log('� CLIQUE NO GOOGLE - INICIANDO OAUTH');
+            console.log('CLIQUE NO GOOGLE - INICIANDO OAUTH');
 
             try {
                 newBtn.disabled = true;
@@ -786,7 +786,7 @@ function setupOAuthButtons() {
             e.stopPropagation();
             e.stopImmediatePropagation();
 
-            console.log('� CLIQUE NO FACEBOOK - INICIANDO OAUTH');
+            console.log('CLIQUE NO FACEBOOK - INICIANDO OAUTH');
 
             try {
                 newBtn.disabled = true;

@@ -639,7 +639,7 @@ app.get('/api/session/:sessionId', validateStripeReady, async (req, res) => {
     }
 });
 
-// � STRIPE WEBHOOK (validação de assinatura)
+// STRIPE WEBHOOK (validação de assinatura)
 // Importante: usamos req.rawBody (definido no express.json verify) para validar a assinatura
 app.post('/api/stripe-webhook', async (req, res) => {
     if (!isStripeReady) {
@@ -732,7 +732,7 @@ app.post('/api/stripe-webhook', async (req, res) => {
                             console.log('📊 GA4 MP purchase sent:', transactionId, t.slice(0,120));
                         }).catch(err => console.warn('GA4 MP error:', err.message));
                     } else {
-                        console.log('ℹ️ GA4_MEASUREMENT_ID or GA4_API_SECRET missing – skipping GA4 server event');
+                        console.log('ℹ️ GA4_MEASUREMENT_ID or GA4_API_SECRET missing - skipping GA4 server event');
                     }
 
                     // Meta Conversions API (optional)
@@ -767,7 +767,7 @@ app.post('/api/stripe-webhook', async (req, res) => {
                             console.log('📈 Meta CAPI purchase sent:', transactionId, JSON.stringify(j).slice(0,500));
                         }).catch(err => console.warn('Meta CAPI error:', err.message));
                     } else {
-                        console.log('ℹ️ META_PIXEL_ID or META_CAPI_TOKEN missing – skipping Meta CAPI');
+                        console.log('ℹ️ META_PIXEL_ID or META_CAPI_TOKEN missing - skipping Meta CAPI');
                     }
                 } catch (attribErr) {
                     console.warn('⚠️ Attribution dispatch failed:', attribErr.message);
@@ -823,7 +823,7 @@ app.post('/api/stripe-webhook', async (req, res) => {
     }
 });
 
-// �🚫 404 Handler
+// 🚫 404 Handler
 app.use('*', (req, res) => {
     res.status(404).json({
         error: 'Not Found',

@@ -28,6 +28,7 @@ html, body {
     top: 0;
     z-index: 1000;
     background: rgba(9, 14, 24, 0.95);
+    -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(246, 200, 78, 0.2);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
@@ -130,6 +131,7 @@ html, body {
     width: clamp(280px, 90vw, 360px);
     height: 100vh;
     background: linear-gradient(135deg, #0b1220 0%, #060a12 100%);
+    -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     box-shadow: -16px 0 32px rgba(0, 0, 0, 0.55);
     border-left: 1px solid rgba(246, 200, 78, 0.15);

@@ -1153,3 +1153,20 @@
     padding: 16px;
   }
 }
+ 
+ / *   F o o t e r   C o m p o n e n t   I n l i n e   S t y l e   F i x e s   * /  
+ .gb-footer-brand-col img[data-gb-logo-src] {
+    margin-bottom: 10px;
+}
+
+.footer-bio-ref {
+    margin-bottom: 8px;
+}
+
+.footer-contact-ref {
+    margin-top: 14px;
+}
+
+.gb-footer-col ul {
+    margin-top: 2px;
+}

@@ -1070,3 +1070,48 @@ section#contact.section.has-bg.contact-bg {
     gap: 1rem;
   }
 }
+/* Pricing Page Inline Style Fixes */
+.crown-icon i.fa-crown {
+    font-size: 2.5rem;
+    color: var(--gold);
+}
+
+.member-discount .tag span {
+    font-size: 16px;
+}
+
+.alert-warning.group-coaching-alert {
+    max-width: 700px;
+    margin: 40px auto 24px auto;
+    font-size: 1.15rem;
+}
+
+.group-coaching-alert span.prompt {
+    font-size: 1rem;
+}
+
+.group-coaching-alert span.footer-note {
+    font-size: 0.95rem;
+    opacity: 0.8;
+}
+
+.discount-form {
+    margin-top: 1rem;
+}
+
+.pricing-protection-alert {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #e9ecef;
+}
+
+#discount-form {
+    display: none;
+}
+
+/* About Page Inline Style Fixes */
+.about-trainer-benefits i.fa-certificate,
+.about-trainer-benefits i.fa-users,
+.about-trainer-benefits i.fa-globe {
+    font-size: 2.5rem;
+}

@@ -427,6 +427,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     top: 0;
     z-index: 1000;
     background: rgba(9, 14, 24, 0.95);
+    -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(246, 200, 78, 0.2);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
@@ -528,6 +529,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     left: 0;
     right: 0;
     background: rgba(15, 15, 15, 0.98);
+  -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   border-bottom: 0;
     max-height: 0;
@@ -755,10 +757,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="price member-discount reveal" data-tilt data-tilt-max="4" data-tilt-speed="500">
         <span class="save">15% OFF</span>
         <div class="crown-icon">
-          <i class="fas fa-crown" style="font-size: 2.5rem; color: var(--gold);"></i>
+          <i class="fas fa-crown"></i>
         </div>
         <h3 data-i18n="pricing.member_discount.title">Exclusive Member Discount</h3>
-        <div class="tag">15%<span style="font-size:16px" data-i18n="pricing.member_discount.discount"> discount</span></div>
+        <div class="tag">15%<span data-i18n="pricing.member_discount.discount"> discount</span></div>
         <ul>
           <li data-i18n="pricing.member_discount.features.0">Valid on 3+ month plans</li>
           <li><span data-i18n="pricing.member_discount.features.1">Code: <strong>MEMBER15</strong></span></li>
@@ -771,12 +773,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- Group & Corporate Coaching Coming Soon -->
     <div class="mt-5" id="group-corporate-coaching">
-      <div class="alert alert-warning text-center" style="max-width:700px;margin:40px auto 24px auto;font-size:1.15rem;">
+      <div class="alert alert-warning text-center group-coaching-alert">
         <strong data-i18n="pricing.group_coaching.title">Group & Corporate Coaching - Coming Soon!</strong><br>
         <span data-i18n="pricing.group_coaching.subtitle">We're preparing new programs for small groups and corporate teams.</span><br>
-        <span style="font-size:1rem;" data-i18n="pricing.group_coaching.prompt">Want early access or to join the waitlist?</span><br>
+        <span class="prompt" data-i18n="pricing.group_coaching.prompt">Want early access or to join the waitlist?</span><br>
         <a href="mailto:andrenjulio072@gmail.com?subject=Group%20or%20Corporate%20Coaching%20Waitlist" class="btn btn-gold mt-2" data-i18n="pricing.group_coaching.cta">Join Waitlist</a>
-        <br><span style="font-size:0.95rem;opacity:0.8;" data-i18n="pricing.group_coaching.footer">Be the first to know when these offers launch!</span>
+        <br><span class="footer-note" data-i18n="pricing.group_coaching.footer">Be the first to know when these offers launch!</span>
       </div>
     </div>
   </div>
@@ -788,7 +790,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button class="btn btn-outline-light" id="show-discount-form" type="button">
           <span data-i18n="pricing.discount.prompt">Have a discount code?</span>
         </button>
-        <div class="discount-form mt-3" id="discount-form" style="display: none;">
+        <div class="discount-form mt-3" id="discount-form">
           <div class="row justify-content-center">
             <div class="col-12 col-md-6 col-lg-4">
               <div class="input-group">
@@ -803,7 +805,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </section>
 <hr class="hr-shine">
-<a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" onclick="return gtag_report_conversion(this.href)">WhatsApp</a>
+<a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener noreferrer" onclick="return gtag_report_conversion(this.href)">WhatsApp</a>
 
 <style>
 /* Period Selector Styles */
@@ -813,6 +815,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.1) 100%);
   border-radius: 20px;
   border: 1px solid rgba(255,255,255,0.1);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
@@ -1085,7 +1088,7 @@ document.addEventListener('change', function(e) {
 <script defer src="js/tracking/engagement-tracking.js"></script>
 
 <section class="container my-4" id="post-purchase-cta">
-  <div class="alert alert-dark" role="alert" style="background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#e9ecef;">
+  <div class="alert alert-dark pricing-protection-alert" role="alert">
     <div class="d-flex flex-wrap align-items-center">
       <div class="me-3 mb-2">
         <i class="fas fa-flag-checkered text-warning me-2" aria-hidden="true"></i>

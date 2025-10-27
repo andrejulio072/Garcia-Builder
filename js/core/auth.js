@@ -719,133 +719,130 @@ function setupSocialLogin() {
 }
 
 function setupOAuthButtons() {
-    // URLs de redirecionamento
+    // URLs de redirecionamento conforme documentação Supabase
     const currentHost = window.location.origin;
     const isLocal = currentHost.includes('localhost') || currentHost.includes('127.0.0.1');
-    // Prefer configured PUBLIC_SITE_URL from env-config.json when available
+    
+    // Usar PUBLIC_SITE_URL do env-config.json quando disponível (produção)
     const siteUrl = (window.__ENV && typeof window.__ENV.PUBLIC_SITE_URL === 'string' && window.__ENV.PUBLIC_SITE_URL)
         ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
         : null;
+    
+    // Para páginas em subpasta (GitHub Pages), construir URL completa com /pages/auth/
+    const currentPath = window.location.pathname;
+    const isInAuthFolder = currentPath.includes('/pages/auth/');
+    
+    // Redirect para a raiz ou para dashboard dependendo do contexto
     const redirectTo = isLocal
-        ? `${currentHost}/dashboard.html`
-        : (siteUrl ? `${siteUrl}/dashboard.html` : `https://andrejulio072.github.io/Garcia-Builder/dashboard.html`);
+        ? `${currentHost}/pages/auth/login.html` // Local: caminho relativo
+        : (siteUrl 
+            ? `${siteUrl}/pages/auth/login.html` // Produção: com PUBLIC_SITE_URL
+            : `https://andrejulio072.github.io/Garcia-Builder/pages/auth/login.html`); // Fallback GitHub Pages
 
-    console.log('🔗 OAuth redirect URL:', redirectTo);
+    console.log('🔗 OAuth redirect URL configurada:', redirectTo);
 
-    // GOOGLE OAUTH - COMPLETAMENTE INDEPENDENTE
+    // GOOGLE OAUTH - Seguindo documentação oficial
     const setupGoogleButton = (btnId) => {
         const btn = document.getElementById(btnId);
         if (!btn) return;
 
         console.log(`🔵 Configurando botão Google: ${btnId}`);
 
-        // Remover todos os listeners existentes
-        btn.replaceWith(btn.cloneNode(true));
-        const newBtn = document.getElementById(btnId);
+        // Limpar listeners anteriores
+        const newBtn = btn.cloneNode(true);
+        btn.replaceWith(newBtn);
 
         newBtn.addEventListener('click', async (e) => {
             e.preventDefault();
             e.stopPropagation();
-            e.stopImmediatePropagation();
 
-            console.log('CLIQUE NO GOOGLE - INICIANDO OAUTH');
+            console.log('🚀 Iniciando Google OAuth...');
 
             try {
                 newBtn.disabled = true;
-                newBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Redirecionando para Google...';
+                newBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando ao Google...';
 
+                // Chamada OAuth conforme documentação Supabase v2
+                // SEM skipBrowserRedirect - deixa o Supabase redirecionar automaticamente
                 const { data, error } = await window.supabaseClient.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
                         redirectTo: redirectTo,
-                        skipBrowserRedirect: true,
                         queryParams: {
                             access_type: 'offline',
-                            prompt: 'select_account'
+                            prompt: 'consent'
                         }
                     }
                 });
 
                 if (error) {
-                    console.error('❌ Erro Google OAuth:', error);
+                    console.error('❌ Erro ao iniciar Google OAuth:', error);
                     throw error;
                 }
 
-                // Garantir redirecionamento manual se a SDK não fizer automaticamente
-                if (data && data.url) {
-                    window.location.href = data.url;
-                }
-
-                console.log('✅ Google OAuth iniciado com sucesso!');
+                // Se chegou aqui sem erro, o Supabase já redirecionou
+                console.log('✅ Redirecionamento Google iniciado');
 
             } catch (error) {
                 console.error('❌ Falha no Google OAuth:', error);
-                showAuthMessage(`Erro no login Google: ${error.message}`, 'danger');
+                showAuthMessage(`Erro ao conectar com Google: ${error.message}`, 'danger');
                 newBtn.disabled = false;
                 newBtn.innerHTML = '<i class="fab fa-google me-2"></i>Continuar com Google';
             }
         });
     };
 
-    // Configurar todos os botões Google
-    setupGoogleButton('google-btn-login');
-    setupGoogleButton('google-btn-register');
-
-    // FACEBOOK OAUTH - COMPLETAMENTE INDEPENDENTE
+    // FACEBOOK OAUTH - Seguindo documentação oficial
     const setupFacebookButton = (btnId) => {
         const btn = document.getElementById(btnId);
         if (!btn) return;
 
         console.log(`🔷 Configurando botão Facebook: ${btnId}`);
 
-        // Remover todos os listeners existentes
-        btn.replaceWith(btn.cloneNode(true));
-        const newBtn = document.getElementById(btnId);
+        // Limpar listeners anteriores
+        const newBtn = btn.cloneNode(true);
+        btn.replaceWith(newBtn);
 
         newBtn.addEventListener('click', async (e) => {
             e.preventDefault();
             e.stopPropagation();
-            e.stopImmediatePropagation();
 
-            console.log('CLIQUE NO FACEBOOK - INICIANDO OAUTH');
+            console.log('🚀 Iniciando Facebook OAuth...');
 
             try {
                 newBtn.disabled = true;
-                newBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Redirecionando para Facebook...';
+                newBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando ao Facebook...';
 
+                // Chamada OAuth conforme documentação Supabase v2
+                // SEM skipBrowserRedirect - deixa o Supabase redirecionar automaticamente
                 const { data, error } = await window.supabaseClient.auth.signInWithOAuth({
                     provider: 'facebook',
                     options: {
                         redirectTo: redirectTo,
-                        skipBrowserRedirect: true,
-                        queryParams: {
-                            scope: 'email'
-                        }
+                        scopes: 'email'
                     }
                 });
 
                 if (error) {
-                    console.error('❌ Erro Facebook OAuth:', error);
+                    console.error('❌ Erro ao iniciar Facebook OAuth:', error);
                     throw error;
                 }
 
-                // Garantir redirecionamento manual se a SDK não fizer automaticamente
-                if (data && data.url) {
-                    window.location.href = data.url;
-                }
-
-                console.log('✅ Facebook OAuth iniciado com sucesso!');
+                // Se chegou aqui sem erro, o Supabase já redirecionou
+                console.log('✅ Redirecionamento Facebook iniciado');
 
             } catch (error) {
                 console.error('❌ Falha no Facebook OAuth:', error);
-                showAuthMessage(`Erro no login Facebook: ${error.message}`, 'danger');
+                showAuthMessage(`Erro ao conectar com Facebook: ${error.message}`, 'danger');
                 newBtn.disabled = false;
                 newBtn.innerHTML = '<i class="fab fa-facebook-f me-2"></i>Continuar com Facebook';
             }
         });
     };
 
-    // Configurar todos os botões Facebook
+    // Configurar todos os botões Google e Facebook
+    setupGoogleButton('google-btn-login');
+    setupGoogleButton('google-btn-register');
     setupFacebookButton('facebook-btn-login');
     setupFacebookButton('facebook-btn-register');
 }
@@ -885,6 +882,15 @@ document.addEventListener('DOMContentLoaded', () => {
     (async () => {
         try {
             if (window.supabaseClient && window.supabaseClient.auth) {
+                // Verificar se há tokens OAuth na URL (retorno de Google/Facebook)
+                const hashParams = new URLSearchParams(window.location.hash.substring(1));
+                const hasOAuthTokens = hashParams.has('access_token') || hashParams.has('error');
+                
+                if (hasOAuthTokens) {
+                    console.log('🔐 Processando retorno OAuth...');
+                    showAuthMessage('Processando login...', 'info');
+                }
+                
                 const { data } = await window.supabaseClient.auth.getUser();
                 const u = data?.user;
                 if (u) {
@@ -901,6 +907,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Listen for auth state changes (OAuth redirects, logout in other tabs)
                 window.supabaseClient.auth.onAuthStateChange(async (event, session) => {
+                    console.log(`🔔 Auth state changed: ${event}`, session?.user?.email || 'no user');
+                    
                     try {
                         if (event === 'SIGNED_IN' && session?.user) {
                             const su = session.user;
@@ -913,6 +921,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 lastLogin: new Date().toISOString()
                             };
                             localStorage.setItem('gb_current_user', JSON.stringify(norm));
+                            
                             // Ensure user profile is upserted in Supabase after OAuth/social login
                             try {
                                 await window.supabaseClient
@@ -927,6 +936,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             } catch (e) {
                                 console.warn('Profile upsert (OAuth) skipped:', e?.message || e);
                             }
+                            
                             // OAuth / external provider tracking
                             try {
                                 window.dataLayer = window.dataLayer || [];
@@ -951,10 +961,27 @@ document.addEventListener('DOMContentLoaded', () => {
                                 }
                             } catch(oauthErr){ console.warn('OAuth tracking failed', oauthErr); }
 
-                            // If on login page, redirect to intended destination
+                            // Se estiver na página de login E houver hash de OAuth na URL, redirecionar
                             if (window.location.pathname.includes('login.html')) {
-                                const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'index.html';
-                                window.location.replace(redirectUrl);
+                                console.log('✅ Login OAuth bem-sucedido! Redirecionando para dashboard...');
+                                
+                                // Verificar se há pagamento pendente
+                                const pendingPayment = localStorage.getItem('pendingPayment');
+                                if (pendingPayment) {
+                                    const paymentData = JSON.parse(pendingPayment);
+                                    localStorage.removeItem('pendingPayment');
+                                    localStorage.setItem('userEmail', norm.email);
+                                    setTimeout(() => {
+                                        window.location.href = `../../pricing.html?auto-pay=${paymentData.planKey}`;
+                                    }, 1000);
+                                    return;
+                                }
+                                
+                                // Redirecionar para dashboard ou URL solicitada
+                                const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || '../../dashboard.html';
+                                setTimeout(() => {
+                                    window.location.href = redirectUrl;
+                                }, 1000);
                             }
                         }
                         if (event === 'SIGNED_OUT') {

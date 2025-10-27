@@ -290,14 +290,17 @@ class TransformationsManager {
             } else {
                 loadMoreBtn.style.display = 'inline-block';
                 loadMoreBtn.disabled = true;
-                loadMoreBtn.innerHTML = '<i class="fas fa-check me-2"></i>All Transformations Loaded';
+                const loaded = this.t('transformations.loadMore.loaded', 'All Transformations Loaded');
+                loadMoreBtn.innerHTML = `<i class="fas fa-check me-2"></i>${loaded}`;
             }
         } else {
             loadMoreBtn.style.display = 'inline-block';
             loadMoreBtn.disabled = false;
+            const remaining = filteredItems.length - visibleItems;
+            const label = this.t('transformations.loadMore.remaining', 'Load More ({remaining} remaining)', { remaining });
             loadMoreBtn.innerHTML = `
                 <i class="fas fa-plus me-2"></i>
-                Load More (${filteredItems.length - visibleItems} remaining)
+                ${label}
             `;
         }
     }
@@ -336,20 +339,23 @@ class TransformationsManager {
         const afterImg = card.dataset.after;
         const timeline = card.dataset.timeline;
 
-        // Update modal content
-        document.getElementById('modalClientName').textContent = clientName + "'s Transformation";
-        document.getElementById('modalStory').textContent = story;
+    // Update modal content (i18n aware)
+    const titleSuffix = this.t('transformations.modal.titleSuffix', "'s Transformation");
+    document.getElementById('modalClientName').textContent = `${clientName}${titleSuffix}`;
+    document.getElementById('modalStory').textContent = story;
 
         // Create before/after comparison
         const comparison = document.getElementById('modalComparison');
+        const beforeLabel = this.t('transformations.modal.before', 'Before');
+        const afterLabel = this.t('transformations.modal.after', 'After');
         comparison.innerHTML = `
             <div class="comparison-item">
-                <img src="${beforeImg}" alt="Before" class="comparison-img">
-                <div class="comparison-label">Before</div>
+                <img src="${beforeImg}" alt="${beforeLabel}" class="comparison-img">
+                <div class="comparison-label">${beforeLabel}</div>
             </div>
             <div class="comparison-item">
-                <img src="${afterImg}" alt="After" class="comparison-img">
-                <div class="comparison-label">After</div>
+                <img src="${afterImg}" alt="${afterLabel}" class="comparison-img">
+                <div class="comparison-label">${afterLabel}</div>
             </div>
         `;
 
@@ -360,64 +366,79 @@ class TransformationsManager {
 
     // Generate stats HTML for modal
     generateModalStats(card) {
-        let statsHTML = `<div class="mb-4"><strong><i class="fas fa-clock text-warning me-2"></i>Timeline:</strong> ${card.dataset.timeline}</div>`;
+    const timelineLabel = this.t('transformations.modal.timeline', 'Timeline');
+    let statsHTML = `<div class=\"mb-4\"><strong><i class=\"fas fa-clock text-warning me-2\"></i>${timelineLabel}:</strong> ${card.dataset.timeline}</div>`;
 
         // Basic transformation stats
-        let basicStats = '<div class="row mb-4"><div class="col-12"><h6 class="text-warning mb-3"><i class="fas fa-chart-bar me-2"></i>Transformation Results</h6></div>';
+    const resultsTitle = this.t('transformations.modal.results', 'Transformation Results');
+    let basicStats = `<div class=\"row mb-4\"><div class=\"col-12\"><h6 class=\"text-warning mb-3\"><i class=\"fas fa-chart-bar me-2\"></i>${resultsTitle}</h6></div>`;
 
+        const ageLabel = this.t('transformations.modal.age', 'Age');
+        const weightLostLabel = this.t('transformations.modal.weightLost', 'Weight Lost');
+        const bodyFatLabel = this.t('transformations.modal.bodyFat', 'Body Fat');
+        const muscleLabel = this.t('transformations.modal.muscle', 'Muscle');
         if (card.dataset.age) {
-            basicStats += `<div class="col-6 mb-2"><i class="fas fa-birthday-cake text-warning me-2"></i>Age: ${card.dataset.age}</div>`;
+            basicStats += `<div class=\"col-6 mb-2\"><i class=\"fas fa-birthday-cake text-warning me-2\"></i>${ageLabel}: ${card.dataset.age}</div>`;
         }
         if (card.dataset.weightLost) {
-            basicStats += `<div class="col-6 mb-2"><i class="fas fa-weight text-warning me-2"></i>Weight Lost: ${card.dataset.weightLost}kg</div>`;
+            basicStats += `<div class=\"col-6 mb-2\"><i class=\"fas fa-weight text-warning me-2\"></i>${weightLostLabel}: ${card.dataset.weightLost}kg</div>`;
         }
         if (card.dataset.bodyFat) {
-            basicStats += `<div class="col-6 mb-2"><i class="fas fa-chart-line text-warning me-2"></i>Body Fat: ${card.dataset.bodyFat}</div>`;
+            basicStats += `<div class=\"col-6 mb-2\"><i class=\"fas fa-chart-line text-warning me-2\"></i>${bodyFatLabel}: ${card.dataset.bodyFat}</div>`;
         }
         if (card.dataset.muscle) {
-            basicStats += `<div class="col-6 mb-2"><i class="fas fa-dumbbell text-warning me-2"></i>Muscle: ${card.dataset.muscle}</div>`;
+            basicStats += `<div class=\"col-6 mb-2\"><i class=\"fas fa-dumbbell text-warning me-2\"></i>${muscleLabel}: ${card.dataset.muscle}</div>`;
         }
         basicStats += '</div>';
 
         // Performance Achievements Section
-        let achievementsHTML = '<div class="row mb-4"><div class="col-12"><h6 class="text-warning mb-3"><i class="fas fa-trophy me-2"></i>Performance Achievements</h6></div>';
+    const achievementsTitle = this.t('transformations.modal.achievements', 'Performance Achievements');
+    let achievementsHTML = `<div class=\"row mb-4\"><div class=\"col-12\"><h6 class=\"text-warning mb-3\"><i class=\"fas fa-trophy me-2\"></i>${achievementsTitle}</h6></div>`;
         let hasAchievements = false;
 
         // Strength Achievements
+        const squatLabel = this.t('transformations.modal.squat', 'Squat');
+        const deadliftLabel = this.t('transformations.modal.deadlift', 'Deadlift');
+        const benchLabel = this.t('transformations.modal.bench', 'Bench Press');
         if (card.dataset.squat) {
-            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-medal text-gold me-2"></i><strong>Squat:</strong> ${card.dataset.squat}</div></div>`;
+            achievementsHTML += `<div class=\"col-6 mb-2\"><div class=\"achievement-item\"><i class=\"fas fa-medal text-gold me-2\"></i><strong>${squatLabel}:</strong> ${card.dataset.squat}</div></div>`;
             hasAchievements = true;
         }
         if (card.dataset.deadlift) {
-            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-medal text-gold me-2"></i><strong>Deadlift:</strong> ${card.dataset.deadlift}</div></div>`;
+            achievementsHTML += `<div class=\"col-6 mb-2\"><div class=\"achievement-item\"><i class=\"fas fa-medal text-gold me-2\"></i><strong>${deadliftLabel}:</strong> ${card.dataset.deadlift}</div></div>`;
             hasAchievements = true;
         }
         if (card.dataset.bench) {
-            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-medal text-gold me-2"></i><strong>Bench Press:</strong> ${card.dataset.bench}</div></div>`;
+            achievementsHTML += `<div class=\"col-6 mb-2\"><div class=\"achievement-item\"><i class=\"fas fa-medal text-gold me-2\"></i><strong>${benchLabel}:</strong> ${card.dataset.bench}</div></div>`;
             hasAchievements = true;
         }
 
         // Cardio Achievements
+        const marathonLabel = this.t('transformations.modal.marathon', 'Marathon');
+        const runTimeLabel = this.t('transformations.modal.runTime', '5K Time');
+        const milesLabel = this.t('transformations.modal.miles', 'Distance PR');
         if (card.dataset.marathon) {
-            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-running text-primary me-2"></i><strong>Marathon:</strong> ${card.dataset.marathon}</div></div>`;
+            achievementsHTML += `<div class=\"col-6 mb-2\"><div class=\"achievement-item\"><i class=\"fas fa-running text-primary me-2\"></i><strong>${marathonLabel}:</strong> ${card.dataset.marathon}</div></div>`;
             hasAchievements = true;
         }
         if (card.dataset.runTime) {
-            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-stopwatch text-primary me-2"></i><strong>5K Time:</strong> ${card.dataset.runTime}</div></div>`;
+            achievementsHTML += `<div class=\"col-6 mb-2\"><div class=\"achievement-item\"><i class=\"fas fa-stopwatch text-primary me-2\"></i><strong>${runTimeLabel}:</strong> ${card.dataset.runTime}</div></div>`;
             hasAchievements = true;
         }
         if (card.dataset.miles) {
-            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-route text-primary me-2"></i><strong>Distance PR:</strong> ${card.dataset.miles}</div></div>`;
+            achievementsHTML += `<div class=\"col-6 mb-2\"><div class=\"achievement-item\"><i class=\"fas fa-route text-primary me-2\"></i><strong>${milesLabel}:</strong> ${card.dataset.miles}</div></div>`;
             hasAchievements = true;
         }
 
         // Fitness Achievements
+        const pullUpsLabel = this.t('transformations.modal.pullUps', 'Pull-ups');
+        const pushUpsLabel = this.t('transformations.modal.pushUps', 'Push-ups');
         if (card.dataset.pullUps) {
-            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-hand-rock text-success me-2"></i><strong>Pull-ups:</strong> ${card.dataset.pullUps}</div></div>`;
+            achievementsHTML += `<div class=\"col-6 mb-2\"><div class=\"achievement-item\"><i class=\"fas fa-hand-rock text-success me-2\"></i><strong>${pullUpsLabel}:</strong> ${card.dataset.pullUps}</div></div>`;
             hasAchievements = true;
         }
         if (card.dataset.pushUps) {
-            achievementsHTML += `<div class="col-6 mb-2"><div class="achievement-item"><i class="fas fa-hand-paper text-success me-2"></i><strong>Push-ups:</strong> ${card.dataset.pushUps}</div></div>`;
+            achievementsHTML += `<div class=\"col-6 mb-2\"><div class=\"achievement-item\"><i class=\"fas fa-hand-paper text-success me-2\"></i><strong>${pushUpsLabel}:</strong> ${card.dataset.pushUps}</div></div>`;
             hasAchievements = true;
         }
 

@@ -82,19 +82,8 @@
             window.supabaseClient = null;
         });
 
-    // OAuth Providers Configuration
-    const OAUTH_CONFIG = {
-        google: {
-            clientId: '84856110459-bghsgv3d1pst0n7v6e2nvf0glghf6fs9.apps.googleusercontent.com',
-            clientSecret: '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'
-        },
-        facebook: {
-            appId: '1155731136457398',
-            appSecret: 'e7947a2b1f7e02df76c92912561d703b'
-        }
-    };
-
-    console.log('📱 OAuth providers configured:', Object.keys(OAUTH_CONFIG));
+    // OAuth providers are configured in Supabase Dashboard; no client secrets should exist in frontend.
+    console.log('📱 OAuth providers configured via Supabase project settings');
 
     /**
      * Configurações adicionais do projeto Supabase:

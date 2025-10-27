@@ -297,7 +297,32 @@
       },
       transformations: {
         title: "Transformations",
-        subtitle: "Real people. Real results. See what's possible with the right guidance."
+        subtitle: "Real people. Real results. See what's possible with the right guidance.",
+        loadMore: {
+          cta: "Load More Transformations",
+          remaining: "Load More ({remaining} remaining)",
+          loaded: "All Transformations Loaded"
+        },
+        modal: {
+          titleSuffix: "'s Transformation",
+          before: "Before",
+          after: "After",
+          timeline: "Timeline",
+          results: "Transformation Results",
+          age: "Age",
+          weightLost: "Weight Lost",
+          bodyFat: "Body Fat",
+          muscle: "Muscle",
+          achievements: "Performance Achievements",
+          squat: "Squat",
+          deadlift: "Deadlift",
+          bench: "Bench Press",
+          marathon: "Marathon",
+          runTime: "5K Time",
+          miles: "Distance PR",
+          pullUps: "Pull-ups",
+          pushUps: "Push-ups"
+        }
       },
       testimonials: {
         title: "Testimonials",
@@ -854,7 +879,32 @@
       },
       transformations: {
         title: "Transformações",
-        subtitle: "Pessoas reais. Resultados reais. Veja o que é possível com a orientação certa."
+        subtitle: "Pessoas reais. Resultados reais. Veja o que é possível com a orientação certa.",
+        loadMore: {
+          cta: "Carregar mais transformações",
+          remaining: "Carregar mais ({remaining} restantes)",
+          loaded: "Todas as transformações carregadas"
+        },
+        modal: {
+          titleSuffix: " — Transformação",
+          before: "Antes",
+          after: "Depois",
+          timeline: "Linha do tempo",
+          results: "Resultados da Transformação",
+          age: "Idade",
+          weightLost: "Peso perdido",
+          bodyFat: "Gordura corporal",
+          muscle: "Músculo",
+          achievements: "Conquistas de Performance",
+          squat: "Agachamento",
+          deadlift: "Levantamento terra",
+          bench: "Supino",
+          marathon: "Maratona",
+          runTime: "Tempo de 5K",
+          miles: "Recorde de distância",
+          pullUps: "Barra fixa",
+          pushUps: "Flexões"
+        }
       },
       testimonials: {
         title: "Depoimentos",
@@ -1409,7 +1459,32 @@
       },
       transformations: {
         title: "Transformaciones",
-        subtitle: "Personas reales. Resultados reales. Ve lo que es posible con la orientación correcta."
+        subtitle: "Personas reales. Resultados reales. Ve lo que es posible con la orientación correcta.",
+        loadMore: {
+          cta: "Cargar más transformaciones",
+          remaining: "Cargar más ({remaining} restantes)",
+          loaded: "Todas las transformaciones cargadas"
+        },
+        modal: {
+          titleSuffix: " — Transformación",
+          before: "Antes",
+          after: "Después",
+          timeline: "Cronología",
+          results: "Resultados de la Transformación",
+          age: "Edad",
+          weightLost: "Peso perdido",
+          bodyFat: "Grasa corporal",
+          muscle: "Músculo",
+          achievements: "Logros de Rendimiento",
+          squat: "Sentadilla",
+          deadlift: "Peso muerto",
+          bench: "Press de banca",
+          marathon: "Maratón",
+          runTime: "Tiempo de 5K",
+          miles: "Récord de distancia",
+          pullUps: "Dominadas",
+          pushUps: "Flexiones"
+        }
       },
       testimonials: {
         title: "Testimonios",

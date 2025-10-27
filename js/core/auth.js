@@ -711,9 +711,13 @@ function setupOAuthButtons() {
     // URLs de redirecionamento
     const currentHost = window.location.origin;
     const isLocal = currentHost.includes('localhost') || currentHost.includes('127.0.0.1');
+    // Prefer configured PUBLIC_SITE_URL from env-config.json when available
+    const siteUrl = (window.__ENV && typeof window.__ENV.PUBLIC_SITE_URL === 'string' && window.__ENV.PUBLIC_SITE_URL)
+        ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
+        : null;
     const redirectTo = isLocal
         ? `${currentHost}/dashboard.html`
-        : `https://andrejulio072.github.io/Garcia-Builder/dashboard.html`;
+        : (siteUrl ? `${siteUrl}/dashboard.html` : `https://andrejulio072.github.io/Garcia-Builder/dashboard.html`);
 
     console.log('🔗 OAuth redirect URL:', redirectTo);
 

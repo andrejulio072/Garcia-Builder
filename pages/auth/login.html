@@ -52,7 +52,7 @@
                         <div id="loginForm" class="auth-form active">
                             <div class="text-center mb-4">
                                 <div class="auth-logo mb-3">
-                                    <img src="../../Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder" height="60" style="background: transparent !important; border-radius: 50% !important;">
+                                    <img src="../../Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder" height="60">
                                     <h2 class="title-gradient mt-2 mb-0">Garcia Builder</h2>
                                 </div>
                                 <h3 class="mb-2" data-i18n="auth.login_title">Login</h3>
@@ -73,7 +73,7 @@
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                         <input type="password" class="form-control" id="loginPassword" data-i18n-ph="auth.password_placeholder" placeholder="Your password" required>
-                                        <button class="btn btn-outline-secondary" type="button" id="toggleLoginPassword">
+                                        <button class="btn btn-outline-secondary" type="button" id="toggleLoginPassword" aria-label="Toggle password visibility" title="Toggle password visibility">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                     </div>
@@ -127,7 +127,7 @@
                         <div id="registerForm" class="auth-form">
                             <div class="text-center mb-4">
                                 <div class="auth-logo mb-3">
-                                    <img src="../../Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder" height="60" style="background: transparent !important; border-radius: 50% !important;">
+                                    <img src="../../Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder" height="60">
                                     <h2 class="title-gradient mt-2 mb-0">Garcia Builder</h2>
                                 </div>
                                 <h3 class="mb-2" data-i18n="auth.register_title">Create Account</h3>
@@ -172,7 +172,7 @@
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                         <input type="password" class="form-control" id="registerPassword" data-i18n-ph="auth.password_min_placeholder" placeholder="Minimum 6 characters" required minlength="6">
-                                        <button class="btn btn-outline-secondary" type="button" id="toggleRegisterPassword">
+                                        <button class="btn btn-outline-secondary" type="button" id="toggleRegisterPassword" aria-label="Toggle password visibility" title="Toggle password visibility">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                     </div>
@@ -268,7 +268,7 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <script src="../../js/supabase.js"></script>
+    <script src="../../js/core/supabase.js"></script>
     <script src="../../js/utils/component-loader-v3-simplified.js?v=20251027"></script>
     <script src="../../js/core/i18n-shim.js" defer></script>
     <script src="../../assets/i18n.js?v=20251027" defer></script>

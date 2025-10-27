@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting to Dashboard - Garcia Builder</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/core/supabase.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .loading-container {
+            text-align: center;
+            padding: 2rem;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(246, 200, 78, 0.2);
+            border-top-color: #f6c84e;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #f6c84e;
+        }
+        p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+        .error-message {
+            color: #ff6b6b;
+            margin-top: 1rem;
+        }
+        .action-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: #f6c84e;
+            color: #0f0f0f;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder" class="logo">
+        <div class="spinner"></div>
+        <h1 id="status-title">Processando autenticação...</h1>
+        <p id="status-message">Por favor, aguarde enquanto verificamos suas credenciais.</p>
+        <div id="error-container" class="hidden">
+            <p class="error-message" id="error-message"></p>
+            <a href="pages/auth/login.html" class="action-btn">Voltar para Login</a>
+        </div>
+    </div>
+
+    <script>
+        (async function() {
+            const statusTitle = document.getElementById('status-title');
+            const statusMessage = document.getElementById('status-message');
+            const errorContainer = document.getElementById('error-container');
+            const errorMessage = document.getElementById('error-message');
+
+            try {
+                console.log('🔐 OAuth redirect handler - Verificando autenticação...');
+                
+                // Aguardar Supabase client estar disponível
+                let attempts = 0;
+                while (!window.supabaseClient && attempts < 20) {
+                    await new Promise(resolve => setTimeout(resolve, 250));
+                    attempts++;
+                }
+
+                if (!window.supabaseClient) {
+                    throw new Error('Cliente Supabase não inicializou. Verifique env-config.json');
+                }
+
+                console.log('✅ Supabase client disponível');
+
+                // Verificar se há tokens OAuth na URL (hash ou query params)
+                const hashParams = new URLSearchParams(window.location.hash.substring(1));
+                const queryParams = new URLSearchParams(window.location.search);
+                
+                const hasOAuthTokens = hashParams.has('access_token') || 
+                                     queryParams.has('code') || 
+                                     hashParams.has('error');
+                
+                if (hasOAuthTokens) {
+                    console.log('🔑 Tokens OAuth detectados na URL');
+                    statusMessage.textContent = 'Validando login social...';
+                }
+
+                // Aguardar um pouco para o Supabase processar os tokens
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                // Verificar usuário autenticado
+                const { data: { user }, error } = await window.supabaseClient.auth.getUser();
+
+                if (error || !user) {
+                    console.error('❌ Erro ao verificar usuário:', error);
+                    throw new Error(error?.message || 'Usuário não autenticado');
+                }
+
+                console.log('✅ Usuário autenticado:', user.email);
+
+                // Salvar usuário no localStorage para compatibilidade com scripts antigos
+                const normalizedUser = {
+                    id: user.id,
+                    name: user.user_metadata?.full_name || user.email,
+                    full_name: user.user_metadata?.full_name || '',
+                    email: user.email,
+                    registeredAt: user.created_at || new Date().toISOString(),
+                    lastLogin: new Date().toISOString()
+                };
+                localStorage.setItem('gb_current_user', JSON.stringify(normalizedUser));
+
+                // Upsert profile no banco
+                try {
+                    await window.supabaseClient
+                        .from('user_profiles')
+                        .upsert({
+                            user_id: user.id,
+                            email: user.email,
+                            full_name: user.user_metadata?.full_name || '',
+                            joined_date: user.created_at || new Date().toISOString(),
+                            last_login: new Date().toISOString()
+                        });
+                    console.log('✅ Profile sincronizado');
+                } catch (e) {
+                    console.warn('⚠️ Profile upsert falhou (não crítico):', e?.message || e);
+                }
+
+                // Tracking de login
+                try {
+                    window.dataLayer = window.dataLayer || [];
+                    const provider = user.app_metadata?.provider || 'oauth';
+                    window.dataLayer.push({
+                        event: 'user_login',
+                        method: provider,
+                        auth_provider: provider,
+                        user_email_domain: (user.email || '').split('@')[1] || ''
+                    });
+                } catch (e) {
+                    console.warn('⚠️ Tracking falhou:', e);
+                }
+
+                // Sucesso - redirecionar para dashboard real
+                statusTitle.textContent = 'Login realizado com sucesso!';
+                statusMessage.textContent = 'Redirecionando para seu dashboard...';
+                
+                await new Promise(resolve => setTimeout(resolve, 800));
+                window.location.href = 'pages/public/dashboard.html';
+
+            } catch (error) {
+                console.error('❌ Erro no OAuth handler:', error);
+                statusTitle.textContent = 'Erro na autenticação';
+                statusMessage.classList.add('hidden');
+                errorMessage.textContent = error.message || 'Erro desconhecido';
+                errorContainer.classList.remove('hidden');
+                
+                // Se não conseguiu autenticar, limpar localStorage
+                localStorage.removeItem('gb_current_user');
+            }
+        })();
+    </script>
+</body>
+</html>

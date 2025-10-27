@@ -728,16 +728,13 @@ function setupOAuthButtons() {
         ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
         : null;
     
-    // Para páginas em subpasta (GitHub Pages), construir URL completa com /pages/auth/
-    const currentPath = window.location.pathname;
-    const isInAuthFolder = currentPath.includes('/pages/auth/');
-    
-    // Redirect para a raiz ou para dashboard dependendo do contexto
+    // Redirect para dashboard.html após login (destino final)
+    // IMPORTANTE: Esta URL deve estar em Supabase > Authentication > URL Configuration > Redirect URLs
     const redirectTo = isLocal
-        ? `${currentHost}/pages/auth/login.html` // Local: caminho relativo
+        ? `${currentHost}/dashboard.html` // Local: raiz do projeto
         : (siteUrl 
-            ? `${siteUrl}/pages/auth/login.html` // Produção: com PUBLIC_SITE_URL
-            : `https://andrejulio072.github.io/Garcia-Builder/pages/auth/login.html`); // Fallback GitHub Pages
+            ? `${siteUrl}/dashboard.html` // Produção: com PUBLIC_SITE_URL configurado
+            : `https://andrejulio072.github.io/Garcia-Builder/dashboard.html`); // Fallback GitHub Pages
 
     console.log('🔗 OAuth redirect URL configurada:', redirectTo);
 
@@ -763,7 +760,7 @@ function setupOAuthButtons() {
                 newBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando ao Google...';
 
                 // Chamada OAuth conforme documentação Supabase v2
-                // SEM skipBrowserRedirect - deixa o Supabase redirecionar automaticamente
+                // Remover skipBrowserRedirect - deixar Supabase redirecionar automaticamente
                 const { data, error } = await window.supabaseClient.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
@@ -780,7 +777,7 @@ function setupOAuthButtons() {
                     throw error;
                 }
 
-                // Se chegou aqui sem erro, o Supabase já redirecionou
+                // O Supabase SDK já redirecionou automaticamente para Google
                 console.log('✅ Redirecionamento Google iniciado');
 
             } catch (error) {
@@ -814,7 +811,7 @@ function setupOAuthButtons() {
                 newBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando ao Facebook...';
 
                 // Chamada OAuth conforme documentação Supabase v2
-                // SEM skipBrowserRedirect - deixa o Supabase redirecionar automaticamente
+                // Remover skipBrowserRedirect - deixar Supabase redirecionar automaticamente
                 const { data, error } = await window.supabaseClient.auth.signInWithOAuth({
                     provider: 'facebook',
                     options: {
@@ -828,7 +825,7 @@ function setupOAuthButtons() {
                     throw error;
                 }
 
-                // Se chegou aqui sem erro, o Supabase já redirecionou
+                // O Supabase SDK já redirecionou automaticamente para Facebook
                 console.log('✅ Redirecionamento Facebook iniciado');
 
             } catch (error) {

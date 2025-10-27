@@ -562,7 +562,7 @@ window.addEventListener('load', function() {
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1102565141856929&ev=PageView&noscript=1"/></noscript>
 <body>
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" title="Google Tag Manager" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <style>
 /* ===== NAVBAR ENHANCED - HAMBURGER SEMPRE VISIVEL ===== */
@@ -869,25 +869,25 @@ window.addEventListener('load', function() {
           <div class="col-md-3 col-6">
             <div class="stat-item">
               <div class="stat-number" data-count="127">0</div>
-              <div class="stat-label">Clients Transformed</div>
+              <div class="stat-label" data-i18n="transformations.stats.clients">Clients Transformed</div>
             </div>
           </div>
           <div class="col-md-3 col-6">
             <div class="stat-item">
               <div class="stat-number" data-count="12">0</div>
-              <div class="stat-label">Average Weeks</div>
+              <div class="stat-label" data-i18n="transformations.stats.weeks">Average Weeks</div>
             </div>
           </div>
           <div class="col-md-3 col-6">
             <div class="stat-item">
               <div class="stat-number" data-count="94">0</div>
-              <div class="stat-label">Success Rate (%)</div>
+              <div class="stat-label" data-i18n="transformations.stats.success">Success Rate (%)</div>
             </div>
           </div>
           <div class="col-md-3 col-6">
             <div class="stat-item">
               <div class="stat-number" data-count="8">0</div>
-              <div class="stat-label">Avg Kg Lost</div>
+              <div class="stat-label" data-i18n="transformations.stats.avgLost">Avg Kg Lost</div>
             </div>
           </div>
         </div>
@@ -901,22 +901,22 @@ window.addEventListener('load', function() {
   <div class="container">
     <div class="filter-tabs">
       <button class="filter-btn active" data-filter="all">
-        <i class="fas fa-th-large me-2"></i>All Transformations
+        <i class="fas fa-th-large me-2" aria-hidden="true"></i><span data-i18n="transformations.filters.all">All Transformations</span>
       </button>
       <button class="filter-btn" data-filter="weight-loss">
-        <i class="fas fa-weight me-2"></i>Weight Loss
+        <i class="fas fa-weight me-2" aria-hidden="true"></i><span data-i18n="transformations.filters.weightLoss">Weight Loss</span>
       </button>
       <button class="filter-btn" data-filter="muscle-gain">
-        <i class="fas fa-dumbbell me-2"></i>Muscle Gain
+        <i class="fas fa-dumbbell me-2" aria-hidden="true"></i><span data-i18n="transformations.filters.muscleGain">Muscle Gain</span>
       </button>
       <button class="filter-btn" data-filter="body-recomp">
-        <i class="fas fa-exchange-alt me-2"></i>Body Recomposition
+        <i class="fas fa-exchange-alt me-2" aria-hidden="true"></i><span data-i18n="transformations.filters.bodyRecomp">Body Recomposition</span>
       </button>
       <button class="filter-btn" data-filter="strength">
-        <i class="fas fa-fist-raised me-2"></i>Strength
+        <i class="fas fa-fist-raised me-2" aria-hidden="true"></i><span data-i18n="transformations.filters.strength">Strength</span>
       </button>
       <button class="filter-btn" data-filter="endurance">
-        <i class="fas fa-running me-2"></i>Endurance
+        <i class="fas fa-running me-2" aria-hidden="true"></i><span data-i18n="transformations.filters.endurance">Endurance</span>
       </button>
     </div>
 
@@ -927,32 +927,33 @@ window.addEventListener('load', function() {
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Elena S. (32)" data-story="18 weeks of body recomposition - 8kg lost while building muscle"
+             data-story-key="transformations.cards.elena.story"
              data-before="assets/images/transformations/t7.jpg" data-after="assets/images/transformations/t7.jpg"
-             data-weight-lost="8" data-timeline="18 weeks" data-age="32">
+             data-weight-lost="8" data-timeline="18 weeks" data-timeline-key="transformations.cards.elena.timeline" data-age="32">
           <div class="before-after-container">
-            <div class="transformation-overlay">-8kg + Muscle</div>
+            <div class="transformation-overlay" data-i18n="transformations.cards.elena.overlay">8kg Lost + Muscle</div>
             <div class="before-after-slider">
               <img src="assets/images/transformations/t7.jpg" alt="Client 7 weight loss and arm/shoulder definition (before and after)" class="before-img">
             </div>
           </div>
           <div class="transformation-info">
             <h3 class="client-name">Elena S. (32)</h3>
-            <div class="timeline-badge">18 Weeks</div>
+            <div class="timeline-badge"><span data-i18n="transformations.cards.elena.timeline">18 Weeks</span></div>
             <div class="transformation-stats">
               <div class="stat-item-small">
-                <div class="stat-value">-8</div>
-                <div class="stat-unit">kg Lost</div>
+                <div class="stat-value">8</div>
+                <div class="stat-unit" data-i18n="transformations.units.kgLost">kg Lost</div>
               </div>
               <div class="stat-item-small">
                 <div class="stat-value">+Muscle</div>
-                <div class="stat-unit">Mass</div>
+                <div class="stat-unit" data-i18n="transformations.units.mass">Mass</div>
               </div>
               <div class="stat-item-small">
                 <div class="stat-value">32</div>
-                <div class="stat-unit">Years Old</div>
+                <div class="stat-unit" data-i18n="transformations.units.yearsOld">Years Old</div>
               </div>
             </div>
-            <p class="transformation-story">
+            <p class="transformation-story" data-i18n="transformations.cards.elena.story">
               "Body recomposition at its finest! Lost fat while building strength and muscle in just 18 weeks."
             </p>
           </div>
@@ -963,32 +964,33 @@ window.addEventListener('load', function() {
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Tom L. (31)" data-story="Perfect balance - 6kg fat loss with 5% muscle mass increase in 12 weeks"
+             data-story-key="transformations.cards.tom.story"
              data-before="assets/images/transformations/t8.jpg" data-after="assets/images/transformations/t8.jpg"
-             data-weight-lost="6" data-timeline="12 weeks" data-age="31" data-muscle="+5%">
+             data-weight-lost="6" data-timeline="12 weeks" data-timeline-key="transformations.cards.tom.timeline" data-age="31" data-muscle="+5%">
           <div class="before-after-container">
-            <div class="transformation-overlay">-6kg +5% Muscle</div>
+            <div class="transformation-overlay" data-i18n="transformations.cards.tom.overlay">6kg Lost +5% Muscle</div>
             <div class="before-after-slider">
               <img src="assets/images/transformations/t8.jpg" alt="Client 8 leaner torso and improved waist shape (before and after)" class="before-img">
             </div>
           </div>
           <div class="transformation-info">
             <h3 class="client-name">Tom L. (31)</h3>
-            <div class="timeline-badge">12 Weeks</div>
+            <div class="timeline-badge"><span data-i18n="transformations.cards.tom.timeline">12 Weeks</span></div>
             <div class="transformation-stats">
               <div class="stat-item-small">
-                <div class="stat-value">-6</div>
-                <div class="stat-unit">kg Lost</div>
+                <div class="stat-value">6</div>
+                <div class="stat-unit" data-i18n="transformations.units.kgLost">kg Lost</div>
               </div>
               <div class="stat-item-small">
                 <div class="stat-value">+5%</div>
-                <div class="stat-unit">Muscle</div>
+                <div class="stat-unit" data-i18n="transformations.units.muscle">Muscle</div>
               </div>
               <div class="stat-item-small">
                 <div class="stat-value">31</div>
-                <div class="stat-unit">Years Old</div>
+                <div class="stat-unit" data-i18n="transformations.units.yearsOld">Years Old</div>
               </div>
             </div>
-            <p class="transformation-story">
+            <p class="transformation-story" data-i18n="transformations.cards.tom.story">
               "The perfect combination! Lost 6kg of fat while gaining 5% muscle mass in just 12 weeks."
             </p>
           </div>
@@ -999,32 +1001,33 @@ window.addEventListener('load', function() {
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Lisa M. (43)" data-story="8 weeks to summer ready - 5kg transformation"
+             data-story-key="transformations.cards.lisa.story"
              data-before="assets/images/transformations/t9.jpg" data-after="assets/images/transformations/t9.jpg"
-             data-weight-lost="5" data-timeline="8 weeks" data-age="43">
+             data-weight-lost="5" data-timeline="8 weeks" data-timeline-key="transformations.cards.lisa.timeline" data-age="43">
           <div class="before-after-container">
-            <div class="transformation-overlay">-5kg in 8w</div>
+            <div class="transformation-overlay" data-i18n="transformations.cards.lisa.overlay">5kg Lost in 8w</div>
             <div class="before-after-slider">
               <img src="assets/images/transformations/t9.jpg" alt="Client 9 recomposition: muscle gain with fat reduction (before and after)" class="before-img">
             </div>
           </div>
           <div class="transformation-info">
             <h3 class="client-name">Lisa M. (43)</h3>
-            <div class="timeline-badge">8 Weeks</div>
+            <div class="timeline-badge"><span data-i18n="transformations.cards.lisa.timeline">8 Weeks</span></div>
             <div class="transformation-stats">
               <div class="stat-item-small">
-                <div class="stat-value">-5</div>
-                <div class="stat-unit">kg Lost</div>
+                <div class="stat-value">5</div>
+                <div class="stat-unit" data-i18n="transformations.units.kgLost">kg Lost</div>
               </div>
               <div class="stat-item-small">
                 <div class="stat-value">43</div>
-                <div class="stat-unit">Years Old</div>
+                <div class="stat-unit" data-i18n="transformations.units.yearsOld">Years Old</div>
               </div>
               <div class="stat-item-small">
                 <div class="stat-value">8</div>
-                <div class="stat-unit">Weeks</div>
+                <div class="stat-unit" data-i18n="transformations.units.weeks">Weeks</div>
               </div>
             </div>
-            <p class="transformation-story">
+            <p class="transformation-story" data-i18n="transformations.cards.lisa.story">
               "Short timeframe, amazing results! 5kg down in 8 weeks with a program that respected my busy mom life."
             </p>
           </div>
@@ -1035,32 +1038,33 @@ window.addEventListener('load', function() {
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Anna K. (55)" data-story="One year journey - sustainable 10kg transformation at 55"
+             data-story-key="transformations.cards.anna.story"
              data-before="assets/images/transformations/t10.jpg" data-after="assets/images/transformations/t10.jpg"
-             data-weight-lost="10" data-timeline="1 year" data-age="55">
+             data-weight-lost="10" data-timeline="1 year" data-timeline-key="transformations.cards.anna.timeline" data-age="55">
           <div class="before-after-container">
-            <div class="transformation-overlay">-10kg at 55</div>
+            <div class="transformation-overlay" data-i18n="transformations.cards.anna.overlay">10kg Lost at 55</div>
             <div class="before-after-slider">
               <img src="assets/images/transformations/t10.jpg" alt="Client 10 increased shoulder and back definition (before and after)" class="before-img">
             </div>
           </div>
           <div class="transformation-info">
             <h3 class="client-name">Anna K. (55)</h3>
-            <div class="timeline-badge">1 Year</div>
+            <div class="timeline-badge"><span data-i18n="transformations.cards.anna.timeline">1 Year</span></div>
             <div class="transformation-stats">
               <div class="stat-item-small">
-                <div class="stat-value">-10</div>
-                <div class="stat-unit">kg Lost</div>
+                <div class="stat-value">10</div>
+                <div class="stat-unit" data-i18n="transformations.units.kgLost">kg Lost</div>
               </div>
               <div class="stat-item-small">
                 <div class="stat-value">55</div>
-                <div class="stat-unit">Years Old</div>
+                <div class="stat-unit" data-i18n="transformations.units.yearsOld">Years Old</div>
               </div>
               <div class="stat-item-small">
                 <div class="stat-value">52</div>
-                <div class="stat-unit">Weeks</div>
+                <div class="stat-unit" data-i18n="transformations.units.weeks">Weeks</div>
               </div>
             </div>
-            <p class="transformation-story">
+            <p class="transformation-story" data-i18n="transformations.cards.anna.story">
               "Slow and steady at 55! One year of consistent habits led to a 10kg transformation and renewed energy."
             </p>
           </div>
@@ -1071,32 +1075,33 @@ window.addEventListener('load', function() {
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Jessica R. (33)" data-story="Fast and effective - 5kg down in 8 weeks"
+             data-story-key="transformations.cards.jessica.story"
              data-before="assets/images/transformations/t11.jpg" data-after="assets/images/transformations/t11.jpg"
-             data-weight-lost="5" data-timeline="8 weeks" data-age="33">
+             data-weight-lost="5" data-timeline="8 weeks" data-timeline-key="transformations.cards.jessica.timeline" data-age="33">
           <div class="before-after-container">
-            <div class="transformation-overlay">-5kg in 8w</div>
+            <div class="transformation-overlay" data-i18n="transformations.cards.jessica.overlay">5kg Lost in 8w</div>
             <div class="before-after-slider">
               <img src="assets/images/transformations/t11.jpg" alt="Client 11 waist slimming and improved muscle tone (before and after)" class="before-img">
             </div>
           </div>
           <div class="transformation-info">
             <h3 class="client-name">Jessica R. (33)</h3>
-            <div class="timeline-badge">8 Weeks</div>
+            <div class="timeline-badge"><span data-i18n="transformations.cards.jessica.timeline">8 Weeks</span></div>
             <div class="transformation-stats">
               <div class="stat-item-small">
-                <div class="stat-value">-5</div>
-                <div class="stat-unit">kg Lost</div>
+                <div class="stat-value">5</div>
+                <div class="stat-unit" data-i18n="transformations.units.kgLost">kg Lost</div>
               </div>
               <div class="stat-item-small">
                 <div class="stat-value">33</div>
-                <div class="stat-unit">Years Old</div>
+                <div class="stat-unit" data-i18n="transformations.units.yearsOld">Years Old</div>
               </div>
               <div class="stat-item-small">
                 <div class="stat-value">8</div>
-                <div class="stat-unit">Weeks</div>
+                <div class="stat-unit" data-i18n="transformations.units.weeks">Weeks</div>
               </div>
             </div>
-            <p class="transformation-story">
+            <p class="transformation-story" data-i18n="transformations.cards.jessica.story">
               "Quick results that last! 5kg transformation in 8 weeks with sustainable habits that continue to work."
             </p>
           </div>
@@ -1107,32 +1112,33 @@ window.addEventListener('load', function() {
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Mike S. (22)" data-story="Young and focused - 4kg cut in 8 weeks"
+             data-story-key="transformations.cards.mike.story"
              data-before="assets/images/transformations/t12.jpg" data-after="assets/images/transformations/t12.jpg"
-             data-weight-lost="4" data-timeline="8 weeks" data-age="22">
+             data-weight-lost="4" data-timeline="8 weeks" data-timeline-key="transformations.cards.mike.timeline" data-age="22">
           <div class="before-after-container">
-            <div class="transformation-overlay">-4kg in 8w</div>
+            <div class="transformation-overlay" data-i18n="transformations.cards.mike.overlay">4kg Lost in 8w</div>
             <div class="before-after-slider">
               <img src="assets/images/transformations/t12.jpg" alt="Client 12 full body slimming and core improvement (before and after)" class="before-img">
             </div>
           </div>
           <div class="transformation-info">
             <h3 class="client-name">Mike S. (22)</h3>
-            <div class="timeline-badge">8 Weeks</div>
+            <div class="timeline-badge"><span data-i18n="transformations.cards.mike.timeline">8 Weeks</span></div>
             <div class="transformation-stats">
               <div class="stat-item-small">
-                <div class="stat-value">-4</div>
-                <div class="stat-unit">kg Lost</div>
+                <div class="stat-value">4</div>
+                <div class="stat-unit" data-i18n="transformations.units.kgLost">kg Lost</div>
               </div>
               <div class="stat-item-small">
                 <div class="stat-value">22</div>
-                <div class="stat-unit">Years Old</div>
+                <div class="stat-unit" data-i18n="transformations.units.yearsOld">Years Old</div>
               </div>
               <div class="stat-item-small">
                 <div class="stat-value">8</div>
-                <div class="stat-unit">Weeks</div>
+                <div class="stat-unit" data-i18n="transformations.units.weeks">Weeks</div>
               </div>
             </div>
-            <p class="transformation-story">
+            <p class="transformation-story" data-i18n="transformations.cards.mike.story">
               "College student success! Managed studies and training to achieve 4kg fat loss in 8 weeks."
             </p>
           </div>
@@ -1145,7 +1151,7 @@ window.addEventListener('load', function() {
     <!-- Load More Button -->
     <div class="text-center mt-5">
       <button class="btn btn-outline-warning btn-lg px-5" id="loadMoreBtn">
-        <i class="fas fa-plus me-2"></i>Load More Transformations
+        <i class="fas fa-plus me-2" aria-hidden="true"></i><span data-i18n="transformations.loadMore.cta">Load More Transformations</span>
       </button>
     </div>
   </div>
@@ -1156,8 +1162,8 @@ window.addEventListener('load', function() {
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalClientName">Client Transformation</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+  <h5 class="modal-title" id="modalClientName" data-i18n="transformations.modal.defaultTitle">Client Transformation</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Close"></button>
       </div>
       <div class="modal-body">
         <div class="before-after-comparison" id="modalComparison">
@@ -1165,11 +1171,11 @@ window.addEventListener('load', function() {
         </div>
         <div class="row">
           <div class="col-md-8">
-            <h6 class="text-warning mb-3">Transformation Story</h6>
+            <h6 class="text-warning mb-3" data-i18n="transformations.modal.storyHeading">Transformation Story</h6>
             <p id="modalStory" class="text-light"></p>
           </div>
           <div class="col-md-4">
-            <h6 class="text-warning mb-3">Key Results</h6>
+            <h6 class="text-warning mb-3" data-i18n="transformations.modal.resultsHeading">Key Results</h6>
             <div id="modalStats" class="text-light">
               <!-- Stats will be inserted here -->
             </div>
@@ -1178,9 +1184,9 @@ window.addEventListener('load', function() {
       </div>
       <div class="modal-footer">
         <a href="pricing.html" class="btn btn-warning">
-          <i class="fas fa-rocket me-2"></i>Start Your Transformation
+          <i class="fas fa-rocket me-2" aria-hidden="true"></i><span data-i18n="transformations.modal.startCta">Start Your Transformation</span>
         </a>
-        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal" data-i18n="transformations.modal.close">Close</button>
       </div>
     </div>
   </div>
@@ -1191,8 +1197,8 @@ window.addEventListener('load', function() {
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-8 text-center">
-        <h2 class="newsletter-title">Get Your Own Transformation</h2>
-        <p class="newsletter-description">
+        <h2 class="newsletter-title" data-i18n="transformations.newsletter.title">Get Your Own Transformation</h2>
+        <p class="newsletter-description" data-i18n="transformations.newsletter.description">
           Inspired by these results? Join our newsletter to get weekly training tips, nutrition insights,
           and the exact strategies that helped these clients achieve their transformations.
         </p>
@@ -1205,6 +1211,7 @@ window.addEventListener('load', function() {
               id="transformationsNewsletterName"
               name="name"
               placeholder="Your Name"
+              data-i18n-ph="transformations.newsletter.namePlaceholder"
               required
               autocomplete="name"
             >
@@ -1214,38 +1221,39 @@ window.addEventListener('load', function() {
               id="transformationsNewsletterEmail"
               name="email"
               placeholder="your.email@example.com"
+              data-i18n-ph="transformations.newsletter.emailPlaceholder"
               required
               autocomplete="email"
             >
             <button type="submit" class="btn newsletter-btn">
-              <i class="fas fa-rocket me-2"></i>Start My Journey
+              <i class="fas fa-rocket me-2" aria-hidden="true"></i><span data-i18n="transformations.newsletter.cta">Start My Journey</span>
             </button>
           </div>
 
           <div class="transformation-promises">
             <div class="promises-grid">
               <div class="promise-item">
-                <i class="fas fa-calendar-week text-warning"></i>
-                <span>Weekly Training Plans</span>
+                <i class="fas fa-calendar-week text-warning" aria-hidden="true"></i>
+                <span data-i18n="transformations.newsletter.items.weeklyPlan">Weekly Training Plans</span>
               </div>
               <div class="promise-item">
-                <i class="fas fa-chart-line text-warning"></i>
-                <span>Progress Tracking Tips</span>
+                <i class="fas fa-chart-line text-warning" aria-hidden="true"></i>
+                <span data-i18n="transformations.newsletter.items.tracking">Progress Tracking Tips</span>
               </div>
               <div class="promise-item">
-                <i class="fas fa-users text-warning"></i>
-                <span>Community Support</span>
+                <i class="fas fa-users text-warning" aria-hidden="true"></i>
+                <span data-i18n="transformations.newsletter.items.community">Community Support</span>
               </div>
               <div class="promise-item">
-                <i class="fas fa-medal text-warning"></i>
-                <span>Success Strategies</span>
+                <i class="fas fa-medal text-warning" aria-hidden="true"></i>
+                <span data-i18n="transformations.newsletter.items.success">Success Strategies</span>
               </div>
             </div>
           </div>
 
           <p class="newsletter-privacy">
-            <i class="fas fa-shield-alt me-1"></i>
-            Join thousands transforming their bodies. No spam, unsubscribe anytime.
+            <i class="fas fa-shield-alt me-1" aria-hidden="true"></i>
+            <span data-i18n="transformations.newsletter.privacy">Join thousands transforming their bodies. No spam, unsubscribe anytime.</span>
           </p>
         </form>
       </div>
@@ -1257,7 +1265,7 @@ window.addEventListener('load', function() {
 <!-- Footer Component -->
 <div data-component="footer"></div>
 
-<a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" onclick="return gtag_report_conversion(this.href)">WhatsApp</a>
+<a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener" onclick="return gtag_report_conversion(this.href)" data-i18n="transformations.whatsappCta">WhatsApp</a>
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>

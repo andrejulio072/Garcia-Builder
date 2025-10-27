@@ -28,8 +28,8 @@ const INLINE_FALLBACKS = {
     <div class="container">
         <div class="gb-navbar-content">
             <a href="#" class="gb-logo-section" aria-label="Garcia Builder Home" data-gb-nav="index.html">
-                <img src="Logo%20Files/For%20Web/logo-nobackground-500.png"
-                     data-gb-logo-src="Logo Files/For Web/logo-nobackground-500.png"
+             <img src="Logo%20Files/For%20Web/logo-nobackground-500.png"
+                 data-gb-logo-src="Logo%20Files/For%20Web/logo-nobackground-500.png"
                      alt="Garcia Builder Logo"
                      class="gb-logo-img"
                      loading="eager"
@@ -106,7 +106,7 @@ const INLINE_FALLBACKS = {
 <footer class="gb-footer" aria-label="Site footer (offline fallback)">
     <div class="gb-footer-main gb-footer-ref">
         <div class="gb-footer-col gb-footer-brand-col">
-            <img src="Logo%20Files/For%20Web/logo-nobackground-500.png" alt="Garcia Builder Logo" data-gb-logo-src="Logo Files/For Web/logo-nobackground-500.png" width="56" height="56" loading="lazy" style="margin-bottom:10px;"/>
+            <img src="Logo%20Files/For%20Web/logo-nobackground-500.png" alt="Garcia Builder Logo" data-gb-logo-src="Logo%20Files/For%20Web/logo-nobackground-500.png" width="56" height="56" loading="lazy" style="margin-bottom:10px;"/>
             <div class="footer-title footer-title-ref">Garcia Builder</div>
             <div class="footer-bio-ref" style="margin-bottom:8px;">Online Coaching — Evidence-based fitness, nutrition & accountability.<br/>Transform your body, sustainably.</div>
             <div class="footer-contact-ref" style="margin-top:14px;">

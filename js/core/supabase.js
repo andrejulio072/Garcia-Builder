@@ -31,6 +31,14 @@
                 return response.json();
             })
             .then((data) => {
+                if (data && typeof data === 'object') {
+                    ['SUPABASE_URL', 'SUPABASE_ANON_KEY', 'STRIPE_PUBLISHABLE_KEY', 'PUBLIC_SITE_URL'].forEach((key) => {
+                        if (typeof data[key] === 'string') {
+                            data[key] = data[key].trim();
+                        }
+                    });
+                }
+
                 if (!data?.SUPABASE_URL || !data?.SUPABASE_ANON_KEY) {
                     throw new Error('Supabase env config is missing SUPABASE_URL or SUPABASE_ANON_KEY.');
                 }

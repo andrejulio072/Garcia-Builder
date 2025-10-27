@@ -23,13 +23,37 @@
             return window.__ENV_PROMISE;
         }
 
-        window.__ENV_PROMISE = fetch('/env-config.json', { cache: 'no-store' })
-            .then(async (response) => {
-                if (!response.ok) {
-                    throw new Error(`Failed to load env-config.json (${response.status})`);
+        // Try multiple candidate paths so it works on localhost, Vercel and GitHub Pages subpaths
+        const origin = window.location.origin || '';
+        const isLocalhost = origin.includes('localhost') || origin.includes('127.0.0.1');
+        const pathParts = (window.location.pathname || '/').split('/').filter(Boolean);
+        const repoBase = origin.includes('github.io') && pathParts.length > 0 ? `/${pathParts[0]}` : '';
+
+        const candidates = [
+            '/env-config.json', // root (Vercel/custom domain/local dev root)
+            `${repoBase}/env-config.json`, // GitHub Pages under repo subpath
+            './env-config.json',
+            '../env-config.json',
+            '../../env-config.json'
+        ].filter((v, idx, arr) => !!v && arr.indexOf(v) === idx);
+
+        const tryFetchSequentially = async () => {
+            let lastErr;
+            for (const url of candidates) {
+                try {
+                    const response = await fetch(url, { cache: 'no-store' });
+                    if (response.ok) {
+                        return await response.json();
+                    }
+                    lastErr = new Error(`env-config at ${url} returned ${response.status}`);
+                } catch (e) {
+                    lastErr = e;
                 }
-                return response.json();
-            })
+            }
+            throw lastErr || new Error('Failed to load env-config.json from known locations');
+        };
+
+        window.__ENV_PROMISE = tryFetchSequentially()
             .then((data) => {
                 if (data && typeof data === 'object') {
                     ['SUPABASE_URL', 'SUPABASE_ANON_KEY', 'STRIPE_PUBLISHABLE_KEY', 'PUBLIC_SITE_URL'].forEach((key) => {
@@ -46,7 +70,7 @@
                 return window.__ENV;
             })
             .catch((error) => {
-                console.error('[Supabase] Failed to load env config:', error);
+                console.error('[Supabase] Failed to load env config from candidates:', candidates, error);
                 delete window.__ENV_PROMISE;
                 throw error;
             });

@@ -693,9 +693,20 @@ function setupSocialLogin() {
     console.log('🔧 Configurando login social...');
 
     // Aguardar Supabase estar disponível
+    let attempts = 0;
+    const maxAttempts = 20; // ~10s
     const waitForSupabase = () => {
         if (!window.supabaseClient) {
-            console.warn('⏳ Aguardando Supabase...');
+            attempts++;
+            if (attempts % 2 === 1) {
+                // reduzir spam no console
+                console.warn('⏳ Aguardando Supabase...');
+            }
+            if (attempts >= maxAttempts) {
+                console.error('❌ Supabase não inicializou. Verifique env-config.json e a conexão.');
+                showAuthMessage('Falha ao iniciar autenticação. Verifique sua conexão ou tente recarregar a página.', 'danger');
+                return;
+            }
             setTimeout(waitForSupabase, 500);
             return;
         }
@@ -747,6 +758,7 @@ function setupOAuthButtons() {
                     provider: 'google',
                     options: {
                         redirectTo: redirectTo,
+                        skipBrowserRedirect: true,
                         queryParams: {
                             access_type: 'offline',
                             prompt: 'select_account'
@@ -757,6 +769,11 @@ function setupOAuthButtons() {
                 if (error) {
                     console.error('❌ Erro Google OAuth:', error);
                     throw error;
+                }
+
+                // Garantir redirecionamento manual se a SDK não fizer automaticamente
+                if (data && data.url) {
+                    window.location.href = data.url;
                 }
 
                 console.log('✅ Google OAuth iniciado com sucesso!');
@@ -800,6 +817,7 @@ function setupOAuthButtons() {
                     provider: 'facebook',
                     options: {
                         redirectTo: redirectTo,
+                        skipBrowserRedirect: true,
                         queryParams: {
                             scope: 'email'
                         }
@@ -809,6 +827,11 @@ function setupOAuthButtons() {
                 if (error) {
                     console.error('❌ Erro Facebook OAuth:', error);
                     throw error;
+                }
+
+                // Garantir redirecionamento manual se a SDK não fizer automaticamente
+                if (data && data.url) {
+                    window.location.href = data.url;
                 }
 
                 console.log('✅ Facebook OAuth iniciado com sucesso!');

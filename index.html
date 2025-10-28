@@ -145,6 +145,22 @@ window.addEventListener('load', function() {
 });
 </script>
 </head><body>
+<script>
+  // If we arrive on the hosted site with ?devReturn=..., send the user back to the local dev server
+  (function(){
+    try {
+      const sp = new URLSearchParams(window.location.search);
+      const devReturn = sp.get('devReturn');
+      if (devReturn) {
+        const targetBase = devReturn.replace(/\/?$/, '/');
+        const target = new URL('dashboard.html', targetBase);
+        target.hash = window.location.hash || '';
+        console.log('[Dev Return] sending back to', target.toString());
+        window.location.replace(target.toString());
+      }
+    } catch(e) { console.warn('devReturn bounce failed:', e); }
+  })();
+</script>
 
 <!-- Google Tag Manager (noscript) -->
 <noscript>

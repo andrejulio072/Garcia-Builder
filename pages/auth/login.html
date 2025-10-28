@@ -509,6 +509,35 @@
             } catch (uxErr) {
                 console.warn('Auth form UX helpers failed:', uxErr);
             }
+            // Fallback form handlers: ensure submits never perform a full page reload if the main AuthSystem isn't ready yet
+            try {
+                const $loginEl = document.getElementById('loginFormElement');
+                const $registerEl = document.getElementById('registerFormElement');
+                const softShow = (msg, type = 'warning') => {
+                    const box = document.getElementById('auth-msg');
+                    if (!box) return alert(msg);
+                    box.className = `alert alert-${type}`;
+                    box.textContent = msg;
+                    box.classList.remove('d-none');
+                    setTimeout(() => box.classList.add('d-none'), 4000);
+                };
+                if ($loginEl) {
+                    $loginEl.addEventListener('submit', (e) => {
+                        if (window.authSystem && typeof window.authSystem.handleLogin === 'function') return; // main handler will take over
+                        e.preventDefault();
+                        softShow('Preparing login… please try again in a second.', 'info');
+                    }, { capture: true });
+                }
+                if ($registerEl) {
+                    $registerEl.addEventListener('submit', (e) => {
+                        if (window.authSystem && typeof window.authSystem.handleRegister === 'function') return;
+                        e.preventDefault();
+                        softShow('Preparing sign up… please try again in a second.', 'info');
+                    }, { capture: true });
+                }
+            } catch (fhErr) {
+                console.warn('Fallback form handlers failed:', fhErr);
+            }
             try {
                 const { url, key } = await resolveSupabaseKeys();
                 if (!url || !key) {

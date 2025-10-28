@@ -59,6 +59,32 @@ function toAbsoluteUrl(pathOrUrl, fallbackPath = '') {
     }
 }
 
+function buildHostedAuthRedirect(path = 'dashboard.html') {
+    const hostedBase = (window.__ENV && window.__ENV.PUBLIC_SITE_URL)
+        ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
+        : 'https://garciabuilder.fitness';
+
+    let redirect;
+    try {
+        redirect = new URL(path || 'dashboard.html', `${hostedBase}/`);
+    } catch (err) {
+        console.warn('buildHostedAuthRedirect failed, using fallback path:', err);
+        redirect = new URL('dashboard.html', `${hostedBase}/`);
+    }
+
+    const localBase = computeSiteBaseUrl();
+    const isLocalEnv = window.location.protocol === 'file:' || /^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname);
+    const existingDevReturn = new URLSearchParams(window.location.search).get('devReturn');
+
+    if (isLocalEnv && localBase) {
+        redirect.searchParams.set('devReturn', localBase);
+    } else if (existingDevReturn && !redirect.searchParams.has('devReturn')) {
+        redirect.searchParams.set('devReturn', existingDevReturn);
+    }
+
+    return redirect.toString();
+}
+
 function resolveRedirectTarget(searchParams, defaultPath = 'dashboard.html') {
     const param = searchParams.get('redirect');
     if (param) {
@@ -626,7 +652,7 @@ class AuthSystem {
         try {
             // Prefer Supabase sign up when available (sends verification email)
             if (window.supabaseClient && window.supabaseClient.auth) {
-                const emailRedirectTo = toAbsoluteUrl('dashboard.html');
+                const emailRedirectTo = buildHostedAuthRedirect('dashboard.html');
 
                 const { data, error } = await window.supabaseClient.auth.signUp({
                     email,
@@ -920,9 +946,9 @@ function setupOAuthButtons() {
 
     // Redirect para dashboard.html após login (destino final)
     // IMPORTANTE: Esta URL deve estar em Supabase > Authentication > URL Configuration > Redirect URLs
-    const redirectTo = `${baseUrl}/dashboard.html`;
+    const redirectTo = buildHostedAuthRedirect('dashboard.html');
 
-    console.log('🔗 OAuth redirect URL configurada:', redirectTo);
+    console.log('🔗 OAuth redirect URL configurada:', redirectTo, '| base local:', baseUrl);
 
     // GOOGLE OAUTH - Seguindo documentação oficial
     const setupGoogleButton = (btnId) => {
@@ -1073,12 +1099,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Verificar se há tokens OAuth na URL (retorno de Google/Facebook)
                 const hashParams = new URLSearchParams(window.location.hash.substring(1));
                 const hasOAuthTokens = hashParams.has('access_token') || hashParams.has('error');
-                
+
                 if (hasOAuthTokens) {
                     console.log('🔐 Processando retorno OAuth...');
                     showAuthMessage('Processando login...', 'info');
                 }
-                
+
                 const { data } = await window.supabaseClient.auth.getUser();
                 const u = data?.user;
                 if (u) {
@@ -1096,7 +1122,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Listen for auth state changes (OAuth redirects, logout in other tabs)
                 window.supabaseClient.auth.onAuthStateChange(async (event, session) => {
                     console.log(`🔔 Auth state changed: ${event}`, session?.user?.email || 'no user');
-                    
+
                     try {
                         if (event === 'SIGNED_IN' && session?.user) {
                             const su = session.user;
@@ -1109,7 +1135,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 lastLogin: new Date().toISOString()
                             };
                             localStorage.setItem('gb_current_user', JSON.stringify(norm));
-                            
+
                             // Ensure user profile is upserted in Supabase after OAuth/social login
                             try {
                                 await window.supabaseClient
@@ -1124,7 +1150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             } catch (e) {
                                 console.warn('Profile upsert (OAuth) skipped:', e?.message || e);
                             }
-                            
+
                             // OAuth / external provider tracking
                             try {
                                 window.dataLayer = window.dataLayer || [];
@@ -1152,7 +1178,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             // Se estiver na página de login E houver hash de OAuth na URL, redirecionar
                             if (window.location.pathname.includes('login.html')) {
                                 console.log('✅ Login OAuth bem-sucedido! Redirecionando para dashboard...');
-                                
+
                                 // Verificar se há pagamento pendente
                                 const pendingPayment = localStorage.getItem('pendingPayment');
                                 if (pendingPayment) {
@@ -1164,7 +1190,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     }, 1000);
                                     return;
                                 }
-                                
+
                                 // Redirecionar para dashboard ou URL solicitada
                                 const redirectUrl = resolveRedirectTarget(new URLSearchParams(window.location.search));
                                 setTimeout(() => {

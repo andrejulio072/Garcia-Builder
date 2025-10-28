@@ -86,6 +86,26 @@
 
     <script>
         (async function() {
+            // If this dashboard is reached on a non-local host but contains a devReturn param,
+            // bounce back to the local environment carrying over the OAuth hash tokens.
+            try {
+                const sp = new URLSearchParams(window.location.search);
+                const devReturn = sp.get('devReturn');
+                if (devReturn) {
+                    const targetBase = devReturn.replace(/\/?$/, '/');
+                    const target = new URL('dashboard.html', targetBase);
+                    target.hash = window.location.hash || '';
+                    const isSameOrigin = target.origin === window.location.origin;
+                    if (!isSameOrigin) {
+                        console.log('↩️ Redirecting back to local dev from hosted environment...', { target: target.toString() });
+                        window.location.replace(target.toString());
+                        return; // Stop further processing on this host
+                    }
+                }
+            } catch (e) {
+                console.warn('devReturn redirect check failed:', e);
+            }
+
             const statusTitle = document.getElementById('status-title');
             const statusMessage = document.getElementById('status-message');
             const errorContainer = document.getElementById('error-container');

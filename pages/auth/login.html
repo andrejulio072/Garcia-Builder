@@ -366,10 +366,19 @@
         const buildRedirectUrl = () => {
             const baseUrl = getSiteBaseUrl();
             try {
-                return new URL('dashboard.html', `${baseUrl}/`).toString();
+                const url = new URL('dashboard.html', `${baseUrl}/`);
+                // For local development, add a devReturn param so hosted redirects can bounce back to localhost
+                if (/^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname)) {
+                    url.searchParams.set('devReturn', baseUrl);
+                }
+                return url.toString();
             } catch (err) {
                 console.warn('Failed to build dashboard redirect URL, falling back to origin:', err);
-                return `${window.location.origin}/dashboard.html`;
+                const fallback = new URL('dashboard.html', `${window.location.origin}/`);
+                if (/^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname)) {
+                    fallback.searchParams.set('devReturn', window.location.origin.replace(/\/$/, ''));
+                }
+                return fallback.toString();
             }
         };
 

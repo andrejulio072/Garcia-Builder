@@ -148,13 +148,15 @@
         return window.__ENV_PROMISE;
     };
 
-    if (isFileProtocol || isOffline) {
-        const reasons = [];
-        if (isFileProtocol) reasons.push('file protocol');
-        if (isOffline) reasons.push('offline mode');
-        console.info(`[Supabase] Legacy initializer skipped (${reasons.join(' + ')}).`);
+    if (isOffline) {
+        console.info('[Supabase] Initializer skipped (offline mode).');
         window.supabaseClient = null;
         return;
+    }
+    if (isFileProtocol) {
+        // Allow initialization under file:// to support lightweight local testing.
+        // OAuth redirects won’t return to file://, but email/password flows work.
+        console.info('[Supabase] Running under file:// protocol; proceeding with initialization for local testing.');
     }
 
     loadEnv()

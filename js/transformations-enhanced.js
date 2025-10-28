@@ -151,7 +151,7 @@ class TransformationsManager {
 
             if (matchesFilter && rendered < this.visibleItems) {
                 const shouldAnimate = rendered >= animateFromIndex;
-                item.style.display = 'block';
+                item.style.display = 'flex';
 
                 if (shouldAnimate) {
                     item.style.opacity = '0';

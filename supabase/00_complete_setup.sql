@@ -220,19 +220,27 @@ CREATE TRIGGER on_leads_updated
     BEFORE UPDATE ON public.leads
     FOR EACH ROW EXECUTE PROCEDURE public.handle_updated_at();
 
--- Função para criar perfil automaticamente quando usuário se cadastra
 CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, auth
+AS $$
 BEGIN
-    INSERT INTO public.profiles (id, full_name, role)
+    INSERT INTO public.profiles (id, user_id, full_name)
     VALUES (
         NEW.id,
-        NEW.raw_user_meta_data->>'full_name',
-        COALESCE(NEW.raw_user_meta_data->>'role', 'client')
-    );
+        NEW.id,
+        NEW.raw_user_meta_data->>'full_name'
+    )
+    ON CONFLICT (id) DO UPDATE
+        SET full_name = COALESCE(EXCLUDED.full_name, public.profiles.full_name),
+            updated_at = timezone('utc', now());
     RETURN NEW;
 END;
-$$ LANGUAGE 'plpgsql';
+$$;
+
+GRANT EXECUTE ON FUNCTION public.handle_new_user() TO authenticated, anon;
 
 -- Trigger para criar perfil ao criar usuário
 CREATE TRIGGER on_auth_user_created

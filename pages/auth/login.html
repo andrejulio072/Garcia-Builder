@@ -103,7 +103,7 @@
                                         <span class="divider-text" data-i18n="auth.or_continue_with">or continue with</span>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button id="google-btn-login" class="btn btn-google" type="button">
+                                        <button id="login-with-google" class="btn btn-google" type="button" data-provider="google" data-use-module="true">
                                             <i class="fab fa-google me-2"></i>
                                             <span data-i18n="auth.continue_google">Continue with Google</span>
                                         </button>
@@ -209,7 +209,7 @@
                                         <span class="divider-text" data-i18n="auth.or_continue_with">or continue with</span>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button id="google-btn-register" class="btn btn-google" type="button">
+                                        <button id="google-btn-register" class="btn btn-google" type="button" data-provider="google" data-use-module="true">
                                             <i class="fab fa-google me-2"></i>
                                             <span data-i18n="auth.continue_google">Continue with Google</span>
                                         </button>
@@ -267,7 +267,200 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="../../js/env.js?v=20251028"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+
+        const resolveSupabaseKeys = async () => {
+            const fromGlobals = () => {
+                if (window.NEXT_PUBLIC_SUPABASE_URL && window.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+                    return {
+                        url: window.NEXT_PUBLIC_SUPABASE_URL,
+                        key: window.NEXT_PUBLIC_SUPABASE_ANON_KEY
+                    };
+                }
+                if (window.SUPABASE_URL && window.SUPABASE_ANON_KEY) {
+                    return {
+                        url: window.SUPABASE_URL,
+                        key: window.SUPABASE_ANON_KEY
+                    };
+                }
+                return null;
+            };
+
+            const existing = fromGlobals();
+            if (existing) return existing;
+
+            if (typeof window.waitForSupabaseClient === 'function') {
+                try {
+                    await window.waitForSupabaseClient();
+                } catch (err) {
+                    console.warn('waitForSupabaseClient error (continuing with manual fetch):', err);
+                }
+            }
+
+            const postWait = fromGlobals();
+            if (postWait) return postWait;
+
+            const fetchEnv = async () => {
+                const candidates = [
+                    '/env-config.json',
+                    '../../env-config.json',
+                    '../env-config.json'
+                ];
+
+                for (const path of candidates) {
+                    try {
+                        const response = await fetch(path, { cache: 'no-store' });
+                        if (!response.ok) continue;
+                        const data = await response.json();
+                        if (data?.SUPABASE_URL && data?.SUPABASE_ANON_KEY) {
+                            window.__ENV = Object.assign({}, window.__ENV || {}, data);
+                            window.NEXT_PUBLIC_SUPABASE_URL = data.SUPABASE_URL;
+                            window.NEXT_PUBLIC_SUPABASE_ANON_KEY = data.SUPABASE_ANON_KEY;
+                            return {
+                                url: data.SUPABASE_URL,
+                                key: data.SUPABASE_ANON_KEY
+                            };
+                        }
+                    } catch (err) {
+                        console.warn('Failed to fetch env config from', path, err);
+                    }
+                }
+
+                throw new Error('Supabase configuration not found.');
+            };
+
+            return fetchEnv();
+        };
+
+        const getSiteBaseUrl = () => {
+            const ensureEnvBase = (base) => {
+                if (!window.__ENV) window.__ENV = {};
+                if (!window.__ENV.PUBLIC_SITE_URL) {
+                    window.__ENV.PUBLIC_SITE_URL = base;
+                }
+                return base;
+            };
+
+            if (window.__ENV && typeof window.__ENV.PUBLIC_SITE_URL === 'string' && window.__ENV.PUBLIC_SITE_URL) {
+                return ensureEnvBase(window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, ''));
+            }
+
+            const { origin, pathname } = window.location;
+            const segments = (pathname || '/').split('/').filter(Boolean);
+            const pagesIdx = segments.indexOf('pages');
+            let baseSegments;
+            if (pagesIdx > -1) {
+                baseSegments = segments.slice(0, pagesIdx);
+            } else if (segments.length > 0) {
+                baseSegments = segments.slice(0, segments.length - 1);
+            } else {
+                baseSegments = [];
+            }
+            const basePath = baseSegments.length ? `/${baseSegments.join('/')}` : '';
+            return ensureEnvBase(`${origin}${basePath}`.replace(/\/$/, ''));
+        };
+
+        const buildRedirectUrl = () => {
+            const baseUrl = getSiteBaseUrl();
+            try {
+                return new URL('dashboard.html', `${baseUrl}/`).toString();
+            } catch (err) {
+                console.warn('Failed to build dashboard redirect URL, falling back to origin:', err);
+                return `${window.location.origin}/dashboard.html`;
+            }
+        };
+
+        const showErrorBanner = (message) => {
+            if (typeof window.showAuthMessage === 'function') {
+                window.showAuthMessage(message, 'danger');
+                return;
+            }
+            console.error('Supabase OAuth error:', message);
+            alert(message);
+        };
+
+        const attachGoogleLogin = (client, projectUrl) => {
+            if (!client) {
+                console.error('Supabase client is unavailable.');
+                return;
+            }
+
+            const redirectTo = buildRedirectUrl();
+
+            const buttons = new Set([
+                document.getElementById('login-with-google'),
+                ...document.querySelectorAll('[data-provider="google"][data-use-module="true"]')
+            ].filter(Boolean));
+
+            buttons.forEach((btn) => {
+                if (btn.dataset.oauthAttached === 'true') return;
+
+                btn.dataset.oauthAttached = 'true';
+
+                const originalHTML = btn.innerHTML;
+                console.log('Google OAuth handler attached:', { id: btn.id, redirectTo });
+                btn.addEventListener('click', async () => {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando ao Google...';
+
+                    try {
+                        const { data, error } = await client.auth.signInWithOAuth({
+                            provider: 'google',
+                            options: {
+                                redirectTo,
+                                queryParams: {
+                                    access_type: 'offline',
+                                    prompt: 'consent'
+                                }
+                            }
+                        });
+
+                        if (error) {
+                            throw error;
+                        }
+
+                        if (data?.url) {
+                            console.log('Supabase OAuth provided redirect URL. Navigating...', data.url);
+                            window.location.assign(data.url);
+                            return;
+                        }
+
+                        // Se o SDK não redirecionou automaticamente, forçar fallback para o provedor
+                        console.warn('Supabase OAuth returned without automatic redirect. Forcing navigation.');
+                        if (projectUrl) {
+                            const sanitizedBase = projectUrl.replace(/\/$/, '');
+                            const fallbackUrl = `${sanitizedBase}/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(redirectTo)}`;
+                            window.location.href = fallbackUrl;
+                            return;
+                        }
+                        throw new Error('Supabase project URL unavailable para redirecionamento.');
+                    } catch (error) {
+                        showErrorBanner(error?.message || 'Erro ao iniciar a autenticação com Google.');
+                        btn.disabled = false;
+                        btn.innerHTML = originalHTML;
+                    }
+                });
+            });
+        };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const { url, key } = await resolveSupabaseKeys();
+                if (!url || !key) {
+                    throw new Error('Supabase project keys are missing.');
+                }
+
+                const supabaseModuleClient = createClient(url, key);
+                window.supabaseOAuthClient = supabaseModuleClient;
+                attachGoogleLogin(supabaseModuleClient, url);
+            } catch (error) {
+                console.error('Failed to initialize Google login:', error);
+            }
+        });
+    </script>
     <script src="../../js/core/supabase.js?v=20251027-oauth-fix"></script>
     <script src="../../js/utils/component-loader-v3-simplified.js?v=20251027"></script>
     <script src="../../js/core/i18n-shim.js" defer></script>
@@ -275,6 +468,15 @@
     <script src="../../js/core/auth.js?v=20251027-oauth-fix" defer></script>
     <script src="../../js/core/auth-guard.js?v=20251009" defer></script>
     <script src="../../js/tracking/conversion-helper.js" defer></script>
+    <script>
+        window.addEventListener('load', () => {
+            console.log('[GB] ready', {
+                url: window.NEXT_PUBLIC_SUPABASE_URL,
+                anon: !!window.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+                btn: !!document.getElementById('login-with-google')
+            });
+        });
+    </script>
 
     <div data-component="footer"></div>
     <a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener noreferrer" aria-label="Contact us on WhatsApp" onclick="return (window.gtag_report_conversion ? gtag_report_conversion(this.href) : true)">WhatsApp</a>

@@ -1,4 +1,76 @@
 // Authentication System - Garcia Builder
+
+function computeSiteBaseUrl() {
+    if (typeof window === 'undefined') {
+        return '';
+    }
+
+    if (window.__SITE_BASE_URL) {
+        return window.__SITE_BASE_URL;
+    }
+
+    const envBase = window.__ENV && typeof window.__ENV.PUBLIC_SITE_URL === 'string'
+        ? window.__ENV.PUBLIC_SITE_URL
+        : null;
+
+    if (envBase) {
+        window.__SITE_BASE_URL = envBase.replace(/\/$/, '');
+        return window.__SITE_BASE_URL;
+    }
+
+    try {
+        const { origin, pathname } = window.location;
+        const segments = (pathname || '/').split('/').filter(Boolean);
+        const pagesIdx = segments.indexOf('pages');
+        let baseSegments;
+        if (pagesIdx > -1) {
+            baseSegments = segments.slice(0, pagesIdx);
+        } else if (segments.length > 0) {
+            baseSegments = segments.slice(0, segments.length - 1);
+        } else {
+            baseSegments = [];
+        }
+        const basePath = baseSegments.length ? `/${baseSegments.join('/')}` : '';
+        window.__SITE_BASE_URL = `${origin}${basePath}`.replace(/\/$/, '');
+        return window.__SITE_BASE_URL;
+    } catch (err) {
+        console.warn('computeSiteBaseUrl fallback to origin:', err);
+        const fallback = window.location ? window.location.origin : '';
+        window.__SITE_BASE_URL = (fallback || '').replace(/\/$/, '');
+        return window.__SITE_BASE_URL;
+    }
+}
+
+function toAbsoluteUrl(pathOrUrl, fallbackPath = '') {
+    if (!pathOrUrl) {
+        return fallbackPath ? toAbsoluteUrl(fallbackPath) : `${computeSiteBaseUrl()}/`;
+    }
+
+    if (/^https?:\/\//i.test(pathOrUrl)) {
+        return pathOrUrl;
+    }
+
+    try {
+        return new URL(pathOrUrl, `${computeSiteBaseUrl()}/`).toString();
+    } catch (err) {
+        console.warn('toAbsoluteUrl fallback in use:', { pathOrUrl, err });
+        const cleanPath = pathOrUrl.replace(/^\/+/, '');
+        return `${computeSiteBaseUrl()}/${cleanPath}`;
+    }
+}
+
+function resolveRedirectTarget(searchParams, defaultPath = 'dashboard.html') {
+    const param = searchParams.get('redirect');
+    if (param) {
+        try {
+            return toAbsoluteUrl(decodeURIComponent(param));
+        } catch (err) {
+            console.warn('resolveRedirectTarget decode failed, using raw value:', err);
+            return toAbsoluteUrl(param);
+        }
+    }
+    return toAbsoluteUrl(defaultPath);
+}
 class AuthSystem {
     constructor() {
         this.users = JSON.parse(localStorage.getItem('gb_users') || '[]');
@@ -27,20 +99,14 @@ class AuthSystem {
                     lastLogin: new Date().toISOString()
                 };
                 localStorage.setItem('gb_current_user', JSON.stringify(devUser));
-                // Redirect to dashboard by default
+
                 if (window.location.pathname.endsWith('login.html')) {
-                    window.location.href = 'dashboard.html?dev=1';
+                    window.location.href = toAbsoluteUrl('dashboard.html?dev=1');
                 }
             }
         } catch (e) {
             console.warn('Dev mode init skipped:', e?.message || e);
         }
-    }
-
-    setupEventListeners() {
-        // Form switching
-        document.getElementById('showRegister')?.addEventListener('click', () => this.showForm('register'));
-        document.getElementById('showLogin')?.addEventListener('click', () => this.showForm('login'));
 
         // Form submissions - APENAS para formulários tradicionais
         const loginForm = document.getElementById('loginFormElement');
@@ -426,11 +492,11 @@ class AuthSystem {
                     localStorage.setItem('userEmail', this.currentUser.email);
 
                     // Redirecionar para pricing com auto-pagamento
-                    window.location.href = `pricing.html?auto-pay=${paymentData.planKey}`;
+                    window.location.href = toAbsoluteUrl(`pricing.html?auto-pay=${paymentData.planKey}`);
                     return;
                 }
 
-                const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'index.html';
+                const redirectUrl = resolveRedirectTarget(new URLSearchParams(window.location.search));
                 window.location.href = redirectUrl;
             }, 1500);
 
@@ -446,11 +512,11 @@ class AuthSystem {
         if (this.currentUser && this.currentUser.role === 'admin') {
             console.log('Redirecting admin to admin dashboard...');
             setTimeout(() => {
-                window.location.href = 'enhanced-admin-dashboard.html';
+                    window.location.href = toAbsoluteUrl('pages/admin/enhanced-admin-dashboard.html');
             }, 1000);
         } else {
             // Para outros usuários, usar redirecionamento normal
-            const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'dashboard.html';
+            const redirectUrl = resolveRedirectTarget(new URLSearchParams(window.location.search));
             setTimeout(() => {
                 window.location.href = redirectUrl;
             }, 1000);
@@ -494,11 +560,7 @@ class AuthSystem {
         try {
             // Prefer Supabase sign up when available (sends verification email)
             if (window.supabaseClient && window.supabaseClient.auth) {
-                const origin = window.location.origin;
-                const isLocal = origin.includes('localhost') || origin.includes('127.0.0.1');
-                const emailRedirectTo = isLocal
-                    ? `${origin}/dashboard.html`
-                    : `https://andrejulio072.github.io/Garcia-Builder/dashboard.html`;
+                const emailRedirectTo = toAbsoluteUrl('dashboard.html');
 
                 const { data, error } = await window.supabaseClient.auth.signUp({
                     email,
@@ -513,7 +575,22 @@ class AuthSystem {
                     }
                 });
 
-                if (error) throw new Error(error.message || 'Registration failed');
+                if (error) {
+                    const message = (error.message || '').toLowerCase();
+                    if (message.includes('already been registered') || message.includes('already registered')) {
+                        this.showError('An account with this email already exists. Try signing in or use Google login.');
+                        // Pré-preencher o email no formulário de login para facilitar o acesso
+                        try {
+                            document.getElementById('loginEmail').value = email;
+                            this.showForm('login');
+                        } catch (prefillErr) {
+                            console.warn('Login form prefill failed:', prefillErr);
+                        }
+                        return;
+                    }
+
+                    throw new Error(error.message || 'Registration failed');
+                }
 
                 // Save email for convenience
                 localStorage.setItem('gb_remember_user', email);
@@ -585,7 +662,7 @@ class AuthSystem {
     checkAuthStatus() {
         // If user is already logged in, redirect to main site
         if (this.currentUser && window.location.pathname.includes('login.html')) {
-            const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'index.html';
+            const redirectUrl = resolveRedirectTarget(new URLSearchParams(window.location.search));
             window.location.href = redirectUrl;
             return;
         }
@@ -674,14 +751,14 @@ class AuthSystem {
         } finally {
             localStorage.removeItem('gb_current_user');
             localStorage.removeItem('gb_remember_user');
-            window.location.href = 'login.html';
+            window.location.href = toAbsoluteUrl('pages/auth/login.html');
         }
     }
 
     static requireAuth() {
         if (!AuthSystem.isLoggedIn()) {
-            const currentUrl = encodeURIComponent(window.location.pathname);
-            window.location.href = `login.html?redirect=${currentUrl}`;
+            const currentUrl = window.location.pathname + window.location.search + window.location.hash;
+            window.location.href = `${toAbsoluteUrl('pages/auth/login.html')}?redirect=${encodeURIComponent(currentUrl)}`;
             return false;
         }
         return true;
@@ -720,21 +797,11 @@ function setupSocialLogin() {
 
 function setupOAuthButtons() {
     // URLs de redirecionamento conforme documentação Supabase
-    const currentHost = window.location.origin;
-    const isLocal = currentHost.includes('localhost') || currentHost.includes('127.0.0.1');
-    
-    // Usar PUBLIC_SITE_URL do env-config.json quando disponível (produção)
-    const siteUrl = (window.__ENV && typeof window.__ENV.PUBLIC_SITE_URL === 'string' && window.__ENV.PUBLIC_SITE_URL)
-        ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
-        : null;
-    
+    const baseUrl = computeSiteBaseUrl();
+
     // Redirect para dashboard.html após login (destino final)
     // IMPORTANTE: Esta URL deve estar em Supabase > Authentication > URL Configuration > Redirect URLs
-    const redirectTo = isLocal
-        ? `${currentHost}/dashboard.html` // Local: raiz do projeto
-        : (siteUrl 
-            ? `${siteUrl}/dashboard.html` // Produção: com PUBLIC_SITE_URL configurado
-            : `https://andrejulio072.github.io/Garcia-Builder/dashboard.html`); // Fallback GitHub Pages
+    const redirectTo = `${baseUrl}/dashboard.html`;
 
     console.log('🔗 OAuth redirect URL configurada:', redirectTo);
 
@@ -742,6 +809,11 @@ function setupOAuthButtons() {
     const setupGoogleButton = (btnId) => {
         const btn = document.getElementById(btnId);
         if (!btn) return;
+
+        if (btn.dataset.useModule === 'true') {
+            console.log(`🔵 Botão Google ${btnId} gerenciado pelo módulo dedicado; ignorando handler legacy.`);
+            return;
+        }
 
         console.log(`🔵 Configurando botão Google: ${btnId}`);
 
@@ -838,7 +910,7 @@ function setupOAuthButtons() {
     };
 
     // Configurar todos os botões Google e Facebook
-    setupGoogleButton('google-btn-login');
+    setupGoogleButton('login-with-google');
     setupGoogleButton('google-btn-register');
     setupFacebookButton('facebook-btn-login');
     setupFacebookButton('facebook-btn-register');
@@ -969,13 +1041,13 @@ document.addEventListener('DOMContentLoaded', () => {
                                     localStorage.removeItem('pendingPayment');
                                     localStorage.setItem('userEmail', norm.email);
                                     setTimeout(() => {
-                                        window.location.href = `../../pricing.html?auto-pay=${paymentData.planKey}`;
+                                        window.location.href = toAbsoluteUrl(`pricing.html?auto-pay=${paymentData.planKey}`);
                                     }, 1000);
                                     return;
                                 }
                                 
                                 // Redirecionar para dashboard ou URL solicitada
-                                const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || '../../dashboard.html';
+                                const redirectUrl = resolveRedirectTarget(new URLSearchParams(window.location.search));
                                 setTimeout(() => {
                                     window.location.href = redirectUrl;
                                 }, 1000);

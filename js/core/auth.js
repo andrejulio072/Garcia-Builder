@@ -501,7 +501,9 @@ class AuthSystem {
             }, 1500);
 
         } catch (error) {
-            this.showError(error.message);
+            const rawMessage = (error && error.message) ? String(error.message) : String(error || '');
+            const friendly = this.getFriendlyErrorMessage(rawMessage, 'login');
+            this.showError(friendly || rawMessage || 'Login failed. Please try again.');
         } finally {
             this.setLoadingState(submitBtn, false);
         }
@@ -653,7 +655,9 @@ class AuthSystem {
             }, 800);
 
         } catch (error) {
-            this.showError('Error creating account: ' + error.message);
+            const rawMessage = (error && error.message) ? String(error.message) : String(error || '');
+            const friendly = this.getFriendlyErrorMessage(rawMessage, 'register');
+            this.showError(friendly || `Error creating account: ${rawMessage || 'Unknown error'}`);
         } finally {
             this.setLoadingState(submitBtn, false);
         }
@@ -694,6 +698,46 @@ class AuthSystem {
             button.classList.remove('loading');
             button.disabled = false;
         }
+    }
+
+    getFriendlyErrorMessage(message, context = 'generic') {
+        if (!message) return null;
+        const normalized = message.toLowerCase();
+
+        const templates = [
+            {
+                match: ['invalid login credentials', 'invalid email or password', 'wrong email or password', 'credenciais inválidas'],
+                text: 'Incorrect email or password. Please double-check your credentials and try again.'
+            },
+            {
+                match: ['email not confirmed', 'email needs to be confirmed', 'user has not been confirmed'],
+                text: "Email not confirmed yet. Check your inbox (and spam folder) for the confirmation email or request a new link via 'Forgot password'."
+            },
+            {
+                match: ['user not found', 'email not found', 'no user found', 'invalid email'],
+                text: 'Account not found. Create a new account or verify that the email address is correct.'
+            },
+            {
+                match: ['too many requests', 'rate limit', '429'],
+                text: 'Too many attempts in a short time. Wait a moment before trying again.'
+            },
+            {
+                match: ['network error', 'fetch failed', 'failed to fetch', 'network request failed'],
+                text: 'Network issue detected. Check your connection and try again.'
+            }
+        ];
+
+        for (const tpl of templates) {
+            if (tpl.match.some((needle) => normalized.includes(needle))) {
+                return tpl.text;
+            }
+        }
+
+        if (context === 'register' && normalized.includes('already')) {
+            return 'This email is already registered. Use the login form or reset your password.';
+        }
+
+        return null;
     }
 
     showSuccess(title, message = '') {

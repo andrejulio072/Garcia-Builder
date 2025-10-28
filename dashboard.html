@@ -113,7 +113,7 @@
 
             try {
                 console.log('🔐 OAuth redirect handler - Verificando autenticação...');
-                
+
                 // Aguardar Supabase client estar disponível
                 let attempts = 0;
                 while (!window.supabaseClient && attempts < 20) {
@@ -130,11 +130,11 @@
                 // Verificar se há tokens OAuth na URL (hash ou query params)
                 const hashParams = new URLSearchParams(window.location.hash.substring(1));
                 const queryParams = new URLSearchParams(window.location.search);
-                
-                const hasOAuthTokens = hashParams.has('access_token') || 
-                                     queryParams.has('code') || 
+
+                const hasOAuthTokens = hashParams.has('access_token') ||
+                                     queryParams.has('code') ||
                                      hashParams.has('error');
-                
+
                 if (hasOAuthTokens) {
                     console.log('🔑 Tokens OAuth detectados na URL');
                     statusMessage.textContent = 'Validando login social...';
@@ -197,7 +197,7 @@
                 // Sucesso - redirecionar para dashboard real
                 statusTitle.textContent = 'Login realizado com sucesso!';
                 statusMessage.textContent = 'Redirecionando para seu dashboard...';
-                
+
                 await new Promise(resolve => setTimeout(resolve, 800));
                 window.location.href = 'pages/public/dashboard.html';
 
@@ -207,7 +207,7 @@
                 statusMessage.classList.add('hidden');
                 errorMessage.textContent = error.message || 'Erro desconhecido';
                 errorContainer.classList.remove('hidden');
-                
+
                 // Se não conseguiu autenticar, limpar localStorage
                 localStorage.removeItem('gb_current_user');
             }

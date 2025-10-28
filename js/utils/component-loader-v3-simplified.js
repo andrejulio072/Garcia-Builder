@@ -8,6 +8,64 @@
 
 console.log('[Component Loader v3.0] Initializing...');
 
+(function handleSupabaseRecoveryBounce() {
+    try {
+        if (typeof window === 'undefined' || !window.location) {
+            return;
+        }
+
+        const { location } = window;
+        const pathname = (location.pathname || '').toLowerCase();
+        if (pathname.includes('reset-password.html')) {
+            return;
+        }
+
+        const hash = location.hash || '';
+        if (!hash || hash.length < 2) {
+            return;
+        }
+
+        const params = new URLSearchParams(hash.slice(1));
+        const isRecovery = params.get('type') === 'recovery' || params.get('event') === 'PASSWORD_RECOVERY';
+        const hasTokens = params.has('access_token') && params.has('refresh_token');
+        if (!isRecovery || !hasTokens) {
+            return;
+        }
+
+        let baseUrl = '';
+        try {
+            const configured = window.__ENV && typeof window.__ENV.PUBLIC_SITE_URL === 'string'
+                ? window.__ENV.PUBLIC_SITE_URL.trim()
+                : '';
+            if (configured) {
+                baseUrl = configured.replace(/\/$/, '');
+            }
+        } catch (err) {
+            console.warn('[Recovery Bounce] __ENV lookup failed:', err);
+        }
+
+        if (!baseUrl) {
+            const origin = location.origin && location.origin !== 'null' ? location.origin : '';
+            if (!origin) {
+                return;
+            }
+            baseUrl = origin.replace(/\/$/, '');
+        }
+
+        const target = new URL('pages/auth/reset-password.html', `${baseUrl}/`);
+        const query = new URLSearchParams(location.search || '');
+        if (query.toString()) {
+            target.search = query.toString();
+        }
+        target.hash = hash;
+
+        console.log('[Recovery Bounce] Redirecting to reset password form:', target.toString());
+        window.location.replace(target.toString());
+    } catch (err) {
+        console.warn('[Recovery Bounce] Failed to reroute tokenized recovery flow:', err);
+    }
+})();
+
 // Configuration
 const COMPONENTS_PATH = 'components/';
 const CACHE = {};

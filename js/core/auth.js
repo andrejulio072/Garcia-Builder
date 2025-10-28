@@ -165,6 +165,70 @@ class AuthSystem {
         }
     }
 
+    setupEventListeners() {
+        try {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+
+            const toggleView = (view) => {
+                if (!loginForm || !registerForm) return;
+                if (view === 'register') {
+                    loginForm.classList.remove('active');
+                    registerForm.classList.add('active');
+                } else {
+                    registerForm.classList.remove('active');
+                    loginForm.classList.add('active');
+                }
+
+                try {
+                    const url = new URL(window.location);
+                    url.searchParams.set('action', view);
+                    window.history.replaceState({}, '', url);
+                } catch (historyErr) {
+                    console.warn('Auth form toggle history update failed:', historyErr);
+                }
+            };
+
+            const focusFirstInput = (container) => {
+                if (!container) return;
+                const field = container.querySelector('input:not([type="hidden"])');
+                if (field) {
+                    setTimeout(() => field.focus(), 50);
+                }
+            };
+
+            const showRegisterBtn = document.getElementById('showRegister');
+            if (showRegisterBtn) {
+                showRegisterBtn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    toggleView('register');
+                    focusFirstInput(registerForm);
+                });
+            }
+
+            const showLoginBtn = document.getElementById('showLogin');
+            if (showLoginBtn) {
+                showLoginBtn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    toggleView('login');
+                    focusFirstInput(loginForm);
+                });
+            }
+
+            // Support explicit action via URL (e.g., ?action=register)
+            const initialAction = new URLSearchParams(window.location.search).get('action');
+            if (initialAction === 'register') {
+                toggleView('register');
+                focusFirstInput(registerForm);
+            } else {
+                toggleView('login');
+                focusFirstInput(loginForm);
+            }
+        } catch (err) {
+            console.warn('setupEventListeners failed:', err);
+        }
+    }
+
     setupFormValidation() {
         // Real-time email validation
         const emailInputs = document.querySelectorAll('input[type="email"]');

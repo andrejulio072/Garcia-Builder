@@ -194,7 +194,7 @@
                                     <input type="checkbox" class="form-check-input" id="agreeTerms" required>
                                     <label class="form-check-label" for="agreeTerms">
                                         <span data-i18n="auth.agree_terms">I agree to the</span>
-                                        <a href="#" class="text-decoration-none" data-i18n="auth.terms_link">Terms of Service</a>
+                                        <a href="../../terms.html" class="text-decoration-none" data-i18n="auth.terms_link">Terms of Service</a>
                                     </label>
                                 </div>
 
@@ -566,6 +566,79 @@
                 anon: !!window.NEXT_PUBLIC_SUPABASE_ANON_KEY,
                 btn: !!document.getElementById('login-with-google')
             });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const issues = [];
+                const normalize = (value) => (value || '').replace(/\/$/, '');
+
+                const anchorChecks = [
+                    { selector: 'a[data-i18n="auth.back_to_login"]', expected: 'login.html' },
+                    { selector: 'a[data-i18n="auth.terms_link"]', expected: '../../terms.html' }
+                ];
+
+                anchorChecks.forEach((check) => {
+                    const element = document.querySelector(check.selector);
+                    if (!element) {
+                        issues.push({ selector: check.selector, reason: 'missing' });
+                        return;
+                    }
+                    const href = element.getAttribute('href');
+                    if (!href) {
+                        issues.push({ selector: check.selector, reason: 'href-missing' });
+                    } else if (normalize(href) !== normalize(check.expected)) {
+                        issues.push({ selector: check.selector, reason: 'href-mismatch', href, expected: check.expected });
+                    }
+                });
+
+                const runToggleTests = () => {
+                    const auth = window.authSystem;
+                    const loginForm = document.getElementById('loginForm');
+                    const registerForm = document.getElementById('registerForm');
+                    if (!auth || typeof auth.showForm !== 'function') {
+                        issues.push({ selector: 'window.authSystem.showForm', reason: 'missing-handler' });
+                        return;
+                    }
+                    if (!loginForm || !registerForm) {
+                        issues.push({ selector: '#loginForm/#registerForm', reason: 'forms-missing' });
+                        return;
+                    }
+
+                    const initialUrl = new URL(window.location.href);
+
+                    auth.showForm('register');
+                    const registerToggled = registerForm.classList.contains('active') && !loginForm.classList.contains('active');
+                    auth.showForm('login');
+                    const loginToggled = loginForm.classList.contains('active');
+
+                    if (!registerToggled) {
+                        issues.push({ selector: '#showRegister', reason: 'toggle-failed' });
+                    }
+                    if (!loginToggled) {
+                        issues.push({ selector: '#showLogin', reason: 'toggle-failed' });
+                    }
+
+                    try {
+                        window.history.replaceState({}, '', initialUrl.toString());
+                    } catch (err) {
+                        console.warn('Auth route test could not restore URL:', err);
+                    }
+                };
+
+                setTimeout(runToggleTests, 20);
+
+                setTimeout(() => {
+                    if (issues.length) {
+                        console.warn('[Auth Route Check] Some buttons failed verification:', issues);
+                    } else {
+                        console.log('[Auth Route Check] All tested buttons point to the correct targets.');
+                    }
+                }, 40);
+            } catch (err) {
+                console.warn('[Auth Route Check] Verification failed:', err);
+            }
         });
     </script>
 

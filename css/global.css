@@ -965,12 +965,19 @@ section#contact.section.has-bg.contact-bg {
   white-space: nowrap;
 }
 
-/* Navbar controls container - visible outside hamburger */
+/* Navbar controls container (desktop only, aligned with navbar component) */
 .gb-navbar-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-left: auto;
+  gap: 16px;
+  margin-left: 0;
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 1024px) {
+  .gb-navbar-controls {
+    display: none !important;
+  }
 }
 
 /* Language and currency selector styling */
@@ -995,28 +1002,7 @@ section#contact.section.has-bg.contact-bg {
   color: #fff;
 }
 
-/* Desktop and tablet navbar tightening */
-@media (min-width: 769px) {
-  .gb-navbar-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-  }
-}
-
 @media (max-width: 768px) {
-  .gb-navbar-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-
-  .gb-navbar-controls {
-    gap: 8px;
-  }
-
   #auth-buttons-navbar {
     gap: 6px;
   }
@@ -1046,13 +1032,6 @@ section#contact.section.has-bg.contact-bg {
 }
 
 @media (max-width: 640px) {
-  .gb-navbar-controls {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-
   #lang-select-navbar {
     min-width: 70px;
   }

@@ -705,11 +705,22 @@ class AuthSystem {
     }
 
     showError(message) {
-        document.getElementById('errorTitle').textContent = 'Error!';
-        document.getElementById('errorMessage').textContent = message;
-
-        const modal = new bootstrap.Modal(document.getElementById('errorModal'));
-        modal.show();
+        try {
+            document.getElementById('errorTitle').textContent = 'Error!';
+            document.getElementById('errorMessage').textContent = message;
+            const modalEl = document.getElementById('errorModal');
+            if (modalEl && window.bootstrap && typeof bootstrap.Modal === 'function') {
+                const modal = new bootstrap.Modal(modalEl);
+                modal.show();
+            }
+        } catch {}
+        // Inline fallback for environments where Bootstrap modal isn’t available yet
+        if (typeof showAuthMessage === 'function') {
+            showAuthMessage(message, 'danger');
+        } else {
+            console.error('[Auth Error]', message);
+            try { alert(message); } catch {}
+        }
     }
 
     switchLanguage(lang) {

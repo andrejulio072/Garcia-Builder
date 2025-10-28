@@ -27,19 +27,21 @@
 .gb-navbar-content {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 16px 0;
-    gap: clamp(18px, 3vw, 32px);
+    gap: clamp(24px, 3vw, 48px);
     flex-wrap: nowrap;
 }
 
 .gb-navbar-links {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: clamp(16px, 2.4vw, 28px);
-    margin-left: clamp(18px, 3.2vw, 54px);
-    flex: 1 1 0;
+    margin-left: 0;
+    margin-right: auto;
+    padding-right: clamp(60px, 8vw, 150px);
+    flex: 0 1 auto;
     min-width: 0;
 }
 
@@ -89,9 +91,9 @@
     align-items: center;
     justify-content: flex-end;
     gap: clamp(10px, 1.8vw, 18px);
-    margin-left: auto;
+    margin-left: 0;
     flex-wrap: nowrap;
-    flex: 0 1 auto;
+    flex: 0 0 auto;
     min-width: 0;
 }
 
@@ -102,7 +104,7 @@
     gap: clamp(10px, 1.6vw, 14px);
     text-decoration: none;
     transition: transform 0.3s ease;
-    flex-shrink: 1;
+    flex-shrink: 0;
     min-width: 0;
 }
 
@@ -127,7 +129,8 @@
     letter-spacing: -0.5px;
     line-height: 1.2;
     white-space: nowrap;
-    min-width: 0;
+    flex-shrink: 0;
+    min-width: max-content;
 }
 
 /* Navbar Controls (Auth + Language) */
@@ -359,6 +362,12 @@
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+@media (min-width: 1025px) {
+    .gb-hamburger {
+        display: none;
+    }
 }
 
 .gb-navbar-actions .gb-hamburger {

@@ -2,742 +2,259 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Garcia Builder</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/global.css">
-
-    <!-- Google Fonts -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="dashboard.title">Client Dashboard  Garcia Builder</title>
+    <meta name="description" content="Track your Garcia Builder progress, routines, and milestones in a cinematic coaching dashboard." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
-            color: #fff;
-            min-height: 100vh;
-        }
-
-        .dashboard-container {
-            padding-top: 120px;
-            min-height: 100vh;
-        }
-
-        .dashboard-header {
-            background: linear-gradient(135deg, rgba(246, 200, 78, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
-            border-radius: 25px;
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(246, 200, 78, 0.3);
-            backdrop-filter: blur(15px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-        }
-
-        .welcome-text {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-avatar {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: 3px solid #F6C84E;
-            object-fit: cover;
-        }
-
-        .user-details h2 {
-            color: #F6C84E;
-            margin: 0;
-            font-weight: 700;
-            font-size: 1.5rem;
-        }
-
-        .user-details p {
-            margin: 0;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
-        }
-
-        .quick-actions {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-quick {
-            background: rgba(246, 200, 78, 0.1);
-            border: 1px solid rgba(246, 200, 78, 0.3);
-            color: #F6C84E;
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-quick:hover {
-            background: rgba(246, 200, 78, 0.2);
-            color: #fff;
-            transform: translateY(-2px);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.2rem;
-            margin-bottom: 2rem;
-        }
-
-        .stats-card {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 20px;
-            padding: 1.5rem;
-            backdrop-filter: blur(12px);
-            transition: all 0.3s ease;
-            text-align: center;
-            position: relative;
-        }
-
-        .stats-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(246, 200, 78, 0.3);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Auto-calculated indicators for dashboard */
-        .stats-card[data-metric="bmi"]::after,
-        .stats-card[data-metric="body-fat"]::after,
-        .stats-card[data-metric="calories"]::after,
-        .stats-card[data-metric="hydration"]::after,
-        .stats-card[data-metric="progress"]::after {
-            content: "AUTO";
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: rgba(246, 200, 78, 0.2);
-            color: #F6C84E;
-            font-size: 0.65rem;
-            padding: 2px 5px;
-            border-radius: 6px;
-            font-weight: 600;
-        }
-
-        .stats-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 1rem;
-            background: linear-gradient(135deg, #F6C84E, #FFD700);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: #000;
-        }
-
-        .stats-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #F6C84E;
-            margin-bottom: 0.5rem;
-            line-height: 1;
-        }
-
-        .stats-label {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        .stats-trend {
-            font-size: 0.8rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 15px;
-            display: inline-block;
-        }
-
-        .trend-up {
-            background: rgba(34, 197, 94, 0.2);
-            color: #22c55e;
-        }
-
-        .trend-down {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-        }
-
-        .trend-neutral {
-            background: rgba(156, 163, 175, 0.2);
-            color: #9ca3af;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-container {
-                padding-top: 80px; /* Less padding on mobile */
-            }
-
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .welcome-text {
-                text-align: center;
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-
-            .user-info {
-                justify-content: center;
-                flex-direction: column;
-                text-align: center;
-                gap: 1rem;
-            }
-
-            .quick-actions {
-                width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-
-            .btn-quick {
-                flex: 1;
-                min-width: 120px;
-                max-width: 150px;
-            }
-
-            .dashboard-header {
-                padding: 1.5rem 1rem;
-                margin-bottom: 1rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-
-            .stats-card {
-                padding: 1rem;
-            }
-
-            .activity-card, .goals-card {
-                padding: 1.5rem;
-            }
-
-            /* Navbar responsiveness */
-            .navbar .inner {
-                flex-wrap: wrap;
-                gap: 1rem;
-            }
-
-            .nav {
-                display: none; /* Hide navigation links on mobile */
-            }
-
-            .nav-actions {
-                width: 100%;
-                justify-content: center;
-                gap: 0.5rem;
-            }
-
-            .nav-actions .btn {
-                flex: 1;
-                text-align: center;
-            }
-        }
-
-        /* Additional mobile improvements */
-        @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .user-avatar {
-                width: 50px;
-                height: 50px;
-            }
-
-            .quick-actions {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .btn-quick {
-                max-width: none;
-                width: 100%;
-            }
-        }
-
-        .activity-card, .goals-card {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: blur(12px);
-            height: fit-content;
-        }
-
-        .card-title {
-            color: #F6C84E;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .activity-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .activity-item:last-child {
-            border-bottom: none;
-        }
-
-        .activity-info {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .activity-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(246, 200, 78, 0.1);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #F6C84E;
-        }
-
-        .activity-text h6 {
-            margin: 0;
-            color: #fff;
-            font-size: 0.9rem;
-        }
-
-        .activity-text p {
-            margin: 0;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.8rem;
-        }
-
-        .activity-time {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.8rem;
-        }
-
-        .goal-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .goal-header {
-            display: flex;
-            justify-content: between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .goal-title {
-            color: #fff;
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin: 0;
-        }
-
-        .goal-progress {
-            color: #F6C84E;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .progress-bar-container {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            height: 6px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            background: linear-gradient(90deg, #F6C84E, #FFD700);
-            height: 100%;
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-
-        .empty-state {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.6);
-            padding: 2rem;
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            color: rgba(246, 200, 78, 0.5);
-            margin-bottom: 1rem;
-        }
-
-        .btn-primary-custom {
-            background: linear-gradient(135deg, #F6C84E, #FFD700);
-            border: none;
-            color: #000;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(246, 200, 78, 0.3);
-            color: #000;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/global.css?v=20251028">
+    <link rel="stylesheet" href="../../css/layout-fixes.css?v=20251028">
+    <link rel="stylesheet" href="../../css/components/navbar-component.css?v=20251028">
+    <link rel="stylesheet" href="../../css/components/enhanced-navbar.css?v=20251028">
+    <link rel="stylesheet" href="../../css/components/newsletter.css?v=20251028">
+    <link rel="stylesheet" href="../../css/pages/dashboard.css?v=20251028">
+    <link rel="preload" as="script" href="../../js/utils/component-loader-v3-simplified.js?v=20251027" crossorigin="anonymous">
+    <link rel="preload" as="fetch" href="../../components/navbar.html" crossorigin="anonymous">
+    <link rel="preload" as="fetch" href="../../components/footer.html" crossorigin="anonymous">
 </head>
-<body>
-    <!-- Navigation -->
+<body class="dashboard-page">
+    <div data-component="navbar" data-variant="dashboard" data-theme="dark"></div>
 
-<nav class="gb-navbar" role="navigation" aria-label="Main navigation">
-    <div class="container">
-        <div class="gb-navbar-content">
-            <a href="index.html" class="gb-logo-section" aria-label="Garcia Builder Home">
-                <img src="Logo Files/For Web/logo-nobackground-500.png"
-                     alt="Garcia Builder Logo"
-                     class="gb-logo-img"
-                     loading="eager"
-                     decoding="async">
-                <span class="gb-logo-text">Garcia Builder</span>
-            </a>
-
-            <div class="gb-navbar-controls">
-                <div id="auth-buttons-navbar"></div>
-                <select id="lang-select-navbar" aria-label="Select Language" title="Select Language">
-                    <option value="en">EN</option>
-                    <option value="pt">PT</option>
-                    <option value="es">ES</option>
-                </select>
-            </div>
-
-            <button class="gb-hamburger"
-                    id="gb-menu-toggle"
-                    aria-label="Toggle navigation menu"
-                    aria-expanded="false"
-                    aria-controls="gb-menu">
-                <div class="gb-hamburger-icon">
-                    <span class="gb-hamburger-line"></span>
-                    <span class="gb-hamburger-line"></span>
-                    <span class="gb-hamburger-line"></span>
-                </div>
-            </button>
-        </div>
-    </div>
-
-    <div class="gb-menu" id="gb-menu" role="menu">
-        <div class="gb-menu-inner">
-            <nav class="gb-menu-links" role="menubar">
-                <a href="index.html" class="gb-menu-link" data-i18n="nav.home" role="menuitem">Home</a>
-                <a href="about.html" class="gb-menu-link" data-i18n="nav.about" role="menuitem">About</a>
-                <a href="transformations.html" class="gb-menu-link" data-i18n="nav.trans" role="menuitem">Transformations</a>
-                <a href="testimonials.html" class="gb-menu-link" data-i18n="nav.testi" role="menuitem">Testimonials</a>
-                <a href="pricing.html" class="gb-menu-link" data-i18n="nav.pricing" role="menuitem">Pricing</a>
-                <a href="blog.html" class="gb-menu-link" data-i18n="nav.blog" role="menuitem">Blog</a>
-                <a href="faq.html" class="gb-menu-link" data-i18n="nav.faq" role="menuitem">FAQ</a>
-                <a href="contact.html" class="gb-menu-link" data-i18n="nav.contact" role="menuitem">Contact</a>
-            </nav>
-
-            <div class="gb-menu-footer">
-                <div id="auth-buttons"></div>
-
-                <select id="lang-select" class="gb-lang-select" aria-label="Select language">
-                    <option value="en">🇬🇧 English</option>
-                    <option value="pt">🇧🇷 Português</option>
-                    <option value="es">🇪🇸 Español</option>
-                </select>
-            </div>
-        </div>
-    </div>
-</nav>
-
-<script>
-(function() {
-    'use strict';
-
-    const menuToggle = document.getElementById('gb-menu-toggle');
-    const menu = document.getElementById('gb-menu');
-
-    if (!menuToggle || !menu) return;
-
-    menuToggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const isActive = menu.classList.toggle('active');
-        menuToggle.classList.toggle('active');
-        menuToggle.setAttribute('aria-expanded', isActive);
-        document.body.style.overflow = isActive ? 'hidden' : '';
-    });
-
-    document.addEventListener('click', function(e) {
-        if (!menu.contains(e.target) && !menuToggle.contains(e.target)) {
-            menu.classList.remove('active');
-            menuToggle.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
-        }
-    });
-
-    const menuLinks = menu.querySelectorAll('.gb-menu-link');
-    menuLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            menu.classList.remove('active');
-            menuToggle.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
-        });
-    });
-
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    menuLinks.forEach(link => {
-        const linkPage = link.getAttribute('href');
-        if (linkPage === currentPage) {
-            link.classList.add('active');
-        }
-    });
-
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && menu.classList.contains('active')) {
-            menu.classList.remove('active');
-            menuToggle.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
-        }
-    });
-})();
-</script>
-
-            <div class="nav-actions">
-                <a href="my-profile.html" class="btn btn-outline-light">
-                    <i class="fas fa-user"></i> Profile
-                </a>
-                <button id="logout-btn" class="btn btn-outline-danger">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <div class="dashboard-container">
-        <div class="container">
-            <!-- Dashboard Header -->
-            <div class="dashboard-header">
-                <div class="welcome-text">
-                    <div class="user-info">
-                        <img id="user-avatar" src="https://via.placeholder.com/70/333/fff?text=U" alt="User Avatar" class="user-avatar">
-                        <div class="user-details">
-                            <h2><span data-i18n="dashboard.welcome_back">Welcome back</span>, <span id="user-name">User</span>!</h2>
-                            <p><span data-i18n="dashboard.last_login">Last login</span>: <span id="last-login">Today</span> • <span data-i18n="dashboard.member_since">Member since</span>: <span id="member-since">2024</span></p>
-                        </div>
-                    </div>
-                    <div class="quick-actions">
-                        <a href="my-profile.html" class="btn-quick">
-                            <i class="fas fa-user-edit"></i> <span data-i18n="dashboard.edit_profile">Edit Profile</span>
-                        </a>
-                        <a href="#" class="btn-quick" id="log-weight-btn">
-                            <i class="fas fa-weight"></i> <span data-i18n="dashboard.log_weight">Log Weight</span>
-                        </a>
-                        <a href="contact.html" class="btn-quick">
-                            <i class="fas fa-comment"></i> <span data-i18n="dashboard.get_support">Get Support</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stats-card" data-metric="current-weight">
-                    <div class="stats-icon">
-                        <i class="fas fa-weight-hanging"></i>
-                    </div>
-                    <div class="stats-number" id="current-weight">--</div>
-                    <div class="stats-label" data-i18n="dashboard.current_weight">Current Weight</div>
-                    <span class="stats-trend trend-neutral" id="weight-trend" data-i18n="dashboard.not_set">Not set</span>
-                </div>
-
-                <div class="stats-card" data-metric="bmi">
-                    <div class="stats-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div class="stats-number" id="bmi">--</div>
-                    <div class="stats-label">BMI</div>
-                    <span class="stats-trend trend-neutral" id="bmi-category">Calculate</span>
-                </div>
-
-                <div class="stats-card" data-metric="body-fat">
-                    <div class="stats-icon">
-                        <i class="fas fa-percentage"></i>
-                    </div>
-                    <div class="stats-number" id="body-fat">--%</div>
-                    <div class="stats-label">Body Fat</div>
-                    <span class="stats-trend trend-neutral" id="body-fat-trend">Auto-calculated</span>
-                </div>
-
-                <div class="stats-card" data-metric="calories">
-                    <div class="stats-icon">
-                        <i class="fas fa-fire-flame-curved"></i>
-                    </div>
-                    <div class="stats-number" id="daily-calories">--</div>
-                    <div class="stats-label">Daily Calories</div>
-                    <span class="stats-trend trend-up" id="calories-trend">Recommended</span>
-                </div>
-
-                <div class="stats-card" data-metric="hydration">
-                    <div class="stats-icon">
-                        <i class="fas fa-tint"></i>
-                    </div>
-                    <div class="stats-number" id="daily-water">--</div>
-                    <div class="stats-label">Daily Water</div>
-                    <span class="stats-trend trend-up" id="water-trend">Target</span>
-                </div>
-
-                <div class="stats-card" data-metric="progress">
-                    <div class="stats-icon">
-                        <i class="fas fa-bullseye"></i>
-                    </div>
-                    <div class="stats-number" id="progress-to-goal">--</div>
-                    <div class="stats-label">Progress to Goal</div>
-                    <span class="stats-trend trend-neutral" id="progress-trend">Set target</span>
-                </div>
-
-                <div class="stats-card" data-metric="workouts">
-                    <div class="stats-icon">
-                        <i class="fas fa-dumbbell"></i>
-                    </div>
-                    <div class="stats-number" id="workouts-completed">0</div>
-                    <div class="stats-label">Workouts Completed</div>
-                    <span class="stats-trend trend-neutral" id="workouts-trend">Getting started</span>
-                </div>
-
-                <div class="stats-card" data-metric="streak">
-                    <div class="stats-icon">
-                        <i class="fas fa-fire"></i>
-                    </div>
-                    <div class="stats-number" id="current-streak">0</div>
-                    <div class="stats-label">Day Streak</div>
-                    <span class="stats-trend trend-neutral" id="streak-trend">Keep going!</span>
-                </div>
-            </div>
-
-            <!-- Main Dashboard Grid -->
-            <div class="dashboard-grid">
-                <!-- Recent Activity -->
-                <div class="activity-card">
-                    <h3 class="card-title">
-                        <i class="fas fa-clock"></i>
-                        Recent Activity
-                    </h3>
-
-                    <div id="recent-activity">
-                        <div class="empty-state">
-                            <i class="fas fa-history"></i>
-                            <p>No recent activity</p>
-                            <button class="btn btn-primary-custom" onclick="window.location.href='my-profile.html'">
-                                Update Your Profile
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Goals & Progress -->
-                <div class="goals-card">
-                    <h3 class="card-title">
-                        <i class="fas fa-target"></i>
-                        Your Goals
-                    </h3>
-
-                    <div id="user-goals">
-                        <div class="empty-state">
-                            <i class="fas fa-bullseye"></i>
-                            <p>No goals set yet</p>
-                            <button class="btn btn-primary-custom" onclick="window.location.href='my-profile.html'">
-                                Set Goals
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Stats Summary -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="stats-card">
-                        <h3 class="card-title">
-                            <i class="fas fa-chart-bar"></i>
-                            Progress Summary
-                        </h3>
-
-                        <div class="row text-center">
-                            <div class="col-md-3 col-6 mb-3">
-                                <div class="stats-number" style="font-size: 1.5rem;" id="total-sessions">0</div>
-                                <div class="stats-label">Total Sessions</div>
-                            </div>
-                            <div class="col-md-3 col-6 mb-3">
-                                <div class="stats-number" style="font-size: 1.5rem;" id="target-weight">--</div>
-                                <div class="stats-label">Target Weight</div>
-                            </div>
-                            <div class="col-md-3 col-6 mb-3">
-                                <div class="stats-number" style="font-size: 1.5rem;" id="achievements-count">0</div>
-                                <div class="stats-label">Achievements</div>
-                            </div>
-                            <div class="col-md-3 col-6 mb-3">
-                                <div class="stats-number" style="font-size: 1.5rem;" id="days-active">0</div>
-                                <div class="stats-label">Days Active</div>
+    <main class="dashboard-main">
+        <section class="dashboard-hero">
+            <div class="container">
+                <div class="dashboard-hero-card js-reveal">
+                    <div class="dashboard-user">
+                        <img id="user-avatar" src="https://via.placeholder.com/86/111/fff?text=U" alt="User avatar" class="dashboard-avatar" loading="lazy" decoding="async">
+                        <div class="dashboard-heading">
+                            <h1><span data-i18n="dashboard.welcome_back">Welcome back</span>, <span id="user-name">User</span>!</h1>
+                            <p data-i18n="dashboard.subtitle">Your personalised transformation hub keeps everything in one place.</p>
+                            <div class="dashboard-meta">
+                                <span><i class="fas fa-clock" aria-hidden="true"></i><span data-i18n="dashboard.last_login">Last login</span>: <span id="last-login">Today</span></span>
+                                <span><i class="fas fa-award" aria-hidden="true"></i><span data-i18n="dashboard.member_since">Member since</span>: <span id="member-since">2024</span></span>
                             </div>
                         </div>
                     </div>
+                    <div class="dashboard-quick-actions">
+                        <a href="my-profile.html" class="btn-quick" data-i18n="dashboard.edit_profile_cta"><i class="fas fa-user-gear"></i>Edit Profile</a>
+                        <button type="button" class="btn-quick" id="log-weight-btn"><i class="fas fa-scale-unbalanced"></i><span data-i18n="dashboard.log_weight">Log Weight</span></button>
+                        <a href="contact.html" class="btn-quick" data-i18n="dashboard.get_support"><i class="fas fa-comments"></i>Get Support</a>
+                        <button type="button" class="btn-quick btn-danger" id="logout-btn"><i class="fas fa-arrow-right-from-bracket"></i><span data-i18n="dashboard.logout">Logout</span></button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- Scripts -->
+        <section class="dashboard-section">
+            <div class="container">
+                <div class="dashboard-section-header">
+                    <h2 data-i18n="dashboard.metrics_heading">Performance Snapshot</h2>
+                    <p data-i18n="dashboard.metrics_subtitle">Auto-generated insights from your latest check-ins.</p>
+                </div>
+                <div class="stats-grid">
+                    <article class="stats-card js-reveal" data-metric="current-weight">
+                        <div class="stats-icon"><i class="fas fa-weight-hanging" aria-hidden="true"></i></div>
+                        <div class="stats-number" id="current-weight">--</div>
+                        <div class="stats-label" data-i18n="dashboard.current_weight">Current Weight</div>
+                        <span class="stats-trend trend-neutral" id="weight-trend" data-i18n="dashboard.not_set">Not set</span>
+                    </article>
+
+                    <article class="stats-card js-reveal" data-metric="bmi">
+                        <div class="stats-icon"><i class="fas fa-chart-line" aria-hidden="true"></i></div>
+                        <div class="stats-number" id="bmi">--</div>
+                        <div class="stats-label">BMI</div>
+                        <span class="stats-trend trend-neutral" id="bmi-category">Calculate</span>
+                    </article>
+
+                    <article class="stats-card js-reveal" data-metric="body-fat">
+                        <div class="stats-icon"><i class="fas fa-percentage" aria-hidden="true"></i></div>
+                        <div class="stats-number" id="body-fat">--%</div>
+                        <div class="stats-label" data-i18n="dashboard.body_fat">Body Fat</div>
+                        <span class="stats-trend trend-neutral" id="body-fat-trend">Auto-calculated</span>
+                    </article>
+
+                    <article class="stats-card js-reveal" data-metric="calories">
+                        <div class="stats-icon"><i class="fas fa-fire-flame-curved" aria-hidden="true"></i></div>
+                        <div class="stats-number" id="daily-calories">--</div>
+                        <div class="stats-label" data-i18n="dashboard.daily_calories">Daily Calories</div>
+                        <span class="stats-trend trend-up" id="calories-trend">Recommended</span>
+                    </article>
+
+                    <article class="stats-card js-reveal" data-metric="hydration">
+                        <div class="stats-icon"><i class="fas fa-droplet" aria-hidden="true"></i></div>
+                        <div class="stats-number" id="daily-water">--</div>
+                        <div class="stats-label" data-i18n="dashboard.daily_water">Daily Water</div>
+                        <span class="stats-trend trend-up" id="water-trend">Target</span>
+                    </article>
+
+                    <article class="stats-card js-reveal" data-metric="progress">
+                        <div class="stats-icon"><i class="fas fa-bullseye" aria-hidden="true"></i></div>
+                        <div class="stats-number" id="progress-to-goal">--</div>
+                        <div class="stats-label" data-i18n="dashboard.progress_goal">Progress to Goal</div>
+                        <span class="stats-trend trend-neutral" id="progress-trend">Set target</span>
+                    </article>
+
+                    <article class="stats-card js-reveal" data-metric="workouts">
+                        <div class="stats-icon"><i class="fas fa-dumbbell" aria-hidden="true"></i></div>
+                        <div class="stats-number" id="workouts-completed">0</div>
+                        <div class="stats-label" data-i18n="dashboard.workouts_completed">Workouts Completed</div>
+                        <span class="stats-trend trend-neutral" id="workouts-trend">Getting started</span>
+                    </article>
+
+                    <article class="stats-card js-reveal" data-metric="streak">
+                        <div class="stats-icon"><i class="fas fa-fire" aria-hidden="true"></i></div>
+                        <div class="stats-number" id="current-streak">0</div>
+                        <div class="stats-label" data-i18n="dashboard.day_streak">Day Streak</div>
+                        <span class="stats-trend trend-neutral" id="streak-trend">Keep going!</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-section">
+            <div class="container">
+                <div class="dashboard-grid">
+                    <section class="dashboard-card activity-card js-reveal">
+                        <h3 class="card-title"><i class="fas fa-clock" aria-hidden="true"></i><span data-i18n="dashboard.recent_activity">Recent Activity</span></h3>
+                        <div id="recent-activity" class="activity-feed">
+                            <div class="empty-state">
+                                <i class="fas fa-history" aria-hidden="true"></i>
+                                <p data-i18n="dashboard.no_activity">No recent activity yet. Complete your first check-in to unlock insights.</p>
+                                <button class="btn-primary-custom" type="button" onclick="window.location.href='my-profile.html'">
+                                    <span data-i18n="dashboard.complete_profile">Complete your profile</span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="dashboard-card goals-card js-reveal">
+                        <h3 class="card-title"><i class="fas fa-target" aria-hidden="true"></i><span data-i18n="dashboard.your_goals">Your Goals</span></h3>
+                        <div id="user-goals" class="goal-list">
+                            <div class="empty-state">
+                                <i class="fas fa-bullseye" aria-hidden="true"></i>
+                                <p data-i18n="dashboard.no_goals">Set personalised goals to track your evolution.</p>
+                                <button class="btn-primary-custom" type="button" onclick="window.location.href='my-profile.html'">
+                                    <span data-i18n="dashboard.set_goals">Define goals</span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="dashboard-card insights-card js-reveal">
+                        <h3 class="card-title"><i class="fas fa-calendar-check" aria-hidden="true"></i><span data-i18n="dashboard.next_sessions">Next Sessions</span></h3>
+                        <div class="resources-list">
+                            <div class="resource-item">
+                                <div>
+                                    <a href="#" data-i18n="dashboard.session_checkin">Weekly check-in with coach</a>
+                                    <div class="resource-meta">Tuesday  09:00 (Online)</div>
+                                </div>
+                                <span class="stats-trend trend-up">Upcoming</span>
+                            </div>
+                            <div class="resource-item">
+                                <div>
+                                    <a href="#" data-i18n="dashboard.session_training">Strength block  Phase 2</a>
+                                    <div class="resource-meta">Thursday  Gym flow</div>
+                                </div>
+                                <span class="stats-trend trend-neutral">Scheduled</span>
+                            </div>
+                            <div class="resource-item">
+                                <div>
+                                    <a href="#" data-i18n="dashboard.session_recovery">Recovery & mobility</a>
+                                    <div class="resource-meta">Saturday  20 min follow-along</div>
+                                </div>
+                                <span class="stats-trend trend-neutral">Self-guided</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="dashboard-card resources-card js-reveal">
+                        <h3 class="card-title"><i class="fas fa-compass" aria-hidden="true"></i><span data-i18n="dashboard.resources">Resources</span></h3>
+                        <div class="resources-list">
+                            <div class="resource-item">
+                                <div>
+                                    <a href="../../assets/transformations.txt" target="_blank" rel="noopener" data-i18n="dashboard.resource_transformations">Transformation spotlight</a>
+                                    <div class="resource-meta" data-i18n="dashboard.resource_transformations_meta">See how athletes progressed in 12 weeks.</div>
+                                </div>
+                                <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                            </div>
+                            <div class="resource-item">
+                                <div>
+                                    <a href="../../docs/guides/macros-guide.pdf" target="_blank" rel="noopener" data-i18n="dashboard.resource_macros">Macro calculator cheat-sheet</a>
+                                    <div class="resource-meta" data-i18n="dashboard.resource_macros_meta">Adjust nutrition targets with evidence-based ratios.</div>
+                                </div>
+                                <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                            </div>
+                            <div class="resource-item">
+                                <div>
+                                    <a href="../../docs/guides/mindset-playbook.pdf" target="_blank" rel="noopener" data-i18n="dashboard.resource_mindset">Mindset playbook</a>
+                                    <div class="resource-meta" data-i18n="dashboard.resource_mindset_meta">Prime your focus for challenging training weeks.</div>
+                                </div>
+                                <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="dashboard-highlights js-reveal">
+                    <div class="highlight-card">
+                        <span class="stats-label" data-i18n="dashboard.highlight_streak">Consistency</span>
+                        <strong id="highlight-streak">0 days</strong>
+                        <p data-i18n="dashboard.highlight_streak_meta">Log three consecutive updates to unlock the elite badge.</p>
+                    </div>
+                    <div class="highlight-card">
+                        <span class="stats-label" data-i18n="dashboard.highlight_nutrition">Nutrition</span>
+                        <strong id="highlight-nutrition">-- kcal</strong>
+                        <p data-i18n="dashboard.highlight_nutrition_meta">Daily targets adjust automatically from your latest intake.</p>
+                    </div>
+                    <div class="highlight-card">
+                        <span class="stats-label" data-i18n="dashboard.highlight_training">Training</span>
+                        <strong id="highlight-training">0 sessions</strong>
+                        <p data-i18n="dashboard.highlight_training_meta">Schedule workouts inside the app to keep streaks alive.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-section">
+            <div class="container">
+                <article class="dashboard-card js-reveal">
+                    <h3 class="card-title"><i class="fas fa-chart-bar" aria-hidden="true"></i><span data-i18n="dashboard.progress_summary">Progress Summary</span></h3>
+                    <div class="progress-summary-grid">
+                        <div>
+                            <div class="stats-number" id="total-sessions">0</div>
+                            <div class="stats-label" data-i18n="dashboard.total_sessions">Total Sessions</div>
+                        </div>
+                        <div>
+                            <div class="stats-number" id="target-weight">--</div>
+                            <div class="stats-label" data-i18n="dashboard.target_weight">Target Weight</div>
+                        </div>
+                        <div>
+                            <div class="stats-number" id="achievements-count">0</div>
+                            <div class="stats-label" data-i18n="dashboard.achievements">Achievements</div>
+                        </div>
+                        <div>
+                            <div class="stats-number" id="days-active">0</div>
+                            <div class="stats-label" data-i18n="dashboard.days_active">Days Active</div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <div data-component="footer" data-theme="dark"></div>
+    <a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre!%20I%20came%20from%20your%20dashboard%20and%20want%20coaching." target="_blank" rel="noopener" aria-label="Contact via WhatsApp">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+    </a>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/env.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../../js/core/supabase.js"></script>
+    <script src="../../js/utils/component-loader-v3-simplified.js?v=20251027"></script>
     <script src="../../js/email-verification-guard.js"></script>
     <script src="../../js/core/auth.js"></script>
     <script src="../../js/components/navigation-manager.js"></script>
@@ -745,15 +262,15 @@
     <script defer src="../../js/body-metrics.js"></script>
 
     <script>
-        // Dashboard-specific functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize dashboard
+            setupRevealAnimations();
             initializeDashboard();
 
-            // Setup logout
-            document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', handleLogout);
+            }
 
-            // Wire Log Weight quick action to the Body Metrics modal
             const logWeightBtn = document.getElementById('log-weight-btn');
             if (logWeightBtn) {
                 logWeightBtn.addEventListener('click', function(e) {
@@ -764,17 +281,15 @@
                 });
             }
 
-            // Refresh stats when body metrics are saved from the modal
             window.addEventListener('gb:bodyMetricsSaved', (e) => {
                 try {
                     const data = e.detail || {};
-                    // Update immediate cards from saved entry
                     if (typeof data.weight === 'number') {
                         updateStatCard('current-weight', `${data.weight}kg`, 'Recorded');
-                        // Hydration from weight
                         const dailyWater = Math.round(data.weight * 35);
                         const liters = (dailyWater / 1000).toFixed(1);
                         updateStatCard('hydration', `${liters}L`, 'Daily target');
+                        document.getElementById('highlight-nutrition').textContent = `${Math.max(1800, Math.round(data.weight * 30))} kcal`;
                     }
                     if (typeof data.weight === 'number' && typeof data.height === 'number') {
                         const bmi = data.weight / Math.pow(data.height / 100, 2);
@@ -783,7 +298,6 @@
                     if (typeof data.body_fat === 'number') {
                         updateStatCard('body-fat', `${data.body_fat}%`, 'Recorded');
                     }
-                    // Progress to goal if target exists in profile data
                     const profileData = window.GarciaProfileManager?.getProfileData?.();
                     const targetWeight = parseFloat(profileData?.body_metrics?.target_weight) || 0;
                     if (typeof data.weight === 'number' && targetWeight > 0) {
@@ -791,17 +305,15 @@
                         const direction = data.weight > targetWeight ? 'lose' : 'gain';
                         updateStatCard('progress', `${Math.round(diff * 10) / 10}kg`, `to ${direction}`);
                     }
-                    // Fallback: run full recompute
                     updateDashboardStats();
-                } catch (e) {
-                    console.warn('Failed to refresh dashboard after metrics save:', e);
+                } catch (err) {
+                    console.warn('Failed to refresh dashboard after metrics save:', err);
                 }
             });
         });
 
         async function initializeDashboard() {
             try {
-                // Wait for profile manager to initialize
                 if (window.GarciaProfileManager) {
                     await window.GarciaProfileManager.init();
                     updateDashboardContent();
@@ -811,88 +323,161 @@
             }
         }
 
-        // Update dashboard stats with auto-calculations
-        function updateDashboardStats() {
+        function setupRevealAnimations() {
             try {
-                const profileData = window.GarciaProfileManager?.getProfileData();
-                if (!profileData) return;
-
-                const metrics = profileData.body_metrics || {};
-                const weight = parseFloat(metrics.current_weight) || 0;
-                const height = parseFloat(metrics.height) || 0;
-                const targetWeight = parseFloat(metrics.target_weight) || 0;
-                const bodyFat = parseFloat(metrics.body_fat_percentage) || 0;
-
-                // Update current weight
-                updateStatCard('current-weight', weight > 0 ? `${weight}kg` : '--',
-                    weight > 0 ? 'Recorded' : 'Not set');
-
-                // Calculate and update BMI
-                if (weight > 0 && height > 0) {
-                    const bmi = weight / Math.pow(height / 100, 2);
-                    const bmiCategory = getBMICategory(bmi);
-                    updateStatCard('bmi', Math.round(bmi * 10) / 10, bmiCategory);
-                } else {
-                    updateStatCard('bmi', '--', 'Calculate');
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    document.querySelectorAll('.js-reveal').forEach(el => el.classList.add('is-visible'));
+                    return;
                 }
 
-                // Calculate and update body fat
-                if (bodyFat > 0) {
-                    updateStatCard('body-fat', `${bodyFat}%`, 'Recorded');
-                } else if (weight > 0 && height > 0) {
-                    const bmi = weight / Math.pow(height / 100, 2);
-                    const estimatedBodyFat = estimateBodyFat(bmi);
-                    updateStatCard('body-fat', `${Math.round(estimatedBodyFat * 10) / 10}%`, 'Estimated');
-                } else {
-                    updateStatCard('body-fat', '--%', 'Not calculated');
-                }
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.15,
+                    rootMargin: '0px 0px -60px 0px'
+                });
 
-                // Calculate daily calories
-                if (weight > 0 && height > 0) {
-                    const bmr = (10 * weight) + (6.25 * height) - (5 * 30) + 5; // Assuming age 30, male
-                    const dailyCalories = Math.round(bmr * 1.55);
-                    updateStatCard('calories', dailyCalories.toLocaleString(), 'Recommended');
-                } else {
-                    updateStatCard('calories', '--', 'Not calculated');
-                }
-
-                // Calculate daily water
-                if (weight > 0) {
-                    const dailyWater = Math.round(weight * 35);
-                    const liters = (dailyWater / 1000).toFixed(1);
-                    updateStatCard('hydration', `${liters}L`, 'Daily target');
-                } else {
-                    updateStatCard('hydration', '--', 'Not calculated');
-                }
-
-                // Calculate progress to goal
-                if (weight > 0 && targetWeight > 0) {
-                    const difference = Math.abs(weight - targetWeight);
-                    const direction = weight > targetWeight ? 'lose' : 'gain';
-                    updateStatCard('progress', `${Math.round(difference * 10) / 10}kg`,
-                        `to ${direction}`);
-                } else {
-                    updateStatCard('progress', '--', 'Set target');
-                }
-
+                document.querySelectorAll('.js-reveal').forEach(el => observer.observe(el));
             } catch (error) {
-                console.error('Error updating dashboard stats:', error);
+                console.error('Reveal animations failed', error);
             }
         }
 
-        // Helper function to update individual stat cards
-        function updateStatCard(metric, value, trend) {
-            const card = document.querySelector(`[data-metric="${metric}"]`);
-            if (!card) return;
+        function updateDashboardContent() {
+            try {
+                const profileData = window.GarciaProfileManager?.getProfileData?.();
+                if (!profileData) {
+                    return;
+                }
 
-            const numberElement = card.querySelector('.stats-number');
-            const trendElement = card.querySelector('.stats-trend');
+                document.getElementById('user-name').textContent = profileData.full_name || 'Athlete';
+                document.getElementById('last-login').textContent =
+                    new Date(profileData.last_login || Date.now()).toLocaleDateString();
+                document.getElementById('member-since').textContent =
+                    (profileData.created_at || '').split('T')[0] || '2024';
 
-            if (numberElement) numberElement.textContent = value;
-            if (trendElement) trendElement.textContent = trend;
+                if (profileData.avatar_url) {
+                    const avatar = document.getElementById('user-avatar');
+                    avatar.src = profileData.avatar_url;
+                    avatar.alt = profileData.full_name || 'User avatar';
+                }
+
+                populateGoals(profileData.goals);
+                populateActivity(profileData.activity);
+                updateDashboardStats(profileData);
+            } catch (error) {
+                console.error('Failed to update dashboard content:', error);
+            }
         }
 
-        // Get BMI category
+        function populateGoals(goals = []) {
+            const goalsContainer = document.getElementById('user-goals');
+            if (!goalsContainer) return;
+
+            if (!Array.isArray(goals) || goals.length === 0) {
+                goalsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-bullseye" aria-hidden="true"></i>
+                        <p data-i18n="dashboard.no_goals">Set personalised goals to track your evolution.</p>
+                        <button class="btn-primary-custom" type="button" onclick="window.location.href='my-profile.html'">
+                            <span data-i18n="dashboard.set_goals">Define goals</span>
+                        </button>
+                    </div>`;
+                return;
+            }
+
+            goalsContainer.innerHTML = goals.map(goal => `
+                <div class="goal-item">
+                    <div>
+                        <strong>${goal.title || 'Goal'}</strong>
+                        <p>${goal.description || ''}</p>
+                    </div>
+                    <span class="stats-trend ${goal.status === 'on-track' ? 'trend-up' : 'trend-neutral'}">
+                        ${goal.status === 'completed' ? 'Completed' : goal.status || 'Active'}
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        function populateActivity(activity = []) {
+            const activityFeed = document.getElementById('recent-activity');
+            if (!activityFeed) return;
+
+            if (!Array.isArray(activity) || activity.length === 0) {
+                activityFeed.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-history" aria-hidden="true"></i>
+                        <p data-i18n="dashboard.no_activity">No recent activity yet. Complete your first check-in to unlock insights.</p>
+                        <button class="btn-primary-custom" type="button" onclick="window.location.href='my-profile.html'">
+                            <span data-i18n="dashboard.complete_profile">Complete your profile</span>
+                        </button>
+                    </div>`;
+                return;
+            }
+
+            activityFeed.innerHTML = activity.slice(0, 5).map(item => `
+                <div class="activity-item">
+                    <div>
+                        <strong>${item.title || 'Update'}</strong>
+                        <p>${item.description || ''}</p>
+                    </div>
+                    <span class="resource-meta">${new Date(item.date).toLocaleDateString()}</span>
+                </div>
+            `).join('');
+        }
+
+        function updateDashboardStats(profileData = {}) {
+            const metrics = profileData.body_metrics || {};
+            if (metrics.current_weight) {
+                updateStatCard('current-weight', `${metrics.current_weight}kg`, 'Updated');
+            }
+            if (metrics.target_weight && metrics.current_weight) {
+                const diff = Math.abs(metrics.current_weight - metrics.target_weight);
+                const direction = metrics.current_weight > metrics.target_weight ? 'lose' : 'gain';
+                updateStatCard('progress', `${Math.round(diff * 10) / 10}kg`, `to ${direction}`);
+            }
+            if (metrics.daily_calories) {
+                updateStatCard('calories', metrics.daily_calories, 'Recommended');
+            }
+            if (metrics.daily_water) {
+                const liters = (metrics.daily_water / 1000).toFixed(1);
+                updateStatCard('hydration', `${liters}L`, 'Target');
+            }
+            if (metrics.bmi) {
+                updateStatCard('bmi', metrics.bmi, getBMICategory(metrics.bmi));
+            }
+            if (metrics.body_fat) {
+                updateStatCard('body-fat', `${metrics.body_fat}%`, 'Measured');
+            }
+
+            document.getElementById('highlight-streak').textContent = `${profileData.current_streak || 0} days`;
+            document.getElementById('highlight-training').textContent = `${profileData.workouts_completed || 0} sessions`;
+            document.getElementById('total-sessions').textContent = profileData.workouts_completed || 0;
+            document.getElementById('achievements-count').textContent = Array.isArray(profileData.achievements)
+                ? profileData.achievements.length
+                : 0;
+            document.getElementById('days-active').textContent = profileData.days_active || 0;
+            document.getElementById('target-weight').textContent = metrics.target_weight
+                ? `${metrics.target_weight}kg`
+                : '--';
+        }
+
+        function updateStatCard(metric, value, trendText) {
+            const card = document.querySelector(`.stats-card[data-metric="${metric}"]`);
+            if (!card) return;
+
+            const numberEl = card.querySelector('.stats-number');
+            if (numberEl) numberEl.textContent = value;
+
+            const trendEl = card.querySelector('.stats-trend');
+            if (trendEl) trendEl.textContent = trendText || '';
+        }
+
         function getBMICategory(bmi) {
             if (bmi < 18.5) return 'Underweight';
             if (bmi < 25) return 'Normal';
@@ -900,285 +485,16 @@
             return 'Obese';
         }
 
-        // Estimate body fat from BMI
-        function estimateBodyFat(bmi) {
-            if (bmi < 18.5) return Math.max(5, bmi * 0.8);
-            if (bmi < 25) return bmi * 1.2 + 0.23;
-            return bmi * 1.5 - 5;
-        }
-
-        function updateDashboardContent() {
-            try {
-                const profileData = window.GarciaProfileManager?.getProfileData();
-                if (!profileData) return;
-
-                // Update stats with auto-calculations
-                updateDashboardStats();
-
-                // Update recent activity
-                updateRecentActivity(profileData);
-
-                // Update goals
-                updateGoalsDisplay(profileData);
-
-                // Update trends
-                updateTrends(profileData);
-
-                console.log('Dashboard content updated with auto-calculations');
-            } catch (error) {
-                console.error('Error updating dashboard content:', error);
-            }
-        }
-
-        function updateRecentActivity(profileData) {
-            const container = document.getElementById('recent-activity');
-            if (!container) return;
-
-            const activities = [
-                {
-                    icon: 'fas fa-user-edit',
-                    title: 'Profile Updated',
-                    description: 'Basic information updated',
-                    time: 'Today'
-                },
-                {
-                    icon: 'fas fa-weight',
-                    title: 'Weight Logged',
-                    description: `Current: ${profileData.body_metrics?.current_weight || 'Not set'}`,
-                    time: 'Today'
-                }
-            ];
-
-            if (activities.length === 0) return;
-
-            container.innerHTML = activities.map(activity => `
-                <div class="activity-item">
-                    <div class="activity-info">
-                        <div class="activity-icon">
-                            <i class="${activity.icon}"></i>
-                        </div>
-                        <div class="activity-text">
-                            <h6>${activity.title}</h6>
-                            <p>${activity.description}</p>
-                        </div>
-                    </div>
-                    <div class="activity-time">${activity.time}</div>
-                </div>
-            `).join('');
-        }
-
-        function updateGoalsDisplay(profileData) {
-            const container = document.getElementById('user-goals');
-            if (!container || !profileData.basic?.goals?.length) return;
-
-            const goals = profileData.basic.goals.map(goal => ({
-                title: goal,
-                progress: Math.floor(Math.random() * 100), // Placeholder progress
-                target: '100%'
-            }));
-
-            container.innerHTML = goals.map(goal => `
-                <div class="goal-item">
-                    <div class="goal-header">
-                        <h6 class="goal-title">${goal.title}</h6>
-                        <span class="goal-progress">${goal.progress}%</span>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill" style="width: ${goal.progress}%"></div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function updateTrends(profileData) {
-            // Update workout trend
-            const workoutTrend = document.getElementById('workouts-trend');
-            if (workoutTrend && profileData.activity?.workouts_completed) {
-                const count = profileData.activity.workouts_completed;
-                if (count > 10) {
-                    workoutTrend.textContent = 'Great progress!';
-                    workoutTrend.className = 'stats-trend trend-up';
-                } else if (count > 0) {
-                    workoutTrend.textContent = 'Keep it up!';
-                    workoutTrend.className = 'stats-trend trend-neutral';
-                }
-            }
-
-            // Update BMI category
-            const bmiCategory = document.getElementById('bmi-category');
-            const bmiValue = document.getElementById('bmi')?.textContent;
-            if (bmiCategory && bmiValue && bmiValue !== '--') {
-                const bmi = parseFloat(bmiValue);
-                if (bmi < 18.5) {
-                    bmiCategory.textContent = 'Underweight';
-                    bmiCategory.className = 'stats-trend trend-down';
-                } else if (bmi < 25) {
-                    bmiCategory.textContent = 'Normal';
-                    bmiCategory.className = 'stats-trend trend-up';
-                } else if (bmi < 30) {
-                    bmiCategory.textContent = 'Overweight';
-                    bmiCategory.className = 'stats-trend trend-neutral';
-                } else {
-                    bmiCategory.textContent = 'Obese';
-                    bmiCategory.className = 'stats-trend trend-down';
-                }
-            }
-        }
-
         async function handleLogout() {
             try {
-                if (window.supabaseClient && window.supabaseClient.auth) {
-                    await window.supabaseClient.auth.signOut();
-                } else if (window.supabase && window.supabase.auth) {
-                    await window.supabase.auth.signOut();
+                if (window.GarciaAuth) {
+                    await window.GarciaAuth.signOut();
                 }
-                localStorage.removeItem('gb_current_user');
-                localStorage.removeItem('gb_remember_user');
-                window.location.href = 'login.html';
+                window.location.href = '../auth/login.html';
             } catch (error) {
                 console.error('Error logging out:', error);
-                // Force logout anyway
-                localStorage.removeItem('gb_current_user');
-                localStorage.removeItem('gb_remember_user');
-                window.location.href = 'login.html';
             }
         }
     </script>
-    <script defer src="js/core/auth-guard.js?v=20251009"></script>
-
-<!-- Footer Section -->
-
-
-<!-- FOOTER: Premium Reference-Inspired, Brand-Adapted -->
-<footer class="gb-footer gb-footer-ref" role="contentinfo" aria-label="Site footer">
-    <div class="gb-footer-main container">
-        <div class="gb-footer-col gb-footer-brand">
-            <a href="index.html" class="gb-footer-logo-link" aria-label="Garcia Builder Home">
-                <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" class="gb-footer-logo" loading="lazy" decoding="async"/>
-            </a>
-            <p class="gb-footer-bio">Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.</p>
-        </div>
-        <div class="gb-footer-col gb-footer-nav">
-            <h4 class="gb-footer-title">Navigation</h4>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="transformations.html">Transformations</a></li>
-                <li><a href="testimonials.html">Testimonials</a></li>
-                <li><a href="pricing.html">Pricing</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="faq.html">FAQ</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </div>
-        <div class="gb-footer-col gb-footer-resources">
-            <h4 class="gb-footer-title">Resources</h4>
-            <ul>
-                <li><a href="privacy.html">Privacy Policy</a></li>
-                <li><a href="terms.html">Terms of Service</a></li>
-                <li><a href="lead-magnet.html">Free Guide</a></li>
-                <li><a href="newsletter-database-schema.sql">Newsletter DB Schema</a></li>
-            </ul>
-        </div>
-        <div class="gb-footer-col gb-footer-contact">
-            <h4 class="gb-footer-title">Contact</h4>
-            <ul>
-                <li><a href="mailto:privacy@garciabuilder.fitness"><i class="fa fa-envelope"></i> privacy@garciabuilder.fitness</a></li>
-                <li><a href="https://wa.me/447508497586" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
-                <li><a href="contact.html"><i class="fa fa-id-badge"></i> Contact Form</a></li>
-            </ul>
-            <div class="gb-footer-social">
-                <a href="https://instagram.com/garcia.builder" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.facebook.com/garciabuilder" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                <a href="https://www.youtube.com/@garciabuilder" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            </div>
-        </div>
-        <div class="gb-footer-col gb-footer-newsletter">
-            <h4 class="gb-footer-title">Newsletter</h4>
-            <form class="gb-footer-newsletter-form" action="#" method="post" autocomplete="off">
-                <input type="email" name="email" placeholder="Your email" aria-label="Email" required>
-                <button type="submit" aria-label="Subscribe"><i class="fa fa-paper-plane"></i></button>
-            </form>
-            <p class="gb-footer-newsletter-desc">Get tips, recipes, and exclusive offers. No spam.</p>
-        </div>
-    </div>
-    <div class="gb-footer-legal container">
-        <span>© 2025 Garcia Builder. All rights reserved.</span>
-        <span class="gb-footer-legal-links">
-            <a href="privacy.html">Privacy</a> |
-            <a href="terms.html">Terms</a>
-        </span>
-    </div>
-</footer>
-<!-- WhatsApp Float Button -->
-<a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener" aria-label="Contact via WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-</a>
-
-<!-- FOOTER: Premium Reference-Inspired, Brand-Adapted -->
-<footer class="gb-footer gb-footer-ref" role="contentinfo" aria-label="Site footer">
-    <div class="gb-footer-main container">
-        <div class="gb-footer-col gb-footer-brand">
-            <a href="index.html" class="gb-footer-logo-link" aria-label="Garcia Builder Home">
-                <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" class="gb-footer-logo" loading="lazy" decoding="async"/>
-            </a>
-            <p class="gb-footer-bio">Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.</p>
-        </div>
-        <div class="gb-footer-col gb-footer-nav">
-            <h4 class="gb-footer-title">Navigation</h4>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="transformations.html">Transformations</a></li>
-                <li><a href="testimonials.html">Testimonials</a></li>
-                <li><a href="pricing.html">Pricing</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="faq.html">FAQ</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </div>
-        <div class="gb-footer-col gb-footer-resources">
-            <h4 class="gb-footer-title">Resources</h4>
-            <ul>
-                <li><a href="privacy.html">Privacy Policy</a></li>
-                <li><a href="terms.html">Terms of Service</a></li>
-                <li><a href="lead-magnet.html">Free Guide</a></li>
-                <li><a href="newsletter-database-schema.sql">Newsletter DB Schema</a></li>
-            </ul>
-        </div>
-        <div class="gb-footer-col gb-footer-contact">
-            <h4 class="gb-footer-title">Contact</h4>
-            <ul>
-                <li><a href="mailto:privacy@garciabuilder.fitness"><i class="fa fa-envelope"></i> privacy@garciabuilder.fitness</a></li>
-                <li><a href="https://wa.me/447508497586" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
-                <li><a href="contact.html"><i class="fa fa-id-badge"></i> Contact Form</a></li>
-            </ul>
-            <div class="gb-footer-social">
-                <a href="https://instagram.com/garcia.builder" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.facebook.com/garciabuilder" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                <a href="https://www.youtube.com/@garciabuilder" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            </div>
-        </div>
-        <div class="gb-footer-col gb-footer-newsletter">
-            <h4 class="gb-footer-title">Newsletter</h4>
-            <form class="gb-footer-newsletter-form" action="#" method="post" autocomplete="off">
-                <input type="email" name="email" placeholder="Your email" aria-label="Email" required>
-                <button type="submit" aria-label="Subscribe"><i class="fa fa-paper-plane"></i></button>
-            </form>
-            <p class="gb-footer-newsletter-desc">Get tips, recipes, and exclusive offers. No spam.</p>
-        </div>
-    </div>
-    <div class="gb-footer-legal container">
-        <span>© 2025 Garcia Builder. All rights reserved.</span>
-        <span class="gb-footer-legal-links">
-            <a href="privacy.html">Privacy</a> |
-            <a href="terms.html">Terms</a>
-        </span>
-    </div>
-</footer>
-<!-- WhatsApp Float Button -->
-<a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener" aria-label="Contact via WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-</a>
 </body>
 </html>

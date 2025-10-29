@@ -2,6 +2,8 @@
 
 class AuthGuard {
     constructor() {
+        this.handleComponentLoaded = this.handleComponentLoaded.bind(this);
+        document.addEventListener('componentLoaded', this.handleComponentLoaded);
         this.init();
     }
 
@@ -12,7 +14,25 @@ class AuthGuard {
         this.setupCompactNavbar();
     }
 
+    handleComponentLoaded(event) {
+        try {
+            if (!event || !event.detail) {
+                return;
+            }
+            if (event.detail.componentName === 'navbar') {
+                this.addUserMenuToNavbar();
+            }
+        } catch (err) {
+            console.warn('AuthGuard: componentLoaded handling failed', err);
+        }
+    }
+
     addUserMenuToNavbar() {
+        if (typeof AuthSystem === 'undefined' || typeof AuthSystem.getCurrentUser !== 'function') {
+            console.warn('AuthGuard: AuthSystem not ready when adding user menu');
+            return;
+        }
+
         console.log('AuthGuard: Adding user menu to navbar');
         const currentUser = AuthSystem.getCurrentUser();
         console.log('AuthGuard: Current user:', currentUser);
@@ -144,6 +164,10 @@ class AuthGuard {
         if (window.ComponentLoader && typeof window.ComponentLoader.normalizeNavLinks === 'function') {
             window.ComponentLoader.normalizeNavLinks();
         }
+    }
+
+    destroy() {
+        document.removeEventListener('componentLoaded', this.handleComponentLoaded);
     }
 
     static handleLogout(event) {

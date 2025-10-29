@@ -3,6 +3,65 @@
   let currentUser = null;
   let profileData = {};
 
+  const getAvatarFallback = () => {
+    const baseName = (profileData.basic?.full_name || profileData.basic?.email || currentUser?.email || 'User').trim();
+    const encoded = encodeURIComponent(baseName || 'User');
+    return `https://ui-avatars.com/api/?background=1a1a1a&color=F6C84E&name=${encoded}&size=256&bold=true`;
+  };
+
+  const syncAuthCache = () => {
+    try {
+      const existingRaw = localStorage.getItem('gb_current_user');
+      const existing = existingRaw ? JSON.parse(existingRaw) : {};
+
+      const fallbackUser = currentUser ? {
+        id: currentUser.id,
+        email: currentUser.email,
+        full_name: currentUser.user_metadata?.full_name || currentUser.email,
+        avatar_url: currentUser.user_metadata?.avatar_url || currentUser.user_metadata?.picture || null,
+        phone: currentUser.user_metadata?.phone || null,
+        user_metadata: { ...(currentUser.user_metadata || {}) }
+      } : {};
+
+      const merged = {
+        ...fallbackUser,
+        ...existing,
+        id: existing.id || fallbackUser.id || currentUser?.id || null,
+        email: profileData.basic?.email || existing.email || fallbackUser.email || currentUser?.email || '',
+        full_name: profileData.basic?.full_name || existing.full_name || fallbackUser.full_name || currentUser?.email || 'User',
+        avatar_url: profileData.basic?.avatar_url || existing.avatar_url || fallbackUser.avatar_url || null,
+        phone: profileData.basic?.phone || existing.phone || fallbackUser.phone || null,
+        user_metadata: {
+          ...(fallbackUser.user_metadata || {}),
+          ...(existing.user_metadata || {})
+        }
+      };
+
+      merged.user_metadata = {
+        ...(merged.user_metadata || {}),
+        full_name: merged.full_name,
+        phone: profileData.basic?.phone || merged.user_metadata?.phone || null,
+        avatar_url: profileData.basic?.avatar_url || merged.user_metadata?.avatar_url || null,
+        body_metrics: profileData.body_metrics,
+        preferences: profileData.preferences
+      };
+
+      localStorage.setItem('gb_current_user', JSON.stringify(merged));
+
+      if (currentUser) {
+        currentUser.email = merged.email || currentUser.email;
+        currentUser.user_metadata = {
+          ...(currentUser.user_metadata || {}),
+          ...merged.user_metadata
+        };
+      }
+
+      console.log('ProfileManager: Auth cache synchronized');
+    } catch (error) {
+      console.warn('ProfileManager: Failed to sync cached auth user', error);
+    }
+  };
+
   // Initialize profile management
   const init = async () => {
     try {
@@ -143,6 +202,17 @@
       // Fallback to localStorage
       loadFromLocalStorage();
 
+      if (!profileData.basic.full_name) {
+        profileData.basic.full_name = currentUser?.user_metadata?.full_name || currentUser?.email || 'User';
+      }
+      if (!profileData.basic.email) {
+        profileData.basic.email = currentUser?.email || profileData.basic.full_name || '';
+      }
+      if (!profileData.basic.avatar_url) {
+        profileData.basic.avatar_url = currentUser?.user_metadata?.avatar_url || currentUser?.user_metadata?.picture || '';
+      }
+
+      syncAuthCache();
       console.log('Profile data loaded:', profileData);
     } catch (error) {
       console.error('Error loading profile data:', error);
@@ -310,6 +380,8 @@
 
       // Save to localStorage as backup
       saveToLocalStorage();
+      syncAuthCache();
+      window.authGuard?.addUserMenuToNavbar?.();
 
       showNotification('Profile updated successfully!', 'success');
       return true;
@@ -407,16 +479,23 @@
       // Try to save to profiles table (main Supabase auth table)
       if (section === 'basic' || !section) {
         try {
-          // Use the main profiles table that comes with Supabase Auth
+          const sanitize = (value) => {
+            if (value === undefined || value === null) return null;
+            if (typeof value === 'string') {
+              const trimmed = value.trim();
+              return trimmed.length ? trimmed : null;
+            }
+            return value;
+          };
+
           const payload = {
             id: currentUser.id,
-            full_name: profileData.basic.full_name || currentUser.user_metadata?.full_name || '',
-            phone: profileData.basic.phone || currentUser.user_metadata?.phone || null,
-            avatar_url: profileData.basic.avatar_url || currentUser.user_metadata?.avatar_url || null,
+            full_name: sanitize(profileData.basic.full_name) || currentUser.user_metadata?.full_name || '',
+            phone: sanitize(profileData.basic.phone) || currentUser.user_metadata?.phone || null,
+            avatar_url: sanitize(profileData.basic.avatar_url) || currentUser.user_metadata?.avatar_url || null,
             updated_at: new Date().toISOString()
           };
 
-          // Add custom fields if they exist
           if (profileData.basic.birthday) {
             payload.date_of_birth = normalizeDate(profileData.basic.birthday);
           }
@@ -425,24 +504,42 @@
             .from('profiles')
             .upsert(payload, { onConflict: 'id' });
 
-          if (profileError) {
-            console.warn('Profiles table upsert failed, trying fallback:', profileError);
+          const metadataPayload = {
+            full_name: sanitize(profileData.basic.full_name),
+            phone: sanitize(profileData.basic.phone),
+            avatar_url: sanitize(profileData.basic.avatar_url),
+            date_of_birth: normalizeDate(profileData.basic.birthday),
+            location: sanitize(profileData.basic.location),
+            bio: sanitize(profileData.basic.bio),
+            experience_level: sanitize(profileData.basic.experience_level)
+          };
 
-            // Fallback: Try to update user metadata
-            const { error: metadataError } = await window.supabaseClient.auth.updateUser({
-              data: {
-                full_name: profileData.basic.full_name,
-                phone: profileData.basic.phone,
-                birthday: profileData.basic.birthday,
-                location: profileData.basic.location,
-                bio: profileData.basic.bio,
-                experience_level: profileData.basic.experience_level
-              }
+          const cleanedMetadata = Object.fromEntries(
+            Object.entries(metadataPayload).filter(([, value]) => value !== undefined)
+          );
+
+          let metadataError = null;
+          if (Object.keys(cleanedMetadata).length > 0) {
+            const { data: updatedUser, error } = await window.supabaseClient.auth.updateUser({
+              data: cleanedMetadata
             });
-
-            if (metadataError) {
-              throw new Error(`Failed to save profile: ${metadataError.message}`);
+            metadataError = error || null;
+            if (!metadataError && updatedUser?.user) {
+              currentUser = updatedUser.user;
+            } else if (!metadataError && currentUser) {
+              currentUser.user_metadata = {
+                ...(currentUser.user_metadata || {}),
+                ...cleanedMetadata
+              };
             }
+          }
+
+          if (profileError) {
+            console.warn('Profiles table upsert failed:', profileError);
+          }
+
+          if (profileError && metadataError) {
+            throw new Error(metadataError.message || profileError.message || 'Failed to save profile');
           }
 
         } catch (error) {
@@ -683,13 +780,13 @@
     // Update avatar
     const avatars = document.querySelectorAll('.user-avatar, .main-avatar, #user-avatar');
     avatars.forEach(avatar => {
-      if (profileData.basic.avatar_url) {
-        avatar.src = profileData.basic.avatar_url;
-      } else {
-        avatar.src = 'https://via.placeholder.com/150/333/fff?text=' +
-                    (profileData.basic.full_name?.charAt(0) || 'U');
-      }
+      const src = profileData.basic.avatar_url || getAvatarFallback();
+      avatar.src = src;
+      const label = profileData.basic.full_name || profileData.basic.email || 'Profile avatar';
+      avatar.alt = `${label}'s avatar`;
     });
+
+    window.authGuard?.addUserMenuToNavbar?.();
   };
 
   // Update dashboard stats
@@ -817,8 +914,10 @@
       const imageUrl = await uploadImage(file, 'avatars');
       profileData.basic.avatar_url = imageUrl;
 
-      await saveProfileData('basic');
-      updateBasicInfoDisplay();
+      const saved = await saveProfileData('basic');
+      if (saved) {
+        updateBasicInfoDisplay();
+      }
     } catch (error) {
       console.error('Error uploading avatar:', error);
       showNotification('Error uploading avatar. Please try again.', 'error');

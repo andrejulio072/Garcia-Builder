@@ -57,13 +57,19 @@
                 if (error) {
                     console.error('Error getting user:', error);
                     // Redirect to login if there's an auth error
-                    window.location.href = 'login.html';
+                    const loginUrl = typeof toAbsoluteUrl === 'function' 
+                        ? toAbsoluteUrl('pages/auth/login.html')
+                        : '../auth/login.html';
+                    window.location.href = loginUrl;
                     return true;
                 }
 
                 if (!user) {
                     console.log('No user found, redirecting to login');
-                    window.location.href = 'login.html';
+                    const loginUrl = typeof toAbsoluteUrl === 'function' 
+                        ? toAbsoluteUrl('pages/auth/login.html')
+                        : '../auth/login.html';
+                    window.location.href = loginUrl;
                     return true;
                 }
 
@@ -320,11 +326,17 @@
                 localStorage.removeItem('gb_current_user');
 
                 // Redirect to login
-                window.location.href = 'login.html';
+                const loginUrl = typeof toAbsoluteUrl === 'function' 
+                    ? toAbsoluteUrl('pages/auth/login.html')
+                    : '../auth/login.html';
+                window.location.href = loginUrl;
 
             } catch (error) {
                 console.error('Error logging out:', error);
-                window.location.href = 'login.html';
+                const loginUrl = typeof toAbsoluteUrl === 'function' 
+                    ? toAbsoluteUrl('pages/auth/login.html')
+                    : '../auth/login.html';
+                window.location.href = loginUrl;
             }
         }
     }

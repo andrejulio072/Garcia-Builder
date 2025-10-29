@@ -578,6 +578,46 @@ function normalizeGlobalAssets() {
     });
 }
 
+function canonicalizeNavTarget(target) {
+    if (!target || typeof target !== 'string') {
+        return target;
+    }
+
+    try {
+        const hasWindow = typeof window !== 'undefined' && window.location && window.location.origin && window.location.origin !== 'null';
+        const base = hasWindow ? `${window.location.origin}/` : 'https://garciabuilder.fitness/';
+        const parsed = new URL(target, base);
+        const normalizedPath = parsed.pathname.replace(/\\/g, '/').replace(/^\/+|\/+$/g, '').toLowerCase();
+
+        const applyPath = (path, extraParams) => {
+            parsed.pathname = path.startsWith('/') ? path : `/${path}`;
+            if (extraParams && parsed.searchParams) {
+                Object.entries(extraParams).forEach(([key, value]) => {
+                    if (!parsed.searchParams.has(key)) {
+                        parsed.searchParams.set(key, value);
+                    }
+                });
+            }
+        };
+
+        if (normalizedPath === 'pages/auth' || normalizedPath === 'pages/auth/index' || normalizedPath === 'pages/auth/index.html') {
+            applyPath('pages/auth/login.html');
+        } else if (normalizedPath === 'pages/auth/login') {
+            applyPath('pages/auth/login.html');
+        } else if (normalizedPath === 'pages/auth/register') {
+            applyPath('pages/auth/login.html', { action: 'register' });
+        }
+
+        const pathname = parsed.pathname.replace(/^\/+/, '');
+        const search = parsed.search || '';
+        const hash = parsed.hash || '';
+        return `${pathname}${search}${hash}`;
+    } catch (error) {
+        console.warn('[Navbar] Failed to canonicalize nav target:', target, error);
+        return target;
+    }
+}
+
 function resolveNavHref(target) {
     if (!target || typeof target !== 'string') {
         return '#';
@@ -592,7 +632,7 @@ function resolveNavHref(target) {
         return trimmed;
     }
 
-    const normalized = trimmed.replace(/^\/+/, '');
+    const normalized = canonicalizeNavTarget(trimmed.replace(/^\/+/, ''));
     const protocol = (typeof window !== 'undefined' && window.location) ? window.location.protocol : '';
 
     if (protocol === 'file:') {
@@ -742,7 +782,8 @@ window.ComponentLoader = {
     init: initComponents,
     cache: CACHE,
     normalizeNavLinks: ensureNavbarLinks,
-    resolveNavHref
+    resolveNavHref,
+    canonicalizeNavTarget
 };
 
 document.addEventListener('componentLoaded', normalizeGlobalAssets);

@@ -76,6 +76,8 @@ class AuthGuard {
                 const firstName = (currentUser.name || currentUser.full_name || currentUser.email || 'User').toString().split(' ')[0];
                 const displayName = (currentUser.name || currentUser.full_name || currentUser.email || 'User');
                 const displayEmail = currentUser.email || '';
+                const dashboardHref = AuthGuard.resolveNavHref('pages/public/dashboard.html');
+                const profileHref = AuthGuard.resolveNavHref('pages/public/my-profile.html');
 
                 // User is logged in - show enhanced user menu
                 userMenu.innerHTML = `
@@ -93,13 +95,13 @@ class AuthGuard {
                             </li>
                             <li><hr class="dropdown-divider" style="border-color: rgba(246, 200, 78, 0.1); margin: 0;"></li>
                             <li>
-                                <a class="dropdown-item d-flex align-items-center gap-2" href="#" data-gb-nav="pages/public/dashboard.html" style="padding: 10px 16px; transition: all 0.2s;">
+                                <a class="dropdown-item d-flex align-items-center gap-2" href="${dashboardHref}" data-gb-nav="pages/public/dashboard.html" style="padding: 10px 16px; transition: all 0.2s;">
                                     <i class="fas fa-tachometer-alt" style="width: 20px; color: #F6C84E;"></i>
                                     <span>${this.getTranslation('nav.dashboard') || 'Dashboard'}</span>
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-flex align-items-center gap-2" href="#" data-gb-nav="pages/public/my-profile.html" style="padding: 10px 16px; transition: all 0.2s;">
+                                <a class="dropdown-item d-flex align-items-center gap-2" href="${profileHref}" data-gb-nav="pages/public/my-profile.html" style="padding: 10px 16px; transition: all 0.2s;">
                                     <i class="fas fa-user" style="width: 20px; color: #F6C84E;"></i>
                                     <span>${this.getTranslation('nav.profile') || 'My Profile'}</span>
                                 </a>
@@ -119,14 +121,16 @@ class AuthGuard {
                 // User not logged in - show enhanced login/register buttons
                 const loginText = this.getTranslation('nav.login') || 'Login';
                 const registerText = this.getTranslation('nav.register') || 'Register';
+                const loginHref = AuthGuard.resolveNavHref('pages/auth/login.html?action=login');
+                const registerHref = AuthGuard.resolveNavHref('pages/auth/login.html?action=register');
 
                 userMenu.innerHTML = `
                     <div class="d-flex gap-2 align-items-center">
-                        <a href="#" data-gb-nav="pages/auth/login.html?action=login" class="btn btn-outline-light btn-sm d-flex align-items-center gap-2" style="border-color: #F6C84E; color: #F6C84E; padding: 8px 16px; font-weight: 500; transition: all 0.3s; border-radius: 8px;">
+                        <a href="${loginHref}" data-gb-nav="pages/auth/login.html?action=login" class="btn btn-outline-light btn-sm d-flex align-items-center gap-2" style="border-color: #F6C84E; color: #F6C84E; padding: 8px 16px; font-weight: 500; transition: all 0.3s; border-radius: 8px;">
                             <i class="fas fa-sign-in-alt"></i>
                             <span>${loginText}</span>
                         </a>
-                        <a href="#" data-gb-nav="pages/auth/login.html?action=register" class="btn btn-sm d-flex align-items-center gap-2" style="background: linear-gradient(135deg, #F6C84E 0%, #e6b73e 100%); border: none; color: #000; font-weight: 600; padding: 8px 16px; transition: all 0.3s; border-radius: 8px; box-shadow: 0 2px 8px rgba(246, 200, 78, 0.3);">
+                        <a href="${registerHref}" data-gb-nav="pages/auth/login.html?action=register" class="btn btn-sm d-flex align-items-center gap-2" style="background: linear-gradient(135deg, #F6C84E 0%, #e6b73e 100%); border: none; color: #000; font-weight: 600; padding: 8px 16px; transition: all 0.3s; border-radius: 8px; box-shadow: 0 2px 8px rgba(246, 200, 78, 0.3);">
                             <i class="fas fa-user-plus"></i>
                             <span>${registerText}</span>
                         </a>
@@ -346,7 +350,8 @@ class AuthGuard {
             if (/^[a-z]+:/i.test(target) || target.startsWith('#')) {
                 return target;
             }
-            const sanitized = target.trim().replace(/^\/+/, '');
+            const canonical = AuthGuard.canonicalizeNavTarget(target);
+            const sanitized = canonical.trim().replace(/^\/+/, '');
             const protocol = (typeof window !== 'undefined' && window.location) ? window.location.protocol : '';
 
             if (protocol === 'file:') {
@@ -391,6 +396,50 @@ class AuthGuard {
         } catch (error) {
             console.warn('AuthGuard: failed to compute relative prefix', error);
             return '';
+        }
+    }
+
+    static canonicalizeNavTarget(target) {
+        if (!target || typeof target !== 'string') {
+            return target;
+        }
+
+        if (window.ComponentLoader && typeof window.ComponentLoader.canonicalizeNavTarget === 'function') {
+            return window.ComponentLoader.canonicalizeNavTarget(target);
+        }
+
+        try {
+            const hasWindow = typeof window !== 'undefined' && window.location && window.location.origin && window.location.origin !== 'null';
+            const base = hasWindow ? `${window.location.origin}/` : 'https://garciabuilder.fitness/';
+            const parsed = new URL(target, base);
+            const normalizedPath = parsed.pathname.replace(/\\/g, '/').replace(/^\/+|\/+$/g, '').toLowerCase();
+
+            const applyPath = (path, extraParams) => {
+                parsed.pathname = path.startsWith('/') ? path : `/${path}`;
+                if (extraParams && parsed.searchParams) {
+                    Object.entries(extraParams).forEach(([key, value]) => {
+                        if (!parsed.searchParams.has(key)) {
+                            parsed.searchParams.set(key, value);
+                        }
+                    });
+                }
+            };
+
+            if (normalizedPath === 'pages/auth' || normalizedPath === 'pages/auth/index' || normalizedPath === 'pages/auth/index.html') {
+                applyPath('pages/auth/login.html');
+            } else if (normalizedPath === 'pages/auth/login') {
+                applyPath('pages/auth/login.html');
+            } else if (normalizedPath === 'pages/auth/register') {
+                applyPath('pages/auth/login.html', { action: 'register' });
+            }
+
+            const pathname = parsed.pathname.replace(/^\/+/, '');
+            const search = parsed.search || '';
+            const hash = parsed.hash || '';
+            return `${pathname}${search}${hash}`;
+        } catch (error) {
+            console.warn('AuthGuard: failed to canonicalize nav target', target, error);
+            return target;
         }
     }
 

@@ -111,6 +111,42 @@
             const errorContainer = document.getElementById('error-container');
             const errorMessage = document.getElementById('error-message');
 
+            const getLocalUser = () => {
+                try {
+                    const raw = localStorage.getItem('gb_current_user');
+                    return raw ? JSON.parse(raw) : null;
+                } catch (parseErr) {
+                    console.warn('Local session parse failed:', parseErr);
+                    return null;
+                }
+            };
+
+            const trackLogin = (user, provider) => {
+                if (!user) return;
+                try {
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        event: 'user_login',
+                        method: provider,
+                        auth_provider: provider,
+                        user_email_domain: (user.email || '').split('@')[1] || ''
+                    });
+                } catch (trackErr) {
+                    console.warn('⚠️ Tracking falhou:', trackErr);
+                }
+            };
+
+            const redirectToApp = async (user, provider) => {
+                if (user) {
+                    localStorage.setItem('gb_current_user', JSON.stringify(user));
+                }
+                trackLogin(user, provider);
+                statusTitle.textContent = 'Login verificado!';
+                statusMessage.textContent = 'Redirecionando para seu dashboard...';
+                await new Promise(resolve => setTimeout(resolve, 800));
+                window.location.href = 'pages/public/dashboard.html';
+            };
+
             try {
                 console.log('🔐 OAuth redirect handler - Verificando autenticação...');
 
@@ -122,6 +158,12 @@
                 }
 
                 if (!window.supabaseClient) {
+                    const localUser = getLocalUser();
+                    if (localUser) {
+                        console.log('Supabase indisponível, utilizando sessão local.');
+                        await redirectToApp(localUser, localUser.is_local_admin ? 'local_admin' : 'local');
+                        return;
+                    }
                     throw new Error('Cliente Supabase não inicializou. Verifique env-config.json');
                 }
 
@@ -148,6 +190,12 @@
 
                 if (error || !user) {
                     console.error('❌ Erro ao verificar usuário:', error);
+                    const localUser = getLocalUser();
+                    if (localUser) {
+                        console.log('Sessão local encontrada, prosseguindo sem Supabase.');
+                        await redirectToApp(localUser, localUser.is_local_admin ? 'local_admin' : 'local');
+                        return;
+                    }
                     throw new Error(error?.message || 'Usuário não autenticado');
                 }
 
@@ -181,28 +229,17 @@
                 }
 
                 // Tracking de login
-                try {
-                    window.dataLayer = window.dataLayer || [];
-                    const provider = user.app_metadata?.provider || 'oauth';
-                    window.dataLayer.push({
-                        event: 'user_login',
-                        method: provider,
-                        auth_provider: provider,
-                        user_email_domain: (user.email || '').split('@')[1] || ''
-                    });
-                } catch (e) {
-                    console.warn('⚠️ Tracking falhou:', e);
-                }
-
-                // Sucesso - redirecionar para dashboard real
-                statusTitle.textContent = 'Login realizado com sucesso!';
-                statusMessage.textContent = 'Redirecionando para seu dashboard...';
-
-                await new Promise(resolve => setTimeout(resolve, 800));
-                window.location.href = 'pages/public/dashboard.html';
+                const provider = user.app_metadata?.provider || 'oauth';
+                await redirectToApp(normalizedUser, provider);
 
             } catch (error) {
                 console.error('❌ Erro no OAuth handler:', error);
+                const localUser = getLocalUser();
+                if (localUser) {
+                    console.log('Erro Supabase, mas sessão local presente. Redirecionando...');
+                    await redirectToApp(localUser, localUser.is_local_admin ? 'local_admin' : 'local');
+                    return;
+                }
                 statusTitle.textContent = 'Erro na autenticação';
                 statusMessage.classList.add('hidden');
                 errorMessage.textContent = error.message || 'Erro desconhecido';

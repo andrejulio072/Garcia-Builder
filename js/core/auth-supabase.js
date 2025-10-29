@@ -4,6 +4,96 @@
  * Funciona 100% no frontend com verificação de email, reset de senha, etc.
  */
 
+const resolveSiteBaseUrl = () => {
+    if (typeof window === 'undefined') {
+        return '';
+    }
+
+    if (window.__SITE_BASE_URL) {
+        return window.__SITE_BASE_URL;
+    }
+
+    if (window.__ENV && typeof window.__ENV.PUBLIC_SITE_URL === 'string' && window.__ENV.PUBLIC_SITE_URL.trim()) {
+        window.__SITE_BASE_URL = window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '');
+        return window.__SITE_BASE_URL;
+    }
+
+    try {
+        const { origin, pathname } = window.location;
+        const segments = (pathname || '/').split('/').filter(Boolean);
+        const pagesIdx = segments.indexOf('pages');
+        let baseSegments;
+        if (pagesIdx > -1) {
+            baseSegments = segments.slice(0, pagesIdx);
+        } else if (segments.length > 0) {
+            baseSegments = segments.slice(0, segments.length - 1);
+        } else {
+            baseSegments = [];
+        }
+        const basePath = baseSegments.length ? `/${baseSegments.join('/')}` : '';
+        const computed = `${origin}${basePath}`.replace(/\/$/, '');
+        window.__SITE_BASE_URL = computed;
+        if (!window.__ENV) window.__ENV = {};
+        if (!window.__ENV.PUBLIC_SITE_URL) {
+            window.__ENV.PUBLIC_SITE_URL = computed;
+        }
+        return computed;
+    } catch (err) {
+        console.warn('[SupabaseAuth] resolveSiteBaseUrl fallback used:', err);
+        const fallback = (window.location && window.location.origin) ? window.location.origin : '';
+        window.__SITE_BASE_URL = (fallback || '').replace(/\/$/, '');
+        return window.__SITE_BASE_URL;
+    }
+};
+
+const toSiteAbsoluteUrl = (pathOrUrl) => {
+    if (!pathOrUrl) {
+        return resolveSiteBaseUrl() || (window.location?.origin || '');
+    }
+
+    if (/^https?:\/\//i.test(pathOrUrl)) {
+        return pathOrUrl;
+    }
+
+    if (typeof toAbsoluteUrl === 'function') {
+        try {
+            return toAbsoluteUrl(pathOrUrl);
+        } catch (err) {
+            console.warn('[SupabaseAuth] toAbsoluteUrl failed, falling back:', err);
+        }
+    }
+
+    const base = resolveSiteBaseUrl();
+    try {
+        return new URL(pathOrUrl, `${base.replace(/\/$/, '')}/`).toString();
+    } catch (err) {
+        console.warn('[SupabaseAuth] URL construction fallback in use:', err);
+        const origin = (window.location && window.location.origin) ? window.location.origin : '';
+        const cleanPath = String(pathOrUrl).replace(/^\/+/, '');
+        return `${origin.replace(/\/$/, '')}/${cleanPath}`;
+    }
+};
+
+const withDevReturnIfNeeded = (absoluteUrl) => {
+    if (!absoluteUrl) return absoluteUrl;
+    try {
+        const url = new URL(absoluteUrl);
+        if (/^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname)) {
+            const base = resolveSiteBaseUrl();
+            if (base) {
+                url.searchParams.set('devReturn', base.replace(/\/$/, ''));
+            }
+        }
+        return url.toString();
+    } catch (err) {
+        console.warn('[SupabaseAuth] devReturn injection skipped:', err);
+        return absoluteUrl;
+    }
+};
+
+const buildDashboardRedirectUrl = () => withDevReturnIfNeeded(toSiteAbsoluteUrl('dashboard.html'));
+const buildResetPasswordRedirectUrl = () => withDevReturnIfNeeded(toSiteAbsoluteUrl('pages/auth/reset-password.html'));
+
 class SupabaseAuthSystem {
     constructor() {
         this.currentUser = null;
@@ -266,7 +356,7 @@ class SupabaseAuthSystem {
                 password,
                 options: {
                     data: { full_name, phone, date_of_birth },
-                    emailRedirectTo: `${window.location.origin}/Garcia-Builder/dashboard.html`
+                    emailRedirectTo: buildDashboardRedirectUrl()
                 }
             });
 
@@ -335,11 +425,11 @@ class SupabaseAuthSystem {
 
             // Verificar se há pagamento pendente
             const pendingPayment = localStorage.getItem('pendingPayment');
-            let redirectUrl = 'dashboard.html';
+            let redirectUrl = buildDashboardRedirectUrl();
 
             if (pendingPayment) {
                 const paymentData = JSON.parse(pendingPayment);
-                redirectUrl = `pricing.html?auto-pay=${paymentData.planKey}`;
+                redirectUrl = toSiteAbsoluteUrl(`pricing.html?auto-pay=${encodeURIComponent(paymentData.planKey)}`);
                 localStorage.removeItem('pendingPayment');
             }
 
@@ -416,7 +506,7 @@ class SupabaseAuthSystem {
             btn.textContent = translate('auth.sending', 'Sending...');
             btn.disabled = true;
 
-            const redirectTo = new URL('reset-password.html', window.location.href).href;
+            const redirectTo = buildResetPasswordRedirectUrl();
             const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, { redirectTo });
 
             if (error) throw error;
@@ -581,7 +671,7 @@ class SupabaseAuthSystem {
 
 // Social Login Functions
 function setupSocialLogin() {
-    const oauthRedirectTo = `${window.location.origin}/Garcia-Builder/dashboard.html`;
+    const oauthRedirectTo = buildDashboardRedirectUrl();
 
     // Google Login
     const googleBtn = document.getElementById("google-btn");

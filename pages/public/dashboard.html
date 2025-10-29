@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title data-i18n="dashboard.title">Client Dashboard  Garcia Builder</title>
+    <title data-i18n="dashboard.title">Client Dashboard · Garcia Builder</title>
     <meta name="description" content="Track your Garcia Builder progress, routines, and milestones in a cinematic coaching dashboard." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,7 +31,7 @@
                         <img id="user-avatar" src="https://via.placeholder.com/86/111/fff?text=U" alt="User avatar" class="dashboard-avatar" loading="lazy" decoding="async">
                         <div class="dashboard-heading">
                             <h1><span data-i18n="dashboard.welcome_back">Welcome back</span>, <span id="user-name">User</span>!</h1>
-                            <p data-i18n="dashboard.subtitle">Your personalised transformation hub keeps everything in one place.</p>
+                            <p data-i18n="dashboard.subtitle">Your personalized transformation hub keeps everything in one place.</p>
                             <div class="dashboard-meta">
                                 <span><i class="fas fa-clock" aria-hidden="true"></i><span data-i18n="dashboard.last_login">Last login</span>: <span id="last-login">Today</span></span>
                                 <span><i class="fas fa-award" aria-hidden="true"></i><span data-i18n="dashboard.member_since">Member since</span>: <span id="member-since">2024</span></span>
@@ -39,9 +39,9 @@
                         </div>
                     </div>
                     <div class="dashboard-quick-actions">
-                        <a href="my-profile.html" class="btn-quick" data-i18n="dashboard.edit_profile_cta"><i class="fas fa-user-gear"></i>Edit Profile</a>
+                        <a href="my-profile.html" class="btn-quick"><i class="fas fa-user-gear"></i><span data-i18n="dashboard.edit_profile_cta">Edit Profile</span></a>
                         <button type="button" class="btn-quick" id="log-weight-btn"><i class="fas fa-scale-unbalanced"></i><span data-i18n="dashboard.log_weight">Log Weight</span></button>
-                        <a href="contact.html" class="btn-quick" data-i18n="dashboard.get_support"><i class="fas fa-comments"></i>Get Support</a>
+                        <a href="contact.html" class="btn-quick"><i class="fas fa-comments"></i><span data-i18n="dashboard.get_support">Get Support</span></a>
                         <button type="button" class="btn-quick btn-danger" id="logout-btn"><i class="fas fa-arrow-right-from-bracket"></i><span data-i18n="dashboard.logout">Logout</span></button>
                     </div>
                 </div>
@@ -65,50 +65,50 @@
                     <article class="stats-card js-reveal" data-metric="bmi">
                         <div class="stats-icon"><i class="fas fa-chart-line" aria-hidden="true"></i></div>
                         <div class="stats-number" id="bmi">--</div>
-                        <div class="stats-label">BMI</div>
-                        <span class="stats-trend trend-neutral" id="bmi-category">Calculate</span>
+                        <div class="stats-label" data-i18n="dashboard.bmi_label">BMI</div>
+                        <span class="stats-trend trend-neutral" id="bmi-category" data-i18n="dashboard.bmi_calculate">Calculate</span>
                     </article>
 
                     <article class="stats-card js-reveal" data-metric="body-fat">
                         <div class="stats-icon"><i class="fas fa-percentage" aria-hidden="true"></i></div>
                         <div class="stats-number" id="body-fat">--%</div>
                         <div class="stats-label" data-i18n="dashboard.body_fat">Body Fat</div>
-                        <span class="stats-trend trend-neutral" id="body-fat-trend">Auto-calculated</span>
+                        <span class="stats-trend trend-neutral" id="body-fat-trend" data-i18n="dashboard.auto_calculated">Auto-calculated</span>
                     </article>
 
                     <article class="stats-card js-reveal" data-metric="calories">
                         <div class="stats-icon"><i class="fas fa-fire-flame-curved" aria-hidden="true"></i></div>
                         <div class="stats-number" id="daily-calories">--</div>
                         <div class="stats-label" data-i18n="dashboard.daily_calories">Daily Calories</div>
-                        <span class="stats-trend trend-up" id="calories-trend">Recommended</span>
+                        <span class="stats-trend trend-up" id="calories-trend" data-i18n="dashboard.recommended">Recommended</span>
                     </article>
 
                     <article class="stats-card js-reveal" data-metric="hydration">
                         <div class="stats-icon"><i class="fas fa-droplet" aria-hidden="true"></i></div>
                         <div class="stats-number" id="daily-water">--</div>
                         <div class="stats-label" data-i18n="dashboard.daily_water">Daily Water</div>
-                        <span class="stats-trend trend-up" id="water-trend">Target</span>
+                        <span class="stats-trend trend-up" id="water-trend" data-i18n="dashboard.target">Target</span>
                     </article>
 
                     <article class="stats-card js-reveal" data-metric="progress">
                         <div class="stats-icon"><i class="fas fa-bullseye" aria-hidden="true"></i></div>
                         <div class="stats-number" id="progress-to-goal">--</div>
                         <div class="stats-label" data-i18n="dashboard.progress_goal">Progress to Goal</div>
-                        <span class="stats-trend trend-neutral" id="progress-trend">Set target</span>
+                        <span class="stats-trend trend-neutral" id="progress-trend" data-i18n="dashboard.set_target">Set target</span>
                     </article>
 
                     <article class="stats-card js-reveal" data-metric="workouts">
                         <div class="stats-icon"><i class="fas fa-dumbbell" aria-hidden="true"></i></div>
                         <div class="stats-number" id="workouts-completed">0</div>
                         <div class="stats-label" data-i18n="dashboard.workouts_completed">Workouts Completed</div>
-                        <span class="stats-trend trend-neutral" id="workouts-trend">Getting started</span>
+                        <span class="stats-trend trend-neutral" id="workouts-trend" data-i18n="dashboard.getting_started">Getting started</span>
                     </article>
 
                     <article class="stats-card js-reveal" data-metric="streak">
                         <div class="stats-icon"><i class="fas fa-fire" aria-hidden="true"></i></div>
                         <div class="stats-number" id="current-streak">0</div>
                         <div class="stats-label" data-i18n="dashboard.day_streak">Day Streak</div>
-                        <span class="stats-trend trend-neutral" id="streak-trend">Keep going!</span>
+                        <span class="stats-trend trend-neutral" id="streak-trend" data-i18n="dashboard.keep_going">Keep going!</span>
                     </article>
                 </div>
             </div>
@@ -135,7 +135,7 @@
                         <div id="user-goals" class="goal-list">
                             <div class="empty-state">
                                 <i class="fas fa-bullseye" aria-hidden="true"></i>
-                                <p data-i18n="dashboard.no_goals">Set personalised goals to track your evolution.</p>
+                                <p data-i18n="dashboard.no_goals">Set personalized goals to track your evolution.</p>
                                 <button class="btn-primary-custom" type="button" onclick="window.location.href='my-profile.html'">
                                     <span data-i18n="dashboard.set_goals">Define goals</span>
                                 </button>
@@ -149,23 +149,23 @@
                             <div class="resource-item">
                                 <div>
                                     <a href="#" data-i18n="dashboard.session_checkin">Weekly check-in with coach</a>
-                                    <div class="resource-meta">Tuesday  09:00 (Online)</div>
+                                    <div class="resource-meta" data-i18n="dashboard.session_checkin_meta">Tuesday · 09:00 (Online)</div>
                                 </div>
-                                <span class="stats-trend trend-up">Upcoming</span>
+                                <span class="stats-trend trend-up" data-i18n="dashboard.session_status_upcoming">Upcoming</span>
                             </div>
                             <div class="resource-item">
                                 <div>
-                                    <a href="#" data-i18n="dashboard.session_training">Strength block  Phase 2</a>
-                                    <div class="resource-meta">Thursday  Gym flow</div>
+                                    <a href="#" data-i18n="dashboard.session_training">Strength block · Phase 2</a>
+                                    <div class="resource-meta" data-i18n="dashboard.session_training_meta">Thursday · Gym flow</div>
                                 </div>
-                                <span class="stats-trend trend-neutral">Scheduled</span>
+                                <span class="stats-trend trend-neutral" data-i18n="dashboard.session_status_scheduled">Scheduled</span>
                             </div>
                             <div class="resource-item">
                                 <div>
-                                    <a href="#" data-i18n="dashboard.session_recovery">Recovery & mobility</a>
-                                    <div class="resource-meta">Saturday  20 min follow-along</div>
+                                    <a href="#" data-i18n="dashboard.session_recovery">Recovery &amp; mobility</a>
+                                    <div class="resource-meta" data-i18n="dashboard.session_recovery_meta">Saturday · 20 min follow-along</div>
                                 </div>
-                                <span class="stats-trend trend-neutral">Self-guided</span>
+                                <span class="stats-trend trend-neutral" data-i18n="dashboard.session_status_selfguided">Self-guided</span>
                             </div>
                         </div>
                     </section>
@@ -246,7 +246,7 @@
     </main>
 
     <div data-component="footer" data-theme="dark"></div>
-    <a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre!%20I%20came%20from%20your%20dashboard%20and%20want%20coaching." target="_blank" rel="noopener" aria-label="Contact via WhatsApp">
+    <a class="whatsapp-float" href="https://wa.me/447508497586" target="_blank" rel="noopener" aria-label="Contact via WhatsApp">
         <i class="fab fa-whatsapp" aria-hidden="true"></i>
     </a>
 
@@ -262,9 +262,48 @@
     <script defer src="../../js/body-metrics.js"></script>
 
     <script>
+        const translate = (key, fallback) => {
+            try {
+                const api = window.GBi18n;
+                if (api && typeof api.t === 'function') {
+                    const value = api.t(key);
+                    if (typeof value === 'string' && value.trim()) {
+                        return value;
+                    }
+                }
+            } catch (err) {
+                console.warn('i18n lookup failed for', key, err);
+            }
+            return fallback;
+        };
+
+        const formatMessage = (template, replacements = {}) => {
+            if (typeof template !== 'string') {
+                return '';
+            }
+            return template.replace(/\{(\w+)\}/g, (_, token) => {
+                return Object.prototype.hasOwnProperty.call(replacements, token)
+                    ? replacements[token]
+                    : `{${token}}`;
+            });
+        };
+
         document.addEventListener('DOMContentLoaded', function() {
+            if (typeof AuthSystem !== 'undefined' && typeof AuthSystem.requireAuth === 'function') {
+                const allowed = AuthSystem.requireAuth();
+                if (!allowed) {
+                    return;
+                }
+            }
+
             setupRevealAnimations();
+            configureWhatsAppLink();
+            setFallbackAvatarLabel();
             initializeDashboard();
+
+            if (window.GarciaNavigationManager && typeof window.GarciaNavigationManager.updateNavigation === 'function') {
+                window.GarciaNavigationManager.updateNavigation();
+            }
 
             const logoutBtn = document.getElementById('logout-btn');
             if (logoutBtn) {
@@ -281,14 +320,20 @@
                 });
             }
 
+            document.addEventListener('languageChanged', () => {
+                configureWhatsAppLink();
+                setFallbackAvatarLabel();
+                updateDashboardContent();
+            });
+
             window.addEventListener('gb:bodyMetricsSaved', (e) => {
                 try {
                     const data = e.detail || {};
                     if (typeof data.weight === 'number') {
-                        updateStatCard('current-weight', `${data.weight}kg`, 'Recorded');
+                        updateStatCard('current-weight', `${data.weight}kg`, translate('dashboard.recorded', 'Recorded'));
                         const dailyWater = Math.round(data.weight * 35);
                         const liters = (dailyWater / 1000).toFixed(1);
-                        updateStatCard('hydration', `${liters}L`, 'Daily target');
+                        updateStatCard('hydration', `${liters}L`, translate('dashboard.daily_target', 'Daily target'));
                         document.getElementById('highlight-nutrition').textContent = `${Math.max(1800, Math.round(data.weight * 30))} kcal`;
                     }
                     if (typeof data.weight === 'number' && typeof data.height === 'number') {
@@ -296,21 +341,55 @@
                         updateStatCard('bmi', Math.round(bmi * 10) / 10, getBMICategory(bmi));
                     }
                     if (typeof data.body_fat === 'number') {
-                        updateStatCard('body-fat', `${data.body_fat}%`, 'Recorded');
+                        updateStatCard('body-fat', `${data.body_fat}%`, translate('dashboard.recorded', 'Recorded'));
                     }
                     const profileData = window.GarciaProfileManager?.getProfileData?.();
                     const targetWeight = parseFloat(profileData?.body_metrics?.target_weight) || 0;
                     if (typeof data.weight === 'number' && targetWeight > 0) {
                         const diff = Math.abs(data.weight - targetWeight);
                         const direction = data.weight > targetWeight ? 'lose' : 'gain';
-                        updateStatCard('progress', `${Math.round(diff * 10) / 10}kg`, `to ${direction}`);
+                        const directionLabel = translate(
+                            direction === 'lose' ? 'dashboard.direction_lose' : 'dashboard.direction_gain',
+                            direction
+                        );
+                        const overlay = formatMessage(
+                            translate('dashboard.progress_to_direction', 'to {direction}'),
+                            { direction: directionLabel }
+                        );
+                        updateStatCard('progress', `${Math.round(diff * 10) / 10}kg`, overlay);
                     }
-                    updateDashboardStats();
+                    updateDashboardStats(profileData || {});
                 } catch (err) {
                     console.warn('Failed to refresh dashboard after metrics save:', err);
                 }
             });
         });
+
+        function configureWhatsAppLink() {
+            const whatsappLink = document.querySelector('.whatsapp-float');
+            if (!whatsappLink) return;
+
+            whatsappLink.setAttribute(
+                'aria-label',
+                translate('dashboard.contact_whatsapp_label', 'Contact via WhatsApp')
+            );
+
+            const baseUrl = 'https://wa.me/447508497586';
+            const message = translate(
+                'dashboard.contact_whatsapp_message',
+                'Hi Andre! I came from your dashboard and want coaching.'
+            );
+            whatsappLink.href = `${baseUrl}?text=${encodeURIComponent(message)}`;
+        }
+
+        function setFallbackAvatarLabel() {
+            const avatar = document.getElementById('user-avatar');
+            if (!avatar) return;
+            const currentAlt = (avatar.getAttribute('alt') || '').trim();
+            if (!currentAlt || currentAlt === 'User avatar') {
+                avatar.setAttribute('alt', translate('dashboard.user_avatar_alt', 'User avatar'));
+            }
+        }
 
         async function initializeDashboard() {
             try {
@@ -355,7 +434,7 @@
                     return;
                 }
 
-                document.getElementById('user-name').textContent = profileData.full_name || 'Athlete';
+                document.getElementById('user-name').textContent = profileData.full_name || translate('dashboard.default_name', 'Athlete');
                 document.getElementById('last-login').textContent =
                     new Date(profileData.last_login || Date.now()).toLocaleDateString();
                 document.getElementById('member-since').textContent =
@@ -364,12 +443,13 @@
                 if (profileData.avatar_url) {
                     const avatar = document.getElementById('user-avatar');
                     avatar.src = profileData.avatar_url;
-                    avatar.alt = profileData.full_name || 'User avatar';
+                    avatar.alt = profileData.full_name || translate('dashboard.user_avatar_alt', 'User avatar');
                 }
 
                 populateGoals(profileData.goals);
                 populateActivity(profileData.activity);
                 updateDashboardStats(profileData);
+                setFallbackAvatarLabel();
             } catch (error) {
                 console.error('Failed to update dashboard content:', error);
             }
@@ -383,7 +463,7 @@
                 goalsContainer.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-bullseye" aria-hidden="true"></i>
-                        <p data-i18n="dashboard.no_goals">Set personalised goals to track your evolution.</p>
+                        <p data-i18n="dashboard.no_goals">Set personalized goals to track your evolution.</p>
                         <button class="btn-primary-custom" type="button" onclick="window.location.href='my-profile.html'">
                             <span data-i18n="dashboard.set_goals">Define goals</span>
                         </button>
@@ -394,11 +474,23 @@
             goalsContainer.innerHTML = goals.map(goal => `
                 <div class="goal-item">
                     <div>
-                        <strong>${goal.title || 'Goal'}</strong>
+                        <strong>${goal.title || translate('dashboard.goal_default', 'Goal')}</strong>
                         <p>${goal.description || ''}</p>
                     </div>
                     <span class="stats-trend ${goal.status === 'on-track' ? 'trend-up' : 'trend-neutral'}">
-                        ${goal.status === 'completed' ? 'Completed' : goal.status || 'Active'}
+                        ${(() => {
+                            const status = (goal.status || '').toLowerCase();
+                            if (status === 'completed') {
+                                return translate('dashboard.goal_completed', 'Completed');
+                            }
+                            if (status === 'on-track') {
+                                return translate('dashboard.goal_ontrack', 'On track');
+                            }
+                            if (status === 'paused') {
+                                return translate('dashboard.goal_paused', 'Paused');
+                            }
+                            return translate('dashboard.goal_active', 'Active');
+                        })()}
                     </span>
                 </div>
             `).join('');
@@ -423,7 +515,7 @@
             activityFeed.innerHTML = activity.slice(0, 5).map(item => `
                 <div class="activity-item">
                     <div>
-                        <strong>${item.title || 'Update'}</strong>
+                        <strong>${item.title || translate('dashboard.activity_update', 'Update')}</strong>
                         <p>${item.description || ''}</p>
                     </div>
                     <span class="resource-meta">${new Date(item.date).toLocaleDateString()}</span>
@@ -434,30 +526,36 @@
         function updateDashboardStats(profileData = {}) {
             const metrics = profileData.body_metrics || {};
             if (metrics.current_weight) {
-                updateStatCard('current-weight', `${metrics.current_weight}kg`, 'Updated');
+                updateStatCard('current-weight', `${metrics.current_weight}kg`, translate('dashboard.updated', 'Updated'));
             }
             if (metrics.target_weight && metrics.current_weight) {
                 const diff = Math.abs(metrics.current_weight - metrics.target_weight);
                 const direction = metrics.current_weight > metrics.target_weight ? 'lose' : 'gain';
-                updateStatCard('progress', `${Math.round(diff * 10) / 10}kg`, `to ${direction}`);
+                const directionLabel = translate(
+                    direction === 'lose' ? 'dashboard.direction_lose' : 'dashboard.direction_gain',
+                    direction
+                );
+                const overlay = formatMessage(
+                    translate('dashboard.progress_to_direction', 'to {direction}'),
+                    { direction: directionLabel }
+                );
+                updateStatCard('progress', `${Math.round(diff * 10) / 10}kg`, overlay);
             }
             if (metrics.daily_calories) {
-                updateStatCard('calories', metrics.daily_calories, 'Recommended');
+                updateStatCard('calories', metrics.daily_calories, translate('dashboard.recommended', 'Recommended'));
             }
             if (metrics.daily_water) {
                 const liters = (metrics.daily_water / 1000).toFixed(1);
-                updateStatCard('hydration', `${liters}L`, 'Target');
+                updateStatCard('hydration', `${liters}L`, translate('dashboard.target', 'Target'));
             }
             if (metrics.bmi) {
                 updateStatCard('bmi', metrics.bmi, getBMICategory(metrics.bmi));
             }
             if (metrics.body_fat) {
-                updateStatCard('body-fat', `${metrics.body_fat}%`, 'Measured');
+                updateStatCard('body-fat', `${metrics.body_fat}%`, translate('dashboard.measured', 'Measured'));
             }
 
-            document.getElementById('highlight-streak').textContent = `${profileData.current_streak || 0} days`;
-            document.getElementById('highlight-training').textContent = `${profileData.workouts_completed || 0} sessions`;
-            document.getElementById('total-sessions').textContent = profileData.workouts_completed || 0;
+            updateHighlightSummaries(profileData);
             document.getElementById('achievements-count').textContent = Array.isArray(profileData.achievements)
                 ? profileData.achievements.length
                 : 0;
@@ -465,6 +563,21 @@
             document.getElementById('target-weight').textContent = metrics.target_weight
                 ? `${metrics.target_weight}kg`
                 : '--';
+        }
+
+        function updateHighlightSummaries(profileData = {}) {
+            const streakCount = Number(profileData.current_streak) || 0;
+            const workoutsCount = Number(profileData.workouts_completed) || 0;
+            const dayLabel = streakCount === 1
+                ? translate('dashboard.day_single', 'day')
+                : translate('dashboard.day_plural', 'days');
+            const sessionLabel = workoutsCount === 1
+                ? translate('dashboard.session_single', 'session')
+                : translate('dashboard.session_plural', 'sessions');
+
+            document.getElementById('highlight-streak').textContent = `${streakCount} ${dayLabel}`;
+            document.getElementById('highlight-training').textContent = `${workoutsCount} ${sessionLabel}`;
+            document.getElementById('total-sessions').textContent = workoutsCount;
         }
 
         function updateStatCard(metric, value, trendText) {
@@ -479,21 +592,28 @@
         }
 
         function getBMICategory(bmi) {
-            if (bmi < 18.5) return 'Underweight';
-            if (bmi < 25) return 'Normal';
-            if (bmi < 30) return 'Overweight';
-            return 'Obese';
+            if (bmi < 18.5) return translate('dashboard.bmi_underweight', 'Underweight');
+            if (bmi < 25) return translate('dashboard.bmi_normal', 'Normal');
+            if (bmi < 30) return translate('dashboard.bmi_overweight', 'Overweight');
+            return translate('dashboard.bmi_obese', 'Obese');
         }
 
         async function handleLogout() {
             try {
-                if (window.GarciaAuth) {
+                if (typeof AuthSystem !== 'undefined' && typeof AuthSystem.logout === 'function') {
+                    await AuthSystem.logout();
+                    return;
+                }
+                if (window.GarciaAuth && typeof window.GarciaAuth.signOut === 'function') {
                     await window.GarciaAuth.signOut();
                 }
-                window.location.href = '../auth/login.html';
             } catch (error) {
                 console.error('Error logging out:', error);
             }
+            const loginUrl = typeof toAbsoluteUrl === 'function'
+                ? toAbsoluteUrl('pages/auth/login.html')
+                : '../auth/login.html';
+            window.location.href = loginUrl;
         }
     </script>
 </body>

@@ -10,6 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node tools/static-server.js",
     "sitemap": "node tools/generate-sitemap.js",
+  "lint": "powershell -ExecutionPolicy Bypass -File validate-components.ps1",
     "build:env": "node scripts/generate-env-config.js",
     "postinstall": "node scripts/generate-env-config.js"
   },

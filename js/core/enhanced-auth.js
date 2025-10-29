@@ -369,12 +369,12 @@ class EnhancedAuthSystem {
 
     redirectUserByRole(user) {
         const redirects = {
-            admin: 'admin-dashboard.html',
-            trainer: 'trainer-dashboard.html',
-            client: 'dashboard.html'
+            admin: 'pages/admin/admin-dashboard.html',
+            trainer: 'pages/trainer/trainer-dashboard.html',
+            client: 'pages/public/dashboard.html'
         };
 
-        const redirect = redirects[user.role] || 'dashboard.html';
+        const redirect = redirects[user.role] || 'pages/public/dashboard.html';
         window.location.href = redirect;
     }
 

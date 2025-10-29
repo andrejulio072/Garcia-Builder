@@ -59,17 +59,18 @@ function toAbsoluteUrl(pathOrUrl, fallbackPath = '') {
     }
 }
 
-function buildHostedAuthRedirect(path = 'dashboard.html') {
+function buildHostedAuthRedirect(path = 'pages/public/dashboard.html') {
     const hostedBase = (window.__ENV && window.__ENV.PUBLIC_SITE_URL)
         ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
         : 'https://garciabuilder.fitness';
 
     let redirect;
     try {
-        redirect = new URL(path || 'dashboard.html', `${hostedBase}/`);
+        // Usar o caminho completo para o dashboard real, não o intermediário
+        redirect = new URL(path || 'pages/public/dashboard.html', `${hostedBase}/`);
     } catch (err) {
         console.warn('buildHostedAuthRedirect failed, using fallback path:', err);
-        redirect = new URL('dashboard.html', `${hostedBase}/`);
+        redirect = new URL('pages/public/dashboard.html', `${hostedBase}/`);
     }
 
     const localBase = computeSiteBaseUrl();
@@ -85,7 +86,7 @@ function buildHostedAuthRedirect(path = 'dashboard.html') {
     return redirect.toString();
 }
 
-function resolveRedirectTarget(searchParams, defaultPath = 'dashboard.html') {
+function resolveRedirectTarget(searchParams, defaultPath = 'pages/public/dashboard.html') {
     const param = searchParams.get('redirect');
     if (param) {
         try {
@@ -652,7 +653,7 @@ class AuthSystem {
         try {
             // Prefer Supabase sign up when available (sends verification email)
             if (window.supabaseClient && window.supabaseClient.auth) {
-                const emailRedirectTo = buildHostedAuthRedirect('dashboard.html');
+                const emailRedirectTo = buildHostedAuthRedirect('pages/public/dashboard.html');
 
                 const { data, error } = await window.supabaseClient.auth.signUp({
                     email,
@@ -944,9 +945,9 @@ function setupOAuthButtons() {
     // URLs de redirecionamento conforme documentação Supabase
     const baseUrl = computeSiteBaseUrl();
 
-    // Redirect para dashboard.html após login (destino final)
+    // Redirect para o dashboard real após login (destino final)
     // IMPORTANTE: Esta URL deve estar em Supabase > Authentication > URL Configuration > Redirect URLs
-    const redirectTo = buildHostedAuthRedirect('dashboard.html');
+    const redirectTo = buildHostedAuthRedirect('pages/public/dashboard.html');
 
     console.log('🔗 OAuth redirect URL configurada:', redirectTo, '| base local:', baseUrl);
 

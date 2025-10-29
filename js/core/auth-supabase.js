@@ -91,7 +91,7 @@ const withDevReturnIfNeeded = (absoluteUrl) => {
     }
 };
 
-const buildDashboardRedirectUrl = () => withDevReturnIfNeeded(toSiteAbsoluteUrl('dashboard.html'));
+const buildDashboardRedirectUrl = () => withDevReturnIfNeeded(toSiteAbsoluteUrl('pages/public/dashboard.html'));
 const buildResetPasswordRedirectUrl = () => withDevReturnIfNeeded(toSiteAbsoluteUrl('pages/auth/reset-password.html'));
 
 class SupabaseAuthSystem {

@@ -232,7 +232,7 @@
                     type: 'signup',
                     email: user.email,
                     options: {
-                        emailRedirectTo: `${window.location.origin}/dashboard.html`
+                        emailRedirectTo: `${window.location.origin}/pages/public/dashboard.html`
                     }
                 });
 

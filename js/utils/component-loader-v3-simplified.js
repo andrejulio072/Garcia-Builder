@@ -540,6 +540,44 @@ function ensureNavbarLinks() {
     });
 }
 
+function shouldSkipAssetNormalization(value) {
+    if (!value) {
+        return true;
+    }
+
+    const trimmed = value.trim();
+    if (!trimmed) {
+        return true;
+    }
+
+    return /^(?:[a-z]+:|\/\/|#)/i.test(trimmed);
+}
+
+function normalizeGlobalAssets() {
+    const assetTargets = [
+        { selector: 'img[src*="Logo Files"], img[src*="Logo%20Files"], img[data-gb-logo-src], img[data-resolve-asset]', attribute: 'src' },
+        { selector: 'link[rel~="icon"], link[rel="apple-touch-icon"]', attribute: 'href' }
+    ];
+
+    assetTargets.forEach(({ selector, attribute }) => {
+        document.querySelectorAll(selector).forEach(element => {
+            const rawValue = element.getAttribute(attribute);
+            if (shouldSkipAssetNormalization(rawValue)) {
+                return;
+            }
+
+            try {
+                const resolved = new URL(rawValue, document.baseURI).toString();
+                if (resolved && resolved !== rawValue) {
+                    element.setAttribute(attribute, resolved);
+                }
+            } catch (error) {
+                console.warn('[Asset Normalizer] Failed to resolve path for', rawValue, error);
+            }
+        });
+    });
+}
+
 function resolveNavHref(target) {
     if (!target || typeof target !== 'string') {
         return '#';
@@ -682,8 +720,11 @@ async function initComponents() {
     const elements = document.querySelectorAll('[data-component]');
     console.log(`[Component Loader] Found ${elements.length} components to load`);
 
+    normalizeGlobalAssets();
+
     if (elements.length === 0) {
         console.warn('[Component Loader] No components found on page');
+        normalizeGlobalAssets();
         return;
     }
 
@@ -692,6 +733,7 @@ async function initComponents() {
     }
 
     console.log(`[Component Loader] ✓ All ${elements.length} components loaded!`);
+    normalizeGlobalAssets();
 }
 
 // EXPOSE TO WINDOW (NO IIFE!)
@@ -702,6 +744,8 @@ window.ComponentLoader = {
     normalizeNavLinks: ensureNavbarLinks,
     resolveNavHref
 };
+
+document.addEventListener('componentLoaded', normalizeGlobalAssets);
 
 // AUTO-INITIALIZE
 console.log('[Component Loader] Document state:', document.readyState);

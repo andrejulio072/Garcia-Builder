@@ -60,27 +60,23 @@ function toAbsoluteUrl(pathOrUrl, fallbackPath = '') {
 }
 
 function buildHostedAuthRedirect(path = 'pages/public/dashboard.html') {
-    const hostedBase = (window.__ENV && window.__ENV.PUBLIC_SITE_URL)
-        ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
-        : 'https://garciabuilder.fitness';
+    const localBase = computeSiteBaseUrl();
+    const isLocalEnv = window.location.protocol === 'file:' || /^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname);
+
+    // Para ambiente local, usar localhost; para produção, usar domínio hospedado
+    const baseUrl = isLocalEnv
+        ? localBase
+        : ((window.__ENV && window.__ENV.PUBLIC_SITE_URL)
+            ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
+            : 'https://garciabuilder.fitness');
 
     let redirect;
     try {
         // Usar o caminho completo para o dashboard real, não o intermediário
-        redirect = new URL(path || 'pages/public/dashboard.html', `${hostedBase}/`);
+        redirect = new URL(path || 'pages/public/dashboard.html', `${baseUrl}/`);
     } catch (err) {
         console.warn('buildHostedAuthRedirect failed, using fallback path:', err);
-        redirect = new URL('pages/public/dashboard.html', `${hostedBase}/`);
-    }
-
-    const localBase = computeSiteBaseUrl();
-    const isLocalEnv = window.location.protocol === 'file:' || /^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname);
-    const existingDevReturn = new URLSearchParams(window.location.search).get('devReturn');
-
-    if (isLocalEnv && localBase) {
-        redirect.searchParams.set('devReturn', localBase);
-    } else if (existingDevReturn && !redirect.searchParams.has('devReturn')) {
-        redirect.searchParams.set('devReturn', existingDevReturn);
+        redirect = new URL('pages/public/dashboard.html', `${baseUrl}/`);
     }
 
     return redirect.toString();

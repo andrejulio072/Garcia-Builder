@@ -101,24 +101,33 @@
         const pathParts = (window.location.pathname || '/').split('/').filter(Boolean);
         const repoBase = origin.includes('github.io') && pathParts.length > 0 ? `/${pathParts[0]}` : '';
 
-        const candidates = [
-            '/env-config.json', // root (Vercel/custom domain/local dev root)
-            `${repoBase}/env-config.json`, // GitHub Pages under repo subpath
-            './env-config.json',
-            '../env-config.json',
-            '../../env-config.json'
-        ].filter((v, idx, arr) => !!v && arr.indexOf(v) === idx);
+        const absoluteFallbacks = [
+                'https://garciabuilder.fitness/env-config.json',
+                'https://www.garciabuilder.fitness/env-config.json',
+                'https://andrejulio072.github.io/Garcia-Builder/env-config.json'
+            ];
+
+            const candidates = [
+                '/env-config.json', // root (Vercel/custom domain/local dev root)
+                `${repoBase}/env-config.json`, // GitHub Pages under repo subpath
+                './env-config.json',
+                '../env-config.json',
+            '../../env-config.json',
+                ...absoluteFallbacks
+            ].filter((v, idx, arr) => !!v && arr.indexOf(v) === idx);
 
         const tryFetchSequentially = async () => {
             let lastErr;
             for (const url of candidates) {
                 try {
+                    console.info('[Supabase] Fetching env config from', url);
                     const response = await fetch(url, { cache: 'no-store' });
                     if (response.ok) {
                         return await response.json();
                     }
                     lastErr = new Error(`env-config at ${url} returned ${response.status}`);
                 } catch (e) {
+                    console.warn('[Supabase] Env config fetch failed for', url, e?.message || e);
                     lastErr = e;
                 }
             }

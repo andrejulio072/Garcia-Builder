@@ -639,7 +639,14 @@ function resolveNavHref(target) {
         return `${computeRelativePrefix()}${normalized}`;
     }
 
-    return `/${normalized}`;
+    const sanitized = normalized.replace(/^\/+/, '');
+    const basePath = computeSiteBasePath();
+    if (!basePath || basePath === '/') {
+        return `/${sanitized}`;
+    }
+
+    const trimmedBase = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
+    return `${trimmedBase}/${sanitized}`;
 }
 
 function computeRelativePrefix() {
@@ -702,6 +709,49 @@ function getCurrentProjectPath() {
     } catch (error) {
         console.warn('[Navbar] Failed to compute project path:', error);
         return window.location ? window.location.pathname : 'index.html';
+    }
+}
+
+function computeSiteBasePath() {
+    try {
+        if (typeof window === 'undefined' || !window.location) {
+            return '/';
+        }
+
+        if (window.__ENV && typeof window.__ENV.PUBLIC_SITE_URL === 'string' && window.__ENV.PUBLIC_SITE_URL.trim()) {
+            try {
+                const envUrl = new URL(window.__ENV.PUBLIC_SITE_URL.trim());
+                const envPath = envUrl.pathname.replace(/\\/g, '/');
+                if (!envPath || envPath === '/') {
+                    return '/';
+                }
+                return envPath.endsWith('/') ? envPath : `${envPath}/`;
+            } catch (envErr) {
+                console.warn('[Navbar] Failed to parse PUBLIC_SITE_URL base path:', envErr);
+            }
+        }
+
+        const { pathname } = window.location;
+        if (!pathname || pathname === '/' || pathname === '') {
+            return '/';
+        }
+
+        const segments = pathname.replace(/\\/g, '/').split('/').filter(Boolean);
+        if (!segments.length) {
+            return '/';
+        }
+
+        const last = segments[segments.length - 1];
+        const isFile = /\.[a-z0-9]+$/i.test(last);
+        const baseSegments = isFile ? segments.slice(0, -1) : segments;
+        if (!baseSegments.length) {
+            return '/';
+        }
+
+        return `/${baseSegments.join('/')}/`;
+    } catch (error) {
+        console.warn('[Navbar] Failed to compute site base path:', error);
+        return '/';
     }
 }
 
@@ -783,7 +833,8 @@ window.ComponentLoader = {
     cache: CACHE,
     normalizeNavLinks: ensureNavbarLinks,
     resolveNavHref,
-    canonicalizeNavTarget
+    canonicalizeNavTarget,
+    computeSiteBasePath
 };
 
 document.addEventListener('componentLoaded', normalizeGlobalAssets);

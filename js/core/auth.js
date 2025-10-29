@@ -1098,11 +1098,31 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.supabaseClient && window.supabaseClient.auth) {
                 // Verificar se há tokens OAuth na URL (retorno de Google/Facebook)
                 const hashParams = new URLSearchParams(window.location.hash.substring(1));
-                const hasOAuthTokens = hashParams.has('access_token') || hashParams.has('error');
+                const queryParams = new URLSearchParams(window.location.search);
+                const codeParam = queryParams.get('code');
+                const hasOAuthTokens = hashParams.has('access_token') || hashParams.has('error') || !!codeParam;
 
                 if (hasOAuthTokens) {
                     console.log('🔐 Processando retorno OAuth...');
                     showAuthMessage('Processando login...', 'info');
+                    if (codeParam) {
+                        try {
+                            console.log('🔄 Trocando código OAuth por sessão (auth.js)...');
+                            const { error: exchangeError } = await window.supabaseClient.auth.exchangeCodeForSession({ code: codeParam });
+                            if (exchangeError) {
+                                throw exchangeError;
+                            }
+
+                            // Limpa parâmetros sensíveis da URL para evitar reprocessamento
+                            const cleanedUrl = new URL(window.location.href);
+                            cleanedUrl.searchParams.delete('code');
+                            cleanedUrl.searchParams.delete('state');
+                            window.history.replaceState({}, document.title, cleanedUrl.toString());
+                        } catch (exchangeErr) {
+                            console.error('Falha ao trocar código OAuth:', exchangeErr);
+                            showAuthMessage(`Erro ao validar login social: ${exchangeErr.message || exchangeErr}`, 'danger');
+                        }
+                    }
                 }
 
                 const { data } = await window.supabaseClient.auth.getUser();

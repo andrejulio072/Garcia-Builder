@@ -358,7 +358,13 @@ class AuthGuard {
                 return `${AuthGuard.computeRelativePrefix()}${sanitized}`;
             }
 
-            return `/${sanitized}`;
+            const basePath = AuthGuard.computeSiteBasePath();
+            if (!basePath || basePath === '/') {
+                return `/${sanitized}`;
+            }
+
+            const trimmedBase = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
+            return `${trimmedBase}/${sanitized}`;
         } catch (error) {
             console.warn('AuthGuard: failed to resolve nav href for', target, error);
             return target || '#';
@@ -396,6 +402,56 @@ class AuthGuard {
         } catch (error) {
             console.warn('AuthGuard: failed to compute relative prefix', error);
             return '';
+        }
+    }
+
+    static computeSiteBasePath() {
+        try {
+            if (window.ComponentLoader && typeof window.ComponentLoader.computeSiteBasePath === 'function') {
+                const loaderBase = window.ComponentLoader.computeSiteBasePath();
+                if (loaderBase) {
+                    return loaderBase;
+                }
+            }
+
+            if (typeof window === 'undefined' || !window.location) {
+                return '/';
+            }
+
+            if (window.__ENV && typeof window.__ENV.PUBLIC_SITE_URL === 'string' && window.__ENV.PUBLIC_SITE_URL.trim()) {
+                try {
+                    const envUrl = new URL(window.__ENV.PUBLIC_SITE_URL.trim());
+                    const envPath = envUrl.pathname.replace(/\\/g, '/');
+                    if (!envPath || envPath === '/') {
+                        return '/';
+                    }
+                    return envPath.endsWith('/') ? envPath : `${envPath}/`;
+                } catch (envErr) {
+                    console.warn('AuthGuard: PUBLIC_SITE_URL parse failed:', envErr);
+                }
+            }
+
+            const { pathname } = window.location;
+            if (!pathname || pathname === '/' || pathname === '') {
+                return '/';
+            }
+
+            const segments = pathname.replace(/\\/g, '/').split('/').filter(Boolean);
+            if (!segments.length) {
+                return '/';
+            }
+
+            const last = segments[segments.length - 1];
+            const isFile = /\.[a-z0-9]+$/i.test(last);
+            const baseSegments = isFile ? segments.slice(0, -1) : segments;
+            if (!baseSegments.length) {
+                return '/';
+            }
+
+            return `/${baseSegments.join('/')}/`;
+        } catch (error) {
+            console.warn('AuthGuard: computeSiteBasePath failed:', error);
+            return '/';
         }
     }
 

@@ -173,20 +173,92 @@
                 const hashParams = new URLSearchParams(window.location.hash.substring(1));
                 const queryParams = new URLSearchParams(window.location.search);
 
+                console.log('📦 Query recebida:', window.location.search || '(sem query)');
+                console.log('📦 Hash recebido:', window.location.hash || '(sem hash)');
+
                 const hasOAuthTokens = hashParams.has('access_token') ||
                                      queryParams.has('code') ||
                                      hashParams.has('error');
+
+                console.log('🔍 OAuth URL debug', {
+                    hasOAuthTokens,
+                    queryKeys: Array.from(queryParams.keys()),
+                    hashKeys: Array.from(hashParams.keys()),
+                    hasCodeParam: queryParams.has('code'),
+                    hasAccessToken: hashParams.has('access_token'),
+                    hasRefreshToken: hashParams.has('refresh_token'),
+                    devReturn: queryParams.get('devReturn') || null
+                });
 
                 if (hasOAuthTokens) {
                     console.log('🔑 Tokens OAuth detectados na URL');
                     statusMessage.textContent = 'Validando login social...';
                 }
 
+                const code = queryParams.get('code');
+                const state = queryParams.get('state');
+                console.log('🔍 Parâmetros relevantes', {
+                    codeLength: code ? code.length : 0,
+                    stateLength: state ? state.length : 0,
+                    devReturn: queryParams.get('devReturn') || null
+                });
+                if (code) {
+                    console.log('🔄 Trocando código OAuth por sessão...');
+                    const { error: exchangeError } = await window.supabaseClient.auth.exchangeCodeForSession({ code });
+                    if (exchangeError) {
+                        throw new Error(exchangeError.message || 'Falha ao validar código OAuth');
+                    }
+
+                    console.log('✅ Código OAuth trocado com sucesso');
+
+                    try {
+                        const exchangeSession = await window.supabaseClient.auth.getSession();
+                        const sessionObj = exchangeSession?.data?.session || null;
+                        console.log('🧾 Sessão após troca de código', {
+                            hasSession: !!sessionObj,
+                            provider: sessionObj?.user?.app_metadata?.provider || sessionObj?.provider_token ? 'provider' : null,
+                            expiresAt: sessionObj?.expires_at || null
+                        });
+                    } catch (sessionErr) {
+                        console.warn('⚠️ Falha ao obter sessão após troca de código:', sessionErr);
+                    }
+
+                    // Limpar parâmetros sensíveis para evitar reprocessamento em reloads
+                    try {
+                        const cleanedUrl = new URL(window.location.href);
+                        cleanedUrl.searchParams.delete('code');
+                        cleanedUrl.searchParams.delete('state');
+                        window.history.replaceState({}, document.title, cleanedUrl.toString());
+                    } catch (urlErr) {
+                        console.warn('Não foi possível limpar parâmetros OAuth da URL:', urlErr);
+                    }
+                }
+
                 // Aguardar um pouco para o Supabase processar os tokens
                 await new Promise(resolve => setTimeout(resolve, 1000));
 
                 // Verificar usuário autenticado
-                const { data: { user }, error } = await window.supabaseClient.auth.getUser();
+                try {
+                    const sessionCheck = await window.supabaseClient.auth.getSession();
+                    const currentSession = sessionCheck?.data?.session || null;
+                    console.log('🧭 Sessão ativa antes do getUser', {
+                        hasSession: !!currentSession,
+                        accessTokenSnippet: currentSession?.access_token ? `${currentSession.access_token.slice(0, 8)}…` : null,
+                        expiresAt: currentSession?.expires_at || null,
+                        provider: currentSession?.user?.app_metadata?.provider || null
+                    });
+                } catch (sessionCheckErr) {
+                    console.warn('⚠️ Falha ao checar sessão ativa:', sessionCheckErr);
+                }
+
+                const { data, error } = await window.supabaseClient.auth.getUser();
+                const user = data?.user || null;
+
+                console.log('🔍 Supabase getUser resultado', {
+                    hasUser: !!user,
+                    userEmail: user?.email || null,
+                    errorMessage: error?.message || null
+                });
 
                 if (error || !user) {
                     console.error('❌ Erro ao verificar usuário:', error);

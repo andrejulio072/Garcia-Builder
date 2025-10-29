@@ -10,15 +10,19 @@ Acesse: **Supabase Dashboard → Authentication → URL Configuration → Redire
 1. ttps://garciabuilder.fitness/pages/public/dashboard.html
    ⚠️ ERRO DE DIGITAÇÃO - falta "h" em https
 
-2. https://garciabuilder.fitness/pages/auth/login.html
-   ⚠️ DUPLICADO - login.html NÃO deve ser redirect URL OAuth
+2. http://localhost:5500/pages/auth/reset-password.html
+   🚨 CRÍTICO - Email vai para localhost (usuário não tem acesso!)
 
-3. https://www.garciabuilder.fitness/pages/auth/login.html
-   ⚠️ login.html NÃO deve ser redirect URL OAuth
+3. https://garciabuilder.fitness/pages/auth/login.html
+   ⚠️ login.html NÃO deve ser redirect URL
+
+4. https://www.garciabuilder.fitness/pages/auth/login.html
+   ⚠️ login.html NÃO deve ser redirect URL
 ```
 
 **Por que remover?**
-- login.html não processa tokens OAuth, causa loop
+- 🚨 Reset password NUNCA deve usar localhost - usuário acessa email de qualquer lugar
+- login.html não processa tokens de reset, causa loop
 - URL com erro de digitação nunca funcionará
 
 ---
@@ -28,20 +32,20 @@ Acesse: **Supabase Dashboard → Authentication → URL Configuration → Redire
 ### ✅ ADICIONAR estas URLs:
 
 ```
-# Localhost - Dashboard OAuth
+# Localhost - Dashboard OAuth APENAS
 http://localhost:5500/pages/public/dashboard.html
 http://127.0.0.1:5500/pages/public/dashboard.html
 http://localhost:3000/pages/public/dashboard.html
 http://localhost:8080/pages/public/dashboard.html
 
-# Produção - Reset Password
+# Produção - Reset Password (CRÍTICO!)
 https://garciabuilder.fitness/pages/auth/reset-password.html
 https://www.garciabuilder.fitness/pages/auth/reset-password.html
 ```
 
 **Por que adicionar?**
-- Necessário para login Google funcionar em localhost
-- Necessário para recuperação de senha funcionar
+- Localhost: Necessário APENAS para OAuth (login Google em desenvolvimento)
+- Reset Password: 🚨 DEVE ser produção - usuário recebe email em qualquer lugar
 
 ---
 
@@ -51,12 +55,12 @@ Após aplicar as ações acima, você deve ter **exatamente estas URLs**:
 
 ### ✅ Domínios Base (Wildcards):
 ```
-https://www.garciabuilder.fitness
-https://garciabuilder.uk
-https://garciabuilder-fitness.vercel.app/
-https://garciabuilder.fitness/*
-https://www.garciabuilder.fitness/*
-https://garciabuilder-fitness.vercel.app/*
+https://www.garciabuilder.fitness      // CORRIGIDO
+https://garciabuilder.uk  //checked
+https://garciabuilder-fitness.vercel.app    //checked
+https://garciabuilder.fitness/*             //checked
+https://www.garciabuilder.fitness/*         //checked
+https://garciabuilder-fitness.vercel.app/*  //checked
 http://localhost:5500/*
 http://127.0.0.1:5500/*
 https://andrejulio072.github.io/Garcia-Builder/*
@@ -86,8 +90,9 @@ https://garciabuilder-fitness-andrejulio072s-projects.vercel.app/pages/public/da
 
 ### ✅ URLs Específicas - Reset Password:
 ```
-# Localhost
-http://localhost:5500/pages/auth/reset-password.html
+# ⚠️ ATENÇÃO: NUNCA USE LOCALHOST PARA RESET PASSWORD!
+# Usuário recebe email em qualquer lugar (celular, trabalho, etc)
+# SEMPRE use domínio público de produção
 
 # Produção
 https://garciabuilder.fitness/pages/auth/reset-password.html
@@ -153,8 +158,8 @@ https://garciabuilder-fitness-andrejulio072s-projects.vercel.app/pages/auth/rese
 5. ✅ `enhanced-auth.js`: logout corrigido
 
 ### ⏳ No Supabase (ação necessária):
-1. ❌ Remover 3 URLs incorretas (2 com login.html + 1 com erro digitação)
-2. ❌ Adicionar 6 URLs faltantes (localhost + reset-password produção)
+1. ❌ Remover 4 URLs incorretas (2 login.html + 1 localhost reset-password + 1 erro digitação)
+2. ❌ Adicionar 6 URLs faltantes (4 localhost dashboard + 2 reset-password produção)
 
 ---
 
@@ -189,7 +194,7 @@ Por quê?
 
 ---
 
-**Data:** 29 de outubro de 2025  
-**Status:** ✅ Código corrigido e commitado | ⏳ Aguardando configuração Supabase  
-**Branch:** fix/auth-login-404  
+**Data:** 29 de outubro de 2025
+**Status:** ✅ Código corrigido e commitado | ⏳ Aguardando configuração Supabase
+**Branch:** fix/auth-login-404
 **Commit:** 5a13ca5

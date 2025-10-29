@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="refresh" content="0;url=login.html">
+    <meta name="robots" content="noindex">
+    <script>
+    (function() {
+        try {
+            var search = window.location.search || '';
+            var hash = window.location.hash || '';
+            var target = 'login.html';
+            if (search) {
+                target += search;
+            }
+            if (hash) {
+                target += hash;
+            }
+            window.location.replace(target);
+        } catch (error) {
+            console.warn('Redirect fallback failed, using href swap.', error);
+            window.location.href = 'login.html';
+        }
+    })();
+    </script>
+</head>
+<body>
+    <p>If you are not redirected automatically, <a href="login.html">open the login page</a>.</p>
+</body>
+</html>

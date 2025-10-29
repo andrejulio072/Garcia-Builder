@@ -578,6 +578,46 @@ function normalizeGlobalAssets() {
     });
 }
 
+function canonicalizeNavTarget(target) {
+    if (!target || typeof target !== 'string') {
+        return target;
+    }
+
+    try {
+        const hasWindow = typeof window !== 'undefined' && window.location && window.location.origin && window.location.origin !== 'null';
+        const base = hasWindow ? `${window.location.origin}/` : 'https://garciabuilder.fitness/';
+        const parsed = new URL(target, base);
+        const normalizedPath = parsed.pathname.replace(/\\/g, '/').replace(/^\/+|\/+$/g, '').toLowerCase();
+
+        const applyPath = (path, extraParams) => {
+            parsed.pathname = path.startsWith('/') ? path : `/${path}`;
+            if (extraParams && parsed.searchParams) {
+                Object.entries(extraParams).forEach(([key, value]) => {
+                    if (!parsed.searchParams.has(key)) {
+                        parsed.searchParams.set(key, value);
+                    }
+                });
+            }
+        };
+
+        if (normalizedPath === 'pages/auth' || normalizedPath === 'pages/auth/index' || normalizedPath === 'pages/auth/index.html') {
+            applyPath('pages/auth/login.html');
+        } else if (normalizedPath === 'pages/auth/login') {
+            applyPath('pages/auth/login.html');
+        } else if (normalizedPath === 'pages/auth/register') {
+            applyPath('pages/auth/login.html', { action: 'register' });
+        }
+
+        const pathname = parsed.pathname.replace(/^\/+/, '');
+        const search = parsed.search || '';
+        const hash = parsed.hash || '';
+        return `${pathname}${search}${hash}`;
+    } catch (error) {
+        console.warn('[Navbar] Failed to canonicalize nav target:', target, error);
+        return target;
+    }
+}
+
 function resolveNavHref(target) {
     if (!target || typeof target !== 'string') {
         return '#';
@@ -592,14 +632,21 @@ function resolveNavHref(target) {
         return trimmed;
     }
 
-    const normalized = trimmed.replace(/^\/+/, '');
+    const normalized = canonicalizeNavTarget(trimmed.replace(/^\/+/, ''));
     const protocol = (typeof window !== 'undefined' && window.location) ? window.location.protocol : '';
 
     if (protocol === 'file:') {
         return `${computeRelativePrefix()}${normalized}`;
     }
 
-    return `/${normalized}`;
+    const sanitized = normalized.replace(/^\/+/, '');
+    const basePath = computeSiteBasePath();
+    if (!basePath || basePath === '/') {
+        return `/${sanitized}`;
+    }
+
+    const trimmedBase = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
+    return `${trimmedBase}/${sanitized}`;
 }
 
 function computeRelativePrefix() {
@@ -662,6 +709,49 @@ function getCurrentProjectPath() {
     } catch (error) {
         console.warn('[Navbar] Failed to compute project path:', error);
         return window.location ? window.location.pathname : 'index.html';
+    }
+}
+
+function computeSiteBasePath() {
+    try {
+        if (typeof window === 'undefined' || !window.location) {
+            return '/';
+        }
+
+        if (window.__ENV && typeof window.__ENV.PUBLIC_SITE_URL === 'string' && window.__ENV.PUBLIC_SITE_URL.trim()) {
+            try {
+                const envUrl = new URL(window.__ENV.PUBLIC_SITE_URL.trim());
+                const envPath = envUrl.pathname.replace(/\\/g, '/');
+                if (!envPath || envPath === '/') {
+                    return '/';
+                }
+                return envPath.endsWith('/') ? envPath : `${envPath}/`;
+            } catch (envErr) {
+                console.warn('[Navbar] Failed to parse PUBLIC_SITE_URL base path:', envErr);
+            }
+        }
+
+        const { pathname } = window.location;
+        if (!pathname || pathname === '/' || pathname === '') {
+            return '/';
+        }
+
+        const segments = pathname.replace(/\\/g, '/').split('/').filter(Boolean);
+        if (!segments.length) {
+            return '/';
+        }
+
+        const last = segments[segments.length - 1];
+        const isFile = /\.[a-z0-9]+$/i.test(last);
+        const baseSegments = isFile ? segments.slice(0, -1) : segments;
+        if (!baseSegments.length) {
+            return '/';
+        }
+
+        return `/${baseSegments.join('/')}/`;
+    } catch (error) {
+        console.warn('[Navbar] Failed to compute site base path:', error);
+        return '/';
     }
 }
 
@@ -742,7 +832,9 @@ window.ComponentLoader = {
     init: initComponents,
     cache: CACHE,
     normalizeNavLinks: ensureNavbarLinks,
-    resolveNavHref
+    resolveNavHref,
+    canonicalizeNavTarget,
+    computeSiteBasePath
 };
 
 document.addEventListener('componentLoaded', normalizeGlobalAssets);

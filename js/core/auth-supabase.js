@@ -91,7 +91,7 @@ const withDevReturnIfNeeded = (absoluteUrl) => {
     }
 };
 
-const buildDashboardRedirectUrl = () => withDevReturnIfNeeded(toSiteAbsoluteUrl('dashboard.html'));
+const buildDashboardRedirectUrl = () => withDevReturnIfNeeded(toSiteAbsoluteUrl('pages/public/dashboard.html'));
 const buildResetPasswordRedirectUrl = () => withDevReturnIfNeeded(toSiteAbsoluteUrl('pages/auth/reset-password.html'));
 
 class SupabaseAuthSystem {
@@ -619,7 +619,7 @@ class SupabaseAuthSystem {
             if (error) throw error;
 
             this.clearUserStorage();
-            window.location.href = 'login.html';
+            window.location.href = toSiteAbsoluteUrl('pages/auth/login.html');
         } catch (error) {
             console.error('Logout error:', error);
             alert('Error signing out: ' + error.message);
@@ -630,7 +630,7 @@ class SupabaseAuthSystem {
         const isLoggedIn = await this.isLoggedIn();
         if (!isLoggedIn) {
             const currentUrl = encodeURIComponent(window.location.pathname);
-            window.location.href = `login.html?redirect=${currentUrl}`;
+            window.location.href = toSiteAbsoluteUrl(`pages/auth/login.html?redirect=${currentUrl}`);
             return false;
         }
         return true;
@@ -655,14 +655,14 @@ class SupabaseAuthSystem {
             window.authSystem.logout();
         } else {
             localStorage.removeItem('gb_current_user');
-            window.location.href = 'login.html';
+            window.location.href = toSiteAbsoluteUrl('pages/auth/login.html');
         }
     }
 
     static requireAuth() {
         if (!SupabaseAuthSystem.isLoggedIn()) {
             const currentUrl = encodeURIComponent(window.location.pathname);
-            window.location.href = `login.html?redirect=${currentUrl}`;
+            window.location.href = toSiteAbsoluteUrl(`pages/auth/login.html?redirect=${currentUrl}`);
             return false;
         }
         return true;
@@ -740,7 +740,7 @@ window.signOut = async () => {
     if (window.authSystem) {
         await window.authSystem.logout();
     } else {
-        window.location.href = 'login.html';
+        window.location.href = toSiteAbsoluteUrl('pages/auth/login.html');
     }
 };
 

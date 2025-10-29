@@ -317,7 +317,10 @@ class EnhancedAuthSystem {
     logout() {
         this.currentUser = null;
         localStorage.removeItem('gb_current_user');
-        window.location.href = 'login.html';
+        const loginUrl = typeof toAbsoluteUrl === 'function'
+            ? toAbsoluteUrl('pages/auth/login.html')
+            : '../auth/login.html';
+        window.location.href = loginUrl;
     }
 
     setupEventListeners() {
@@ -369,12 +372,12 @@ class EnhancedAuthSystem {
 
     redirectUserByRole(user) {
         const redirects = {
-            admin: 'admin-dashboard.html',
-            trainer: 'trainer-dashboard.html',
-            client: 'dashboard.html'
+            admin: 'pages/admin/admin-dashboard.html',
+            trainer: 'pages/trainer/trainer-dashboard.html',
+            client: 'pages/public/dashboard.html'
         };
 
-        const redirect = redirects[user.role] || 'dashboard.html';
+        const redirect = redirects[user.role] || 'pages/public/dashboard.html';
         window.location.href = redirect;
     }
 

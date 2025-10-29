@@ -59,33 +59,30 @@ function toAbsoluteUrl(pathOrUrl, fallbackPath = '') {
     }
 }
 
-function buildHostedAuthRedirect(path = 'dashboard.html') {
-    const hostedBase = (window.__ENV && window.__ENV.PUBLIC_SITE_URL)
-        ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
-        : 'https://garciabuilder.fitness';
+function buildHostedAuthRedirect(path = 'pages/public/dashboard.html') {
+    const localBase = computeSiteBaseUrl();
+    const isLocalEnv = window.location.protocol === 'file:' || /^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname);
+
+    // Para ambiente local, usar localhost; para produção, usar domínio hospedado
+    const baseUrl = isLocalEnv
+        ? localBase
+        : ((window.__ENV && window.__ENV.PUBLIC_SITE_URL)
+            ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
+            : 'https://garciabuilder.fitness');
 
     let redirect;
     try {
-        redirect = new URL(path || 'dashboard.html', `${hostedBase}/`);
+        // Usar o caminho completo para o dashboard real, não o intermediário
+        redirect = new URL(path || 'pages/public/dashboard.html', `${baseUrl}/`);
     } catch (err) {
         console.warn('buildHostedAuthRedirect failed, using fallback path:', err);
-        redirect = new URL('dashboard.html', `${hostedBase}/`);
-    }
-
-    const localBase = computeSiteBaseUrl();
-    const isLocalEnv = window.location.protocol === 'file:' || /^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname);
-    const existingDevReturn = new URLSearchParams(window.location.search).get('devReturn');
-
-    if (isLocalEnv && localBase) {
-        redirect.searchParams.set('devReturn', localBase);
-    } else if (existingDevReturn && !redirect.searchParams.has('devReturn')) {
-        redirect.searchParams.set('devReturn', existingDevReturn);
+        redirect = new URL('pages/public/dashboard.html', `${baseUrl}/`);
     }
 
     return redirect.toString();
 }
 
-function resolveRedirectTarget(searchParams, defaultPath = 'dashboard.html') {
+function resolveRedirectTarget(searchParams, defaultPath = 'pages/public/dashboard.html') {
     const param = searchParams.get('redirect');
     if (param) {
         try {
@@ -652,7 +649,7 @@ class AuthSystem {
         try {
             // Prefer Supabase sign up when available (sends verification email)
             if (window.supabaseClient && window.supabaseClient.auth) {
-                const emailRedirectTo = buildHostedAuthRedirect('dashboard.html');
+                const emailRedirectTo = buildHostedAuthRedirect('pages/public/dashboard.html');
 
                 const { data, error } = await window.supabaseClient.auth.signUp({
                     email,
@@ -944,9 +941,9 @@ function setupOAuthButtons() {
     // URLs de redirecionamento conforme documentação Supabase
     const baseUrl = computeSiteBaseUrl();
 
-    // Redirect para dashboard.html após login (destino final)
+    // Redirect para o dashboard real após login (destino final)
     // IMPORTANTE: Esta URL deve estar em Supabase > Authentication > URL Configuration > Redirect URLs
-    const redirectTo = buildHostedAuthRedirect('dashboard.html');
+    const redirectTo = buildHostedAuthRedirect('pages/public/dashboard.html');
 
     console.log('🔗 OAuth redirect URL configurada:', redirectTo, '| base local:', baseUrl);
 
@@ -1098,11 +1095,31 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.supabaseClient && window.supabaseClient.auth) {
                 // Verificar se há tokens OAuth na URL (retorno de Google/Facebook)
                 const hashParams = new URLSearchParams(window.location.hash.substring(1));
-                const hasOAuthTokens = hashParams.has('access_token') || hashParams.has('error');
+                const queryParams = new URLSearchParams(window.location.search);
+                const codeParam = queryParams.get('code');
+                const hasOAuthTokens = hashParams.has('access_token') || hashParams.has('error') || !!codeParam;
 
                 if (hasOAuthTokens) {
                     console.log('🔐 Processando retorno OAuth...');
                     showAuthMessage('Processando login...', 'info');
+                    if (codeParam) {
+                        try {
+                            console.log('🔄 Trocando código OAuth por sessão (auth.js)...');
+                            const { error: exchangeError } = await window.supabaseClient.auth.exchangeCodeForSession({ code: codeParam });
+                            if (exchangeError) {
+                                throw exchangeError;
+                            }
+
+                            // Limpa parâmetros sensíveis da URL para evitar reprocessamento
+                            const cleanedUrl = new URL(window.location.href);
+                            cleanedUrl.searchParams.delete('code');
+                            cleanedUrl.searchParams.delete('state');
+                            window.history.replaceState({}, document.title, cleanedUrl.toString());
+                        } catch (exchangeErr) {
+                            console.error('Falha ao trocar código OAuth:', exchangeErr);
+                            showAuthMessage(`Erro ao validar login social: ${exchangeErr.message || exchangeErr}`, 'danger');
+                        }
+                    }
                 }
 
                 const { data } = await window.supabaseClient.auth.getUser();

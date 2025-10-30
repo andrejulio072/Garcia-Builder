@@ -884,7 +884,7 @@ class AuthSystem {
     static async logout() {
         try {
             console.log('🚪 Logging out...');
-            
+
             // Clear all Supabase session keys from localStorage
             const keysToRemove = [];
             for (let i = 0; i < localStorage.length; i++) {
@@ -893,22 +893,22 @@ class AuthSystem {
                     keysToRemove.push(key);
                 }
             }
-            
+
             keysToRemove.forEach(key => {
                 localStorage.removeItem(key);
                 console.log('🗑️ Removed:', key);
             });
-            
+
             // Clear custom keys
             localStorage.removeItem('gb_current_user');
             localStorage.removeItem('gb_remember_user');
             localStorage.removeItem('gb_remember_me');
-            
+
             // Clear sessionStorage
             sessionStorage.clear();
-            
+
             console.log('✅ Storage cleared');
-            
+
             // Sign out from Supabase
             try {
                 if (window.supabaseClient && window.supabaseClient.auth) {
@@ -921,7 +921,7 @@ class AuthSystem {
             } catch (e) {
                 console.warn('⚠️ Supabase signOut error (continuing anyway):', e?.message || e);
             }
-            
+
             // Force redirect with cache busting
             const loginUrl = toAbsoluteUrl('pages/auth/login.html');
             console.log('↪️ Redirecting to:', loginUrl);

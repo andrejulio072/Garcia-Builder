@@ -468,34 +468,74 @@
 
         function updateDashboardContent() {
             try {
+                console.log('📊 Updating dashboard content...');
+                
+                // Get profile data
                 const profileData = window.GarciaProfileManager?.getProfileData?.();
+                console.log('Profile data:', profileData);
+                
+                // Get current user from Supabase for OAuth picture
+                let currentUser = null;
+                if (window.supabaseClient) {
+                    window.supabaseClient.auth.getUser().then(({ data: { user } }) => {
+                        currentUser = user;
+                        console.log('Current user metadata:', user?.user_metadata);
+                    });
+                }
+                
                 if (!profileData) {
+                    console.warn('No profile data available');
                     return;
                 }
 
-                const fullName = profileData.full_name || translate('dashboard.default_name', 'Athlete');
+                // Update name
+                const fullName = profileData.basic?.full_name || 
+                                profileData.full_name || 
+                                currentUser?.user_metadata?.full_name ||
+                                currentUser?.email ||
+                                translate('dashboard.default_name', 'Athlete');
+                                
                 document.getElementById('user-name').textContent = fullName;
+                
+                // Update login info
                 document.getElementById('last-login').textContent =
                     new Date(profileData.last_login || Date.now()).toLocaleDateString();
                 document.getElementById('member-since').textContent =
-                    (profileData.created_at || '').split('T')[0] || '2024';
+                    (profileData.basic?.joined_date || profileData.created_at || '').split('T')[0] || '2024';
 
+                // Update avatar with priority: OAuth picture > saved avatar_url > initials
                 const avatar = document.getElementById('user-avatar');
-                if (profileData.avatar_url) {
-                    avatar.src = profileData.avatar_url;
-                    avatar.alt = fullName;
-                } else {
-                    // Generate avatar with user initials
-                    avatar.src = generateAvatarWithInitials(fullName);
+                if (avatar) {
+                    let avatarSrc = null;
+                    
+                    // Priority 1: OAuth picture from user_metadata (Google/Facebook)
+                    if (currentUser?.user_metadata?.picture) {
+                        avatarSrc = currentUser.user_metadata.picture;
+                        console.log('✅ Using OAuth avatar:', avatarSrc);
+                    }
+                    // Priority 2: Saved avatar_url
+                    else if (profileData.basic?.avatar_url || profileData.avatar_url) {
+                        avatarSrc = profileData.basic?.avatar_url || profileData.avatar_url;
+                        console.log('✅ Using saved avatar:', avatarSrc);
+                    }
+                    // Priority 3: Generate with initials
+                    else {
+                        avatarSrc = generateAvatarWithInitials(fullName);
+                        console.log('✅ Generated initials avatar');
+                    }
+                    
+                    avatar.src = avatarSrc;
                     avatar.alt = fullName;
                 }
 
-                populateGoals(profileData.goals);
+                populateGoals(profileData.basic?.goals || profileData.goals);
                 populateActivity(profileData.activity);
                 updateDashboardStats(profileData);
                 setFallbackAvatarLabel();
+                
+                console.log('✅ Dashboard content updated');
             } catch (error) {
-                console.error('Failed to update dashboard content:', error);
+                console.error('❌ Failed to update dashboard content:', error);
             }
         }
 

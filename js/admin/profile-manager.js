@@ -211,12 +211,18 @@
         profileData.basic.email = currentUser?.email || profileData.basic.full_name || '';
       }
       if (!profileData.basic.avatar_url) {
-        profileData.basic.avatar_url = currentUser?.user_metadata?.avatar_url || currentUser?.user_metadata?.picture || '';
+        // Priority: picture (OAuth) > avatar_url > empty
+        profileData.basic.avatar_url = currentUser?.user_metadata?.picture || 
+                                       currentUser?.user_metadata?.avatar_url || 
+                                       '';
+        console.log('🖼️ Avatar URL set:', profileData.basic.avatar_url);
       }
 
       syncAuthCache();
       console.log('✅ Profile data loaded successfully');
       console.log('📊 Profile sections:', Object.keys(profileData));
+      console.log('👤 User:', profileData.basic.full_name, profileData.basic.email);
+      console.log('🖼️ Avatar:', profileData.basic.avatar_url ? 'Yes' : 'No (will use initials)');
     } catch (error) {
       console.error('❌ Error loading profile data:', error);
     }
@@ -822,15 +828,19 @@
 
   // Setup forms
   const setupForms = () => {
+    console.log('📝 Setting up forms with profile data...');
+    
     // Basic info form
     const basicForm = document.getElementById('basic-info-form');
     if (basicForm) {
+      console.log('✅ Found basic-info-form');
       // Populate form fields
       const fields = ['full_name', 'first_name', 'last_name', 'phone', 'birthday', 'location', 'bio', 'experience_level', 'trainer_name', 'trainer_id'];
       fields.forEach(field => {
         const input = basicForm.querySelector(`[name="${field}"]`);
         if (input && profileData.basic[field]) {
           input.value = profileData.basic[field];
+          console.log(`  ✓ ${field}: ${profileData.basic[field]}`);
         }
       });
 
@@ -839,16 +849,21 @@
       goalCheckboxes.forEach(checkbox => {
         checkbox.checked = profileData.basic.goals.includes(checkbox.value);
       });
+      console.log(`  ✓ Goals: ${profileData.basic.goals.join(', ')}`);
+    } else {
+      console.warn('⚠️ basic-info-form not found');
     }
 
     // Body metrics form
     const metricsForm = document.getElementById('body-metrics-form');
     if (metricsForm) {
+      console.log('✅ Found body-metrics-form');
       const fields = ['current_weight', 'height', 'target_weight', 'body_fat_percentage', 'muscle_mass'];
       fields.forEach(field => {
         const input = metricsForm.querySelector(`[name="${field}"]`);
         if (input && profileData.body_metrics[field]) {
           input.value = profileData.body_metrics[field];
+          console.log(`  ✓ ${field}: ${profileData.body_metrics[field]}`);
         }
       });
 
@@ -857,6 +872,7 @@
         const input = metricsForm.querySelector(`[name="measurements_${key}"]`);
         if (input && value) {
           input.value = value;
+          console.log(`  ✓ measurement ${key}: ${value}`);
         }
       });
 
@@ -869,9 +885,14 @@
         const heightInput = metricsForm.querySelector('[name="height"]');
         if (weightInput && heightInput && weightInput.value && heightInput.value) {
           weightInput.dispatchEvent(new Event('input'));
+          console.log('  ✓ Triggered BMI calculation');
         }
       }, 200);
+    } else {
+      console.warn('⚠️ body-metrics-form not found');
     }
+    
+    console.log('✅ Forms setup complete');
   };
 
   // Setup photo upload

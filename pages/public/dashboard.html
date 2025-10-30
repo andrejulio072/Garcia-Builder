@@ -644,20 +644,54 @@
 
         async function handleLogout() {
             try {
+                console.log('🚪 Dashboard logout initiated');
+                
+                // Try AuthSystem first (this is now the corrected version)
                 if (typeof AuthSystem !== 'undefined' && typeof AuthSystem.logout === 'function') {
                     await AuthSystem.logout();
                     return;
                 }
-                if (window.GarciaAuth && typeof window.GarciaAuth.signOut === 'function') {
+                
+                // Fallback to AuthGuard
+                if (window.AuthGuard && typeof window.AuthGuard.handleLogout === 'function') {
+                    const fakeEvent = { preventDefault: () => {}, stopPropagation: () => {} };
+                    window.AuthGuard.handleLogout(fakeEvent);
+                    return;
+                }
+                
+                // Manual logout as last resort
+                console.log('⚠️ Using manual logout fallback');
+                
+                // Clear all storage
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && (key.startsWith('sb-') || key.includes('supabase'))) {
+                        keysToRemove.push(key);
+                    }
+                }
+                keysToRemove.forEach(key => localStorage.removeItem(key));
+                localStorage.removeItem('gb_current_user');
+                localStorage.removeItem('gb_remember_me');
+                sessionStorage.clear();
+                
+                // Try Supabase signOut
+                if (window.supabaseClient?.auth) {
+                    await window.supabaseClient.auth.signOut();
+                } else if (window.GarciaAuth && typeof window.GarciaAuth.signOut === 'function') {
                     await window.GarciaAuth.signOut();
                 }
+                
+                // Redirect
+                const loginUrl = typeof toAbsoluteUrl === 'function'
+                    ? toAbsoluteUrl('pages/auth/login.html')
+                    : '../auth/login.html';
+                window.location.replace(loginUrl + '?t=' + Date.now());
             } catch (error) {
-                console.error('Error logging out:', error);
+                console.error('❌ Error logging out:', error);
+                // Force redirect even on error
+                window.location.replace('../auth/login.html');
             }
-            const loginUrl = typeof toAbsoluteUrl === 'function'
-                ? toAbsoluteUrl('pages/auth/login.html')
-                : '../auth/login.html';
-            window.location.href = loginUrl;
         }
     </script>
 </body>

@@ -883,17 +883,53 @@ class AuthSystem {
 
     static async logout() {
         try {
-            if (window.supabaseClient && window.supabaseClient.auth) {
-                await window.supabaseClient.auth.signOut();
-            } else if (window.supabase && window.supabase.auth) {
-                await window.supabase.auth.signOut();
+            console.log('🚪 Logging out...');
+            
+            // Clear all Supabase session keys from localStorage
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && (key.startsWith('sb-') || key.includes('supabase'))) {
+                    keysToRemove.push(key);
+                }
             }
-        } catch (e) {
-            console.warn('Supabase signOut error (ignored):', e?.message || e);
-        } finally {
+            
+            keysToRemove.forEach(key => {
+                localStorage.removeItem(key);
+                console.log('🗑️ Removed:', key);
+            });
+            
+            // Clear custom keys
             localStorage.removeItem('gb_current_user');
             localStorage.removeItem('gb_remember_user');
-            window.location.href = toAbsoluteUrl('pages/auth/login.html');
+            localStorage.removeItem('gb_remember_me');
+            
+            // Clear sessionStorage
+            sessionStorage.clear();
+            
+            console.log('✅ Storage cleared');
+            
+            // Sign out from Supabase
+            try {
+                if (window.supabaseClient && window.supabaseClient.auth) {
+                    await window.supabaseClient.auth.signOut();
+                    console.log('✅ Supabase signOut complete');
+                } else if (window.supabase && window.supabase.auth) {
+                    await window.supabase.auth.signOut();
+                    console.log('✅ Supabase signOut complete');
+                }
+            } catch (e) {
+                console.warn('⚠️ Supabase signOut error (continuing anyway):', e?.message || e);
+            }
+            
+            // Force redirect with cache busting
+            const loginUrl = toAbsoluteUrl('pages/auth/login.html');
+            console.log('↪️ Redirecting to:', loginUrl);
+            window.location.replace(loginUrl + '?t=' + Date.now());
+        } catch (error) {
+            console.error('❌ Logout error:', error);
+            // Even if there's an error, redirect to login
+            window.location.replace(toAbsoluteUrl('pages/auth/login.html'));
         }
     }
 

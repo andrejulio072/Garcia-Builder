@@ -115,6 +115,8 @@
   // Load complete profile data
   const loadProfileData = async () => {
     try {
+      console.log('📥 Loading profile data...');
+      
       // Initialize default profile structure
       profileData = {
         basic: {
@@ -213,9 +215,10 @@
       }
 
       syncAuthCache();
-      console.log('Profile data loaded:', profileData);
+      console.log('✅ Profile data loaded successfully');
+      console.log('📊 Profile sections:', Object.keys(profileData));
     } catch (error) {
-      console.error('Error loading profile data:', error);
+      console.error('❌ Error loading profile data:', error);
     }
   };
 
@@ -368,6 +371,8 @@
   // Save profile data
   const saveProfileData = async (section = null) => {
     try {
+      console.log(`💾 Saving profile${section ? ` (${section})` : ''}...`);
+      
       // Update timestamp
       if (section) {
         profileData[section].updated_at = new Date().toISOString();
@@ -376,21 +381,26 @@
       // Save to Supabase
       if (window.supabaseClient) {
         await saveToSupabase(section);
+        console.log('✅ Saved to Supabase');
       }
 
       // Save to localStorage as backup
       saveToLocalStorage();
+      console.log('✅ Saved to localStorage');
+      
       syncAuthCache();
       window.authGuard?.addUserMenuToNavbar?.();
 
       showNotification('Profile updated successfully!', 'success');
+      console.log('✅ Profile save complete');
       return true;
     } catch (error) {
-      console.error('Error saving profile data:', error);
+      console.error('❌ Error saving profile data:', error);
 
       // Try to create profiles table if it doesn't exist
       if (error.message && error.message.includes('table') && error.message.includes('does not exist')) {
         try {
+          console.log('📋 Creating profiles table...');
           await createProfilesTable();
           // Retry saving after creating table
           await saveToSupabase(section);
@@ -2024,6 +2034,7 @@
     getCurrentUser,
     getProfileData: () => profileData,
     saveProfileData,
+    saveProfile: saveProfileData, // Alias for compatibility
     updateBasicInfoDisplay,
     updateDashboardStats,
     handleFormSubmit,

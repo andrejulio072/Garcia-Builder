@@ -1346,9 +1346,115 @@
                 if (window.GarciaProfileManager) {
                     await window.GarciaProfileManager.init();
                     updateMetricsDisplay();
+                    updateProfileAvatar();
                 }
             } catch (error) {
                 console.error('Error initializing profile page:', error);
+            }
+        }
+
+        /**
+         * Generates a data URI avatar with user initials
+         * @param {string} name - User's full name
+         * @returns {string} Data URI for the generated avatar
+         */
+        function generateAvatarWithInitials(name) {
+            // Get initials (max 2 letters)
+            const initials = name
+                .split(' ')
+                .filter(word => word.length > 0)
+                .map(word => word[0].toUpperCase())
+                .slice(0, 2)
+                .join('');
+            
+            // Create canvas
+            const canvas = document.createElement('canvas');
+            const size = 150; // Larger for profile page
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient (Garcia Builder brand colors)
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#FF6B35');  // Orange
+            gradient.addColorStop(1, '#004E89');  // Blue
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Text
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 64px system-ui, -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(initials || 'U', size / 2, size / 2);
+            
+            return canvas.toDataURL('image/png');
+        }
+
+        function updateProfileAvatar() {
+            try {
+                const profileData = window.GarciaProfileManager?.getProfileData?.();
+                if (!profileData) return;
+
+                const avatar = document.getElementById('main-avatar');
+                if (!avatar) return;
+
+                const fullName = profileData.full_name || profileData.email?.split('@')[0] || 'User';
+                
+                if (profileData.avatar_url) {
+                    avatar.src = profileData.avatar_url;
+                    avatar.alt = fullName;
+                } else {
+                    // Generate avatar with user initials
+                    avatar.src = generateAvatarWithInitials(fullName);
+                    avatar.alt = fullName;
+                }
+            } catch (error) {
+                console.error('Error updating profile avatar:', error);
+            }
+        }
+
+        async function handleAvatarUpload(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file');
+                return;
+            }
+
+            // Validate file size (max 5MB)
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                alert('Image size must be less than 5MB');
+                return;
+            }
+
+            try {
+                // Show loading state
+                const avatar = document.getElementById('main-avatar');
+                const originalSrc = avatar.src;
+                avatar.style.opacity = '0.5';
+
+                // Read and display image preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    avatar.src = e.target.result;
+                    avatar.style.opacity = '1';
+                };
+                reader.readAsDataURL(file);
+
+                // TODO: Upload to Supabase storage when ready
+                // For now, just save the data URL to profile
+                if (window.GarciaProfileManager) {
+                    const profileData = window.GarciaProfileManager.getProfileData();
+                    profileData.avatar_url = avatar.src;
+                    await window.GarciaProfileManager.saveProfile(profileData);
+                }
+            } catch (error) {
+                console.error('Error uploading avatar:', error);
+                alert('Failed to upload avatar. Please try again.');
             }
         }
 
@@ -1399,6 +1505,12 @@
                         fallbackLogout(event);
                     }
                 });
+            }
+
+            // Avatar upload
+            const avatarUpload = document.getElementById('avatar-upload');
+            if (avatarUpload) {
+                avatarUpload.addEventListener('change', handleAvatarUpload);
             }
 
             // Weight input change for BMI calculation

@@ -392,6 +392,44 @@
             }
         }
 
+        /**
+         * Generates a data URI avatar with user initials
+         * @param {string} name - User's full name
+         * @returns {string} Data URI for the generated avatar
+         */
+        function generateAvatarWithInitials(name) {
+            // Get initials (max 2 letters)
+            const initials = name
+                .split(' ')
+                .filter(word => word.length > 0)
+                .map(word => word[0].toUpperCase())
+                .slice(0, 2)
+                .join('');
+            
+            // Create canvas
+            const canvas = document.createElement('canvas');
+            const size = 86;
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient (Garcia Builder brand colors)
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#FF6B35');  // Orange
+            gradient.addColorStop(1, '#004E89');  // Blue
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Text
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 36px system-ui, -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(initials || 'U', size / 2, size / 2);
+            
+            return canvas.toDataURL('image/png');
+        }
+
         async function initializeDashboard() {
             try {
                 if (window.GarciaProfileManager) {
@@ -435,16 +473,21 @@
                     return;
                 }
 
-                document.getElementById('user-name').textContent = profileData.full_name || translate('dashboard.default_name', 'Athlete');
+                const fullName = profileData.full_name || translate('dashboard.default_name', 'Athlete');
+                document.getElementById('user-name').textContent = fullName;
                 document.getElementById('last-login').textContent =
                     new Date(profileData.last_login || Date.now()).toLocaleDateString();
                 document.getElementById('member-since').textContent =
                     (profileData.created_at || '').split('T')[0] || '2024';
 
+                const avatar = document.getElementById('user-avatar');
                 if (profileData.avatar_url) {
-                    const avatar = document.getElementById('user-avatar');
                     avatar.src = profileData.avatar_url;
-                    avatar.alt = profileData.full_name || translate('dashboard.user_avatar_alt', 'User avatar');
+                    avatar.alt = fullName;
+                } else {
+                    // Generate avatar with user initials
+                    avatar.src = generateAvatarWithInitials(fullName);
+                    avatar.alt = fullName;
                 }
 
                 populateGoals(profileData.goals);

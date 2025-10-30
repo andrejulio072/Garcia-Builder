@@ -285,8 +285,22 @@ class SupabaseAuthSystem {
     }
 
     clearUserStorage() {
+        // Remove Garcia Builder custom keys
         localStorage.removeItem('gb_current_user');
         localStorage.removeItem('gb_remember_me');
+        
+        // Remove all Supabase auth keys (they use sb-<project-ref>-auth-token pattern)
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && (key.startsWith('sb-') || key.includes('supabase'))) {
+                keysToRemove.push(key);
+            }
+        }
+        keysToRemove.forEach(key => localStorage.removeItem(key));
+        
+        // Clear session storage as well
+        sessionStorage.clear();
     }
 
     showMessage(text, type = "info") {
@@ -615,14 +629,24 @@ class SupabaseAuthSystem {
 
     async logout() {
         try {
-            const { error } = await window.supabaseClient.auth.signOut();
-            if (error) throw error;
-
+            // Clear storage first to prevent any race conditions
             this.clearUserStorage();
-            window.location.href = toSiteAbsoluteUrl('pages/auth/login.html');
+            
+            // Sign out from Supabase
+            const { error } = await window.supabaseClient.auth.signOut();
+            if (error) {
+                console.error('Supabase signOut error:', error);
+                // Continue anyway - local session is already cleared
+            }
+            
+            // Force redirect to login with cache busting
+            const loginUrl = toSiteAbsoluteUrl('pages/auth/login.html');
+            window.location.replace(loginUrl + '?t=' + Date.now());
         } catch (error) {
             console.error('Logout error:', error);
-            alert('Error signing out: ' + error.message);
+            // Even if there's an error, clear local session and redirect
+            this.clearUserStorage();
+            window.location.replace(toSiteAbsoluteUrl('pages/auth/login.html'));
         }
     }
 

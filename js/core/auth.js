@@ -59,27 +59,62 @@ function toAbsoluteUrl(pathOrUrl, fallbackPath = '') {
     }
 }
 
-function buildHostedAuthRedirect(path = 'pages/public/dashboard.html') {
-    const localBase = computeSiteBaseUrl();
-    const isLocalEnv = window.location.protocol === 'file:' || /^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname);
-
-    // Para ambiente local, usar localhost; para produção, usar domínio hospedado
-    const baseUrl = isLocalEnv
-        ? localBase
-        : ((window.__ENV && window.__ENV.PUBLIC_SITE_URL)
-            ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
-            : 'https://garciabuilder.fitness');
-
-    let redirect;
+// Considera "local" uma variedade maior de hosts usados em desenvolvimento
+function isLocalLikeHost(hostname) {
     try {
-        // Usar o caminho completo para o dashboard real, não o intermediário
-        redirect = new URL(path || 'pages/public/dashboard.html', `${baseUrl}/`);
-    } catch (err) {
-        console.warn('buildHostedAuthRedirect failed, using fallback path:', err);
-        redirect = new URL('pages/public/dashboard.html', `${baseUrl}/`);
-    }
+        if (!hostname) return false;
+        return (
+            hostname === 'localhost' ||
+            hostname === '127.0.0.1' ||
+            hostname === '0.0.0.0' ||
+            hostname === '::1' ||
+            /^192\.168\./.test(hostname) ||
+            /^10\./.test(hostname) ||
+            /\.local$/i.test(hostname)
+        );
+    } catch { return false; }
+}
 
-    return redirect.toString();
+function buildHostedAuthRedirect(path = 'pages/public/dashboard.html') {
+    const currentBase = computeSiteBaseUrl();
+    try {
+        const hostname = (window.location && window.location.hostname) || '';
+        const isFile = window.location && window.location.protocol === 'file:';
+        const isLocal = isLocalLikeHost(hostname);
+
+        // Ambiente file:// não suporta OAuth – preferir localhost explícito
+        if (isFile) {
+            const fallbackLocal = (window.__DEV_REDIRECT_BASE || 'http://localhost:8000').replace(/\/$/, '');
+            const url = new URL(path || 'pages/public/dashboard.html', `${fallbackLocal}/`).toString();
+            console.log('🔗 OAuth redirect (file prot.) →', url);
+            return url;
+        }
+
+        // Se for host local (ou qualquer host não-prod), preferir a origem atual
+        if (isLocal || !/garciabuilder\.fitness$/i.test(hostname)) {
+            const url = new URL(path || 'pages/public/dashboard.html', `${currentBase}/`).toString();
+            console.log('🔗 OAuth redirect (local/current) →', url);
+            return url;
+        }
+
+        // Em produção, se PUBLIC_SITE_URL estiver definido, utilizar
+        const envBase = (window.__ENV && typeof window.__ENV.PUBLIC_SITE_URL === 'string' && window.__ENV.PUBLIC_SITE_URL)
+            ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
+            : null;
+        if (envBase) {
+            const url = new URL(path || 'pages/public/dashboard.html', `${envBase}/`).toString();
+            console.log('🔗 OAuth redirect (env base) →', url);
+            return url;
+        }
+
+        // Fallback seguro: usar a base atual (evitar saltar para domínio de produção por engano)
+        const safeUrl = new URL(path || 'pages/public/dashboard.html', `${currentBase}/`).toString();
+        console.log('🔗 OAuth redirect (safe fallback) →', safeUrl);
+        return safeUrl;
+    } catch (err) {
+        console.warn('buildHostedAuthRedirect failed, using toAbsoluteUrl fallback:', err);
+        return toAbsoluteUrl(path || 'pages/public/dashboard.html');
+    }
 }
 
 function resolveRedirectTarget(searchParams, defaultPath = 'pages/public/dashboard.html') {
@@ -1151,6 +1186,23 @@ document.addEventListener('DOMContentLoaded', () => {
                             cleanedUrl.searchParams.delete('code');
                             cleanedUrl.searchParams.delete('state');
                             window.history.replaceState({}, document.title, cleanedUrl.toString());
+
+                            // Se veio de um fluxo file:// usando devReturn, fazer o bounce-back para o host local
+                            try {
+                                const devReturn = new URL(window.location.href).searchParams.get('devReturn');
+                                if (devReturn) {
+                                    const devUrl = new URL(devReturn);
+                                    const devHost = devUrl.hostname;
+                                    if (isLocalLikeHost(devHost)) {
+                                        const bounce = new URL('pages/public/dashboard.html', devUrl.origin + '/').toString();
+                                        console.log('🔁 OAuth devReturn detectado. Redirecionando de volta para ambiente local →', bounce);
+                                        window.location.replace(bounce);
+                                        return;
+                                    }
+                                }
+                            } catch (bounceErr) {
+                                console.warn('devReturn bounce falhou (seguindo fluxo normal):', bounceErr?.message || bounceErr);
+                            }
                         } catch (exchangeErr) {
                             console.error('Falha ao trocar código OAuth:', exchangeErr);
                             showAuthMessage(`Erro ao validar login social: ${exchangeErr.message || exchangeErr}`, 'danger');

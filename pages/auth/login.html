@@ -392,6 +392,21 @@
             return ensureEnvBase(`${origin}${basePath}`.replace(/\/$/, ''));
         };
 
+        const isLocalLikeHost = (hostname) => {
+            try {
+                if (!hostname) return false;
+                return (
+                    hostname === 'localhost' ||
+                    hostname === '127.0.0.1' ||
+                    hostname === '0.0.0.0' ||
+                    hostname === '::1' ||
+                    /^192\.168\./.test(hostname) ||
+                    /^10\./.test(hostname) ||
+                    /\.local$/i.test(hostname)
+                );
+            } catch { return false; }
+        };
+
         const buildRedirectUrl = () => {
             // Special handling for file:// development (no http origin allowed by OAuth)
             if (window.location.protocol === 'file:') {
@@ -409,25 +424,29 @@
                 }
             }
 
-            // Force absolute URL to pages/public/dashboard.html using production domain
-            const productionDomain = 'https://garciabuilder.fitness';
-            const origin = window.location.origin || productionDomain;
+            // Prefer current origin for local-like and non-production hosts
+            const origin = window.location.origin || 'http://localhost:8000';
             const hostname = (window.location.hostname || '').toLowerCase();
-            
-            // Use production domain for hosted sites (not localhost)
-            const baseOrigin = /^(localhost|127\.0\.0\.1)$/i.test(hostname) ? origin : productionDomain;
-            
+            const isLocal = isLocalLikeHost(hostname);
+            const isProd = /garciabuilder\.fitness$/i.test(hostname);
+
             try {
-                const url = new URL('pages/public/dashboard.html', `${baseOrigin}/`);
-                // For local development, add a devReturn param so hosted redirects can bounce back to localhost
-                if (/^(localhost|127\.0\.0\.1)$/i.test(hostname)) {
-                    url.searchParams.set('devReturn', origin);
+                let baseOrigin;
+                if (isLocal || !isProd) {
+                    baseOrigin = origin;
+                } else {
+                    const envBase = (window.__ENV && typeof window.__ENV.PUBLIC_SITE_URL === 'string' && window.__ENV.PUBLIC_SITE_URL)
+                        ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
+                        : 'https://garciabuilder.fitness';
+                    baseOrigin = envBase;
                 }
+
+                const url = new URL('pages/public/dashboard.html', `${baseOrigin}/`);
                 console.log('[OAuth] Redirect URL configured:', url.toString());
                 return url.toString();
             } catch (err) {
-                console.warn('Failed to build dashboard redirect URL, using production fallback:', err);
-                return 'https://garciabuilder.fitness/pages/public/dashboard.html';
+                console.warn('Failed to build dashboard redirect URL. Falling back to current origin:', err);
+                return new URL('pages/public/dashboard.html', `${origin.replace(/\/$/, '')}/`).toString();
             }
         };
 

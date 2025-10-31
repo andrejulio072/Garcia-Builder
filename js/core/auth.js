@@ -143,23 +143,32 @@ class AuthSystem {
         this.setupPasswordToggle();
         this.setupPasswordStrength();
 
-        // Dev mode: allow quick local login when running on localhost with ?dev=1
+        // Dev/Local mode: allow quick local login when running locally with ?dev=1, ?guest=1 or ?local=1
         try {
-            const isLocal = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1');
-            const isDev = new URLSearchParams(window.location.search).get('dev') === '1';
-            if (isLocal && isDev && !localStorage.getItem('gb_current_user')) {
+            const sp = new URLSearchParams(window.location.search);
+            const isDevFlag = sp.get('dev') === '1' || sp.get('guest') === '1' || sp.get('local') === '1';
+            const isFile = window.location.protocol === 'file:';
+            const host = (window.location && window.location.hostname) || '';
+            const isLocalHost = isLocalLikeHost(host);
+
+            if ((isLocalHost || isFile) && isDevFlag && !localStorage.getItem('gb_current_user')) {
+                const now = new Date();
                 const devUser = {
-                    id: 'dev-user-1',
-                    name: 'Test User',
-                    full_name: 'Test User',
-                    email: 'test.user@example.com',
-                    registeredAt: new Date().toISOString(),
-                    lastLogin: new Date().toISOString()
+                    id: `local-${now.getTime()}`,
+                    name: 'Local User',
+                    full_name: 'Local User',
+                    email: 'local.user@dev',
+                    avatar_url: null,
+                    registeredAt: now.toISOString(),
+                    lastLogin: now.toISOString(),
+                    user_metadata: { full_name: 'Local User' }
                 };
                 localStorage.setItem('gb_current_user', JSON.stringify(devUser));
 
+                // Redirect to the canonical dashboard path used in the app
+                const target = toAbsoluteUrl('pages/public/dashboard.html?dev=1');
                 if (window.location.pathname.endsWith('login.html')) {
-                    window.location.href = toAbsoluteUrl('dashboard.html?dev=1');
+                    window.location.href = target;
                 }
             }
         } catch (e) {
@@ -970,6 +979,25 @@ class AuthSystem {
 
     static requireAuth() {
         if (!AuthSystem.isLoggedIn()) {
+            // In local dev mode with flags, auto-provision a local user and continue
+            try {
+                const sp = new URLSearchParams(window.location.search);
+                const isDevFlag = sp.get('dev') === '1' || sp.get('guest') === '1' || sp.get('local') === '1';
+                const isFile = window.location.protocol === 'file:';
+                const host = (window.location && window.location.hostname) || '';
+                const isLocalHost = isLocalLikeHost(host);
+                if ((isLocalHost || isFile) && isDevFlag) {
+                    const tmp = {
+                        id: `local-${Date.now()}`,
+                        name: 'Local User',
+                        full_name: 'Local User',
+                        email: 'local.user@dev',
+                        user_metadata: { full_name: 'Local User' }
+                    };
+                    localStorage.setItem('gb_current_user', JSON.stringify(tmp));
+                    return true;
+                }
+            } catch {}
             const currentUrl = window.location.pathname + window.location.search + window.location.hash;
             window.location.href = `${toAbsoluteUrl('pages/auth/login.html')}?redirect=${encodeURIComponent(currentUrl)}`;
             return false;
@@ -977,6 +1005,24 @@ class AuthSystem {
         return true;
     }
 }
+
+// Expose a helper to create a local guest user from console or other scripts
+window.ensureLocalGuestUser = function ensureLocalGuestUser() {
+    if (!localStorage.getItem('gb_current_user')) {
+        const tmp = {
+            id: `local-${Date.now()}`,
+            name: 'Local User',
+            full_name: 'Local User',
+            email: 'local.user@dev',
+            user_metadata: { full_name: 'Local User' }
+        };
+        localStorage.setItem('gb_current_user', JSON.stringify(tmp));
+    }
+    const target = toAbsoluteUrl('pages/public/dashboard.html?dev=1');
+    if (!window.location.pathname.endsWith('dashboard.html')) {
+        window.location.href = target;
+    }
+};
 
 // OAUTH SOCIAL LOGIN - INDEPENDENTE DE FORMULÁRIOS
 function setupSocialLogin() {

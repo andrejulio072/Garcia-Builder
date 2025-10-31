@@ -254,6 +254,7 @@
     <script src="../../js/env.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../../js/core/supabase.js"></script>
+    <script src="../../js/brutal-sync.js"></script>
     <script src="../../js/utils/component-loader-v3-simplified.js?v=20251029"></script>
     <script src="../../js/email-verification-guard.js"></script>
     <script src="../../js/core/auth.js"></script>
@@ -302,6 +303,18 @@
             setFallbackAvatarLabel();
             initializeDashboard();
             
+            // BRUTAL SYNC: Listen for data updates from other pages
+            window.addEventListener('brutal:dataUpdate', (e) => {
+                console.log('📡 Dashboard received data update:', e.detail);
+                const { section, data } = e.detail;
+                
+                // Refresh dashboard when profile or metrics change
+                if (section === 'profile' || section === 'metrics') {
+                    updateDashboardContent();
+                    console.log('✅ Dashboard refreshed from sync');
+                }
+            });
+            
             // BRUTAL FIX: Watch for avatar resets and fix them
             const avatarGuard = new MutationObserver((mutations) => {
                 const avatar = document.getElementById('user-avatar');
@@ -344,6 +357,22 @@
             window.addEventListener('gb:bodyMetricsSaved', (e) => {
                 try {
                     const data = e.detail || {};
+                    
+                    // BRUTAL SYNC: Save metrics immediately
+                    if (window.BrutalSync) {
+                        const metricsData = {
+                            current_weight: data.weight,
+                            height: data.height,
+                            body_fat_percentage: data.body_fat,
+                            measurements: data.measurements || {}
+                        };
+                        window.BrutalSync.save('metrics', metricsData).then(result => {
+                            console.log('💾 Metrics saved via BrutalSync:', result);
+                        }).catch(err => {
+                            console.warn('BrutalSync save warning:', err);
+                        });
+                    }
+                    
                     if (typeof data.weight === 'number') {
                         updateStatCard('current-weight', `${data.weight}kg`, translate('dashboard.recorded', 'Recorded'));
                         const dailyWater = Math.round(data.weight * 35);

@@ -1340,6 +1340,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../../js/core/supabase.js"></script>
+    <script src="../../js/brutal-sync.js"></script>
     <script src="../../js/utils/component-loader-v3-simplified.js?v=20251029"></script>
     <script src="../../js/email-verification-guard.js"></script>
     <script src="../../js/core/auth.js"></script>
@@ -1362,6 +1363,19 @@
             setupTabNavigation();
             activateTabFromUrl();
             setupEventListeners();
+            
+            // BRUTAL SYNC: Listen for data updates from other pages
+            window.addEventListener('brutal:dataUpdate', (e) => {
+                console.log('📡 Profile received data update:', e.detail);
+                const { section, data } = e.detail;
+                
+                // Refresh profile displays when metrics or profile change
+                if (section === 'metrics' || section === 'profile') {
+                    updateMetricsDisplay();
+                    updateProfileChart();
+                    console.log('✅ Profile refreshed from sync');
+                }
+            });
             
             // BRUTAL FIX: Watch for avatar resets and fix them
             const avatarGuard = new MutationObserver((mutations) => {
@@ -1673,10 +1687,24 @@
                 inputs.forEach(input => {
                     input.addEventListener('change', () => {
                         // Auto-save after short delay
-                        setTimeout(() => {
+                        setTimeout(async () => {
                             if (window.GarciaProfileManager) {
                                 const event = { target: form, preventDefault: () => {} };
-                                window.GarciaProfileManager.handleFormSubmit?.(event);
+                                await window.GarciaProfileManager.handleFormSubmit?.(event);
+                                
+                                // BRUTAL SYNC: Save to sync system after profile manager
+                                if (window.BrutalSync) {
+                                    const section = form.dataset.profileSection;
+                                    const formData = new FormData(form);
+                                    const data = Object.fromEntries(formData.entries());
+                                    
+                                    try {
+                                        await window.BrutalSync.save(section, data);
+                                        console.log(`💾 Form ${section} saved via BrutalSync`);
+                                    } catch (err) {
+                                        console.warn('BrutalSync save warning:', err);
+                                    }
+                                }
                             }
                         }, 500);
                     });

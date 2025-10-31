@@ -432,12 +432,28 @@
 
         async function initializeDashboard() {
             try {
+                console.log('🚀 Initializing dashboard...');
+
+                // Verify authentication first
+                if (window.supabaseClient) {
+                    const { data: session } = await window.supabaseClient.auth.getSession();
+                    console.log('🔐 Session status:', session ? '✅ Active' : '❌ No session');
+                    if (session?.session) {
+                        console.log('👤 Session user:', session.session.user.email);
+                        console.log('📸 Session user metadata:', session.session.user.user_metadata);
+                    }
+                } else {
+                    console.error('❌ supabaseClient not available!');
+                }
+
                 if (window.GarciaProfileManager) {
                     await window.GarciaProfileManager.init();
                     updateDashboardContent();
+                } else {
+                    console.error('❌ GarciaProfileManager not available!');
                 }
             } catch (error) {
-                console.error('Error initializing dashboard:', error);
+                console.error('❌ Error initializing dashboard:', error);
             }
         }
 
@@ -478,12 +494,20 @@
                 let currentUser = null;
                 if (window.supabaseClient) {
                     try {
-                        const { data } = await window.supabaseClient.auth.getUser();
+                        console.log('🔍 Fetching Supabase user...');
+                        const { data, error } = await window.supabaseClient.auth.getUser();
+                        if (error) {
+                            console.error('❌ Supabase getUser error:', error);
+                        }
                         currentUser = data?.user;
-                        console.log('Current user metadata:', currentUser?.user_metadata);
+                        console.log('✅ Current user:', currentUser);
+                        console.log('📸 User metadata:', currentUser?.user_metadata);
+                        console.log('🖼️ OAuth picture:', currentUser?.user_metadata?.picture);
                     } catch (err) {
-                        console.warn('Failed to fetch Supabase user:', err);
+                        console.error('❌ Failed to fetch Supabase user:', err);
                     }
+                } else {
+                    console.warn('⚠️ window.supabaseClient not available!');
                 }
 
                 if (!profileData) {

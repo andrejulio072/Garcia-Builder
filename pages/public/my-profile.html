@@ -1456,62 +1456,74 @@
                 const storedUser = localStorage.getItem('gb_current_user');
                 if (storedUser) {
                     userData = JSON.parse(storedUser);
-                    console.log('👤 Current user data:', userData);
+                    console.log('👤 Current user data (localStorage):', userData);
                 }
                 
-                // Source 4: Supabase session
+                // Source 4: Supabase session (HIGHEST PRIORITY for real OAuth users)
                 if (window.supabaseClient) {
                     try {
-                        const { data: { user } } = await window.supabaseClient.auth.getUser();
-                        if (user) {
-                            userData = { ...userData, ...user };
-                            console.log('☁️ Supabase user data:', user);
+                        const { data: { user }, error } = await window.supabaseClient.auth.getUser();
+                        if (user && !error) {
+                            console.log('☁️ Supabase user data (LIVE SESSION):', user);
+                            
+                            // Merge Supabase user into userData (Supabase is TRUTH)
+                            userData = {
+                                ...userData,
+                                ...user,
+                                // OAuth providers put name in user_metadata
+                                full_name: user.user_metadata?.full_name || 
+                                          user.user_metadata?.name || 
+                                          userData?.full_name || 
+                                          userData?.name ||
+                                          user.email?.split('@')[0] || '',
+                                email: user.email || userData?.email || ''
+                            };
+                            
+                            console.log('🔥 MERGED USER DATA (Supabase + localStorage):', userData);
                         }
                     } catch (err) {
                         console.warn('Could not fetch Supabase user:', err);
                     }
                 }
                 
+                // 🔨 BRUTAL: Update header IMMEDIATELY with user data
+                console.log('🔨 BRUTAL HEADER UPDATE - Starting...');
+                
+                // Email in header (below avatar) - PRIORITY: Live session > localStorage
+                const profileEmailDisplay = document.getElementById('profile-email');
+                if (profileEmailDisplay) {
+                    const emailToShow = userData?.email || 'user@example.com';
+                    profileEmailDisplay.textContent = emailToShow;
+                    console.log('✅ BRUTAL: Set profile-email:', emailToShow);
+                }
+                
+                // Name in header title - PRIORITY: profileData > userData
+                const profileTitle = document.querySelector('.profile-header h1');
+                if (profileTitle) {
+                    const displayName = profileData?.full_name || 
+                                      userData?.user_metadata?.full_name ||
+                                      userData?.full_name || 
+                                      userData?.name ||
+                                      userData?.email?.split('@')[0] ||
+                                      'Your Profile';
+                    
+                    profileTitle.textContent = displayName;
+                    console.log('✅ BRUTAL: Set profile title:', displayName);
+                }
+                
                 // POPULATE BASIC INFO FORM
                 const basicForm = document.getElementById('basic-info-form');
                 if (basicForm && (profileData || userData)) {
-                    // Full name (priority: profileData → userData.full_name → userData.name)
+                    // Full name (priority: profileData → userData.user_metadata → userData)
                     const fullNameInput = basicForm.querySelector('#full_name');
                     if (fullNameInput) {
-                        fullNameInput.value = profileData?.full_name || 
-                                            userData?.user_metadata?.full_name ||
-                                            userData?.full_name || 
-                                            userData?.name || 
-                                            '';
-                        console.log('✅ Set full_name:', fullNameInput.value);
-                    }
-                    
-                    // Email in header (below avatar)
-                    const profileEmailDisplay = document.getElementById('profile-email');
-                    if (profileEmailDisplay && userData?.email) {
-                        profileEmailDisplay.textContent = userData.email;
-                        console.log('✅ Set profile-email:', userData.email);
-                    }
-                    
-                    // Update "Your Profile" title with actual name if available
-                    const profileTitle = document.querySelector('.profile-header h1');
-                    if (profileTitle) {
-                        const displayName = profileData?.full_name || 
-                                          userData?.user_metadata?.full_name ||
-                                          userData?.full_name || 
-                                          userData?.name || 
-                                          'Your Profile';
-                        if (displayName !== 'Your Profile') {
-                            profileTitle.textContent = displayName;
-                            console.log('✅ Set profile title:', displayName);
-                        }
-                    }
-                    
-                    // Email (read-only, from user auth)
-                    const emailDisplay = document.querySelector('#basic-tab .text-muted');
-                    if (emailDisplay && userData?.email) {
-                        emailDisplay.textContent = userData.email;
-                        console.log('✅ Set email display:', userData.email);
+                        const nameValue = profileData?.full_name || 
+                                        userData?.user_metadata?.full_name ||
+                                        userData?.full_name || 
+                                        userData?.name || 
+                                        '';
+                        fullNameInput.value = nameValue;
+                        console.log('✅ Set full_name input:', nameValue);
                     }
                     
                     // Phone

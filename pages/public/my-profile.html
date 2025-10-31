@@ -1407,11 +1407,236 @@
                 // Wait for profile manager
                 if (window.GarciaProfileManager) {
                     await window.GarciaProfileManager.init();
+                    await brutalLoadAllFormData(); // 🔨 BRUTAL: Load ALL form data
                     updateMetricsDisplay();
                     updateProfileAvatar();
                 }
             } catch (error) {
                 console.error('Error initializing profile page:', error);
+            }
+        }
+
+        /**
+         * 🔨 BRUTAL FORM DATA LOADER
+         * Loads ALL data from multiple sources and populates ALL form fields
+         */
+        async function brutalLoadAllFormData() {
+            console.log('🔨 BRUTAL LOAD - Loading all form data...');
+            
+            try {
+                // Get data from multiple sources
+                let profileData = null;
+                let userData = null;
+                
+                // Source 1: BrutalSync (localStorage + cache)
+                if (window.BrutalSync) {
+                    profileData = window.BrutalSync.load('profile');
+                    console.log('💾 BrutalSync profile data:', profileData);
+                }
+                
+                // Source 2: GarciaProfileManager
+                if (window.GarciaProfileManager) {
+                    const managerData = window.GarciaProfileManager.getProfileData();
+                    console.log('📊 GarciaProfileManager data:', managerData);
+                    
+                    // Merge data (GarciaProfileManager takes precedence)
+                    if (managerData) {
+                        profileData = {
+                            ...profileData,
+                            ...managerData.basic,
+                            body_metrics: managerData.body_metrics,
+                            preferences: managerData.preferences,
+                            macros: managerData.macros,
+                            habits: managerData.habits
+                        };
+                    }
+                }
+                
+                // Source 3: gb_current_user (for email)
+                const storedUser = localStorage.getItem('gb_current_user');
+                if (storedUser) {
+                    userData = JSON.parse(storedUser);
+                    console.log('👤 Current user data:', userData);
+                }
+                
+                // Source 4: Supabase session
+                if (window.supabaseClient) {
+                    try {
+                        const { data: { user } } = await window.supabaseClient.auth.getUser();
+                        if (user) {
+                            userData = { ...userData, ...user };
+                            console.log('☁️ Supabase user data:', user);
+                        }
+                    } catch (err) {
+                        console.warn('Could not fetch Supabase user:', err);
+                    }
+                }
+                
+                // POPULATE BASIC INFO FORM
+                const basicForm = document.getElementById('basic-info-form');
+                if (basicForm && (profileData || userData)) {
+                    // Full name (priority: profileData → userData.full_name → userData.name)
+                    const fullNameInput = basicForm.querySelector('#full_name');
+                    if (fullNameInput) {
+                        fullNameInput.value = profileData?.full_name || 
+                                            userData?.user_metadata?.full_name ||
+                                            userData?.full_name || 
+                                            userData?.name || 
+                                            '';
+                        console.log('✅ Set full_name:', fullNameInput.value);
+                    }
+                    
+                    // Email in header (below avatar)
+                    const profileEmailDisplay = document.getElementById('profile-email');
+                    if (profileEmailDisplay && userData?.email) {
+                        profileEmailDisplay.textContent = userData.email;
+                        console.log('✅ Set profile-email:', userData.email);
+                    }
+                    
+                    // Update "Your Profile" title with actual name if available
+                    const profileTitle = document.querySelector('.profile-header h1');
+                    if (profileTitle) {
+                        const displayName = profileData?.full_name || 
+                                          userData?.user_metadata?.full_name ||
+                                          userData?.full_name || 
+                                          userData?.name || 
+                                          'Your Profile';
+                        if (displayName !== 'Your Profile') {
+                            profileTitle.textContent = displayName;
+                            console.log('✅ Set profile title:', displayName);
+                        }
+                    }
+                    
+                    // Email (read-only, from user auth)
+                    const emailDisplay = document.querySelector('#basic-tab .text-muted');
+                    if (emailDisplay && userData?.email) {
+                        emailDisplay.textContent = userData.email;
+                        console.log('✅ Set email display:', userData.email);
+                    }
+                    
+                    // Phone
+                    const phoneInput = basicForm.querySelector('#phone');
+                    if (phoneInput && profileData?.phone) {
+                        phoneInput.value = profileData.phone;
+                    }
+                    
+                    // Birthday
+                    const birthdayInput = basicForm.querySelector('#birthday');
+                    if (birthdayInput && profileData?.birthday) {
+                        birthdayInput.value = profileData.birthday;
+                    }
+                    
+                    // Location
+                    const locationInput = basicForm.querySelector('#location');
+                    if (locationInput && profileData?.location) {
+                        locationInput.value = profileData.location;
+                    }
+                    
+                    // Bio
+                    const bioInput = basicForm.querySelector('#bio');
+                    if (bioInput && profileData?.bio) {
+                        bioInput.value = profileData.bio;
+                    }
+                    
+                    // Experience level
+                    const expInput = basicForm.querySelector('#experience_level');
+                    if (expInput && profileData?.experience_level) {
+                        expInput.value = profileData.experience_level;
+                    }
+                    
+                    // Trainer name
+                    const trainerInput = basicForm.querySelector('#trainer_name');
+                    if (trainerInput && profileData?.trainer_name) {
+                        trainerInput.value = profileData.trainer_name;
+                    }
+                }
+                
+                // POPULATE BODY METRICS FORM
+                const metricsForm = document.getElementById('body-metrics-form');
+                if (metricsForm && profileData?.body_metrics) {
+                    const metrics = profileData.body_metrics;
+                    
+                    // Weight
+                    const weightInput = metricsForm.querySelector('#current_weight');
+                    if (weightInput && metrics.current_weight) {
+                        weightInput.value = metrics.current_weight;
+                    }
+                    
+                    // Height
+                    const heightInput = metricsForm.querySelector('#height');
+                    if (heightInput && metrics.height) {
+                        heightInput.value = metrics.height;
+                    }
+                    
+                    // Body fat
+                    const bfInput = metricsForm.querySelector('#body_fat_percentage');
+                    if (bfInput && metrics.body_fat_percentage) {
+                        bfInput.value = metrics.body_fat_percentage;
+                    }
+                    
+                    // Target weight
+                    const targetInput = metricsForm.querySelector('#target_weight');
+                    if (targetInput && metrics.target_weight) {
+                        targetInput.value = metrics.target_weight;
+                    }
+                    
+                    console.log('✅ Populated body metrics');
+                }
+                
+                // POPULATE PREFERENCES FORM
+                const prefsForm = document.getElementById('preferences-form');
+                if (prefsForm && profileData?.preferences) {
+                    const prefs = profileData.preferences;
+                    
+                    // Units
+                    const unitsInput = prefsForm.querySelector('#units');
+                    if (unitsInput && prefs.units) {
+                        unitsInput.value = prefs.units;
+                    }
+                    
+                    // Language
+                    const langInput = prefsForm.querySelector('#language');
+                    if (langInput && prefs.language) {
+                        langInput.value = prefs.language;
+                    }
+                    
+                    console.log('✅ Populated preferences');
+                }
+                
+                // POPULATE MACROS FORM
+                const macrosForm = document.getElementById('macros-form');
+                if (macrosForm && profileData?.macros) {
+                    const macros = profileData.macros;
+                    
+                    Object.keys(macros).forEach(key => {
+                        const input = macrosForm.querySelector(`#${key}`);
+                        if (input && macros[key]) {
+                            input.value = macros[key];
+                        }
+                    });
+                    
+                    console.log('✅ Populated macros');
+                }
+                
+                // POPULATE HABITS FORM
+                const habitsForm = document.getElementById('habits-form');
+                if (habitsForm && profileData?.habits) {
+                    const habits = profileData.habits;
+                    
+                    Object.keys(habits).forEach(key => {
+                        const input = habitsForm.querySelector(`#${key}`);
+                        if (input && habits[key]) {
+                            input.value = habits[key];
+                        }
+                    });
+                    
+                    console.log('✅ Populated habits');
+                }
+                
+                console.log('✅ BRUTAL LOAD COMPLETE - All forms populated!');
+                
+            } catch (error) {
+                console.error('❌ Brutal load error:', error);
             }
         }
 

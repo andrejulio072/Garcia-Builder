@@ -686,6 +686,11 @@
                         <i class="fas fa-sign-out-alt"></i>
                         <span data-i18n="dashboard.logout">Logout</span>
                     </button>
+                    <!-- 🔨 BRUTAL DEBUG BUTTON (temporary) -->
+                    <button type="button" id="debug-storage-btn" class="btn-profile-action" style="background: rgba(100, 255, 100, 0.18); border: 1px solid rgba(100, 255, 100, 0.35); color: #c5ffc5;">
+                        <i class="fas fa-bug"></i>
+                        <span>Debug Storage</span>
+                    </button>
                 </div>
             </div>
 
@@ -1484,12 +1489,48 @@
                     } catch (err) {
                         console.warn('Could not fetch Supabase user:', err);
                     }
+                } else {
+                    console.warn('⚠️ Supabase client not available (file:// protocol or not loaded)');
                 }
+                
+                // 🔨 SUPER BRUTAL: If still no userData, check localStorage AGAIN
+                if (!userData || !userData.email) {
+                    console.log('🔨 SUPER BRUTAL - No userData, checking localStorage again...');
+                    
+                    // Check all possible localStorage keys
+                    const possibleKeys = [
+                        'gb_current_user',
+                        'supabase.auth.token',
+                        'sb-localhost-auth-token',
+                        'garcia_user'
+                    ];
+                    
+                    for (const key of possibleKeys) {
+                        const data = localStorage.getItem(key);
+                        if (data) {
+                            try {
+                                const parsed = JSON.parse(data);
+                                console.log(`📦 Found data in ${key}:`, parsed);
+                                
+                                // Extract user data from various formats
+                                if (parsed.user) {
+                                    userData = { ...userData, ...parsed.user };
+                                } else if (parsed.email || parsed.id) {
+                                    userData = { ...userData, ...parsed };
+                                }
+                            } catch (e) {
+                                console.warn(`Could not parse ${key}:`, e);
+                            }
+                        }
+                    }
+                }
+                
+                console.log('🎯 FINAL USER DATA:', userData);
                 
                 // 🔨 BRUTAL: Update header IMMEDIATELY with user data
                 console.log('🔨 BRUTAL HEADER UPDATE - Starting...');
                 
-                // Email in header (below avatar) - PRIORITY: Live session > localStorage
+                // Email in header (below avatar) - PRIORITY: userData.email > default
                 const profileEmailDisplay = document.getElementById('profile-email');
                 if (profileEmailDisplay) {
                     const emailToShow = userData?.email || 'user@example.com';
@@ -1497,7 +1538,7 @@
                     console.log('✅ BRUTAL: Set profile-email:', emailToShow);
                 }
                 
-                // Name in header title - PRIORITY: profileData > userData
+                // Name in header title - PRIORITY: profileData > userData (all variations)
                 const profileTitle = document.querySelector('.profile-header h1');
                 if (profileTitle) {
                     const displayName = profileData?.full_name || 
@@ -1507,8 +1548,12 @@
                                       userData?.email?.split('@')[0] ||
                                       'Your Profile';
                     
-                    profileTitle.textContent = displayName;
-                    console.log('✅ BRUTAL: Set profile title:', displayName);
+                    if (displayName !== 'Your Profile') {
+                        profileTitle.textContent = displayName;
+                        console.log('✅ BRUTAL: Set profile title:', displayName);
+                    } else {
+                        console.warn('⚠️ No name found, showing default "Your Profile"');
+                    }
                 }
                 
                 // POPULATE BASIC INFO FORM
@@ -1898,6 +1943,55 @@
                     } else {
                         fallbackLogout(event);
                     }
+                });
+            }
+
+            // 🔨 BRUTAL DEBUG BUTTON
+            const debugBtn = document.getElementById('debug-storage-btn');
+            if (debugBtn) {
+                debugBtn.addEventListener('click', () => {
+                    console.log('🔨 BRUTAL DEBUG - Showing ALL localStorage data...');
+                    console.log('='.repeat(80));
+                    
+                    // Show all localStorage keys
+                    const allData = {};
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        try {
+                            const value = localStorage.getItem(key);
+                            allData[key] = JSON.parse(value);
+                        } catch (e) {
+                            allData[key] = localStorage.getItem(key);
+                        }
+                    }
+                    
+                    console.log('📦 ALL LOCALSTORAGE DATA:', allData);
+                    console.log('='.repeat(80));
+                    
+                    // Show specific important keys
+                    const importantKeys = ['gb_current_user', 'supabase.auth.token', 'garcia_user'];
+                    importantKeys.forEach(key => {
+                        const data = localStorage.getItem(key);
+                        if (data) {
+                            console.log(`\n🔑 ${key}:`);
+                            try {
+                                console.log(JSON.parse(data));
+                            } catch (e) {
+                                console.log(data);
+                            }
+                        } else {
+                            console.log(`\n❌ ${key}: NOT FOUND`);
+                        }
+                    });
+                    
+                    // Show window.supabaseClient status
+                    console.log('\n☁️ Supabase Client Available:', !!window.supabaseClient);
+                    
+                    // Try to reload data
+                    console.log('\n🔄 Reloading profile data...');
+                    brutalLoadAllFormData();
+                    
+                    alert('🔨 Debug info printed to console! Check DevTools.');
                 });
             }
 

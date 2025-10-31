@@ -405,28 +405,28 @@
                 .map(word => word[0].toUpperCase())
                 .slice(0, 2)
                 .join('');
-            
+
             // Create canvas
             const canvas = document.createElement('canvas');
             const size = 86;
             canvas.width = size;
             canvas.height = size;
             const ctx = canvas.getContext('2d');
-            
+
             // Background gradient (Garcia Builder brand colors)
             const gradient = ctx.createLinearGradient(0, 0, size, size);
             gradient.addColorStop(0, '#FF6B35');  // Orange
             gradient.addColorStop(1, '#004E89');  // Blue
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, size, size);
-            
+
             // Text
             ctx.fillStyle = '#FFFFFF';
             ctx.font = 'bold 36px system-ui, -apple-system, sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(initials || 'U', size / 2, size / 2);
-            
+
             return canvas.toDataURL('image/png');
         }
 
@@ -466,37 +466,40 @@
             }
         }
 
-        function updateDashboardContent() {
+        async function updateDashboardContent() {
             try {
                 console.log('📊 Updating dashboard content...');
-                
+
                 // Get profile data
                 const profileData = window.GarciaProfileManager?.getProfileData?.();
                 console.log('Profile data:', profileData);
-                
-                // Get current user from Supabase for OAuth picture
+
+                // Get current user from Supabase for OAuth picture (AWAIT properly)
                 let currentUser = null;
                 if (window.supabaseClient) {
-                    window.supabaseClient.auth.getUser().then(({ data: { user } }) => {
-                        currentUser = user;
-                        console.log('Current user metadata:', user?.user_metadata);
-                    });
+                    try {
+                        const { data } = await window.supabaseClient.auth.getUser();
+                        currentUser = data?.user;
+                        console.log('Current user metadata:', currentUser?.user_metadata);
+                    } catch (err) {
+                        console.warn('Failed to fetch Supabase user:', err);
+                    }
                 }
-                
+
                 if (!profileData) {
                     console.warn('No profile data available');
                     return;
                 }
 
                 // Update name
-                const fullName = profileData.basic?.full_name || 
-                                profileData.full_name || 
+                const fullName = profileData.basic?.full_name ||
+                                profileData.full_name ||
                                 currentUser?.user_metadata?.full_name ||
                                 currentUser?.email ||
                                 translate('dashboard.default_name', 'Athlete');
-                                
+
                 document.getElementById('user-name').textContent = fullName;
-                
+
                 // Update login info
                 document.getElementById('last-login').textContent =
                     new Date(profileData.last_login || Date.now()).toLocaleDateString();
@@ -507,7 +510,7 @@
                 const avatar = document.getElementById('user-avatar');
                 if (avatar) {
                     let avatarSrc = null;
-                    
+
                     // Priority 1: OAuth picture from user_metadata (Google/Facebook)
                     if (currentUser?.user_metadata?.picture) {
                         avatarSrc = currentUser.user_metadata.picture;
@@ -523,7 +526,7 @@
                         avatarSrc = generateAvatarWithInitials(fullName);
                         console.log('✅ Generated initials avatar');
                     }
-                    
+
                     avatar.src = avatarSrc;
                     avatar.alt = fullName;
                 }
@@ -532,7 +535,7 @@
                 populateActivity(profileData.activity);
                 updateDashboardStats(profileData);
                 setFallbackAvatarLabel();
-                
+
                 console.log('✅ Dashboard content updated');
             } catch (error) {
                 console.error('❌ Failed to update dashboard content:', error);
@@ -685,23 +688,23 @@
         async function handleLogout() {
             try {
                 console.log('🚪 Dashboard logout initiated');
-                
+
                 // Try AuthSystem first (this is now the corrected version)
                 if (typeof AuthSystem !== 'undefined' && typeof AuthSystem.logout === 'function') {
                     await AuthSystem.logout();
                     return;
                 }
-                
+
                 // Fallback to AuthGuard
                 if (window.AuthGuard && typeof window.AuthGuard.handleLogout === 'function') {
                     const fakeEvent = { preventDefault: () => {}, stopPropagation: () => {} };
                     window.AuthGuard.handleLogout(fakeEvent);
                     return;
                 }
-                
+
                 // Manual logout as last resort
                 console.log('⚠️ Using manual logout fallback');
-                
+
                 // Clear all storage
                 const keysToRemove = [];
                 for (let i = 0; i < localStorage.length; i++) {
@@ -714,14 +717,14 @@
                 localStorage.removeItem('gb_current_user');
                 localStorage.removeItem('gb_remember_me');
                 sessionStorage.clear();
-                
+
                 // Try Supabase signOut
                 if (window.supabaseClient?.auth) {
                     await window.supabaseClient.auth.signOut();
                 } else if (window.GarciaAuth && typeof window.GarciaAuth.signOut === 'function') {
                     await window.GarciaAuth.signOut();
                 }
-                
+
                 // Redirect
                 const loginUrl = typeof toAbsoluteUrl === 'function'
                     ? toAbsoluteUrl('pages/auth/login.html')

@@ -376,6 +376,9 @@
 
   // Save profile data
   const saveProfileData = async (section = null) => {
+      let supabaseSuccess = false;
+      let supabaseError = null;
+    
     try {
       console.log(`💾 Saving profile${section ? ` (${section})` : ''}...`);
       
@@ -384,42 +387,53 @@
         profileData[section].updated_at = new Date().toISOString();
       }
 
-      // Save to Supabase
+        // Try to save to Supabase (but don't fail if it doesn't work)
       if (window.supabaseClient) {
-        await saveToSupabase(section);
-        console.log('✅ Saved to Supabase');
+          try {
+            await saveToSupabase(section);
+            console.log('✅ Saved to Supabase');
+            supabaseSuccess = true;
+          } catch (supabaseErr) {
+            console.warn('⚠️ Supabase save failed (will use localStorage):', supabaseErr.message);
+            supabaseError = supabaseErr;
+            // Don't throw - continue to localStorage save
+          }
+        } else {
+          console.warn('⚠️ Supabase client not available (using localStorage only)');
       }
 
-      // Save to localStorage as backup
+        // ALWAYS save to localStorage as backup (or primary if Supabase failed)
       saveToLocalStorage();
       console.log('✅ Saved to localStorage');
       
       syncAuthCache();
       window.authGuard?.addUserMenuToNavbar?.();
 
-      showNotification('Profile updated successfully!', 'success');
+        // Show appropriate notification
+        if (supabaseSuccess) {
+          showNotification('Profile updated successfully!', 'success');
+        } else if (supabaseError) {
+          showNotification('Saved locally. Will sync when online.', 'warning');
+        } else {
+          showNotification('Profile updated (offline mode)!', 'success');
+        }
+      
       console.log('✅ Profile save complete');
       return true;
     } catch (error) {
       console.error('❌ Error saving profile data:', error);
 
-      // Try to create profiles table if it doesn't exist
-      if (error.message && error.message.includes('table') && error.message.includes('does not exist')) {
+        // Last resort: try localStorage one more time
         try {
-          console.log('📋 Creating profiles table...');
-          await createProfilesTable();
-          // Retry saving after creating table
-          await saveToSupabase(section);
           saveToLocalStorage();
-          showNotification('Profile updated successfully!', 'success');
+          showNotification('Saved locally only. Check connection.', 'warning');
           return true;
-        } catch (createError) {
-          console.error('Error creating profiles table:', createError);
-        }
+        } catch (localErr) {
+          console.error('❌ Even localStorage failed:', localErr);
+          showNotification('Error saving profile. Please try again.', 'error');
+          return false;
       }
 
-      showNotification('Error saving profile. Please try again.', 'error');
-      return false;
     }
   };
 
@@ -2037,8 +2051,13 @@
 
   const showNotification = (message, type = 'info') => {
     // Simple notification system
+      let alertClass = 'alert-info';
+      if (type === 'error') alertClass = 'alert-danger';
+      else if (type === 'success') alertClass = 'alert-success';
+      else if (type === 'warning') alertClass = 'alert-warning';
+    
     const notification = document.createElement('div');
-    notification.className = `alert alert-${type === 'error' ? 'danger' : 'success'} position-fixed top-0 end-0 m-3`;
+      notification.className = `alert ${alertClass} position-fixed top-0 end-0 m-3`;
     notification.style.zIndex = '9999';
     notification.textContent = message;
 

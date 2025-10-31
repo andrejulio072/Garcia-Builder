@@ -490,28 +490,65 @@
                 const profileData = window.GarciaProfileManager?.getProfileData?.();
                 console.log('Profile data:', profileData);
 
-                // Get current user from Supabase for OAuth picture (AWAIT properly)
+                // Get current user from multiple sources for robustness
                 let currentUser = null;
+                let oauthPicture = null;
+
+                // Try 1: Supabase session (most reliable for OAuth data)
                 if (window.supabaseClient) {
                     try {
-                        console.log('🔍 Fetching Supabase user...');
-                        const { data, error } = await window.supabaseClient.auth.getUser();
-                        if (error) {
-                            console.error('❌ Supabase getUser error:', error);
+                        console.log('🔍 Fetching Supabase session...');
+                        const { data: sessionData } = await window.supabaseClient.auth.getSession();
+                        if (sessionData?.session?.user) {
+                            currentUser = sessionData.session.user;
+                            oauthPicture = currentUser.user_metadata?.picture ||
+                                          currentUser.user_metadata?.avatar_url;
+                            console.log('✅ Session user:', currentUser.email);
+                            console.log('📸 OAuth picture from session:', oauthPicture);
                         }
-                        currentUser = data?.user;
-                        console.log('✅ Current user:', currentUser);
-                        console.log('📸 User metadata:', currentUser?.user_metadata);
-                        console.log('🖼️ OAuth picture:', currentUser?.user_metadata?.picture);
                     } catch (err) {
-                        console.error('❌ Failed to fetch Supabase user:', err);
+                        console.warn('⚠️ Session fetch failed, trying getUser...', err);
+                    }
+
+                    // Try 2: getUser as fallback
+                    if (!currentUser) {
+                        try {
+                            const { data, error } = await window.supabaseClient.auth.getUser();
+                            if (error) {
+                                console.warn('❌ Supabase getUser error:', error);
+                            } else {
+                                currentUser = data?.user;
+                                oauthPicture = currentUser?.user_metadata?.picture ||
+                                              currentUser?.user_metadata?.avatar_url;
+                                console.log('✅ Current user from getUser:', currentUser?.email);
+                                console.log('� OAuth picture from getUser:', oauthPicture);
+                            }
+                        } catch (err) {
+                            console.error('❌ Failed to fetch Supabase user:', err);
+                        }
                     }
                 } else {
                     console.warn('⚠️ window.supabaseClient not available!');
                 }
 
-                if (!profileData) {
-                    console.warn('No profile data available');
+                // Try 3: localStorage backup
+                if (!currentUser) {
+                    try {
+                        const storedUser = localStorage.getItem('gb_current_user');
+                        if (storedUser) {
+                            const parsed = JSON.parse(storedUser);
+                            currentUser = parsed;
+                            oauthPicture = parsed.user_metadata?.picture || parsed.avatar_url;
+                            console.log('💾 Using stored user from localStorage:', currentUser.email);
+                            console.log('📸 Picture from localStorage:', oauthPicture);
+                        }
+                    } catch (err) {
+                        console.warn('⚠️ Failed to read localStorage user:', err);
+                    }
+                }
+
+                if (!profileData && !currentUser) {
+                    console.warn('⚠️ No profile data or user available');
                     return;
                 }
 
@@ -535,28 +572,29 @@
                 if (avatar) {
                     let avatarSrc = null;
 
-                    // Priority 1: OAuth picture from user_metadata (Google/Facebook)
-                    if (currentUser?.user_metadata?.picture) {
-                        avatarSrc = currentUser.user_metadata.picture;
+                    // Priority 1: OAuth picture (already extracted from multiple sources above)
+                    if (oauthPicture) {
+                        avatarSrc = oauthPicture;
                         console.log('✅ Using OAuth avatar:', avatarSrc);
                     }
-                    // Priority 2: Saved avatar_url
-                    else if (profileData.basic?.avatar_url || profileData.avatar_url) {
+                    // Priority 2: Saved avatar_url in profile
+                    else if (profileData?.basic?.avatar_url || profileData?.avatar_url) {
                         avatarSrc = profileData.basic?.avatar_url || profileData.avatar_url;
                         console.log('✅ Using saved avatar:', avatarSrc);
                     }
                     // Priority 3: Generate with initials
                     else {
                         avatarSrc = generateAvatarWithInitials(fullName);
-                        console.log('✅ Generated initials avatar');
+                        console.log('✅ Generated initials avatar for:', fullName);
                     }
 
                     avatar.src = avatarSrc;
                     avatar.alt = fullName;
+                    console.log('🖼️ Final avatar set:', avatarSrc?.substring?.(0, 60) + '...');
                 }
 
-                populateGoals(profileData.basic?.goals || profileData.goals);
-                populateActivity(profileData.activity);
+                populateGoals(profileData?.basic?.goals || profileData?.goals);
+                populateActivity(profileData?.activity);
                 updateDashboardStats(profileData);
                 setFallbackAvatarLabel();
 

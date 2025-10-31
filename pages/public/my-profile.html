@@ -1680,9 +1680,73 @@
                 });
             }
 
-            // Form auto-save functionality
+            // BRUTAL FORM INTERCEPTOR: Prevent traditional submit, force JavaScript save
             const forms = document.querySelectorAll('form[data-profile-section]');
             forms.forEach(form => {
+                // BRUTAL: Intercept form submit and KILL IT
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🔨 BRUTAL FORM INTERCEPTOR - Preventing page refresh!');
+                    
+                    const section = form.dataset.profileSection;
+                    const formData = new FormData(form);
+                    const data = Object.fromEntries(formData.entries());
+                    
+                    // Show saving indicator
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalText = submitBtn?.textContent;
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+                    }
+                    
+                    try {
+                        // Save via GarciaProfileManager (localStorage + Supabase)
+                        if (window.GarciaProfileManager) {
+                            await window.GarciaProfileManager.handleFormSubmit?.({ target: form, preventDefault: () => {} });
+                        }
+                        
+                        // Save via BrutalSync (localStorage + broadcast)
+                        if (window.BrutalSync) {
+                            await window.BrutalSync.save(section, data);
+                            console.log(`✅ Form ${section} saved successfully`);
+                        }
+                        
+                        // Show success feedback
+                        if (submitBtn) {
+                            submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Saved!';
+                            submitBtn.classList.add('btn-success');
+                            submitBtn.classList.remove('btn-save');
+                            
+                            setTimeout(() => {
+                                submitBtn.innerHTML = originalText;
+                                submitBtn.classList.remove('btn-success');
+                                submitBtn.classList.add('btn-save');
+                                submitBtn.disabled = false;
+                            }, 2000);
+                        }
+                        
+                    } catch (err) {
+                        console.error('Failed to save form:', err);
+                        
+                        // Show error feedback
+                        if (submitBtn) {
+                            submitBtn.innerHTML = '<i class="fas fa-times me-2"></i>Error';
+                            submitBtn.classList.add('btn-danger');
+                            submitBtn.classList.remove('btn-save');
+                            
+                            setTimeout(() => {
+                                submitBtn.innerHTML = originalText;
+                                submitBtn.classList.remove('btn-danger');
+                                submitBtn.classList.add('btn-save');
+                                submitBtn.disabled = false;
+                            }, 2000);
+                        }
+                    }
+                });
+                
+                // Auto-save on input change (secondary backup)
                 const inputs = form.querySelectorAll('input, select, textarea');
                 inputs.forEach(input => {
                     input.addEventListener('change', () => {
@@ -1700,7 +1764,7 @@
                                     
                                     try {
                                         await window.BrutalSync.save(section, data);
-                                        console.log(`💾 Form ${section} saved via BrutalSync`);
+                                        console.log(`💾 Form ${section} auto-saved via BrutalSync`);
                                     } catch (err) {
                                         console.warn('BrutalSync save warning:', err);
                                     }

@@ -301,6 +301,20 @@
             configureWhatsAppLink();
             setFallbackAvatarLabel();
             initializeDashboard();
+            
+            // BRUTAL FIX: Watch for avatar resets and fix them
+            const avatarGuard = new MutationObserver((mutations) => {
+                const avatar = document.getElementById('user-avatar');
+                if (avatar && avatar.src.includes('placeholder')) {
+                    console.warn('⚠️ Avatar reset detected! Re-applying fix...');
+                    brutalAvatarFix();
+                }
+            });
+            
+            const avatarEl = document.getElementById('user-avatar');
+            if (avatarEl) {
+                avatarGuard.observe(avatarEl, { attributes: true, attributeFilter: ['src'] });
+            }
 
             if (window.GarciaNavigationManager && typeof window.GarciaNavigationManager.updateNavigation === 'function') {
                 window.GarciaNavigationManager.updateNavigation();
@@ -428,6 +442,75 @@
             ctx.fillText(initials || 'U', size / 2, size / 2);
 
             return canvas.toDataURL('image/png');
+        }
+
+        // BRUTAL FIX: Update avatar IMMEDIATELY on page load
+        function brutalAvatarFix() {
+            console.log('🔨 BRUTAL AVATAR FIX - Running immediately...');
+            
+            const avatar = document.getElementById('user-avatar');
+            if (!avatar) {
+                console.error('❌ Avatar element not found!');
+                return;
+            }
+
+            let finalSrc = null;
+            let finalName = 'User';
+
+            try {
+                // Try 1: localStorage gb_current_user
+                const storedUser = localStorage.getItem('gb_current_user');
+                if (storedUser) {
+                    const user = JSON.parse(storedUser);
+                    console.log('💾 Found user in localStorage:', user);
+                    
+                    finalName = user.full_name || user.name || user.email || 'User';
+                    
+                    // Check for picture in various places
+                    finalSrc = user.user_metadata?.picture || 
+                              user.user_metadata?.avatar_url ||
+                              user.avatar_url ||
+                              user.picture ||
+                              null;
+                    
+                    if (finalSrc) {
+                        console.log('✅ Found picture URL:', finalSrc);
+                    }
+                }
+
+                // Try 2: GarciaProfileManager if available
+                if (!finalSrc && window.GarciaProfileManager) {
+                    const profileData = window.GarciaProfileManager.getProfileData?.();
+                    if (profileData) {
+                        console.log('📊 Found profile data:', profileData);
+                        finalName = profileData.basic?.full_name || profileData.full_name || finalName;
+                        finalSrc = profileData.basic?.avatar_url || profileData.avatar_url || null;
+                    }
+                }
+
+                // Generate initials if no picture found
+                if (!finalSrc) {
+                    console.log('🎨 Generating initials avatar for:', finalName);
+                    finalSrc = generateAvatarWithInitials(finalName);
+                }
+
+                // SET THE AVATAR NOW
+                avatar.src = finalSrc;
+                avatar.alt = finalName;
+                console.log('✅ AVATAR SET TO:', finalSrc.substring(0, 80) + '...');
+
+            } catch (error) {
+                console.error('❌ Brutal avatar fix error:', error);
+                // Last resort: generate initials for 'User'
+                avatar.src = generateAvatarWithInitials('User');
+            }
+        }
+
+        // Run brutal fix ASAP
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', brutalAvatarFix);
+        } else {
+            brutalAvatarFix();
         }
 
         async function initializeDashboard() {
@@ -590,7 +673,11 @@
 
                     avatar.src = avatarSrc;
                     avatar.alt = fullName;
-                    console.log('🖼️ Final avatar set:', avatarSrc?.substring?.(0, 60) + '...');
+                    console.log('🖼️ Final avatar set (updateDashboardContent):', avatarSrc?.substring?.(0, 60) + '...');
+                    
+                    // Force immediate render
+                    avatar.style.display = 'none';
+                    setTimeout(() => { avatar.style.display = ''; }, 10);
                 }
 
                 populateGoals(profileData?.basic?.goals || profileData?.goals);

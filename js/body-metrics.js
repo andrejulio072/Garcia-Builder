@@ -1,7 +1,10 @@
 // Body Metrics System - Sistema de dados físicos
 (() => {
   let currentUser = null;
-  let bodyMetrics = {};
+  // Must be an array; we unshift new entries. Using an object here
+  // caused TypeError: bodyMetrics.unshift is not a function when saving.
+  // Initialize as empty array to store chronological entries (latest first).
+  let bodyMetrics = [];
   let progressPhotos = [];
 
   const init = () => {

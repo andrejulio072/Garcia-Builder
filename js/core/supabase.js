@@ -168,23 +168,61 @@
         console.info('[Supabase] Running under file:// protocol; proceeding with initialization for local testing.');
     }
 
-    loadEnv()
-        .then((env) => {
+    // Wait for Supabase library to be available
+    const waitForSupabaseLib = () => {
+        return new Promise((resolve) => {
+            if (typeof supabase !== 'undefined' || window.supabase) {
+                resolve(typeof supabase !== 'undefined' ? supabase : window.supabase);
+                return;
+            }
+
+            // Poll for library availability (max 5 seconds)
+            let attempts = 0;
+            const maxAttempts = 50;
+            const interval = setInterval(() => {
+                attempts++;
+                if (typeof supabase !== 'undefined' || window.supabase) {
+                    clearInterval(interval);
+                    resolve(typeof supabase !== 'undefined' ? supabase : window.supabase);
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(interval);
+                    console.error('❌ Supabase library failed to load after 5 seconds');
+                    resolve(null);
+                }
+            }, 100);
+        });
+    };
+
+    // Initialize client
+    Promise.all([loadEnv(), waitForSupabaseLib()])
+        .then(([env, supabaseLib]) => {
+            if (!supabaseLib) {
+                throw new Error('Supabase library not loaded');
+            }
+
             window.SUPABASE_URL = env.SUPABASE_URL;
             window.SUPABASE_ANON_KEY = env.SUPABASE_ANON_KEY;
             window.NEXT_PUBLIC_SUPABASE_URL = env.SUPABASE_URL;
             window.NEXT_PUBLIC_SUPABASE_ANON_KEY = env.SUPABASE_ANON_KEY;
 
-            const supabaseLib = typeof supabase !== 'undefined' ? supabase : window.supabase;
+            console.log('🔧 Creating Supabase client...', {
+                url: env.SUPABASE_URL,
+                hasKey: !!env.SUPABASE_ANON_KEY
+            });
 
-            if (!supabaseLib) {
-                console.error('❌ Supabase library not loaded');
-                return;
-            }
+            window.supabaseClient = supabaseLib.createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY, {
+                auth: {
+                    autoRefreshToken: true,
+                    persistSession: true,
+                    detectSessionInUrl: true,
+                    storage: window.localStorage,
+                    storageKey: 'sb-auth-token'
+                }
+            });
 
-            window.supabaseClient = supabaseLib.createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
-            console.log('✅ Supabase client initialized successfully');
+            console.log('✅ Supabase client initialized successfully', window.supabaseClient);
 
+            // Resolve all waiting promises
             if (Array.isArray(window.__supabaseReadyQueue)) {
                 window.__supabaseReadyQueue.forEach((resolver) => {
                     try {
@@ -195,6 +233,17 @@
                 });
                 window.__supabaseReadyQueue = null;
             }
+
+            // Debug: Check current session
+            window.supabaseClient.auth.getSession().then(({ data, error }) => {
+                if (error) {
+                    console.warn('⚠️ Session check error:', error);
+                } else if (data?.session) {
+                    console.log('✅ Active session found:', data.session.user.email);
+                } else {
+                    console.log('ℹ️ No active session');
+                }
+            });
         })
         .catch((err) => {
             console.error('[Supabase] Initialization failed:', err);

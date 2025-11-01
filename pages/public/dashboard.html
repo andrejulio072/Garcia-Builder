@@ -254,6 +254,7 @@
     <script src="../../js/env.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../../js/core/supabase.js"></script>
+    <script src="../../js/brutal-sync.js"></script>
     <script src="../../js/utils/component-loader-v3-simplified.js?v=20251029"></script>
     <script src="../../js/email-verification-guard.js"></script>
     <script src="../../js/core/auth.js"></script>
@@ -301,6 +302,32 @@
             configureWhatsAppLink();
             setFallbackAvatarLabel();
             initializeDashboard();
+            
+            // BRUTAL SYNC: Listen for data updates from other pages
+            window.addEventListener('brutal:dataUpdate', (e) => {
+                console.log('📡 Dashboard received data update:', e.detail);
+                const { section, data } = e.detail;
+                
+                // Refresh dashboard when profile or metrics change
+                if (section === 'profile' || section === 'metrics') {
+                    updateDashboardContent();
+                    console.log('✅ Dashboard refreshed from sync');
+                }
+            });
+            
+            // BRUTAL FIX: Watch for avatar resets and fix them
+            const avatarGuard = new MutationObserver((mutations) => {
+                const avatar = document.getElementById('user-avatar');
+                if (avatar && avatar.src.includes('placeholder')) {
+                    console.warn('⚠️ Avatar reset detected! Re-applying fix...');
+                    brutalAvatarFix();
+                }
+            });
+            
+            const avatarEl = document.getElementById('user-avatar');
+            if (avatarEl) {
+                avatarGuard.observe(avatarEl, { attributes: true, attributeFilter: ['src'] });
+            }
 
             if (window.GarciaNavigationManager && typeof window.GarciaNavigationManager.updateNavigation === 'function') {
                 window.GarciaNavigationManager.updateNavigation();
@@ -330,6 +357,22 @@
             window.addEventListener('gb:bodyMetricsSaved', (e) => {
                 try {
                     const data = e.detail || {};
+                    
+                    // BRUTAL SYNC: Save metrics immediately
+                    if (window.BrutalSync) {
+                        const metricsData = {
+                            current_weight: data.weight,
+                            height: data.height,
+                            body_fat_percentage: data.body_fat,
+                            measurements: data.measurements || {}
+                        };
+                        window.BrutalSync.save('metrics', metricsData).then(result => {
+                            console.log('💾 Metrics saved via BrutalSync:', result);
+                        }).catch(err => {
+                            console.warn('BrutalSync save warning:', err);
+                        });
+                    }
+                    
                     if (typeof data.weight === 'number') {
                         updateStatCard('current-weight', `${data.weight}kg`, translate('dashboard.recorded', 'Recorded'));
                         const dailyWater = Math.round(data.weight * 35);
@@ -392,14 +435,137 @@
             }
         }
 
+        /**
+         * Generates a data URI avatar with user initials
+         * @param {string} name - User's full name
+         * @returns {string} Data URI for the generated avatar
+         */
+        function generateAvatarWithInitials(name) {
+            // Get initials (max 2 letters)
+            const initials = name
+                .split(' ')
+                .filter(word => word.length > 0)
+                .map(word => word[0].toUpperCase())
+                .slice(0, 2)
+                .join('');
+
+            // Create canvas
+            const canvas = document.createElement('canvas');
+            const size = 86;
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // Background gradient (Garcia Builder brand colors)
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#FF6B35');  // Orange
+            gradient.addColorStop(1, '#004E89');  // Blue
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+
+            // Text
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 36px system-ui, -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(initials || 'U', size / 2, size / 2);
+
+            return canvas.toDataURL('image/png');
+        }
+
+        // BRUTAL FIX: Update avatar IMMEDIATELY on page load
+        function brutalAvatarFix() {
+            console.log('🔨 BRUTAL AVATAR FIX - Running immediately...');
+            
+            const avatar = document.getElementById('user-avatar');
+            if (!avatar) {
+                console.error('❌ Avatar element not found!');
+                return;
+            }
+
+            let finalSrc = null;
+            let finalName = 'User';
+
+            try {
+                // Try 1: localStorage gb_current_user
+                const storedUser = localStorage.getItem('gb_current_user');
+                if (storedUser) {
+                    const user = JSON.parse(storedUser);
+                    console.log('💾 Found user in localStorage:', user);
+                    
+                    finalName = user.full_name || user.name || user.email || 'User';
+                    
+                    // Check for picture in various places
+                    finalSrc = user.user_metadata?.picture || 
+                              user.user_metadata?.avatar_url ||
+                              user.avatar_url ||
+                              user.picture ||
+                              null;
+                    
+                    if (finalSrc) {
+                        console.log('✅ Found picture URL:', finalSrc);
+                    }
+                }
+
+                // Try 2: GarciaProfileManager if available
+                if (!finalSrc && window.GarciaProfileManager) {
+                    const profileData = window.GarciaProfileManager.getProfileData?.();
+                    if (profileData) {
+                        console.log('📊 Found profile data:', profileData);
+                        finalName = profileData.basic?.full_name || profileData.full_name || finalName;
+                        finalSrc = profileData.basic?.avatar_url || profileData.avatar_url || null;
+                    }
+                }
+
+                // Generate initials if no picture found
+                if (!finalSrc) {
+                    console.log('🎨 Generating initials avatar for:', finalName);
+                    finalSrc = generateAvatarWithInitials(finalName);
+                }
+
+                // SET THE AVATAR NOW
+                avatar.src = finalSrc;
+                avatar.alt = finalName;
+                console.log('✅ AVATAR SET TO:', finalSrc.substring(0, 80) + '...');
+
+            } catch (error) {
+                console.error('❌ Brutal avatar fix error:', error);
+                // Last resort: generate initials for 'User'
+                avatar.src = generateAvatarWithInitials('User');
+            }
+        }
+
+        // Run brutal fix ASAP
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', brutalAvatarFix);
+        } else {
+            brutalAvatarFix();
+        }
+
         async function initializeDashboard() {
             try {
+                console.log('🚀 Initializing dashboard...');
+
+                // Verify authentication first
+                if (window.supabaseClient) {
+                    const { data: session } = await window.supabaseClient.auth.getSession();
+                    console.log('🔐 Session status:', session ? '✅ Active' : '❌ No session');
+                    if (session?.session) {
+                        console.log('👤 Session user:', session.session.user.email);
+                        console.log('📸 Session user metadata:', session.session.user.user_metadata);
+                    }
+                } else {
+                    console.error('❌ supabaseClient not available!');
+                }
+
                 if (window.GarciaProfileManager) {
                     await window.GarciaProfileManager.init();
                     updateDashboardContent();
+                } else {
+                    console.error('❌ GarciaProfileManager not available!');
                 }
             } catch (error) {
-                console.error('Error initializing dashboard:', error);
+                console.error('❌ Error initializing dashboard:', error);
             }
         }
 
@@ -428,31 +594,129 @@
             }
         }
 
-        function updateDashboardContent() {
+        async function updateDashboardContent() {
             try {
+                console.log('📊 Updating dashboard content...');
+
+                // Get profile data
                 const profileData = window.GarciaProfileManager?.getProfileData?.();
-                if (!profileData) {
+                console.log('Profile data:', profileData);
+
+                // Get current user from multiple sources for robustness
+                let currentUser = null;
+                let oauthPicture = null;
+
+                // Try 1: Supabase session (most reliable for OAuth data)
+                if (window.supabaseClient) {
+                    try {
+                        console.log('🔍 Fetching Supabase session...');
+                        const { data: sessionData } = await window.supabaseClient.auth.getSession();
+                        if (sessionData?.session?.user) {
+                            currentUser = sessionData.session.user;
+                            oauthPicture = currentUser.user_metadata?.picture ||
+                                          currentUser.user_metadata?.avatar_url;
+                            console.log('✅ Session user:', currentUser.email);
+                            console.log('📸 OAuth picture from session:', oauthPicture);
+                        }
+                    } catch (err) {
+                        console.warn('⚠️ Session fetch failed, trying getUser...', err);
+                    }
+
+                    // Try 2: getUser as fallback
+                    if (!currentUser) {
+                        try {
+                            const { data, error } = await window.supabaseClient.auth.getUser();
+                            if (error) {
+                                console.warn('❌ Supabase getUser error:', error);
+                            } else {
+                                currentUser = data?.user;
+                                oauthPicture = currentUser?.user_metadata?.picture ||
+                                              currentUser?.user_metadata?.avatar_url;
+                                console.log('✅ Current user from getUser:', currentUser?.email);
+                                console.log('� OAuth picture from getUser:', oauthPicture);
+                            }
+                        } catch (err) {
+                            console.error('❌ Failed to fetch Supabase user:', err);
+                        }
+                    }
+                } else {
+                    console.warn('⚠️ window.supabaseClient not available!');
+                }
+
+                // Try 3: localStorage backup
+                if (!currentUser) {
+                    try {
+                        const storedUser = localStorage.getItem('gb_current_user');
+                        if (storedUser) {
+                            const parsed = JSON.parse(storedUser);
+                            currentUser = parsed;
+                            oauthPicture = parsed.user_metadata?.picture || parsed.avatar_url;
+                            console.log('💾 Using stored user from localStorage:', currentUser.email);
+                            console.log('📸 Picture from localStorage:', oauthPicture);
+                        }
+                    } catch (err) {
+                        console.warn('⚠️ Failed to read localStorage user:', err);
+                    }
+                }
+
+                if (!profileData && !currentUser) {
+                    console.warn('⚠️ No profile data or user available');
                     return;
                 }
 
-                document.getElementById('user-name').textContent = profileData.full_name || translate('dashboard.default_name', 'Athlete');
+                // Update name
+                const fullName = profileData.basic?.full_name ||
+                                profileData.full_name ||
+                                currentUser?.user_metadata?.full_name ||
+                                currentUser?.email ||
+                                translate('dashboard.default_name', 'Athlete');
+
+                document.getElementById('user-name').textContent = fullName;
+
+                // Update login info
                 document.getElementById('last-login').textContent =
                     new Date(profileData.last_login || Date.now()).toLocaleDateString();
                 document.getElementById('member-since').textContent =
-                    (profileData.created_at || '').split('T')[0] || '2024';
+                    (profileData.basic?.joined_date || profileData.created_at || '').split('T')[0] || '2024';
 
-                if (profileData.avatar_url) {
-                    const avatar = document.getElementById('user-avatar');
-                    avatar.src = profileData.avatar_url;
-                    avatar.alt = profileData.full_name || translate('dashboard.user_avatar_alt', 'User avatar');
+                // Update avatar with priority: OAuth picture > saved avatar_url > initials
+                const avatar = document.getElementById('user-avatar');
+                if (avatar) {
+                    let avatarSrc = null;
+
+                    // Priority 1: OAuth picture (already extracted from multiple sources above)
+                    if (oauthPicture) {
+                        avatarSrc = oauthPicture;
+                        console.log('✅ Using OAuth avatar:', avatarSrc);
+                    }
+                    // Priority 2: Saved avatar_url in profile
+                    else if (profileData?.basic?.avatar_url || profileData?.avatar_url) {
+                        avatarSrc = profileData.basic?.avatar_url || profileData.avatar_url;
+                        console.log('✅ Using saved avatar:', avatarSrc);
+                    }
+                    // Priority 3: Generate with initials
+                    else {
+                        avatarSrc = generateAvatarWithInitials(fullName);
+                        console.log('✅ Generated initials avatar for:', fullName);
+                    }
+
+                    avatar.src = avatarSrc;
+                    avatar.alt = fullName;
+                    console.log('🖼️ Final avatar set (updateDashboardContent):', avatarSrc?.substring?.(0, 60) + '...');
+                    
+                    // Force immediate render
+                    avatar.style.display = 'none';
+                    setTimeout(() => { avatar.style.display = ''; }, 10);
                 }
 
-                populateGoals(profileData.goals);
-                populateActivity(profileData.activity);
+                populateGoals(profileData?.basic?.goals || profileData?.goals);
+                populateActivity(profileData?.activity);
                 updateDashboardStats(profileData);
                 setFallbackAvatarLabel();
+
+                console.log('✅ Dashboard content updated');
             } catch (error) {
-                console.error('Failed to update dashboard content:', error);
+                console.error('❌ Failed to update dashboard content:', error);
             }
         }
 
@@ -601,20 +865,54 @@
 
         async function handleLogout() {
             try {
+                console.log('🚪 Dashboard logout initiated');
+
+                // Try AuthSystem first (this is now the corrected version)
                 if (typeof AuthSystem !== 'undefined' && typeof AuthSystem.logout === 'function') {
                     await AuthSystem.logout();
                     return;
                 }
-                if (window.GarciaAuth && typeof window.GarciaAuth.signOut === 'function') {
+
+                // Fallback to AuthGuard
+                if (window.AuthGuard && typeof window.AuthGuard.handleLogout === 'function') {
+                    const fakeEvent = { preventDefault: () => {}, stopPropagation: () => {} };
+                    window.AuthGuard.handleLogout(fakeEvent);
+                    return;
+                }
+
+                // Manual logout as last resort
+                console.log('⚠️ Using manual logout fallback');
+
+                // Clear all storage
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && (key.startsWith('sb-') || key.includes('supabase'))) {
+                        keysToRemove.push(key);
+                    }
+                }
+                keysToRemove.forEach(key => localStorage.removeItem(key));
+                localStorage.removeItem('gb_current_user');
+                localStorage.removeItem('gb_remember_me');
+                sessionStorage.clear();
+
+                // Try Supabase signOut
+                if (window.supabaseClient?.auth) {
+                    await window.supabaseClient.auth.signOut();
+                } else if (window.GarciaAuth && typeof window.GarciaAuth.signOut === 'function') {
                     await window.GarciaAuth.signOut();
                 }
+
+                // Redirect
+                const loginUrl = typeof toAbsoluteUrl === 'function'
+                    ? toAbsoluteUrl('pages/auth/login.html')
+                    : '../auth/login.html';
+                window.location.replace(loginUrl + '?t=' + Date.now());
             } catch (error) {
-                console.error('Error logging out:', error);
+                console.error('❌ Error logging out:', error);
+                // Force redirect even on error
+                window.location.replace('../auth/login.html');
             }
-            const loginUrl = typeof toAbsoluteUrl === 'function'
-                ? toAbsoluteUrl('pages/auth/login.html')
-                : '../auth/login.html';
-            window.location.href = loginUrl;
         }
     </script>
 </body>

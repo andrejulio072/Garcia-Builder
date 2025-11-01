@@ -265,10 +265,56 @@
         </div>
     </div>
 
+    <!-- File Protocol Warning (only shows on file://) -->
+    <div id="file-protocol-warning" style="display: none; position: fixed; top: 60px; left: 50%; transform: translateX(-50%); z-index: 9999; max-width: 90%; width: 600px;">
+        <div class="alert alert-warning alert-dismissible fade show shadow-lg" role="alert" style="border-left: 4px solid #ffc107;">
+            <div class="d-flex align-items-start">
+                <i class="fas fa-exclamation-triangle me-3 mt-1" style="font-size: 1.5rem;"></i>
+                <div>
+                    <h5 class="alert-heading mb-2">
+                        <i class="fas fa-folder-open me-2"></i>Running via File Protocol
+                    </h5>
+                    <p class="mb-2">
+                        <strong>Note:</strong> You're opening this page directly from your file system (<code>file://</code>).
+                    </p>
+                    <ul class="mb-2 small">
+                        <li><strong>Email/Password login:</strong> ✅ Works</li>
+                        <li><strong>OAuth (Google/Facebook):</strong> ❌ Won't work (requires http/https)</li>
+                    </ul>
+                    <p class="mb-0 small text-muted">
+                        <strong>Recommended:</strong> Use a local server (<code>python -m http.server 8000</code>) for full functionality.
+                    </p>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+
+    <script>
+        // Show warning if using file:// protocol
+        if (window.location.protocol === 'file:') {
+            document.getElementById('file-protocol-warning').style.display = 'block';
+            
+            // Also disable OAuth buttons
+            setTimeout(() => {
+                const oauthButtons = document.querySelectorAll('#login-with-google, #facebook-btn-login, #register-with-google, #facebook-btn-register');
+                oauthButtons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.title = 'OAuth not available on file:// protocol';
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'not-allowed';
+                });
+            }, 100);
+        }
+    </script>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/env.js?v=20251028"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
+    
+    <!-- Loop Prevention Guard - MUST load before auth.js -->
+    <script src="../../js/utils/loop-prevention.js?v=20251101"></script>
     
     <!-- OAuth Token Handler - Process tokens if they arrive on login page -->
     <script>
@@ -392,42 +438,52 @@
             return ensureEnvBase(`${origin}${basePath}`.replace(/\/$/, ''));
         };
 
+        const isLocalLikeHost = (hostname) => {
+            try {
+                if (!hostname) return false;
+                return (
+                    hostname === 'localhost' ||
+                    hostname === '127.0.0.1' ||
+                    hostname === '0.0.0.0' ||
+                    hostname === '::1' ||
+                    /^192\.168\./.test(hostname) ||
+                    /^10\./.test(hostname) ||
+                    /\.local$/i.test(hostname)
+                );
+            } catch { return false; }
+        };
+
         const buildRedirectUrl = () => {
-            // Special handling for file:// development (no http origin allowed by OAuth)
+            // Special handling for file:// development (OAuth cannot work with file://)
             if (window.location.protocol === 'file:') {
-                // Try to use a stored local base first, else assume Live Server default
-                const localBase = (localStorage.getItem('gb_local_base') || '').trim() || 'http://localhost:5500';
-                const hostedBase = (window.__ENV && window.__ENV.PUBLIC_SITE_URL) ? window.__ENV.PUBLIC_SITE_URL : 'https://garciabuilder.fitness';
-                try {
-                    const url = new URL('pages/public/dashboard.html', `${hostedBase.replace(/\/$/, '')}/`);
-                    url.searchParams.set('devReturn', localBase.replace(/\/$/, ''));
-                    console.info('[OAuth] file:// detected. Using hosted redirect with devReturn ->', url.toString());
-                    return url.toString();
-                } catch (e) {
-                    console.warn('Failed to construct hosted redirect URL for file:// mode:', e);
-                    return 'https://garciabuilder.fitness/pages/public/dashboard.html';
-                }
+                console.warn('⚠️ OAuth não funciona com file://. Use localhost ou ?dev=1');
+                // Retornar URL inválida para forçar erro visível
+                return 'about:blank';
             }
 
-            // Force absolute URL to pages/public/dashboard.html using production domain
-            const productionDomain = 'https://garciabuilder.fitness';
-            const origin = window.location.origin || productionDomain;
+            // Prefer current origin for local-like and non-production hosts
+            const origin = window.location.origin || 'http://localhost:8000';
             const hostname = (window.location.hostname || '').toLowerCase();
-            
-            // Use production domain for hosted sites (not localhost)
-            const baseOrigin = /^(localhost|127\.0\.0\.1)$/i.test(hostname) ? origin : productionDomain;
-            
+            const isLocal = isLocalLikeHost(hostname);
+            const isProd = /garciabuilder\.fitness$/i.test(hostname);
+
             try {
-                const url = new URL('pages/public/dashboard.html', `${baseOrigin}/`);
-                // For local development, add a devReturn param so hosted redirects can bounce back to localhost
-                if (/^(localhost|127\.0\.0\.1)$/i.test(hostname)) {
-                    url.searchParams.set('devReturn', origin);
+                let baseOrigin;
+                if (isLocal || !isProd) {
+                    baseOrigin = origin;
+                } else {
+                    const envBase = (window.__ENV && typeof window.__ENV.PUBLIC_SITE_URL === 'string' && window.__ENV.PUBLIC_SITE_URL)
+                        ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
+                        : 'https://garciabuilder.fitness';
+                    baseOrigin = envBase;
                 }
+
+                const url = new URL('pages/public/dashboard.html', `${baseOrigin}/`);
                 console.log('[OAuth] Redirect URL configured:', url.toString());
                 return url.toString();
             } catch (err) {
-                console.warn('Failed to build dashboard redirect URL, using production fallback:', err);
-                return 'https://garciabuilder.fitness/pages/public/dashboard.html';
+                console.warn('Failed to build dashboard redirect URL. Falling back to current origin:', err);
+                return new URL('pages/public/dashboard.html', `${origin.replace(/\/$/, '')}/`).toString();
             }
         };
 
@@ -443,6 +499,25 @@
         const attachGoogleLogin = (client, projectUrl) => {
             if (!client) {
                 console.error('Supabase client is unavailable.');
+                return;
+            }
+
+            // Detectar file:// e desabilitar botões OAuth
+            if (window.location.protocol === 'file:') {
+                const buttons = [
+                    document.getElementById('login-with-google'),
+                    ...document.querySelectorAll('[data-provider="google"][data-use-module="true"]')
+                ].filter(Boolean);
+                
+                buttons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.title = 'OAuth não funciona com file://. Use http://localhost:8000 ou adicione ?dev=1 à URL';
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'not-allowed';
+                    btn.innerHTML = '<i class="fab fa-google me-2"></i>OAuth indisponível (use localhost)';
+                });
+                
+                showErrorBanner('⚠️ OAuth não funciona com file://. Abra via http://localhost:8000 ou use ?dev=1 para modo dev.');
                 return;
             }
 

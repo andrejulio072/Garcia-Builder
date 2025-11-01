@@ -86,12 +86,13 @@ const INLINE_FALLBACKS = {
     <div class="container">
         <div class="gb-navbar-content">
             <a href="#" class="gb-logo-section" aria-label="Garcia Builder Home" data-gb-nav="index.html">
-             <img src="Logo%20Files/For%20Web/logo-nobackground-500.png"
-                 data-gb-logo-src="Logo%20Files/For%20Web/logo-nobackground-500.png"
+             <img src="/Logo%20Files/For%20Web/logo-nobackground-500.png"
+                 data-gb-logo-src="/Logo%20Files/For%20Web/logo-nobackground-500.png"
                      alt="Garcia Builder Logo"
                      class="gb-logo-img"
                      loading="eager"
-                     decoding="async">
+                     decoding="async"
+                     onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'40\' viewBox=\'0 0 120 40\'%3E%3Ctext x=\'10\' y=\'25\' font-family=\'Arial, sans-serif\' font-size=\'16\' font-weight=\'bold\' fill=\'%23FF6B35\'%3EGarcia Builder%3C/text%3E%3C/svg%3E';">
                 <span class="gb-logo-text">Garcia Builder</span>
             </a>
 

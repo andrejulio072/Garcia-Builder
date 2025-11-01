@@ -59,27 +59,62 @@ function toAbsoluteUrl(pathOrUrl, fallbackPath = '') {
     }
 }
 
-function buildHostedAuthRedirect(path = 'pages/public/dashboard.html') {
-    const localBase = computeSiteBaseUrl();
-    const isLocalEnv = window.location.protocol === 'file:' || /^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname);
-
-    // Para ambiente local, usar localhost; para produção, usar domínio hospedado
-    const baseUrl = isLocalEnv
-        ? localBase
-        : ((window.__ENV && window.__ENV.PUBLIC_SITE_URL)
-            ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
-            : 'https://garciabuilder.fitness');
-
-    let redirect;
+// Considera "local" uma variedade maior de hosts usados em desenvolvimento
+function isLocalLikeHost(hostname) {
     try {
-        // Usar o caminho completo para o dashboard real, não o intermediário
-        redirect = new URL(path || 'pages/public/dashboard.html', `${baseUrl}/`);
-    } catch (err) {
-        console.warn('buildHostedAuthRedirect failed, using fallback path:', err);
-        redirect = new URL('pages/public/dashboard.html', `${baseUrl}/`);
-    }
+        if (!hostname) return false;
+        return (
+            hostname === 'localhost' ||
+            hostname === '127.0.0.1' ||
+            hostname === '0.0.0.0' ||
+            hostname === '::1' ||
+            /^192\.168\./.test(hostname) ||
+            /^10\./.test(hostname) ||
+            /\.local$/i.test(hostname)
+        );
+    } catch { return false; }
+}
 
-    return redirect.toString();
+function buildHostedAuthRedirect(path = 'pages/public/dashboard.html') {
+    const currentBase = computeSiteBaseUrl();
+    try {
+        const hostname = (window.location && window.location.hostname) || '';
+        const isFile = window.location && window.location.protocol === 'file:';
+        const isLocal = isLocalLikeHost(hostname);
+
+        // Ambiente file:// não suporta OAuth – preferir localhost explícito
+        if (isFile) {
+            const fallbackLocal = (window.__DEV_REDIRECT_BASE || 'http://localhost:8000').replace(/\/$/, '');
+            const url = new URL(path || 'pages/public/dashboard.html', `${fallbackLocal}/`).toString();
+            console.log('🔗 OAuth redirect (file prot.) →', url);
+            return url;
+        }
+
+        // Se for host local (ou qualquer host não-prod), preferir a origem atual
+        if (isLocal || !/garciabuilder\.fitness$/i.test(hostname)) {
+            const url = new URL(path || 'pages/public/dashboard.html', `${currentBase}/`).toString();
+            console.log('🔗 OAuth redirect (local/current) →', url);
+            return url;
+        }
+
+        // Em produção, se PUBLIC_SITE_URL estiver definido, utilizar
+        const envBase = (window.__ENV && typeof window.__ENV.PUBLIC_SITE_URL === 'string' && window.__ENV.PUBLIC_SITE_URL)
+            ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
+            : null;
+        if (envBase) {
+            const url = new URL(path || 'pages/public/dashboard.html', `${envBase}/`).toString();
+            console.log('🔗 OAuth redirect (env base) →', url);
+            return url;
+        }
+
+        // Fallback seguro: usar a base atual (evitar saltar para domínio de produção por engano)
+        const safeUrl = new URL(path || 'pages/public/dashboard.html', `${currentBase}/`).toString();
+        console.log('🔗 OAuth redirect (safe fallback) →', safeUrl);
+        return safeUrl;
+    } catch (err) {
+        console.warn('buildHostedAuthRedirect failed, using toAbsoluteUrl fallback:', err);
+        return toAbsoluteUrl(path || 'pages/public/dashboard.html');
+    }
 }
 
 function resolveRedirectTarget(searchParams, defaultPath = 'pages/public/dashboard.html') {
@@ -98,6 +133,17 @@ class AuthSystem {
     constructor() {
         this.users = JSON.parse(localStorage.getItem('gb_users') || '[]');
         this.currentUser = JSON.parse(localStorage.getItem('gb_current_user') || 'null');
+        
+        // Prevent redirect loop: if on login page, verify session before trusting currentUser
+        const isOnLoginPage = window.location.pathname.includes('login.html') || 
+                             window.location.pathname.includes('register.html');
+        
+        if (isOnLoginPage && this.currentUser) {
+            console.log('⚠️ On login page with cached user data - will verify session');
+            // Mark that we need to verify - checkAuthStatus will handle it
+            this._needsSessionVerification = true;
+        }
+        
         this.init();
     }
 
@@ -108,23 +154,32 @@ class AuthSystem {
         this.setupPasswordToggle();
         this.setupPasswordStrength();
 
-        // Dev mode: allow quick local login when running on localhost with ?dev=1
+        // Dev/Local mode: allow quick local login when running locally with ?dev=1, ?guest=1 or ?local=1
         try {
-            const isLocal = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1');
-            const isDev = new URLSearchParams(window.location.search).get('dev') === '1';
-            if (isLocal && isDev && !localStorage.getItem('gb_current_user')) {
+            const sp = new URLSearchParams(window.location.search);
+            const isDevFlag = sp.get('dev') === '1' || sp.get('guest') === '1' || sp.get('local') === '1';
+            const isFile = window.location.protocol === 'file:';
+            const host = (window.location && window.location.hostname) || '';
+            const isLocalHost = isLocalLikeHost(host);
+
+            if ((isLocalHost || isFile) && isDevFlag && !localStorage.getItem('gb_current_user')) {
+                const now = new Date();
                 const devUser = {
-                    id: 'dev-user-1',
-                    name: 'Test User',
-                    full_name: 'Test User',
-                    email: 'test.user@example.com',
-                    registeredAt: new Date().toISOString(),
-                    lastLogin: new Date().toISOString()
+                    id: `local-${now.getTime()}`,
+                    name: 'Local User',
+                    full_name: 'Local User',
+                    email: 'local.user@dev',
+                    avatar_url: null,
+                    registeredAt: now.toISOString(),
+                    lastLogin: now.toISOString(),
+                    user_metadata: { full_name: 'Local User' }
                 };
                 localStorage.setItem('gb_current_user', JSON.stringify(devUser));
 
+                // Redirect to the canonical dashboard path used in the app
+                const target = toAbsoluteUrl('pages/public/dashboard.html?dev=1');
                 if (window.location.pathname.endsWith('login.html')) {
-                    window.location.href = toAbsoluteUrl('dashboard.html?dev=1');
+                    window.location.href = target;
                 }
             }
         } catch (e) {
@@ -751,20 +806,90 @@ class AuthSystem {
     }
 
     checkAuthStatus() {
-        // If user is already logged in, redirect to main site
+        // SPECIAL HANDLING FOR file:// protocol
+        const isFile = window.location.protocol === 'file:';
+        
+        if (isFile) {
+            console.log('📁 Running on file:// protocol - special auth handling');
+            
+            // For file:// protocol, NEVER auto-redirect from login page
+            // User must explicitly login each time
+            if (window.location.pathname.includes('login.html')) {
+                console.log('📁 On login page via file:// - staying here');
+                
+                // Clear any stale data to prevent confusion
+                if (this.currentUser) {
+                    console.warn('⚠️ Found stale user data in file:// mode, clearing...');
+                    localStorage.removeItem('gb_current_user');
+                    localStorage.removeItem('gb_remember_user');
+                    this.currentUser = null;
+                }
+                
+                // Auto-fill remembered email if exists
+                const rememberedEmail = localStorage.getItem('gb_remember_user');
+                if (rememberedEmail) {
+                    const emailInput = document.getElementById('loginEmail');
+                    if (emailInput) {
+                        emailInput.value = rememberedEmail;
+                        const rememberCheckbox = document.getElementById('rememberMe');
+                        if (rememberCheckbox) {
+                            rememberCheckbox.checked = true;
+                        }
+                    }
+                }
+                return; // STAY on login page, don't redirect
+            }
+        }
+        
+        // Standard handling for http:// and https://
+        // If user is already logged in AND has valid session, redirect to main site
         if (this.currentUser && window.location.pathname.includes('login.html')) {
-            const redirectUrl = resolveRedirectTarget(new URLSearchParams(window.location.search));
-            window.location.href = redirectUrl;
+            // Only redirect if we have a valid Supabase session
+            // This prevents redirect loop when user has localStorage data but no active session
+            const shouldRedirect = async () => {
+                try {
+                    // Check if we have Supabase client and valid session
+                    if (window.supabaseClient) {
+                        const { data: sessionData, error } = await window.supabaseClient.auth.getSession();
+                        
+                        if (!error && sessionData?.session) {
+                            // Valid session exists, safe to redirect
+                            const redirectUrl = resolveRedirectTarget(new URLSearchParams(window.location.search));
+                            console.log('✅ Valid session found, redirecting to:', redirectUrl);
+                            window.location.href = redirectUrl;
+                        } else {
+                            // No valid session - clear localStorage and stay on login page
+                            console.warn('⚠️ User in localStorage but no valid Supabase session. Clearing local data.');
+                            localStorage.removeItem('gb_current_user');
+                            localStorage.removeItem('gb_remember_user');
+                            this.currentUser = null;
+                        }
+                    } else {
+                        // Supabase client not available
+                        console.warn('⚠️ Supabase client not available, clearing invalid data');
+                        localStorage.removeItem('gb_current_user');
+                        this.currentUser = null;
+                    }
+                } catch (err) {
+                    console.error('❌ Error checking auth status:', err);
+                }
+            };
+            
+            // Run async check
+            shouldRedirect();
             return;
         }
 
-        // Auto-fill remembered email
+        // Auto-fill remembered email (for both file:// and http://)
         const rememberedEmail = localStorage.getItem('gb_remember_user');
         if (rememberedEmail) {
             const emailInput = document.getElementById('loginEmail');
             if (emailInput) {
                 emailInput.value = rememberedEmail;
-                document.getElementById('rememberMe').checked = true;
+                const rememberCheckbox = document.getElementById('rememberMe');
+                if (rememberCheckbox) {
+                    rememberCheckbox.checked = true;
+                }
             }
         }
     }
@@ -883,22 +1008,77 @@ class AuthSystem {
 
     static async logout() {
         try {
-            if (window.supabaseClient && window.supabaseClient.auth) {
-                await window.supabaseClient.auth.signOut();
-            } else if (window.supabase && window.supabase.auth) {
-                await window.supabase.auth.signOut();
+            console.log('🚪 Logging out...');
+
+            // Clear all Supabase session keys from localStorage
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && (key.startsWith('sb-') || key.includes('supabase'))) {
+                    keysToRemove.push(key);
+                }
             }
-        } catch (e) {
-            console.warn('Supabase signOut error (ignored):', e?.message || e);
-        } finally {
+
+            keysToRemove.forEach(key => {
+                localStorage.removeItem(key);
+                console.log('🗑️ Removed:', key);
+            });
+
+            // Clear custom keys
             localStorage.removeItem('gb_current_user');
             localStorage.removeItem('gb_remember_user');
-            window.location.href = toAbsoluteUrl('pages/auth/login.html');
+            localStorage.removeItem('gb_remember_me');
+
+            // Clear sessionStorage
+            sessionStorage.clear();
+
+            console.log('✅ Storage cleared');
+
+            // Sign out from Supabase
+            try {
+                if (window.supabaseClient && window.supabaseClient.auth) {
+                    await window.supabaseClient.auth.signOut();
+                    console.log('✅ Supabase signOut complete');
+                } else if (window.supabase && window.supabase.auth) {
+                    await window.supabase.auth.signOut();
+                    console.log('✅ Supabase signOut complete');
+                }
+            } catch (e) {
+                console.warn('⚠️ Supabase signOut error (continuing anyway):', e?.message || e);
+            }
+
+            // Force redirect with cache busting
+            const loginUrl = toAbsoluteUrl('pages/auth/login.html');
+            console.log('↪️ Redirecting to:', loginUrl);
+            window.location.replace(loginUrl + '?t=' + Date.now());
+        } catch (error) {
+            console.error('❌ Logout error:', error);
+            // Even if there's an error, redirect to login
+            window.location.replace(toAbsoluteUrl('pages/auth/login.html'));
         }
     }
 
     static requireAuth() {
         if (!AuthSystem.isLoggedIn()) {
+            // In local dev mode with flags, auto-provision a local user and continue
+            try {
+                const sp = new URLSearchParams(window.location.search);
+                const isDevFlag = sp.get('dev') === '1' || sp.get('guest') === '1' || sp.get('local') === '1';
+                const isFile = window.location.protocol === 'file:';
+                const host = (window.location && window.location.hostname) || '';
+                const isLocalHost = isLocalLikeHost(host);
+                if ((isLocalHost || isFile) && isDevFlag) {
+                    const tmp = {
+                        id: `local-${Date.now()}`,
+                        name: 'Local User',
+                        full_name: 'Local User',
+                        email: 'local.user@dev',
+                        user_metadata: { full_name: 'Local User' }
+                    };
+                    localStorage.setItem('gb_current_user', JSON.stringify(tmp));
+                    return true;
+                }
+            } catch {}
             const currentUrl = window.location.pathname + window.location.search + window.location.hash;
             window.location.href = `${toAbsoluteUrl('pages/auth/login.html')}?redirect=${encodeURIComponent(currentUrl)}`;
             return false;
@@ -906,6 +1086,24 @@ class AuthSystem {
         return true;
     }
 }
+
+// Expose a helper to create a local guest user from console or other scripts
+window.ensureLocalGuestUser = function ensureLocalGuestUser() {
+    if (!localStorage.getItem('gb_current_user')) {
+        const tmp = {
+            id: `local-${Date.now()}`,
+            name: 'Local User',
+            full_name: 'Local User',
+            email: 'local.user@dev',
+            user_metadata: { full_name: 'Local User' }
+        };
+        localStorage.setItem('gb_current_user', JSON.stringify(tmp));
+    }
+    const target = toAbsoluteUrl('pages/public/dashboard.html?dev=1');
+    if (!window.location.pathname.endsWith('dashboard.html')) {
+        window.location.href = target;
+    }
+};
 
 // OAUTH SOCIAL LOGIN - INDEPENDENTE DE FORMULÁRIOS
 function setupSocialLogin() {
@@ -1115,6 +1313,23 @@ document.addEventListener('DOMContentLoaded', () => {
                             cleanedUrl.searchParams.delete('code');
                             cleanedUrl.searchParams.delete('state');
                             window.history.replaceState({}, document.title, cleanedUrl.toString());
+
+                            // Se veio de um fluxo file:// usando devReturn, fazer o bounce-back para o host local
+                            try {
+                                const devReturn = new URL(window.location.href).searchParams.get('devReturn');
+                                if (devReturn) {
+                                    const devUrl = new URL(devReturn);
+                                    const devHost = devUrl.hostname;
+                                    if (isLocalLikeHost(devHost)) {
+                                        const bounce = new URL('pages/public/dashboard.html', devUrl.origin + '/').toString();
+                                        console.log('🔁 OAuth devReturn detectado. Redirecionando de volta para ambiente local →', bounce);
+                                        window.location.replace(bounce);
+                                        return;
+                                    }
+                                }
+                            } catch (bounceErr) {
+                                console.warn('devReturn bounce falhou (seguindo fluxo normal):', bounceErr?.message || bounceErr);
+                            }
                         } catch (exchangeErr) {
                             console.error('Falha ao trocar código OAuth:', exchangeErr);
                             showAuthMessage(`Erro ao validar login social: ${exchangeErr.message || exchangeErr}`, 'danger');

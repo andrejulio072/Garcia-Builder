@@ -2049,6 +2049,88 @@
     return new Date(dateString).toLocaleDateString();
   };
 
+  // Upload avatar to Supabase Storage
+  const uploadAvatar = async (file) => {
+    try {
+      if (!file) {
+        throw new Error('No file provided');
+      }
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        throw new Error('File must be an image');
+      }
+
+      // Validate file size (5MB limit)
+      const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+      if (file.size > MAX_SIZE) {
+        throw new Error('File size must be less than 5MB');
+      }
+
+      console.log('📤 Uploading avatar...');
+
+      // Try Supabase Storage if available
+      if (window.supabaseClient && currentUser) {
+        try {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${currentUser.id}-${Date.now()}.${fileExt}`;
+          const filePath = `avatars/${fileName}`;
+
+          // Upload to Supabase Storage
+          const { data, error } = await window.supabaseClient.storage
+            .from('profiles')
+            .upload(filePath, file, {
+              cacheControl: '3600',
+              upsert: false
+            });
+
+          if (error) throw error;
+
+          // Get public URL
+          const { data: { publicUrl } } = window.supabaseClient.storage
+            .from('profiles')
+            .getPublicUrl(filePath);
+
+          console.log('✅ Avatar uploaded to Supabase:', publicUrl);
+
+          // Update profile data
+          profileData.basic.avatar_url = publicUrl;
+          await saveProfileData('basic');
+
+          return publicUrl;
+        } catch (supabaseError) {
+          console.warn('⚠️ Supabase upload failed, using base64 fallback:', supabaseError);
+          // Fall through to base64 fallback
+        }
+      }
+
+      // Fallback: Convert to base64 and store locally
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          try {
+            const base64Url = e.target.result;
+            console.log('✅ Avatar converted to base64 (local only)');
+            
+            // Update profile data
+            profileData.basic.avatar_url = base64Url;
+            await saveProfileData('basic');
+            
+            resolve(base64Url);
+          } catch (error) {
+            reject(error);
+          }
+        };
+        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.readAsDataURL(file);
+      });
+    } catch (error) {
+      console.error('❌ Error uploading avatar:', error);
+      showNotification(`Error uploading avatar: ${error.message}`, 'error');
+      throw error;
+    }
+  };
+
   const showNotification = (message, type = 'info') => {
     // Simple notification system
       let alertClass = 'alert-info';
@@ -2075,6 +2157,7 @@
     getProfileData: () => profileData,
     saveProfileData,
     saveProfile: saveProfileData, // Alias for compatibility
+    uploadAvatar,
     updateBasicInfoDisplay,
     updateDashboardStats,
     handleFormSubmit,

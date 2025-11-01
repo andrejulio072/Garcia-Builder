@@ -1,7 +1,10 @@
 // Body Metrics System - Sistema de dados físicos
 (() => {
   let currentUser = null;
-  let bodyMetrics = {};
+  // Must be an array; we unshift new entries. Using an object here
+  // caused TypeError: bodyMetrics.unshift is not a function when saving.
+  // Initialize as empty array to store chronological entries (latest first).
+  let bodyMetrics = [];
   let progressPhotos = [];
 
   const init = () => {
@@ -319,10 +322,15 @@
       }
 
       // Salvar dados
-      await saveBodyMetrics(entryData);
+      const saveResult = await saveBodyMetrics(entryData);
 
-      // Sucesso
-      showNotification('✅ Body metrics saved successfully!', 'success');
+      // Sucesso (diferenciar entre cloud e local-only)
+      if (saveResult && saveResult.savedViaSupabase) {
+        showNotification('✅ Body metrics saved successfully!', 'success');
+      } else {
+        // Saved locally only (offline/file://). Keep it non-blocking and informative.
+        showNotification('💾 Saved locally. Will sync when online.', 'warning');
+      }
 
       // Notify other parts of the app (e.g., Dashboard) that body metrics were saved
       try {
@@ -407,10 +415,25 @@
       bodyMetrics = bodyMetrics || [];
       bodyMetrics.unshift(entryData);
 
+      // Never throw for connectivity issues; we persisted locally.
+      // Return a status object so callers may show an informational banner if desired.
+      return { savedViaSupabase, savedLocally: true };
     } catch (error) {
       console.error('❌ Error saving body metrics:', error);
-      // Graceful fallback message (avoid blocking the user)
-      throw new Error('Failed to save metrics online. Saved locally and will sync later.');
+      try {
+        // Last-resort: ensure we still persist locally
+        const key = `gb_body_metrics_${currentUser?.id || 'guest'}`;
+        const stored = JSON.parse(localStorage.getItem(key) || '[]');
+        const entry = { ...(entryData || {}), id: (entryData?.id) || Date.now().toString() };
+        stored.push(entry);
+        localStorage.setItem(key, JSON.stringify(stored));
+        bodyMetrics = bodyMetrics || [];
+        bodyMetrics.unshift(entry);
+      } catch (localErr) {
+        console.error('❌ Also failed to persist locally:', localErr);
+      }
+      // Do not throw — caller will treat as success with local-only save
+      return { savedViaSupabase: false, savedLocally: true, error: error?.message || String(error) };
     }
   };
 

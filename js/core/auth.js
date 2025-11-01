@@ -133,6 +133,17 @@ class AuthSystem {
     constructor() {
         this.users = JSON.parse(localStorage.getItem('gb_users') || '[]');
         this.currentUser = JSON.parse(localStorage.getItem('gb_current_user') || 'null');
+        
+        // Prevent redirect loop: if on login page, verify session before trusting currentUser
+        const isOnLoginPage = window.location.pathname.includes('login.html') || 
+                             window.location.pathname.includes('register.html');
+        
+        if (isOnLoginPage && this.currentUser) {
+            console.log('⚠️ On login page with cached user data - will verify session');
+            // Mark that we need to verify - checkAuthStatus will handle it
+            this._needsSessionVerification = true;
+        }
+        
         this.init();
     }
 
@@ -795,20 +806,90 @@ class AuthSystem {
     }
 
     checkAuthStatus() {
-        // If user is already logged in, redirect to main site
+        // SPECIAL HANDLING FOR file:// protocol
+        const isFile = window.location.protocol === 'file:';
+        
+        if (isFile) {
+            console.log('📁 Running on file:// protocol - special auth handling');
+            
+            // For file:// protocol, NEVER auto-redirect from login page
+            // User must explicitly login each time
+            if (window.location.pathname.includes('login.html')) {
+                console.log('📁 On login page via file:// - staying here');
+                
+                // Clear any stale data to prevent confusion
+                if (this.currentUser) {
+                    console.warn('⚠️ Found stale user data in file:// mode, clearing...');
+                    localStorage.removeItem('gb_current_user');
+                    localStorage.removeItem('gb_remember_user');
+                    this.currentUser = null;
+                }
+                
+                // Auto-fill remembered email if exists
+                const rememberedEmail = localStorage.getItem('gb_remember_user');
+                if (rememberedEmail) {
+                    const emailInput = document.getElementById('loginEmail');
+                    if (emailInput) {
+                        emailInput.value = rememberedEmail;
+                        const rememberCheckbox = document.getElementById('rememberMe');
+                        if (rememberCheckbox) {
+                            rememberCheckbox.checked = true;
+                        }
+                    }
+                }
+                return; // STAY on login page, don't redirect
+            }
+        }
+        
+        // Standard handling for http:// and https://
+        // If user is already logged in AND has valid session, redirect to main site
         if (this.currentUser && window.location.pathname.includes('login.html')) {
-            const redirectUrl = resolveRedirectTarget(new URLSearchParams(window.location.search));
-            window.location.href = redirectUrl;
+            // Only redirect if we have a valid Supabase session
+            // This prevents redirect loop when user has localStorage data but no active session
+            const shouldRedirect = async () => {
+                try {
+                    // Check if we have Supabase client and valid session
+                    if (window.supabaseClient) {
+                        const { data: sessionData, error } = await window.supabaseClient.auth.getSession();
+                        
+                        if (!error && sessionData?.session) {
+                            // Valid session exists, safe to redirect
+                            const redirectUrl = resolveRedirectTarget(new URLSearchParams(window.location.search));
+                            console.log('✅ Valid session found, redirecting to:', redirectUrl);
+                            window.location.href = redirectUrl;
+                        } else {
+                            // No valid session - clear localStorage and stay on login page
+                            console.warn('⚠️ User in localStorage but no valid Supabase session. Clearing local data.');
+                            localStorage.removeItem('gb_current_user');
+                            localStorage.removeItem('gb_remember_user');
+                            this.currentUser = null;
+                        }
+                    } else {
+                        // Supabase client not available
+                        console.warn('⚠️ Supabase client not available, clearing invalid data');
+                        localStorage.removeItem('gb_current_user');
+                        this.currentUser = null;
+                    }
+                } catch (err) {
+                    console.error('❌ Error checking auth status:', err);
+                }
+            };
+            
+            // Run async check
+            shouldRedirect();
             return;
         }
 
-        // Auto-fill remembered email
+        // Auto-fill remembered email (for both file:// and http://)
         const rememberedEmail = localStorage.getItem('gb_remember_user');
         if (rememberedEmail) {
             const emailInput = document.getElementById('loginEmail');
             if (emailInput) {
                 emailInput.value = rememberedEmail;
-                document.getElementById('rememberMe').checked = true;
+                const rememberCheckbox = document.getElementById('rememberMe');
+                if (rememberCheckbox) {
+                    rememberCheckbox.checked = true;
+                }
             }
         }
     }

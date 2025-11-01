@@ -630,7 +630,7 @@
             <!-- Profile Header -->
             <div class="profile-header">
                 <div class="position-relative d-inline-block">
-                    <img id="main-avatar" src="https://via.placeholder.com/150/333/fff?text=U" alt="Profile Picture" class="main-avatar">
+                    <img id="main-avatar" src="../../assets/images/avatars/avatar-m1.svg" alt="Profile Picture" class="main-avatar" onerror="this.src='../../assets/images/avatars/avatar-m1.svg'">
                     <div class="avatar-upload-overlay" onclick="document.getElementById('avatar-upload').click()">
                         <i class="fas fa-camera"></i>
                     </div>
@@ -1342,6 +1342,9 @@
 
         async function initializeProfilePage() {
             try {
+                // Load user data and avatar
+                await loadUserProfileData();
+                
                 // Wait for profile manager
                 if (window.GarciaProfileManager) {
                     await window.GarciaProfileManager.init();
@@ -1349,6 +1352,68 @@
                 }
             } catch (error) {
                 console.error('Error initializing profile page:', error);
+            }
+        }
+
+        async function loadUserProfileData() {
+            try {
+                const supabase = window.supabaseClient || window.supabase;
+                if (!supabase) {
+                    console.warn('Supabase client not available');
+                    return;
+                }
+
+                // Get user from Supabase
+                const { data: { user }, error } = await supabase.auth.getUser();
+                
+                if (error || !user) {
+                    console.warn('User not found:', error);
+                    return;
+                }
+
+                // Update profile header
+                const userName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'User';
+                const userEmail = user.email || '';
+                
+                const nameElement = document.getElementById('profile-name');
+                const emailElement = document.getElementById('profile-email');
+                
+                if (nameElement) nameElement.textContent = userName;
+                if (emailElement) emailElement.textContent = userEmail;
+
+                // Update member since date
+                if (user.created_at) {
+                    const memberSince = new Date(user.created_at).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long' 
+                    });
+                    const memberSinceElement = document.getElementById('member-since-display');
+                    if (memberSinceElement) {
+                        memberSinceElement.textContent = memberSince;
+                    }
+                }
+
+                // Load avatar from profile or use default
+                const avatarElement = document.getElementById('main-avatar');
+                if (avatarElement) {
+                    // Try to get avatar from user metadata
+                    const avatarUrl = user.user_metadata?.avatar_url || 
+                                     user.user_metadata?.picture ||
+                                     null;
+                    
+                    if (avatarUrl) {
+                        avatarElement.src = avatarUrl;
+                    } else {
+                        // Use gender-appropriate default avatar
+                        const gender = user.user_metadata?.gender || 'male';
+                        const defaultAvatar = gender === 'female' ? 
+                            '../../assets/images/avatars/avatar-f1.svg' : 
+                            '../../assets/images/avatars/avatar-m1.svg';
+                        avatarElement.src = defaultAvatar;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading user profile data:', error);
             }
         }
 
@@ -1399,6 +1464,12 @@
                         fallbackLogout(event);
                     }
                 });
+            }
+
+            // Avatar upload
+            const avatarUploadInput = document.getElementById('avatar-upload');
+            if (avatarUploadInput) {
+                avatarUploadInput.addEventListener('change', handleAvatarUpload);
             }
 
             // Weight input change for BMI calculation
@@ -1474,6 +1545,67 @@
             const bmi = weight / (heightInMeters * heightInMeters);
 
             return bmi.toFixed(1);
+        }
+
+        async function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file');
+                return;
+            }
+
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must be less than 5MB');
+                return;
+            }
+
+            try {
+                // Show loading state
+                const avatarElement = document.getElementById('main-avatar');
+                const originalSrc = avatarElement.src;
+                avatarElement.style.opacity = '0.5';
+
+                // Use profile manager to upload if available
+                if (window.GarciaProfileManager && typeof window.GarciaProfileManager.uploadAvatar === 'function') {
+                    const avatarUrl = await window.GarciaProfileManager.uploadAvatar(file);
+                    if (avatarUrl) {
+                        avatarElement.src = avatarUrl;
+                        avatarElement.style.opacity = '1';
+                        // Show success message
+                        showNotification('Avatar updated successfully!', 'success');
+                    }
+                } else {
+                    // Fallback: just show preview
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        avatarElement.src = e.target.result;
+                        avatarElement.style.opacity = '1';
+                        showNotification('Avatar preview loaded (not saved to server)', 'info');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            } catch (error) {
+                console.error('Error uploading avatar:', error);
+                showNotification('Failed to upload avatar', 'error');
+                avatarElement.style.opacity = '1';
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            // Simple notification - you can replace with a better UI component
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'error' ? 'danger' : type === 'success' ? 'success' : 'info'} position-fixed top-0 start-50 translate-middle-x mt-3`;
+            notification.style.zIndex = '9999';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
         }
 
         async function fallbackLogout(event) {

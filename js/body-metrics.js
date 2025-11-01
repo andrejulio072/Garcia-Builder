@@ -322,10 +322,15 @@
       }
 
       // Salvar dados
-      await saveBodyMetrics(entryData);
+      const saveResult = await saveBodyMetrics(entryData);
 
-      // Sucesso
-      showNotification('✅ Body metrics saved successfully!', 'success');
+      // Sucesso (diferenciar entre cloud e local-only)
+      if (saveResult && saveResult.savedViaSupabase) {
+        showNotification('✅ Body metrics saved successfully!', 'success');
+      } else {
+        // Saved locally only (offline/file://). Keep it non-blocking and informative.
+        showNotification('💾 Saved locally. Will sync when online.', 'warning');
+      }
 
       // Notify other parts of the app (e.g., Dashboard) that body metrics were saved
       try {

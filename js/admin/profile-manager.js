@@ -65,29 +65,48 @@
   // Initialize profile management
   const init = async () => {
     try {
+      console.log('🔥 ProfileManager init START');
+      
       // Check authentication
       currentUser = await getCurrentUser();
+      console.log('👤 Current user:', currentUser?.email || 'none');
+      
       if (!currentUser) {
+        console.warn('❌ No authenticated user, redirecting to login...');
         const ret = encodeURIComponent(window.location.pathname + window.location.search);
         window.location.href = `login.html?redirect=${ret}`;
         return;
       }
 
       // Load profile data
+      console.log('📥 Loading profile data...');
       await loadProfileData();
+      console.log('✅ Profile data loaded, keys:', Object.keys(profileData));
+      console.log('📊 profileData.basic exists?', !!profileData.basic);
+      console.log('📊 profileData.basic.full_name:', profileData.basic?.full_name);
+
+      // Verify critical structures exist
+      if (!profileData.basic) {
+        console.error('❌ CRITICAL: profileData.basic is null after loadProfileData!');
+        throw new Error('Failed to initialize profile basic data');
+      }
 
       // Initialize UI
+      console.log('🎨 Initializing UI...');
       initializeUI();
 
       // Set up event listeners
+      console.log('🔗 Setting up event listeners...');
       setupEventListeners();
 
       // Initial display update
+      console.log('🔄 Updating displays...');
       updateBodyMetricsDisplays();
 
-      console.log('Profile management initialized successfully');
+      console.log('✅ Profile management initialized successfully');
     } catch (error) {
-      console.error('Error initializing profile management:', error);
+      console.error('❌❌❌ Error initializing profile management:', error);
+      console.error('Error stack:', error.stack);
       showNotification('Error loading profile. Please refresh the page.', 'error');
     }
   };
@@ -1750,6 +1769,36 @@
       form.dataset.saving = 'true';
       console.log(`🔧 Starting save for section: ${section}`);
 
+      // DEFENSIVE CHECK: Ensure profileData structure exists
+      if (!profileData || typeof profileData !== 'object') {
+        console.error('❌ CRITICAL: profileData is not initialized!', profileData);
+        showNotification('Profile not loaded. Please refresh the page.', 'error');
+        form.dataset.saving = 'false';
+        return;
+      }
+
+      if (section === 'basic' && !profileData.basic) {
+        console.error('❌ CRITICAL: profileData.basic is undefined! Initializing...');
+        profileData.basic = {
+          id: currentUser?.id || null,
+          email: currentUser?.email || '',
+          full_name: '',
+          first_name: '',
+          last_name: '',
+          phone: '',
+          avatar_url: '',
+          birthday: '',
+          location: '',
+          bio: '',
+          goals: [],
+          experience_level: '',
+          trainer_id: null,
+          trainer_name: '',
+          joined_date: new Date().toISOString(),
+          last_login: new Date().toISOString()
+        };
+      }
+
       const formData = new FormData(form);
       const toNumber = (value) => {
         if (value === undefined || value === null || value === '') return '';
@@ -1763,12 +1812,24 @@
       if (section === 'basic') {
         const entries = Object.fromEntries(formData);
         console.log('📋 Basic form entries:', entries);
+        console.log('📊 profileData.basic BEFORE update:', JSON.stringify(profileData.basic));
         
+        // SAFE UPDATE: Check each property before setting
         Object.entries(entries).forEach(([key, value]) => {
-          if (key === 'goals') {
-            profileData.basic.goals = formData.getAll('goals');
-          } else {
-            profileData.basic[key] = value;
+          try {
+            if (key === 'goals') {
+              profileData.basic.goals = formData.getAll('goals');
+            } else {
+              // Ensure the property exists in the basic object
+              if (!(key in profileData.basic)) {
+                console.warn(`⚠️ Property ${key} not in profileData.basic schema, adding it...`);
+              }
+              profileData.basic[key] = value;
+              console.log(`  ✓ Set ${key} = ${value}`);
+            }
+          } catch (err) {
+            console.error(`❌ Error setting profileData.basic.${key}:`, err);
+            throw new Error(`Failed to set ${key}: ${err.message}`);
           }
         });
         
@@ -1781,18 +1842,35 @@
           }
         }
         
-        console.log('✅ Basic profileData updated:', profileData.basic);
+        console.log('✅ Basic profileData AFTER update:', JSON.stringify(profileData.basic));
         
       } else if (section === 'body_metrics') {
+        if (!profileData.body_metrics) {
+          console.error('❌ CRITICAL: profileData.body_metrics is undefined!');
+          showNotification('Body metrics not initialized. Please refresh.', 'error');
+          form.dataset.saving = 'false';
+          return;
+        }
+        
         Object.entries(Object.fromEntries(formData)).forEach(([key, value]) => {
           if (key.startsWith('measurements_')) {
             const measurementKey = key.replace('measurements_', '');
+            if (!profileData.body_metrics.measurements) {
+              profileData.body_metrics.measurements = {};
+            }
             profileData.body_metrics.measurements[measurementKey] = toNumber(value);
           } else {
             profileData.body_metrics[key] = toNumber(value);
           }
         });
       } else if (section === 'preferences') {
+        if (!profileData.preferences) {
+          console.error('❌ CRITICAL: profileData.preferences is undefined!');
+          showNotification('Preferences not initialized. Please refresh.', 'error');
+          form.dataset.saving = 'false';
+          return;
+        }
+        
         const units = formData.get('units');
         const language = formData.get('language');
         if (units) profileData.preferences.units = units;

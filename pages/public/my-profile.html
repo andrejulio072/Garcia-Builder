@@ -778,6 +778,82 @@
                         </div>
                     </form>
                 </div>
+
+                <div class="profile-card mt-4">
+                    <h3 class="card-title">
+                        <i class="fas fa-clipboard-check"></i>
+                        Saved Profile Overview
+                    </h3>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="info-display">
+                                <div class="info-label">Full Name</div>
+                                <div class="info-value" id="user-name">Not provided</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-display">
+                                <div class="info-label">Email</div>
+                                <div class="info-value" id="user-email">user@example.com</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-display">
+                                <div class="info-label">Phone</div>
+                                <div class="info-value" id="user-phone">Not provided</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-display">
+                                <div class="info-label">Experience Level</div>
+                                <div class="info-value" id="user-experience">Not specified</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-display">
+                                <div class="info-label">Birthday</div>
+                                <div class="info-value" id="user-birthday">N/A</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-display">
+                                <div class="info-label">Location</div>
+                                <div class="info-value" id="user-location">Not provided</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-display">
+                                <div class="info-label">Trainer</div>
+                                <div class="info-value" id="user-trainer">Not assigned</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-display">
+                                <div class="info-label">Fitness Goals</div>
+                                <div class="info-value" id="user-goals">No goals set</div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="info-display">
+                                <div class="info-label">Bio</div>
+                                <div class="info-value" id="user-bio">No bio added yet</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-display">
+                                <div class="info-label">Member Since</div>
+                                <div class="info-value" id="member-since">--</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-display">
+                                <div class="info-label">Last Login</div>
+                                <div class="info-value" id="last-login">--</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Body Metrics Tab -->
@@ -1344,7 +1420,7 @@
             try {
                 // Load user data and avatar
                 await loadUserProfileData();
-                
+
                 // Wait for profile manager
                 if (window.GarciaProfileManager) {
                     await window.GarciaProfileManager.init();
@@ -1365,7 +1441,7 @@
 
                 // Get user from Supabase
                 const { data: { user }, error } = await supabase.auth.getUser();
-                
+
                 if (error || !user) {
                     console.warn('User not found:', error);
                     return;
@@ -1374,18 +1450,18 @@
                 // Update profile header
                 const userName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'User';
                 const userEmail = user.email || '';
-                
+
                 const nameElement = document.getElementById('profile-name');
                 const emailElement = document.getElementById('profile-email');
-                
+
                 if (nameElement) nameElement.textContent = userName;
                 if (emailElement) emailElement.textContent = userEmail;
 
                 // Update member since date
                 if (user.created_at) {
-                    const memberSince = new Date(user.created_at).toLocaleDateString('en-US', { 
-                        year: 'numeric', 
-                        month: 'long' 
+                    const memberSince = new Date(user.created_at).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long'
                     });
                     const memberSinceElement = document.getElementById('member-since-display');
                     if (memberSinceElement) {
@@ -1397,17 +1473,17 @@
                 const avatarElement = document.getElementById('main-avatar');
                 if (avatarElement) {
                     // Try to get avatar from user metadata
-                    const avatarUrl = user.user_metadata?.avatar_url || 
+                    const avatarUrl = user.user_metadata?.avatar_url ||
                                      user.user_metadata?.picture ||
                                      null;
-                    
+
                     if (avatarUrl) {
                         avatarElement.src = avatarUrl;
                     } else {
                         // Use gender-appropriate default avatar
                         const gender = user.user_metadata?.gender || 'male';
-                        const defaultAvatar = gender === 'female' ? 
-                            '../../assets/images/avatars/avatar-f1.svg' : 
+                        const defaultAvatar = gender === 'female' ?
+                            '../../assets/images/avatars/avatar-f1.svg' :
                             '../../assets/images/avatars/avatar-m1.svg';
                         avatarElement.src = defaultAvatar;
                     }
@@ -1602,7 +1678,7 @@
             notification.style.zIndex = '9999';
             notification.textContent = message;
             document.body.appendChild(notification);
-            
+
             setTimeout(() => {
                 notification.remove();
             }, 3000);

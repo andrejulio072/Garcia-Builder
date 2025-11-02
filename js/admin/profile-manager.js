@@ -364,7 +364,10 @@
   // Load data from localStorage as fallback
   const loadFromLocalStorage = () => {
     try {
-      const savedProfile = localStorage.getItem(`garcia_profile_${currentUser.id}`);
+      const storageKey = currentUser?.id
+        ? `garcia_profile_${currentUser.id}`
+        : 'garcia_profile_guest';
+      const savedProfile = localStorage.getItem(storageKey);
       if (savedProfile) {
         const parsed = JSON.parse(savedProfile);
         profileData = { ...profileData, ...parsed };
@@ -738,8 +741,11 @@
   // Save to localStorage
   const saveToLocalStorage = () => {
     try {
+      const storageKey = currentUser?.id
+        ? `garcia_profile_${currentUser.id}`
+        : 'garcia_profile_guest';
       localStorage.setItem(
-        `garcia_profile_${currentUser.id}`,
+        storageKey,
         JSON.stringify(profileData)
       );
     } catch (error) {
@@ -793,6 +799,8 @@
       'user-bio': profileData.basic.bio || 'No bio added yet',
       'user-goals': profileData.basic.goals.join(', ') || 'No goals set',
       'user-experience': profileData.basic.experience_level || 'Not specified',
+  'user-birthday': formatDate(profileData.basic.birthday),
+  'user-trainer': profileData.basic.trainer_name || 'Not assigned',
       'member-since': formatDate(profileData.basic.joined_date),
       'member-since-display': formatDate(profileData.basic.joined_date),
       'last-login': formatDate(profileData.basic.last_login),

@@ -948,9 +948,12 @@
       console.log(`🛑 Form ${form.id} submit event captured!`);
       e.preventDefault();
       e.stopPropagation();
-      e.stopImmediatePropagation();
+      if (e.stopImmediatePropagation) {
+        e.stopImmediatePropagation();
+      }
       console.log(`🛑 Event propagation stopped`);
       handleFormSubmit(e);
+      return false; // Extra safety
     }, { capture: true });
     
     form.dataset.submitBound = 'true';
@@ -1756,13 +1759,6 @@
 
   // Handle form submit
   const handleFormSubmit = async (event) => {
-    // CRITICAL: FORCE PREVENT DEFAULT IMMEDIATELY
-    if (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-    }
-    
     const form = event?.target || event?.currentTarget;
     
     // BRUTAL ERROR TRACKING - Log EVERYTHING

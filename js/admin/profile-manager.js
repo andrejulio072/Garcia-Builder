@@ -905,14 +905,20 @@
 
   // Update dashboard stats
   const updateDashboardStats = () => {
+    // DEFENSIVE: Skip if activity data not initialized
+    if (!profileData.activity || typeof profileData.activity !== 'object') {
+      console.warn('⚠️ profileData.activity not initialized, skipping dashboard stats update');
+      return;
+    }
+    
     const stats = {
-      'workouts-completed': profileData.activity.workouts_completed,
-      'current-streak': profileData.activity.streak_days,
-      'total-sessions': profileData.activity.total_sessions,
-      'current-weight': profileData.body_metrics.current_weight ?
-        `${profileData.body_metrics.current_weight} ${profileData.preferences.units === 'metric' ? 'kg' : 'lbs'}` : 'Not set',
-      'target-weight': profileData.body_metrics.target_weight ?
-        `${profileData.body_metrics.target_weight} ${profileData.preferences.units === 'metric' ? 'kg' : 'lbs'}` : 'Not set',
+      'workouts-completed': profileData.activity.workouts_completed || 0,
+      'current-streak': profileData.activity.streak_days || 0,
+      'total-sessions': profileData.activity.total_sessions || 0,
+      'current-weight': profileData.body_metrics?.current_weight ?
+        `${profileData.body_metrics.current_weight} ${profileData.preferences?.units === 'metric' ? 'kg' : 'lbs'}` : 'Not set',
+      'target-weight': profileData.body_metrics?.target_weight ?
+        `${profileData.body_metrics.target_weight} ${profileData.preferences?.units === 'metric' ? 'kg' : 'lbs'}` : 'Not set',
       'bmi': calculateBMI() || 'Not available'
     };
 
@@ -930,10 +936,26 @@
       console.warn('ProfileManager: form missing data-profile-section attribute; skipping submit binding.', form.id || form);
       return;
     }
-    if (form.dataset.submitBound === 'true') return;
-    form.addEventListener('submit', handleFormSubmit);
+    if (form.dataset.submitBound === 'true') {
+      console.log(`ℹ️ Form ${form.id} already bound, skipping`);
+      return;
+    }
+    
+    console.log(`🔗 Binding submit handler to form: ${form.id}`);
+    
+    // CRITICAL: Use capturing phase to ensure we catch the event BEFORE any other handlers
+    form.addEventListener('submit', (e) => {
+      console.log(`🛑 Form ${form.id} submit event captured!`);
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      console.log(`🛑 Event propagation stopped`);
+      handleFormSubmit(e);
+    }, { capture: true });
+    
     form.dataset.submitBound = 'true';
     form.setAttribute('novalidate', 'novalidate');
+    console.log(`✅ Form ${form.id} submit handler bound successfully`);
   }
 
   // Setup forms
@@ -1734,6 +1756,13 @@
 
   // Handle form submit
   const handleFormSubmit = async (event) => {
+    // CRITICAL: FORCE PREVENT DEFAULT IMMEDIATELY
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+    }
+    
     const form = event?.target || event?.currentTarget;
     
     // BRUTAL ERROR TRACKING - Log EVERYTHING
@@ -1742,28 +1771,27 @@
       hasForm: !!form,
       formId: form?.id,
       section: form?.dataset?.profileSection,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      defaultPrevented: event?.defaultPrevented
     });
 
     try {
-      event?.preventDefault?.();
-
       if (!form) {
         console.error('❌ CRITICAL: No form element in handleFormSubmit');
         showNotification('Internal error: form not found', 'error');
-        return;
+        return false; // Return false to prevent default
       }
 
       const section = form.dataset.profileSection;
       if (!section) {
         console.error('❌ CRITICAL: Form missing data-profile-section', form.id || form);
         showNotification('Internal error: section not defined', 'error');
-        return;
+        return false;
       }
 
       if (form.dataset.saving === 'true') {
         console.log(`⚠️ Skipping duplicate submit for section "${section}"`);
-        return;
+        return false;
       }
 
       form.dataset.saving = 'true';
@@ -1774,7 +1802,7 @@
         console.error('❌ CRITICAL: profileData is not initialized!', profileData);
         showNotification('Profile not loaded. Please refresh the page.', 'error');
         form.dataset.saving = 'false';
-        return;
+        return false;
       }
 
       if (section === 'basic' && !profileData.basic) {
@@ -1962,6 +1990,10 @@
         console.log(`🔓 Released lock on form: ${form.id}`);
       }
     }
+    
+    // CRITICAL: Return false to prevent any default form submission
+    console.log('🛑 handleFormSubmit returning false to prevent page reload');
+    return false;
   };
 
   // Handle weight change

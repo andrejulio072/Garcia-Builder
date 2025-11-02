@@ -265,24 +265,20 @@
         </div>
     </div>
 
-    <!-- File Protocol Warning (only shows on file://) -->
-    <div id="file-protocol-warning" style="display: none; position: fixed; top: 60px; left: 50%; transform: translateX(-50%); z-index: 9999; max-width: 90%; width: 600px;">
-        <div class="alert alert-warning alert-dismissible fade show shadow-lg" role="alert" style="border-left: 4px solid #ffc107;">
+    <!-- File Protocol Hint (only shows on file://) -->
+    <div id="file-protocol-warning" class="d-none" style="position: fixed; top: 70px; left: 50%; transform: translateX(-50%); z-index: 9999; max-width: 92%; width: 620px;">
+        <div class="alert alert-info alert-dismissible fade show shadow" role="alert" style="border-left: 4px solid #0d6efd;">
             <div class="d-flex align-items-start">
-                <i class="fas fa-exclamation-triangle me-3 mt-1" style="font-size: 1.5rem;"></i>
+                <i class="fas fa-lightbulb me-3 mt-1" style="font-size: 1.5rem;"></i>
                 <div>
                     <h5 class="alert-heading mb-2">
-                        <i class="fas fa-folder-open me-2"></i>Running via File Protocol
+                        <i class="fas fa-folder-open me-2"></i>Running directly from your computer
                     </h5>
                     <p class="mb-2">
-                        <strong>Note:</strong> You're opening this page directly from your file system (<code>file://</code>).
+                        This login page works normally via <code>file://</code>. Social providers may require a local server in some browsers.
                     </p>
-                    <ul class="mb-2 small">
-                        <li><strong>Email/Password login:</strong> ✅ Works</li>
-                        <li><strong>OAuth (Google/Facebook):</strong> ❌ Won't work (requires http/https)</li>
-                    </ul>
                     <p class="mb-0 small text-muted">
-                        <strong>Recommended:</strong> Use a local server (<code>python -m http.server 8000</code>) for full functionality.
+                        Quick tip: if a provider refuses the redirect, start a local server (<code>python -m http.server 8000</code>) or keep using email and password.
                     </p>
                 </div>
             </div>
@@ -293,18 +289,28 @@
     <script>
         // Show warning if using file:// protocol
         if (window.location.protocol === 'file:') {
-            document.getElementById('file-protocol-warning').style.display = 'block';
-            
-            // Also disable OAuth buttons
-            setTimeout(() => {
-                const oauthButtons = document.querySelectorAll('#login-with-google, #facebook-btn-login, #register-with-google, #facebook-btn-register');
-                oauthButtons.forEach(btn => {
-                    btn.disabled = true;
-                    btn.title = 'OAuth not available on file:// protocol';
-                    btn.style.opacity = '0.5';
-                    btn.style.cursor = 'not-allowed';
-                });
-            }, 100);
+            const warningBanner = document.getElementById('file-protocol-warning');
+            if (warningBanner) {
+                warningBanner.classList.remove('d-none');
+            }
+
+            // Keep OAuth buttons active but provide a gentle reminder before first use
+            const oauthButtons = document.querySelectorAll('#login-with-google, #facebook-btn-login, #register-with-google, #facebook-btn-register');
+            oauthButtons.forEach(btn => {
+                if (!btn) return;
+
+                btn.title = 'OAuth may require a local server in some browsers when running via file://';
+                const reminder = () => {
+                    const message = 'If the social provider blocks file:// redirects, start a local server and try again.';
+                    if (window.APP_NOTIFIER?.info) {
+                        window.APP_NOTIFIER.info(message, { icon: 'fa-circle-info' });
+                    } else {
+                        console.info(message);
+                    }
+                };
+
+                btn.addEventListener('click', reminder, { once: true });
+            });
         }
     </script>
 

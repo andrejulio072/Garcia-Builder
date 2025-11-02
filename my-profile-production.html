@@ -1,0 +1,1522 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="dashboard.profile_title">My Profile - Garcia Builder</title>
+
+    <script src="../../js/env.js?v=20251028"></script>
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Site styles -->
+    <link rel="stylesheet" href="../../css/global.css?v=20251028">
+    <link rel="stylesheet" href="../../css/layout-fixes.css?v=20251028">
+    <link rel="stylesheet" href="../../css/components/navbar-component.css?v=20251028">
+    <link rel="stylesheet" href="../../css/components/enhanced-navbar.css?v=20251028">
+
+    <!-- Component preload -->
+    <link rel="preload" as="script" href="../../js/utils/component-loader-v3-simplified.js?v=20251029" crossorigin="anonymous">
+    <link rel="preload" as="fetch" href="../../components/navbar.html" crossorigin="anonymous">
+    <link rel="preload" as="fetch" href="../../components/footer.html" crossorigin="anonymous">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .profile-container {
+            padding-top: 120px;
+            min-height: 100vh;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, rgba(246, 200, 78, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(246, 200, 78, 0.3);
+            text-align: center;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #F6C84E;
+            object-fit: cover;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .main-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(246, 200, 78, 0.5);
+        }
+
+        .avatar-upload-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #F6C84E;
+            color: #000;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .avatar-upload-overlay:hover {
+            background: #FFD700;
+            transform: scale(1.1);
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .profile-card:hover {
+            border-color: rgba(246, 200, 78, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            color: #F6C84E;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .form-label {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Ensure all form text is visible */
+        .text-muted {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        /* Fix for input text color */
+        input.form-control,
+        textarea.form-control {
+            color: #fff !important;
+        }
+
+        input.form-control::-webkit-input-placeholder,
+        textarea.form-control::-webkit-input-placeholder {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        input.form-control::-moz-placeholder,
+        textarea.form-control::-moz-placeholder {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff !important;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #F6C84E;
+            box-shadow: 0 0 0 0.2rem rgba(246, 200, 78, 0.25);
+            color: #fff !important;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Fix for select options visibility */
+        .form-select option {
+            background: #1a1a1a !important;
+            color: #fff !important;
+            padding: 8px 12px;
+        }
+
+        .form-select option:checked,
+        .form-select option:hover {
+            background: #F6C84E !important;
+            color: #000 !important;
+        }
+
+        /* Ensure text is visible in all states */
+        select.form-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
+        }
+
+        .form-check {
+            margin-bottom: 0.5rem;
+        }
+
+        .form-check-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-check-label {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .form-check-input:checked {
+            background-color: #F6C84E;
+            border-color: #F6C84E;
+        }
+
+        /* Fix for button text */
+        .btn-primary {
+            background: linear-gradient(135deg, #F6C84E 0%, #ff6b35 100%);
+            border: none;
+            color: #000 !important;
+            font-weight: 600;
+        }
+
+        /* Tabs: base color only (visual state handled below around line 420) */
+        .tab-btn { color: rgba(255, 255, 255, 0.8); }
+        /* Remove conflicting yellow text style so active state below is visible */
+        .tab-btn.active { color: #000; }
+
+        .form-check-input:checked {
+            background-color: #F6C84E;
+            border-color: #F6C84E;
+        }
+
+        .form-check-label {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #F6C84E, #FFD700);
+            border: none;
+            color: #000;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(246, 200, 78, 0.3);
+            color: #000;
+        }
+
+        .btn-secondary-custom {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary-custom:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        .info-display {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .metric-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #F6C84E;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        /* Auto-calculated metrics styling */
+        .metric-card[data-category] {
+            border: 2px solid rgba(246, 200, 78, 0.3);
+        }
+
+        .metric-card[data-category="normal"] {
+            border-color: rgba(34, 197, 94, 0.5);
+        }
+
+        .metric-card[data-category="overweight"] {
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .metric-card[data-category="obese"] {
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .metric-card[data-category="underweight"] {
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        /* Auto-calculation indicator */
+        .metric-card[data-metric="bmi"]::after,
+        .metric-card[data-metric="body-fat"]::after,
+        .metric-card[data-metric="muscle-mass"]::after,
+        .metric-card[data-metric="calories"]::after,
+        .metric-card[data-metric="hydration"]::after,
+        .metric-card[data-metric="progress"]::after,
+        .metric-card[data-metric="fitness-category"]::after {
+            content: "AUTO";
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(246, 200, 78, 0.2);
+            color: #F6C84E;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* Advanced metrics styling */
+        .metric-card[data-metric="calories"] {
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .metric-card[data-metric="hydration"] {
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .metric-card[data-metric="progress"] {
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .metric-card[data-metric="fitness-category"] {
+            border-color: rgba(236, 72, 153, 0.3);
+        }
+
+        .metric-card {
+            position: relative;
+        }
+
+        .progress-photos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .progress-photo {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .progress-photo:hover {
+            transform: scale(1.05);
+        }
+
+        .progress-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-date {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: #fff;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(246, 200, 78, 0.5);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: #F6C84E;
+            background: rgba(246, 200, 78, 0.05);
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: #F6C84E;
+            margin-bottom: 1rem;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.92);
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            outline: 0;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #F6C84E, #FFD700);
+            color: #000;
+            border-color: transparent;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        .tab-btn:focus-visible { box-shadow: 0 0 0 3px rgba(246,200,78,.45); }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                padding-top: 80px;
+            }
+
+            .profile-header {
+                padding: 1.5rem 1rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .profile-info {
+                align-items: center;
+            }
+
+            .main-avatar {
+                width: 120px;
+                height: 120px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1rem;
+            }
+
+            .tab-buttons {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .tab-button {
+                flex: 1;
+                min-width: 120px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .save-button {
+                width: 100%;
+                margin-top: 1rem;
+            }
+
+            /* Navbar adjustments for profile page */
+            .navbar .nav {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 4px;
+            }
+
+            .navbar .nav a {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tab-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .tab-button {
+                width: 100%;
+                max-width: none;
+            }
+
+            .profile-header {
+                padding: 1rem;
+            }
+
+            .main-avatar {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        .alert-custom {
+            background: rgba(246, 200, 78, 0.1);
+            border: 1px solid rgba(246, 200, 78, 0.3);
+            color: #F6C84E;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-action-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1.75rem;
+        }
+
+        .btn-profile-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-radius: 12px;
+            padding: 0.75rem 1.6rem;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-profile-action i {
+            font-size: 1rem;
+        }
+
+        .btn-profile-action.dashboard {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .btn-profile-action.dashboard:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .btn-profile-action.support {
+            background: linear-gradient(135deg, #F6C84E, #ff6b35);
+            color: #000;
+            box-shadow: 0 2px 8px rgba(246, 200, 78, 0.25);
+        }
+
+        .btn-profile-action.support:hover {
+            box-shadow: 0 12px 30px rgba(246, 200, 78, 0.4);
+            color: #000;
+        }
+
+        .btn-profile-action.logout {
+            background: rgba(255, 99, 99, 0.18);
+            border: 1px solid rgba(255, 99, 99, 0.35);
+            color: #ffc5c5;
+        }
+
+        .btn-profile-action.logout:hover {
+            background: rgba(255, 99, 99, 0.28);
+            color: #fff;
+        }
+    </style>
+</head>
+<body class="profile-page">
+    <div data-component="navbar" data-variant="dashboard" data-theme="dark"></div>
+
+    <main class="profile-container">
+        <div class="container">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="position-relative d-inline-block">
+                    <img id="main-avatar" src="https://via.placeholder.com/150/333/fff?text=U" alt="Profile Picture" class="main-avatar">
+                    <div class="avatar-upload-overlay" onclick="document.getElementById('avatar-upload').click()">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+                </div>
+                <h1 id="profile-name" data-i18n="dashboard.your_profile">Your Profile</h1>
+                <p class="lead" id="profile-email">user@example.com</p>
+                <p class="text-muted">Member since <span id="member-since-display">2024</span></p>
+                <div class="profile-action-bar">
+                    <a class="btn-profile-action dashboard" href="dashboard.html" data-gb-nav="pages/public/dashboard.html">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span data-i18n="dashboard.dashboard_cta">Back to Dashboard</span>
+                    </a>
+                    <a class="btn-profile-action support" href="../../contact.html" data-gb-nav="contact.html">
+                        <i class="fas fa-comments"></i>
+                        <span data-i18n="dashboard.get_support">Get Support</span>
+                    </a>
+                    <button type="button" id="logout-btn" class="btn-profile-action logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span data-i18n="dashboard.logout">Logout</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="basic">
+                    <i class="fas fa-user"></i> Basic Info
+                </button>
+                <button class="tab-btn" data-tab="metrics">
+                    <i class="fas fa-weight"></i> Body Metrics
+                </button>
+                <button class="tab-btn" data-tab="progress">
+                    <i class="fas fa-chart-line"></i> Progress
+                </button>
+                <button class="tab-btn" data-tab="goals">
+                    <i class="fas fa-target"></i> Goals
+                </button>
+                <button class="tab-btn" data-tab="macros">
+                    <i class="fas fa-utensils"></i> Macros
+                 </button>
+                <button class="tab-btn" data-tab="habits">
+                    <i class="fas fa-check-circle"></i> Habits
+                </button>
+                <button class="tab-btn" data-tab="workouts">
+                    <i class="fas fa-dumbbell"></i> Workouts
+                </button>
+                <button class="tab-btn" data-tab="meetings">
+                    <i class="fas fa-video"></i> Meetings
+                </button>
+                <button class="tab-btn" data-tab="settings">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </div>
+
+            <!-- Basic Info Tab -->
+            <div class="tab-content active" id="basic-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-user-edit"></i>
+                        <span data-i18n="dashboard.personal_information">Personal Information</span>
+                    </h3>
+
+                    <form id="basic-info-form" data-profile-section="basic">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="full_name" class="form-label" data-i18n="dashboard.full_name">Full Name</label>
+                                <input type="text" class="form-control" id="full_name" name="full_name" data-i18n-placeholder="dashboard.full_name_placeholder" placeholder="Your full name">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label" data-i18n="dashboard.phone_number">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" data-i18n-placeholder="dashboard.phone_placeholder" placeholder="+1 (555) 123-4567">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="birthday" class="form-label">Birthday</label>
+                                <input type="date" class="form-control" id="birthday" name="birthday">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="location" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="location" name="location" placeholder="City, Country">
+                            </div>
+                            <div class="col-12">
+                                <label for="bio" class="form-label">Bio</label>
+                                <textarea class="form-control" id="bio" name="bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="experience_level" class="form-label">Experience Level</label>
+                                <select class="form-select" id="experience_level" name="experience_level">
+                                    <option value="">Select your level</option>
+                                    <option value="beginner">Beginner</option>
+                                    <option value="intermediate">Intermediate</option>
+                                    <option value="advanced">Advanced</option>
+                                    <option value="expert">Expert</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="trainer_name" class="form-label">Your Trainer</label>
+                                <input type="text" class="form-control" id="trainer_name" name="trainer_name" placeholder="Assigned coach name">
+                                <small class="text-muted">Visible to you and your trainer</small>
+                            </div>
+                            <div class="col-md-6 d-none">
+                                <label for="trainer_id" class="form-label">Trainer ID</label>
+                                <input type="text" class="form-control" id="trainer_id" name="trainer_id" placeholder="uuid">
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h5 class="text-light mb-3">Fitness Goals</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_weight_loss" name="goals" value="Weight Loss">
+                                        <label class="form-check-label" for="goal_weight_loss">Weight Loss</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_muscle_gain" name="goals" value="Muscle Gain">
+                                        <label class="form-check-label" for="goal_muscle_gain">Muscle Gain</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_strength" name="goals" value="Strength">
+                                        <label class="form-check-label" for="goal_strength">Strength Training</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_endurance" name="goals" value="Endurance">
+                                        <label class="form-check-label" for="goal_endurance">Endurance</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_flexibility" name="goals" value="Flexibility">
+                                        <label class="form-check-label" for="goal_flexibility">Flexibility</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_general" name="goals" value="General Health">
+                                        <label class="form-check-label" for="goal_general">General Health</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Save Basic Info
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Body Metrics Tab -->
+            <div class="tab-content" id="metrics-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-weight"></i>
+                        Body Measurements
+                    </h3>
+
+                    <!-- Current Metrics Display -->
+                    <div class="metrics-grid">
+                        <div class="metric-card" data-metric="current-weight">
+                            <div class="metric-number metric-value" id="display-weight">--</div>
+                            <div class="metric-label">Current Weight</div>
+                        </div>
+                        <div class="metric-card" data-metric="height">
+                            <div class="metric-number metric-value" id="display-height">--</div>
+                            <div class="metric-label">Height</div>
+                        </div>
+                        <div class="metric-card" data-metric="bmi">
+                            <div class="metric-number metric-value" id="display-bmi">38.4</div>
+                            <div class="metric-label">BMI</div>
+                        </div>
+                        <div class="metric-card" data-metric="body-fat">
+                            <div class="metric-number metric-value" id="display-body-fat">--%</div>
+                            <div class="metric-label">Body Fat</div>
+                        </div>
+                        <div class="metric-card" data-metric="muscle-mass">
+                            <div class="metric-number metric-value" id="display-muscle-mass">--</div>
+                            <div class="metric-label">Muscle Mass</div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Metrics Display -->
+                    <h4 class="mt-4 mb-3">
+                        <i class="fas fa-chart-pie"></i>
+                        Advanced Metrics
+                    </h4>
+                    <div class="metrics-grid">
+                        <div class="metric-card" data-metric="calories">
+                            <div class="metric-number metric-value">--</div>
+                            <div class="metric-label">Daily Calories</div>
+                        </div>
+                        <div class="metric-card" data-metric="hydration">
+                            <div class="metric-number metric-value">--</div>
+                            <div class="metric-label">Daily Water</div>
+                        </div>
+                        <div class="metric-card" data-metric="progress">
+                            <div class="metric-number metric-value">--</div>
+                            <div class="metric-label">Progress to Goal</div>
+                        </div>
+                        <div class="metric-card" data-metric="fitness-category">
+                            <div class="metric-number metric-value">--</div>
+                            <div class="metric-label">Fitness Level</div>
+                        </div>
+                    </div>
+
+                    <!-- Body Measurements Display -->
+                    <h4 class="mt-4 mb-3">
+                        <i class="fas fa-ruler"></i>
+                        Body Measurements
+                    </h4>
+                    <div class="metrics-grid">
+                        <div class="metric-card" data-metric="chest">
+                            <div class="metric-number metric-value">100</div>
+                            <div class="metric-label">Chest</div>
+                        </div>
+                        <div class="metric-card" data-metric="waist">
+                            <div class="metric-number metric-value">94</div>
+                            <div class="metric-label">Waist</div>
+                        </div>
+                        <div class="metric-card" data-metric="hips">
+                            <div class="metric-number metric-value">115</div>
+                            <div class="metric-label">Hips</div>
+                        </div>
+                        <div class="metric-card" data-metric="arms">
+                            <div class="metric-number metric-value">35</div>
+                            <div class="metric-label">Arms</div>
+                        </div>
+                        <div class="metric-card" data-metric="thighs">
+                            <div class="metric-number metric-value">55</div>
+                            <div class="metric-label">Thighs</div>
+                        </div>
+                    </div>
+
+                    <form id="body-metrics-form" data-profile-section="body_metrics">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="current_weight" class="form-label">Current Weight</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="current_weight" name="current_weight" step="0.1" placeholder="70">
+                                    <span class="input-group-text">kg</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="height" class="form-label">Height</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="height" name="height" step="0.1" placeholder="175">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="target_weight" class="form-label">Target Weight</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="target_weight" name="target_weight" step="0.1" placeholder="65">
+                                    <span class="input-group-text">kg</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="body_fat_percentage" class="form-label">Body Fat %</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="body_fat_percentage" name="body_fat_percentage" step="0.1" placeholder="15">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="muscle_mass" class="form-label">Muscle Mass</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="muscle_mass" name="muscle_mass" step="0.1" placeholder="30">
+                                    <span class="input-group-text">kg</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurements_chest" class="form-label">Chest</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="measurements_chest" name="measurements_chest" step="0.1" placeholder="100">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurements_waist" class="form-label">Waist</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="measurements_waist" name="measurements_waist" step="0.1" placeholder="80">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurements_hips" class="form-label">Hips</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="measurements_hips" name="measurements_hips" step="0.1" placeholder="95">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurements_arms" class="form-label">Arms</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="measurements_arms" name="measurements_arms" step="0.1" placeholder="35">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurements_thighs" class="form-label">Thighs</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="measurements_thighs" name="measurements_thighs" step="0.1" placeholder="55">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Save Measurements
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Progress Tab -->
+            <div class="tab-content" id="progress-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-camera"></i>
+                        Progress Photos
+                    </h3>
+
+                    <div class="upload-area" onclick="document.getElementById('photo-upload').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h5>Upload Progress Photo</h5>
+                        <p class="text-muted mb-0">Click to select or drag and drop your photo</p>
+                        <input type="file" id="photo-upload" accept="image/*" style="display: none;">
+                    </div>
+
+                    <div id="progress-photos-container" class="progress-photos">
+                        <!-- Progress photos will be dynamically inserted here -->
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-line"></i>
+                        Weight History
+                    </h3>
+
+                    <div id="weight-chart-container">
+                        <div class="alert-custom" id="weight-chart-empty">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Start logging your weight to see your progress chart here.
+                        </div>
+                        <canvas id="weight-history-canvas" height="120" style="display:none"></canvas>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-percent"></i>
+                        Body Fat % History
+                    </h3>
+
+                    <div id="bodyfat-chart-container">
+                        <div class="alert-custom" id="bodyfat-chart-empty">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Start logging your body fat to see your trend here.
+                        </div>
+                        <canvas id="bodyfat-history-canvas" height="120" style="display:none"></canvas>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-ruler-horizontal"></i>
+                        Waist History
+                    </h3>
+                    <div id="waist-chart-container">
+                        <div class="alert-custom" id="waist-chart-empty">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Log your waist measurement to see your trend here.
+                        </div>
+                        <canvas id="waist-history-canvas" height="120" style="display:none"></canvas>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-dumbbell"></i>
+                        Muscle Mass History
+                    </h3>
+                    <div id="muscle-chart-container">
+                        <div class="alert-custom" id="muscle-chart-empty">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Log your muscle mass to see your trend here.
+                        </div>
+                        <canvas id="muscle-history-canvas" height="120" style="display:none"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Goals Tab -->
+            <div class="tab-content" id="goals-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-target"></i>
+                        My Goals & Achievements
+                    </h3>
+
+                    <div id="goals-display">
+                        <div class="alert-custom">
+                            <i class="fas fa-bullseye me-2"></i>
+                            Set your fitness goals in the Basic Info tab to track your progress here.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settings-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-cog"></i>
+                        Preferences & Settings
+                    </h3>
+
+                    <form id="preferences-form" data-profile-section="preferences">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="units" class="form-label">Unit System</label>
+                                <select class="form-select" id="units" name="units">
+                                    <option value="metric">Metric (kg, cm)</option>
+                                    <option value="imperial">Imperial (lbs, ft/in)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="language" class="form-label">Language</label>
+                                <select class="form-select" id="language" name="language">
+                                    <option value="en">English</option>
+                                    <option value="pt">Português</option>
+                                    <option value="es">Español</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h5 class="text-light mb-3">Notifications</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="email_notifications" name="email_notifications" checked>
+                                <label class="form-check-label" for="email_notifications">Email notifications</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="workout_reminders" name="workout_reminders" checked>
+                                <label class="form-check-label" for="workout_reminders">Workout reminders</label>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h5 class="text-light mb-3">Privacy</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="profile_visible" name="profile_visible" checked>
+                                <label class="form-check-label" for="profile_visible">Make profile visible to other users</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="progress_visible" name="progress_visible">
+                                <label class="form-check-label" for="progress_visible">Share progress photos publicly</label>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Save Preferences
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Macros Tab -->
+            <div class="tab-content" id="macros-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-balance-scale"></i>
+                        Macronutrients
+                    </h3>
+
+                    <form id="macros-form" data-profile-section="macros">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="macros_goal" class="form-label">Goal</label>
+                                <select class="form-select" id="macros_goal" name="goal">
+                                    <option value="maintain">Maintain</option>
+                                    <option value="cut">Cut (fat loss)</option>
+                                    <option value="bulk">Bulk (gain)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="macros_activity" class="form-label">Activity Level</label>
+                                <select class="form-select" id="macros_activity" name="activity_level">
+                                    <option value="sedentary">Sedentary (1.2)</option>
+                                    <option value="light">Lightly Active (1.375)</option>
+                                    <option value="moderate">Moderately Active (1.55)</option>
+                                    <option value="very">Very Active (1.725)</option>
+                                    <option value="athlete">Athlete (1.9)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="macros_calories" class="form-label">Daily Calories</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="macros_calories" name="calories" step="10" placeholder="2000">
+                                    <button class="btn btn-secondary-custom" type="button" id="btn-auto-calc-calories">Auto</button>
+                                </div>
+                                <small class="text-muted">Auto uses your weight/height + activity</small>
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <h5 class="text-light mb-2"><i class="fas fa-sliders-h me-2"></i> Macro Split (%)</h5>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="macros_protein_pct" class="form-label">Protein %</label>
+                                        <input type="number" class="form-control" id="macros_protein_pct" name="protein_pct" min="0" max="100" step="1" placeholder="30">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="macros_carbs_pct" class="form-label">Carbs %</label>
+                                        <input type="number" class="form-control" id="macros_carbs_pct" name="carbs_pct" min="0" max="100" step="1" placeholder="40">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="macros_fats_pct" class="form-label">Fats %</label>
+                                        <input type="number" class="form-control" id="macros_fats_pct" name="fats_pct" min="0" max="100" step="1" placeholder="30">
+                                    </div>
+                                </div>
+                                <small class="text-muted">Total must be 100%</small>
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <h5 class="text-light mb-2"><i class="fas fa-scale-balanced me-2"></i> Targets (per day)</h5>
+                                <div class="metrics-grid">
+                                    <div class="metric-card" data-metric="protein-g">
+                                        <div class="metric-number" id="display-protein-g">--g</div>
+                                        <div class="metric-label">Protein</div>
+                                    </div>
+                                    <div class="metric-card" data-metric="carbs-g">
+                                        <div class="metric-number" id="display-carbs-g">--g</div>
+                                        <div class="metric-label">Carbs</div>
+                                    </div>
+                                    <div class="metric-card" data-metric="fats-g">
+                                        <div class="metric-number" id="display-fats-g">--g</div>
+                                        <div class="metric-label">Fats</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Save Macros
+                            </button>
+                        </div>
+                    </form>
+
+                    <div id="macros-tip" class="alert-custom mt-3" style="display:none">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Tip: set weight, height and target weight in Body Metrics to improve auto-calculation.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Habits Tab -->
+            <div class="tab-content" id="habits-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-list-check"></i>
+                        Habits & Routines
+                    </h3>
+
+                    <form id="habits-form" data-profile-section="habits">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="habits_water" class="form-label">Water (ml)</label>
+                                <input type="number" class="form-control" id="habits_water" name="water_ml" placeholder="2500" min="0" step="50">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="habits_steps" class="form-label">Steps</label>
+                                <input type="number" class="form-control" id="habits_steps" name="steps" placeholder="8000" min="0" step="100">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="habits_sleep" class="form-label">Sleep (hours)</label>
+                                <input type="number" class="form-control" id="habits_sleep" name="sleep_hours" placeholder="7.5" min="0" max="24" step="0.1">
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="habits_workout" name="workout">
+                                    <label class="form-check-label" for="habits_workout">Workout done</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="habits_meditation" name="meditation">
+                                    <label class="form-check-label" for="habits_meditation">Meditation</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="habits_stretch" name="stretch">
+                                    <label class="form-check-label" for="habits_stretch">Stretching</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Save Today
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="metrics-grid mt-4">
+                        <div class="metric-card">
+                            <div class="metric-number" id="streak-workout">0</div>
+                            <div class="metric-label">Workout Streak (days)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number" id="streak-meditation">0</div>
+                            <div class="metric-label">Meditation Streak (days)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number" id="streak-stretch">0</div>
+                            <div class="metric-label">Stretching Streak (days)</div>
+                        </div>
+                    </div>
+
+                    <h5 class="text-light mt-4 mb-2"><i class="fas fa-shoe-prints me-2"></i> Steps (Last 7 days)</h5>
+                    <div style="height:180px">
+                        <canvas id="habits-steps-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workouts Tab -->
+            <div class="tab-content" id="workouts-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-dumbbell"></i>
+                        Workouts
+                    </h3>
+                    <div class="alert-custom">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Your assigned workouts and training blocks will appear here. (Coming soon)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Meetings Tab -->
+            <div class="tab-content" id="meetings-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-video"></i>
+                        Meetings & Check-ins
+                    </h3>
+                    <div class="alert-custom">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Schedule calls and review previous check-ins here. (Coming soon)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div data-component="footer" data-theme="dark"></div>
+    <a class="whatsapp-float" href="https://wa.me/447508497586" target="_blank" rel="noopener" aria-label="Contact via WhatsApp">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../js/core/supabase.js"></script>
+    <script src="../../js/utils/component-loader-v3-simplified.js?v=20251029"></script>
+    <script src="../../js/email-verification-guard.js"></script>
+    <script src="../../js/core/auth.js"></script>
+    <script src="../../js/auth-guard.js"></script>
+    <script src="../../js/components/navigation-manager.js"></script>
+    <script src="../../js/admin/profile-manager.js"></script>
+    <script defer src="../../js/body-metrics.js"></script>
+
+    <script>
+        // Profile page specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof AuthSystem !== 'undefined' && typeof AuthSystem.requireAuth === 'function') {
+                const allowed = AuthSystem.requireAuth();
+                if (!allowed) {
+                    return;
+                }
+            }
+
+            initializeProfilePage();
+            setupTabNavigation();
+            activateTabFromUrl();
+            setupEventListeners();
+        });
+
+        document.addEventListener('componentLoaded', (event) => {
+            try {
+                if (event?.detail?.componentName === 'navbar' && window.GarciaNavigationManager?.updateNavigation) {
+                    window.GarciaNavigationManager.updateNavigation();
+                }
+            } catch (error) {
+                console.warn('Failed to refresh navigation after component load:', error);
+            }
+        });
+
+        async function initializeProfilePage() {
+            try {
+                // Wait for profile manager
+                if (window.GarciaProfileManager) {
+                    await window.GarciaProfileManager.init();
+                    updateMetricsDisplay();
+                }
+            } catch (error) {
+                console.error('Error initializing profile page:', error);
+            }
+        }
+
+        function setupTabNavigation() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Add active class to clicked button and target content
+                    this.classList.add('active');
+                    document.getElementById(targetTab + '-tab').classList.add('active');
+                });
+            });
+        }
+
+        // Allow linking directly to tabs via query parameter ?tab=metrics|progress|goals|settings
+        function activateTabFromUrl() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                let target = params.get('tab');
+                if (!target && window.location.hash.startsWith('#tab=')) {
+                    target = window.location.hash.replace('#tab=', '');
+                }
+                const validTabs = ['basic', 'metrics', 'progress', 'goals', 'macros', 'habits', 'workouts', 'meetings', 'settings'];
+                if (target && validTabs.includes(target)) {
+                    const btn = document.querySelector(`.tab-btn[data-tab="${target}"]`);
+                    btn?.click();
+                }
+            } catch (e) {
+                console.warn('Failed to activate tab from URL:', e);
+            }
+        }
+
+        function setupEventListeners() {
+            const logoutButton = document.getElementById('logout-btn');
+            if (logoutButton) {
+                logoutButton.addEventListener('click', (event) => {
+                    if (window.AuthGuard && typeof window.AuthGuard.handleLogout === 'function') {
+                        window.AuthGuard.handleLogout(event);
+                    } else {
+                        fallbackLogout(event);
+                    }
+                });
+            }
+
+            // Weight input change for BMI calculation
+            const weightInput = document.getElementById('current_weight');
+            const heightInput = document.getElementById('height');
+
+            if (weightInput && heightInput) {
+                [weightInput, heightInput].forEach(input => {
+                    input.addEventListener('input', calculateAndDisplayBMI);
+                });
+            }
+
+            // Form auto-save functionality
+            const forms = document.querySelectorAll('form[data-profile-section]');
+            forms.forEach(form => {
+                const inputs = form.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => {
+                    input.addEventListener('change', () => {
+                        // Auto-save after short delay
+                        setTimeout(() => {
+                            if (window.GarciaProfileManager) {
+                                const event = { target: form, preventDefault: () => {} };
+                                window.GarciaProfileManager.handleFormSubmit?.(event);
+                            }
+                        }, 500);
+                    });
+                });
+            });
+        }
+
+        function updateMetricsDisplay() {
+            const profileData = window.GarciaProfileManager?.getProfileData();
+            if (!profileData) return;
+
+            const metrics = profileData.body_metrics;
+            const units = profileData.preferences?.units || 'metric';
+
+            // Update metric displays
+            const displays = {
+                'display-weight': metrics.current_weight ?
+                    `${metrics.current_weight} ${units === 'metric' ? 'kg' : 'lbs'}` : '--',
+                'display-height': metrics.height ?
+                    `${metrics.height} ${units === 'metric' ? 'cm' : 'ft'}` : '--',
+                'display-bmi': calculateBMI(metrics.current_weight, metrics.height) || '--',
+                    'display-body-fat': metrics.body_fat_percentage ?
+                        `${metrics.body_fat_percentage}%` : '--%',
+                    'display-muscle-mass': metrics.muscle_mass ?
+                        `${metrics.muscle_mass} ${units === 'metric' ? 'kg' : 'lbs'}` : '--'
+            };
+
+            Object.entries(displays).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = value;
+            });
+        }
+
+        function calculateAndDisplayBMI() {
+            const weight = parseFloat(document.getElementById('current_weight')?.value);
+            const height = parseFloat(document.getElementById('height')?.value);
+
+            const bmi = calculateBMI(weight, height);
+            const displayElement = document.getElementById('display-bmi');
+
+            if (displayElement && bmi) {
+                displayElement.textContent = bmi;
+            }
+        }
+
+        function calculateBMI(weight, height) {
+            if (!weight || !height) return null;
+
+            const heightInMeters = height > 3 ? height / 100 : height;
+            const bmi = weight / (heightInMeters * heightInMeters);
+
+            return bmi.toFixed(1);
+        }
+
+        async function fallbackLogout(event) {
+            try {
+                event?.preventDefault?.();
+                event?.stopPropagation?.();
+            } catch (error) {
+                console.warn('Logout event cleanup failed:', error);
+            }
+
+            try {
+                if (typeof AuthSystem !== 'undefined' && typeof AuthSystem.logout === 'function') {
+                    await AuthSystem.logout();
+                    return;
+                }
+                if (window.authSystem && typeof window.authSystem.logout === 'function') {
+                    await window.authSystem.logout();
+                    return;
+                }
+                if (window.supabaseClient?.auth) {
+                    await window.supabaseClient.auth.signOut();
+                } else if (window.supabase?.auth) {
+                    await window.supabase.auth.signOut();
+                }
+            } catch (error) {
+                console.error('Error logging out:', error);
+            }
+
+            try {
+                localStorage.removeItem('gb_current_user');
+                localStorage.removeItem('gb_remember_user');
+            } catch (error) {
+                console.warn('Failed to clear auth cache during logout:', error);
+            }
+
+            const loginUrl = typeof toAbsoluteUrl === 'function'
+                ? toAbsoluteUrl('pages/auth/login.html')
+                : '../auth/login.html';
+            window.location.href = loginUrl;
+        }
+    </script>
+
+    <!-- I18n Script -->
+    <script src="../../assets/i18n.js"></script>
+</body>
+</html>

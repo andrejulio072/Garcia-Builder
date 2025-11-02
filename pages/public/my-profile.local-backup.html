@@ -1,0 +1,2587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="dashboard.profile_title">My Profile - Garcia Builder</title>
+
+    <script src="../../js/env.js?v=20251028"></script>
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Site styles -->
+    <link rel="stylesheet" href="../../css/global.css?v=20251028">
+    <link rel="stylesheet" href="../../css/layout-fixes.css?v=20251028">
+    <link rel="stylesheet" href="../../css/components/navbar-component.css?v=20251028">
+    <link rel="stylesheet" href="../../css/components/enhanced-navbar.css?v=20251028">
+
+    <!-- Component preload -->
+    <link rel="preload" as="script" href="../../js/utils/component-loader-v3-simplified.js?v=20251029" crossorigin="anonymous">
+    <link rel="preload" as="fetch" href="../../components/navbar.html" crossorigin="anonymous">
+    <link rel="preload" as="fetch" href="../../components/footer.html" crossorigin="anonymous">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .profile-container {
+            padding-top: 120px;
+            min-height: 100vh;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, rgba(246, 200, 78, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(246, 200, 78, 0.3);
+            text-align: center;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #F6C84E;
+            object-fit: cover;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .main-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(246, 200, 78, 0.5);
+        }
+
+        .avatar-upload-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #F6C84E;
+            color: #000;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .avatar-upload-overlay:hover {
+            background: #FFD700;
+            transform: scale(1.1);
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .profile-card:hover {
+            border-color: rgba(246, 200, 78, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            color: #F6C84E;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .form-label {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .mb-3, .form-group {
+            margin-bottom: 1.25rem !important;
+        }
+
+        .row {
+            margin-bottom: 0.75rem;
+        }
+
+        /* Ensure all form text is visible */
+        .text-muted {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        /* Fix for input text color */
+        input.form-control,
+        textarea.form-control {
+            color: #fff !important;
+        }
+
+        input.form-control::-webkit-input-placeholder,
+        textarea.form-control::-webkit-input-placeholder {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        input.form-control::-moz-placeholder,
+        textarea.form-control::-moz-placeholder {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff !important;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #F6C84E;
+            box-shadow: 0 0 0 0.2rem rgba(246, 200, 78, 0.25);
+            color: #fff !important;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Fix for select options visibility */
+        .form-select option {
+            background: #1a1a1a !important;
+            color: #fff !important;
+            padding: 8px 12px;
+        }
+
+        .form-select option:checked,
+        .form-select option:hover {
+            background: #F6C84E !important;
+            color: #000 !important;
+        }
+
+        /* Ensure text is visible in all states */
+        select.form-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
+        }
+
+        .form-check {
+            margin-bottom: 0.5rem;
+        }
+
+        .form-check-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-check-label {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .form-check-input:checked {
+            background-color: #F6C84E;
+            border-color: #F6C84E;
+        }
+
+        /* Fix for button text */
+        .btn-primary {
+            background: linear-gradient(135deg, #F6C84E 0%, #ff6b35 100%);
+            border: none;
+            color: #000 !important;
+            font-weight: 600;
+        }
+
+        /* Tabs: base color only (visual state handled below around line 420) */
+        .tab-btn { color: rgba(255, 255, 255, 0.8); }
+        /* Remove conflicting yellow text style so active state below is visible */
+        .tab-btn.active { color: #000; }
+
+        .form-check-input:checked {
+            background-color: #F6C84E;
+            border-color: #F6C84E;
+        }
+
+        .form-check-label {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #F6C84E, #FFD700);
+            border: none;
+            color: #000;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(246, 200, 78, 0.3);
+            color: #000;
+        }
+
+        .btn-secondary-custom {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary-custom:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        .info-display {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .metric-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #F6C84E;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        /* Auto-calculated metrics styling */
+        .metric-card[data-category] {
+            border: 2px solid rgba(246, 200, 78, 0.3);
+        }
+
+        .metric-card[data-category="normal"] {
+            border-color: rgba(34, 197, 94, 0.5);
+        }
+
+        .metric-card[data-category="overweight"] {
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .metric-card[data-category="obese"] {
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .metric-card[data-category="underweight"] {
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        /* Auto-calculation indicator */
+        .metric-card[data-metric="bmi"]::after,
+        .metric-card[data-metric="body-fat"]::after,
+        .metric-card[data-metric="muscle-mass"]::after,
+        .metric-card[data-metric="calories"]::after,
+        .metric-card[data-metric="hydration"]::after,
+        .metric-card[data-metric="progress"]::after,
+        .metric-card[data-metric="fitness-category"]::after {
+            content: "AUTO";
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(246, 200, 78, 0.2);
+            color: #F6C84E;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* Advanced metrics styling */
+        .metric-card[data-metric="calories"] {
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .metric-card[data-metric="hydration"] {
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .metric-card[data-metric="progress"] {
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .metric-card[data-metric="fitness-category"] {
+            border-color: rgba(236, 72, 153, 0.3);
+        }
+
+        .metric-card {
+            position: relative;
+        }
+
+        .progress-photos {
+            display: grid;
+            async function loadAndDisplayUserData() {
+                console.group('loadAndDisplayUserData');
+                console.log('🔍 Supabase client available?', !!window.supabaseClient);
+                console.log('🔍 Supabase auth ready?', !!window.supabaseClient?.auth);
+
+                const defaults = {
+                    displayName: 'Your Profile',
+                    displayEmail: 'user@example.com',
+                    memberSince: '2024',
+                    source: 'defaults'
+                };
+
+                const state = { ...defaults, user: null };
+
+                // SOURCE 1: Active Supabase session (most reliable)
+                if (window.supabaseClient?.auth) {
+                    try {
+                        const { data: sessionData, error: sessionError } = await window.supabaseClient.auth.getSession();
+                        console.log('☁️ getSession() →', { hasSession: !!sessionData?.session, error: sessionError?.message });
+
+                        if (sessionData?.session?.user) {
+                            const sessionUser = sessionData.session.user;
+                            state.user = sessionUser;
+                            state.displayEmail = sessionUser.email || state.displayEmail;
+                            state.displayName = sessionUser.user_metadata?.full_name ||
+                                               sessionUser.user_metadata?.name ||
+                                               sessionUser.email?.split('@')[0] ||
+                                               state.displayName;
+                            state.memberSince = sessionUser.created_at ? new Date(sessionUser.created_at).getFullYear() : state.memberSince;
+                            state.source = 'supabase-session';
+
+                            // Cache session user locally for offline use
+                            localStorage.setItem('gb_current_user', JSON.stringify({
+                                id: sessionUser.id,
+                                email: sessionUser.email,
+                                full_name: state.displayName,
+                                avatar_url: sessionUser.user_metadata?.avatar_url || sessionUser.user_metadata?.picture || null,
+                                registeredAt: sessionUser.created_at,
+                                lastLogin: new Date().toISOString()
+                            }));
+                            console.log('💾 Cached Supabase session user in localStorage');
+                        } else {
+                            console.warn('⚠️ No active Supabase session user');
+                        }
+                    } catch (sessionErr) {
+                        console.error('❌ Supabase getSession() failed:', sessionErr);
+                    }
+
+                    // If session did not return a user, fall back to getUser (legacy method)
+                    if (!state.user) {
+                        try {
+                            const { data, error } = await window.supabaseClient.auth.getUser();
+                            console.log('☁️ getUser() →', { hasUser: !!data?.user, error: error?.message });
+
+                            if (data?.user && !error) {
+                                state.user = data.user;
+                                state.displayEmail = data.user.email || state.displayEmail;
+                                state.displayName = data.user.user_metadata?.full_name ||
+                                                   data.user.user_metadata?.name ||
+                                                   data.user.email?.split('@')[0] ||
+                                                   state.displayName;
+                                state.memberSince = data.user.created_at ? new Date(data.user.created_at).getFullYear() : state.memberSince;
+                                state.source = 'supabase-user';
+                            }
+                        } catch (userErr) {
+                            console.error('❌ Supabase getUser() failed:', userErr);
+                        }
+                    }
+                } else {
+                    console.warn('⚠️ Supabase client/auth not ready – skipping cloud lookup');
+                }
+
+                // SOURCE 2: Local cache (gb_current_user)
+                try {
+                    const cachedRaw = localStorage.getItem('gb_current_user');
+                    if (cachedRaw) {
+                        const cachedUser = JSON.parse(cachedRaw);
+                        console.log('📦 Loaded gb_current_user from localStorage:', cachedUser);
+
+                        if (state.source === 'defaults' || !state.displayEmail || state.displayEmail === defaults.displayEmail) {
+                            state.displayEmail = cachedUser.email || state.displayEmail;
+                        }
+                        if (state.source === 'defaults' || state.displayName === defaults.displayName) {
+                            state.displayName = cachedUser.full_name || cachedUser.name || cachedUser.email?.split('@')[0] || state.displayName;
+                        }
+                        if (cachedUser.registeredAt) {
+                            state.memberSince = new Date(cachedUser.registeredAt).getFullYear();
+                        }
+                        if (!state.user) {
+                            state.user = cachedUser;
+                            state.source = state.source === 'defaults' ? 'localStorage' : `${state.source}+localStorage`;
+                        }
+                    } else {
+                        console.warn('⚠️ gb_current_user not found in localStorage');
+                    }
+                } catch (cacheErr) {
+                    console.error('❌ Failed to read gb_current_user from localStorage:', cacheErr);
+                }
+
+                console.log('🎯 Final display state:', state);
+
+                // --- Update DOM -------------------------------------------------
+                const dom = {
+                    email: document.getElementById('profile-email'),
+                    name: document.getElementById('profile-name'),
+                    memberSince: document.getElementById('member-since-display'),
+                    emailInput: document.getElementById('profile_email_field') || document.getElementById('email'),
+                    fullNameInput: document.getElementById('full_name')
+                };
+                console.log('🧱 DOM availability:', {
+                    email: !!dom.email,
+                    name: !!dom.name,
+                    memberSince: !!dom.memberSince,
+                    emailInput: !!dom.emailInput,
+                    fullNameInput: !!dom.fullNameInput
+                });
+
+                const applyHeaderState = () => {
+                    if (dom.email) {
+                        if (dom.email.textContent !== state.displayEmail) {
+                            dom.email.textContent = state.displayEmail;
+                        }
+                    }
+                    if (dom.name) {
+                        if (dom.name.textContent !== state.displayName) {
+                            dom.name.textContent = state.displayName;
+                        }
+                        dom.name.removeAttribute('data-i18n');
+                    }
+                    if (dom.memberSince) dom.memberSince.textContent = state.memberSince;
+                    if (dom.emailInput) {
+                        dom.emailInput.value = state.displayEmail;
+                        dom.emailInput.disabled = true;
+                        dom.emailInput.readOnly = true;
+                    }
+                    if (dom.fullNameInput && state.displayName !== defaults.displayName) {
+                        dom.fullNameInput.value = state.displayName;
+                    }
+                };
+
+                // Apply immediately and re-apply after potential i18n/component overwrites
+                applyHeaderState();
+                setTimeout(applyHeaderState, 300);
+                setTimeout(applyHeaderState, 1200);
+
+                // Guard against later mutations that restore placeholders
+                const ensureValue = (el, expected) => {
+                    if (!el || !expected) return () => {};
+                    const mo = new MutationObserver(() => {
+                        if (el.textContent !== expected && expected !== defaults.displayEmail && expected !== defaults.displayName) {
+                            el.textContent = expected;
+                        }
+                    });
+                    mo.observe(el, { childList: true, characterData: true, subtree: true });
+                    return () => mo.disconnect();
+                };
+
+                const stopEmailGuard = ensureValue(dom.email, state.displayEmail);
+                const stopNameGuard = ensureValue(dom.name, state.displayName);
+
+                // Also re-apply on custom events some loaders emit
+                window.addEventListener('i18n:applied', applyHeaderState);
+                document.addEventListener('componentLoaded', applyHeaderState);
+
+                console.log('✅ Profile display applied (source →', state.source, ') with guards');
+                console.groupEnd();
+                return state;
+            }
+            .navbar .nav {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 4px;
+            }
+
+            .navbar .nav a {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .profile-container {
+                padding-top: 90px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .tab-buttons {
+                flex-direction: column;
+                width: 100%;
+                gap: 0.4rem;
+            }
+
+            .tab-btn {
+                width: 100%;
+                max-width: none;
+                min-width: 0;
+                font-size: 0.85rem;
+                padding: 0.75rem 1rem;
+            }
+
+            .profile-header {
+                padding: 1.25rem;
+            }
+
+            .main-avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            .profile-card {
+                padding: 1.25rem;
+            }
+
+            .metric-card {
+                padding: 1.25rem;
+            }
+
+            .chart-container-180 { height: 180px; }
+        }
+
+        .alert-custom {
+            background: rgba(246, 200, 78, 0.1);
+            border: 1px solid rgba(246, 200, 78, 0.3);
+            color: #F6C84E;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-action-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1.75rem;
+        }
+
+        .btn-profile-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-radius: 12px;
+            padding: 0.75rem 1.6rem;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-profile-action i {
+            font-size: 1rem;
+        }
+
+        .btn-profile-action.dashboard {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .btn-profile-action.dashboard:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .btn-profile-action.support {
+            background: linear-gradient(135deg, #F6C84E, #ff6b35);
+            color: #000;
+            box-shadow: 0 2px 8px rgba(246, 200, 78, 0.25);
+        }
+
+        .btn-profile-action.support:hover {
+            box-shadow: 0 12px 30px rgba(246, 200, 78, 0.4);
+            color: #000;
+        }
+
+        .btn-profile-action.logout {
+            background: rgba(255, 99, 99, 0.18);
+            border: 1px solid rgba(255, 99, 99, 0.35);
+            color: #ffc5c5;
+        }
+
+        .btn-profile-action.logout:hover {
+            background: rgba(255, 99, 99, 0.28);
+            color: #fff;
+        }
+
+        /* Debug button style extracted from inline to avoid layout issues */
+        .btn-profile-action.debug {
+            background: rgba(100, 255, 100, 0.18);
+            border: 1px solid rgba(100, 255, 100, 0.35);
+            color: #c5ffc5;
+        }
+
+        /* Readonly input visual consistency */
+        .readonly-field[readonly],
+        .readonly-field:disabled {
+            background-color: rgba(255,255,255,0.05) !important;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="profile-page">
+    <div data-component="navbar" data-variant="dashboard" data-theme="dark"></div>
+
+    <main class="profile-container">
+        <div class="container">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="position-relative d-inline-block">
+                    <img id="main-avatar" src="https://via.placeholder.com/150/333/fff?text=U" alt="Profile Picture" class="main-avatar">
+                    <div class="avatar-upload-overlay" onclick="document.getElementById('avatar-upload').click()">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <input type="file" id="avatar-upload" accept="image/*" hidden>
+                </div>
+                <h1 id="profile-name" data-i18n="dashboard.your_profile">Your Profile</h1>
+                <p class="lead" id="profile-email">user@example.com</p>
+                <p class="text-muted">Member since <span id="member-since-display">2024</span></p>
+                <div class="profile-action-bar">
+                    <a class="btn-profile-action dashboard" href="dashboard.html" data-gb-nav="pages/public/dashboard.html">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span data-i18n="dashboard.dashboard_cta">Back to Dashboard</span>
+                    </a>
+                    <a class="btn-profile-action support" href="../../contact.html" data-gb-nav="contact.html">
+                        <i class="fas fa-comments"></i>
+                        <span data-i18n="dashboard.get_support">Get Support</span>
+                    </a>
+                    <button type="button" id="logout-btn" class="btn-profile-action logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span data-i18n="dashboard.logout">Logout</span>
+                    </button>
+                    <!-- 🔨 BRUTAL DEBUG BUTTON (temporary) -->
+                    <button type="button" id="debug-storage-btn" class="btn-profile-action debug">
+                        <i class="fas fa-bug"></i>
+                        <span>Debug Storage</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="basic">
+                    <i class="fas fa-user"></i> Basic Info
+                </button>
+                <button class="tab-btn" data-tab="metrics">
+                    <i class="fas fa-weight"></i> Body Metrics
+                </button>
+                <button class="tab-btn" data-tab="progress">
+                    <i class="fas fa-chart-line"></i> Progress
+                </button>
+                <button class="tab-btn" data-tab="goals">
+                    <i class="fas fa-target"></i> Goals
+                </button>
+                <button class="tab-btn" data-tab="macros">
+                    <i class="fas fa-utensils"></i> Macros
+                 </button>
+                <button class="tab-btn" data-tab="habits">
+                    <i class="fas fa-check-circle"></i> Habits
+                </button>
+                <button class="tab-btn" data-tab="workouts">
+                    <i class="fas fa-dumbbell"></i> Workouts
+                </button>
+                <button class="tab-btn" data-tab="meetings">
+                    <i class="fas fa-video"></i> Meetings
+                </button>
+                <button class="tab-btn" data-tab="settings">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </div>
+
+            <!-- Basic Info Tab -->
+            <div class="tab-content active" id="basic-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-user-edit"></i>
+                        <span data-i18n="dashboard.personal_information">Personal Information</span>
+                    </h3>
+
+                    <form id="basic-info-form" data-profile-section="basic">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="full_name" class="form-label" data-i18n="dashboard.full_name">Full Name</label>
+                                <input type="text" class="form-control" id="full_name" name="full_name" data-i18n-placeholder="dashboard.full_name_placeholder" placeholder="Your full name">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label" data-i18n="dashboard.phone_number">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" data-i18n-placeholder="dashboard.phone_placeholder" placeholder="+1 (555) 123-4567">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="birthday" class="form-label">Birthday</label>
+                                <input type="date" class="form-control" id="birthday" name="birthday">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="location" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="location" name="location" placeholder="City, Country">
+                            </div>
+                            <div class="col-12">
+                                <label for="bio" class="form-label">Bio</label>
+                                <textarea class="form-control" id="bio" name="bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="experience_level" class="form-label">Experience Level</label>
+                                <select class="form-select" id="experience_level" name="experience_level">
+                                    <option value="">Select your level</option>
+                                    <option value="beginner">Beginner</option>
+                                    <option value="intermediate">Intermediate</option>
+                                    <option value="advanced">Advanced</option>
+                                    <option value="expert">Expert</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="trainer_name" class="form-label">Your Trainer</label>
+                                <input type="text" class="form-control" id="trainer_name" name="trainer_name" placeholder="Assigned coach name">
+                                <small class="text-muted">Visible to you and your trainer</small>
+                            </div>
+                            <div class="col-md-6 d-none">
+                                <label for="trainer_id" class="form-label">Trainer ID</label>
+                                <input type="text" class="form-control" id="trainer_id" name="trainer_id" placeholder="uuid">
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h5 class="text-light mb-3">Fitness Goals</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_weight_loss" name="goals" value="Weight Loss">
+                                        <label class="form-check-label" for="goal_weight_loss">Weight Loss</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_muscle_gain" name="goals" value="Muscle Gain">
+                                        <label class="form-check-label" for="goal_muscle_gain">Muscle Gain</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_strength" name="goals" value="Strength">
+                                        <label class="form-check-label" for="goal_strength">Strength Training</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_endurance" name="goals" value="Endurance">
+                                        <label class="form-check-label" for="goal_endurance">Endurance</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_flexibility" name="goals" value="Flexibility">
+                                        <label class="form-check-label" for="goal_flexibility">Flexibility</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="goal_general" name="goals" value="General Health">
+                                        <label class="form-check-label" for="goal_general">General Health</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Save Basic Info
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Body Metrics Tab -->
+            <div class="tab-content" id="metrics-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-weight"></i>
+                        Body Measurements
+                    </h3>
+
+                    <!-- Current Metrics Display -->
+                    <div class="metrics-grid">
+                        <div class="metric-card" data-metric="current-weight">
+                            <div class="metric-number metric-value" id="display-weight">--</div>
+                            <div class="metric-label">Current Weight</div>
+                        </div>
+                        <div class="metric-card" data-metric="height">
+                            <div class="metric-number metric-value" id="display-height">--</div>
+                            <div class="metric-label">Height</div>
+                        </div>
+                        <div class="metric-card" data-metric="bmi">
+                            <div class="metric-number metric-value" id="display-bmi">38.4</div>
+                            <div class="metric-label">BMI</div>
+                        </div>
+                        <div class="metric-card" data-metric="body-fat">
+                            <div class="metric-number metric-value" id="display-body-fat">--%</div>
+                            <div class="metric-label">Body Fat</div>
+                        </div>
+                        <div class="metric-card" data-metric="muscle-mass">
+                            <div class="metric-number metric-value" id="display-muscle-mass">--</div>
+                            <div class="metric-label">Muscle Mass</div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Metrics Display -->
+                    <h4 class="mt-4 mb-3">
+                        <i class="fas fa-chart-pie"></i>
+                        Advanced Metrics
+                    </h4>
+                    <div class="metrics-grid">
+                        <div class="metric-card" data-metric="calories">
+                            <div class="metric-number metric-value">--</div>
+                            <div class="metric-label">Daily Calories</div>
+                        </div>
+                        <div class="metric-card" data-metric="hydration">
+                            <div class="metric-number metric-value">--</div>
+                            <div class="metric-label">Daily Water</div>
+                        </div>
+                        <div class="metric-card" data-metric="progress">
+                            <div class="metric-number metric-value">--</div>
+                            <div class="metric-label">Progress to Goal</div>
+                        </div>
+                        <div class="metric-card" data-metric="fitness-category">
+                            <div class="metric-number metric-value">--</div>
+                            <div class="metric-label">Fitness Level</div>
+                        </div>
+                    </div>
+
+                    <!-- Body Measurements Display -->
+                    <h4 class="mt-4 mb-3">
+                        <i class="fas fa-ruler"></i>
+                        Body Measurements
+                    </h4>
+                    <div class="metrics-grid">
+                        <div class="metric-card" data-metric="chest">
+                            <div class="metric-number metric-value">100</div>
+                            <div class="metric-label">Chest</div>
+                        </div>
+                        <div class="metric-card" data-metric="waist">
+                            <div class="metric-number metric-value">94</div>
+                            <div class="metric-label">Waist</div>
+                        </div>
+                        <div class="metric-card" data-metric="hips">
+                            <div class="metric-number metric-value">115</div>
+                            <div class="metric-label">Hips</div>
+                        </div>
+                        <div class="metric-card" data-metric="arms">
+                            <div class="metric-number metric-value">35</div>
+                            <div class="metric-label">Arms</div>
+                        </div>
+                        <div class="metric-card" data-metric="thighs">
+                            <div class="metric-number metric-value">55</div>
+                            <div class="metric-label">Thighs</div>
+                        </div>
+                    </div>
+
+                    <form id="body-metrics-form" data-profile-section="body_metrics">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="current_weight" class="form-label">Current Weight</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="current_weight" name="current_weight" step="0.1" placeholder="70">
+                                    <span class="input-group-text">kg</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="height" class="form-label">Height</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="height" name="height" step="0.1" placeholder="175">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="target_weight" class="form-label">Target Weight</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="target_weight" name="target_weight" step="0.1" placeholder="65">
+                                    <span class="input-group-text">kg</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="body_fat_percentage" class="form-label">Body Fat %</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="body_fat_percentage" name="body_fat_percentage" step="0.1" placeholder="15">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="muscle_mass" class="form-label">Muscle Mass</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="muscle_mass" name="muscle_mass" step="0.1" placeholder="30">
+                                    <span class="input-group-text">kg</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurements_chest" class="form-label">Chest</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="measurements_chest" name="measurements_chest" step="0.1" placeholder="100">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurements_waist" class="form-label">Waist</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="measurements_waist" name="measurements_waist" step="0.1" placeholder="80">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurements_hips" class="form-label">Hips</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="measurements_hips" name="measurements_hips" step="0.1" placeholder="95">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurements_arms" class="form-label">Arms</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="measurements_arms" name="measurements_arms" step="0.1" placeholder="35">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="measurements_thighs" class="form-label">Thighs</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="measurements_thighs" name="measurements_thighs" step="0.1" placeholder="55">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Save Measurements
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Progress Tab -->
+            <div class="tab-content" id="progress-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-camera"></i>
+                        Progress Photos
+                    </h3>
+
+                    <div class="upload-area" onclick="document.getElementById('photo-upload').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h5>Upload Progress Photo</h5>
+                        <p class="text-muted mb-0">Click to select or drag and drop your photo</p>
+                        <input type="file" id="photo-upload" accept="image/*" hidden>
+                    </div>
+
+                    <div id="progress-photos-container" class="progress-photos">
+                        <!-- Progress photos will be dynamically inserted here -->
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-line"></i>
+                        Weight History
+                    </h3>
+
+                    <div id="weight-chart-container">
+                        <div class="alert-custom" id="weight-chart-empty">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Start logging your weight to see your progress chart here.
+                        </div>
+                        <canvas id="weight-history-canvas" height="120" class="d-none"></canvas>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-percent"></i>
+                        Body Fat % History
+                    </h3>
+
+                    <div id="bodyfat-chart-container">
+                        <div class="alert-custom" id="bodyfat-chart-empty">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Start logging your body fat to see your trend here.
+                        </div>
+                        <canvas id="bodyfat-history-canvas" height="120" class="d-none"></canvas>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-ruler-horizontal"></i>
+                        Waist History
+                    </h3>
+                    <div id="waist-chart-container">
+                        <div class="alert-custom" id="waist-chart-empty">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Log your waist measurement to see your trend here.
+                        </div>
+                        <canvas id="waist-history-canvas" height="120" class="d-none"></canvas>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-dumbbell"></i>
+                        Muscle Mass History
+                    </h3>
+                    <div id="muscle-chart-container">
+                        <div class="alert-custom" id="muscle-chart-empty">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Log your muscle mass to see your trend here.
+                        </div>
+                        <canvas id="muscle-history-canvas" height="120" class="d-none"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Goals Tab -->
+            <div class="tab-content" id="goals-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-target"></i>
+                        My Goals & Achievements
+                    </h3>
+
+                    <div id="goals-display">
+                        <div class="alert-custom">
+                            <i class="fas fa-bullseye me-2"></i>
+                            Set your fitness goals in the Basic Info tab to track your progress here.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settings-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-cog"></i>
+                        Preferences & Settings
+                    </h3>
+
+                    <form id="preferences-form" data-profile-section="preferences">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="units" class="form-label">Unit System</label>
+                                <select class="form-select" id="units" name="units">
+                                    <option value="metric">Metric (kg, cm)</option>
+                                    <option value="imperial">Imperial (lbs, ft/in)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="language" class="form-label">Language</label>
+                                <select class="form-select" id="language" name="language">
+                                    <option value="en">English</option>
+                                    <option value="pt">Português</option>
+                                    <option value="es">Español</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h5 class="text-light mb-3">Notifications</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="email_notifications" name="email_notifications" checked>
+                                <label class="form-check-label" for="email_notifications">Email notifications</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="workout_reminders" name="workout_reminders" checked>
+                                <label class="form-check-label" for="workout_reminders">Workout reminders</label>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h5 class="text-light mb-3">Privacy</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="profile_visible" name="profile_visible" checked>
+                                <label class="form-check-label" for="profile_visible">Make profile visible to other users</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="progress_visible" name="progress_visible">
+                                <label class="form-check-label" for="progress_visible">Share progress photos publicly</label>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Save Preferences
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Macros Tab -->
+            <div class="tab-content" id="macros-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-balance-scale"></i>
+                        Macronutrients
+                    </h3>
+
+                    <form id="macros-form" data-profile-section="macros">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="macros_goal" class="form-label">Goal</label>
+                                <select class="form-select" id="macros_goal" name="goal">
+                                    <option value="maintain">Maintain</option>
+                                    <option value="cut">Cut (fat loss)</option>
+                                    <option value="bulk">Bulk (gain)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="macros_activity" class="form-label">Activity Level</label>
+                                <select class="form-select" id="macros_activity" name="activity_level">
+                                    <option value="sedentary">Sedentary (1.2)</option>
+                                    <option value="light">Lightly Active (1.375)</option>
+                                    <option value="moderate">Moderately Active (1.55)</option>
+                                    <option value="very">Very Active (1.725)</option>
+                                    <option value="athlete">Athlete (1.9)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="macros_calories" class="form-label">Daily Calories</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="macros_calories" name="calories" step="10" placeholder="2000">
+                                    <button class="btn btn-secondary-custom" type="button" id="btn-auto-calc-calories">Auto</button>
+                                </div>
+                                <small class="text-muted">Auto uses your weight/height + activity</small>
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <h5 class="text-light mb-2"><i class="fas fa-sliders-h me-2"></i> Macro Split (%)</h5>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="macros_protein_pct" class="form-label">Protein %</label>
+                                        <input type="number" class="form-control" id="macros_protein_pct" name="protein_pct" min="0" max="100" step="1" placeholder="30">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="macros_carbs_pct" class="form-label">Carbs %</label>
+                                        <input type="number" class="form-control" id="macros_carbs_pct" name="carbs_pct" min="0" max="100" step="1" placeholder="40">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="macros_fats_pct" class="form-label">Fats %</label>
+                                        <input type="number" class="form-control" id="macros_fats_pct" name="fats_pct" min="0" max="100" step="1" placeholder="30">
+                                    </div>
+                                </div>
+                                <small class="text-muted">Total must be 100%</small>
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <h5 class="text-light mb-2"><i class="fas fa-scale-balanced me-2"></i> Targets (per day)</h5>
+                                <div class="metrics-grid">
+                                    <div class="metric-card" data-metric="protein-g">
+                                        <div class="metric-number" id="display-protein-g">--g</div>
+                                        <div class="metric-label">Protein</div>
+                                    </div>
+                                    <div class="metric-card" data-metric="carbs-g">
+                                        <div class="metric-number" id="display-carbs-g">--g</div>
+                                        <div class="metric-label">Carbs</div>
+                                    </div>
+                                    <div class="metric-card" data-metric="fats-g">
+                                        <div class="metric-number" id="display-fats-g">--g</div>
+                                        <div class="metric-label">Fats</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Save Macros
+                            </button>
+                        </div>
+                    </form>
+
+                    <div id="macros-tip" class="alert-custom mt-3 d-none">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Tip: set weight, height and target weight in Body Metrics to improve auto-calculation.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Habits Tab -->
+            <div class="tab-content" id="habits-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-list-check"></i>
+                        Habits & Routines
+                    </h3>
+
+                    <form id="habits-form" data-profile-section="habits">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="habits_water" class="form-label">Water (ml)</label>
+                                <input type="number" class="form-control" id="habits_water" name="water_ml" placeholder="2500" min="0" step="50">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="habits_steps" class="form-label">Steps</label>
+                                <input type="number" class="form-control" id="habits_steps" name="steps" placeholder="8000" min="0" step="100">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="habits_sleep" class="form-label">Sleep (hours)</label>
+                                <input type="number" class="form-control" id="habits_sleep" name="sleep_hours" placeholder="7.5" min="0" max="24" step="0.1">
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="habits_workout" name="workout">
+                                    <label class="form-check-label" for="habits_workout">Workout done</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="habits_meditation" name="meditation">
+                                    <label class="form-check-label" for="habits_meditation">Meditation</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="habits_stretch" name="stretch">
+                                    <label class="form-check-label" for="habits_stretch">Stretching</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save"></i> Save Today
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="metrics-grid mt-4">
+                        <div class="metric-card">
+                            <div class="metric-number" id="streak-workout">0</div>
+                            <div class="metric-label">Workout Streak (days)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number" id="streak-meditation">0</div>
+                            <div class="metric-label">Meditation Streak (days)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number" id="streak-stretch">0</div>
+                            <div class="metric-label">Stretching Streak (days)</div>
+                        </div>
+                    </div>
+
+                    <h5 class="text-light mt-4 mb-2"><i class="fas fa-shoe-prints me-2"></i> Steps (Last 7 days)</h5>
+                    <div class="chart-container-180">
+                        <canvas id="habits-steps-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workouts Tab -->
+            <div class="tab-content" id="workouts-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-dumbbell"></i>
+                        Workouts
+                    </h3>
+                    <div class="alert-custom">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Your assigned workouts and training blocks will appear here. (Coming soon)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Meetings Tab -->
+            <div class="tab-content" id="meetings-tab">
+                <div class="profile-card">
+                    <h3 class="card-title">
+                        <i class="fas fa-video"></i>
+                        Meetings & Check-ins
+                    </h3>
+                    <div class="alert-custom">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Schedule calls and review previous check-ins here. (Coming soon)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div data-component="footer" data-theme="dark"></div>
+    <a class="whatsapp-float" href="https://wa.me/447508497586" target="_blank" rel="noopener" aria-label="Contact via WhatsApp">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../js/core/supabase.js"></script>
+    <script src="../../js/brutal-sync.js"></script>
+    <script src="../../js/utils/component-loader-v3-simplified.js?v=20251029"></script>
+    <script src="../../js/email-verification-guard.js"></script>
+    <script src="../../js/core/auth.js"></script>
+    <script src="../../js/auth-guard.js"></script>
+    <script src="../../js/components/navigation-manager.js"></script>
+    <script src="../../js/admin/profile-manager.js"></script>
+    <script defer src="../../js/body-metrics.js"></script>
+
+    <script>
+        // Ensure Supabase is ready before anything else
+        console.log('🔧 Profile page loading - Checking Supabase...');
+        
+        // Debug: Check what's available
+        console.log('Available globals:', {
+            supabase: typeof supabase,
+            windowSupabase: typeof window.supabase,
+            supabaseClient: typeof window.supabaseClient,
+            waitForSupabaseClient: typeof window.waitForSupabaseClient
+        });
+
+        // Profile page specific functionality
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('✅ DOM Content Loaded');
+
+            // Wait for Supabase client to be ready
+            if (typeof window.waitForSupabaseClient === 'function') {
+                try {
+                    console.log('⏳ Waiting for Supabase client...');
+                    await window.waitForSupabaseClient(10000);
+                    console.log('✅ Supabase client ready:', !!window.supabaseClient);
+                    
+                    // Test the connection
+                    if (window.supabaseClient) {
+                        try {
+                            const { data, error } = await window.supabaseClient.auth.getSession();
+                            console.log('🔐 Session check:', { hasSession: !!data?.session, error });
+                            
+                            if (data?.session) {
+                                console.log('✅ Active session found:', {
+                                    user: data.session.user.email,
+                                    expires: data.session.expires_at
+                                });
+                            } else {
+                                console.log('ℹ️ No active session - user needs to login');
+                            }
+                        } catch (err) {
+                            console.error('❌ Session check failed:', err);
+                        }
+                    }
+                } catch (err) {
+                    console.warn('⚠️ Supabase client initialization timeout:', err);
+                }
+            } else {
+                console.warn('⚠️ waitForSupabaseClient function not available');
+            }
+
+            // Now proceed with auth check
+            if (typeof AuthSystem !== 'undefined' && typeof AuthSystem.requireAuth === 'function') {
+                const allowed = AuthSystem.requireAuth();
+                if (!allowed) {
+                    return;
+                }
+            }
+
+            initializeProfilePage();
+            // Restore tab navigation logic for profile page
+            function setupTabNavigation() {
+                const tabButtons = document.querySelectorAll('.tab-btn');
+                const tabContents = document.querySelectorAll('.tab-content');
+                tabButtons.forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        tabButtons.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        const tab = btn.getAttribute('data-tab');
+                        tabContents.forEach(tc => {
+                            if (tc.id === tab + '-tab') {
+                                tc.classList.add('active');
+                                tc.style.display = '';
+                            } else {
+                                tc.classList.remove('active');
+                                tc.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+                // Initial state: show only the first tab
+                tabContents.forEach((tc, i) => {
+                    if (i === 0) {
+                        tc.classList.add('active');
+                        tc.style.display = '';
+                    } else {
+                        tc.classList.remove('active');
+                        tc.style.display = 'none';
+                    }
+                });
+            }
+            setupTabNavigation();
+
+            // Final header identity guard: re-apply name/email a few times and on events
+            const forceHeaderIdentity = async (retries = 3) => {
+                try {
+                    const state = await loadAndDisplayUserData();
+                    // Re-apply in case loaders overwrote
+                    const apply = () => {
+                        const emailEl = document.getElementById('profile-email');
+                        const nameEl = document.getElementById('profile-name');
+                        if (emailEl && state.displayEmail) emailEl.textContent = state.displayEmail;
+                        if (nameEl && state.displayName && state.displayName !== 'Your Profile') {
+                            nameEl.textContent = state.displayName;
+                            nameEl.removeAttribute('data-i18n');
+                        }
+                    };
+                    apply();
+                    setTimeout(apply, 250);
+                    setTimeout(apply, 1000);
+                } catch {}
+                if (retries > 1) setTimeout(() => forceHeaderIdentity(retries - 1), 1500);
+            };
+
+            window.addEventListener('load', () => forceHeaderIdentity(2));
+            document.addEventListener('componentLoaded', () => forceHeaderIdentity(1));
+            window.addEventListener('i18n:applied', () => forceHeaderIdentity(1));
+
+            // BRUTAL SYNC: Listen for data updates from other pages
+            window.addEventListener('brutal:dataUpdate', (e) => {
+                console.log('📡 Profile received data update:', e.detail);
+                const { section, data } = e.detail;
+
+                // Refresh profile displays when metrics or profile change
+                if (section === 'metrics' || section === 'profile') {
+                    updateMetricsDisplay();
+                    updateProfileChart();
+                    console.log('✅ Profile refreshed from sync');
+                }
+            });
+
+            // BRUTAL FIX: Watch for avatar resets and fix them
+            const avatarGuard = new MutationObserver((mutations) => {
+                const avatar = document.getElementById('main-avatar');
+                if (avatar && avatar.src.includes('placeholder')) {
+                    console.warn('⚠️ Profile avatar reset detected! Re-applying fix...');
+                    brutalProfileAvatarFix();
+                }
+            });
+
+            const avatarEl = document.getElementById('main-avatar');
+            if (avatarEl) {
+                avatarGuard.observe(avatarEl, { attributes: true, attributeFilter: ['src'] });
+            }
+        });
+
+        document.addEventListener('componentLoaded', (event) => {
+            try {
+                if (event?.detail?.componentName === 'navbar' && window.GarciaNavigationManager?.updateNavigation) {
+                    window.GarciaNavigationManager.updateNavigation();
+                }
+            } catch (error) {
+                console.warn('Failed to refresh navigation after component load:', error);
+            }
+        });
+
+        async function initializeProfilePage() {
+            try {
+                console.log('🚀 Initializing profile page...');
+                
+                // CRITICAL: Ensure Supabase client is ready before loading data
+                if (!window.supabaseClient) {
+                    console.warn('⚠️ Supabase client not ready yet, waiting...');
+                    if (typeof window.waitForSupabaseClient === 'function') {
+                        try {
+                            await window.waitForSupabaseClient(5000);
+                            console.log('✅ Supabase client now ready');
+                        } catch (err) {
+                            console.error('❌ Supabase client wait timeout:', err);
+                        }
+                    }
+                }
+                
+                // FIRST: Load user data from all sources
+                await loadAndDisplayUserData();
+                
+                // THEN: Initialize profile manager
+                if (window.GarciaProfileManager) {
+                    await window.GarciaProfileManager.init();
+                    await brutalLoadAllFormData(); // 🔨 BRUTAL: Load ALL form data
+                    updateMetricsDisplay();
+                    updateProfileAvatar();
+                }
+            } catch (error) {
+                console.error('Error initializing profile page:', error);
+            }
+        }
+
+        /**
+         * 🎯 LOAD AND DISPLAY USER DATA
+         * Gets user data from Supabase (priority) or localStorage
+         * Updates header display immediately
+         */
+        async function loadAndDisplayUserData() {
+            console.log('🔍 Loading user data from all sources...');
+            console.log('🔍 Supabase client available?', !!window.supabaseClient);
+            console.log('🔍 Supabase client type:', typeof window.supabaseClient);
+            
+            let userData = null;
+            let displayName = 'Your Profile';
+            let displayEmail = 'user@example.com';
+            let memberSince = '2024';
+
+            // SOURCE 1: Try Supabase first (highest priority)
+            if (window.supabaseClient) {
+                try {
+                    console.log('☁️ Checking Supabase for user data...');
+                    console.log('☁️ Calling auth.getUser()...');
+                    const { data, error } = await window.supabaseClient.auth.getUser();
+                    console.log('☁️ getUser() result:', { hasData: !!data, hasUser: !!data?.user, error: error?.message });
+                    
+                    if (data?.user && !error) {
+                        userData = data.user;
+                        console.log('✅ Supabase user found:', {
+                            email: userData.email,
+                            id: userData.id,
+                            metadata: userData.user_metadata
+                        });
+
+                        // Extract display info from Supabase
+                        displayEmail = userData.email || displayEmail;
+                        displayName = userData.user_metadata?.full_name || 
+                                     userData.user_metadata?.name || 
+                                     userData.email?.split('@')[0] || 
+                                     displayName;
+                        
+                        if (userData.created_at) {
+                            memberSince = new Date(userData.created_at).getFullYear();
+                        }
+
+                        // Save to localStorage for offline access
+                        const localUser = {
+                            id: userData.id,
+                            email: userData.email,
+                            full_name: displayName,
+                            avatar_url: userData.user_metadata?.avatar_url,
+                            registeredAt: userData.created_at,
+                            lastLogin: new Date().toISOString()
+                        };
+                        localStorage.setItem('gb_current_user', JSON.stringify(localUser));
+                        console.log('💾 Saved user to localStorage');
+                    } else {
+                        console.warn('⚠️ No Supabase user or error:', error?.message);
+                        // Force userData to null to trigger localStorage fallback
+                        userData = null;
+                    }
+                } catch (err) {
+                    console.error('❌ Supabase user fetch error:', err);
+                    // Force userData to null to trigger localStorage fallback
+                    userData = null;
+                }
+            } else {
+                console.warn('⚠️ Supabase client not available - will use localStorage');
+                // Force fallback to localStorage
+                userData = null;
+            }
+
+            // SOURCE 2: ALWAYS check localStorage (even if Supabase worked)
+            // This ensures we show SOMETHING even if Supabase data is incomplete
+            console.log('📦 Checking localStorage for user data (fallback or supplement)...');
+            const gbUser = localStorage.getItem('gb_current_user');
+            
+            if (gbUser) {
+                try {
+                    const parsed = JSON.parse(gbUser);
+                    console.log('✅ Found gb_current_user in localStorage:', parsed);
+                    
+                    // Use localStorage data if we don't have Supabase data
+                    // OR if current values are still defaults
+                    if (!userData || displayEmail === 'user@example.com') {
+                        displayEmail = parsed.email || displayEmail;
+                        displayName = parsed.full_name || 
+                                     parsed.name || 
+                                     parsed.email?.split('@')[0] || 
+                                     displayName;
+                        
+                        if (parsed.registeredAt) {
+                            memberSince = new Date(parsed.registeredAt).getFullYear();
+                        }
+                    }
+                } catch (e) {
+                    console.error('❌ Error parsing gb_current_user:', e);
+                }
+            } else {
+                console.warn('⚠️ No gb_current_user in localStorage');
+            }
+
+            // UPDATE DISPLAY
+            console.log('🎨 Updating profile display with:', { displayName, displayEmail, memberSince });
+            console.log('🎨 DOM elements check:', {
+                'profile-email': !!document.getElementById('profile-email'),
+                'profile-name': !!document.getElementById('profile-name'),
+                'member-since-display': !!document.getElementById('member-since-display'),
+                'profile_email_field': !!document.getElementById('profile_email_field'),
+                'full_name': !!document.getElementById('full_name')
+            });
+
+            // Update email (below avatar)
+            const profileEmailEl = document.getElementById('profile-email');
+            if (profileEmailEl) {
+                console.log('📧 BEFORE update - profile-email:', profileEmailEl.textContent);
+                profileEmailEl.textContent = displayEmail;
+                console.log('📧 AFTER update - profile-email:', profileEmailEl.textContent);
+            } else {
+                console.error('❌ profile-email element NOT FOUND in DOM!');
+            }
+
+            // Update name (title)
+            const profileNameEl = document.getElementById('profile-name');
+            if (profileNameEl) {
+                profileNameEl.textContent = displayName;
+                console.log('✅ Updated profile-name:', displayName);
+            }
+
+            // Update member since
+            const memberSinceEl = document.getElementById('member-since-display');
+            if (memberSinceEl) {
+                memberSinceEl.textContent = memberSince;
+                console.log('✅ Updated member-since:', memberSince);
+            }
+
+            // Update basic info form email field (read-only display)
+            const emailInput = document.getElementById('email');
+            const emailInputField = document.getElementById('profile_email_field');
+            
+            // Try new field first, fallback to old one
+            const targetEmailInput = emailInputField || emailInput;
+            
+            if (targetEmailInput) {
+                targetEmailInput.value = displayEmail;
+                targetEmailInput.disabled = true; // Email shouldn't be editable
+                targetEmailInput.readOnly = true;
+                console.log('✅ Updated email input field:', displayEmail);
+            } else {
+                console.warn('⚠️ Email input field not found (tried profile_email_field and email)');
+            }
+
+            // Update full name input
+            const fullNameInput = document.getElementById('full_name');
+            if (fullNameInput && displayName !== 'Your Profile') {
+                fullNameInput.value = displayName;
+                console.log('✅ Updated full_name input:', displayName);
+            } else if (!fullNameInput) {
+                console.warn('⚠️ full_name input not found');
+            }
+
+            console.log('✅ Profile display updated successfully');
+            return { displayName, displayEmail, memberSince, userData };
+        }
+
+        /**
+         * 🔨 BRUTAL FORM DATA LOADER
+         * Loads ALL data from multiple sources and populates ALL form fields
+         */
+        async function brutalLoadAllFormData() {
+            console.log('🔨 BRUTAL LOAD - Loading all form data...');
+
+            try {
+                // Get data from multiple sources
+                let profileData = null;
+                let userData = null;
+
+                // Source 1: BrutalSync (localStorage + cache)
+                if (window.BrutalSync) {
+                    profileData = window.BrutalSync.load('profile');
+                    console.log('💾 BrutalSync profile data:', profileData);
+                }
+
+                // Source 2: GarciaProfileManager
+                if (window.GarciaProfileManager) {
+                    const managerData = window.GarciaProfileManager.getProfileData();
+                    console.log('📊 GarciaProfileManager data:', managerData);
+
+                    // Merge data (GarciaProfileManager takes precedence)
+                    if (managerData) {
+                        profileData = {
+                            ...profileData,
+                            ...managerData.basic,
+                            body_metrics: managerData.body_metrics,
+                            preferences: managerData.preferences,
+                            macros: managerData.macros,
+                            habits: managerData.habits
+                        };
+                    }
+                }
+
+                // Source 3: gb_current_user (for email)
+                const storedUser = localStorage.getItem('gb_current_user');
+                if (storedUser) {
+                    userData = JSON.parse(storedUser);
+                    console.log('👤 Current user data (localStorage):', userData);
+                }
+
+                // Source 4: Supabase session (HIGHEST PRIORITY for real OAuth users)
+                if (window.supabaseClient) {
+                    try {
+                        const { data: { user }, error } = await window.supabaseClient.auth.getUser();
+                        if (user && !error) {
+                            console.log('☁️ Supabase user data (LIVE SESSION):', user);
+
+                            // Merge Supabase user into userData (Supabase is TRUTH)
+                            userData = {
+                                ...userData,
+                                ...user,
+                                // OAuth providers put name in user_metadata
+                                full_name: user.user_metadata?.full_name ||
+                                          user.user_metadata?.name ||
+                                          userData?.full_name ||
+                                          userData?.name ||
+                                          user.email?.split('@')[0] || '',
+                                email: user.email || userData?.email || ''
+                            };
+
+                            console.log('🔥 MERGED USER DATA (Supabase + localStorage):', userData);
+                        }
+                    } catch (err) {
+                        console.warn('Could not fetch Supabase user:', err);
+                    }
+                } else {
+                    console.warn('⚠️ Supabase client not available (file:// protocol or not loaded)');
+                }
+
+                // 🔨 SUPER BRUTAL: If still no userData, check localStorage AGAIN
+                if (!userData || !userData.email) {
+                    console.log('🔨 SUPER BRUTAL - No userData, checking localStorage again...');
+
+                    // Check all possible localStorage keys
+                    const possibleKeys = [
+                        'gb_current_user',
+                        'supabase.auth.token',
+                        'sb-localhost-auth-token',
+                        'garcia_user'
+                    ];
+
+                    for (const key of possibleKeys) {
+                        const data = localStorage.getItem(key);
+                        if (data) {
+                            try {
+                                const parsed = JSON.parse(data);
+                                console.log(`📦 Found data in ${key}:`, parsed);
+
+                                // Extract user data from various formats
+                                if (parsed.user) {
+                                    userData = { ...userData, ...parsed.user };
+                                } else if (parsed.email || parsed.id) {
+                                    userData = { ...userData, ...parsed };
+                                }
+                            } catch (e) {
+                                console.warn(`Could not parse ${key}:`, e);
+                            }
+                        }
+                    }
+                }
+
+                console.log('🎯 FINAL USER DATA:', userData);
+
+                // 🔨 BRUTAL: Update header IMMEDIATELY with user data
+                console.log('🔨 BRUTAL HEADER UPDATE - Starting...');
+
+                // Email in header (below avatar) - PRIORITY: userData.email > default
+                const profileEmailDisplay = document.getElementById('profile-email');
+                if (profileEmailDisplay) {
+                    const emailToShow = userData?.email || 'user@example.com';
+                    profileEmailDisplay.textContent = emailToShow;
+                    console.log('✅ BRUTAL: Set profile-email:', emailToShow);
+                }
+
+                // Name in header title - PRIORITY: profileData > userData (all variations)
+                const profileTitle = document.querySelector('.profile-header h1');
+                if (profileTitle) {
+                    const displayName = profileData?.full_name ||
+                                      userData?.user_metadata?.full_name ||
+                                      userData?.full_name ||
+                                      userData?.name ||
+                                      userData?.email?.split('@')[0] ||
+                                      'Your Profile';
+
+                    if (displayName !== 'Your Profile') {
+                        profileTitle.textContent = displayName;
+                        console.log('✅ BRUTAL: Set profile title:', displayName);
+                    } else {
+                        console.warn('⚠️ No name found, showing default "Your Profile"');
+                    }
+                }
+
+                // POPULATE BASIC INFO FORM
+                const basicForm = document.getElementById('basic-info-form');
+                if (basicForm && (profileData || userData)) {
+                    // Full name (priority: profileData → userData.user_metadata → userData)
+                    const fullNameInput = basicForm.querySelector('#full_name');
+                    if (fullNameInput) {
+                        const nameValue = profileData?.full_name ||
+                                        userData?.user_metadata?.full_name ||
+                                        userData?.full_name ||
+                                        userData?.name ||
+                                        '';
+                        fullNameInput.value = nameValue;
+                        console.log('✅ Set full_name input:', nameValue);
+                    }
+
+                    // Phone
+                    const phoneInput = basicForm.querySelector('#phone');
+                    if (phoneInput && profileData?.phone) {
+                        phoneInput.value = profileData.phone;
+                    }
+
+                    // Birthday
+                    const birthdayInput = basicForm.querySelector('#birthday');
+                    if (birthdayInput && profileData?.birthday) {
+                        birthdayInput.value = profileData.birthday;
+                    }
+
+                    // Location
+                    const locationInput = basicForm.querySelector('#location');
+                    if (locationInput && profileData?.location) {
+                        locationInput.value = profileData.location;
+                    }
+
+                    // Bio
+                    const bioInput = basicForm.querySelector('#bio');
+                    if (bioInput && profileData?.bio) {
+                        bioInput.value = profileData.bio;
+                    }
+
+                    // Experience level
+                    const expInput = basicForm.querySelector('#experience_level');
+                    if (expInput && profileData?.experience_level) {
+                        expInput.value = profileData.experience_level;
+                    }
+
+                    // Trainer name
+                    const trainerInput = basicForm.querySelector('#trainer_name');
+                    if (trainerInput && profileData?.trainer_name) {
+                        trainerInput.value = profileData.trainer_name;
+                    }
+                }
+
+                // POPULATE BODY METRICS FORM
+                const metricsForm = document.getElementById('body-metrics-form');
+                if (metricsForm && profileData?.body_metrics) {
+                    const metrics = profileData.body_metrics;
+
+                    // Weight
+                    const weightInput = metricsForm.querySelector('#current_weight');
+                    if (weightInput && metrics.current_weight) {
+                        weightInput.value = metrics.current_weight;
+                    }
+
+                    // Height
+                    const heightInput = metricsForm.querySelector('#height');
+                    if (heightInput && metrics.height) {
+                        heightInput.value = metrics.height;
+                    }
+
+                    // Body fat
+                    const bfInput = metricsForm.querySelector('#body_fat_percentage');
+                    if (bfInput && metrics.body_fat_percentage) {
+                        bfInput.value = metrics.body_fat_percentage;
+                    }
+
+                    // Target weight
+                    const targetInput = metricsForm.querySelector('#target_weight');
+                    if (targetInput && metrics.target_weight) {
+                        targetInput.value = metrics.target_weight;
+                    }
+
+                    console.log('✅ Populated body metrics');
+                }
+
+                // POPULATE PREFERENCES FORM
+                const prefsForm = document.getElementById('preferences-form');
+                if (prefsForm && profileData?.preferences) {
+                    const prefs = profileData.preferences;
+
+                    // Units
+                    const unitsInput = prefsForm.querySelector('#units');
+                    if (unitsInput && prefs.units) {
+                        unitsInput.value = prefs.units;
+                    }
+
+                    // Language
+                    const langInput = prefsForm.querySelector('#language');
+                    if (langInput && prefs.language) {
+                        langInput.value = prefs.language;
+                    }
+
+                    console.log('✅ Populated preferences');
+                }
+
+                // POPULATE MACROS FORM
+                const macrosForm = document.getElementById('macros-form');
+                if (macrosForm && profileData?.macros) {
+                    const macros = profileData.macros;
+
+                    Object.keys(macros).forEach(key => {
+                        const input = macrosForm.querySelector(`#${key}`);
+                        if (input && macros[key]) {
+                            input.value = macros[key];
+                        }
+                    });
+
+                    console.log('✅ Populated macros');
+                }
+
+                // POPULATE HABITS FORM
+                const habitsForm = document.getElementById('habits-form');
+                if (habitsForm && profileData?.habits) {
+                    const habits = profileData.habits;
+
+                    Object.keys(habits).forEach(key => {
+                        const input = habitsForm.querySelector(`#${key}`);
+                        if (input && habits[key]) {
+                            input.value = habits[key];
+                        }
+                    });
+
+                    console.log('✅ Populated habits');
+                }
+
+                console.log('✅ BRUTAL LOAD COMPLETE - All forms populated!');
+
+            } catch (error) {
+                console.error('❌ Brutal load error:', error);
+            }
+        }
+
+        /**
+         * Generates a data URI avatar with user initials
+         * @param {string} name - User's full name
+         * @returns {string} Data URI for the generated avatar
+         */
+        function generateAvatarWithInitials(name) {
+            // Get initials (max 2 letters)
+            const initials = name
+                .split(' ')
+                .filter(word => word.length > 0)
+                .map(word => word[0].toUpperCase())
+                .slice(0, 2)
+                .join('');
+
+            // Create canvas
+            const canvas = document.createElement('canvas');
+            const size = 150; // Larger for profile page
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // Background gradient (Garcia Builder brand colors)
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#FF6B35');  // Orange
+            gradient.addColorStop(1, '#004E89');  // Blue
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+
+            // Text
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 64px system-ui, -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(initials || 'U', size / 2, size / 2);
+
+            return canvas.toDataURL('image/png');
+        }
+
+        // BRUTAL FIX: Update avatar IMMEDIATELY on page load (same as dashboard)
+        function brutalProfileAvatarFix() {
+            console.log('🔨 BRUTAL PROFILE AVATAR FIX - Running immediately...');
+
+            const avatar = document.getElementById('main-avatar');
+            if (!avatar) {
+                console.error('❌ Avatar element not found!');
+                return;
+            }
+
+            let finalSrc = null;
+            let finalName = 'User';
+
+            try {
+                // Try 1: localStorage gb_current_user
+                const storedUser = localStorage.getItem('gb_current_user');
+                if (storedUser) {
+                    const user = JSON.parse(storedUser);
+                    console.log('💾 Found user in localStorage:', user);
+
+                    finalName = user.full_name || user.name || user.email || 'User';
+
+                    // Check for picture in various places
+                    finalSrc = user.user_metadata?.picture ||
+                              user.user_metadata?.avatar_url ||
+                              user.avatar_url ||
+                              user.picture ||
+                              null;
+
+                    if (finalSrc) {
+                        console.log('✅ Found picture URL:', finalSrc);
+                    }
+                }
+
+                // Try 2: GarciaProfileManager if available
+                if (!finalSrc && window.GarciaProfileManager) {
+                    const profileData = window.GarciaProfileManager.getProfileData?.();
+                    if (profileData) {
+                        console.log('📊 Found profile data:', profileData);
+                        finalName = profileData.basic?.full_name || profileData.full_name || finalName;
+                        finalSrc = profileData.basic?.avatar_url || profileData.avatar_url || null;
+                    }
+                }
+
+                // Generate initials if no picture found
+                if (!finalSrc) {
+                    console.log('🎨 Generating initials avatar for:', finalName);
+                    finalSrc = generateAvatarWithInitials(finalName);
+                }
+
+                // SET THE AVATAR NOW
+                avatar.src = finalSrc;
+                avatar.alt = finalName;
+                console.log('✅ PROFILE AVATAR SET TO:', finalSrc.substring(0, 80) + '...');
+
+            } catch (error) {
+                console.error('❌ Brutal profile avatar fix error:', error);
+                // Last resort: generate initials for 'User'
+                avatar.src = generateAvatarWithInitials('User');
+            }
+        }
+
+        // Run brutal fix ASAP
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', brutalProfileAvatarFix);
+        } else {
+            brutalProfileAvatarFix();
+        }
+
+        function updateProfileAvatar() {
+            try {
+                console.log('📸 updateProfileAvatar called...');
+                const profileData = window.GarciaProfileManager?.getProfileData?.();
+
+                const avatar = document.getElementById('main-avatar');
+                if (!avatar) {
+                    console.warn('⚠️ Avatar element not found');
+                    return;
+                }
+
+                let finalSrc = null;
+                let finalName = 'User';
+
+                // Try multiple sources
+                if (profileData) {
+                    finalName = profileData.basic?.full_name || profileData.full_name || profileData.email?.split('@')[0] || 'User';
+                    finalSrc = profileData.basic?.avatar_url || profileData.avatar_url || null;
+                }
+
+                // Fallback to localStorage if profileData has no avatar
+                if (!finalSrc) {
+                    const storedUser = localStorage.getItem('gb_current_user');
+                    if (storedUser) {
+                        const user = JSON.parse(storedUser);
+                        finalSrc = user.user_metadata?.picture || user.avatar_url || null;
+                        finalName = finalName !== 'User' ? finalName : (user.full_name || user.name || 'User');
+                    }
+                }
+
+                // Generate initials if still no picture
+                if (!finalSrc) {
+                    finalSrc = generateAvatarWithInitials(finalName);
+                    console.log('✅ Generated initials for:', finalName);
+                } else {
+                    console.log('✅ Using picture URL:', finalSrc.substring(0, 60));
+                }
+
+                avatar.src = finalSrc;
+                avatar.alt = finalName;
+
+                // Force render
+                avatar.style.display = 'none';
+                setTimeout(() => { avatar.style.display = ''; }, 10);
+            } catch (error) {
+                console.error('❌ Error updating profile avatar:', error);
+            }
+        }
+
+        async function handleAvatarUpload(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file');
+                return;
+            }
+
+            // Validate file size (max 5MB)
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                alert('Image size must be less than 5MB');
+                return;
+            }
+
+            try {
+                // Show loading state
+                const avatar = document.getElementById('main-avatar');
+                const originalSrc = avatar.src;
+                avatar.style.opacity = '0.5';
+
+                // Read and display image preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    avatar.src = e.target.result;
+                    avatar.style.opacity = '1';
+                };
+                reader.readAsDataURL(file);
+
+                // TODO: Upload to Supabase storage when ready
+                // For now, just save the data URL to profile
+                if (window.GarciaProfileManager) {
+                    const profileData = window.GarciaProfileManager.getProfileData();
+                    profileData.avatar_url = avatar.src;
+                    await window.GarciaProfileManager.saveProfile(profileData);
+                }
+            } catch (error) {
+                console.error('Error uploading avatar:', error);
+                alert('Failed to upload avatar. Please try again.');
+            }
+        }
+
+        function setupTabNavigation() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Add active class to clicked button and target content
+                    this.classList.add('active');
+                    document.getElementById(targetTab + '-tab').classList.add('active');
+                });
+            });
+        }
+
+        // Allow linking directly to tabs via query parameter ?tab=metrics|progress|goals|settings
+        function activateTabFromUrl() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                let target = params.get('tab');
+                if (!target && window.location.hash.startsWith('#tab=')) {
+                    target = window.location.hash.replace('#tab=', '');
+                }
+                const validTabs = ['basic', 'metrics', 'progress', 'goals', 'macros', 'habits', 'workouts', 'meetings', 'settings'];
+                if (target && validTabs.includes(target)) {
+                    const btn = document.querySelector(`.tab-btn[data-tab="${target}"]`);
+                    btn?.click();
+                }
+            } catch (e) {
+                console.warn('Failed to activate tab from URL:', e);
+            }
+        }
+
+        function setupEventListeners() {
+            const logoutButton = document.getElementById('logout-btn');
+            if (logoutButton) {
+                logoutButton.addEventListener('click', (event) => {
+                    if (window.AuthGuard && typeof window.AuthGuard.handleLogout === 'function') {
+                        window.AuthGuard.handleLogout(event);
+                    } else {
+                        fallbackLogout(event);
+                    }
+                });
+            }
+
+            // 🔨 BRUTAL DEBUG BUTTON
+            const debugBtn = document.getElementById('debug-storage-btn');
+            if (debugBtn) {
+                debugBtn.addEventListener('click', async () => {
+                    console.log('🔨 BRUTAL DEBUG - Showing ALL localStorage data...');
+                    console.log('='.repeat(80));
+
+                    // Show all localStorage keys
+                    const allData = {};
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        try {
+                            const value = localStorage.getItem(key);
+                            allData[key] = JSON.parse(value);
+                        } catch (e) {
+                            allData[key] = localStorage.getItem(key);
+                        }
+                    }
+
+                    console.log('📦 ALL LOCALSTORAGE DATA:', allData);
+                    console.log('='.repeat(80));
+
+                    // Show specific important keys
+                    const importantKeys = ['gb_current_user', 'supabase.auth.token', 'garcia_user'];
+                    importantKeys.forEach(key => {
+                        const data = localStorage.getItem(key);
+                        if (data) {
+                            console.log(`\n🔑 ${key}:`);
+                            try {
+                                console.log(JSON.parse(data));
+                            } catch (e) {
+                                console.log(data);
+                            }
+                        } else {
+                            console.log(`\n❌ ${key}: NOT FOUND`);
+                        }
+                    });
+
+                    // Show Supabase storage keys
+                    console.log('\n☁️ SUPABASE STORAGE KEYS:');
+                    const supabaseKeys = Object.keys(allData).filter(k => k.includes('sb-') || k.includes('supabase'));
+                    if (supabaseKeys.length > 0) {
+                        supabaseKeys.forEach(key => {
+                            console.log(`✓ ${key}`);
+                        });
+                    } else {
+                        console.log('❌ No Supabase auth keys found');
+                    }
+
+                    // Show window.supabaseClient status
+                    console.log('\n☁️ Supabase Client Available:', !!window.supabaseClient);
+                    
+                    // Test Supabase connection
+                    if (window.supabaseClient) {
+                        console.log('\n🔐 Testing Supabase authentication...');
+                        
+                        try {
+                            const { data: sessionData, error: sessionError } = await window.supabaseClient.auth.getSession();
+                            if (sessionError) {
+                                console.error('❌ Session error:', sessionError.message);
+                            } else if (sessionData?.session) {
+                                console.log('✅ Active session:', sessionData.session.user.email);
+                            } else {
+                                console.warn('⚠️ No active session');
+                                
+                                // Try to sync from localStorage
+                                console.log('\n🔄 Attempting to sync from localStorage...');
+                                const gbUser = localStorage.getItem('gb_current_user');
+                                if (gbUser) {
+                                    const parsed = JSON.parse(gbUser);
+                                    console.log('Found local user:', parsed.email);
+                                    console.log('💡 Need to re-authenticate to sync with Supabase');
+                                    
+                                    // Check for auth tokens
+                                    for (const key of supabaseKeys) {
+                                        try {
+                                            const value = localStorage.getItem(key);
+                                            const tokenData = JSON.parse(value);
+                                            
+                                            if (tokenData?.access_token && tokenData?.refresh_token) {
+                                                console.log(`\n🔧 Found tokens in ${key}, attempting restore...`);
+                                                
+                                                const { data, error } = await window.supabaseClient.auth.setSession({
+                                                    access_token: tokenData.access_token,
+                                                    refresh_token: tokenData.refresh_token
+                                                });
+                                                
+                                                if (error) {
+                                                    console.error('❌ Restore failed:', error.message);
+                                                } else if (data?.session) {
+                                                    console.log('✅ SESSION RESTORED!', data.session.user.email);
+                                                    alert('✅ Session restored! Reloading page...');
+                                                    setTimeout(() => location.reload(), 1000);
+                                                    return;
+                                                }
+                                            }
+                                        } catch (err) {
+                                            console.warn(`Failed to restore from ${key}:`, err.message);
+                                        }
+                                    }
+                                    
+                                    console.log('\n💡 Could not restore session. Options:');
+                                    console.log('1. Login again at /pages/auth/login.html');
+                                    console.log('2. Or clear localStorage and start fresh');
+                                }
+                            }
+                            
+                            const { data: userData, error: userError } = await window.supabaseClient.auth.getUser();
+                            if (userError) {
+                                console.error('❌ User error:', userError.message);
+                            } else if (userData?.user) {
+                                console.log('✅ User authenticated:', userData.user.email);
+                            } else {
+                                console.warn('⚠️ No user found');
+                            }
+                        } catch (err) {
+                            console.error('❌ Supabase test failed:', err);
+                        }
+                    }
+
+                    // Try to reload data
+                    console.log('\n🔄 Reloading profile data...');
+                    await brutalLoadAllFormData();
+
+                    alert('🔨 Debug info printed to console! Check DevTools (F12).');
+                });
+            }
+
+            // Avatar upload
+            const avatarUpload = document.getElementById('avatar-upload');
+            if (avatarUpload) {
+                avatarUpload.addEventListener('change', handleAvatarUpload);
+            }
+
+            // Weight input change for BMI calculation
+            const weightInput = document.getElementById('current_weight');
+            const heightInput = document.getElementById('height');
+
+            if (weightInput && heightInput) {
+                [weightInput, heightInput].forEach(input => {
+                    input.addEventListener('input', calculateAndDisplayBMI);
+                });
+            }
+
+            // BRUTAL FORM INTERCEPTOR: Prevent traditional submit, force JavaScript save
+            const forms = document.querySelectorAll('form[data-profile-section]');
+            forms.forEach(form => {
+                // BRUTAL: Intercept form submit and KILL IT
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🔨 BRUTAL FORM INTERCEPTOR - Preventing page refresh!');
+
+                    const section = form.dataset.profileSection;
+                    const formData = new FormData(form);
+                    const data = Object.fromEntries(formData.entries());
+
+                    // Show saving indicator
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalText = submitBtn?.textContent;
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+                    }
+
+                    try {
+                        // Save via GarciaProfileManager (localStorage + Supabase)
+                        if (window.GarciaProfileManager) {
+                            await window.GarciaProfileManager.handleFormSubmit?.({ target: form, preventDefault: () => {} });
+                        }
+
+                        // Save via BrutalSync (localStorage + broadcast)
+                        if (window.BrutalSync) {
+                            await window.BrutalSync.save(section, data);
+                            console.log(`✅ Form ${section} saved successfully`);
+                        }
+
+                        // Show success feedback
+                        if (submitBtn) {
+                            submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Saved!';
+                            submitBtn.classList.add('btn-success');
+                            submitBtn.classList.remove('btn-save');
+
+                            setTimeout(() => {
+                                submitBtn.innerHTML = originalText;
+                                submitBtn.classList.remove('btn-success');
+                                submitBtn.classList.add('btn-save');
+                                submitBtn.disabled = false;
+                            }, 2000);
+                        }
+
+                    } catch (err) {
+                        console.error('Failed to save form:', err);
+
+                        // Show error feedback
+                        if (submitBtn) {
+                            submitBtn.innerHTML = '<i class="fas fa-times me-2"></i>Error';
+                            submitBtn.classList.add('btn-danger');
+                            submitBtn.classList.remove('btn-save');
+
+                            setTimeout(() => {
+                                submitBtn.innerHTML = originalText;
+                                submitBtn.classList.remove('btn-danger');
+                                submitBtn.classList.add('btn-save');
+                                submitBtn.disabled = false;
+                            }, 2000);
+                        }
+                    }
+                });
+
+                // Auto-save on input change (secondary backup)
+                const inputs = form.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => {
+                    input.addEventListener('change', () => {
+                        // Auto-save after short delay
+                        setTimeout(async () => {
+                            if (window.GarciaProfileManager) {
+                                const event = { target: form, preventDefault: () => {} };
+                                await window.GarciaProfileManager.handleFormSubmit?.(event);
+
+                                // BRUTAL SYNC: Save to sync system after profile manager
+                                if (window.BrutalSync) {
+                                    const section = form.dataset.profileSection;
+                                    const formData = new FormData(form);
+                                    const data = Object.fromEntries(formData.entries());
+
+                                    try {
+                                        await window.BrutalSync.save(section, data);
+                                        console.log(`💾 Form ${section} auto-saved via BrutalSync`);
+                                    } catch (err) {
+                                        console.warn('BrutalSync save warning:', err);
+                                    }
+                                }
+                            }
+                        }, 500);
+                    });
+                });
+            });
+        }
+
+        function updateMetricsDisplay() {
+            const profileData = window.GarciaProfileManager?.getProfileData();
+            if (!profileData) return;
+
+            const metrics = profileData.body_metrics;
+            const units = profileData.preferences?.units || 'metric';
+
+            // Update metric displays
+            const displays = {
+                'display-weight': metrics.current_weight ?
+                    `${metrics.current_weight} ${units === 'metric' ? 'kg' : 'lbs'}` : '--',
+                'display-height': metrics.height ?
+                    `${metrics.height} ${units === 'metric' ? 'cm' : 'ft'}` : '--',
+                'display-bmi': calculateBMI(metrics.current_weight, metrics.height) || '--',
+                    'display-body-fat': metrics.body_fat_percentage ?
+                        `${metrics.body_fat_percentage}%` : '--%',
+                    'display-muscle-mass': metrics.muscle_mass ?
+                        `${metrics.muscle_mass} ${units === 'metric' ? 'kg' : 'lbs'}` : '--'
+            };
+
+            Object.entries(displays).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = value;
+            });
+        }
+
+        function calculateAndDisplayBMI() {
+            const weight = parseFloat(document.getElementById('current_weight')?.value);
+            const height = parseFloat(document.getElementById('height')?.value);
+
+            const bmi = calculateBMI(weight, height);
+            const displayElement = document.getElementById('display-bmi');
+
+            if (displayElement && bmi) {
+                displayElement.textContent = bmi;
+            }
+        }
+
+        function calculateBMI(weight, height) {
+            if (!weight || !height) return null;
+
+            const heightInMeters = height > 3 ? height / 100 : height;
+            const bmi = weight / (heightInMeters * heightInMeters);
+
+            return bmi.toFixed(1);
+        }
+
+        async function fallbackLogout(event) {
+            try {
+                event?.preventDefault?.();
+                event?.stopPropagation?.();
+            } catch (error) {
+                console.warn('Logout event cleanup failed:', error);
+            }
+
+            try {
+                if (typeof AuthSystem !== 'undefined' && typeof AuthSystem.logout === 'function') {
+                    await AuthSystem.logout();
+                    return;
+                }
+                if (window.authSystem && typeof window.authSystem.logout === 'function') {
+                    await window.authSystem.logout();
+                    return;
+                }
+                if (window.supabaseClient?.auth) {
+                    await window.supabaseClient.auth.signOut();
+                } else if (window.supabase?.auth) {
+                    await window.supabase.auth.signOut();
+                }
+            } catch (error) {
+                console.error('Error logging out:', error);
+            }
+
+            try {
+                localStorage.removeItem('gb_current_user');
+                localStorage.removeItem('gb_remember_user');
+            } catch (error) {
+                console.warn('Failed to clear auth cache during logout:', error);
+            }
+
+            const loginUrl = typeof toAbsoluteUrl === 'function'
+                ? toAbsoluteUrl('pages/auth/login.html')
+                : '../auth/login.html';
+            window.location.href = loginUrl;
+        }
+    </script>
+
+    <!-- I18n Script -->
+    <script src="../../assets/i18n.js"></script>
+</body>
+</html>

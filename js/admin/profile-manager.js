@@ -931,6 +931,12 @@
   };
 
   function ensureFormSubmitBinding(form) {
+    // DISABLED - Using onclick instead of form submit to avoid browser conflicts
+    // Forms now use type="button" with onclick="window.saveBasicInfo()"
+    console.log(`ℹ️ ensureFormSubmitBinding DISABLED - using onclick handlers instead`);
+    return;
+    
+    /* OLD CODE - DISABLED
     if (!form) return;
     if (!form.dataset.profileSection) {
       console.warn('ProfileManager: form missing data-profile-section attribute; skipping submit binding.', form.id || form);
@@ -959,6 +965,7 @@
     form.dataset.submitBound = 'true';
     form.setAttribute('novalidate', 'novalidate');
     console.log(`✅ Form ${form.id} submit handler bound successfully`);
+    */
   }
 
   // Setup forms

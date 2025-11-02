@@ -772,7 +772,7 @@
                         </div>
 
                         <div class="text-end mt-4">
-                            <button type="submit" class="btn btn-save">
+                            <button type="button" class="btn btn-save" onclick="return window.saveBasicInfo(event);">
                                 <i class="fas fa-save"></i> Save Basic Info
                             </button>
                         </div>
@@ -1391,6 +1391,42 @@
     <script defer src="../../js/body-metrics.js"></script>
 
     <script>
+        // SIMPLE SAVE FUNCTION - No form submit, just direct call
+        window.saveBasicInfo = async function(event) {
+            console.log('🔵 saveBasicInfo DIRECT CALL - NO FORM SUBMIT');
+            
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            const form = document.getElementById('basic-info-form');
+            if (!form) {
+                console.error('❌ Form not found!');
+                return false;
+            }
+            
+            console.log('📝 Calling ProfileManager directly...');
+            
+            // Create fake event for ProfileManager
+            const fakeEvent = {
+                target: form,
+                currentTarget: form,
+                preventDefault: () => {},
+                stopPropagation: () => {},
+                stopImmediatePropagation: () => {},
+                defaultPrevented: true
+            };
+            
+            if (window.GarciaProfileManager && window.GarciaProfileManager.handleFormSubmit) {
+                await window.GarciaProfileManager.handleFormSubmit(fakeEvent);
+            } else {
+                console.error('❌ ProfileManager not available!');
+            }
+            
+            return false;
+        };
+
         // Profile page specific functionality
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof AuthSystem !== 'undefined' && typeof AuthSystem.requireAuth === 'function') {
@@ -1558,7 +1594,9 @@
                 });
             }
 
-            // Form auto-save functionality
+            // AUTO-SAVE DISABLED - Causes conflicts with manual save
+            // Only save when user clicks Save button
+            /*
             const forms = document.querySelectorAll('form[data-profile-section]');
             forms.forEach(form => {
                 const inputs = form.querySelectorAll('input, select, textarea');
@@ -1582,6 +1620,7 @@
                     });
                 });
             });
+            */
         }
 
         function updateMetricsDisplay() {

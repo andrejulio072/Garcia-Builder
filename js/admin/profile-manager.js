@@ -840,6 +840,18 @@
     });
   };
 
+  function ensureFormSubmitBinding(form) {
+    if (!form) return;
+    if (!form.dataset.profileSection) {
+      console.warn('ProfileManager: form missing data-profile-section attribute; skipping submit binding.', form.id || form);
+      return;
+    }
+    if (form.dataset.submitBound === 'true') return;
+    form.addEventListener('submit', handleFormSubmit);
+    form.dataset.submitBound = 'true';
+    form.setAttribute('novalidate', 'novalidate');
+  }
+
   // Setup forms
   const setupForms = () => {
     console.log('📝 Setting up forms with profile data...');
@@ -864,6 +876,8 @@
         checkbox.checked = profileData.basic.goals.includes(checkbox.value);
       });
       console.log(`  ✓ Goals: ${profileData.basic.goals.join(', ')}`);
+
+      ensureFormSubmitBinding(basicForm);
     } else {
       console.warn('⚠️ basic-info-form not found');
     }
@@ -902,10 +916,65 @@
           console.log('  ✓ Triggered BMI calculation');
         }
       }, 200);
+
+      ensureFormSubmitBinding(metricsForm);
     } else {
       console.warn('⚠️ body-metrics-form not found');
     }
     
+    // Preferences form
+    const preferencesForm = document.getElementById('preferences-form');
+    if (preferencesForm) {
+      const unitsField = preferencesForm.querySelector('[name="units"]');
+      if (unitsField && profileData.preferences.units) {
+        unitsField.value = profileData.preferences.units;
+      }
+      const languageField = preferencesForm.querySelector('[name="language"]');
+      if (languageField && profileData.preferences.language) {
+        languageField.value = profileData.preferences.language;
+      }
+
+      const emailNotif = preferencesForm.querySelector('[name="email_notifications"]');
+      if (emailNotif) {
+        emailNotif.checked = !!profileData.preferences.notifications?.email;
+      }
+      const workoutReminders = preferencesForm.querySelector('[name="workout_reminders"]');
+      if (workoutReminders) {
+        workoutReminders.checked = !!profileData.preferences.notifications?.reminders;
+      }
+      const profileVisible = preferencesForm.querySelector('[name="profile_visible"]');
+      if (profileVisible) {
+        profileVisible.checked = !!profileData.preferences.privacy?.profile_visible;
+      }
+      const progressVisible = preferencesForm.querySelector('[name="progress_visible"]');
+      if (progressVisible) {
+        progressVisible.checked = !!profileData.preferences.privacy?.progress_visible;
+      }
+
+      ensureFormSubmitBinding(preferencesForm);
+    }
+
+    // Macros form
+    const macrosForm = document.getElementById('macros-form');
+    if (macrosForm) {
+      const fields = ['goal', 'activity_level', 'calories', 'protein_pct', 'carbs_pct', 'fats_pct', 'protein_g', 'carbs_g', 'fats_g'];
+      fields.forEach(field => {
+        const input = macrosForm.querySelector(`[name="${field}"]`);
+        if (!input) return;
+        const value = profileData.macros[field];
+        if (value !== undefined && value !== null && value !== '') {
+          input.value = value;
+        }
+      });
+      ensureFormSubmitBinding(macrosForm);
+    }
+
+    // Habits form (detailed population handled in setupHabitsForm)
+    const habitsForm = document.getElementById('habits-form');
+    if (habitsForm) {
+      ensureFormSubmitBinding(habitsForm);
+    }
+
     console.log('✅ Forms setup complete');
   };
 
@@ -1003,9 +1072,7 @@
 
     // Form submissions
     const forms = document.querySelectorAll('form[data-profile-section]');
-    forms.forEach(form => {
-      form.addEventListener('submit', handleFormSubmit);
-    });
+    forms.forEach(ensureFormSubmitBinding);
 
     // Weight tracking
     const weightInput = document.getElementById('current_weight');
@@ -1583,86 +1650,142 @@
 
   // Handle form submit
   const handleFormSubmit = async (event) => {
-    event.preventDefault();
+    const form = event?.target || event?.currentTarget;
+    try {
+      event?.preventDefault?.();
 
-    const form = event.target;
-    const section = form.dataset.profileSection;
-    const formData = new FormData(form);
+      if (!form) return;
 
-    // Update profile data based on section
-    if (section === 'basic') {
-      Object.entries(Object.fromEntries(formData)).forEach(([key, value]) => {
-        if (key === 'goals') {
-          profileData.basic.goals = formData.getAll('goals');
-        } else {
-          profileData.basic[key] = value;
+      const section = form.dataset.profileSection;
+      if (!section) {
+        console.warn('ProfileManager: form submitted without data-profile-section attribute.', form.id || form);
+        return;
+      }
+
+      if (form.dataset.saving === 'true') {
+        console.log(`ProfileManager: skipping duplicate submit for section "${section}"`);
+        return;
+      }
+
+      form.dataset.saving = 'true';
+
+      const formData = new FormData(form);
+      const toNumber = (value) => {
+        if (value === undefined || value === null || value === '') return '';
+        const n = Number(value);
+        return Number.isFinite(n) ? n : value;
+      };
+
+      // Update profile data based on section
+      if (section === 'basic') {
+        Object.entries(Object.fromEntries(formData)).forEach(([key, value]) => {
+          if (key === 'goals') {
+            profileData.basic.goals = formData.getAll('goals');
+          } else {
+            profileData.basic[key] = value;
+          }
+        });
+        // Normalize birthday
+        if (profileData.basic.birthday) {
+          const v = profileData.basic.birthday;
+          if (/^\d{2}\/\d{2}\/\d{4}$/.test(v)) {
+            const [d,m,y] = v.split('/');
+            profileData.basic.birthday = `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
+          }
         }
-      });
-      // Normalize birthday
-      if (profileData.basic.birthday) {
-        const v = profileData.basic.birthday;
-        if (/^\d{2}\/\d{2}\/\d{4}$/.test(v)) {
-          const [d,m,y] = v.split('/');
-          profileData.basic.birthday = `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
+      } else if (section === 'body_metrics') {
+        Object.entries(Object.fromEntries(formData)).forEach(([key, value]) => {
+          if (key.startsWith('measurements_')) {
+            const measurementKey = key.replace('measurements_', '');
+            profileData.body_metrics.measurements[measurementKey] = toNumber(value);
+          } else {
+            profileData.body_metrics[key] = toNumber(value);
+          }
+        });
+      } else if (section === 'preferences') {
+        // Selects
+        const units = formData.get('units');
+        const language = formData.get('language');
+        if (units) profileData.preferences.units = units;
+        if (language) profileData.preferences.language = language;
+
+        // Notifications
+        profileData.preferences.notifications = {
+          ...profileData.preferences.notifications,
+          email: !!formData.get('email_notifications'),
+          reminders: !!formData.get('workout_reminders'),
+        };
+
+        // Privacy
+        profileData.preferences.privacy = {
+          ...profileData.preferences.privacy,
+          profile_visible: !!formData.get('profile_visible'),
+          progress_visible: !!formData.get('progress_visible')
+        };
+      } else if (section === 'macros') {
+        const obj = Object.fromEntries(formData);
+        profileData.macros.goal = obj.goal || 'maintain';
+        profileData.macros.activity_level = obj.activity_level || 'moderate';
+        profileData.macros.calories = obj.calories ? Number(obj.calories) : '';
+        profileData.macros.protein_pct = obj.protein_pct ? Number(obj.protein_pct) : 30;
+        profileData.macros.carbs_pct = obj.carbs_pct ? Number(obj.carbs_pct) : 40;
+        profileData.macros.fats_pct = obj.fats_pct ? Number(obj.fats_pct) : 30;
+        profileData.macros.protein_g = obj.protein_g ? Number(obj.protein_g) : '';
+        profileData.macros.carbs_g = obj.carbs_g ? Number(obj.carbs_g) : '';
+        profileData.macros.fats_g = obj.fats_g ? Number(obj.fats_g) : '';
+        // Recompute and write displays
+        enforceMacroSplit();
+        renderMacroTargets();
+      } else if (section === 'habits') {
+        const obj = Object.fromEntries(formData);
+        const key = todayKey();
+        profileData.habits.daily[key] = {
+          water_ml: obj.water_ml ? Number(obj.water_ml) : 0,
+          steps: obj.steps ? Number(obj.steps) : 0,
+          sleep_hours: obj.sleep_hours ? Number(obj.sleep_hours) : 0,
+          workout: !!obj.workout,
+          meditation: !!obj.meditation,
+          stretch: !!obj.stretch
+        };
+        profileData.habits.updated_at = new Date().toISOString();
+      }
+
+      const success = await saveProfileData(section);
+
+      if (success) {
+        if (section === 'basic') {
+          updateBasicInfoDisplay();
+          updateDashboardStats();
+        } else if (section === 'body_metrics') {
+          updateBodyMetricsDisplays();
+          updateDashboardStats();
+          renderWeightHistoryChart();
+          renderBodyFatHistoryChart();
+          renderWaistHistoryChart();
+          renderMuscleHistoryChart();
+          try {
+            window.BodyMetrics?.loadBodyMetrics?.();
+          } catch (e) {
+            console.warn('BodyMetrics sync skipped:', e?.message || e);
+          }
+        } else if (section === 'preferences') {
+          updateDashboardStats();
+          updateBodyMetricsDisplays();
+        } else if (section === 'macros') {
+          renderMacroTargets();
+        } else if (section === 'habits') {
+          renderHabitsStreaks();
+          renderHabitsStepsChart();
         }
       }
-    } else if (section === 'body_metrics') {
-      Object.entries(Object.fromEntries(formData)).forEach(([key, value]) => {
-        if (key.startsWith('measurements_')) {
-          const measurementKey = key.replace('measurements_', '');
-          profileData.body_metrics.measurements[measurementKey] = value;
-        } else {
-          profileData.body_metrics[key] = value;
-        }
-      });
-  } else if (section === 'preferences') {
-      // Selects
-      const units = formData.get('units');
-      const language = formData.get('language');
-      if (units) profileData.preferences.units = units;
-      if (language) profileData.preferences.language = language;
-
-      // Notifications
-      profileData.preferences.notifications = {
-        ...profileData.preferences.notifications,
-        email: !!formData.get('email_notifications'),
-        reminders: !!formData.get('workout_reminders'),
-      };
-
-      // Privacy
-      profileData.preferences.privacy = {
-        ...profileData.preferences.privacy,
-        profile_visible: !!formData.get('profile_visible'),
-        progress_visible: !!formData.get('progress_visible')
-      };
-  } else if (section === 'macros') {
-      const obj = Object.fromEntries(formData);
-      profileData.macros.goal = obj.goal || 'maintain';
-      profileData.macros.activity_level = obj.activity_level || 'moderate';
-      profileData.macros.calories = obj.calories ? Number(obj.calories) : '';
-      profileData.macros.protein_pct = obj.protein_pct ? Number(obj.protein_pct) : 30;
-      profileData.macros.carbs_pct = obj.carbs_pct ? Number(obj.carbs_pct) : 40;
-      profileData.macros.fats_pct = obj.fats_pct ? Number(obj.fats_pct) : 30;
-      // Recompute and write displays
-      enforceMacroSplit();
-      renderMacroTargets();
-    } else if (section === 'habits') {
-      const obj = Object.fromEntries(formData);
-      const key = todayKey();
-      profileData.habits.daily[key] = {
-        water_ml: obj.water_ml ? Number(obj.water_ml) : 0,
-        steps: obj.steps ? Number(obj.steps) : 0,
-        sleep_hours: obj.sleep_hours ? Number(obj.sleep_hours) : 0,
-        workout: !!obj.workout,
-        meditation: !!obj.meditation,
-        stretch: !!obj.stretch
-      };
-      profileData.habits.updated_at = new Date().toISOString();
-      renderHabitsStreaks();
-      renderHabitsStepsChart();
+    } catch (error) {
+      console.error('ProfileManager: error handling form submit', error);
+      showNotification('Error saving data. Please try again.', 'error');
+    } finally {
+      if (form) {
+        form.dataset.saving = 'false';
+      }
     }
-
-    await saveProfileData(section);
   };
 
   // Handle weight change

@@ -27,13 +27,16 @@
         const { data: { user }, error } = await window.supabaseClient.auth.getUser();
         if (!error && user) {
           currentUser = user;
-          await loadBodyMetrics();
-          // attempt sync of any local entries to cloud
-          trySyncLocalMetrics();
         }
       }
     } catch (error) {
       console.warn('Auth check failed:', error);
+    } finally {
+      await loadBodyMetrics();
+      if (currentUser) {
+        // attempt sync of any local entries to cloud
+        trySyncLocalMetrics();
+      }
     }
   };
 
@@ -362,6 +365,7 @@
 
   const loadBodyMetrics = async () => {
     try {
+      let cloudEntries = [];
       if (window.supabaseClient && currentUser) {
         const { data, error } = await window.supabaseClient
           .from('body_metrics')
@@ -369,21 +373,63 @@
           .eq('user_id', currentUser.id)
           .order('date', { ascending: false });
 
-        if (!error && data) {
-          bodyMetrics = data;
+        if (!error && Array.isArray(data)) {
+          cloudEntries = data;
+        } else if (error) {
+          console.warn('⚠️ Supabase body_metrics load failed:', error.message || error);
         }
       }
 
-      // Fallback para localStorage
-      if (!bodyMetrics.length) {
-        const stored = localStorage.getItem(`gb_body_metrics_${currentUser?.id}`);
-        bodyMetrics = stored ? JSON.parse(stored) : [];
+      const storageKey = `gb_body_metrics_${currentUser?.id || 'guest'}`;
+      let localEntries = [];
+      try {
+        localEntries = JSON.parse(localStorage.getItem(storageKey) || '[]');
+        if (!Array.isArray(localEntries)) {
+          localEntries = [];
+        }
+      } catch (storageErr) {
+        console.warn('⚠️ Failed to parse local body metrics cache:', storageErr?.message || storageErr);
+        localEntries = [];
       }
 
-      console.log(`📊 Loaded ${bodyMetrics.length} body metric entries`);
+      const combined = Array.isArray(cloudEntries) ? [...cloudEntries] : [];
+      if (localEntries.length) {
+        const seen = new Set(
+          combined
+            .map(entry => entry?.client_id || entry?.id)
+            .filter(Boolean)
+        );
+        const unsyncedLocal = localEntries.filter(entry => {
+          const key = entry?.client_id || entry?.id;
+          return key ? !seen.has(key) : true;
+        });
+        if (unsyncedLocal.length) {
+          combined.push(...unsyncedLocal);
+        }
+      }
 
+      const normalizeDate = (entry) => {
+        if (!entry) return 0;
+        const value = entry.date || entry.created_at || entry.updated_at;
+        const ts = value ? new Date(value).getTime() : 0;
+        return Number.isFinite(ts) ? ts : 0;
+      };
+
+      combined.sort((a, b) => normalizeDate(b) - normalizeDate(a));
+
+      bodyMetrics = combined;
+
+      console.log(`📊 Loaded ${bodyMetrics.length} body metric entries (cloud: ${cloudEntries.length}, local: ${localEntries.length})`);
+
+      // Refresh UI with the latest combined dataset
+      loadCurrentMetrics();
+      loadRecentEntries();
+      updateChart();
+
+      return bodyMetrics;
     } catch (error) {
       console.error('❌ Error loading body metrics:', error);
+      return [];
     }
   };
 

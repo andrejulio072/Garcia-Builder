@@ -379,64 +379,97 @@
 
   // Save profile data
   const saveProfileData = async (section = null) => {
-      let supabaseSuccess = false;
-      let supabaseError = null;
+    let supabaseSuccess = false;
+    let supabaseError = null;
+    
+    console.log(`🔥 saveProfileData START - section: ${section}, timestamp: ${new Date().toISOString()}`);
+    console.log('📊 Current profileData snapshot:', JSON.stringify(profileData, null, 2).substring(0, 500));
     
     try {
       console.log(`💾 Saving profile${section ? ` (${section})` : ''}...`);
       
       // Update timestamp
       if (section) {
+        if (!profileData[section]) {
+          console.error(`❌ CRITICAL: profileData.${section} is undefined!`);
+          throw new Error(`Section ${section} does not exist in profileData`);
+        }
         profileData[section].updated_at = new Date().toISOString();
       }
 
-        // Try to save to Supabase (but don't fail if it doesn't work)
+      // Try to save to Supabase (but don't fail if it doesn't work)
       if (window.supabaseClient) {
-          try {
-            await saveToSupabase(section);
-            console.log('✅ Saved to Supabase');
-            supabaseSuccess = true;
-          } catch (supabaseErr) {
-            console.warn('⚠️ Supabase save failed (will use localStorage):', supabaseErr.message);
-            supabaseError = supabaseErr;
-            // Don't throw - continue to localStorage save
-          }
-        } else {
-          console.warn('⚠️ Supabase client not available (using localStorage only)');
+        try {
+          console.log('☁️ Attempting Supabase save...');
+          await saveToSupabase(section);
+          console.log('✅ Saved to Supabase');
+          supabaseSuccess = true;
+        } catch (supabaseErr) {
+          console.warn('⚠️ Supabase save failed (will use localStorage):', supabaseErr);
+          console.warn('Supabase error details:', {
+            message: supabaseErr.message,
+            code: supabaseErr.code,
+            details: supabaseErr.details,
+            hint: supabaseErr.hint
+          });
+          supabaseError = supabaseErr;
+          // Don't throw - continue to localStorage save
+        }
+      } else {
+        console.warn('⚠️ Supabase client not available (using localStorage only)');
       }
 
-        // ALWAYS save to localStorage as backup (or primary if Supabase failed)
+      // ALWAYS save to localStorage as backup (or primary if Supabase failed)
+      console.log('💿 Saving to localStorage...');
       saveToLocalStorage();
       console.log('✅ Saved to localStorage');
+      
+      // Verify localStorage save
+      const storageKey = currentUser?.id ? `garcia_profile_${currentUser.id}` : 'garcia_profile_guest';
+      const savedData = localStorage.getItem(storageKey);
+      if (savedData) {
+        console.log('✅ localStorage verification: data exists');
+        const parsed = JSON.parse(savedData);
+        if (section && parsed[section]) {
+          console.log(`✅ Section ${section} found in localStorage`);
+        }
+      } else {
+        console.error('❌ CRITICAL: localStorage save failed - no data found after save!');
+      }
       
       syncAuthCache();
       window.authGuard?.addUserMenuToNavbar?.();
 
-        // Show appropriate notification
-        if (supabaseSuccess) {
-          showNotification('Profile updated successfully!', 'success');
-        } else if (supabaseError) {
-          showNotification('Saved locally. Will sync when online.', 'warning');
-        } else {
-          showNotification('Profile updated (offline mode)!', 'success');
-        }
+      // Show appropriate notification
+      if (supabaseSuccess) {
+        showNotification('Profile updated successfully!', 'success');
+      } else if (supabaseError) {
+        showNotification('Saved locally. Will sync when online.', 'warning');
+      } else {
+        showNotification('Profile updated (offline mode)!', 'success');
+      }
       
-      console.log('✅ Profile save complete');
+      console.log('✅ Profile save complete - returning TRUE');
       return true;
     } catch (error) {
-      console.error('❌ Error saving profile data:', error);
+      console.error('❌❌❌ CRITICAL ERROR in saveProfileData:', error);
+      console.error('Error stack:', error.stack);
+      console.error('Section:', section);
+      console.error('ProfileData keys:', Object.keys(profileData));
 
-        // Last resort: try localStorage one more time
-        try {
-          saveToLocalStorage();
-          showNotification('Saved locally only. Check connection.', 'warning');
-          return true;
-        } catch (localErr) {
-          console.error('❌ Even localStorage failed:', localErr);
-          showNotification('Error saving profile. Please try again.', 'error');
-          return false;
+      // Last resort: try localStorage one more time
+      try {
+        console.log('🆘 Last resort: attempting localStorage save again...');
+        saveToLocalStorage();
+        showNotification('Saved locally only. Check connection.', 'warning');
+        console.log('✅ Last resort save succeeded - returning TRUE');
+        return true;
+      } catch (localErr) {
+        console.error('❌❌❌ CATASTROPHIC: Even localStorage failed:', localErr);
+        console.error('LocalStorage error stack:', localErr.stack);
+        showNotification('Error saving profile. Please try again.', 'error');
+        return false;
       }
-
     }
   };
 
@@ -744,12 +777,36 @@
       const storageKey = currentUser?.id
         ? `garcia_profile_${currentUser.id}`
         : 'garcia_profile_guest';
-      localStorage.setItem(
-        storageKey,
-        JSON.stringify(profileData)
-      );
+      
+      console.log(`💿 saveToLocalStorage START - key: ${storageKey}`);
+      console.log('📊 Data to save (first 500 chars):', JSON.stringify(profileData).substring(0, 500));
+      
+      const dataString = JSON.stringify(profileData);
+      console.log(`📏 Data size: ${dataString.length} characters`);
+      
+      localStorage.setItem(storageKey, dataString);
+      
+      // Verify save
+      const retrieved = localStorage.getItem(storageKey);
+      if (!retrieved) {
+        throw new Error('localStorage.setItem succeeded but getItem returned null');
+      }
+      if (retrieved.length !== dataString.length) {
+        throw new Error(`localStorage save corrupted: expected ${dataString.length} chars, got ${retrieved.length}`);
+      }
+      
+      console.log('✅ saveToLocalStorage SUCCESS');
     } catch (error) {
-      console.error('Error saving to localStorage:', error);
+      console.error('❌❌❌ CRITICAL ERROR in saveToLocalStorage:', error);
+      console.error('Error name:', error.name);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      console.error('localStorage available:', typeof localStorage !== 'undefined');
+      console.error('localStorage quota check:', {
+        used: JSON.stringify(localStorage).length,
+        profileDataSize: JSON.stringify(profileData).length
+      });
+      throw error;
     }
   };
 
@@ -1659,23 +1716,39 @@
   // Handle form submit
   const handleFormSubmit = async (event) => {
     const form = event?.target || event?.currentTarget;
+    
+    // BRUTAL ERROR TRACKING - Log EVERYTHING
+    console.log('🔥🔥🔥 handleFormSubmit CALLED', {
+      hasEvent: !!event,
+      hasForm: !!form,
+      formId: form?.id,
+      section: form?.dataset?.profileSection,
+      timestamp: new Date().toISOString()
+    });
+
     try {
       event?.preventDefault?.();
 
-      if (!form) return;
+      if (!form) {
+        console.error('❌ CRITICAL: No form element in handleFormSubmit');
+        showNotification('Internal error: form not found', 'error');
+        return;
+      }
 
       const section = form.dataset.profileSection;
       if (!section) {
-        console.warn('ProfileManager: form submitted without data-profile-section attribute.', form.id || form);
+        console.error('❌ CRITICAL: Form missing data-profile-section', form.id || form);
+        showNotification('Internal error: section not defined', 'error');
         return;
       }
 
       if (form.dataset.saving === 'true') {
-        console.log(`ProfileManager: skipping duplicate submit for section "${section}"`);
+        console.log(`⚠️ Skipping duplicate submit for section "${section}"`);
         return;
       }
 
       form.dataset.saving = 'true';
+      console.log(`🔧 Starting save for section: ${section}`);
 
       const formData = new FormData(form);
       const toNumber = (value) => {
@@ -1685,14 +1758,20 @@
       };
 
       // Update profile data based on section
+      console.log(`📝 Extracting form data for section: ${section}`);
+      
       if (section === 'basic') {
-        Object.entries(Object.fromEntries(formData)).forEach(([key, value]) => {
+        const entries = Object.fromEntries(formData);
+        console.log('📋 Basic form entries:', entries);
+        
+        Object.entries(entries).forEach(([key, value]) => {
           if (key === 'goals') {
             profileData.basic.goals = formData.getAll('goals');
           } else {
             profileData.basic[key] = value;
           }
         });
+        
         // Normalize birthday
         if (profileData.basic.birthday) {
           const v = profileData.basic.birthday;
@@ -1701,6 +1780,9 @@
             profileData.basic.birthday = `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
           }
         }
+        
+        console.log('✅ Basic profileData updated:', profileData.basic);
+        
       } else if (section === 'body_metrics') {
         Object.entries(Object.fromEntries(formData)).forEach(([key, value]) => {
           if (key.startsWith('measurements_')) {
@@ -1711,20 +1793,17 @@
           }
         });
       } else if (section === 'preferences') {
-        // Selects
         const units = formData.get('units');
         const language = formData.get('language');
         if (units) profileData.preferences.units = units;
         if (language) profileData.preferences.language = language;
 
-        // Notifications
         profileData.preferences.notifications = {
           ...profileData.preferences.notifications,
           email: !!formData.get('email_notifications'),
           reminders: !!formData.get('workout_reminders'),
         };
 
-        // Privacy
         profileData.preferences.privacy = {
           ...profileData.preferences.privacy,
           profile_visible: !!formData.get('profile_visible'),
@@ -1741,7 +1820,6 @@
         profileData.macros.protein_g = obj.protein_g ? Number(obj.protein_g) : '';
         profileData.macros.carbs_g = obj.carbs_g ? Number(obj.carbs_g) : '';
         profileData.macros.fats_g = obj.fats_g ? Number(obj.fats_g) : '';
-        // Recompute and write displays
         enforceMacroSplit();
         renderMacroTargets();
       } else if (section === 'habits') {
@@ -1758,12 +1836,18 @@
         profileData.habits.updated_at = new Date().toISOString();
       }
 
+      console.log(`💾 Calling saveProfileData for section: ${section}`);
       const success = await saveProfileData(section);
+      console.log(`💾 saveProfileData returned: ${success}`);
 
       if (success) {
+        console.log(`✅ Save successful for ${section}, updating UI...`);
+        
         if (section === 'basic') {
+          console.log('🔄 Updating basic info display...');
           updateBasicInfoDisplay();
           updateDashboardStats();
+          console.log('✅ Basic info display updated');
         } else if (section === 'body_metrics') {
           updateBodyMetricsDisplays();
           updateDashboardStats();
@@ -1785,13 +1869,19 @@
           renderHabitsStreaks();
           renderHabitsStepsChart();
         }
+      } else {
+        console.error('❌ saveProfileData returned false');
+        showNotification('Save failed. Data stored locally.', 'warning');
       }
     } catch (error) {
-      console.error('ProfileManager: error handling form submit', error);
-      showNotification('Error saving data. Please try again.', 'error');
+      console.error('❌❌❌ CRITICAL ERROR in handleFormSubmit:', error);
+      console.error('Error stack:', error.stack);
+      console.error('Form:', form?.id, 'Section:', form?.dataset?.profileSection);
+      showNotification(`Error saving data: ${error.message}`, 'error');
     } finally {
       if (form) {
         form.dataset.saving = 'false';
+        console.log(`🔓 Released lock on form: ${form.id}`);
       }
     }
   };

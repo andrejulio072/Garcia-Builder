@@ -397,7 +397,8 @@
   };
 
   // Save profile data
-  const saveProfileData = async (section = null) => {
+  const saveProfileData = async (section = null, options = {}) => {
+    const silent = options?.silent === true;
     let supabaseSuccess = false;
     let supabaseError = null;
     
@@ -460,12 +461,14 @@
       window.authGuard?.addUserMenuToNavbar?.();
 
       // Show appropriate notification
-      if (supabaseSuccess) {
-        showNotification('Profile updated successfully!', 'success');
-      } else if (supabaseError) {
-        showNotification('Saved locally. Will sync when online.', 'warning');
-      } else {
-        showNotification('Profile updated (offline mode)!', 'success');
+      if (!silent) {
+        if (supabaseSuccess) {
+          showNotification('Profile updated successfully!', 'success');
+        } else if (supabaseError) {
+          showNotification('Saved locally. Will sync when online.', 'warning');
+        } else {
+          showNotification('Profile updated (offline mode)!', 'success');
+        }
       }
       
       console.log('✅ Profile save complete - returning TRUE');
@@ -480,13 +483,17 @@
       try {
         console.log('🆘 Last resort: attempting localStorage save again...');
         saveToLocalStorage();
-        showNotification('Saved locally only. Check connection.', 'warning');
+        if (!silent) {
+          showNotification('Saved locally only. Check connection.', 'warning');
+        }
         console.log('✅ Last resort save succeeded - returning TRUE');
         return true;
       } catch (localErr) {
         console.error('❌❌❌ CATASTROPHIC: Even localStorage failed:', localErr);
         console.error('LocalStorage error stack:', localErr.stack);
-        showNotification('Error saving profile. Please try again.', 'error');
+        if (!silent) {
+          showNotification('Error saving profile. Please try again.', 'error');
+        }
         return false;
       }
     }
@@ -636,12 +643,51 @@
       // Save metrics: preferred upsert to body_metrics table (today) and mirror to user metadata
       if (section === 'body_metrics' || !section) {
         try {
+          try {
+            const weightValue = num(profileData.body_metrics?.current_weight);
+            if (weightValue !== null) {
+              if (!Array.isArray(profileData.body_metrics.weight_history)) {
+                profileData.body_metrics.weight_history = [];
+              }
+              const entryTimestamp = profileData.body_metrics.last_entry_date || profileData.body_metrics.updated_at || new Date().toISOString();
+              const entryDate = (() => {
+                const parsed = new Date(entryTimestamp);
+                if (Number.isFinite(parsed.getTime())) {
+                  return parsed.toISOString().slice(0, 10);
+                }
+                return new Date().toISOString().slice(0, 10);
+              })();
+              const existingIndex = profileData.body_metrics.weight_history.findIndex((item) => {
+                try {
+                  return new Date(item.date).toISOString().slice(0, 10) === entryDate;
+                } catch {
+                  return item.date === entryDate;
+                }
+              });
+              const historyEntry = { date: entryDate, weight: weightValue };
+              if (existingIndex >= 0) {
+                profileData.body_metrics.weight_history[existingIndex] = {
+                  ...profileData.body_metrics.weight_history[existingIndex],
+                  ...historyEntry
+                };
+              } else {
+                profileData.body_metrics.weight_history.push(historyEntry);
+              }
+              profileData.body_metrics.weight_history.sort((a, b) => new Date(a.date) - new Date(b.date));
+              if (profileData.body_metrics.weight_history.length > 50) {
+                profileData.body_metrics.weight_history = profileData.body_metrics.weight_history.slice(-50);
+              }
+            }
+          } catch (historyErr) {
+            console.warn('Failed to maintain weight history before save:', historyErr);
+          }
+
           // 1) Upsert into table for today's date
           try {
-            const today = new Date().toISOString().slice(0,10);
+            const entryDate = profileData.body_metrics.last_entry_date || new Date().toISOString().slice(0,10);
             const payload = {
               user_id: currentUser.id,
-              date: today,
+              date: entryDate,
               weight: num(profileData.body_metrics.current_weight),
               height: num(profileData.body_metrics.height),
               body_fat: num(profileData.body_metrics.body_fat_percentage),
@@ -654,7 +700,7 @@
                 muscle_mass: num(profileData.body_metrics.muscle_mass),
                 target_weight: num(profileData.body_metrics.target_weight)
               },
-              client_id: `bm-${today}`,
+              client_id: `bm-${entryDate}`,
               updated_at: new Date().toISOString()
             };
             const { error: bmErr } = await window.supabaseClient
@@ -747,16 +793,16 @@
 
           // Best-effort: also write calories to today's body_metrics row
           try {
-            const today = new Date().toISOString().slice(0,10);
+            const entryDate = profileData.body_metrics.last_entry_date || new Date().toISOString().slice(0,10);
             const { data: existing } = await window.supabaseClient
               .from('body_metrics')
               .select('measurements')
               .eq('user_id', currentUser.id)
-              .eq('date', today)
+              .eq('date', entryDate)
               .maybeSingle();
             const measurements = existing?.measurements || {};
             measurements.calories = macrosData.calories;
-            const payload = { user_id: currentUser.id, date: today, measurements, client_id: `bm-${today}` };
+            const payload = { user_id: currentUser.id, date: entryDate, measurements, client_id: `bm-${entryDate}` };
             const { error: upErr } = await window.supabaseClient
               .from('body_metrics')
               .upsert(payload, { onConflict: 'user_id,client_id' });
@@ -2001,10 +2047,13 @@
     const newWeight = event.target.value;
     if (newWeight && newWeight !== profileData.body_metrics.current_weight) {
       // Add to weight history
+      const timestamp = new Date().toISOString();
       profileData.body_metrics.weight_history.push({
         weight: parseFloat(newWeight),
-        date: new Date().toISOString()
+        date: timestamp
       });
+      profileData.body_metrics.last_entry_date = timestamp.slice(0, 10);
+      profileData.body_metrics.updated_at = timestamp;
 
       // Keep only last 50 entries
       if (profileData.body_metrics.weight_history.length > 50) {
@@ -2044,13 +2093,13 @@
   const upsertBodyFatRowToTable = async (bodyFat) => {
     try {
       if (!window.supabaseClient) return;
-      const today = new Date().toISOString().slice(0,10);
+      const entryDate = profileData.body_metrics?.last_entry_date || new Date().toISOString().slice(0,10);
       const { data: { user } } = await window.supabaseClient.auth.getUser();
       const payload = {
         user_id: user?.id,
-        date: today,
+        date: entryDate,
         body_fat: bodyFat,
-        client_id: `bm-${today}`,
+        client_id: `bm-${entryDate}`,
         updated_at: new Date().toISOString()
       };
       const { error } = await window.supabaseClient
@@ -2066,17 +2115,17 @@
   const upsertMeasurementsToTable = async (partial) => {
     try {
       if (!window.supabaseClient) return;
-      const today = new Date().toISOString().slice(0,10);
+      const entryDate = profileData.body_metrics?.last_entry_date || new Date().toISOString().slice(0,10);
       const { data: existing, error: selErr } = await window.supabaseClient
         .from('body_metrics')
         .select('measurements')
         .eq('user_id', currentUser.id)
-        .eq('date', today)
+        .eq('date', entryDate)
         .maybeSingle();
       if (selErr) { /* continue best-effort */ }
       const base = existing?.measurements || {};
       const measurements = { ...base, ...partial };
-      const payload = { user_id: currentUser.id, date: today, measurements, client_id: `bm-${today}`, updated_at: new Date().toISOString() };
+      const payload = { user_id: currentUser.id, date: entryDate, measurements, client_id: `bm-${entryDate}`, updated_at: new Date().toISOString() };
       const { error: upErr } = await window.supabaseClient
         .from('body_metrics')
         .upsert(payload, { onConflict: 'user_id,client_id' });
@@ -2090,14 +2139,14 @@
   const upsertWeightRowToTable = async (weight) => {
     try {
       if (!window.supabaseClient) return;
-      const today = new Date().toISOString().slice(0,10);
-      const clientId = `wh-${today}`;
+      const entryDate = profileData.body_metrics?.last_entry_date || new Date().toISOString().slice(0,10);
+      const clientId = `wh-${entryDate}`;
       const heightNum = Number(profileData.body_metrics.height || 0) || null;
       const bodyFatNum = Number(profileData.body_metrics.body_fat_percentage || 0) || null;
       const { data: { user } } = await window.supabaseClient.auth.getUser();
       const payload = {
         user_id: user?.id,
-        date: today,
+        date: entryDate,
         weight,
         height: heightNum,
         body_fat: bodyFatNum,
@@ -2490,6 +2539,12 @@
     saveProfile: saveProfileData, // Alias for compatibility
     uploadAvatar,
     updateBasicInfoDisplay,
+    updateBodyMetricsDisplays,
+    renderWeightHistoryChart,
+    renderBodyFatHistoryChart,
+    renderWaistHistoryChart,
+    renderMuscleHistoryChart,
+    renderMacroTargets,
     updateDashboardStats,
     handleFormSubmit,
     handleSaveProfile

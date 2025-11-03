@@ -7,6 +7,129 @@
   let bodyMetrics = [];
   let progressPhotos = [];
 
+  const syncProfileManagerWithMetrics = async (entryData = {}) => {
+    try {
+      const manager = window.GarciaProfileManager;
+      if (!manager || typeof manager.getProfileData !== 'function' || typeof manager.saveProfileData !== 'function') {
+        return;
+      }
+
+      const profile = manager.getProfileData();
+      if (!profile) return;
+
+      if (!profile.body_metrics || typeof profile.body_metrics !== 'object') {
+        profile.body_metrics = {
+          current_weight: null,
+          height: null,
+          body_fat_percentage: null,
+          muscle_mass: null,
+          target_weight: profile.body_metrics?.target_weight || null,
+          measurements: {},
+          weight_history: []
+        };
+      }
+
+      const metrics = profile.body_metrics;
+      metrics.measurements = { ...(metrics.measurements || {}) };
+
+      const toNumber = (value) => {
+        if (value === undefined || value === null || value === '') return null;
+        const n = Number(value);
+        return Number.isFinite(n) ? n : null;
+      };
+
+      const normalizeDate = (value) => {
+        if (!value) return new Date().toISOString().slice(0, 10);
+        const parsed = new Date(value);
+        if (Number.isFinite(parsed.getTime())) {
+          return parsed.toISOString().slice(0, 10);
+        }
+        return new Date().toISOString().slice(0, 10);
+      };
+
+      const isoDate = normalizeDate(entryData.date);
+
+      const weightVal = toNumber(entryData.weight);
+      if (weightVal !== null) {
+        metrics.current_weight = weightVal;
+      }
+
+      const heightVal = toNumber(entryData.height);
+      if (heightVal !== null) {
+        metrics.height = heightVal;
+      }
+
+      const bodyFatVal = toNumber(entryData.body_fat);
+      if (bodyFatVal !== null) {
+        metrics.body_fat_percentage = bodyFatVal;
+      }
+
+      const muscleVal = toNumber(entryData.measurements?.muscle_mass);
+      if (muscleVal !== null) {
+        metrics.muscle_mass = muscleVal;
+      }
+
+      const measurements = entryData.measurements || {};
+      Object.entries(measurements).forEach(([key, value]) => {
+        const numeric = toNumber(value);
+        if (numeric !== null) {
+          metrics.measurements[key] = numeric;
+        }
+      });
+
+      if (!Array.isArray(metrics.weight_history)) {
+        metrics.weight_history = [];
+      }
+      if (weightVal !== null) {
+        const existingIndex = metrics.weight_history.findIndex((item) => {
+          try {
+            return new Date(item.date).toISOString().slice(0, 10) === isoDate;
+          } catch {
+            return item.date === isoDate;
+          }
+        });
+        const weightEntry = { date: isoDate, weight: weightVal };
+        if (existingIndex >= 0) {
+          metrics.weight_history[existingIndex] = { ...metrics.weight_history[existingIndex], ...weightEntry };
+        } else {
+          metrics.weight_history.push(weightEntry);
+        }
+
+        metrics.weight_history.sort((a, b) => new Date(a.date) - new Date(b.date));
+        if (metrics.weight_history.length > 50) {
+          metrics.weight_history = metrics.weight_history.slice(-50);
+        }
+      }
+
+      metrics.updated_at = new Date().toISOString();
+      metrics.last_entry_date = isoDate;
+
+      await manager.saveProfileData('body_metrics', { silent: true });
+
+      manager.updateBodyMetricsDisplays?.();
+      manager.renderWeightHistoryChart?.();
+      manager.renderBodyFatHistoryChart?.();
+      manager.renderWaistHistoryChart?.();
+      manager.renderMuscleHistoryChart?.();
+      manager.updateDashboardStats?.();
+      manager.renderMacroTargets?.();
+
+      if (window.BrutalSync && typeof window.BrutalSync.save === 'function') {
+        window.BrutalSync.save('metrics', {
+          current_weight: metrics.current_weight,
+          height: metrics.height,
+          body_fat_percentage: metrics.body_fat_percentage,
+          measurements: metrics.measurements,
+          updated_at: metrics.updated_at
+        }).catch((err) => {
+          console.warn('BrutalSync metrics save skipped:', err?.message || err);
+        });
+      }
+    } catch (error) {
+      console.warn('Failed to sync profile manager with metrics entry:', error);
+    }
+  };
+
   const init = () => {
     checkUserAuth();
 
@@ -341,6 +464,8 @@
       } catch (e) {
         console.warn('Event dispatch failed:', e);
       }
+
+      await syncProfileManagerWithMetrics(entryData);
 
       // Fechar modal
       bootstrap.Modal.getInstance(document.getElementById('metricsModal')).hide();

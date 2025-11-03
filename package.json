@@ -10,9 +10,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node tools/static-server.js",
     "sitemap": "node tools/generate-sitemap.js",
-  "lint": "powershell -ExecutionPolicy Bypass -File validate-components.ps1",
+    "lint": "powershell -ExecutionPolicy Bypass -File validate-components.ps1",
     "build:env": "node scripts/generate-env-config.js",
-    "postinstall": "node scripts/generate-env-config.js"
+    "postinstall": "node scripts/generate-env-config.js",
+    "test:profile-save": "node tools/tests/profile-save-smoke.js"
   },
   "keywords": [
     "stripe",
@@ -33,6 +34,7 @@
     "stripe": "^14.25.0"
   },
   "devDependencies": {
+    "jsdom": "^22.1.0",
     "nodemon": "^3.0.2"
   },
   "engines": {

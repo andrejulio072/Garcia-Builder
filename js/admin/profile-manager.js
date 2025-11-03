@@ -931,42 +931,33 @@
   };
 
   function ensureFormSubmitBinding(form) {
-    // DISABLED - Using onclick instead of form submit to avoid browser conflicts
-    // Forms now use type="button" with onclick="window.saveBasicInfo()"
-    console.log(`ℹ️ ensureFormSubmitBinding DISABLED - using onclick handlers instead`);
-    return;
-    
-    /* OLD CODE - DISABLED
     if (!form) return;
     if (!form.dataset.profileSection) {
       console.warn('ProfileManager: form missing data-profile-section attribute; skipping submit binding.', form.id || form);
       return;
     }
     if (form.dataset.submitBound === 'true') {
-      console.log(`ℹ️ Form ${form.id} already bound, skipping`);
+      console.log(`[ProfileManager] Form ${form.id || form.dataset.profileSection} already bound`);
       return;
     }
-    
-    console.log(`🔗 Binding submit handler to form: ${form.id}`);
-    
-    // CRITICAL: Use capturing phase to ensure we catch the event BEFORE any other handlers
-    form.addEventListener('submit', (e) => {
-      console.log(`🛑 Form ${form.id} submit event captured!`);
-      e.preventDefault();
-      e.stopPropagation();
-      if (e.stopImmediatePropagation) {
-        e.stopImmediatePropagation();
-      }
-      console.log(`🛑 Event propagation stopped`);
-      handleFormSubmit(e);
-      return false; // Extra safety
-    }, { capture: true });
-    
+
+    console.log(`[ProfileManager] Binding submit handler to form: ${form.id || form.dataset.profileSection}`);
+
+    const submitHandler = (event) => {
+      console.log(`[ProfileManager] Captured submit for ${form.id || form.dataset.profileSection}`);
+      if (typeof event.preventDefault === 'function') event.preventDefault();
+      if (typeof event.stopPropagation === 'function') event.stopPropagation();
+      if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+      handleFormSubmit(event);
+      return false;
+    };
+
+    form.addEventListener('submit', submitHandler, { capture: true });
     form.dataset.submitBound = 'true';
     form.setAttribute('novalidate', 'novalidate');
-    console.log(`✅ Form ${form.id} submit handler bound successfully`);
-    */
+    console.log(`[ProfileManager] Form ${form.id || form.dataset.profileSection} submit handler bound`);
   }
+
 
   // Setup forms
   const setupForms = () => {
@@ -1766,10 +1757,16 @@
 
   // Handle form submit
   const handleFormSubmit = async (event) => {
+    if (event) {
+      if (typeof event.preventDefault === 'function') event.preventDefault();
+      if (typeof event.stopPropagation === 'function') event.stopPropagation();
+      if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+    }
+
     const form = event?.target || event?.currentTarget;
     
     // BRUTAL ERROR TRACKING - Log EVERYTHING
-    console.log('🔥🔥🔥 handleFormSubmit CALLED', {
+    console.log('[ProfileManager] handleFormSubmit called', {
       hasEvent: !!event,
       hasForm: !!form,
       formId: form?.id,
@@ -1995,7 +1992,7 @@
     }
     
     // CRITICAL: Return false to prevent any default form submission
-    console.log('🛑 handleFormSubmit returning false to prevent page reload');
+    console.log('[ProfileManager] handleFormSubmit returning false to prevent page reload');
     return false;
   };
 

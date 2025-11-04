@@ -1,0 +1,396 @@
+body.trainer-page {
+  background: #05060f;
+  color: #f5f7ff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.trainer-main {
+  padding-top: clamp(5rem, 8vw, 6.5rem);
+  overflow-x: hidden;
+}
+
+.trainer-main .section-padding {
+  padding-block: clamp(3rem, 6vw, 6rem);
+}
+
+.trainer-hero {
+  position: relative;
+  background:
+    radial-gradient(circle at top right, rgba(246, 200, 78, 0.32) 0%, rgba(246, 200, 78, 0.05) 60%, transparent 100%),
+    linear-gradient(135deg, #111326 0%, #090b16 66%, #060712 100%);
+  color: #f7f9ff;
+}
+
+.trainer-hero::after {
+  content: "";
+  position: absolute;
+  inset: -2rem -2rem auto auto;
+  width: clamp(18rem, 26vw, 24rem);
+  height: clamp(18rem, 26vw, 24rem);
+  background: radial-gradient(circle, rgba(246, 200, 78, 0.35) 0%, rgba(246, 200, 78, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.trainer-hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(246, 200, 78, 0.12);
+  color: #f6c84e;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.hero-title {
+  font-size: clamp(2.25rem, 5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.hero-description {
+  font-size: 1.05rem;
+  color: rgba(245, 247, 255, 0.8);
+  max-width: 36rem;
+}
+
+.trainer-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.trainer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f7f9ff;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.trainer-badge i {
+  color: #f6c84e;
+}
+
+.trainer-hero-card {
+  position: relative;
+  backdrop-filter: blur(12px);
+  background: rgba(12, 14, 28, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  padding: clamp(1.5rem, 5vw, 2.75rem);
+  box-shadow: 0 28px 42px -24px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+.trainer-hero-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, rgba(246, 200, 78, 0.15) 0%, rgba(246, 200, 78, 0) 50%);
+  pointer-events: none;
+}
+
+.trainer-hero-illustration {
+  width: clamp(180px, 35vw, 220px);
+  display: block;
+  margin-inline: auto;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.45));
+}
+
+.trainer-hero-stats {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1.1rem;
+}
+
+.trainer-hero-stats li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.trainer-hero-stats .stat-head {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #f6c84e;
+}
+
+.trainer-hero-stats .stat-copy {
+  font-size: 0.95rem;
+  color: rgba(245, 247, 255, 0.75);
+}
+
+.trainer-metrics .trainer-metric-card,
+.trainer-benefits .trainer-benefit-card,
+.trainer-tools .trainer-tool-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 1.9rem;
+  height: 100%;
+  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.trainer-metric-card:hover,
+.trainer-benefit-card:hover,
+.trainer-tool-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(246, 200, 78, 0.4);
+  box-shadow: 0 22px 40px -28px rgba(246, 200, 78, 0.45);
+}
+
+.trainer-metric-card i,
+.trainer-benefit-card i,
+.trainer-tool-card i {
+  font-size: 1.75rem;
+  color: #f6c84e;
+  margin-bottom: 1.25rem;
+}
+
+.trainer-section-title {
+  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  color: #f7f9ff;
+}
+
+.trainer-section-subtitle {
+  color: rgba(245, 247, 255, 0.7);
+  max-width: 48rem;
+}
+
+.trainer-process .trainer-process-step {
+  position: relative;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.75rem 1.5rem;
+  height: 100%;
+  transition: border-color 0.35s ease, transform 0.35s ease;
+}
+
+.trainer-process .trainer-process-step:hover {
+  border-color: rgba(246, 200, 78, 0.4);
+  transform: translateY(-4px);
+}
+
+.trainer-process .step-number {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f6c84e 0%, #f1a94d 100%);
+  color: #1a1429;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.trainer-requirements .requirement-card {
+  background: rgba(9, 11, 25, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 2rem;
+  height: 100%;
+}
+
+.trainer-requirements .requirement-card h4 {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.trainer-requirements ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.trainer-requirements li {
+  display: flex;
+  gap: 0.6rem;
+  color: rgba(245, 247, 255, 0.78);
+}
+
+.trainer-requirements li i {
+  color: #89f6c8;
+  margin-top: 0.2rem;
+}
+
+.trainer-form-card {
+  background: rgba(7, 8, 18, 0.92);
+  border: 1px solid rgba(246, 200, 78, 0.15);
+  border-radius: 20px;
+  padding: clamp(2rem, 5vw, 3rem);
+  box-shadow: 0 26px 48px -32px rgba(0, 0, 0, 0.7);
+}
+
+.trainer-form-card h3 {
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.trainer-form-card .section-label {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(246, 200, 78, 0.75);
+  font-weight: 700;
+}
+
+.trainer-form-card .form-label {
+  color: rgba(245, 247, 255, 0.86);
+  font-weight: 600;
+}
+
+.trainer-form-card .form-control,
+.trainer-form-card .form-select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f7f9ff;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+}
+
+.trainer-form-card .form-control:focus,
+.trainer-form-card .form-select:focus {
+  border-color: rgba(246, 200, 78, 0.7);
+  box-shadow: 0 0 0 0.15rem rgba(246, 200, 78, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.trainer-form-card .form-control::placeholder {
+  color: rgba(245, 247, 255, 0.45);
+}
+
+.trainer-form-card .form-check {
+  padding-left: 1.8rem;
+}
+
+.trainer-form-card .form-check-input {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-left: -1.8rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.trainer-form-card .form-check-input:checked {
+  background-color: #f6c84e;
+  border-color: #f6c84e;
+}
+
+.trainer-form-card .form-check-label {
+  color: rgba(245, 247, 255, 0.78);
+}
+
+.certification-upload {
+  border: 2px dashed rgba(246, 200, 78, 0.35);
+  border-radius: 16px;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.03);
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.certification-upload:hover,
+.certification-upload:focus-within {
+  border-color: rgba(246, 200, 78, 0.75);
+  background: rgba(246, 200, 78, 0.08);
+  transform: translateY(-2px);
+}
+
+#uploaded-files .d-flex {
+  background: rgba(12, 14, 28, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+}
+
+.trainer-cta {
+  background: linear-gradient(115deg, rgba(246, 200, 78, 0.18) 0%, rgba(246, 200, 78, 0.02) 65%, rgba(3, 4, 12, 0.9) 100%);
+  border: 1px solid rgba(246, 200, 78, 0.25);
+  border-radius: 24px;
+  padding: clamp(2.5rem, 6vw, 4rem);
+  text-align: center;
+  color: #f7f9ff;
+}
+
+.trainer-cta h2 {
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.trainer-cta p {
+  color: rgba(245, 247, 255, 0.75);
+  max-width: 44rem;
+  margin-inline: auto;
+}
+
+.trainer-main .text-muted {
+  color: rgba(245, 247, 255, 0.68) !important;
+}
+
+.trainer-main hr {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 991.98px) {
+  .trainer-hero {
+    text-align: center;
+  }
+
+  .trainer-badges {
+    justify-content: center;
+  }
+
+  .trainer-hero-card {
+    max-width: 420px;
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .trainer-main .section-padding {
+    padding-block: 2.75rem;
+  }
+
+  .trainer-hero-stats {
+    gap: 0.9rem;
+  }
+
+  .trainer-form-card {
+    padding: clamp(1.75rem, 8vw, 2.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trainer-metric-card,
+  .trainer-benefit-card,
+  .trainer-process-step,
+  .trainer-tool-card,
+  .certification-upload {
+    transition: none;
+  }
+}

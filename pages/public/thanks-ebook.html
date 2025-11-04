@@ -447,7 +447,7 @@
                 `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
 
             document.getElementById('shareEmail').href =
-                `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`;
+                "mailto:?subject=${encodeURIComponent('Garcia Builder Ebook')}&body=${encodeURIComponent(shareText + '\n' + shareUrl)}";
 
             document.getElementById('shareLinkedIn').href =
                 `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;

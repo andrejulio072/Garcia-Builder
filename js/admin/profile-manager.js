@@ -3,6 +3,154 @@
   let currentUser = null;
   let profileData = {};
 
+  const parseJsonSafe = (value, fallback = null) => {
+    if (typeof value !== 'string') return fallback;
+    try {
+      return JSON.parse(value);
+    } catch (error) {
+      console.warn('ProfileManager: JSON parse failed', error);
+      return fallback;
+    }
+  };
+
+  const getCachedUserFromStorage = () => parseJsonSafe(localStorage.getItem('gb_current_user')) || null;
+
+  const resolveActiveUserId = () => {
+    if (currentUser?.id) return currentUser.id;
+    const cached = getCachedUserFromStorage();
+    if (cached?.id) return cached.id;
+    if (profileData?.basic?.id) return profileData.basic.id;
+    return null;
+  };
+
+  const getProfileStorageKey = () => {
+    const activeId = resolveActiveUserId();
+    return activeId ? `garcia_profile_${activeId}` : 'garcia_profile_guest';
+  };
+
+  const migrateGuestProfileStorage = () => {
+    const activeId = resolveActiveUserId();
+    if (!activeId) return;
+    const guestKey = 'garcia_profile_guest';
+    const userKey = `garcia_profile_${activeId}`;
+    try {
+      const guestData = localStorage.getItem(guestKey);
+      if (guestData && !localStorage.getItem(userKey)) {
+        localStorage.setItem(userKey, guestData);
+        console.log('ProfileManager: migrated guest profile cache to user key');
+      }
+    } catch (error) {
+      console.warn('ProfileManager: Failed to migrate guest profile cache', error);
+    }
+  };
+
+  const mergeObjects = (target, source) => {
+    const base = (target && typeof target === 'object' && !Array.isArray(target)) ? { ...target } : {};
+    Object.entries(source || {}).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        base[key] = Array.isArray(base[key]) ? [...base[key], ...value] : [...value];
+      } else if (value && typeof value === 'object') {
+        base[key] = mergeObjects(base[key], value);
+      } else if (value !== undefined) {
+        base[key] = value;
+      }
+    });
+    return base;
+  };
+
+  const mergeUniqueBy = (existing = [], incoming = [], keySelector) => {
+    const map = new Map();
+    (Array.isArray(existing) ? existing : []).forEach((entry) => {
+      const key = keySelector(entry);
+      if (key !== undefined && key !== null) {
+        map.set(key, { ...(entry || {}) });
+      }
+    });
+    (Array.isArray(incoming) ? incoming : []).forEach((entry) => {
+      const key = keySelector(entry);
+      if (key !== undefined && key !== null) {
+        const prev = map.get(key) || {};
+        map.set(key, { ...prev, ...(entry || {}) });
+      }
+    });
+    return Array.from(map.values());
+  };
+
+  const mergeWeightHistory = (current = [], incoming = []) => {
+    const merged = mergeUniqueBy(current, incoming, (item = {}) => {
+      if (!item) return null;
+      if (item.client_id) return item.client_id;
+      if (item.date) return item.date;
+      return item.id || `${item.weight || 'w'}-${item.created_at || item.updated_at || ''}`;
+    });
+    merged.sort((a, b) => {
+      const tsA = new Date(a.date || a.created_at || a.updated_at || 0).getTime();
+      const tsB = new Date(b.date || b.created_at || b.updated_at || 0).getTime();
+      return tsA - tsB;
+    });
+    return merged;
+  };
+
+  const mergeProgressPhotos = (current = [], incoming = []) => mergeUniqueBy(
+    current,
+    incoming,
+    (item = {}) => item.photo_id || item.public_id || item.url || `${item.date || item.created_at || ''}-${item.note || ''}`
+  );
+
+  const mergeProfileSnapshot = (snapshot) => {
+    if (!snapshot || typeof snapshot !== 'object') return;
+
+    if (snapshot.basic && typeof snapshot.basic === 'object') {
+      profileData.basic = mergeObjects(profileData.basic, snapshot.basic);
+    }
+
+    if (snapshot.body_metrics && typeof snapshot.body_metrics === 'object') {
+      const incoming = snapshot.body_metrics;
+      const current = profileData.body_metrics || {};
+      const merged = mergeObjects(current, incoming);
+
+      if (Array.isArray(incoming.weight_history)) {
+        merged.weight_history = mergeWeightHistory(current.weight_history, incoming.weight_history);
+      }
+
+      if (Array.isArray(incoming.progress_photos)) {
+        merged.progress_photos = mergeProgressPhotos(current.progress_photos, incoming.progress_photos);
+      }
+
+      profileData.body_metrics = merged;
+    }
+
+    if (snapshot.macros && typeof snapshot.macros === 'object') {
+      profileData.macros = mergeObjects(profileData.macros, snapshot.macros);
+    }
+
+    if (snapshot.preferences && typeof snapshot.preferences === 'object') {
+      profileData.preferences = mergeObjects(profileData.preferences, snapshot.preferences);
+    }
+
+    if (snapshot.habits && typeof snapshot.habits === 'object') {
+      profileData.habits = mergeObjects(profileData.habits, snapshot.habits);
+    }
+
+    if (snapshot.activity && typeof snapshot.activity === 'object') {
+      profileData.activity = mergeObjects(profileData.activity, snapshot.activity);
+    }
+
+    Object.entries(snapshot).forEach(([key, value]) => {
+      if (['basic', 'body_metrics', 'macros', 'preferences', 'habits', 'activity'].includes(key)) {
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        profileData[key] = [...value];
+      } else if (value && typeof value === 'object') {
+        profileData[key] = mergeObjects(profileData[key], value);
+      } else if (value !== undefined) {
+        profileData[key] = value;
+      }
+    });
+  };
+
   const getAvatarFallback = () => {
     const baseName = (profileData.basic?.full_name || profileData.basic?.email || currentUser?.email || 'User').trim();
     const encoded = encodeURIComponent(baseName || 'User');
@@ -70,6 +218,7 @@
       // Check authentication
       currentUser = await getCurrentUser();
       console.log('👤 Current user:', currentUser?.email || 'none');
+      migrateGuestProfileStorage();
       
       if (!currentUser) {
         console.warn('❌ No authenticated user, redirecting to login...');
@@ -383,18 +532,34 @@
   // Load data from localStorage as fallback
   const loadFromLocalStorage = () => {
     try {
-      const storageKey = currentUser?.id
-        ? `garcia_profile_${currentUser.id}`
-        : 'garcia_profile_guest';
-      const savedProfile = localStorage.getItem(storageKey);
-      if (savedProfile) {
-        const parsed = JSON.parse(savedProfile);
-        profileData = { ...profileData, ...parsed };
+      const activeId = resolveActiveUserId();
+      const userKey = activeId ? `garcia_profile_${activeId}` : null;
+      const guestKey = 'garcia_profile_guest';
+      const keys = [guestKey, userKey].filter(Boolean);
+
+      keys.forEach((key) => {
+        try {
+          const raw = key ? localStorage.getItem(key) : null;
+          if (!raw) return;
+          const snapshot = parseJsonSafe(raw, null);
+          if (snapshot && typeof snapshot === 'object') {
+            mergeProfileSnapshot(snapshot);
+          }
+        } catch (innerError) {
+          console.warn(`ProfileManager: Failed to merge local snapshot for key ${key}`, innerError);
+        }
+      });
+
+      if (!profileData.basic) profileData.basic = {};
+      if (activeId && !profileData.basic.id) {
+        profileData.basic.id = activeId;
       }
     } catch (error) {
       console.error('Error loading from localStorage:', error);
     }
   };
+
+
 
   // Save profile data
   const saveProfileData = async (section = null, options = {}) => {
@@ -406,6 +571,18 @@
     console.log('📊 Current profileData snapshot:', JSON.stringify(profileData, null, 2).substring(0, 500));
     
     try {
+      const activeUserId = resolveActiveUserId();
+    if (activeUserId) {
+      if (!profileData.basic) profileData.basic = {};
+      if (!profileData.basic.id) {
+        profileData.basic.id = activeUserId;
+      }
+      if (!currentUser || !currentUser.id) {
+        currentUser = { ...(currentUser || {}), id: activeUserId };
+      }
+    }
+
+
       console.log(`💾 Saving profile${section ? ` (${section})` : ''}...`);
       
       // Update timestamp
@@ -837,32 +1014,52 @@
   };
 
   // Save to localStorage
+
   const saveToLocalStorage = () => {
     try {
-      const storageKey = currentUser?.id
-        ? `garcia_profile_${currentUser.id}`
-        : 'garcia_profile_guest';
-      
-      console.log(`💿 saveToLocalStorage START - key: ${storageKey}`);
-      console.log('📊 Data to save (first 500 chars):', JSON.stringify(profileData).substring(0, 500));
-      
+      const activeId = resolveActiveUserId();
+      const primaryKey = activeId ? `garcia_profile_${activeId}` : 'garcia_profile_guest';
+      if (!profileData.basic) profileData.basic = {};
+      if (activeId && !profileData.basic.id) {
+        profileData.basic.id = activeId;
+      }
       const dataString = JSON.stringify(profileData);
-      console.log(`📏 Data size: ${dataString.length} characters`);
-      
-      localStorage.setItem(storageKey, dataString);
-      
-      // Verify save
-      const retrieved = localStorage.getItem(storageKey);
+
+      console.log('[ProfileManager] saveToLocalStorage START - key:', primaryKey);
+      console.log('[ProfileManager] Data to save (first 500 chars):', dataString.substring(0, 500));
+      console.log('[ProfileManager] Data size (chars):', dataString.length);
+
+      const keys = new Set(['garcia_profile_guest']);
+      if (activeId) keys.add(primaryKey);
+
+      keys.forEach((key) => {
+        if (!key) return;
+        try {
+          localStorage.setItem(key, dataString);
+        } catch (storageError) {
+          console.warn(`ProfileManager: Failed to write localStorage key ${key}`, storageError);
+        }
+      });
+
+      let retrieved = localStorage.getItem(primaryKey);
+      if (!retrieved && primaryKey !== 'garcia_profile_guest') {
+        retrieved = localStorage.getItem('garcia_profile_guest');
+      }
+
       if (!retrieved) {
         throw new Error('localStorage.setItem succeeded but getItem returned null');
       }
+
       if (retrieved.length !== dataString.length) {
         throw new Error(`localStorage save corrupted: expected ${dataString.length} chars, got ${retrieved.length}`);
       }
-      
-      console.log('✅ saveToLocalStorage SUCCESS');
+
+      migrateGuestProfileStorage();
+      syncAuthCache();
+
+      console.log('[ProfileManager] saveToLocalStorage SUCCESS');
     } catch (error) {
-      console.error('❌❌❌ CRITICAL ERROR in saveToLocalStorage:', error);
+      console.error('CRITICAL ERROR in saveToLocalStorage:', error);
       console.error('Error name:', error.name);
       console.error('Error message:', error.message);
       console.error('Error stack:', error.stack);
@@ -874,6 +1071,8 @@
       throw error;
     }
   };
+
+
 
   // Initialize UI components
   const initializeUI = () => {
@@ -2534,6 +2733,7 @@
   window.GarciaProfileManager = {
     init,
     getCurrentUser,
+    resolveActiveUserId,
     getProfileData: () => profileData,
     saveProfileData,
     saveProfile: saveProfileData, // Alias for compatibility

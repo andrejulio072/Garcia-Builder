@@ -7,6 +7,151 @@
   let bodyMetrics = [];
   let progressPhotos = [];
 
+  const parseJsonSafe = (value, fallback = null) => {
+    if (!value || typeof value !== 'string') return fallback;
+    try {
+      return JSON.parse(value);
+    } catch {
+      return fallback;
+    }
+  };
+
+  const getCachedUser = () => {
+    return parseJsonSafe(localStorage.getItem('gb_current_user')) ||
+      parseJsonSafe(localStorage.getItem('garcia_user')) ||
+      null;
+  };
+
+  const resolveProfileManager = () => (window.GarciaProfileManager || null);
+
+  const resolveActiveUserContext = () => {
+    if (currentUser?.id) {
+      return {
+        id: currentUser.id,
+        email: currentUser.email || currentUser.user_metadata?.email || null
+      };
+    }
+
+    const manager = resolveProfileManager();
+    if (manager?.resolveActiveUserId) {
+      try {
+        const id = manager.resolveActiveUserId();
+        if (id) {
+          const profile = typeof manager.getProfileData === 'function' ? manager.getProfileData() : null;
+          const email = profile?.basic?.email || profile?.basic?.full_name || null;
+          if (!currentUser) currentUser = {};
+          currentUser.id = id;
+          currentUser.email = currentUser.email || email || null;
+          currentUser.user_metadata = {
+            ...(currentUser.user_metadata || {}),
+            ...(profile?.basic ? { full_name: profile.basic.full_name, avatar_url: profile.basic.avatar_url } : {}),
+            ...(profile?.body_metrics ? { body_metrics: profile.body_metrics } : {})
+          };
+          return { id, email: currentUser.email || email || null };
+        }
+      } catch (error) {
+        console.warn('BodyMetrics: failed to resolve user from profile manager', error);
+      }
+    }
+
+    const cached = getCachedUser();
+    if (cached?.id) {
+      currentUser = { ...(currentUser || {}), ...cached };
+      return {
+        id: cached.id,
+        email: cached.email || cached.user_metadata?.email || null
+      };
+    }
+
+    return { id: null, email: null };
+  };
+
+  const getMetricsStorageDescriptor = () => {
+    const { id } = resolveActiveUserContext();
+    const primary = id ? `gb_body_metrics_${id}` : 'gb_body_metrics_guest';
+    const keys = Array.from(new Set(['gb_body_metrics_guest', primary].filter(Boolean)));
+    return { primary, keys };
+  };
+
+  const mergeMetricEntries = (...lists) => {
+    const map = new Map();
+    lists.filter(Array.isArray).forEach((entries) => {
+      entries.forEach((entry) => {
+        if (!entry || typeof entry !== 'object') return;
+        const key = entry.client_id || entry.id || `${entry.date || ''}-${entry.created_at || entry.updated_at || ''}-${entry.weight || ''}`;
+        const current = map.get(key) || {};
+        map.set(key, { ...current, ...entry });
+      });
+    });
+    return Array.from(map.values());
+  };
+
+  const sortMetricsEntries = (entries = []) => {
+    const normalized = Array.isArray(entries) ? [...entries] : [];
+    normalized.sort((a, b) => {
+      const toTime = (value) => {
+        const ts = value ? new Date(value).getTime() : NaN;
+        return Number.isFinite(ts) ? ts : 0;
+      };
+      const timeA = toTime(a.date || a.updated_at || a.created_at);
+      const timeB = toTime(b.date || b.updated_at || b.created_at);
+      return timeB - timeA;
+    });
+    return normalized;
+  };
+
+
+  const mergeProgressPhotoList = (...lists) => {
+    const map = new Map();
+    lists.filter(Array.isArray).forEach((entries) => {
+      entries.forEach((entry) => {
+        if (!entry || typeof entry !== 'object') return;
+        const key = entry.photo_id || entry.public_id || entry.filename || entry.image_url || entry.image_data || `${entry.date || ''}-${entry.created_at || ''}`;
+        map.set(key, { ...entry });
+      });
+    });
+    return Array.from(map.values());
+  };
+
+  const getProgressPhotoStorageDescriptor = () => {
+    const { id } = resolveActiveUserContext();
+    const primary = id ? `gb_progress_photos_${id}` : 'gb_progress_photos_guest';
+    const keys = Array.from(new Set(['gb_progress_photos_guest', primary].filter(Boolean)));
+    return { primary, keys };
+  };
+
+  const persistLocalMetricsEntry = (entry) => {
+    if (!entry || typeof entry !== 'object') return;
+    const { keys } = getMetricsStorageDescriptor();
+    keys.forEach((key) => {
+      if (!key) return;
+      try {
+        const stored = mergeMetricEntries(parseJsonSafe(localStorage.getItem(key), []), [entry]);
+        localStorage.setItem(key, JSON.stringify(sortMetricsEntries(stored)));
+      } catch (error) {
+        console.warn(`BodyMetrics: failed to persist metrics entry to ${key}`, error?.message || error);
+      }
+    });
+  };
+
+  const migrateGuestBodyMetrics = () => {
+    const { id } = resolveActiveUserContext();
+    if (!id) return;
+    const guestKey = 'gb_body_metrics_guest';
+    const userKey = `gb_body_metrics_${id}`;
+
+    try {
+      const guestRaw = localStorage.getItem(guestKey);
+      if (!guestRaw) return;
+      const guestEntries = parseJsonSafe(guestRaw, []);
+      const userEntries = parseJsonSafe(localStorage.getItem(userKey), []);
+      const merged = mergeMetricEntries(userEntries, guestEntries);
+      localStorage.setItem(userKey, JSON.stringify(merged));
+    } catch (error) {
+      console.warn('BodyMetrics: failed to migrate guest metrics cache', error);
+    }
+  };
+
   const syncProfileManagerWithMetrics = async (entryData = {}) => {
     try {
       const manager = window.GarciaProfileManager;
@@ -152,11 +297,28 @@
           currentUser = user;
         }
       }
+
+      if (!currentUser) {
+        const manager = resolveProfileManager();
+        if (manager?.getCurrentUser) {
+          try {
+            const maybeUser = await manager.getCurrentUser();
+            if (maybeUser?.id) {
+              currentUser = maybeUser;
+            }
+          } catch (managerError) {
+            console.warn('BodyMetrics: failed to resolve user via profile manager', managerError);
+          }
+        }
+      }
     } catch (error) {
       console.warn('Auth check failed:', error);
     } finally {
+      resolveActiveUserContext();
+      migrateGuestBodyMetrics();
       await loadBodyMetrics();
-      if (currentUser) {
+      const { id } = resolveActiveUserContext();
+      if (id) {
         // attempt sync of any local entries to cloud
         trySyncLocalMetrics();
       }
@@ -423,8 +585,9 @@
       saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Saving...';
 
       // Coletar dados
+      const { id: activeUserId } = resolveActiveUserContext();
       const entryData = {
-        user_id: currentUser?.id,
+        user_id: activeUserId,
         date: document.getElementById('entry-date').value,
         weight: parseFloat(document.getElementById('entry-weight').value) || null,
         height: parseFloat(document.getElementById('entry-height').value) || null,
@@ -490,55 +653,60 @@
 
   const loadBodyMetrics = async () => {
     try {
+      const { id } = resolveActiveUserContext();
       let cloudEntries = [];
-      if (window.supabaseClient && currentUser) {
+      if (window.supabaseClient && id) {
         const { data, error } = await window.supabaseClient
           .from('body_metrics')
           .select('*')
-          .eq('user_id', currentUser.id)
+          .eq('user_id', id)
           .order('date', { ascending: false });
 
         if (!error && Array.isArray(data)) {
           cloudEntries = data;
         } else if (error) {
-          console.warn('⚠️ Supabase body_metrics load failed:', error.message || error);
+          console.warn('BodyMetrics: Supabase body_metrics load failed:', error.message || error);
         }
       }
 
-      const storageKey = `gb_body_metrics_${currentUser?.id || 'guest'}`;
+      const { keys } = getMetricsStorageDescriptor();
       let localEntries = [];
-      try {
-        localEntries = JSON.parse(localStorage.getItem(storageKey) || '[]');
-        if (!Array.isArray(localEntries)) {
-          localEntries = [];
+      keys.forEach((key) => {
+        try {
+          const parsed = parseJsonSafe(localStorage.getItem(key), []);
+          if (Array.isArray(parsed) && parsed.length) {
+            localEntries = mergeMetricEntries(localEntries, parsed);
+          }
+        } catch (storageErr) {
+          console.warn(`BodyMetrics: failed to parse local cache for ${key}`, storageErr?.message || storageErr);
         }
-      } catch (storageErr) {
-        console.warn('⚠️ Failed to parse local body metrics cache:', storageErr?.message || storageErr);
-        localEntries = [];
-      }
+      });
 
-      const combined = Array.isArray(cloudEntries) ? [...cloudEntries] : [];
-      if (localEntries.length) {
-        const seen = new Set(
-          combined
-            .map(entry => entry?.client_id || entry?.id)
-            .filter(Boolean)
-        );
-        const unsyncedLocal = localEntries.filter(entry => {
-          const key = entry?.client_id || entry?.id;
-          return key ? !seen.has(key) : true;
-        });
-        if (unsyncedLocal.length) {
-          combined.push(...unsyncedLocal);
+      localEntries = sortMetricsEntries(localEntries);
+      keys.forEach((key) => {
+        try {
+          localStorage.setItem(key, JSON.stringify(localEntries));
+        } catch (storageErr) {
+          console.warn(`BodyMetrics: failed to persist normalized cache for ${key}`, storageErr?.message || storageErr);
         }
-      }
+      });
 
-      const normalizeDate = (entry) => {
-        if (!entry) return 0;
-        const value = entry.date || entry.created_at || entry.updated_at;
-        const ts = value ? new Date(value).getTime() : 0;
-        return Number.isFinite(ts) ? ts : 0;
-      };
+      const combined = mergeMetricEntries(localEntries, Array.isArray(cloudEntries) ? cloudEntries : []);
+      bodyMetrics = sortMetricsEntries(combined);
+
+      console.log(`BodyMetrics: loaded ${bodyMetrics.length} entries (cloud: ${cloudEntries.length}, local: ${localEntries.length})`);
+
+      // Refresh UI with the latest combined dataset
+      loadCurrentMetrics();
+      loadRecentEntries();
+      updateChart();
+
+      return bodyMetrics;
+    } catch (error) {
+      console.error('BodyMetrics: error loading metrics:', error);
+      return [];
+    }
+  };
 
       combined.sort((a, b) => normalizeDate(b) - normalizeDate(a));
 
@@ -559,51 +727,47 @@
   };
 
   const saveBodyMetrics = async (entryData) => {
+    let normalizedEntry = { ...(entryData || {}) };
     try {
+      const { id } = resolveActiveUserContext();
+      if (id) {
+        normalizedEntry.user_id = normalizedEntry.user_id || id;
+      }
+      normalizedEntry.created_at = normalizedEntry.created_at || new Date().toISOString();
+      normalizedEntry.client_id = normalizedEntry.client_id || normalizedEntry.id || `${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+      normalizedEntry.id = normalizedEntry.id || normalizedEntry.client_id;
+
       let savedViaSupabase = false;
-      if (window.supabaseClient && currentUser) {
+      if (window.supabaseClient && id) {
         const { error } = await window.supabaseClient
           .from('body_metrics')
-          .insert([entryData]);
+          .insert([normalizedEntry]);
 
         if (!error) {
           savedViaSupabase = true;
         } else {
-          console.warn('Supabase insert failed for body_metrics, falling back to localStorage:', error?.message || error);
+          console.warn('BodyMetrics: Supabase insert failed for body_metrics, falling back to localStorage:', error?.message || error);
         }
       }
 
-      if (!savedViaSupabase) {
-        // Fallback para localStorage (sempre persistimos localmente)
-        const key = `gb_body_metrics_${currentUser?.id || 'guest'}`;
-        const stored = JSON.parse(localStorage.getItem(key) || '[]');
-        entryData.id = entryData.id || Date.now().toString();
-        stored.push(entryData);
-        localStorage.setItem(key, JSON.stringify(stored));
+      persistLocalMetricsEntry(normalizedEntry);
+      bodyMetrics = sortMetricsEntries(mergeMetricEntries(bodyMetrics, [normalizedEntry]));
+      if (entryData && typeof entryData === 'object') {
+        Object.assign(entryData, normalizedEntry);
       }
 
-      // Atualizar array local
-      bodyMetrics = bodyMetrics || [];
-      bodyMetrics.unshift(entryData);
-
-      // Never throw for connectivity issues; we persisted locally.
-      // Return a status object so callers may show an informational banner if desired.
       return { savedViaSupabase, savedLocally: true };
     } catch (error) {
-      console.error('❌ Error saving body metrics:', error);
+      console.error('BodyMetrics: error saving body metrics:', error);
       try {
-        // Last-resort: ensure we still persist locally
-        const key = `gb_body_metrics_${currentUser?.id || 'guest'}`;
-        const stored = JSON.parse(localStorage.getItem(key) || '[]');
-        const entry = { ...(entryData || {}), id: (entryData?.id) || Date.now().toString() };
-        stored.push(entry);
-        localStorage.setItem(key, JSON.stringify(stored));
-        bodyMetrics = bodyMetrics || [];
-        bodyMetrics.unshift(entry);
+        persistLocalMetricsEntry(normalizedEntry);
+        bodyMetrics = sortMetricsEntries(mergeMetricEntries(bodyMetrics, [normalizedEntry]));
+        if (entryData && typeof entryData === 'object') {
+          Object.assign(entryData, normalizedEntry);
+        }
       } catch (localErr) {
-        console.error('❌ Also failed to persist locally:', localErr);
+        console.error('BodyMetrics: also failed to persist locally:', localErr);
       }
-      // Do not throw — caller will treat as success with local-only save
       return { savedViaSupabase: false, savedLocally: true, error: error?.message || String(error) };
     }
   };
@@ -611,29 +775,41 @@
   // Try to sync any locally stored metrics to Supabase when online
   async function trySyncLocalMetrics() {
     try {
-      if (!window.supabaseClient || !currentUser) return;
-      const key = `gb_body_metrics_${currentUser.id}`;
-      const stored = JSON.parse(localStorage.getItem(key) || '[]');
-      if (!stored.length) return;
+      const { id } = resolveActiveUserContext();
+      if (!window.supabaseClient || !id) return;
+      const { primary, keys } = getMetricsStorageDescriptor();
+      const stored = parseJsonSafe(localStorage.getItem(primary), []);
+      if (!Array.isArray(stored) || !stored.length) return;
 
       // Fetch existing client_ids to avoid duplicates
       const { data: cloudRows } = await window.supabaseClient
         .from('body_metrics')
         .select('client_id')
-        .eq('user_id', currentUser.id);
-      const cloudIds = new Set((cloudRows || []).map(r => r.client_id).filter(Boolean));
+        .eq('user_id', id);
+      const cloudIds = new Set((cloudRows || []).map((row) => row.client_id).filter(Boolean));
 
-      const toPush = stored.filter(row => row.client_id && !cloudIds.has(row.client_id));
+      const toPush = stored.filter((row) => row?.client_id && !cloudIds.has(row.client_id));
       if (!toPush.length) return;
 
       const { error } = await window.supabaseClient.from('body_metrics').insert(toPush);
       if (!error) {
-        // After push, refresh and clear local duplicates
+        toPush.forEach((row) => cloudIds.add(row.client_id));
         await loadBodyMetrics();
-        const stillLocal = stored.filter(row => row.client_id && !cloudIds.has(row.client_id));
-        localStorage.setItem(key, JSON.stringify(stillLocal));
-        console.log(`✅ Synced ${toPush.length} local metrics to cloud`);
+        const remaining = stored.filter((row) => row?.client_id && !cloudIds.has(row.client_id));
+        keys.forEach((key) => {
+          try {
+            localStorage.setItem(key, JSON.stringify(remaining));
+          } catch (storageErr) {
+            console.warn(`BodyMetrics: failed to update synced cache for ${key}`, storageErr?.message || storageErr);
+          }
+        });
+        console.log(`BodyMetrics: synced ${toPush.length} local metrics to cloud`);
       }
+    } catch (e) {
+      console.warn('BodyMetrics: metrics sync skipped:', e?.message || e);
+    }
+  }
+
     } catch (e) {
       console.warn('Metrics sync skipped:', e?.message || e);
     }
@@ -721,6 +897,7 @@
   };
 
   const uploadProgressPhoto = () => {
+    const { id: activeUserId } = resolveActiveUserContext();
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
@@ -736,14 +913,15 @@
         if (window.supabaseClient && currentUser) {
           try {
             const bucket = 'user-assets';
-            const path = `${currentUser.id}/progress/${Date.now()}-${file.name}`;
+            const userIdForStorage = currentUser?.id || activeUserId || 'guest';
+            const path = `${userIdForStorage}/progress/${Date.now()}-${file.name}`;
             const { data, error } = await window.supabaseClient.storage
               .from(bucket)
               .upload(path, file, { cacheControl: '3600', upsert: false, contentType: file.type });
             if (error) throw error;
             const { data: pub } = window.supabaseClient.storage.from(bucket).getPublicUrl(data.path);
             photoRecord = {
-              user_id: currentUser?.id,
+              user_id: activeUserId,
               image_url: pub.publicUrl,
               filename: file.name,
               date: new Date().toISOString().split('T')[0],
@@ -758,7 +936,7 @@
         if (!photoRecord) {
           const compressedDataUrl = await compressImageToDataURL(file, 1280, 0.8);
           photoRecord = {
-            user_id: currentUser?.id,
+            user_id: activeUserId,
             image_data: compressedDataUrl,
             filename: file.name,
             date: new Date().toISOString().split('T')[0],
@@ -775,12 +953,24 @@
 
   const saveProgressPhoto = async (photoData) => {
     try {
-      progressPhotos = progressPhotos || [];
-      progressPhotos.unshift(photoData);
+      progressPhotos = mergeProgressPhotoList([photoData], progressPhotos || []);
+      progressPhotos.sort((a, b) => {
+        const toTime = (value) => {
+          const ts = value ? new Date(value).getTime() : NaN;
+          return Number.isFinite(ts) ? ts : 0;
+        };
+        return toTime(b.created_at || b.date) - toTime(a.created_at || a.date);
+      });
 
       // Salvar metadados no localStorage (armazenamos URL ou base64 comprimida)
-      const key = `gb_progress_photos_${currentUser?.id || 'guest'}`;
-      localStorage.setItem(key, JSON.stringify(progressPhotos));
+      const { keys } = getProgressPhotoStorageDescriptor();
+      keys.forEach((key) => {
+        try {
+          localStorage.setItem(key, JSON.stringify(progressPhotos));
+        } catch (storageErr) {
+          console.warn(`BodyMetrics: failed to persist progress photos to ${key}`, storageErr?.message || storageErr);
+        }
+      });
 
       showNotification('📸 Progress photo uploaded!', 'success');
       loadProgressPhotos();
@@ -796,8 +986,22 @@
     if (!photosGrid) return;
 
     // Carregar do localStorage
-  const stored = localStorage.getItem(`gb_progress_photos_${currentUser?.id || 'guest'}`);
-    progressPhotos = stored ? JSON.parse(stored) : [];
+    const { keys } = getProgressPhotoStorageDescriptor();
+    let mergedPhotos = [];
+    keys.forEach((key) => {
+      const parsed = parseJsonSafe(localStorage.getItem(key), []);
+      if (Array.isArray(parsed) && parsed.length) {
+        mergedPhotos = mergeProgressPhotoList(parsed, mergedPhotos);
+      }
+    });
+    progressPhotos = mergedPhotos;
+    progressPhotos.sort((a, b) => {
+      const toTime = (value) => {
+        const ts = value ? new Date(value).getTime() : NaN;
+        return Number.isFinite(ts) ? ts : 0;
+      };
+      return toTime(b.created_at || b.date) - toTime(a.created_at || a.date);
+    });
 
     if (!progressPhotos.length) {
       photosGrid.innerHTML = '<div class="text-muted text-center py-3">No progress photos yet</div>';

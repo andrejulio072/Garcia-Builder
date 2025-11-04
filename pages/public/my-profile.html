@@ -772,7 +772,7 @@
                         </div>
 
                         <div class="text-end mt-4">
-                            <button type="button" class="btn btn-save" onclick="return window.saveBasicInfo(event);">
+                            <button type="submit" class="btn btn-save">
                                 <i class="fas fa-save"></i> Save Basic Info
                             </button>
                         </div>
@@ -1177,6 +1177,23 @@
                         </div>
                     </form>
                 </div>
+
+                <div class="profile-card mt-4">
+                    <h3 class="card-title">
+                        <i class="fas fa-shield-alt"></i>
+                        Data Safety &amp; Export
+                    </h3>
+                    <p class="text-muted">Every change is cached locally and synced to Supabase when online. Download a complete JSON snapshot of your profile, metrics, and habits whenever you need.</p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <button type="button" class="btn btn-save" id="download-user-data">
+                            <i class="fas fa-download"></i> Download My Data
+                        </button>
+                        <button type="button" class="btn btn-outline-light" id="sync-user-data">
+                            <i class="fas fa-cloud-upload-alt"></i> Sync Pending Data
+                        </button>
+                    </div>
+                    <div id="user-data-export-status" class="alert alert-info mt-3 d-none" role="status"></div>
+                </div>
             </div>
 
             <!-- Macros Tab -->
@@ -1389,44 +1406,9 @@
     <script src="../../js/components/navigation-manager.js"></script>
     <script src="../../js/admin/profile-manager.js"></script>
     <script defer src="../../js/body-metrics.js"></script>
+    <script defer src="../../js/utils/user-data-export.js"></script>
 
     <script>
-        // SIMPLE SAVE FUNCTION - No form submit, just direct call
-        window.saveBasicInfo = async function(event) {
-            console.log('🔵 saveBasicInfo DIRECT CALL - NO FORM SUBMIT');
-            
-            if (event) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            
-            const form = document.getElementById('basic-info-form');
-            if (!form) {
-                console.error('❌ Form not found!');
-                return false;
-            }
-            
-            console.log('📝 Calling ProfileManager directly...');
-            
-            // Create fake event for ProfileManager
-            const fakeEvent = {
-                target: form,
-                currentTarget: form,
-                preventDefault: () => {},
-                stopPropagation: () => {},
-                stopImmediatePropagation: () => {},
-                defaultPrevented: true
-            };
-            
-            if (window.GarciaProfileManager && window.GarciaProfileManager.handleFormSubmit) {
-                await window.GarciaProfileManager.handleFormSubmit(fakeEvent);
-            } else {
-                console.error('❌ ProfileManager not available!');
-            }
-            
-            return false;
-        };
-
         // Profile page specific functionality
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof AuthSystem !== 'undefined' && typeof AuthSystem.requireAuth === 'function') {

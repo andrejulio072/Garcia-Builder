@@ -271,3 +271,13 @@ Este guia descreve os testes para verificar se os dados do usuÃ¡rio estÃ£o sendo
 **Ãšltima AtualizaÃ§Ã£o**: 2025-11-01  
 **VersÃ£o**: 1.0.0  
 **Branch**: `fix/logo-and-profile-data-save`
+
+### Teste 7: Exportar Dados do Usuário
+1. Abrir `pages/public/my-profile.html` (localhost ou file://)
+2. Navegar para **Settings > Data Safety & Export**
+3. (Opcional) clicar em `Sync Pending Data` para forçar o envio ao Supabase
+4. Clicar em `Download My Data`
+5. Confirmar que o arquivo `garcia-builder-export-*.json` foi baixado
+6. Conferir se o JSON contém os blocos `profile_data`, `body_metrics_entries`, `local_storage` e `supabase_snapshot`
+
+> O arquivo inclui o cache offline (`gb_*`), o histórico local e os registros atuais do Supabase (quando online).

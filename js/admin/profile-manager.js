@@ -3,6 +3,154 @@
   let currentUser = null;
   let profileData = {};
 
+  const parseJsonSafe = (value, fallback = null) => {
+    if (typeof value !== 'string') return fallback;
+    try {
+      return JSON.parse(value);
+    } catch (error) {
+      console.warn('ProfileManager: JSON parse failed', error);
+      return fallback;
+    }
+  };
+
+  const getCachedUserFromStorage = () => parseJsonSafe(localStorage.getItem('gb_current_user')) || null;
+
+  const resolveActiveUserId = () => {
+    if (currentUser?.id) return currentUser.id;
+    const cached = getCachedUserFromStorage();
+    if (cached?.id) return cached.id;
+    if (profileData?.basic?.id) return profileData.basic.id;
+    return null;
+  };
+
+  const getProfileStorageKey = () => {
+    const activeId = resolveActiveUserId();
+    return activeId ? `garcia_profile_${activeId}` : 'garcia_profile_guest';
+  };
+
+  const migrateGuestProfileStorage = () => {
+    const activeId = resolveActiveUserId();
+    if (!activeId) return;
+    const guestKey = 'garcia_profile_guest';
+    const userKey = `garcia_profile_${activeId}`;
+    try {
+      const guestData = localStorage.getItem(guestKey);
+      if (guestData && !localStorage.getItem(userKey)) {
+        localStorage.setItem(userKey, guestData);
+        console.log('ProfileManager: migrated guest profile cache to user key');
+      }
+    } catch (error) {
+      console.warn('ProfileManager: Failed to migrate guest profile cache', error);
+    }
+  };
+
+  const mergeObjects = (target, source) => {
+    const base = (target && typeof target === 'object' && !Array.isArray(target)) ? { ...target } : {};
+    Object.entries(source || {}).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        base[key] = Array.isArray(base[key]) ? [...base[key], ...value] : [...value];
+      } else if (value && typeof value === 'object') {
+        base[key] = mergeObjects(base[key], value);
+      } else if (value !== undefined) {
+        base[key] = value;
+      }
+    });
+    return base;
+  };
+
+  const mergeUniqueBy = (existing = [], incoming = [], keySelector) => {
+    const map = new Map();
+    (Array.isArray(existing) ? existing : []).forEach((entry) => {
+      const key = keySelector(entry);
+      if (key !== undefined && key !== null) {
+        map.set(key, { ...(entry || {}) });
+      }
+    });
+    (Array.isArray(incoming) ? incoming : []).forEach((entry) => {
+      const key = keySelector(entry);
+      if (key !== undefined && key !== null) {
+        const prev = map.get(key) || {};
+        map.set(key, { ...prev, ...(entry || {}) });
+      }
+    });
+    return Array.from(map.values());
+  };
+
+  const mergeWeightHistory = (current = [], incoming = []) => {
+    const merged = mergeUniqueBy(current, incoming, (item = {}) => {
+      if (!item) return null;
+      if (item.client_id) return item.client_id;
+      if (item.date) return item.date;
+      return item.id || `${item.weight || 'w'}-${item.created_at || item.updated_at || ''}`;
+    });
+    merged.sort((a, b) => {
+      const tsA = new Date(a.date || a.created_at || a.updated_at || 0).getTime();
+      const tsB = new Date(b.date || b.created_at || b.updated_at || 0).getTime();
+      return tsA - tsB;
+    });
+    return merged;
+  };
+
+  const mergeProgressPhotos = (current = [], incoming = []) => mergeUniqueBy(
+    current,
+    incoming,
+    (item = {}) => item.photo_id || item.public_id || item.url || `${item.date || item.created_at || ''}-${item.note || ''}`
+  );
+
+  const mergeProfileSnapshot = (snapshot) => {
+    if (!snapshot || typeof snapshot !== 'object') return;
+
+    if (snapshot.basic && typeof snapshot.basic === 'object') {
+      profileData.basic = mergeObjects(profileData.basic, snapshot.basic);
+    }
+
+    if (snapshot.body_metrics && typeof snapshot.body_metrics === 'object') {
+      const incoming = snapshot.body_metrics;
+      const current = profileData.body_metrics || {};
+      const merged = mergeObjects(current, incoming);
+
+      if (Array.isArray(incoming.weight_history)) {
+        merged.weight_history = mergeWeightHistory(current.weight_history, incoming.weight_history);
+      }
+
+      if (Array.isArray(incoming.progress_photos)) {
+        merged.progress_photos = mergeProgressPhotos(current.progress_photos, incoming.progress_photos);
+      }
+
+      profileData.body_metrics = merged;
+    }
+
+    if (snapshot.macros && typeof snapshot.macros === 'object') {
+      profileData.macros = mergeObjects(profileData.macros, snapshot.macros);
+    }
+
+    if (snapshot.preferences && typeof snapshot.preferences === 'object') {
+      profileData.preferences = mergeObjects(profileData.preferences, snapshot.preferences);
+    }
+
+    if (snapshot.habits && typeof snapshot.habits === 'object') {
+      profileData.habits = mergeObjects(profileData.habits, snapshot.habits);
+    }
+
+    if (snapshot.activity && typeof snapshot.activity === 'object') {
+      profileData.activity = mergeObjects(profileData.activity, snapshot.activity);
+    }
+
+    Object.entries(snapshot).forEach(([key, value]) => {
+      if (['basic', 'body_metrics', 'macros', 'preferences', 'habits', 'activity'].includes(key)) {
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        profileData[key] = [...value];
+      } else if (value && typeof value === 'object') {
+        profileData[key] = mergeObjects(profileData[key], value);
+      } else if (value !== undefined) {
+        profileData[key] = value;
+      }
+    });
+  };
+
   const getAvatarFallback = () => {
     const baseName = (profileData.basic?.full_name || profileData.basic?.email || currentUser?.email || 'User').trim();
     const encoded = encodeURIComponent(baseName || 'User');
@@ -70,6 +218,7 @@
       // Check authentication
       currentUser = await getCurrentUser();
       console.log('👤 Current user:', currentUser?.email || 'none');
+      migrateGuestProfileStorage();
       
       if (!currentUser) {
         console.warn('❌ No authenticated user, redirecting to login...');
@@ -383,21 +532,38 @@
   // Load data from localStorage as fallback
   const loadFromLocalStorage = () => {
     try {
-      const storageKey = currentUser?.id
-        ? `garcia_profile_${currentUser.id}`
-        : 'garcia_profile_guest';
-      const savedProfile = localStorage.getItem(storageKey);
-      if (savedProfile) {
-        const parsed = JSON.parse(savedProfile);
-        profileData = { ...profileData, ...parsed };
+      const activeId = resolveActiveUserId();
+      const userKey = activeId ? `garcia_profile_${activeId}` : null;
+      const guestKey = 'garcia_profile_guest';
+      const keys = [guestKey, userKey].filter(Boolean);
+
+      keys.forEach((key) => {
+        try {
+          const raw = key ? localStorage.getItem(key) : null;
+          if (!raw) return;
+          const snapshot = parseJsonSafe(raw, null);
+          if (snapshot && typeof snapshot === 'object') {
+            mergeProfileSnapshot(snapshot);
+          }
+        } catch (innerError) {
+          console.warn(`ProfileManager: Failed to merge local snapshot for key ${key}`, innerError);
+        }
+      });
+
+      if (!profileData.basic) profileData.basic = {};
+      if (activeId && !profileData.basic.id) {
+        profileData.basic.id = activeId;
       }
     } catch (error) {
       console.error('Error loading from localStorage:', error);
     }
   };
 
+
+
   // Save profile data
-  const saveProfileData = async (section = null) => {
+  const saveProfileData = async (section = null, options = {}) => {
+    const silent = options?.silent === true;
     let supabaseSuccess = false;
     let supabaseError = null;
     
@@ -405,6 +571,18 @@
     console.log('📊 Current profileData snapshot:', JSON.stringify(profileData, null, 2).substring(0, 500));
     
     try {
+      const activeUserId = resolveActiveUserId();
+    if (activeUserId) {
+      if (!profileData.basic) profileData.basic = {};
+      if (!profileData.basic.id) {
+        profileData.basic.id = activeUserId;
+      }
+      if (!currentUser || !currentUser.id) {
+        currentUser = { ...(currentUser || {}), id: activeUserId };
+      }
+    }
+
+
       console.log(`💾 Saving profile${section ? ` (${section})` : ''}...`);
       
       // Update timestamp
@@ -460,12 +638,14 @@
       window.authGuard?.addUserMenuToNavbar?.();
 
       // Show appropriate notification
-      if (supabaseSuccess) {
-        showNotification('Profile updated successfully!', 'success');
-      } else if (supabaseError) {
-        showNotification('Saved locally. Will sync when online.', 'warning');
-      } else {
-        showNotification('Profile updated (offline mode)!', 'success');
+      if (!silent) {
+        if (supabaseSuccess) {
+          showNotification('Profile updated successfully!', 'success');
+        } else if (supabaseError) {
+          showNotification('Saved locally. Will sync when online.', 'warning');
+        } else {
+          showNotification('Profile updated (offline mode)!', 'success');
+        }
       }
       
       console.log('✅ Profile save complete - returning TRUE');
@@ -480,13 +660,17 @@
       try {
         console.log('🆘 Last resort: attempting localStorage save again...');
         saveToLocalStorage();
-        showNotification('Saved locally only. Check connection.', 'warning');
+        if (!silent) {
+          showNotification('Saved locally only. Check connection.', 'warning');
+        }
         console.log('✅ Last resort save succeeded - returning TRUE');
         return true;
       } catch (localErr) {
         console.error('❌❌❌ CATASTROPHIC: Even localStorage failed:', localErr);
         console.error('LocalStorage error stack:', localErr.stack);
-        showNotification('Error saving profile. Please try again.', 'error');
+        if (!silent) {
+          showNotification('Error saving profile. Please try again.', 'error');
+        }
         return false;
       }
     }
@@ -636,12 +820,51 @@
       // Save metrics: preferred upsert to body_metrics table (today) and mirror to user metadata
       if (section === 'body_metrics' || !section) {
         try {
+          try {
+            const weightValue = num(profileData.body_metrics?.current_weight);
+            if (weightValue !== null) {
+              if (!Array.isArray(profileData.body_metrics.weight_history)) {
+                profileData.body_metrics.weight_history = [];
+              }
+              const entryTimestamp = profileData.body_metrics.last_entry_date || profileData.body_metrics.updated_at || new Date().toISOString();
+              const entryDate = (() => {
+                const parsed = new Date(entryTimestamp);
+                if (Number.isFinite(parsed.getTime())) {
+                  return parsed.toISOString().slice(0, 10);
+                }
+                return new Date().toISOString().slice(0, 10);
+              })();
+              const existingIndex = profileData.body_metrics.weight_history.findIndex((item) => {
+                try {
+                  return new Date(item.date).toISOString().slice(0, 10) === entryDate;
+                } catch {
+                  return item.date === entryDate;
+                }
+              });
+              const historyEntry = { date: entryDate, weight: weightValue };
+              if (existingIndex >= 0) {
+                profileData.body_metrics.weight_history[existingIndex] = {
+                  ...profileData.body_metrics.weight_history[existingIndex],
+                  ...historyEntry
+                };
+              } else {
+                profileData.body_metrics.weight_history.push(historyEntry);
+              }
+              profileData.body_metrics.weight_history.sort((a, b) => new Date(a.date) - new Date(b.date));
+              if (profileData.body_metrics.weight_history.length > 50) {
+                profileData.body_metrics.weight_history = profileData.body_metrics.weight_history.slice(-50);
+              }
+            }
+          } catch (historyErr) {
+            console.warn('Failed to maintain weight history before save:', historyErr);
+          }
+
           // 1) Upsert into table for today's date
           try {
-            const today = new Date().toISOString().slice(0,10);
+            const entryDate = profileData.body_metrics.last_entry_date || new Date().toISOString().slice(0,10);
             const payload = {
               user_id: currentUser.id,
-              date: today,
+              date: entryDate,
               weight: num(profileData.body_metrics.current_weight),
               height: num(profileData.body_metrics.height),
               body_fat: num(profileData.body_metrics.body_fat_percentage),
@@ -654,7 +877,7 @@
                 muscle_mass: num(profileData.body_metrics.muscle_mass),
                 target_weight: num(profileData.body_metrics.target_weight)
               },
-              client_id: `bm-${today}`,
+              client_id: `bm-${entryDate}`,
               updated_at: new Date().toISOString()
             };
             const { error: bmErr } = await window.supabaseClient
@@ -747,16 +970,16 @@
 
           // Best-effort: also write calories to today's body_metrics row
           try {
-            const today = new Date().toISOString().slice(0,10);
+            const entryDate = profileData.body_metrics.last_entry_date || new Date().toISOString().slice(0,10);
             const { data: existing } = await window.supabaseClient
               .from('body_metrics')
               .select('measurements')
               .eq('user_id', currentUser.id)
-              .eq('date', today)
+              .eq('date', entryDate)
               .maybeSingle();
             const measurements = existing?.measurements || {};
             measurements.calories = macrosData.calories;
-            const payload = { user_id: currentUser.id, date: today, measurements, client_id: `bm-${today}` };
+            const payload = { user_id: currentUser.id, date: entryDate, measurements, client_id: `bm-${entryDate}` };
             const { error: upErr } = await window.supabaseClient
               .from('body_metrics')
               .upsert(payload, { onConflict: 'user_id,client_id' });
@@ -791,32 +1014,52 @@
   };
 
   // Save to localStorage
+
   const saveToLocalStorage = () => {
     try {
-      const storageKey = currentUser?.id
-        ? `garcia_profile_${currentUser.id}`
-        : 'garcia_profile_guest';
-      
-      console.log(`💿 saveToLocalStorage START - key: ${storageKey}`);
-      console.log('📊 Data to save (first 500 chars):', JSON.stringify(profileData).substring(0, 500));
-      
+      const activeId = resolveActiveUserId();
+      const primaryKey = activeId ? `garcia_profile_${activeId}` : 'garcia_profile_guest';
+      if (!profileData.basic) profileData.basic = {};
+      if (activeId && !profileData.basic.id) {
+        profileData.basic.id = activeId;
+      }
       const dataString = JSON.stringify(profileData);
-      console.log(`📏 Data size: ${dataString.length} characters`);
-      
-      localStorage.setItem(storageKey, dataString);
-      
-      // Verify save
-      const retrieved = localStorage.getItem(storageKey);
+
+      console.log('[ProfileManager] saveToLocalStorage START - key:', primaryKey);
+      console.log('[ProfileManager] Data to save (first 500 chars):', dataString.substring(0, 500));
+      console.log('[ProfileManager] Data size (chars):', dataString.length);
+
+      const keys = new Set(['garcia_profile_guest']);
+      if (activeId) keys.add(primaryKey);
+
+      keys.forEach((key) => {
+        if (!key) return;
+        try {
+          localStorage.setItem(key, dataString);
+        } catch (storageError) {
+          console.warn(`ProfileManager: Failed to write localStorage key ${key}`, storageError);
+        }
+      });
+
+      let retrieved = localStorage.getItem(primaryKey);
+      if (!retrieved && primaryKey !== 'garcia_profile_guest') {
+        retrieved = localStorage.getItem('garcia_profile_guest');
+      }
+
       if (!retrieved) {
         throw new Error('localStorage.setItem succeeded but getItem returned null');
       }
+
       if (retrieved.length !== dataString.length) {
         throw new Error(`localStorage save corrupted: expected ${dataString.length} chars, got ${retrieved.length}`);
       }
-      
-      console.log('✅ saveToLocalStorage SUCCESS');
+
+      migrateGuestProfileStorage();
+      syncAuthCache();
+
+      console.log('[ProfileManager] saveToLocalStorage SUCCESS');
     } catch (error) {
-      console.error('❌❌❌ CRITICAL ERROR in saveToLocalStorage:', error);
+      console.error('CRITICAL ERROR in saveToLocalStorage:', error);
       console.error('Error name:', error.name);
       console.error('Error message:', error.message);
       console.error('Error stack:', error.stack);
@@ -828,6 +1071,8 @@
       throw error;
     }
   };
+
+
 
   // Initialize UI components
   const initializeUI = () => {
@@ -931,42 +1176,33 @@
   };
 
   function ensureFormSubmitBinding(form) {
-    // DISABLED - Using onclick instead of form submit to avoid browser conflicts
-    // Forms now use type="button" with onclick="window.saveBasicInfo()"
-    console.log(`ℹ️ ensureFormSubmitBinding DISABLED - using onclick handlers instead`);
-    return;
-    
-    /* OLD CODE - DISABLED
     if (!form) return;
     if (!form.dataset.profileSection) {
       console.warn('ProfileManager: form missing data-profile-section attribute; skipping submit binding.', form.id || form);
       return;
     }
     if (form.dataset.submitBound === 'true') {
-      console.log(`ℹ️ Form ${form.id} already bound, skipping`);
+      console.log(`[ProfileManager] Form ${form.id || form.dataset.profileSection} already bound`);
       return;
     }
-    
-    console.log(`🔗 Binding submit handler to form: ${form.id}`);
-    
-    // CRITICAL: Use capturing phase to ensure we catch the event BEFORE any other handlers
-    form.addEventListener('submit', (e) => {
-      console.log(`🛑 Form ${form.id} submit event captured!`);
-      e.preventDefault();
-      e.stopPropagation();
-      if (e.stopImmediatePropagation) {
-        e.stopImmediatePropagation();
-      }
-      console.log(`🛑 Event propagation stopped`);
-      handleFormSubmit(e);
-      return false; // Extra safety
-    }, { capture: true });
-    
+
+    console.log(`[ProfileManager] Binding submit handler to form: ${form.id || form.dataset.profileSection}`);
+
+    const submitHandler = (event) => {
+      console.log(`[ProfileManager] Captured submit for ${form.id || form.dataset.profileSection}`);
+      if (typeof event.preventDefault === 'function') event.preventDefault();
+      if (typeof event.stopPropagation === 'function') event.stopPropagation();
+      if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+      handleFormSubmit(event);
+      return false;
+    };
+
+    form.addEventListener('submit', submitHandler, { capture: true });
     form.dataset.submitBound = 'true';
     form.setAttribute('novalidate', 'novalidate');
-    console.log(`✅ Form ${form.id} submit handler bound successfully`);
-    */
+    console.log(`[ProfileManager] Form ${form.id || form.dataset.profileSection} submit handler bound`);
   }
+
 
   // Setup forms
   const setupForms = () => {
@@ -1766,10 +2002,16 @@
 
   // Handle form submit
   const handleFormSubmit = async (event) => {
+    if (event) {
+      if (typeof event.preventDefault === 'function') event.preventDefault();
+      if (typeof event.stopPropagation === 'function') event.stopPropagation();
+      if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+    }
+
     const form = event?.target || event?.currentTarget;
     
     // BRUTAL ERROR TRACKING - Log EVERYTHING
-    console.log('🔥🔥🔥 handleFormSubmit CALLED', {
+    console.log('[ProfileManager] handleFormSubmit called', {
       hasEvent: !!event,
       hasForm: !!form,
       formId: form?.id,
@@ -1995,7 +2237,7 @@
     }
     
     // CRITICAL: Return false to prevent any default form submission
-    console.log('🛑 handleFormSubmit returning false to prevent page reload');
+    console.log('[ProfileManager] handleFormSubmit returning false to prevent page reload');
     return false;
   };
 
@@ -2004,10 +2246,13 @@
     const newWeight = event.target.value;
     if (newWeight && newWeight !== profileData.body_metrics.current_weight) {
       // Add to weight history
+      const timestamp = new Date().toISOString();
       profileData.body_metrics.weight_history.push({
         weight: parseFloat(newWeight),
-        date: new Date().toISOString()
+        date: timestamp
       });
+      profileData.body_metrics.last_entry_date = timestamp.slice(0, 10);
+      profileData.body_metrics.updated_at = timestamp;
 
       // Keep only last 50 entries
       if (profileData.body_metrics.weight_history.length > 50) {
@@ -2047,13 +2292,13 @@
   const upsertBodyFatRowToTable = async (bodyFat) => {
     try {
       if (!window.supabaseClient) return;
-      const today = new Date().toISOString().slice(0,10);
+      const entryDate = profileData.body_metrics?.last_entry_date || new Date().toISOString().slice(0,10);
       const { data: { user } } = await window.supabaseClient.auth.getUser();
       const payload = {
         user_id: user?.id,
-        date: today,
+        date: entryDate,
         body_fat: bodyFat,
-        client_id: `bm-${today}`,
+        client_id: `bm-${entryDate}`,
         updated_at: new Date().toISOString()
       };
       const { error } = await window.supabaseClient
@@ -2069,17 +2314,17 @@
   const upsertMeasurementsToTable = async (partial) => {
     try {
       if (!window.supabaseClient) return;
-      const today = new Date().toISOString().slice(0,10);
+      const entryDate = profileData.body_metrics?.last_entry_date || new Date().toISOString().slice(0,10);
       const { data: existing, error: selErr } = await window.supabaseClient
         .from('body_metrics')
         .select('measurements')
         .eq('user_id', currentUser.id)
-        .eq('date', today)
+        .eq('date', entryDate)
         .maybeSingle();
       if (selErr) { /* continue best-effort */ }
       const base = existing?.measurements || {};
       const measurements = { ...base, ...partial };
-      const payload = { user_id: currentUser.id, date: today, measurements, client_id: `bm-${today}`, updated_at: new Date().toISOString() };
+      const payload = { user_id: currentUser.id, date: entryDate, measurements, client_id: `bm-${entryDate}`, updated_at: new Date().toISOString() };
       const { error: upErr } = await window.supabaseClient
         .from('body_metrics')
         .upsert(payload, { onConflict: 'user_id,client_id' });
@@ -2093,14 +2338,14 @@
   const upsertWeightRowToTable = async (weight) => {
     try {
       if (!window.supabaseClient) return;
-      const today = new Date().toISOString().slice(0,10);
-      const clientId = `wh-${today}`;
+      const entryDate = profileData.body_metrics?.last_entry_date || new Date().toISOString().slice(0,10);
+      const clientId = `wh-${entryDate}`;
       const heightNum = Number(profileData.body_metrics.height || 0) || null;
       const bodyFatNum = Number(profileData.body_metrics.body_fat_percentage || 0) || null;
       const { data: { user } } = await window.supabaseClient.auth.getUser();
       const payload = {
         user_id: user?.id,
-        date: today,
+        date: entryDate,
         weight,
         height: heightNum,
         body_fat: bodyFatNum,
@@ -2488,11 +2733,18 @@
   window.GarciaProfileManager = {
     init,
     getCurrentUser,
+    resolveActiveUserId,
     getProfileData: () => profileData,
     saveProfileData,
     saveProfile: saveProfileData, // Alias for compatibility
     uploadAvatar,
     updateBasicInfoDisplay,
+    updateBodyMetricsDisplays,
+    renderWeightHistoryChart,
+    renderBodyFatHistoryChart,
+    renderWaistHistoryChart,
+    renderMuscleHistoryChart,
+    renderMacroTargets,
     updateDashboardStats,
     handleFormSubmit,
     handleSaveProfile

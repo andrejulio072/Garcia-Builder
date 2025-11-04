@@ -33,7 +33,7 @@
       "cred.c1.t":"Active IQ Level 2 & 3 (UK)",
       "cred.c1.p":"Evidence-based programming, hypertrophy and S&C foundations.",
       "cred.c2.t":"Under 24h response",
-      "cred.c2.p":"Weekly reviews + WhatsApp support to keep you moving.",
+      "cred.c2.p":"Weekly reviews + in-app messaging support to keep you moving.",
       "cred.c3.t":"Clients in 5+ countries",
       "cred.c3.p":"Brazil, Spain, UK, USA and India."
     },
@@ -72,7 +72,7 @@
     wrap.id = 'credibility';
     wrap.innerHTML = [
       '<div class="card credcard"><div class="ic" aria-hidden="true">🎓</div><h4 class="mb-1" data-i18n="cred.c1.t">Active IQ Level 2 & 3 (UK)</h4><p data-i18n="cred.c1.p">Evidence-based programming, hypertrophy and S&C foundations.</p></div>',
-      '<div class="card credcard"><div class="ic" aria-hidden="true">⚡</div><h4 class="mb-1" data-i18n="cred.c2.t">Under 24h response</h4><p data-i18n="cred.c2.p">Weekly reviews + WhatsApp support to keep you moving.</p></div>',
+      '<div class="card credcard"><div class="ic" aria-hidden="true">⚡</div><h4 class="mb-1" data-i18n="cred.c2.t">Under 24h response</h4><p data-i18n="cred.c2.p">Weekly reviews + in-app messaging support to keep you moving.</p></div>',
       '<div class="card credcard"><div class="ic" aria-hidden="true">🌍</div><h4 class="mb-1" data-i18n="cred.c3.t">Clients in 5+ countries</h4><p data-i18n="cred.c3.p">Brazil, Spain, UK, USA and India.</p></div>'
     ].join('');
     // Insert after the KPIs block

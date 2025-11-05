@@ -51,7 +51,10 @@
         base[key] = Array.isArray(base[key]) ? [...base[key], ...value] : [...value];
       } else if (value && typeof value === 'object') {
         base[key] = mergeObjects(base[key], value);
-      } else if (value !== undefined) {
+      } else if (value !== undefined && value !== null) {
+        // CORREÇÃO CRÍTICA: FORÇAR override mesmo se base[key] for string vazia
+        // Antes: só atualizava se value !== undefined
+        // Agora: atualiza se value não for undefined/null, mesmo que base[key] = ''
         base[key] = value;
       }
     });
@@ -283,101 +286,132 @@
   // Load complete profile data
   const loadProfileData = async () => {
     try {
-      console.log('📥 Loading profile data...');
+      console.log('📥 [LOAD_PROFILE] Loading profile data...');
 
-      // Initialize default profile structure
-      profileData = {
-        basic: {
-          id: currentUser.id,
-          email: currentUser.email || '',
-          full_name: currentUser.user_metadata?.full_name || '',
-          first_name: currentUser.user_metadata?.first_name || '',
-          last_name: currentUser.user_metadata?.last_name || '',
-          phone: currentUser.user_metadata?.phone || '',
-          avatar_url: currentUser.user_metadata?.avatar_url || '',
-          birthday: currentUser.user_metadata?.date_of_birth || '',
-          location: '',
-          bio: '',
-          goals: [],
-          experience_level: '',
-          trainer_id: null,
-          trainer_name: '',
-          joined_date: new Date().toISOString(),
-          last_login: new Date().toISOString()
-        },
-        body_metrics: {
-          current_weight: '',
-          height: '',
-          target_weight: '',
-          body_fat_percentage: '',
-          muscle_mass: '',
-          measurements: {
-            chest: '',
-            waist: '',
-            hips: '',
-            arms: '',
-            thighs: ''
-          },
-          progress_photos: [],
-          weight_history: [],
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        preferences: {
-          units: 'metric', // metric or imperial
-          theme: 'dark',
-          language: 'en',
-          notifications: {
-            email: true,
-            push: true,
-            reminders: true
-          },
-          privacy: {
-            profile_visible: true,
-            progress_visible: false
-          }
-        },
-        macros: {
-          goal: 'maintain',
-          activity_level: 'moderate',
-          calories: '',
-          protein_pct: 30,
-          carbs_pct: 40,
-          fats_pct: 30,
-          protein_g: '',
-          carbs_g: '',
-          fats_g: '',
-          updated_at: new Date().toISOString()
-        },
-        habits: {
-          // keyed by yyyy-mm-dd
-          daily: {},
-          updated_at: new Date().toISOString()
-        },
-        activity: {
-          workouts_completed: 0,
-          total_sessions: 0,
-          streak_days: 0,
-          achievements: [],
-          last_workout: null,
-          weekly_goals: {}
-        }
-      };
+      // CORREÇÃO CRÍTICA #1: Carregar dados salvos ANTES de inicializar estrutura vazia
+      // ORDEM ANTIGA (errada): 1. Reset → 2. Load → 3. Merge (falha!)
+      // ORDEM NOVA (correta): 1. Load → 2. Merge → 3. Fill defaults apenas se vazio
 
-      // Try to load from Supabase
+      let hasLoadedData = false;
+
+      // 1. PRIMEIRO: Tentar carregar do Supabase
       if (window.supabaseClient) {
+        console.log('☁️ [LOAD_PROFILE] Tentando carregar do Supabase...');
         await loadFromSupabase();
+        if (profileData && Object.keys(profileData).length > 0) {
+          hasLoadedData = true;
+          console.log('✅ [LOAD_PROFILE] Dados carregados do Supabase');
+        }
       }
 
-      // Fallback to localStorage
-      loadFromLocalStorage();
+      // 2. SEGUNDO: Tentar carregar do localStorage (fallback)
+      console.log('💾 [LOAD_PROFILE] Tentando carregar do localStorage...');
+      const localData = loadFromLocalStorage();
+      if (localData && Object.keys(localData).length > 0) {
+        hasLoadedData = true;
+        console.log('✅ [LOAD_PROFILE] Dados carregados do localStorage');
+      }
 
+      // 3. TERCEIRO: SE e SOMENTE SE não tiver dados, inicializar estrutura padrão
+      if (!hasLoadedData || !profileData || Object.keys(profileData).length === 0) {
+        console.log('⚠️ [LOAD_PROFILE] Nenhum dado encontrado, inicializando estrutura padrão...');
+        
+        profileData = {
+          basic: {
+            id: currentUser.id,
+            email: currentUser.email || '',
+            full_name: currentUser.user_metadata?.full_name || '',
+            first_name: currentUser.user_metadata?.first_name || '',
+            last_name: currentUser.user_metadata?.last_name || '',
+            phone: currentUser.user_metadata?.phone || '',
+            avatar_url: currentUser.user_metadata?.avatar_url || '',
+            birthday: currentUser.user_metadata?.date_of_birth || '',
+            location: '',
+            bio: '',
+            goals: [],
+            experience_level: '',
+            trainer_id: null,
+            trainer_name: '',
+            joined_date: new Date().toISOString(),
+            last_login: new Date().toISOString()
+          },
+          body_metrics: {
+            current_weight: '',
+            height: '',
+            target_weight: '',
+            body_fat_percentage: '',
+            muscle_mass: '',
+            measurements: {
+              chest: '',
+              waist: '',
+              hips: '',
+              arms: '',
+              thighs: ''
+            },
+            progress_photos: [],
+            weight_history: [],
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          },
+          preferences: {
+            units: 'metric', // metric or imperial
+            theme: 'dark',
+            language: 'en',
+            notifications: {
+              email: true,
+              push: true,
+              reminders: true
+            },
+            privacy: {
+              profile_visible: true,
+              progress_visible: false
+            }
+          },
+          macros: {
+            goal: 'maintain',
+            activity_level: 'moderate',
+            calories: '',
+            protein_pct: 30,
+            carbs_pct: 40,
+            fats_pct: 30,
+            protein_g: '',
+            carbs_g: '',
+            fats_g: '',
+            updated_at: new Date().toISOString()
+          },
+          habits: {
+            // keyed by yyyy-mm-dd
+            daily: {},
+            updated_at: new Date().toISOString()
+          },
+          activity: {
+            workouts_completed: 0,
+            total_sessions: 0,
+            streak_days: 0,
+            achievements: [],
+            last_workout: null,
+            weekly_goals: {}
+          }
+        };
+      } else {
+        console.log('✅ [LOAD_PROFILE] Dados existentes mantidos, estrutura NÃO foi resetada');
+      }
+
+      // 4. Preencher campos obrigatórios se estiverem vazios (mas NÃO sobrescrever dados existentes)
+      if (!profileData.basic) profileData.basic = {};
+      
+      if (!profileData.basic.id && currentUser?.id) {
+        profileData.basic.id = currentUser.id;
+      }
+      
       if (!profileData.basic.full_name) {
         profileData.basic.full_name = currentUser?.user_metadata?.full_name || currentUser?.email || 'User';
       }
+      
       if (!profileData.basic.email) {
         profileData.basic.email = currentUser?.email || profileData.basic.full_name || '';
       }
+      
       if (!profileData.basic.avatar_url) {
         // Priority: picture (OAuth) > avatar_url > empty
         profileData.basic.avatar_url = currentUser?.user_metadata?.picture ||
@@ -387,12 +421,15 @@
       }
 
       syncAuthCache();
-      console.log('✅ Profile data loaded successfully');
-      console.log('📊 Profile sections:', Object.keys(profileData));
-      console.log('👤 User:', profileData.basic.full_name, profileData.basic.email);
-      console.log('🖼️ Avatar:', profileData.basic.avatar_url ? 'Yes' : 'No (will use initials)');
+      console.log('✅ [LOAD_PROFILE] Profile data loaded successfully');
+      console.log('📊 [LOAD_PROFILE] Profile sections:', Object.keys(profileData));
+      console.log('👤 [LOAD_PROFILE] User:', profileData.basic.full_name, profileData.basic.email);
+      console.log('📱 [LOAD_PROFILE] Phone:', profileData.basic.phone || '(empty)');
+      console.log('📍 [LOAD_PROFILE] Location:', profileData.basic.location || '(empty)');
+      console.log('🎯 [LOAD_PROFILE] Goals:', profileData.basic.goals?.length || 0);
+      console.log('🖼️ [LOAD_PROFILE] Avatar:', profileData.basic.avatar_url ? 'Yes' : 'No (will use initials)');
     } catch (error) {
-      console.error('❌ Error loading profile data:', error);
+      console.error('❌ [LOAD_PROFILE] Error loading profile data:', error);
     }
   };
 
@@ -531,18 +568,30 @@
 
   // Load data from localStorage as fallback
   const loadFromLocalStorage = () => {
+    console.log('🔄 [LOAD] loadFromLocalStorage INICIO');
     try {
       const activeId = resolveActiveUserId();
+      console.log('🔑 [LOAD] Active User ID:', activeId);
+      
       const userKey = activeId ? `garcia_profile_${activeId}` : null;
       const guestKey = 'garcia_profile_guest';
       const keys = [guestKey, userKey].filter(Boolean);
+      
+      console.log('🗝️ [LOAD] Storage keys a verificar:', keys);
+
+      let loadedData = null;
 
       keys.forEach((key) => {
         try {
           const raw = key ? localStorage.getItem(key) : null;
+          console.log(`📦 [LOAD] Key: ${key}, Tamanho raw: ${raw?.length || 0} chars`);
+          
           if (!raw) return;
+          
           const snapshot = parseJsonSafe(raw, null);
           if (snapshot && typeof snapshot === 'object') {
+            console.log(`✅ [LOAD] Snapshot parsed para key ${key}:`, JSON.stringify(snapshot).substring(0, 200));
+            loadedData = snapshot;
             mergeProfileSnapshot(snapshot);
           }
         } catch (innerError) {
@@ -554,8 +603,15 @@
       if (activeId && !profileData.basic.id) {
         profileData.basic.id = activeId;
       }
+      
+      console.log('🎯 [LOAD] profileData APÓS merge:', JSON.stringify(profileData).substring(0, 300));
+      console.log('✅ [LOAD] loadFromLocalStorage CONCLUÍDO');
+      
+      // Retornar os dados carregados para permitir verificação externa
+      return loadedData;
     } catch (error) {
-      console.error('Error loading from localStorage:', error);
+      console.error('❌ [LOAD] Error loading from localStorage:', error);
+      return null;
     }
   };
 
@@ -1015,19 +1071,33 @@
 
   // Save to localStorage
 
-  const saveToLocalStorage = () => {
+  const saveToLocalStorage = (dataToSave = null) => {
     try {
+      console.log('💾 [SAVE] saveToLocalStorage INICIO');
+      
       const activeId = resolveActiveUserId();
+      console.log('🔑 [SAVE] Active User ID:', activeId);
+      
       const primaryKey = activeId ? `garcia_profile_${activeId}` : 'garcia_profile_guest';
-      if (!profileData.basic) profileData.basic = {};
-      if (activeId && !profileData.basic.id) {
-        profileData.basic.id = activeId;
+      console.log('🗝️ [SAVE] Primary storage key:', primaryKey);
+      
+      // Se dataToSave foi passado, usar ele; senão, usar profileData global
+      const dataToStore = dataToSave || profileData;
+      
+      if (!dataToStore.basic) dataToStore.basic = {};
+      if (activeId && !dataToStore.basic.id) {
+        dataToStore.basic.id = activeId;
       }
-      const dataString = JSON.stringify(profileData);
+      
+      const dataString = JSON.stringify(dataToStore);
 
-      console.log('[ProfileManager] saveToLocalStorage START - key:', primaryKey);
-      console.log('[ProfileManager] Data to save (first 500 chars):', dataString.substring(0, 500));
-      console.log('[ProfileManager] Data size (chars):', dataString.length);
+      console.log('[SAVE] saveToLocalStorage START - key:', primaryKey);
+      console.log('[SAVE] Data to save - full_name:', dataToStore.basic?.full_name);
+      console.log('[SAVE] Data to save - phone:', dataToStore.basic?.phone);
+      console.log('[SAVE] Data to save - location:', dataToStore.basic?.location);
+      console.log('[SAVE] Data to save - goals:', dataToStore.basic?.goals);
+      console.log('[SAVE] Data to save (first 500 chars):', dataString.substring(0, 500));
+      console.log('[SAVE] Data size (chars):', dataString.length);
 
       const keys = new Set(['garcia_profile_guest']);
       if (activeId) keys.add(primaryKey);
@@ -1036,6 +1106,7 @@
         if (!key) return;
         try {
           localStorage.setItem(key, dataString);
+          console.log(`✅ [SAVE] Salvo em key: ${key}`);
         } catch (storageError) {
           console.warn(`ProfileManager: Failed to write localStorage key ${key}`, storageError);
         }
@@ -1053,13 +1124,18 @@
       if (retrieved.length !== dataString.length) {
         throw new Error(`localStorage save corrupted: expected ${dataString.length} chars, got ${retrieved.length}`);
       }
+      
+      // Verificar se dados foram salvos corretamente
+      const parsedBack = JSON.parse(retrieved);
+      console.log('✅ [SAVE] Verificação após save - full_name:', parsedBack.basic?.full_name);
+      console.log('✅ [SAVE] Verificação após save - phone:', parsedBack.basic?.phone);
 
       migrateGuestProfileStorage();
       syncAuthCache();
 
-      console.log('[ProfileManager] saveToLocalStorage SUCCESS');
+      console.log('✅ [SAVE] saveToLocalStorage SUCCESS');
     } catch (error) {
-      console.error('CRITICAL ERROR in saveToLocalStorage:', error);
+      console.error('❌ [SAVE] CRITICAL ERROR in saveToLocalStorage:', error);
       console.error('Error name:', error.name);
       console.error('Error message:', error.message);
       console.error('Error stack:', error.stack);
@@ -2747,8 +2823,15 @@
     renderMacroTargets,
     updateDashboardStats,
     handleFormSubmit,
-    handleSaveProfile
+    handleSaveProfile,
+    // Expor funções de storage para testes
+    loadFromLocalStorage,
+    saveToLocalStorage,
+    loadProfileData
   };
+  
+  // Criar alias ProfileManager para compatibilidade com testes
+  window.ProfileManager = window.GarciaProfileManager;
 
   // Auto-initialize if DOM is ready
   if (document.readyState === 'loading') {

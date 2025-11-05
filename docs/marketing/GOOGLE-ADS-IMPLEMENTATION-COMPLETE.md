@@ -25,7 +25,7 @@
    - Aplicado a todos os links para:
      - Instagram (@garcia.builder)
      - Calendly (agendamento de consultas)
-     - WhatsApp (contato direto)
+     - Contact form (direct)
      - Links de pagamento Stripe
      - Artigos externos do blog
 
@@ -36,19 +36,19 @@
 ### Páginas Principais ✅
 1. ✅ **index.html** - Homepage
    - Google Ads tag adicionado
-   - onclick: Instagram, Calendly, WhatsApp
+   - onclick: Instagram, Calendly, contact form
 
 2. ✅ **about.html** - Sobre
    - Google Ads tag completo
-   - onclick: Instagram, Calendly, WhatsApp
+   - onclick: Instagram, Calendly, contact form
 
 3. ✅ **contact.html** - Contato
    - Google Ads tag (ambos IDs: AW-1762742053 e AW-17627402053)
-   - onclick: Instagram, Calendly, WhatsApp
+   - onclick: Instagram, Calendly, contact form
 
 4. ✅ **faq.html** - FAQ
    - Google Ads tag completo
-   - onclick: Instagram, Calendly, WhatsApp
+   - onclick: Instagram, Calendly, contact form
 
 5. ✅ **programs.html** - Programas
    - Google Ads tag completo
@@ -56,17 +56,17 @@
 
 ### Páginas de Pricing e Pagamento ✅
 6. ✅ **pricing.html** - Preços
-   - onclick: Instagram, Calendly, WhatsApp, email waitlist
+   - onclick: Instagram, Calendly, contact form, email waitlist
 
 7. ✅ **pricing-payment-links.html** - Links de Pagamento
    - Google Ads tag completo
-   - onclick: 5 links Stripe + Instagram, Calendly, WhatsApp
+   - onclick: 5 links Stripe + Instagram, Calendly, contact form
 
 ### Páginas de Blog ✅
 8. ✅ **blog.html** - Blog Principal
    - Google Ads tag completo
    - onclick: 14+ links de artigos externos (Trainerize)
-   - onclick: Instagram, Calendly, WhatsApp (2 instâncias)
+   - onclick: Instagram, Calendly, contact form (2 instâncias)
 
 9. ✅ **blog-consistency.html** - Artigo: Consistência
    - Google Ads tag completo
@@ -80,11 +80,11 @@
 ### Páginas de Transformação e Testemunhos ✅
 12. ✅ **transformations.html** - Transformações
     - Google Ads tag completo (linhas 452-479)
-    - onclick: Instagram, Calendly, WhatsApp
+    - onclick: Instagram, Calendly, contact form
 
 13. ✅ **testimonials.html** - Testemunhos
     - Google Ads tag completo
-    - onclick: Instagram, Calendly, WhatsApp (footer + seção de submissão)
+    - onclick: Instagram, Calendly, contact form (footer + seção de submissão)
     - onclick: email link
 
 ### Páginas de Lead Magnet e Sucesso ✅
@@ -94,11 +94,11 @@
 
 15. ✅ **thanks-ebook.html** - Obrigado pelo Ebook
     - Google Ads tag completo
-    - onclick: WhatsApp (upsell para coaching)
+    - onclick: App chat (upsell para coaching)
 
 16. ✅ **success.html** - Sucesso de Pagamento
     - Google Ads tag (ambos IDs: AW-1762742053 e AW-17627402053)
-    - onclick: WhatsApp
+    - onclick: App chat
 
 ### Páginas Legais ✅
 17. ✅ **privacy.html** - Política de Privacidade
@@ -114,7 +114,7 @@
 ### Links Sociais e Contato
 - ✅ Instagram: `https://instagram.com/garcia.builder`
 - ✅ Calendly: `https://calendly.com/andrenjulio072/consultation`
-- ✅ WhatsApp: `https://wa.me/447508497586`
+- ✅ Calendly: `https://calendly.com/andrenjulio072/consultation`
 
 ### Links de Pagamento
 - ✅ 5 links Stripe (pricing-payment-links.html):
@@ -186,7 +186,7 @@
 <a href="https://wa.me/447508497586?text=..."
    target="_blank"
    onclick="return gtag_report_conversion(this.href)">
-   WhatsApp
+   App chat
 </a>
 ```
 
@@ -228,12 +228,12 @@ O Google Ads Conversion Tracking foi implementado em conjunto com:
 - [ ] Confirmar evento de conversão em tempo real
 
 ### 3. Testes de Conversão
-- [ ] Testar onclick em Instagram, Calendly, WhatsApp
+- [ ] Testar onclick em Instagram, Calendly, contact form
 - [ ] Testar links de pagamento Stripe
 - [ ] Verificar redirecionamento após evento de conversão
 
 ### 4. Otimização Futura
-- [ ] Criar eventos de conversão separados por tipo (WhatsApp, Instagram, Calendly)
+- [ ] Criar eventos de conversão separados por tipo (App chat, Instagram, Calendly)
 - [ ] Implementar valores de conversão dinâmicos por plano
 - [ ] Configurar remarketing audiences baseado em conversões
 
@@ -259,7 +259,7 @@ O Google Ads Conversion Tracking foi implementado em conjunto com:
 
 ### Metas de Negócio
 1. **Agendamentos via Calendly**: Quantos cliques = quantas consultas?
-2. **Mensagens no WhatsApp**: Taxa de conversão para clientes pagantes
+2. **Mensagens no App chat**: Taxa de conversão para clientes pagantes
 3. **Vendas via Stripe**: Conversão de cliques para pagamentos
 
 ---
@@ -327,3 +327,4 @@ Para questões sobre esta implementação:
 **Implementado por**: GitHub Copilot + andrejulio072
 **Google Ads ID**: AW-17627402053
 **Conversion Label**: mdOMCOTV3acbEMWes9VB
+

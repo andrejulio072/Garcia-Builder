@@ -83,7 +83,7 @@
         document.addEventListener('click', function(e) {
             const target = e.target;
 
-            // Track WhatsApp clicks
+            // Track contact-float clicks
             if (target.href && target.href.includes('wa.me')) {
                 trackCoachingInquiry('whatsapp', 'homepage');
             }
@@ -179,3 +179,4 @@
     }
 
 })();
+

@@ -1,14 +1,14 @@
-# Confirmação de E-mail para Contato
+# Confirmao de E-mail para Contato
 
-Agora o sistema possui confirmação de e-mail para usuários que entram em contato pelo formulário do site.
+Agora o sistema possui confirmao de e-mail para usurios que entram em contato pelo formulrio do site.
 
 **Como usar:**
-- Inclua o script `assets/js/contact-send.js` no seu formulário de contato.
-- O backend está em `api/contact.js`.
-- A página de confirmação é `confirm-contact.html`.
-- Veja instruções detalhadas em `docs/confirmacao-contato.md`.
+- Inclua o script `assets/js/contact-send.js` no seu formulrio de contato.
+- O backend est em `api/contact.js`.
+- A pgina de confirmao  `confirm-contact.html`.
+- Veja instrues detalhadas em `docs/confirmacao-contato.md`.
 
-**Exemplo de formulário:**
+**Exemplo de formulrio:**
 ```html
 <form onsubmit="enviarContato(this); return false;">
   <input type="text" name="nome" placeholder="Seu nome" required>
@@ -19,21 +19,21 @@ Agora o sistema possui confirmação de e-mail para usuários que entram em cont
 ```
 
 **Importante:**
-- Configure o e-mail do remetente no backend antes de usar em produção.
-- Tokens de confirmação são armazenados localmente (troque para banco em produção).
-# Garcia Builder — Professional Online Coaching Platform
+- Configure o e-mail do remetente no backend antes de usar em produo.
+- Tokens de confirmao so armazenados localmente (troque para banco em produo).
+# Garcia Builder  Professional Online Coaching Platform
 
-Complete multilingual fitness coaching platform for **Andre Garcia (Garcia Builder)** — featuring advanced user authentication, payment processing, newsletter management, and mobile-optimized lead capture. Built with modern web technologies and deployed on **GitHub Pages**.
+Complete multilingual fitness coaching platform for **Andre Garcia (Garcia Builder)**  featuring advanced user authentication, payment processing, newsletter management, and mobile-optimized lead capture. Built with modern web technologies and deployed on **GitHub Pages**.
 
-> 🔗 **Live Website:** https://andrejulio072.github.io/Garcia-Builder/
-> 💬 **WhatsApp:** https://wa.me/447508497586
-> 📅 **Book Consultation:** https://calendly.com/andrenjulio072/consultation
-> 📸 **Instagram:** https://instagram.com/garcia.builder
-> 🏋️ **Trainerize:** https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/
+>  **Live Website:** https://andrejulio072.github.io/Garcia-Builder/
+>  **Contact Form:** https://www.garciabuilder.fitness/contact.html
+>  **Book Consultation:** https://calendly.com/andrenjulio072/consultation
+>  **Instagram:** https://instagram.com/garcia.builder
+>  **Trainerize:** https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/
 
 ---
 
-## 🌐 Production Domains
+##  Production Domains
 
 - Primary (recommended): [https://www.garciabuilder.fitness](https://www.garciabuilder.fitness)
 - Alternate: [https://www.garciabuilder.uk](https://www.garciabuilder.uk)
@@ -45,9 +45,9 @@ DNS setup and go-live checklists:
 
 ---
 
-## ✨ Project Highlights
+##  Project Highlights
 
-### 🎨 **Frontend & UX**
+###  **Frontend & UX**
 - **Multilingual Support** (EN/PT/ES) with complete internationalization system
 - **Professional Design** with charcoal + gold (`#F6C84E`) brand colors and glassmorphism effects
 - **Mobile-First Responsive** design optimized for all devices
@@ -55,28 +55,28 @@ DNS setup and go-live checklists:
 - **18 Client Testimonials** with 5-star ratings and detailed success stories
 - **Transformation Gallery** with before/after images and lightbox functionality
 
-### 🔐 **Authentication & User Management**
+###  **Authentication & User Management**
 - **OAuth Integration** with Google and Facebook login
 - **Supabase Authentication** with secure session management
 - **User Dashboards** with personalized profiles and progress tracking
 - **Admin Panel** for trainer management and user oversight
 - **Auth Guards** protecting sensitive pages and content
 
-### 💳 **Payment & Business Logic**
+###  **Payment & Business Logic**
 - **Stripe Integration** with multiple payment methods
 - **Payment Links** for quick checkout and course sales
-- **5-Tier Pricing Plans** from £75 to £250 with clear value propositions
+- **5-Tier Pricing Plans** from 75 to 250 with clear value propositions
 - **Currency Conversion** support for international clients
 - **Discount System** with promotional codes
 
-### 📧 **Marketing & Lead Generation**
+###  **Marketing & Lead Generation**
 - **Newsletter System** with automated email sequences
 - **Lead Capture Forms** with validation and database storage
 - **Exit Intent Technology** to maximize conversion rates
-- **Contact Integration** via Formspree, WhatsApp, and Calendly
+- **Contact Integration** via Formspree, Calendly, and Instagram DMs
 - **CRM Integration** with lead tracking and management
 
-### 📊 **Analytics & Performance**
+###  **Analytics & Performance**
 - **SEO Optimized** with sitemap, robots.txt, and meta tags
 - **Performance Monitoring** with Google Analytics integration
 - **A/B Testing** capabilities for conversion optimization
@@ -84,7 +84,7 @@ DNS setup and go-live checklists:
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 ### **Frontend**
 - **HTML5/CSS3/JavaScript** - Modern web standards
@@ -118,98 +118,98 @@ DNS setup and go-live checklists:
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 Garcia-Builder/
-├── 📄 Core Pages
-│   ├── index.html                 # Homepage with lead capture
-│   ├── about.html                 # About Andre & methodology
-│   ├── pricing.html               # Pricing plans & payment links
-│   ├── programs.html              # Program descriptions
-│   ├── testimonials.html          # Client success stories
-│   ├── transformations.html       # Before/after gallery
-│   ├── contact.html               # Contact form & links
-│   └── faq.html                   # FAQ with search
-│
-├── 🔐 Authentication Pages
-│   ├── login.html                 # OAuth & email login
-│   ├── reset-password.html        # Password recovery
-│   ├── dashboard.html             # User dashboard
-│   ├── my-profile.html            # Profile management
-│   ├── admin-dashboard.html       # Admin panel
-│   ├── admin-trainers.html        # Trainer management
-│   └── trainer-dashboard.html     # Trainer interface
-│
-├── 💳 Business Pages
-│   ├── stripe-oficial.html        # Stripe integration
-│   ├── pricing-payment-links.html # Payment processing
-│   ├── success.html               # Payment success
-│   ├── become-trainer.html        # Trainer application
-│   ├── certificacao-completa.html # Certification page
-│   └── profile-manager.html       # Profile editing
-│
-├── 🎨 Assets & Resources
-│   ├── assets/
-│   │   ├── i18n/                  # Translation files
-│   │   ├── images/                # Optimized images
-│   │   ├── logo.png               # Brand assets
-│   │   └── transformations/       # Client photos
-│   ├── css/
-│   │   ├── global.css             # Main styles
-│   │   ├── newsletter.css         # Newsletter system
-│   │   ├── auth.css               # Authentication UI
-│   │   ├── dashboard.css          # Dashboard styles
-│   │   └── credibility.css        # Trust elements
-│   └── js/
-│       ├── app.js                 # Main application
-│       ├── auth.js                # Authentication logic
-│       ├── newsletter-manager.js  # Lead capture system
-│       ├── stripe-payments.js     # Payment processing
-│       ├── supabase-config.js     # Database config
-│       └── [30+ specialized modules]
-│
-├── 📚 Documentation
-│   ├── docs/
-│   │   ├── setup/                 # Setup guides
-│   │   │   ├── OAUTH-SETUP-GUIDE.md
-│   │   │   ├── SUPABASE-SETUP.md
-│   │   │   ├── README-STRIPE.md
-│   │   │   └── NEWSLETTER-SETUP-GUIDE.md
-│   │   └── testing/               # Test files
-│   │       ├── test-mobile-popup.html
-│   │       ├── test-homepage-popup.html
-│   │       └── MOBILE-POPUP-TESTING.md
-│   └── archive/                   # Archived files
-│       ├── docs-obsoletos/        # Old documentation
-│       ├── testes-obsoletos/      # Legacy tests
-│       ├── backups/               # File backups
-│       └── config-info/           # Configuration files
-│
-├── 🗄 Database & Configuration
-│   ├── supabase-schema-update.sql # Database schema
-│   ├── newsletter-database-schema.sql # Newsletter tables
-│   ├── .env.example              # Environment template
-│   ├── package.json              # Dependencies
-│   └── start-server.bat          # Local development
-│
-└── 🔧 Development Tools
-    ├── .github/                   # GitHub workflows
-    ├── .vscode/                   # VS Code settings
-    ├── tools/                     # Development scripts
-    ├── robots.txt                 # SEO configuration
-    └── sitemap.xml                # Site structure
+  Core Pages
+    index.html                 # Homepage with lead capture
+    about.html                 # About Andre & methodology
+    pricing.html               # Pricing plans & payment links
+    programs.html              # Program descriptions
+    testimonials.html          # Client success stories
+    transformations.html       # Before/after gallery
+    contact.html               # Contact form & links
+    faq.html                   # FAQ with search
+
+  Authentication Pages
+    login.html                 # OAuth & email login
+    reset-password.html        # Password recovery
+    dashboard.html             # User dashboard
+    my-profile.html            # Profile management
+    admin-dashboard.html       # Admin panel
+    admin-trainers.html        # Trainer management
+    trainer-dashboard.html     # Trainer interface
+
+  Business Pages
+    stripe-oficial.html        # Stripe integration
+    pricing-payment-links.html # Payment processing
+    success.html               # Payment success
+    become-trainer.html        # Trainer application
+    certificacao-completa.html # Certification page
+    profile-manager.html       # Profile editing
+
+  Assets & Resources
+    assets/
+       i18n/                  # Translation files
+       images/                # Optimized images
+       logo.png               # Brand assets
+       transformations/       # Client photos
+    css/
+       global.css             # Main styles
+       newsletter.css         # Newsletter system
+       auth.css               # Authentication UI
+       dashboard.css          # Dashboard styles
+       credibility.css        # Trust elements
+    js/
+        app.js                 # Main application
+        auth.js                # Authentication logic
+        newsletter-manager.js  # Lead capture system
+        stripe-payments.js     # Payment processing
+        supabase-config.js     # Database config
+        [30+ specialized modules]
+
+  Documentation
+    docs/
+       setup/                 # Setup guides
+          OAUTH-SETUP-GUIDE.md
+          SUPABASE-SETUP.md
+          README-STRIPE.md
+          NEWSLETTER-SETUP-GUIDE.md
+       testing/               # Test files
+           test-mobile-popup.html
+           test-homepage-popup.html
+           MOBILE-POPUP-TESTING.md
+    archive/                   # Archived files
+        docs-obsoletos/        # Old documentation
+        testes-obsoletos/      # Legacy tests
+        backups/               # File backups
+        config-info/           # Configuration files
+
+  Database & Configuration
+    supabase-schema-update.sql # Database schema
+    newsletter-database-schema.sql # Newsletter tables
+    .env.example              # Environment template
+    package.json              # Dependencies
+    start-server.bat          # Local development
+
+  Development Tools
+     .github/                   # GitHub workflows
+     .vscode/                   # VS Code settings
+     tools/                     # Development scripts
+     robots.txt                 # SEO configuration
+     sitemap.xml                # Site structure
 ```
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Local Development
 ```bash
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Local Development
 
@@ -255,13 +255,13 @@ php -S localhost:8000              # PHP
 
 ### GitHub Pages Deployment
 1. Push changes to **main** branch
-2. Go to **Settings → Pages**
+2. Go to **Settings  Pages**
 3. Select **Deploy from branch: main / root**
 4. Access at: `https://yourusername.github.io/Garcia-Builder/`
 
 ---
 
-## 🔐 Authentication System
+##  Authentication System
 
 ### OAuth Integration
 - **Google OAuth**: Complete setup with consent screens
@@ -275,12 +275,12 @@ php -S localhost:8000              # PHP
 - **Admin**: Full system access and user management
 
 ### Setup Guides
-- 📖 [OAuth Setup Guide](docs/setup/OAUTH-SETUP-GUIDE.md)
-- 🔧 [Authentication Quick Start](GUIA-RAPIDO-AUTH.md)
+-  [OAuth Setup Guide](docs/setup/OAUTH-SETUP-GUIDE.md)
+-  [Authentication Quick Start](GUIA-RAPIDO-AUTH.md)
 
 ---
 
-## 💳 Payment Integration
+##  Payment Integration
 
 ### Stripe Configuration
 - **Payment Links**: Direct checkout for programs
@@ -289,17 +289,17 @@ php -S localhost:8000              # PHP
 - **Multiple Currencies**: International support
 
 ### Pricing Structure
-- **5-Tier System**: £75 to £250 monthly plans
+- **5-Tier System**: 75 to 250 monthly plans
 - **Payment Options**: One-time and subscription
 - **Discount Codes**: Promotional pricing support
 
 ### Setup Documentation
-- 💰 [Stripe Setup Guide](docs/setup/README-STRIPE.md)
-- 🔗 [Payment Links Guide](GUIA-PAYMENT-LINKS.md)
+-  [Stripe Setup Guide](docs/setup/README-STRIPE.md)
+-  [Payment Links Guide](GUIA-PAYMENT-LINKS.md)
 
 ---
 
-## 📧 Newsletter & Lead Capture
+##  Newsletter & Lead Capture
 
 ### Exit Intent System
 - **Mobile Optimized**: Touch-friendly popup triggers
@@ -308,11 +308,11 @@ php -S localhost:8000              # PHP
 - **A/B Testing**: Multiple popup variants
 
 ### Features
-- ✨ **Exit Intent Detection**: Captures leaving users
-- 📱 **Mobile Triggers**: Scroll and interaction based
-- 💾 **Session Management**: Prevents popup spam
-- 📊 **Lead Tracking**: Supabase integration
-- 🌐 **Multilingual**: Full i18n support
+-  **Exit Intent Detection**: Captures leaving users
+-  **Mobile Triggers**: Scroll and interaction based
+-  **Session Management**: Prevents popup spam
+-  **Lead Tracking**: Supabase integration
+-  **Multilingual**: Full i18n support
 
 ### Implementation Files
 - **JavaScript**: `js/newsletter-manager.js`
@@ -321,7 +321,7 @@ php -S localhost:8000              # PHP
 
 ---
 
-## 🌐 Internationalization (i18n)
+##  Internationalization (i18n)
 
 ### Language Support
 - **English (EN)**: Default language
@@ -346,14 +346,14 @@ const I18N = {
 ```
 
 ### Translation Features
-- 🌍 **Complete Coverage**: All UI text translated
-- 💾 **Persistent Selection**: Language choice saved to localStorage
-- 🔄 **Dynamic Switching**: No page reload required
-- 📝 **Form Support**: Placeholders and validation messages
+-  **Complete Coverage**: All UI text translated
+-  **Persistent Selection**: Language choice saved to localStorage
+-  **Dynamic Switching**: No page reload required
+-  **Form Support**: Placeholders and validation messages
 
 ---
 
-## 📊 Analytics & Tracking
+##  Analytics & Tracking
 
 ### Conversion Tracking
 - **Newsletter Signups**: Lead capture analytics
@@ -368,16 +368,16 @@ const I18N = {
 
 ---
 
-## 🛠 Development & Testing
+##  Development & Testing
 
 ### Test Files & Validation
 ```
 docs/testing/
-├── test-mobile-popup.html      # Mobile popup testing
-├── test-homepage-popup.html    # Homepage integration test
-├── test-newsletter.html        # Newsletter system test
-├── test-payment-flow.html      # Payment integration test
-└── MOBILE-POPUP-TESTING.md    # Testing documentation
+ test-mobile-popup.html      # Mobile popup testing
+ test-homepage-popup.html    # Homepage integration test
+ test-newsletter.html        # Newsletter system test
+ test-payment-flow.html      # Payment integration test
+ MOBILE-POPUP-TESTING.md    # Testing documentation
 ```
 
 ### Quality Assurance
@@ -394,7 +394,7 @@ docs/testing/
 
 ---
 
-## 🚀 Deployment & Production
+##  Deployment & Production
 
 ### Production Configuration
 - **Environment**: GitHub Pages static hosting
@@ -410,38 +410,38 @@ docs/testing/
 
 ---
 
-## 🧭 Próximos Passos para Vender de Verdade
+##  Prximos Passos para Vender de Verdade
 
-- Guia de publicação com domínio real e Render/Vercel/Netlify: `docs/GO-LIVE.md`
-- Ações rápidas de SEO para aparecer no Google: `docs/SEO-QUICK-WINS.md`
-- Gerar sitemap com seu domínio:
+- Guia de publicao com domnio real e Render/Vercel/Netlify: `docs/GO-LIVE.md`
+- Aes rpidas de SEO para aparecer no Google: `docs/SEO-QUICK-WINS.md`
+- Gerar sitemap com seu domnio:
 
 ```powershell
 $env:SITE_URL="https://www.garciabuilder.fitness"; npm run sitemap
 ```
 
-Depois faça commit do `sitemap.xml` e envie no Google Search Console.
+Depois faa commit do `sitemap.xml` e envie no Google Search Console.
 
-## 📚 Documentation & Support
+##  Documentation & Support
 
 ### Setup Guides
-- 🔧 [Supabase Setup](docs/setup/SUPABASE-SETUP.md)
-- 🔐 [OAuth Configuration](docs/setup/OAUTH-SETUP-GUIDE.md)
-- 💳 [Stripe Integration](docs/setup/README-STRIPE.md)
-- 📧 [Newsletter System](docs/setup/NEWSLETTER-SETUP-GUIDE.md)
+-  [Supabase Setup](docs/setup/SUPABASE-SETUP.md)
+-  [OAuth Configuration](docs/setup/OAUTH-SETUP-GUIDE.md)
+-  [Stripe Integration](docs/setup/README-STRIPE.md)
+-  [Newsletter System](docs/setup/NEWSLETTER-SETUP-GUIDE.md)
 
 ### Testing Documentation
-- 📱 [Mobile Testing Guide](docs/testing/MOBILE-POPUP-TESTING.md)
-- 🧪 [Test File Documentation](docs/testing/)
+-  [Mobile Testing Guide](docs/testing/MOBILE-POPUP-TESTING.md)
+-  [Test File Documentation](docs/testing/)
 
 ### Project History
-- 📝 [Implementation Timeline](IMPLEMENTACAO-COMPLETA.md)
-- ✅ [Feature Completion](MELHORIAS-COMPLETAS.md)
-- 🔄 [Project Updates](DASHBOARD-MELHORADO.md)
+-  [Implementation Timeline](IMPLEMENTACAO-COMPLETA.md)
+-  [Feature Completion](MELHORIAS-COMPLETAS.md)
+-  [Project Updates](DASHBOARD-MELHORADO.md)
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 ### Development Workflow
 1. **Fork** the repository
@@ -458,7 +458,7 @@ Depois faça commit do `sitemap.xml` e envie no Google Search Console.
 
 ---
 
-## 📄 License & Contact
+##  License & Contact
 
 ### Project Information
 - **Version**: 2.0 (Complete Platform)
@@ -467,10 +467,11 @@ Depois faça commit do `sitemap.xml` e envie no Google Search Console.
 - **Maintainer**: Andre Garcia (Garcia Builder)
 
 ### Contact & Support
-- 💬 **WhatsApp**: https://wa.me/447508497586
-- 📅 **Book Consultation**: https://calendly.com/andrenjulio072/consultation
-- 📸 **Instagram**: https://instagram.com/garcia.builder
-- 🏋️ **Trainerize**: https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/
+-  **Email**: andre@garciabuilder.fitness
+-  **Book Consultation**: https://calendly.com/andrenjulio072/consultation
+-  **Instagram**: https://instagram.com/garcia.builder
+-  **Trainerize**: https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/
+-  **Contact Form**: https://www.garciabuilder.fitness/contact.html
 
 ### Business Information
 - **Services**: Online Fitness Coaching
@@ -480,23 +481,23 @@ Depois faça commit do `sitemap.xml` e envie no Google Search Console.
 
 ---
 
-## 🏆 Client Success Stories
+##  Client Success Stories
 
 > *"Andre gave me structure, habits I could actually follow, and most importantly - results that last."*
-> **— Eduarda Ribeiro** ⭐⭐⭐⭐⭐
+> ** Eduarda Ribeiro** 
 
 > *"As a busy dad I didn't think I had time. Andre simplified training and nutrition into something I could manage."*
-> **— Conrad Norman** ⭐⭐⭐⭐⭐
+> ** Conrad Norman** 
 
 > *"Twelve weeks later my friends keep asking what I changed. It wasn't just my body - my whole mindset shifted."*
-> **— Mariana Vieira** ⭐⭐⭐⭐⭐
+> ** Mariana Vieira** 
 
 **18 verified testimonials** with detailed transformation stories available on the live website.
 
 ---
 
-**Ready to transform your body?** 🔥
-👉 [**Book Your Free Consultation**](https://calendly.com/andrenjulio072/consultation) 👈
+**Ready to transform your body?** 
+ [**Book Your Free Consultation**](https://calendly.com/andrenjulio072/consultation) 
 
 ### Dynamic Components
 - **KPI Injection**: [`js/kpi6.inject.js`](js/kpi6.inject.js) creates performance metrics
@@ -505,39 +506,39 @@ Depois faça commit do `sitemap.xml` e envie no Google Search Console.
 
 ---
 
-## 🔗 External Integrations
+##  External Integrations
 
 ### Direct Links
-- 🌐 **Website**: https://andrejulio072.github.io/Garcia-Builder/
-- 💬 **WhatsApp**: https://wa.me/447508497586
-- 📅 **Calendly**: https://calendly.com/andrenjulio072/consultation
-- 📸 **Instagram**: https://instagram.com/garcia.builder
-- 🏋️ **Trainerize**: https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/
+-  **Website**: https://andrejulio072.github.io/Garcia-Builder/
+-  **Calendly**: https://calendly.com/andrenjulio072/consultation
+-  **Instagram**: https://instagram.com/garcia.builder
+-  **Contact Form**: https://www.garciabuilder.fitness/contact.html
+-  **Trainerize**: https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/
 
 ### Ready for Integration
-- 💳 **Stripe Checkout**: Configure payment URLs in pricing CTAs
-- 📊 **Analytics**: Ready for GA4 or Plausible integration
-- 📧 **Email Marketing**: Contact form exports to your email system
+-  **Stripe Checkout**: Configure payment URLs in pricing CTAs
+-  **Analytics**: Ready for GA4 or Plausible integration
+-  **Email Marketing**: Contact form exports to your email system
 
 ---
 
-## 📱 Mobile & Accessibility
+##  Mobile & Accessibility
 
 ### Mobile Optimization
-- 📱 **Responsive Design**: Works perfectly on all device sizes
-- 👆 **Touch-Friendly**: Optimized button sizes and interactions
-- ⚡ **Fast Loading**: Optimized images and deferred scripts
-- 🔄 **Consistent Layout**: No horizontal scrolling issues
+-  **Responsive Design**: Works perfectly on all device sizes
+-  **Touch-Friendly**: Optimized button sizes and interactions
+-  **Fast Loading**: Optimized images and deferred scripts
+-  **Consistent Layout**: No horizontal scrolling issues
 
 ### Accessibility Features
-- ⌨️ **Keyboard Navigation**: Full keyboard support
-- 🔍 **High Contrast**: Excellent readability ratios
-- 🗣️ **Screen Readers**: Semantic HTML structure
-- 🎯 **Focus States**: Clear visual focus indicators
+-  **Keyboard Navigation**: Full keyboard support
+-  **High Contrast**: Excellent readability ratios
+-  **Screen Readers**: Semantic HTML structure
+-  **Focus States**: Clear visual focus indicators
 
 ---
 
-## 🚀 Future Roadmap
+##  Future Roadmap
 
 - [ ] **Stripe Integration**: Complete payment processing for pricing plans
 - [ ] **Professional Photos**: Replace placeholder avatars with client photos
@@ -549,7 +550,7 @@ Depois faça commit do `sitemap.xml` e envie no Google Search Console.
 
 ---
 
-## 🆘 Support & Issues
+##  Support & Issues
 
 ### Common Solutions
 1. **Language not switching**: Check browser console for JavaScript errors
@@ -558,14 +559,14 @@ Depois faça commit do `sitemap.xml` e envie no Google Search Console.
 4. **Mobile layout issues**: Check viewport meta tag
 
 ### Getting Help
-- 🐛 **GitHub Issues**: Report bugs or request features
-- 💬 **WhatsApp**: Direct contact with Andre Garcia
-- 📅 **Calendly**: Book technical consultation
-- 📸 **Instagram**: Follow for updates
+-  **GitHub Issues**: Report bugs or request features
+-  **Contact Form**: Send a message via https://www.garciabuilder.fitness/contact.html
+-  **Calendly**: Book technical consultation
+-  **Instagram**: Follow for updates
 
 ---
 
-## 👤 About the Coach
+##  About the Coach
 
 **Andre Garcia (Garcia Builder)**
 *Certified Online Fitness Coach*
@@ -574,13 +575,13 @@ Specializing in sustainable transformations through evidence-based training and 
 
 ### Contact Andre
 - **Website**: https://andrejulio072.github.io/Garcia-Builder/
-- **WhatsApp**: https://wa.me/447508497586
+- **Email**: andre@garciabuilder.fitness
 - **Instagram**: https://instagram.com/garcia.builder
 - **Book Consultation**: https://calendly.com/andrenjulio072/consultation
 
 ---
 
-## 📄 License
+##  License
 
 This project is proprietary to Garcia Builder. All rights reserved.
 
@@ -588,4 +589,4 @@ For licensing inquiries or usage permissions, contact Andre Garcia via the links
 
 ---
 
-*Last updated: January 2025 • Built with ❤️ for fitness transformations*
+*Last updated: January 2025  Built with  for fitness transformations*

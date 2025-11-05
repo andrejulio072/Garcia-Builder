@@ -337,7 +337,7 @@ Se encontrar problemas ou precisar de ajuda:
 1. **Verifique este README** para soluções comuns
 2. **Teste no console** usando os comandos de debug
 3. **Examine o código** em `js/auth.js` e `js/auth-guard.js`
-4. **Entre em contato** via WhatsApp ou Instagram
+4. **Entre em contato** via Calendly ou Instagram
 
 ---
 

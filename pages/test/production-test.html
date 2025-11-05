@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +14,7 @@
             <div class="col-md-10">
                 <div class="card glass-effect">
                     <div class="card-header bg-success text-white">
-                        <h3>🚀 Production Readiness Test</h3>
+                        <h3>?? Production Readiness Test</h3>
                         <p class="mb-0">Complete system test for deployment</p>
                     </div>
                     <div class="card-body">
@@ -23,7 +23,7 @@
                         <!-- Step 1: Create Real Admin -->
                         <div class="card mb-4">
                             <div class="card-header">
-                                <h5>1️⃣ Create Real Admin Account</h5>
+                                <h5>1?? Create Real Admin Account</h5>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -42,7 +42,7 @@
                         <!-- Step 2: Test Local Admin -->
                         <div class="card mb-4">
                             <div class="card-header">
-                                <h5>2️⃣ Test Local Admin (Super User)</h5>
+                                <h5>2?? Test Local Admin (Super User)</h5>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -61,7 +61,7 @@
                         <!-- Step 3: Test Profile System -->
                         <div class="card mb-4">
                             <div class="card-header">
-                                <h5>3️⃣ Test Profile Save System</h5>
+                                <h5>3?? Test Profile Save System</h5>
                             </div>
                             <div class="card-body">
                                 <form id="profileTestForm">
@@ -98,7 +98,7 @@
                         <!-- Step 4: Production Environment Check -->
                         <div class="card mb-4">
                             <div class="card-header">
-                                <h5>4️⃣ Production Environment Check</h5>
+                                <h5>4?? Production Environment Check</h5>
                             </div>
                             <div class="card-body">
                                 <button id="checkProduction" class="btn btn-info">Check Production Compatibility</button>
@@ -109,7 +109,7 @@
                         <!-- Step 5: Complete Dashboard Test -->
                         <div class="card">
                             <div class="card-header">
-                                <h5>5️⃣ Final Dashboard Test</h5>
+                                <h5>5?? Final Dashboard Test</h5>
                             </div>
                             <div class="card-body">
                                 <p>Test complete dashboard functionality:</p>
@@ -168,15 +168,15 @@
 
                 if (error) {
                     if (error.message.includes('already registered')) {
-                        showStatus('adminStatus', '✅ Admin email already exists! Ready to use.', 'success');
+                        showStatus('adminStatus', '? Admin email already exists! Ready to use.', 'success');
                     } else {
-                        showStatus('adminStatus', `❌ Error: ${error.message}`, 'danger');
+                        showStatus('adminStatus', `? Error: ${error.message}`, 'danger');
                     }
                 } else {
-                    showStatus('adminStatus', '✅ Real admin created! Check email for confirmation.', 'success');
+                    showStatus('adminStatus', '? Real admin created! Check email for confirmation.', 'success');
                 }
             } catch (error) {
-                showStatus('adminStatus', `❌ Error: ${error.message}`, 'danger');
+                showStatus('adminStatus', `? Error: ${error.message}`, 'danger');
             }
         });
 
@@ -209,9 +209,9 @@
 
             if (admin) {
                 localStorage.setItem('garcia_current_user', JSON.stringify(admin));
-                showStatus('localAdminStatus', '✅ Local admin login successful! Super user ready.', 'success');
+                showStatus('localAdminStatus', '? Local admin login successful! Super user ready.', 'success');
             } else {
-                showStatus('localAdminStatus', '❌ Local admin login failed.', 'danger');
+                showStatus('localAdminStatus', '? Local admin login failed.', 'danger');
             }
         });
 
@@ -241,7 +241,7 @@
 
                         if (!error) {
                             saveSuccess = true;
-                            showStatus('profileStatus', '✅ Profile saved to Supabase!', 'success');
+                            showStatus('profileStatus', '? Profile saved to Supabase!', 'success');
                         }
                     }
                 } catch (supabaseError) {
@@ -258,17 +258,17 @@
                     }));
 
                     if (!saveSuccess) {
-                        showStatus('profileStatus', '✅ Profile saved to localStorage! (Production ready)', 'success');
+                        showStatus('profileStatus', '? Profile saved to localStorage! (Production ready)', 'success');
                     }
                     saveSuccess = true;
                 }
 
                 if (!saveSuccess) {
-                    showStatus('profileStatus', '⚠️ No user logged in. Please login first.', 'warning');
+                    showStatus('profileStatus', '?? No user logged in. Please login first.', 'warning');
                 }
 
             } catch (error) {
-                showStatus('profileStatus', `❌ Error: ${error.message}`, 'danger');
+                showStatus('profileStatus', `? Error: ${error.message}`, 'danger');
             }
         });
 
@@ -283,36 +283,36 @@
                 localStorage.setItem('garcia_test', 'production');
                 const test = localStorage.getItem('garcia_test');
                 if (test === 'production') {
-                    checks.push('✅ LocalStorage: Working');
+                    checks.push('? LocalStorage: Working');
                     localStorage.removeItem('garcia_test');
                 } else {
-                    checks.push('❌ LocalStorage: Failed');
+                    checks.push('? LocalStorage: Failed');
                 }
             } catch (e) {
-                checks.push('❌ LocalStorage: Error');
+                checks.push('? LocalStorage: Error');
             }
 
             // Check 2: Supabase Connection
             supabaseClient.auth.getSession()
                 .then(({ data, error }) => {
                     if (error) {
-                        checks.push(`⚠️ Supabase: ${error.message}`);
+                        checks.push(`?? Supabase: ${error.message}`);
                     } else {
-                        checks.push('✅ Supabase: Connected');
+                        checks.push('? Supabase: Connected');
                     }
                 })
                 .catch(() => {
-                    checks.push('❌ Supabase: Connection failed');
+                    checks.push('? Supabase: Connection failed');
                 })
                 .finally(() => {
                     // Check 3: Super User System
                     const localUsers = JSON.parse(localStorage.getItem('garcia_users') || '[]');
                     const hasAdmin = localUsers.some(u => u.role === 'admin');
-                    checks.push(hasAdmin ? '✅ Super User: Ready' : '⚠️ Super User: Needs setup');
+                    checks.push(hasAdmin ? '? Super User: Ready' : '?? Super User: Needs setup');
 
                     // Check 4: CSS/JS Loading
                     const cssLoaded = document.querySelector('link[href*="enhanced-dashboard.css"]');
-                    checks.push(cssLoaded ? '✅ Stylesheets: Loaded' : '⚠️ Stylesheets: Check paths');
+                    checks.push(cssLoaded ? '? Stylesheets: Loaded' : '?? Stylesheets: Check paths');
 
                     // Display results
                     const resultHtml = `
@@ -322,7 +322,7 @@
                                 ${checks.map(check => `<li>${check}</li>`).join('')}
                             </ul>
                             <hr>
-                            <p class="mb-0"><strong>✅ System is production ready!</strong></p>
+                            <p class="mb-0"><strong>? System is production ready!</strong></p>
                             <small>Super user will work in production environment.</small>
                         </div>
                     `;
@@ -333,7 +333,7 @@
 
         // Initialize
         window.addEventListener('load', () => {
-            showMainStatus('🚀 Production Test Suite Ready! Complete all steps to verify deployment readiness.', 'info');
+            showMainStatus('?? Production Test Suite Ready! Complete all steps to verify deployment readiness.', 'info');
 
             // Show current system status
             const localUsers = JSON.parse(localStorage.getItem('garcia_users') || '[]');
@@ -382,16 +382,16 @@
                 <ul class="footer-links">
                     <li><a href="mailto:contato@garciabuilder.fitness"><i class="fas fa-envelope"></i> contato@garciabuilder.fitness</a></li>
                     <li><a href="https://www.instagram.com/garciabuilder/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i> Instagram</a></li>
-                    <li><a href="https://wa.me/5511949494949" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+                    <li><a href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener"><i class="fas fa-calendar-check"></i> Book a Free Consultation</a></li>
                 </ul>
                 <div class="footer-social">
                     <a href="https://www.instagram.com/garciabuilder/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://wa.me/5511949494949" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener" aria-label="Schedule a free consultation"><i class="fas fa-calendar-check"></i></a>
                 </div>
             </div>
         </div>
         <div class="gb-footer-row legal-row">
-            <div class="footer-legal">&copy; 2025 Garcia Builder — Online Coaching</div>
+            <div class="footer-legal">&copy; 2025 Garcia Builder � Online Coaching</div>
             <div class="footer-links-legal">
                 <a href="privacy.html" data-i18n="footer.privacy">Privacy Policy</a>
                 <span class="divider">|</span>
@@ -404,3 +404,4 @@
 
 </body>
 </html>
+

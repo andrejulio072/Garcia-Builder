@@ -230,7 +230,7 @@
         goal_paused: "Paused",
         goal_active: "Active",
         activity_update: "Update",
-        contact_whatsapp_label: "Contact via WhatsApp",
+        contact_whatsapp_label: "Open coach chat",
         contact_whatsapp_message: "Hi Andre! I came from your dashboard and want coaching.",
         user_avatar_alt: "User avatar"
       },
@@ -255,7 +255,7 @@
         subtitle: "Your transformation journey in 4 simple steps",
         step1: { title: "Free Consultation", desc: "We discuss your goals, experience, and create your personalized plan." },
         step2: { title: "Custom Program", desc: "Receive your tailored training and nutrition plan via Trainerize app." },
-        step3: { title: "Weekly Check-ins", desc: "Progress reviews, adjustments, and direct WhatsApp support throughout." },
+        step3: { title: "Weekly Check-ins", desc: "Progress reviews, adjustments, and direct in-app chat support throughout." },
         step4: { title: "Achieve Results", desc: "Hit your goals in 8-12 weeks with sustainable habits that last." },
         cta: "Start Your Journey Today →"
       },
@@ -264,7 +264,7 @@
         subtitle: "Watch how our personalized approach delivers results that last",
         point1: "Evidence-based training protocols",
         point2: "Custom nutrition without restrictions",
-        point3: "24/7 support via WhatsApp",
+        point3: "24/7 support via in-app chat",
         point4: "Weekly progress reviews and adjustments",
         cta: "Get Started Now →"
       },
@@ -294,7 +294,7 @@
         privacy: "100% Private",
         "privacy.desc": "Your data is secure and never shared",
         support: "24/7 Support",
-        "support.desc": "WhatsApp access for questions anytime",
+        "support.desc": "In-app chat access for questions anytime",
         flexible: "Cancel Anytime",
         "flexible.desc": "No long-term contracts or commitments"
       },
@@ -303,14 +303,14 @@
         count: "(87 reviews)"
       },
       hero: {
-        p: "Precision training, simple nutrition and relentless accountability — 100% online via Trainerize and WhatsApp."
+        p: "Precision training, simple nutrition and relentless accountability — 100% online via Trainerize and in-app chat."
       },
       cta: {
         start: "Start Today",
         plans: "See Plans",
         strip: {
           title: "Ready to start? Let's build your strongest body.",
-          p: "Book a free consultation or message me on WhatsApp. I coach in EN/PT/ES.",
+          p: "Book a free consultation or DM me on Instagram. I coach in EN/PT/ES.",
           book: "Book a Free Consultation",
           ig: "Follow on Instagram"
         },
@@ -327,12 +327,12 @@
         f1: { title: "Personalized Plans", p: "Designed for your schedule, equipment and goal." },
         f2: { title: "Simple Nutrition", p: "Flexible guidelines. No extremes. Sustainable." },
         f3: { title: "Data‑Driven", p: "Progress checks & smart adjustments weekly." },
-        f4: { title: "Accountability", p: "WhatsApp support + weekly reviews." },
+        f4: { title: "Accountability", p: "In-app chat support + weekly reviews." },
         f5: { title: "Injury‑Smart", p: "Technique cues and safe progressions." },
         f6: { title: "Mindset & Habits", p: "Systems that keep you consistent." }
       },
       footer: {
-        whatsapp: "WhatsApp",
+        whatsapp: "Coach Chat",
         language_label: "Site language",
         language_help: "Change the language used across the site."
       },
@@ -350,7 +350,7 @@
         credentials: { title: "Credentials", p: "Active IQ L2/L3 (UK) • 12+ years coaching." },
         specialties: { title: "Specialties", p: "Hypertrophy • Fat loss • Strength & Conditioning." },
         values: { title: "Values", p: "Clarity, discipline and humanity — results that last in real life." },
-        accountability: { title: "Accountability", p: "Direct check-ins via WhatsApp to keep you consistent." },
+        accountability: { title: "Accountability", p: "Direct check-ins via the app chat to keep you consistent." },
         evidence: { title: "Evidence-Based", p: "Clear metrics, progressive overload and habit tracking." },
         injury: { title: "Injury-Smart", p: "Technique cues and safe progressions for long-term results." }
       },
@@ -513,7 +513,7 @@
             description: "For ambitious transformations with premium accountability.",
             features: [
               "High-touch coaching: weekly deep-dives",
-              "WhatsApp priority & voice notes",
+              "Priority in-app messaging & voice notes",
               "Custom cut/build phases + peaking",
               "Unlimited form reviews (fair use)",
               "Nutrition audits & meal structure redesign",
@@ -563,7 +563,7 @@
         form: {
           name: "Your name",
           email: "Your email",
-          phone: "Phone / WhatsApp (optional)",
+          phone: "Phone (optional)",
           preferredContact: "Preferred contact",
           goal: "Primary goal",
           timeline: "Target timeline",
@@ -584,7 +584,7 @@
           options: {
             contact: {
               email: "Email",
-              whatsapp: "WhatsApp",
+              whatsapp: "Instagram DM",
               phone: "Phone call"
             },
             goals: {
@@ -888,7 +888,7 @@
         goal_paused: "Pausada",
         goal_active: "Ativa",
         activity_update: "Atualização",
-        contact_whatsapp_label: "Contato via WhatsApp",
+        contact_whatsapp_label: "Abrir chat do coach",
         contact_whatsapp_message: "Oi Andre! Vim do dashboard e quero coaching.",
         user_avatar_alt: "Avatar do usuário"
       },
@@ -913,7 +913,7 @@
         subtitle: "Sua jornada de transformação em 4 passos simples",
         step1: { title: "Consulta Gratuita", desc: "Conversamos sobre seus objetivos e experiência para criar seu plano personalizado." },
         step2: { title: "Programa Personalizado", desc: "Receba seu treino e nutrição sob medida via app Trainerize." },
-        step3: { title: "Check-ins Semanais", desc: "Revisões de progresso, ajustes e suporte direto via WhatsApp." },
+        step3: { title: "Check-ins Semanais", desc: "Revisoes de progresso, ajustes e suporte direto pelo chat do app." },
         step4: { title: "Alcance Resultados", desc: "Bata suas metas em 8–12 semanas com hábitos sustentáveis." },
         cta: "Comece Sua Jornada Hoje →"
       },
@@ -922,7 +922,7 @@
         subtitle: "Assista como nossa abordagem personalizada gera resultados que duram",
         point1: "Protocolos de treino baseados em evidência",
         point2: "Nutrição sob medida sem restrições",
-        point3: "Suporte 24/7 via WhatsApp",
+        point3: "Suporte 24/7 pelo chat do app",
         point4: "Revisões semanais e ajustes contínuos",
         cta: "Começar Agora →"
       },
@@ -952,7 +952,7 @@
         privacy: "100% Privado",
         "privacy.desc": "Seus dados são seguros e nunca compartilhados",
         support: "Suporte 24/7",
-        "support.desc": "Acesso via WhatsApp para dúvidas a qualquer hora",
+        "support.desc": "Acesso ao chat do app para duvidas a qualquer hora",
         flexible: "Cancele a Qualquer Momento",
         "flexible.desc": "Sem contratos de longo prazo"
       },
@@ -961,14 +961,14 @@
         count: "(87 avaliações)"
       },
       hero: {
-        p: "Treino preciso, nutrição simples e responsabilidade implacável — 100% online via Trainerize e WhatsApp."
+        p: "Treino preciso, nutricao simples e responsabilidade implacavel — 100% online via Trainerize e chat do app."
       },
       cta: {
         start: "Começar Hoje",
         plans: "Ver Planos",
         strip: {
           title: "Pronto para começar? Vamos construir seu corpo mais forte.",
-          p: "Agende uma consulta gratuita ou me mande mensagem no WhatsApp. Atendo em PT/EN/ES.",
+          p: "Agende uma consulta gratuita ou envie um DM no Instagram. Atendo em PT/EN/ES.",
           book: "Agendar Consulta Gratuita",
           ig: "Seguir no Instagram"
         },
@@ -985,12 +985,12 @@
         f1: { title: "Planos Personalizados", p: "Projetados para sua rotina, equipamentos e objetivo." },
         f2: { title: "Nutrição Simples", p: "Diretrizes flexíveis. Sem extremos. Sustentável." },
         f3: { title: "Baseado em Dados", p: "Análise de progresso e ajustes inteligentes semanais." },
-        f4: { title: "Responsabilidade", p: "Suporte via WhatsApp + revisões semanais." },
+        f4: { title: "Responsabilidade", p: "Suporte pelo chat do app + revisoes semanais." },
         f5: { title: "Inteligente contra Lesões", p: "Dicas de técnica e progressões seguras." },
         f6: { title: "Mentalidade e Hábitos", p: "Sistemas que mantêm você consistente." }
       },
       footer: {
-        whatsapp: "WhatsApp",
+        whatsapp: "Chat do coach",
         language_label: "Idioma do site",
         language_help: "Altere o idioma utilizado em todo o site."
       },
@@ -1008,7 +1008,7 @@
         credentials: { title: "Credenciais", p: "Active IQ L2/L3 (UK) • 12+ anos de coaching." },
         specialties: { title: "Especialidades", p: "Hipertrofia • Perda de gordura • Força e Condicionamento." },
         values: { title: "Valores", p: "Clareza, disciplina e humanidade — resultados que duram na vida real." },
-        accountability: { title: "Responsabilidade", p: "Check-ins diretos via WhatsApp para te manter consistente." },
+        accountability: { title: "Responsabilidade", p: "Check-ins diretos pelo chat do app para te manter consistente." },
         evidence: { title: "Baseado em Evidências", p: "Métricas claras, sobrecarga progressiva e acompanhamento de hábitos." },
         injury: { title: "Inteligente contra Lesões", p: "Dicas de técnica e progressões seguras para resultados a longo prazo." }
       },
@@ -1171,7 +1171,7 @@
             description: "Para transformações ambiciosas com responsabilidade premium.",
             features: [
               "Coaching de alta proximidade: mergulhos semanais",
-              "Prioridade no WhatsApp e áudios",
+              "Prioridade no chat do app e audios",
               "Fases de cut/build + peak personalizadas",
               "Revisões de técnica ilimitadas (uso justo)",
               "Auditorias nutricionais e reestruturação de refeições",
@@ -1221,7 +1221,7 @@
         form: {
           name: "Seu nome",
           email: "Seu email",
-          phone: "Telefone / WhatsApp (opcional)",
+          phone: "Telefone (opcional)",
           preferredContact: "Contato preferido",
           goal: "Objetivo principal",
           timeline: "Prazo desejado",
@@ -1242,7 +1242,7 @@
           options: {
             contact: {
               email: "Email",
-              whatsapp: "WhatsApp",
+              whatsapp: "Mensagem no Instagram",
               phone: "Ligação"
             },
             goals: {
@@ -1543,7 +1543,7 @@
         goal_paused: "Pausado",
         goal_active: "Activo",
         activity_update: "Actualización",
-        contact_whatsapp_label: "Contacto por WhatsApp",
+        contact_whatsapp_label: "Abrir chat del coach",
         contact_whatsapp_message: "¡Hola Andre! Vengo del dashboard y quiero coaching.",
         user_avatar_alt: "Avatar del usuario"
       },
@@ -1568,7 +1568,7 @@
         subtitle: "Tu viaje de transformación en 4 pasos simples",
         step1: { title: "Consulta Gratuita", desc: "Hablamos de tus objetivos y experiencia para crear tu plan personalizado." },
         step2: { title: "Programa Personalizado", desc: "Recibe tu plan de entrenamiento y nutrición en el app Trainerize." },
-        step3: { title: "Check-ins Semanales", desc: "Revisiones de progreso, ajustes y soporte directo por WhatsApp." },
+        step3: { title: "Check-ins Semanales", desc: "Revisiones de progreso, ajustes y soporte directo por el chat de la app." },
         step4: { title: "Alcanza Resultados", desc: "Logra tus metas en 8–12 semanas con hábitos sostenibles." },
         cta: "Empieza Tu Viaje Hoy →"
       },
@@ -1577,7 +1577,7 @@
         subtitle: "Observa cómo nuestro enfoque personalizado entrega resultados duraderos",
         point1: "Protocolos de entrenamiento basados en evidencia",
         point2: "Nutrición personalizada sin restricciones",
-        point3: "Soporte 24/7 por WhatsApp",
+        point3: "Soporte 24/7 por el chat de la app",
         point4: "Revisiones semanales y ajustes continuos",
         cta: "Empezar Ahora →"
       },
@@ -1607,7 +1607,7 @@
         privacy: "100% Privado",
         "privacy.desc": "Tus datos son seguros y nunca compartidos",
         support: "Soporte 24/7",
-        "support.desc": "Acceso por WhatsApp para preguntas en cualquier momento",
+        "support.desc": "Acceso al chat de la app para preguntas en cualquier momento",
         flexible: "Cancela en Cualquier Momento",
         "flexible.desc": "Sin contratos a largo plazo"
       },
@@ -1616,14 +1616,14 @@
         count: "(87 reseñas)"
       },
       hero: {
-        p: "Entrenamiento preciso, nutrición simple y responsabilidad implacable — 100% online vía Trainerize y WhatsApp."
+        p: "Entrenamiento preciso, nutrición simple y responsabilidad implacable — 100% online vía Trainerize y chat de la app."
       },
       cta: {
         start: "Empezar Hoy",
         plans: "Ver Planes",
         strip: {
           title: "¿Listo para empezar? Construyamos tu cuerpo más fuerte.",
-          p: "Reserva una consulta gratuita o envíame un mensaje por WhatsApp. Entreno en ES/EN/PT.",
+          p: "Reserva una consulta gratuita o envíame un DM en Instagram. Entreno en ES/EN/PT.",
           book: "Reservar Consulta Gratuita",
           ig: "Seguir en Instagram"
         },
@@ -1640,12 +1640,12 @@
         f1: { title: "Planes Personalizados", p: "Diseñados para tu horario, equipamiento y objetivo." },
         f2: { title: "Nutrición Simple", p: "Pautas flexibles. Sin extremos. Sostenible." },
         f3: { title: "Basado en Datos", p: "Revisiones de progreso y ajustes inteligentes semanales." },
-        f4: { title: "Responsabilidad", p: "Soporte vía WhatsApp + revisiones semanales." },
+        f4: { title: "Responsabilidad", p: "Soporte vía chat del app + revisiones semanales." },
         f5: { title: "Inteligente contra Lesiones", p: "Consejos de técnica y progresiones seguras." },
         f6: { title: "Mentalidad y Hábitos", p: "Sistemas que te mantienen consistente." }
       },
       footer: {
-        whatsapp: "WhatsApp",
+        whatsapp: "Chat del coach",
         language_label: "Idioma del sitio",
         language_help: "Cambia el idioma utilizado en todo el sitio."
       },
@@ -1663,7 +1663,7 @@
         credentials: { title: "Credenciales", p: "Active IQ L2/L3 (UK) • 12+ años de coaching." },
         specialties: { title: "Especialidades", p: "Hipertrofia • Pérdida de grasa • Fuerza y Acondicionamiento." },
         values: { title: "Valores", p: "Claridad, disciplina y humanidad — resultados que duran en la vida real." },
-        accountability: { title: "Responsabilidad", p: "Check-ins directos vía WhatsApp para mantenerte consistente." },
+        accountability: { title: "Responsabilidad", p: "Check-ins directos por el chat de la app para mantenerte consistente." },
         evidence: { title: "Basado en Evidencias", p: "Métricas claras, sobrecarga progresiva y seguimiento de hábitos." },
         injury: { title: "Inteligente contra Lesiones", p: "Consejos de técnica y progresiones seguras para resultados a largo plazo." }
       },
@@ -1826,7 +1826,7 @@
             description: "Para transformaciones ambiciosas con responsabilidad premium.",
             features: [
               "Coaching de alta dedicación: análisis semanales",
-              "Prioridad WhatsApp y notas de voz",
+              "Prioridad en el chat de la app y notas de voz",
               "Fases de cut/build + peak personalizadas",
               "Revisiones de técnica ilimitadas (uso justo)",
               "Auditorías de nutrición y rediseño de comidas",
@@ -1876,7 +1876,7 @@
         form: {
           name: "Tu nombre",
           email: "Tu email",
-          phone: "Teléfono / WhatsApp (opcional)",
+          phone: "Teléfono (opcional)",
           preferredContact: "Contacto preferido",
           goal: "Objetivo principal",
           timeline: "Plazo objetivo",
@@ -1897,7 +1897,7 @@
           options: {
             contact: {
               email: "Email",
-              whatsapp: "WhatsApp",
+              whatsapp: "DM en Instagram",
               phone: "Llamada telefónica"
             },
             goals: {

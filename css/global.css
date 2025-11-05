@@ -666,8 +666,10 @@ select option {
 .tcard{display:flex;gap:14px;padding:18px;align-items:flex-start;min-height:140px}
 .tcard img{width:56px;height:56px;border-radius:50%;border:1px solid var(--line)}
 .tcard .name{font-weight:800}
-/* Floating WhatsApp */
+/* Floating contact buttons */
 .whatsapp-float{position:fixed;right:18px;bottom:18px;z-index:90;background:#25D366;color:#04120c;border-radius:999px;padding:14px 18px;font-weight:900;border:2px solid #1ca851;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.contact-float{position:fixed;right:18px;bottom:18px;z-index:90;background:linear-gradient(135deg,#F6C84E 0%,#FF8C00 100%);color:#0a0f1e;border-radius:999px;padding:14px 20px;font-weight:800;border:2px solid rgba(255,215,0,.65);box-shadow:0 8px 24px rgba(0,0,0,.3);text-decoration:none;display:flex;align-items:center;gap:8px;transition:transform .2s ease,box-shadow .2s ease}
+.contact-float:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(246,200,78,.35);color:#0a0f1e}
 
 /* === Stage 10 additions: hero visuals, parallax & count-up === */
 .hero{--mx:0;--my:0}

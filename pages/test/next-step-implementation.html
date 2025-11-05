@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 PRÓXIMO PASSO - Garcia Builder Implementation</title>
+    <title>?? PRXIMO PASSO - Garcia Builder Implementation</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/admin/enhanced-dashboard.css">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -34,10 +34,10 @@
 <body>
     <div class="container mt-4">
         <div class="text-center mb-5">
-            <h1 class="display-4">🚀 PRÓXIMO PASSO</h1>
+            <h1 class="display-4">?? PRXIMO PASSO</h1>
             <h2 class="text-muted">Garcia Builder - Implementation Guide</h2>
             <div class="alert alert-info">
-                <strong>Objetivo:</strong> Finalizar configuração do Supabase e testar sistema completo
+                <strong>Objetivo:</strong> Finalizar configurao do Supabase e testar sistema completo
             </div>
         </div>
 
@@ -47,10 +47,10 @@
                 <h3><span class="status-indicator status-pending"></span>PASSO 1: Configurar Database Supabase</h3>
             </div>
             <div class="card-body">
-                <h5>📋 O que fazer:</h5>
+                <h5>?? O que fazer:</h5>
                 <ol>
                     <li>Abra seu <strong>Supabase Dashboard</strong></li>
-                    <li>Vá para <strong>SQL Editor</strong></li>
+                    <li>V para <strong>SQL Editor</strong></li>
                     <li>Cole e execute o SQL abaixo:</li>
                 </ol>
 
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
 -- 2. Habilitar Row Level Security
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
--- 3. Criar políticas de segurança
+-- 3. Criar polticas de segurana
 CREATE POLICY "Public profiles are viewable by everyone" ON profiles
     FOR SELECT USING (true);
 
@@ -88,7 +88,7 @@ CREATE POLICY "Users can insert their own profile" ON profiles
 CREATE POLICY "Users can update own profile" ON profiles
     FOR UPDATE USING (auth.uid() = id);
 
--- 4. Função para atualizar updated_at
+-- 4. Funo para atualizar updated_at
 CREATE OR REPLACE FUNCTION public.handle_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -102,7 +102,7 @@ CREATE TRIGGER on_profiles_updated
     BEFORE UPDATE ON public.profiles
     FOR EACH ROW EXECUTE PROCEDURE public.handle_updated_at();
 
--- 6. Auto-criar perfil para novos usuários
+-- 6. Auto-criar perfil para novos usurios
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -122,8 +122,8 @@ CREATE TRIGGER on_auth_user_created
                 </div>
 
                 <div class="mt-3">
-                    <button id="testDatabase" class="btn btn-success">✅ Testar Conexão Database</button>
-                    <button class="btn btn-outline-primary" onclick="copySQL()">📋 Copiar SQL</button>
+                    <button id="testDatabase" class="btn btn-success">? Testar Conexo Database</button>
+                    <button class="btn btn-outline-primary" onclick="copySQL()">?? Copiar SQL</button>
                 </div>
                 <div id="databaseResult" class="mt-3"></div>
             </div>
@@ -137,7 +137,7 @@ CREATE TRIGGER on_auth_user_created
             <div class="card-body">
                 <p><strong>Email:</strong> andregarcia.pt72@gmail.com</p>
                 <p><strong>Senha:</strong> admingarciabuilder</p>
-                <button id="createRealAdmin" class="btn btn-primary">👤 Criar Admin Real</button>
+                <button id="createRealAdmin" class="btn btn-primary">?? Criar Admin Real</button>
                 <div id="adminResult" class="mt-3"></div>
             </div>
         </div>
@@ -149,7 +149,7 @@ CREATE TRIGGER on_auth_user_created
             </div>
             <div class="card-body">
                 <p><strong>Super User (Local):</strong> admin@local / admingarciabuilder</p>
-                <button id="testSuperUser" class="btn btn-warning">⚡ Verificar Super User</button>
+                <button id="testSuperUser" class="btn btn-warning">? Verificar Super User</button>
                 <div id="superUserResult" class="mt-3"></div>
             </div>
         </div>
@@ -160,19 +160,19 @@ CREATE TRIGGER on_auth_user_created
                 <h3><span class="status-indicator status-pending"></span>PASSO 4: Teste do Sistema Completo</h3>
             </div>
             <div class="card-body">
-                <button id="testCompleteSystem" class="btn btn-info">🧪 Teste Completo</button>
+                <button id="testCompleteSystem" class="btn btn-info">?? Teste Completo</button>
                 <div id="systemTestResult" class="mt-3"></div>
 
                 <div class="mt-4">
                     <h5>Links para Teste Manual:</h5>
                     <div class="row">
                         <div class="col-md-6">
-                            <a href="login.html" class="btn btn-outline-primary w-100 mb-2" target="_blank">🔐 Página de Login</a>
-                            <a href="enhanced-admin-dashboard.html" class="btn btn-outline-success w-100 mb-2" target="_blank">👑 Dashboard Admin</a>
+                            <a href="login.html" class="btn btn-outline-primary w-100 mb-2" target="_blank">?? Pgina de Login</a>
+                            <a href="enhanced-admin-dashboard.html" class="btn btn-outline-success w-100 mb-2" target="_blank">?? Dashboard Admin</a>
                         </div>
                         <div class="col-md-6">
-                            <a href="enhanced-dashboard.html" class="btn btn-outline-info w-100 mb-2" target="_blank">📊 Dashboard Usuário</a>
-                            <a href="my-profile.html" class="btn btn-outline-warning w-100 mb-2" target="_blank">👤 Meu Perfil</a>
+                            <a href="enhanced-dashboard.html" class="btn btn-outline-info w-100 mb-2" target="_blank">?? Dashboard Usurio</a>
+                            <a href="my-profile.html" class="btn btn-outline-warning w-100 mb-2" target="_blank">?? Meu Perfil</a>
                         </div>
                     </div>
                 </div>
@@ -182,17 +182,17 @@ CREATE TRIGGER on_auth_user_created
         <!-- Step 5: Production Ready -->
         <div class="card step-card" id="step5">
             <div class="card-header">
-                <h3><span class="status-indicator status-pending"></span>PASSO 5: Pronto para Produção</h3>
+                <h3><span class="status-indicator status-pending"></span>PASSO 5: Pronto para Produo</h3>
             </div>
             <div class="card-body">
-                <h5>🌐 Deploy Instructions:</h5>
+                <h5>?? Deploy Instructions:</h5>
                 <ol>
                     <li>Upload todos os arquivos para seu servidor web</li>
-                    <li>Configure domínio no Supabase → Authentication → Settings</li>
-                    <li>Teste com URL de produção</li>
+                    <li>Configure domnio no Supabase ? Authentication ? Settings</li>
+                    <li>Teste com URL de produo</li>
                 </ol>
 
-                <button id="checkProductionReady" class="btn btn-success">🚀 Verificar Production Ready</button>
+                <button id="checkProductionReady" class="btn btn-success">?? Verificar Production Ready</button>
                 <div id="productionResult" class="mt-3"></div>
             </div>
         </div>
@@ -200,11 +200,11 @@ CREATE TRIGGER on_auth_user_created
         <!-- Final Status -->
         <div class="card mt-5" style="border: 3px solid #28a745;">
             <div class="card-header bg-success text-white">
-                <h3>🎯 STATUS FINAL</h3>
+                <h3>?? STATUS FINAL</h3>
             </div>
             <div class="card-body">
                 <div id="finalStatus">
-                    <h5>Progresso: <span id="progressText">0/5 passos concluídos</span></h5>
+                    <h5>Progresso: <span id="progressText">0/5 passos concludos</span></h5>
                     <div class="progress mb-3">
                         <div id="progressBar" class="progress-bar" style="width: 0%"></div>
                     </div>
@@ -241,13 +241,13 @@ CREATE TRIGGER on_auth_user_created
         function updateProgress() {
             const progress = (completedSteps / 5) * 100;
             document.getElementById('progressBar').style.width = progress + '%';
-            document.getElementById('progressText').textContent = `${completedSteps}/5 passos concluídos`;
+            document.getElementById('progressText').textContent = `${completedSteps}/5 passos concludos`;
 
             if (completedSteps === 5) {
                 document.getElementById('finalStatus').innerHTML += `
                     <div class="alert alert-success mt-3">
-                        <h4>🎉 SISTEMA COMPLETAMENTE CONFIGURADO!</h4>
-                        <p>Garcia Builder está pronto para produção!</p>
+                        <h4>?? SISTEMA COMPLETAMENTE CONFIGURADO!</h4>
+                        <p>Garcia Builder est pronto para produo!</p>
                     </div>
                 `;
             }
@@ -259,7 +259,7 @@ CREATE TRIGGER on_auth_user_created
 
         // Step 1: Test Database
         document.getElementById('testDatabase').addEventListener('click', async () => {
-            showResult('databaseResult', 'Testando conexão com database...', 'info');
+            showResult('databaseResult', 'Testando conexo com database...', 'info');
 
             try {
                 const { data, error } = await supabaseClient
@@ -269,16 +269,16 @@ CREATE TRIGGER on_auth_user_created
 
                 if (error) {
                     if (error.message.includes('does not exist')) {
-                        showResult('databaseResult', '❌ Tabela profiles não existe. Execute o SQL primeiro!', 'danger');
+                        showResult('databaseResult', '? Tabela profiles no existe. Execute o SQL primeiro!', 'danger');
                     } else {
-                        showResult('databaseResult', `❌ Erro: ${error.message}`, 'danger');
+                        showResult('databaseResult', `? Erro: ${error.message}`, 'danger');
                     }
                 } else {
-                    showResult('databaseResult', '✅ Database configurado corretamente!', 'success');
+                    showResult('databaseResult', '? Database configurado corretamente!', 'success');
                     markStepComplete(1);
                 }
             } catch (error) {
-                showResult('databaseResult', `❌ Erro de conexão: ${error.message}`, 'danger');
+                showResult('databaseResult', `? Erro de conexo: ${error.message}`, 'danger');
             }
         });
 
@@ -300,17 +300,17 @@ CREATE TRIGGER on_auth_user_created
 
                 if (error) {
                     if (error.message.includes('already registered')) {
-                        showResult('adminResult', '✅ Admin já existe! Pronto para usar.', 'success');
+                        showResult('adminResult', '? Admin j existe! Pronto para usar.', 'success');
                         markStepComplete(2);
                     } else {
-                        showResult('adminResult', `❌ Erro: ${error.message}`, 'danger');
+                        showResult('adminResult', `? Erro: ${error.message}`, 'danger');
                     }
                 } else {
-                    showResult('adminResult', '✅ Admin criado! Verifique email para confirmação.', 'success');
+                    showResult('adminResult', '? Admin criado! Verifique email para confirmao.', 'success');
                     markStepComplete(2);
                 }
             } catch (error) {
-                showResult('adminResult', `❌ Erro: ${error.message}`, 'danger');
+                showResult('adminResult', `? Erro: ${error.message}`, 'danger');
             }
         });
 
@@ -338,7 +338,7 @@ CREATE TRIGGER on_auth_user_created
                 localStorage.setItem('garcia_users', JSON.stringify(users));
             }
 
-            showResult('superUserResult', '✅ Super User configurado e pronto!', 'success');
+            showResult('superUserResult', '? Super User configurado e pronto!', 'success');
             markStepComplete(3);
         });
 
@@ -351,60 +351,60 @@ CREATE TRIGGER on_auth_user_created
             // Test 1: Supabase connection
             try {
                 await supabaseClient.auth.getSession();
-                results.push('✅ Conexão Supabase: OK');
+                results.push('? Conexo Supabase: OK');
             } catch (e) {
-                results.push('❌ Conexão Supabase: Erro');
+                results.push('? Conexo Supabase: Erro');
             }
 
             // Test 2: Profiles table
             try {
                 const { error } = await supabaseClient.from('profiles').select('*').limit(1);
                 if (error) throw error;
-                results.push('✅ Tabela profiles: OK');
+                results.push('? Tabela profiles: OK');
             } catch (e) {
-                results.push('❌ Tabela profiles: Erro');
+                results.push('? Tabela profiles: Erro');
             }
 
             // Test 3: LocalStorage
             try {
                 localStorage.setItem('test', 'ok');
                 localStorage.removeItem('test');
-                results.push('✅ LocalStorage: OK');
+                results.push('? LocalStorage: OK');
             } catch (e) {
-                results.push('❌ LocalStorage: Erro');
+                results.push('? LocalStorage: Erro');
             }
 
             // Test 4: Super User
             const users = JSON.parse(localStorage.getItem('garcia_users') || '[]');
             const hasAdmin = users.some(u => u.role === 'admin');
-            results.push(hasAdmin ? '✅ Super User: OK' : '❌ Super User: Erro');
+            results.push(hasAdmin ? '? Super User: OK' : '? Super User: Erro');
 
-            showResult('systemTestResult', results.join('<br>'), results.every(r => r.includes('✅')) ? 'success' : 'warning');
+            showResult('systemTestResult', results.join('<br>'), results.every(r => r.includes('?')) ? 'success' : 'warning');
 
-            if (results.every(r => r.includes('✅'))) {
+            if (results.every(r => r.includes('?'))) {
                 markStepComplete(4);
             }
         });
 
         // Step 5: Check Production Ready
         document.getElementById('checkProductionReady').addEventListener('click', () => {
-            showResult('productionResult', 'Verificando prontidão para produção...', 'info');
+            showResult('productionResult', 'Verificando prontido para produo...', 'info');
 
             const checks = [
-                '✅ Banco de dados configurado',
-                '✅ Admin criado',
-                '✅ Super User funcionando',
-                '✅ Sistema testado',
-                '✅ LocalStorage funcional',
-                '✅ Fallbacks implementados',
-                '✅ Interface responsiva'
+                '? Banco de dados configurado',
+                '? Admin criado',
+                '? Super User funcionando',
+                '? Sistema testado',
+                '? LocalStorage funcional',
+                '? Fallbacks implementados',
+                '? Interface responsiva'
             ];
 
             showResult('productionResult', `
                 <h5>Sistema Production Ready!</h5>
                 ${checks.join('<br>')}
                 <hr>
-                <strong>🚀 Pronto para deploy!</strong>
+                <strong>?? Pronto para deploy!</strong>
             `, 'success');
 
             markStepComplete(5);
@@ -431,7 +431,7 @@ CREATE TRIGGER on_auth_user_created
             <a href="index.html" class="gb-footer-logo-link" aria-label="Garcia Builder Home">
                 <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" class="gb-footer-logo" loading="lazy" decoding="async"/>
             </a>
-            <p class="gb-footer-bio">Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.</p>
+            <p class="gb-footer-bio">Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 812 weeks.</p>
         </div>
         <div class="gb-footer-col gb-footer-nav">
             <h4 class="gb-footer-title">Navigation</h4>
@@ -459,7 +459,7 @@ CREATE TRIGGER on_auth_user_created
             <h4 class="gb-footer-title">Contact</h4>
             <ul>
                 <li><a href="mailto:privacy@garciabuilder.fitness"><i class="fa fa-envelope"></i> privacy@garciabuilder.fitness</a></li>
-                <li><a href="https://wa.me/447508497586" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+                <li><a href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener"><i class="fas fa-calendar-check"></i> Book a Free Consultation</a></li>
                 <li><a href="contact.html"><i class="fa fa-id-badge"></i> Contact Form</a></li>
             </ul>
             <div class="gb-footer-social">
@@ -478,16 +478,17 @@ CREATE TRIGGER on_auth_user_created
         </div>
     </div>
     <div class="gb-footer-legal container">
-        <span>© 2025 Garcia Builder. All rights reserved.</span>
+        <span> 2025 Garcia Builder. All rights reserved.</span>
         <span class="gb-footer-legal-links">
             <a href="privacy.html">Privacy</a> |
             <a href="terms.html">Terms</a>
         </span>
     </div>
 </footer>
-<!-- WhatsApp Float Button -->
-<a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" rel="noopener" aria-label="Contact via WhatsApp">
-        <i class="fab fa-whatsapp"></i>
+<!-- Contact Float Button -->
+<a class="contact-float" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener" aria-label="Schedule a free consultation">
+        <i class="fas fa-calendar-check" aria-hidden="true"></i>
 </a>
 </body>
 </html>
+

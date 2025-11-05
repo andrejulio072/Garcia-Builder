@@ -133,7 +133,7 @@ Crie uma página `success.html` profissional:
     <ul>
         <li>✅ Email de confirmação</li>
         <li>✅ Acesso ao Trainerize</li>
-        <li>✅ Convite para WhatsApp</li>
+        <li>✅ Convite para o chat do app / onboarding</li>
         <li>✅ Seu plano personalizado</li>
     </ul>
     <a href="index.html">Voltar ao Site</a>
@@ -145,7 +145,7 @@ Crie uma página `success.html` profissional:
 Configure webhooks em `https://dashboard.stripe.com/webhooks` para:
 - Enviar emails de boas-vindas
 - Criar usuário no Trainerize
-- Adicionar ao WhatsApp grupo
+- Adicionar ao chat do app (grupo/DM)
 - Integrar com Zapier
 
 ---

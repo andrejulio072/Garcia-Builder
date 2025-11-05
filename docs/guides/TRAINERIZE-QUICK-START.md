@@ -195,7 +195,7 @@ supabase secrets set RESEND_API_KEY=xxx
 ### **ESTE MÊS (Desejável):**
 1. ⏳ Integração completa com API Trainerize
 2. ⏳ Sincronização de dados
-3. ⏳ WhatsApp automation
+3. ⏳ App chat automation
 
 ---
 
@@ -260,3 +260,4 @@ Depois de implementar, você deve ver:
 **🚀 VAMOS COMEÇAR!**
 
 Primeiro passo: Criar a Edge Function básica acima. Você quer que eu ajude a criar os arquivos necessários?
+

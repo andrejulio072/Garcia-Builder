@@ -21,7 +21,7 @@
 **Benefícios:**
 - ✅ Cliente paga → Conta Trainerize criada automaticamente
 - ✅ Email de boas-vindas com instruções
-- ✅ WhatsApp automático (opcional)
+- ✅ App chat automático (opcional)
 - ✅ Dashboard sincronizado com progresso
 - ✅ Zero trabalho manual (economia de 2-4h por cliente)
 
@@ -61,7 +61,7 @@
 - [x] Google Analytics + Ads configurados
 - [ ] **Integração Trainerize (EM PROGRESSO)**
 - [ ] Email automation (Resend)
-- [ ] WhatsApp automation (Twilio - opcional)
+- [ ] App chat automation (Twilio - opcional)
 
 ### **Q1 2026 - Crescimento**
 - [ ] Loja Shopify (produtos físicos)
@@ -153,7 +153,7 @@
 1. ✅ Integração Trainerize 100% funcional
 2. 📊 Dashboard com stats do Trainerize
 3. 🤖 Automação de onboarding completa
-4. 📱 WhatsApp automation (opcional)
+4. 📱 App chat automation (opcional)
 
 **Próximos 3 Meses:**
 1. 📈 Aumentar tráfego orgânico (SEO)
@@ -168,3 +168,4 @@
 - 📧 Configurar Resend para emails
 - 🧪 Fazer teste end-to-end do fluxo
 - 📊 Monitorar métricas de conversão
+

@@ -19,7 +19,7 @@ Integrar o Trainerize com o site Garcia Builder para **automatizar 100% do fluxo
 - Link para perfil: `https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia`
 - Supabase configurado (auth, user_profiles, body_metrics)
 - Sistema de pagamento Stripe funcionando
-- WhatsApp integrado
+- App chat integrado
 - Dashboard de trainer básico
 - Sistema de autenticação completo
 
@@ -54,7 +54,7 @@ Integrar o Trainerize com o site Garcia Builder para **automatizar 100% do fluxo
    - Credenciais de acesso
    - Instruções de onboarding
    ↓
-7. Cliente recebe WhatsApp de boas-vindas
+7. Cliente recebe App chat de boas-vindas
    ↓
 8. Dashboard mostra status "Active"
 ```
@@ -155,8 +155,8 @@ serve(async (req) => {
     // 4. Enviar email de boas-vindas
     await sendWelcomeEmail(user, trainerizeClient)
 
-    // 5. Notificar WhatsApp
-    await sendWhatsAppNotification(user)
+    // 5. Notificar App chat
+    await sendApp chatNotification(user)
   }
 
   return new Response(JSON.stringify({ received: true }), {
@@ -447,7 +447,7 @@ SELECT cron.schedule(
     </div>
 
     <div class="section">
-      <h3>💬 Step 4: Connect on WhatsApp</h3>
+      <h3>💬 Step 4: Connect on App chat</h3>
       <p>I'll add you to the client support group within 24h.</p>
       <a href="https://wa.me/447508497586?text=Hi%20Andre!%20Just%20signed%20up!" class="button">
         Message Me
@@ -500,7 +500,7 @@ async function sendWelcomeEmail(user: any, trainerizeClient: any) {
 ### **FASE 6: WHATSAPP AUTOMATION** (1 dia)
 **Prioridade:** Média
 
-#### 6.1 Integrar Twilio para WhatsApp
+#### 6.1 Integrar Twilio para App chat
 ```typescript
 // supabase/functions/send-whatsapp/index.ts
 
@@ -511,7 +511,7 @@ const client = twilio(
   Deno.env.get('TWILIO_AUTH_TOKEN')
 )
 
-async function sendWhatsAppWelcome(user: any) {
+async function sendApp chatWelcome(user: any) {
   await client.messages.create({
     from: 'whatsapp:+14155238886', // Twilio Sandbox
     to: `whatsapp:${user.phone}`,
@@ -543,7 +543,7 @@ Andre
 - [ ] Verificar se tem plano Business no Trainerize
 - [ ] Obter API Key do Trainerize
 - [ ] Criar conta Resend (envio de emails)
-- [ ] Criar conta Twilio (WhatsApp opcional)
+- [ ] Criar conta Twilio (App chat opcional)
 - [ ] Backup completo do Supabase
 
 ### **Fase 1 - Setup:**
@@ -576,7 +576,7 @@ Andre
 - [ ] Criar Edge Function `send-welcome-email`
 - [ ] Testar envio
 
-### **Fase 6 - WhatsApp:**
+### **Fase 6 - App chat:**
 - [ ] Configurar Twilio
 - [ ] Criar Edge Function `send-whatsapp`
 - [ ] Testar mensagem
@@ -608,7 +608,7 @@ TWILIO_AUTH_TOKEN=xxx...
 3. Confirmar criação de usuário no Supabase
 4. Confirmar criação de cliente no Trainerize
 5. Verificar recebimento de email
-6. Verificar recebimento de WhatsApp (se configurado)
+6. Verificar recebimento de App chat (se configurado)
 7. Login no dashboard
 8. Verificar stats do Trainerize aparecendo
 
@@ -635,7 +635,7 @@ TWILIO_AUTH_TOKEN=xxx...
 |---------|--------------|-------|
 | Trainerize Business | $50-100 | Depende do plano |
 | Resend (Emails) | $10-20 | 3.000 emails/mês grátis |
-| Twilio (WhatsApp) | $20-50 | Opcional, $0.005/msg |
+| Twilio (App chat) | $20-50 | Opcional, $0.005/msg |
 | Supabase Edge Functions | Incluído | Free tier: 500k req/mês |
 | **TOTAL** | **$80-170/mês** | Paga-se com 2-3 clientes novos |
 
@@ -654,7 +654,7 @@ TWILIO_AUTH_TOKEN=xxx...
    - Setup de emails
 
 3. **Médio prazo (Próximo mês):**
-   - WhatsApp automation
+   - App chat automation
    - Relatórios avançados
    - Mobile app notifications
 
@@ -678,3 +678,5 @@ TWILIO_AUTH_TOKEN=xxx...
 Comece pela **Fase 1** e avance passo a passo. Documente tudo e faça backups regulares.
 
 🎯 **Meta:** Ter a integração básica funcionando em 7-10 dias.
+
+

@@ -124,19 +124,20 @@ Hi ${userName},
 Thank you for reaching out! I've received your message and will get back to you within 24-48 hours.
 
 In the meantime, feel free to:
-• Follow me on Instagram @garcia.builder for daily tips
-• Check out my transformation stories at garciabuilder.com/transformations
-• Book a free consultation call if you'd like to chat sooner
+- Follow me on Instagram @garcia.builder for daily tips
+- Check out transformation stories at garciabuilder.com
+- Book a free consultation call here: https://calendly.com/andrenjulio072/consultation
 
 Looking forward to speaking with you soon!
 
 Best regards,
 Andre Garcia
 Garcia Builder - Online Coaching
-📧 coach@garciabuilder.com
-📱 WhatsApp: +447508497586
-🌐 garciabuilder.com
-      `);
+Email: coach@garciabuilder.com
+Calendly: https://calendly.com/andrenjulio072/consultation
+Site: garciabuilder.com
+• Book a free consultation call if you'd like to chat sooner
+
 
       // Send confirmation email via Formspree
       await fetch('https://formspree.io/f/mldpgrwq', {
@@ -273,3 +274,11 @@ Garcia Builder - Online Coaching
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') form.requestSubmit();
   });
 })();
+
+
+
+
+
+
+
+

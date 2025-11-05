@@ -1,5 +1,5 @@
 1)implementar pdf real/ receitas treinos free
-2)WhatsApp AI
+2)In-app chat AI
 4)implementar trainer message direto no site. conversas entre trainer e aluno.
 3)melhorar SEO, automatizar vendas
 5)criar business email info@garciabuilder.com, etc
@@ -8,4 +8,5 @@ opcoes futuras:
 1) conectar com trainarize blogs
 3) criar e desenvolver e-book gratuito
 4) criar um online shop com conteudo digital: treino, receitas,	 vegatarianos, veganos, dieta,etc.
+
 

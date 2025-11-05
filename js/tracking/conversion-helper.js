@@ -19,9 +19,9 @@
       return false;
     };
   }
-  // Auto-bind on WhatsApp or any link marked with data-track-conv
+  // Auto-bind on WhatsApp/contact float or any link marked with data-track-conv
   document.addEventListener('click', function(e){
-    var a = e.target.closest && e.target.closest('a.whatsapp-float, a[data-track-conv]');
+    var a = e.target.closest && e.target.closest('a.whatsapp-float, a.contact-float, a[data-track-conv]');
     if (a && a.href) {
       if (typeof window.gtag_report_conversion === 'function') {
         e.preventDefault();

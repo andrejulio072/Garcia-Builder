@@ -52,7 +52,7 @@
 - **Features**:
   - Page view tracking
   - Coaching inquiry tracking (€50 value)
-  - WhatsApp click tracking
+  - Contact/Calendly click tracking
   - CTA button tracking
   - Blog article click tracking
   - Pricing plan tracking
@@ -280,3 +280,4 @@ Seguimos os padrões dos maiores projetos do GitHub (Bootstrap, React, Tailwind,
 ---
 
 *Generated: 2025-01-25 | Phase 3 Complete*
+

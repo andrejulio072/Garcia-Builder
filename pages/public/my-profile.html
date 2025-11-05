@@ -918,7 +918,7 @@
                         </div>
 
                         <div class="text-end mt-4">
-                            <button type="submit" class="btn btn-save">
+                            <button type="button" class="btn btn-save" onclick="document.getElementById('basic-info-form').dispatchEvent(new Event('submit', {bubbles: true, cancelable: true}));">
                                 <i class="fas fa-save"></i> Save Basic Info
                             </button>
                         </div>
@@ -1161,7 +1161,7 @@
                         </div>
 
                         <div class="text-end mt-4">
-                            <button type="submit" class="btn btn-save">
+                            <button type="button" class="btn btn-save" onclick="document.getElementById('body-metrics-form').dispatchEvent(new Event('submit', {bubbles: true, cancelable: true}));">
                                 <i class="fas fa-save"></i> Save Measurements
                             </button>
                         </div>
@@ -1317,7 +1317,7 @@
                         </div>
 
                         <div class="text-end mt-4">
-                            <button type="submit" class="btn btn-save">
+                            <button type="button" class="btn btn-save" onclick="document.getElementById('preferences-form').dispatchEvent(new Event('submit', {bubbles: true, cancelable: true}));">
                                 <i class="fas fa-save"></i> Save Preferences
                             </button>
                         </div>
@@ -1418,7 +1418,7 @@
                         </div>
 
                         <div class="text-end mt-4">
-                            <button type="submit" class="btn btn-save">
+                            <button type="button" class="btn btn-save" onclick="document.getElementById('macros-form').dispatchEvent(new Event('submit', {bubbles: true, cancelable: true}));">
                                 <i class="fas fa-save"></i> Save Macros
                             </button>
                         </div>
@@ -1477,7 +1477,7 @@
                         </div>
 
                         <div class="text-end mt-3">
-                            <button type="submit" class="btn btn-save">
+                            <button type="button" class="btn btn-save" onclick="document.getElementById('habits-form').dispatchEvent(new Event('submit', {bubbles: true, cancelable: true}));">
                                 <i class="fas fa-save"></i> Save Today
                             </button>
                         </div>

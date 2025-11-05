@@ -101,10 +101,18 @@
   );
 
   const mergeProfileSnapshot = (snapshot) => {
-    if (!snapshot || typeof snapshot !== 'object') return;
+    if (!snapshot || typeof snapshot !== 'object') {
+      console.log('⚠️ [MERGE] Snapshot inválido ou vazio');
+      return;
+    }
+
+    console.log('🔄 [MERGE] Iniciando merge de snapshot');
+    console.log('🔍 [MERGE] profileData.basic ANTES do merge:', profileData.basic);
+    console.log('🔍 [MERGE] snapshot.basic:', snapshot.basic);
 
     if (snapshot.basic && typeof snapshot.basic === 'object') {
       profileData.basic = mergeObjects(profileData.basic, snapshot.basic);
+      console.log('✅ [MERGE] profileData.basic APÓS merge:', profileData.basic);
     }
 
     if (snapshot.body_metrics && typeof snapshot.body_metrics === 'object') {

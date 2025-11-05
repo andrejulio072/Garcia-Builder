@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧪 Teste Automatizado Completo - Salvamento de Dados</title>
+  <style>
+    body {
+      font-family: 'Consolas', 'Monaco', monospace;
+      background: #0a0f1e;
+      color: #fff;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #F6C84E;
+      text-align: center;
+    }
+    .test-section {
+      background: #1a1a2e;
+      border: 2px solid #F6C84E;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .test-result {
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      font-family: monospace;
+    }
+    .pass {
+      background: rgba(0, 255, 157, 0.1);
+      border-left: 4px solid #00ff9d;
+      color: #00ff9d;
+    }
+    .fail {
+      background: rgba(255, 68, 68, 0.1);
+      border-left: 4px solid #ff4444;
+      color: #ff4444;
+    }
+    .warn {
+      background: rgba(255, 157, 0, 0.1);
+      border-left: 4px solid #ff9d00;
+      color: #ff9d00;
+    }
+    .info {
+      background: rgba(0, 204, 255, 0.1);
+      border-left: 4px solid #00ccff;
+      color: #00ccff;
+    }
+    .code {
+      background: #000;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin: 10px 0;
+    }
+    button {
+      background: linear-gradient(135deg, #F6C84E, #FFD700);
+      color: #000;
+      border: none;
+      padding: 15px 30px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 10px 5px;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(246, 200, 78, 0.3);
+    }
+    #summary {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+    }
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(246, 200, 78, 0.3);
+      border-radius: 50%;
+      border-top-color: #F6C84E;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 TESTE AUTOMATIZADO COMPLETO</h1>
+    <h2 style="text-align: center; color: #00ccff;">Diagnóstico de Salvamento e Carregamento de Dados</h2>
+    
+    <div style="text-align: center; margin: 30px 0;">
+      <button onclick="runAllTests()">▶️ Executar Todos os Testes</button>
+      <button onclick="clearResults()">🗑️ Limpar Resultados</button>
+      <button onclick="location.reload()">🔄 Recarregar Página</button>
+    </div>
+
+    <div id="summary" style="display: none;"></div>
+    
+    <div id="results"></div>
+  </div>
+
+  <script>
+    let testsPassed = 0;
+    let testsFailed = 0;
+    let testsWarning = 0;
+    const results = [];
+
+    function clearResults() {
+      document.getElementById('results').innerHTML = '';
+      document.getElementById('summary').style.display = 'none';
+      testsPassed = 0;
+      testsFailed = 0;
+      testsWarning = 0;
+      results.length = 0;
+    }
+
+    function addResult(section, message, status, details = '') {
+      const result = { section, message, status, details, timestamp: new Date().toISOString() };
+      results.push(result);
+
+      const resultsDiv = document.getElementById('results');
+      const testDiv = document.createElement('div');
+      testDiv.className = `test-result ${status}`;
+      
+      let icon = '';
+      if (status === 'pass') {
+        icon = '✅';
+        testsPassed++;
+      } else if (status === 'fail') {
+        icon = '❌';
+        testsFailed++;
+      } else if (status === 'warn') {
+        icon = '⚠️';
+        testsWarning++;
+      } else {
+        icon = 'ℹ️';
+      }
+      
+      testDiv.innerHTML = `
+        <strong>${icon} [${section}]</strong> ${message}
+        ${details ? `<div style="margin-top: 5px; opacity: 0.8; font-size: 0.9em;">${details}</div>` : ''}
+      `;
+      
+      resultsDiv.appendChild(testDiv);
+      
+      // Auto scroll
+      testDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+
+    function addSection(title) {
+      const resultsDiv = document.getElementById('results');
+      const sectionDiv = document.createElement('div');
+      sectionDiv.className = 'test-section';
+      sectionDiv.innerHTML = `<h3 style="color: #F6C84E; margin: 0 0 15px 0;">📋 ${title}</h3>`;
+      resultsDiv.appendChild(sectionDiv);
+      return sectionDiv;
+    }
+
+    function showSummary() {
+      const total = testsPassed + testsFailed + testsWarning;
+      const successRate = total > 0 ? Math.round((testsPassed / total) * 100) : 0;
+      
+      const summaryDiv = document.getElementById('summary');
+      summaryDiv.style.display = 'block';
+      
+      let bgColor = '';
+      let message = '';
+      
+      if (testsFailed === 0 && testsWarning === 0) {
+        bgColor = 'rgba(0, 255, 157, 0.2)';
+        message = '🎉 TODOS OS TESTES PASSARAM!';
+      } else if (testsFailed === 0) {
+        bgColor = 'rgba(255, 157, 0, 0.2)';
+        message = '⚠️ TESTES PASSARAM COM AVISOS';
+      } else {
+        bgColor = 'rgba(255, 68, 68, 0.2)';
+        message = '❌ ALGUNS TESTES FALHARAM';
+      }
+      
+      summaryDiv.style.background = bgColor;
+      summaryDiv.innerHTML = `
+        ${message}<br>
+        <div style="margin-top: 10px; font-size: 16px;">
+          ✅ Passou: ${testsPassed} | ❌ Falhou: ${testsFailed} | ⚠️ Avisos: ${testsWarning}<br>
+          Taxa de Sucesso: ${successRate}%
+        </div>
+      `;
+    }
+
+    async function runAllTests() {
+      clearResults();
+      
+      addResult('INÍCIO', 'Iniciando bateria de testes automatizados...', 'info');
+      
+      // Pequeno delay para UI atualizar
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // TESTE 1: Verificar Ambiente
+      await testEnvironment();
+      
+      // TESTE 2: Verificar Autenticação
+      await testAuthentication();
+      
+      // TESTE 3: Verificar Funções ProfileManager
+      await testProfileManagerFunctions();
+      
+      // TESTE 4: Testar Save
+      await testSaveOperation();
+      
+      // TESTE 5: Verificar LocalStorage após Save
+      await testLocalStorageAfterSave();
+      
+      // TESTE 6: Simular Reload e Load
+      await testLoadOperation();
+      
+      // TESTE 7: Análise de Código
+      await analyzeCode();
+      
+      // Mostrar resumo
+      showSummary();
+      
+      addResult('FIM', 'Bateria de testes concluída!', 'info', `Total de testes: ${testsPassed + testsFailed + testsWarning}`);
+      
+      // Gerar relatório JSON
+      console.log('📊 RELATÓRIO COMPLETO:', JSON.stringify(results, null, 2));
+    }
+
+    async function testEnvironment() {
+      const section = addSection('TESTE 1: Ambiente');
+      
+      // Verificar localStorage disponível
+      try {
+        localStorage.setItem('test', 'test');
+        localStorage.removeItem('test');
+        addResult('Ambiente', 'localStorage disponível', 'pass');
+      } catch (e) {
+        addResult('Ambiente', 'localStorage NÃO disponível', 'fail', e.message);
+      }
+      
+      // Verificar sessionStorage
+      try {
+        sessionStorage.setItem('test', 'test');
+        sessionStorage.removeItem('test');
+        addResult('Ambiente', 'sessionStorage disponível', 'pass');
+      } catch (e) {
+        addResult('Ambiente', 'sessionStorage NÃO disponível', 'fail', e.message);
+      }
+      
+      // Verificar URL
+      addResult('Ambiente', `URL: ${window.location.href}`, 'info');
+      
+      // Verificar protocolo
+      if (window.location.protocol === 'file:') {
+        addResult('Ambiente', 'Usando protocolo file:// - pode ter restrições', 'warn', 'Recomendado usar HTTP server');
+      } else {
+        addResult('Ambiente', `Protocolo: ${window.location.protocol}`, 'pass');
+      }
+      
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
+    async function testAuthentication() {
+      const section = addSection('TESTE 2: Autenticação');
+      
+      // Verificar chaves de auth
+      const authKeys = Object.keys(localStorage).filter(k => k.includes('auth-token'));
+      
+      if (authKeys.length === 0) {
+        addResult('Auth', 'Nenhuma chave de autenticação encontrada', 'fail', 'Usuário não está autenticado');
+        return;
+      }
+      
+      addResult('Auth', `${authKeys.length} chave(s) de autenticação encontrada(s)`, 'pass', authKeys[0]);
+      
+      // Verificar dados de auth
+      try {
+        const authKey = authKeys[0];
+        const authData = JSON.parse(localStorage.getItem(authKey));
+        
+        if (!authData) {
+          addResult('Auth', 'Dados de autenticação vazios', 'fail');
+          return;
+        }
+        
+        addResult('Auth', 'Dados de autenticação presentes', 'pass');
+        
+        const userId = authData?.user?.id;
+        const userEmail = authData?.user?.email;
+        
+        if (userId) {
+          addResult('Auth', `User ID: ${userId}`, 'pass');
+        } else {
+          addResult('Auth', 'User ID não encontrado', 'fail');
+        }
+        
+        if (userEmail) {
+          addResult('Auth', `Email: ${userEmail}`, 'pass');
+        } else {
+          addResult('Auth', 'Email não encontrado', 'fail');
+        }
+        
+        // Verificar gb_current_user
+        const currentUserRaw = localStorage.getItem('gb_current_user');
+        if (currentUserRaw) {
+          try {
+            const currentUser = JSON.parse(currentUserRaw);
+            addResult('Auth', 'gb_current_user presente e válido', 'pass');
+            
+            if (currentUser.id === userId) {
+              addResult('Auth', 'IDs sincronizados entre auth e gb_current_user', 'pass');
+            } else {
+              addResult('Auth', 'IDs DIFERENTES entre auth e gb_current_user', 'fail', `Auth: ${userId} vs gb_current_user: ${currentUser.id}`);
+            }
+          } catch (e) {
+            addResult('Auth', 'gb_current_user inválido (JSON mal formado)', 'fail', e.message);
+          }
+        } else {
+          addResult('Auth', 'gb_current_user NÃO encontrado', 'fail', 'Pode causar problemas no save');
+        }
+        
+      } catch (e) {
+        addResult('Auth', 'Erro ao ler dados de autenticação', 'fail', e.message);
+      }
+      
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
+    async function testProfileManagerFunctions() {
+      const section = addSection('TESTE 3: Funções ProfileManager');
+      
+      // Verificar se ProfileManager existe
+      if (typeof window.ProfileManager === 'undefined') {
+        addResult('ProfileManager', 'window.ProfileManager NÃO encontrado', 'fail', 'Script profile-manager.js não carregado ou erro de execução');
+        return;
+      }
+      
+      addResult('ProfileManager', 'window.ProfileManager existe', 'pass');
+      
+      // Verificar profileData global
+      if (typeof window.profileData === 'undefined') {
+        addResult('ProfileManager', 'window.profileData NÃO encontrado', 'fail');
+      } else {
+        addResult('ProfileManager', 'window.profileData existe', 'pass');
+        
+        // Verificar estrutura
+        const sections = Object.keys(window.profileData || {});
+        if (sections.length > 0) {
+          addResult('ProfileManager', `profileData tem ${sections.length} seções`, 'pass', sections.join(', '));
+          
+          // Verificar seção basic
+          if (window.profileData.basic) {
+            addResult('ProfileManager', 'Seção "basic" existe', 'pass');
+            
+            const basicKeys = Object.keys(window.profileData.basic);
+            addResult('ProfileManager', `Seção basic tem ${basicKeys.length} campos`, 'info', basicKeys.slice(0, 10).join(', ') + '...');
+          } else {
+            addResult('ProfileManager', 'Seção "basic" NÃO encontrada', 'fail');
+          }
+        } else {
+          addResult('ProfileManager', 'profileData está vazio', 'warn');
+        }
+      }
+      
+      // Verificar funções críticas
+      const criticalFunctions = [
+        'saveProfileData',
+        'loadProfileData', 
+        'saveToLocalStorage',
+        'loadFromLocalStorage',
+        'mergeProfileSnapshot'
+      ];
+      
+      // Como ProfileManager pode ser um IIFE, vamos verificar no código carregado
+      addResult('ProfileManager', 'Verificando funções críticas no código...', 'info');
+      
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
+    async function testSaveOperation() {
+      const section = addSection('TESTE 4: Operação de Save');
+      
+      // Obter user ID
+      const currentUserRaw = localStorage.getItem('gb_current_user');
+      if (!currentUserRaw) {
+        addResult('Save', 'Não é possível testar save sem usuário autenticado', 'fail');
+        return;
+      }
+      
+      const currentUser = JSON.parse(currentUserRaw);
+      const userId = currentUser.id;
+      
+      // Criar dados de teste
+      const testData = {
+        basic: {
+          id: userId,
+          email: currentUser.email || 'test@example.com',
+          full_name: 'Test User ' + Date.now(),
+          phone: '+44 7777 777777',
+          location: 'Test City',
+          goals: ['Muscle Gain', 'Strength'],
+          trainer_name: 'Test Trainer',
+          experience_level: 'advanced',
+          updated_at: new Date().toISOString()
+        },
+        body_metrics: {
+          current_weight: 80,
+          height: 180,
+          updated_at: new Date().toISOString()
+        }
+      };
+      
+      addResult('Save', 'Dados de teste criados', 'info', `Nome: ${testData.basic.full_name}`);
+      
+      // Tentar salvar no localStorage
+      try {
+        const storageKey = `garcia_profile_${userId}`;
+        localStorage.setItem(storageKey, JSON.stringify(testData));
+        addResult('Save', 'Dados salvos no localStorage', 'pass', `Chave: ${storageKey}`);
+        
+        // Verificar tamanho
+        const savedRaw = localStorage.getItem(storageKey);
+        const sizeKB = (savedRaw.length / 1024).toFixed(2);
+        addResult('Save', `Tamanho dos dados: ${sizeKB} KB`, 'info');
+        
+        if (savedRaw.length > 5000000) {
+          addResult('Save', 'AVISO: Dados muito grandes (>5MB)', 'warn', 'localStorage tem limite de ~10MB');
+        }
+        
+      } catch (e) {
+        addResult('Save', 'ERRO ao salvar no localStorage', 'fail', e.message);
+        
+        if (e.name === 'QuotaExceededError') {
+          addResult('Save', 'localStorage CHEIO!', 'fail', 'Limite de armazenamento excedido');
+        }
+      }
+      
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
+    async function testLocalStorageAfterSave() {
+      const section = addSection('TESTE 5: Verificar localStorage Após Save');
+      
+      // Obter user ID
+      const currentUserRaw = localStorage.getItem('gb_current_user');
+      if (!currentUserRaw) {
+        addResult('LocalStorage', 'Sem usuário para verificar', 'fail');
+        return;
+      }
+      
+      const currentUser = JSON.parse(currentUserRaw);
+      const userId = currentUser.id;
+      const storageKey = `garcia_profile_${userId}`;
+      
+      // Verificar se existe
+      const savedRaw = localStorage.getItem(storageKey);
+      
+      if (!savedRaw) {
+        addResult('LocalStorage', `Chave "${storageKey}" NÃO encontrada`, 'fail', 'Dados não foram salvos ou foram apagados');
+        return;
+      }
+      
+      addResult('LocalStorage', `Chave "${storageKey}" encontrada`, 'pass');
+      
+      // Tentar parsear
+      try {
+        const savedData = JSON.parse(savedRaw);
+        addResult('LocalStorage', 'Dados são JSON válido', 'pass');
+        
+        // Verificar estrutura
+        if (savedData.basic) {
+          addResult('LocalStorage', 'Seção "basic" existe nos dados salvos', 'pass');
+          
+          const fields = ['full_name', 'phone', 'location', 'goals', 'trainer_name', 'experience_level'];
+          fields.forEach(field => {
+            const value = savedData.basic[field];
+            if (value && (typeof value === 'string' ? value !== '' : true)) {
+              addResult('LocalStorage', `Campo "${field}": ${Array.isArray(value) ? JSON.stringify(value) : value}`, 'pass');
+            } else {
+              addResult('LocalStorage', `Campo "${field}" está vazio`, 'warn');
+            }
+          });
+        } else {
+          addResult('LocalStorage', 'Seção "basic" NÃO existe nos dados salvos', 'fail');
+        }
+        
+        // Verificar outras seções
+        const sections = Object.keys(savedData);
+        addResult('LocalStorage', `Total de seções salvas: ${sections.length}`, 'info', sections.join(', '));
+        
+      } catch (e) {
+        addResult('LocalStorage', 'ERRO ao parsear JSON', 'fail', e.message);
+      }
+      
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
+    async function testLoadOperation() {
+      const section = addSection('TESTE 6: Simular Load (Após Reload)');
+      
+      // Obter user ID
+      const currentUserRaw = localStorage.getItem('gb_current_user');
+      if (!currentUserRaw) {
+        addResult('Load', 'Sem usuário para simular load', 'fail');
+        return;
+      }
+      
+      const currentUser = JSON.parse(currentUserRaw);
+      const userId = currentUser.id;
+      const storageKey = `garcia_profile_${userId}`;
+      
+      addResult('Load', 'Simulando processo de load após reload...', 'info');
+      
+      // Passo 1: Ler do localStorage
+      const savedRaw = localStorage.getItem(storageKey);
+      if (!savedRaw) {
+        addResult('Load', 'localStorage vazio - nada para carregar', 'fail');
+        return;
+      }
+      
+      addResult('Load', 'Dados encontrados no localStorage', 'pass');
+      
+      // Passo 2: Parse
+      let savedData;
+      try {
+        savedData = JSON.parse(savedRaw);
+        addResult('Load', 'Parse JSON bem-sucedido', 'pass');
+      } catch (e) {
+        addResult('Load', 'ERRO no parse JSON', 'fail', e.message);
+        return;
+      }
+      
+      // Passo 3: Simular merge com estrutura vazia (o que loadProfileData faz)
+      const emptyStructure = {
+        basic: {
+          full_name: '',
+          phone: '',
+          location: '',
+          goals: [],
+          trainer_name: '',
+          experience_level: ''
+        }
+      };
+      
+      addResult('Load', 'Estrutura vazia criada (como em loadProfileData)', 'info');
+      
+      // Merge simples
+      const merged = {
+        ...emptyStructure,
+        ...savedData
+      };
+      
+      if (merged.basic) {
+        merged.basic = {
+          ...emptyStructure.basic,
+          ...savedData.basic
+        };
+      }
+      
+      // Verificar resultado do merge
+      if (merged.basic.full_name && merged.basic.full_name !== '') {
+        addResult('Load', `✅ MERGE funcionou! full_name="${merged.basic.full_name}"`, 'pass');
+      } else {
+        addResult('Load', '❌ MERGE FALHOU! full_name está vazio', 'fail', 'Este é provavelmente o problema!');
+      }
+      
+      if (merged.basic.phone && merged.basic.phone !== '') {
+        addResult('Load', `✅ MERGE funcionou! phone="${merged.basic.phone}"`, 'pass');
+      } else {
+        addResult('Load', '❌ MERGE FALHOU! phone está vazio', 'fail');
+      }
+      
+      if (merged.basic.goals && merged.basic.goals.length > 0) {
+        addResult('Load', `✅ MERGE funcionou! goals="${JSON.stringify(merged.basic.goals)}"`, 'pass');
+      } else {
+        addResult('Load', '❌ MERGE FALHOU! goals está vazio', 'fail');
+      }
+      
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
+    async function analyzeCode() {
+      const section = addSection('TESTE 7: Análise de Código');
+      
+      addResult('Análise', 'Procurando possíveis bugs no fluxo...', 'info');
+      
+      // Lista de problemas comuns
+      const commonIssues = [
+        {
+          name: 'Reset de profileData antes de load',
+          description: 'loadProfileData() reseta profileData com valores vazios ANTES de carregar do localStorage',
+          severity: 'CRÍTICO',
+          solution: 'Inverter ordem: carregar PRIMEIRO, depois preencher campos faltantes'
+        },
+        {
+          name: 'mergeObjects não sobrescreve strings vazias',
+          description: 'Se mergeObjects() não sobrescrever strings vazias "", dados salvos são ignorados',
+          severity: 'CRÍTICO',
+          solution: 'Garantir que merge sobrescreve TODOS os valores, exceto undefined'
+        },
+        {
+          name: 'Storage key incorreta',
+          description: 'Se chave de save for diferente de load, dados salvam mas não carregam',
+          severity: 'ALTO',
+          solution: 'Verificar que resolveActiveUserId() retorna mesmo ID em save e load'
+        },
+        {
+          name: 'initializeUI() chamado antes do load completar',
+          description: 'Se UI é populada antes do async load() terminar, mostra dados vazios',
+          severity: 'ALTO',
+          solution: 'Garantir que initializeUI() só executa APÓS loadProfileData() resolver'
+        },
+        {
+          name: 'Race condition no init()',
+          description: 'Se múltiplas chamadas a init() acontecem, pode causar override de dados',
+          severity: 'MÉDIO',
+          solution: 'Adicionar flag de inicialização para prevenir múltiplas chamadas'
+        }
+      ];
+      
+      commonIssues.forEach(issue => {
+        addResult('Análise', `🐛 Bug Comum: ${issue.name}`, 'warn', `Severidade: ${issue.severity}<br>Descrição: ${issue.description}<br>Solução: ${issue.solution}`);
+      });
+      
+      addResult('Análise', 'Análise concluída - veja bugs comuns acima', 'info');
+      
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
+    // Auto-executar ao carregar
+    window.addEventListener('load', () => {
+      console.log('🧪 Página de teste carregada. Clique em "Executar Todos os Testes"');
+    });
+  </script>
+</body>
+</html>

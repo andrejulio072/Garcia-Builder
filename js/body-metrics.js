@@ -708,24 +708,6 @@
     }
   };
 
-      combined.sort((a, b) => normalizeDate(b) - normalizeDate(a));
-
-      bodyMetrics = combined;
-
-      console.log(`📊 Loaded ${bodyMetrics.length} body metric entries (cloud: ${cloudEntries.length}, local: ${localEntries.length})`);
-
-      // Refresh UI with the latest combined dataset
-      loadCurrentMetrics();
-      loadRecentEntries();
-      updateChart();
-
-      return bodyMetrics;
-    } catch (error) {
-      console.error('❌ Error loading body metrics:', error);
-      return [];
-    }
-  };
-
   const saveBodyMetrics = async (entryData) => {
     let normalizedEntry = { ...(entryData || {}) };
     try {
@@ -807,11 +789,6 @@
       }
     } catch (e) {
       console.warn('BodyMetrics: metrics sync skipped:', e?.message || e);
-    }
-  }
-
-    } catch (e) {
-      console.warn('Metrics sync skipped:', e?.message || e);
     }
   }
 

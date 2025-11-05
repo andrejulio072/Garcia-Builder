@@ -620,6 +620,152 @@
             background: rgba(255, 99, 99, 0.28);
             color: #fff;
         }
+
+        /* Consultation Options Styles */
+        .consultation-options {
+            margin-top: 1.5rem;
+        }
+
+        .section-title-gold {
+            margin-bottom: 20px;
+            color: #F6C84E;
+        }
+
+        .section-title-gold-sm {
+            margin-bottom: 15px;
+            color: #F6C84E;
+        }
+
+        .consultation-card {
+            display: block;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 2rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .consultation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #0069ff, #4d9fff);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .consultation-card:hover::before {
+            opacity: 1;
+        }
+
+        .consultation-card:hover {
+            border-color: rgba(246, 200, 78, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .consultation-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            transition: transform 0.3s ease;
+        }
+
+        .consultation-card:hover .consultation-icon {
+            transform: scale(1.1);
+        }
+
+        .consultation-card h5 {
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .consultation-card p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .consultation-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .consultation-features span {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+        }
+
+        .consultation-features i {
+            color: #F6C84E;
+            margin-right: 0.3rem;
+        }
+
+        .consultation-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .consultation-card:hover .consultation-btn {
+            background: linear-gradient(135deg, #0069ff, #4d9fff);
+            color: #fff;
+        }
+
+        .consultation-card:hover .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: #fff;
+        }
+
+        /* WhatsApp specific gradient for the card border on hover */
+        .consultation-card:has(.whatsapp-btn)::before {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+        }
+
+        /* Icon backgrounds */
+        .consultation-icon.calendly-icon {
+            background: linear-gradient(135deg, #0069ff, #4d9fff);
+        }
+
+        .consultation-icon.whatsapp-icon {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+        }
+
+        @media (max-width: 768px) {
+            .consultation-card {
+                margin-bottom: 1rem;
+            }
+            
+            .consultation-icon {
+                width: 60px;
+                height: 60px;
+            }
+        }
     </style>
 </head>
 <body class="profile-page">
@@ -1380,9 +1526,71 @@
                         <i class="fas fa-video"></i>
                         Meetings & Check-ins
                     </h3>
-                    <div class="alert-custom">
-                        <i class="fas fa-info-circle me-2"></i>
-                        Schedule calls and review previous check-ins here. (Coming soon)
+                    
+                    <!-- Consultation Options -->
+                    <div class="consultation-options">
+                        <h4 class="section-title-gold">
+                            <i class="fas fa-calendar-alt me-2"></i>
+                            Schedule Your Consultation
+                        </h4>
+                        
+                        <div class="row g-3">
+                            <!-- Calendly Option -->
+                            <div class="col-md-6">
+                                <a href="https://calendly.com/andrenjulio072/consultation" 
+                                   target="_blank" 
+                                   rel="noopener" 
+                                   class="consultation-card">
+                                    <div class="consultation-icon calendly-icon">
+                                        <i class="fas fa-calendar-check fa-2x"></i>
+                                    </div>
+                                    <h5>Book Free Consultation</h5>
+                                    <p>Schedule a video call at your convenience</p>
+                                    <div class="consultation-features">
+                                        <span><i class="fas fa-check-circle me-1"></i> Video Call</span>
+                                        <span><i class="fas fa-check-circle me-1"></i> 30 Minutes</span>
+                                        <span><i class="fas fa-check-circle me-1"></i> Free</span>
+                                    </div>
+                                    <div class="consultation-btn">
+                                        Book Now <i class="fas fa-arrow-right ms-2"></i>
+                                    </div>
+                                </a>
+                            </div>
+                            
+                            <!-- WhatsApp Option -->
+                            <div class="col-md-6">
+                                <a href="https://wa.me/447354757954?text=Hi%20Andre%2C%20I%27d%20like%20to%20discuss%20my%20fitness%20goals" 
+                                   target="_blank" 
+                                   rel="noopener" 
+                                   class="consultation-card">
+                                    <div class="consultation-icon whatsapp-icon">
+                                        <i class="fab fa-whatsapp fa-2x"></i>
+                                    </div>
+                                    <h5>WhatsApp Chat</h5>
+                                    <p>Message me directly for quick questions</p>
+                                    <div class="consultation-features">
+                                        <span><i class="fas fa-check-circle me-1"></i> Instant Reply</span>
+                                        <span><i class="fas fa-check-circle me-1"></i> Flexible</span>
+                                        <span><i class="fas fa-check-circle me-1"></i> Free</span>
+                                    </div>
+                                    <div class="consultation-btn whatsapp-btn">
+                                        Start Chat <i class="fab fa-whatsapp ms-2"></i>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upcoming Meetings -->
+                    <div class="mt-4">
+                        <h4 class="section-title-gold-sm">
+                            <i class="fas fa-clock me-2"></i>
+                            Your Scheduled Meetings
+                        </h4>
+                        <div class="alert-custom">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Your upcoming meetings and check-ins will appear here once scheduled.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1390,10 +1598,6 @@
     </main>
 
     <div data-component="footer" data-theme="dark"></div>
-    <a class="contact-float" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener" aria-label="Schedule a free consultation">
-        <i class="fas fa-calendar-check" aria-hidden="true"></i>
-        Book Free Consultation
-    </a>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

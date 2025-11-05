@@ -760,7 +760,7 @@
             .consultation-card {
                 margin-bottom: 1rem;
             }
-            
+
             .consultation-icon {
                 width: 60px;
                 height: 60px;
@@ -840,7 +840,7 @@
                         <span data-i18n="dashboard.personal_information">Personal Information</span>
                     </h3>
 
-                    <form id="basic-info-form" data-profile-section="basic" action="" novalidate>
+                    <form id="basic-info-form" data-profile-section="basic" novalidate onsubmit="return false;">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label for="full_name" class="form-label" data-i18n="dashboard.full_name">Full Name</label>
@@ -1086,7 +1086,7 @@
                         </div>
                     </div>
 
-                    <form id="body-metrics-form" data-profile-section="body_metrics" action="" novalidate>
+                    <form id="body-metrics-form" data-profile-section="body_metrics" novalidate onsubmit="return false;">
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <label for="current_weight" class="form-label">Current Weight</label>
@@ -1273,7 +1273,7 @@
                         Preferences & Settings
                     </h3>
 
-                    <form id="preferences-form" data-profile-section="preferences" action="" novalidate>
+                    <form id="preferences-form" data-profile-section="preferences" novalidate onsubmit="return false;">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label for="units" class="form-label">Unit System</label>
@@ -1350,7 +1350,7 @@
                         Macronutrients
                     </h3>
 
-                    <form id="macros-form" data-profile-section="macros" action="" novalidate>
+                    <form id="macros-form" data-profile-section="macros" novalidate onsubmit="return false;">
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <label for="macros_goal" class="form-label">Goal</label>
@@ -1439,7 +1439,7 @@
                         Habits & Routines
                     </h3>
 
-                    <form id="habits-form" data-profile-section="habits" action="" novalidate>
+                    <form id="habits-form" data-profile-section="habits" novalidate onsubmit="return false;">
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <label for="habits_water" class="form-label">Water (ml)</label>
@@ -1526,20 +1526,20 @@
                         <i class="fas fa-video"></i>
                         Meetings & Check-ins
                     </h3>
-                    
+
                     <!-- Consultation Options -->
                     <div class="consultation-options">
                         <h4 class="section-title-gold">
                             <i class="fas fa-calendar-alt me-2"></i>
                             Schedule Your Consultation
                         </h4>
-                        
+
                         <div class="row g-3">
                             <!-- Calendly Option -->
                             <div class="col-md-6">
-                                <a href="https://calendly.com/andrenjulio072/consultation" 
-                                   target="_blank" 
-                                   rel="noopener" 
+                                <a href="https://calendly.com/andrenjulio072/consultation"
+                                   target="_blank"
+                                   rel="noopener"
                                    class="consultation-card">
                                     <div class="consultation-icon calendly-icon">
                                         <i class="fas fa-calendar-check fa-2x"></i>
@@ -1556,12 +1556,12 @@
                                     </div>
                                 </a>
                             </div>
-                            
+
                             <!-- WhatsApp Option -->
                             <div class="col-md-6">
-                                <a href="https://wa.me/447354757954?text=Hi%20Andre%2C%20I%27d%20like%20to%20discuss%20my%20fitness%20goals" 
-                                   target="_blank" 
-                                   rel="noopener" 
+                                <a href="https://wa.me/447354757954?text=Hi%20Andre%2C%20I%27d%20like%20to%20discuss%20my%20fitness%20goals"
+                                   target="_blank"
+                                   rel="noopener"
                                    class="consultation-card">
                                     <div class="consultation-icon whatsapp-icon">
                                         <i class="fab fa-whatsapp fa-2x"></i>
@@ -1580,7 +1580,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Upcoming Meetings -->
                     <div class="mt-4">
                         <h4 class="section-title-gold-sm">

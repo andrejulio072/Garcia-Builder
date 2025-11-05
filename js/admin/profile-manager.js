@@ -214,12 +214,12 @@
   const init = async () => {
     try {
       console.log('🔥 ProfileManager init START');
-      
+
       // Check authentication
       currentUser = await getCurrentUser();
       console.log('👤 Current user:', currentUser?.email || 'none');
       migrateGuestProfileStorage();
-      
+
       if (!currentUser) {
         console.warn('❌ No authenticated user, redirecting to login...');
         const ret = encodeURIComponent(window.location.pathname + window.location.search);
@@ -284,7 +284,7 @@
   const loadProfileData = async () => {
     try {
       console.log('📥 Loading profile data...');
-      
+
       // Initialize default profile structure
       profileData = {
         basic: {
@@ -380,8 +380,8 @@
       }
       if (!profileData.basic.avatar_url) {
         // Priority: picture (OAuth) > avatar_url > empty
-        profileData.basic.avatar_url = currentUser?.user_metadata?.picture || 
-                                       currentUser?.user_metadata?.avatar_url || 
+        profileData.basic.avatar_url = currentUser?.user_metadata?.picture ||
+                                       currentUser?.user_metadata?.avatar_url ||
                                        '';
         console.log('🖼️ Avatar URL set:', profileData.basic.avatar_url);
       }
@@ -566,10 +566,10 @@
     const silent = options?.silent === true;
     let supabaseSuccess = false;
     let supabaseError = null;
-    
+
     console.log(`🔥 saveProfileData START - section: ${section}, timestamp: ${new Date().toISOString()}`);
     console.log('📊 Current profileData snapshot:', JSON.stringify(profileData, null, 2).substring(0, 500));
-    
+
     try {
       const activeUserId = resolveActiveUserId();
     if (activeUserId) {
@@ -584,7 +584,7 @@
 
 
       console.log(`💾 Saving profile${section ? ` (${section})` : ''}...`);
-      
+
       // Update timestamp
       if (section) {
         if (!profileData[section]) {
@@ -620,7 +620,7 @@
       console.log('💿 Saving to localStorage...');
       saveToLocalStorage();
       console.log('✅ Saved to localStorage');
-      
+
       // Verify localStorage save
       const storageKey = currentUser?.id ? `garcia_profile_${currentUser.id}` : 'garcia_profile_guest';
       const savedData = localStorage.getItem(storageKey);
@@ -633,7 +633,7 @@
       } else {
         console.error('❌ CRITICAL: localStorage save failed - no data found after save!');
       }
-      
+
       syncAuthCache();
       window.authGuard?.addUserMenuToNavbar?.();
 
@@ -647,7 +647,7 @@
           showNotification('Profile updated (offline mode)!', 'success');
         }
       }
-      
+
       console.log('✅ Profile save complete - returning TRUE');
       return true;
     } catch (error) {
@@ -1155,7 +1155,7 @@
       console.warn('⚠️ profileData.activity not initialized, skipping dashboard stats update');
       return;
     }
-    
+
     const stats = {
       'workouts-completed': profileData.activity.workouts_completed || 0,
       'current-streak': profileData.activity.streak_days || 0,
@@ -1207,7 +1207,7 @@
   // Setup forms
   const setupForms = () => {
     console.log('📝 Setting up forms with profile data...');
-    
+
     // Basic info form
     const basicForm = document.getElementById('basic-info-form');
     if (basicForm) {
@@ -1273,7 +1273,7 @@
     } else {
       console.warn('⚠️ body-metrics-form not found');
     }
-    
+
     // Preferences form
     const preferencesForm = document.getElementById('preferences-form');
     if (preferencesForm) {
@@ -2009,7 +2009,7 @@
     }
 
     const form = event?.target || event?.currentTarget;
-    
+
     // BRUTAL ERROR TRACKING - Log EVERYTHING
     console.log('[ProfileManager] handleFormSubmit called', {
       hasEvent: !!event,
@@ -2081,12 +2081,12 @@
 
       // Update profile data based on section
       console.log(`📝 Extracting form data for section: ${section}`);
-      
+
       if (section === 'basic') {
         const entries = Object.fromEntries(formData);
         console.log('📋 Basic form entries:', entries);
         console.log('📊 profileData.basic BEFORE update:', JSON.stringify(profileData.basic));
-        
+
         // SAFE UPDATE: Check each property before setting
         Object.entries(entries).forEach(([key, value]) => {
           try {
@@ -2105,7 +2105,7 @@
             throw new Error(`Failed to set ${key}: ${err.message}`);
           }
         });
-        
+
         // Normalize birthday
         if (profileData.basic.birthday) {
           const v = profileData.basic.birthday;
@@ -2114,9 +2114,9 @@
             profileData.basic.birthday = `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
           }
         }
-        
+
         console.log('✅ Basic profileData AFTER update:', JSON.stringify(profileData.basic));
-        
+
       } else if (section === 'body_metrics') {
         if (!profileData.body_metrics) {
           console.error('❌ CRITICAL: profileData.body_metrics is undefined!');
@@ -2124,7 +2124,7 @@
           form.dataset.saving = 'false';
           return;
         }
-        
+
         Object.entries(Object.fromEntries(formData)).forEach(([key, value]) => {
           if (key.startsWith('measurements_')) {
             const measurementKey = key.replace('measurements_', '');
@@ -2143,7 +2143,7 @@
           form.dataset.saving = 'false';
           return;
         }
-        
+
         const units = formData.get('units');
         const language = formData.get('language');
         if (units) profileData.preferences.units = units;
@@ -2193,7 +2193,7 @@
 
       if (success) {
         console.log(`✅ Save successful for ${section}, updating UI...`);
-        
+
         if (section === 'basic') {
           console.log('🔄 Updating basic info display...');
           updateBasicInfoDisplay();
@@ -2235,7 +2235,7 @@
         console.log(`🔓 Released lock on form: ${form.id}`);
       }
     }
-    
+
     // CRITICAL: Return false to prevent any default form submission
     console.log('[ProfileManager] handleFormSubmit returning false to prevent page reload');
     return false;
@@ -2690,11 +2690,11 @@
           try {
             const base64Url = e.target.result;
             console.log('✅ Avatar converted to base64 (local only)');
-            
+
             // Update profile data
             profileData.basic.avatar_url = base64Url;
             await saveProfileData('basic');
-            
+
             resolve(base64Url);
           } catch (error) {
             reject(error);
@@ -2716,7 +2716,7 @@
       if (type === 'error') alertClass = 'alert-danger';
       else if (type === 'success') alertClass = 'alert-success';
       else if (type === 'warning') alertClass = 'alert-warning';
-    
+
     const notification = document.createElement('div');
       notification.className = `alert ${alertClass} position-fixed top-0 end-0 m-3`;
     notification.style.zIndex = '9999';

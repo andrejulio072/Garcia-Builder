@@ -918,7 +918,7 @@
                         </div>
 
                         <div class="text-end mt-4">
-                            <button type="button" class="btn btn-save" onclick="document.getElementById('basic-info-form').dispatchEvent(new Event('submit', {bubbles: true, cancelable: true}));">
+                            <button type="button" class="btn btn-save" onclick="console.log('🔥 BOTÃO CLICADO - Basic Info');if(window.GarciaProfileManager){console.log('✅ ProfileManager existe');const form=document.getElementById('basic-info-form');console.log('✅ Form encontrado:',form?.id);window.GarciaProfileManager.handleFormSubmit({preventDefault:()=>{},stopPropagation:()=>{},stopImmediatePropagation:()=>{},target:form,currentTarget:form});}else{console.error('❌ ProfileManager NÃO existe!');}">
                                 <i class="fas fa-save"></i> Save Basic Info
                             </button>
                         </div>

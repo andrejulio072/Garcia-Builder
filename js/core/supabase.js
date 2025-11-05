@@ -234,10 +234,23 @@
                 window.__supabaseReadyQueue = null;
             }
 
-            // Debug: Check current session
-            window.supabaseClient.auth.getSession().then(({ data, error }) => {
+            // Debug: Check current session and try to restore if needed
+            window.supabaseClient.auth.getSession().then(async ({ data, error }) => {
                 if (error) {
                     console.warn('⚠️ Session check error:', error);
+                    
+                    // Try to refresh the session if it exists in localStorage
+                    try {
+                        console.log('🔄 Attempting to restore session from storage...');
+                        const { data: refreshData, error: refreshError } = await window.supabaseClient.auth.refreshSession();
+                        if (refreshError) {
+                            console.warn('⚠️ Session refresh failed:', refreshError);
+                        } else if (refreshData?.session) {
+                            console.log('✅ Session restored successfully:', refreshData.session.user.email);
+                        }
+                    } catch (refreshErr) {
+                        console.warn('Session restoration failed:', refreshErr);
+                    }
                 } else if (data?.session) {
                     console.log('✅ Active session found:', data.session.user.email);
                 } else {

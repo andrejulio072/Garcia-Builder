@@ -1409,7 +1409,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             // Se estiver na página de login E houver hash de OAuth na URL, redirecionar
                             if (window.location.pathname.includes('login.html')) {
+                                // Check if already redirected to prevent loops
+                                if (sessionStorage.getItem('oauth_redirected')) {
+                                    console.log('⏭️ OAuth redirect already performed, skipping...');
+                                    sessionStorage.removeItem('oauth_processing');
+                                    return;
+                                }
+                                
                                 console.log('✅ Login OAuth bem-sucedido! Redirecionando para dashboard...');
+                                
+                                // Mark as redirected to prevent duplicate redirects
+                                sessionStorage.setItem('oauth_redirected', 'true');
+                                sessionStorage.removeItem('oauth_processing');
 
                                 // Verificar se há pagamento pendente
                                 const pendingPayment = localStorage.getItem('pendingPayment');
@@ -1418,6 +1429,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     localStorage.removeItem('pendingPayment');
                                     localStorage.setItem('userEmail', norm.email);
                                     setTimeout(() => {
+                                        sessionStorage.removeItem('oauth_redirected');
                                         window.location.href = toAbsoluteUrl(`pricing.html?auto-pay=${paymentData.planKey}`);
                                     }, 1000);
                                     return;
@@ -1426,6 +1438,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 // Redirecionar para dashboard ou URL solicitada
                                 const redirectUrl = resolveRedirectTarget(new URLSearchParams(window.location.search));
                                 setTimeout(() => {
+                                    sessionStorage.removeItem('oauth_redirected');
                                     window.location.href = redirectUrl;
                                 }, 1000);
                             }

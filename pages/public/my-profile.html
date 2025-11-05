@@ -1412,6 +1412,13 @@
     <script>
         // Profile page specific functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Clean up OAuth redirect flags when profile page loads successfully
+            if (sessionStorage.getItem('oauth_processing') || sessionStorage.getItem('oauth_redirected')) {
+                console.log('✅ Profile page loaded, clearing OAuth redirect flags');
+                sessionStorage.removeItem('oauth_processing');
+                sessionStorage.removeItem('oauth_redirected');
+            }
+
             if (typeof AuthSystem !== 'undefined' && typeof AuthSystem.requireAuth === 'function') {
                 const allowed = AuthSystem.requireAuth();
                 if (!allowed) {

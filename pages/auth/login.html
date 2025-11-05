@@ -325,27 +325,30 @@
     <!-- OAuth Token Handler - Process tokens if they arrive on login page -->
     <script>
         (function() {
+            // Prevent duplicate OAuth processing
+            if (sessionStorage.getItem('oauth_processing')) {
+                console.log('⏳ OAuth already being processed, skipping redirect...');
+                return;
+            }
+
             // Check if OAuth tokens are in URL hash (redirect from Supabase)
             const hash = window.location.hash;
             const searchParams = new URLSearchParams(window.location.search);
             
             if (hash.includes('access_token') || searchParams.has('code')) {
-                console.log('🔐 OAuth tokens detected on login page, redirecting to dashboard for processing...');
+                console.log('🔐 OAuth tokens detected on login page');
                 
-                // Extract redirect parameter if exists
-                const redirectParam = searchParams.get('redirect');
-                const targetUrl = redirectParam 
-                    ? decodeURIComponent(redirectParam) 
-                    : '../../pages/public/dashboard.html';
+                // Mark as processing to prevent duplicate redirects
+                sessionStorage.setItem('oauth_processing', 'true');
                 
-                // Preserve hash with tokens
-                const fullUrl = targetUrl.includes('?') 
-                    ? `${targetUrl}${hash}` 
-                    : `${targetUrl}${hash}`;
+                // Let auth.js handle the OAuth callback instead of redirecting immediately
+                // This prevents double-redirect issues
+                console.log('✅ Waiting for auth.js to process OAuth tokens...');
                 
-                console.log('📍 Redirecting to:', fullUrl);
-                window.location.replace(fullUrl);
-                return;
+                // Clear processing flag after 5 seconds as fallback
+                setTimeout(() => {
+                    sessionStorage.removeItem('oauth_processing');
+                }, 5000);
             }
         })();
     </script>

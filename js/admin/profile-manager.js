@@ -1197,16 +1197,16 @@
       return false;
     };
 
-    // Set onsubmit as additional safeguard against page reload
-    form.onsubmit = (e) => {
-      e.preventDefault();
-      return false;
-    };
-
     form.addEventListener('submit', submitHandler, { capture: true });
     form.dataset.submitBound = 'true';
     form.setAttribute('novalidate', 'novalidate');
-    console.log(`[ProfileManager] Form ${form.id || form.dataset.profileSection} submit handler bound with onsubmit safeguard`);
+    
+    // Set onsubmit ONLY if not already set (preserves existing handlers)
+    if (!form.onsubmit) {
+      form.onsubmit = () => false; // Additional safeguard
+    }
+    
+    console.log(`[ProfileManager] Form ${form.id || form.dataset.profileSection} submit handler bound`);
   }
 
 

@@ -325,6 +325,9 @@
     <!-- OAuth Token Handler - Process tokens if they arrive on login page -->
     <script>
         (function() {
+            // OAuth processing timeout constant (30 seconds for slower connections)
+            const OAUTH_PROCESSING_TIMEOUT_MS = 30000;
+            
             // Prevent duplicate OAuth processing
             if (sessionStorage.getItem('oauth_processing')) {
                 console.log('⏳ OAuth already being processed, skipping redirect...');
@@ -345,10 +348,10 @@
                 // This prevents double-redirect issues
                 console.log('✅ Waiting for auth.js to process OAuth tokens...');
                 
-                // Clear processing flag after 5 seconds as fallback
+                // Clear processing flag after timeout as fallback
                 setTimeout(() => {
                     sessionStorage.removeItem('oauth_processing');
-                }, 5000);
+                }, OAUTH_PROCESSING_TIMEOUT_MS);
             }
         })();
     </script>

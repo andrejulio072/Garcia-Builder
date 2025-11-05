@@ -235,21 +235,31 @@
             }
 
             // Debug: Check current session and try to restore if needed
+            let lastSessionRefreshAttempt = 0;
+            const SESSION_REFRESH_COOLDOWN_MS = 60000; // 1 minute cooldown
+            
             window.supabaseClient.auth.getSession().then(async ({ data, error }) => {
                 if (error) {
                     console.warn('⚠️ Session check error:', error);
                     
                     // Try to refresh the session if it exists in localStorage
-                    try {
-                        console.log('🔄 Attempting to restore session from storage...');
-                        const { data: refreshData, error: refreshError } = await window.supabaseClient.auth.refreshSession();
-                        if (refreshError) {
-                            console.warn('⚠️ Session refresh failed:', refreshError);
-                        } else if (refreshData?.session) {
-                            console.log('✅ Session restored successfully:', refreshData.session.user.email);
+                    // but only if we haven't tried recently (prevent excessive API calls)
+                    const now = Date.now();
+                    if (now - lastSessionRefreshAttempt > SESSION_REFRESH_COOLDOWN_MS) {
+                        lastSessionRefreshAttempt = now;
+                        try {
+                            console.log('🔄 Attempting to restore session from storage...');
+                            const { data: refreshData, error: refreshError } = await window.supabaseClient.auth.refreshSession();
+                            if (refreshError) {
+                                console.warn('⚠️ Session refresh failed:', refreshError);
+                            } else if (refreshData?.session) {
+                                console.log('✅ Session restored successfully:', refreshData.session.user.email);
+                            }
+                        } catch (refreshErr) {
+                            console.warn('Session restoration failed:', refreshErr);
                         }
-                    } catch (refreshErr) {
-                        console.warn('Session restoration failed:', refreshErr);
+                    } else {
+                        console.log('⏳ Skipping session refresh (cooldown active)');
                     }
                 } else if (data?.session) {
                     console.log('✅ Active session found:', data.session.user.email);

@@ -227,9 +227,13 @@
       console.log('🔥 ProfileManager init START');
 
       // Check authentication
+      console.log('🔐 [INIT] Getting current user...');
       currentUser = await getCurrentUser();
-      console.log('👤 Current user:', currentUser?.email || 'none');
+      console.log('👤 [INIT] Current user:', currentUser?.email || 'none', 'ID:', currentUser?.id);
+      
+      console.log('🔄 [INIT] Migrating guest profile storage...');
       migrateGuestProfileStorage();
+      console.log('✅ [INIT] Guest profile migration complete');
 
       if (!currentUser) {
         console.warn('❌ No authenticated user, redirecting to login...');
@@ -239,11 +243,11 @@
       }
 
       // Load profile data
-      console.log('📥 Loading profile data...');
+      console.log('📥 [INIT] Loading profile data...');
       await loadProfileData();
-      console.log('✅ Profile data loaded, keys:', Object.keys(profileData));
-      console.log('📊 profileData.basic exists?', !!profileData.basic);
-      console.log('📊 profileData.basic.full_name:', profileData.basic?.full_name);
+      console.log('✅ [INIT] Profile data loaded, keys:', Object.keys(profileData));
+      console.log('📊 [INIT] profileData.basic exists?', !!profileData.basic);
+      console.log('📊 [INIT] profileData.basic.full_name:', profileData.basic?.full_name);
 
       // Verify critical structures exist
       if (!profileData.basic) {

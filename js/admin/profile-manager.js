@@ -1,7 +1,17 @@
 // Garcia Builder - Complete Profile Management System
 (() => {
+  // Global-level duplication guard: if this script is evaluated twice, reuse the first instance
+  if (window.__GB_ProfileManagerLoaded === true && window.GarciaProfileManager) {
+    console.warn('ProfileManager script loaded again - reusing existing instance and skipping re-execution');
+    return; // Abort re-evaluating the entire module
+  }
+  // Mark as loaded as early as possible to avoid race conditions
+  window.__GB_ProfileManagerLoaded = true;
   let currentUser = null;
   let profileData = {};
+  // Reentrancy/duplication guards for initialization
+  let __initState = 'not-started'; // not-started | in-progress | done | error
+  let __initPromise = null;
 
   const parseJsonSafe = (value, fallback = null) => {
     if (typeof value !== 'string') return fallback;
@@ -223,6 +233,16 @@
 
   // Initialize profile management
   const init = async () => {
+    // Reentrancy guard to avoid double initialization
+    if (__initState === 'in-progress') {
+      console.warn('ProfileManager init already in progress - skipping');
+      return;
+    }
+    if (__initState === 'done') {
+      console.log('ProfileManager already initialized - skipping');
+      return;
+    }
+    __initState = 'in-progress';
     try {
       console.log('🔥 ProfileManager init START');
 
@@ -268,10 +288,12 @@
       updateBodyMetricsDisplays();
 
       console.log('✅ Profile management initialized successfully');
+      __initState = 'done';
     } catch (error) {
       console.error('❌❌❌ Error initializing profile management:', error);
       console.error('Error stack:', error.stack);
       showNotification('Error loading profile. Please refresh the page.', 'error');
+      __initState = 'error';
     }
   };
 
@@ -2871,6 +2893,8 @@
     saveToLocalStorage,
     loadProfileData
   };
+  // Expose stable singleton handle to guard against duplicate script evaluations
+  window.__GB_ProfileManagerInstance = window.GarciaProfileManager;
   
   // Criar alias ProfileManager para compatibilidade com testes
   window.ProfileManager = window.GarciaProfileManager;

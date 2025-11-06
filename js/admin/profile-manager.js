@@ -303,13 +303,17 @@
       let hasLoadedData = false;
 
       // 1. PRIMEIRO: Tentar carregar do Supabase
-      if (window.supabaseClient) {
-        console.log('☁️ [LOAD_PROFILE] Tentando carregar do Supabase...');
-        await loadFromSupabase();
-        if (profileData && Object.keys(profileData).length > 0) {
-          hasLoadedData = true;
-          console.log('✅ [LOAD_PROFILE] Dados carregados do Supabase');
+      try {
+        if (window.supabaseClient) {
+          console.log('☁️ [LOAD_PROFILE] Tentando carregar do Supabase...');
+          await loadFromSupabase();
+          if (profileData && Object.keys(profileData).length > 0) {
+            hasLoadedData = true;
+            console.log('✅ [LOAD_PROFILE] Dados carregados do Supabase');
+          }
         }
+      } catch (supabaseError) {
+        console.warn('⚠️ [LOAD_PROFILE] Erro ao carregar do Supabase, continuando com localStorage...', supabaseError);
       }
 
       // 2. SEGUNDO: Tentar carregar do localStorage (fallback)

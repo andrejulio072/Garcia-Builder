@@ -278,19 +278,33 @@
   // Get current user
   const getCurrentUser = async () => {
     try {
+      console.log('👤 [GET_USER] Iniciando getCurrentUser...');
+      console.log('👤 [GET_USER] window.supabaseClient existe?', !!window.supabaseClient);
+      console.log('👤 [GET_USER] window.supabaseClient.auth existe?', !!window.supabaseClient?.auth);
+      
       // Prefer Supabase client if available
       if (window.supabaseClient && window.supabaseClient.auth) {
+        console.log('👤 [GET_USER] Chamando supabaseClient.auth.getUser()...');
         const { data: { user } } = await window.supabaseClient.auth.getUser();
-        if (user) return user;
+        console.log('👤 [GET_USER] Resposta do Supabase:', user?.email || 'nenhum usuário');
+        if (user) {
+          console.log('✅ [GET_USER] Usuário encontrado no Supabase');
+          return user;
+        }
       }
 
+      console.log('👤 [GET_USER] Tentando localStorage fallback...');
       // Fallback: auth system might have stored a normalized current user
       const stored = localStorage.getItem('gb_current_user') || localStorage.getItem('garcia_user');
-      if (stored) return JSON.parse(stored);
+      if (stored) {
+        console.log('✅ [GET_USER] Usuário encontrado no localStorage');
+        return JSON.parse(stored);
+      }
 
+      console.log('❌ [GET_USER] Nenhum usuário encontrado');
       return null;
     } catch (error) {
-      console.error('Error getting current user:', error);
+      console.error('❌ [GET_USER] Error getting current user:', error);
       return null;
     }
   };

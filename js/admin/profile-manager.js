@@ -284,12 +284,24 @@
       
       // Prefer Supabase client if available
       if (window.supabaseClient && window.supabaseClient.auth) {
-        console.log('👤 [GET_USER] Chamando supabaseClient.auth.getUser()...');
-        const { data: { user } } = await window.supabaseClient.auth.getUser();
-        console.log('👤 [GET_USER] Resposta do Supabase:', user?.email || 'nenhum usuário');
-        if (user) {
-          console.log('✅ [GET_USER] Usuário encontrado no Supabase');
-          return user;
+        console.log('👤 [GET_USER] Chamando supabaseClient.auth.getUser() com timeout...');
+        
+        try {
+          // Adicionar timeout de 2 segundos para evitar trava
+          const getUserPromise = window.supabaseClient.auth.getUser();
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Supabase timeout')), 2000)
+          );
+          
+          const { data: { user } } = await Promise.race([getUserPromise, timeoutPromise]);
+          console.log('👤 [GET_USER] Resposta do Supabase:', user?.email || 'nenhum usuário');
+          
+          if (user) {
+            console.log('✅ [GET_USER] Usuário encontrado no Supabase');
+            return user;
+          }
+        } catch (supabaseError) {
+          console.warn('⚠️ [GET_USER] Supabase getUser falhou ou timeout, usando fallback:', supabaseError.message);
         }
       }
 

@@ -49,6 +49,10 @@
         localStorage.setItem(userKey, guestData);
         console.log('ProfileManager: migrated guest profile cache to user key');
       }
+      if (guestData) {
+        localStorage.removeItem(guestKey);
+        console.log('ProfileManager: removed guest profile cache after migration');
+      }
     } catch (error) {
       console.warn('ProfileManager: Failed to migrate guest profile cache', error);
     }
@@ -250,7 +254,7 @@
       console.log('🔐 [INIT] Getting current user...');
       currentUser = await getCurrentUser();
       console.log('👤 [INIT] Current user:', currentUser?.email || 'none', 'ID:', currentUser?.id);
-      
+
       console.log('🔄 [INIT] Migrating guest profile storage...');
       migrateGuestProfileStorage();
       console.log('✅ [INIT] Guest profile migration complete');
@@ -303,21 +307,21 @@
       console.log('👤 [GET_USER] Iniciando getCurrentUser...');
       console.log('👤 [GET_USER] window.supabaseClient existe?', !!window.supabaseClient);
       console.log('👤 [GET_USER] window.supabaseClient.auth existe?', !!window.supabaseClient?.auth);
-      
+
       // Prefer Supabase client if available
       if (window.supabaseClient && window.supabaseClient.auth) {
         console.log('👤 [GET_USER] Chamando supabaseClient.auth.getUser() com timeout...');
-        
+
         try {
           // Adicionar timeout de 2 segundos para evitar trava
           const getUserPromise = window.supabaseClient.auth.getUser();
-          const timeoutPromise = new Promise((_, reject) => 
+          const timeoutPromise = new Promise((_, reject) =>
             setTimeout(() => reject(new Error('Supabase timeout')), 2000)
           );
-          
+
           const { data: { user } } = await Promise.race([getUserPromise, timeoutPromise]);
           console.log('👤 [GET_USER] Resposta do Supabase:', user?.email || 'nenhum usuário');
-          
+
           if (user) {
             console.log('✅ [GET_USER] Usuário encontrado no Supabase');
             return user;
@@ -379,7 +383,7 @@
       // 3. TERCEIRO: SE e SOMENTE SE não tiver dados, inicializar estrutura padrão
       if (!hasLoadedData || !profileData || Object.keys(profileData).length === 0) {
         console.log('⚠️ [LOAD_PROFILE] Nenhum dado encontrado, inicializando estrutura padrão...');
-        
+
         profileData = {
           basic: {
             id: currentUser.id,
@@ -463,19 +467,19 @@
 
       // 4. Preencher campos obrigatórios se estiverem vazios (mas NÃO sobrescrever dados existentes)
       if (!profileData.basic) profileData.basic = {};
-      
+
       if (!profileData.basic.id && currentUser?.id) {
         profileData.basic.id = currentUser.id;
       }
-      
+
       if (!profileData.basic.full_name) {
         profileData.basic.full_name = currentUser?.user_metadata?.full_name || currentUser?.email || 'User';
       }
-      
+
       if (!profileData.basic.email) {
         profileData.basic.email = currentUser?.email || profileData.basic.full_name || '';
       }
-      
+
       if (!profileData.basic.avatar_url) {
         // Priority: picture (OAuth) > avatar_url > empty
         profileData.basic.avatar_url = currentUser?.user_metadata?.picture ||
@@ -636,41 +640,58 @@
     try {
       const activeId = resolveActiveUserId();
       console.log('🔑 [LOAD] Active User ID:', activeId);
-      
+
       const userKey = activeId ? `garcia_profile_${activeId}` : null;
       const guestKey = 'garcia_profile_guest';
-      const keys = [guestKey, userKey].filter(Boolean);
-      
-      console.log('🗝️ [LOAD] Storage keys a verificar:', keys);
+
+      console.log('🗝️ [LOAD] Storage keys disponíveis:', { userKey, guestKey });
 
       let loadedData = null;
+      let loadedFromUser = false;
 
-      keys.forEach((key) => {
+      if (userKey) {
         try {
-          const raw = key ? localStorage.getItem(key) : null;
-          console.log(`📦 [LOAD] Key: ${key}, Tamanho raw: ${raw?.length || 0} chars`);
-          
-          if (!raw) return;
-          
-          const snapshot = parseJsonSafe(raw, null);
-          if (snapshot && typeof snapshot === 'object') {
-            console.log(`✅ [LOAD] Snapshot parsed para key ${key}:`, JSON.stringify(snapshot).substring(0, 200));
-            loadedData = snapshot;
-            mergeProfileSnapshot(snapshot);
+          const rawUser = localStorage.getItem(userKey);
+          console.log(`📦 [LOAD] Key: ${userKey}, Tamanho raw: ${rawUser?.length || 0} chars`);
+          if (rawUser) {
+            const snapshot = parseJsonSafe(rawUser, null);
+            if (snapshot && typeof snapshot === 'object') {
+              console.log(`✅ [LOAD] Snapshot parsed para key ${userKey}:`, JSON.stringify(snapshot).substring(0, 200));
+              loadedData = snapshot;
+              mergeProfileSnapshot(snapshot);
+              loadedFromUser = true;
+            }
           }
         } catch (innerError) {
-          console.warn(`ProfileManager: Failed to merge local snapshot for key ${key}`, innerError);
+          console.warn(`ProfileManager: Failed to merge local snapshot for key ${userKey}`, innerError);
         }
-      });
+      }
+
+      if (!loadedFromUser) {
+        try {
+          const rawGuest = localStorage.getItem(guestKey);
+          console.log(`📦 [LOAD] Key: ${guestKey}, Tamanho raw: ${rawGuest?.length || 0} chars`);
+          if (rawGuest) {
+            const snapshot = parseJsonSafe(rawGuest, null);
+            if (snapshot && typeof snapshot === 'object') {
+              console.log(`✅ [LOAD] Snapshot parsed para key ${guestKey}:`, JSON.stringify(snapshot).substring(0, 200));
+              loadedData = snapshot;
+              mergeProfileSnapshot(snapshot);
+            }
+          }
+        } catch (innerError) {
+          console.warn(`ProfileManager: Failed to merge local snapshot for key ${guestKey}`, innerError);
+        }
+      }
 
       if (!profileData.basic) profileData.basic = {};
       if (activeId && !profileData.basic.id) {
         profileData.basic.id = activeId;
       }
-      
+
       console.log('🎯 [LOAD] profileData APÓS merge:', JSON.stringify(profileData).substring(0, 300));
       console.log('✅ [LOAD] loadFromLocalStorage CONCLUÍDO');
-      
+
       // Retornar os dados carregados para permitir verificação externa
       return loadedData;
     } catch (error) {
@@ -1138,21 +1159,21 @@
   const saveToLocalStorage = (dataToSave = null) => {
     try {
       console.log('💾 [SAVE] saveToLocalStorage INICIO');
-      
+
       const activeId = resolveActiveUserId();
       console.log('🔑 [SAVE] Active User ID:', activeId);
-      
+
       const primaryKey = activeId ? `garcia_profile_${activeId}` : 'garcia_profile_guest';
       console.log('🗝️ [SAVE] Primary storage key:', primaryKey);
-      
+
       // Se dataToSave foi passado, usar ele; senão, usar profileData global
       const dataToStore = dataToSave || profileData;
-      
+
       if (!dataToStore.basic) dataToStore.basic = {};
       if (activeId && !dataToStore.basic.id) {
         dataToStore.basic.id = activeId;
       }
-      
+
       const dataString = JSON.stringify(dataToStore);
 
       console.log('[SAVE] saveToLocalStorage START - key:', primaryKey);
@@ -1163,8 +1184,21 @@
       console.log('[SAVE] Data to save (first 500 chars):', dataString.substring(0, 500));
       console.log('[SAVE] Data size (chars):', dataString.length);
 
-      const keys = new Set(['garcia_profile_guest']);
-      if (activeId) keys.add(primaryKey);
+      const keys = [];
+      if (activeId) {
+        keys.push(primaryKey);
+      } else {
+        keys.push('garcia_profile_guest');
+      }
+
+      if (activeId) {
+        try {
+          localStorage.removeItem('garcia_profile_guest');
+          console.log('🧹 [SAVE] Removed guest profile cache after user save');
+        } catch (cleanupError) {
+          console.warn('ProfileManager: Failed to clear guest cache during save', cleanupError);
+        }
+      }
 
       keys.forEach((key) => {
         if (!key) return;
@@ -1188,7 +1222,7 @@
       if (retrieved.length !== dataString.length) {
         throw new Error(`localStorage save corrupted: expected ${dataString.length} chars, got ${retrieved.length}`);
       }
-      
+
       // Verificar se dados foram salvos corretamente
       const parsedBack = JSON.parse(retrieved);
       console.log('✅ [SAVE] Verificação após save - full_name:', parsedBack.basic?.full_name);
@@ -2895,7 +2929,7 @@
   };
   // Expose stable singleton handle to guard against duplicate script evaluations
   window.__GB_ProfileManagerInstance = window.GarciaProfileManager;
-  
+
   // Criar alias ProfileManager para compatibilidade com testes
   window.ProfileManager = window.GarciaProfileManager;
 

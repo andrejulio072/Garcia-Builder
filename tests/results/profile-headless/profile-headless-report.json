@@ -1,0 +1,126 @@
+{
+  "startedAt": "2025-11-07T17:18:22.971Z",
+  "baseUrl": "http://localhost:5173",
+  "server": {
+    "port": 5173,
+    "launched": true
+  },
+  "tests": [
+    {
+      "id": "test-1",
+      "name": "Test 1 - LocalStorage diagnostic",
+      "status": "pass",
+      "details": {
+        "authKeys": [
+          "sb-qejtjcaldnuokoofpqap-auth-token"
+        ],
+        "profileKeys": [
+          "garcia_profile_guest",
+          "garcia_profile_abc-123-def-456"
+        ],
+        "currentUserId": "abc-123-def-456",
+        "currentUserEmail": "tester@example.com",
+        "resultText": "Resultados\n🔑 Chaves de Autenticação\n✅ 1 chave(s) encontrada(s)\n📦 sb-qejtjcaldnuokoofpqap-auth-token:\n{\n  \"user_id\": \"abc-123-def-456\",\n  \"email\": \"tester@example.com\",\n  \"expires_at\": \"07/11/2025, 18:18:24\"\n}\n👤 Chaves de Perfil\n✅ 2 chave(s) encontrada(s)\n📦 garcia_profile_guest:\n{\n  \"sections\": [\n    \"basic\",\n    \"body_metrics\",\n    \"preferences\",\n    \"macros\",\n    \"habits\",\n    \"activity\"\n  ],\n  \"basic\": {\n    \"full_name\": \"empty\",\n    \"phone\": \"empty\",\n    \"location\": \"empty\",\n    \"goals\": [],\n    \"trainer_name\": \"empty\",\n    \"experience_level\": \"empty\"\n  },\n  \"body_metrics\": {\n    \"current_weight\": \"empty\",\n    \"height\": \"empty\",\n    \"target_weight\": \"empty\"\n  },\n  \"macros\": {\n    \"goal\": \"maintain\",\n    \"activity_level\": \"moderate\",\n    \"calories\": \"empty\"\n  }\n}\n⚠️ Dados básicos vazios ou ausentes\n📦 garcia_profile_abc-123-def-456:\n{\n  \"sections\": [\n    \"basic\",\n    \"body_metrics\",\n    \"preferences\",\n    \"macros\",\n    \"habits\",\n    \"activity\"\n  ],\n  \"basic\": {\n    \"full_name\": \"empty\",\n    \"phone\": \"empty\",\n    \"location\": \"empty\",\n    \"goals\": [],\n    \"trainer_name\": \"empty\",\n    \"experience_level\": \"empty\"\n  },\n  \"body_metrics\": {\n    \"current_weight\": \"empty\",\n    \"height\": \"empty\",\n    \"target_weight\": \"empty\"\n  },\n  \"macros\": {\n    \"goal\": \"maintain\",\n    \"activity_level\": \"moderate\",\n    \"calories\": \"empty\"\n  }\n}\n⚠️ Dados básicos vazios ou ausentes\n👤 Usuário Atual (gb_current_user)\n✅ Encontrado\n{\n  \"id\": \"abc-123-def-456\",\n  \"email\": \"tester@example.com\",\n  \"user_metadata\": [\n    \"full_name\",\n    \"phone\",\n    \"avatar_url\",\n    \"birthday\",\n    \"location\",\n    \"bio\",\n    \"experience_level\",\n    \"goals\",\n    \"preferences\"\n  ]\n}\n📦 Todas as Chaves no LocalStorage (4)\ngarcia_profile_guest, gb_current_user, garcia_profile_abc-123-def-456, sb-qejtjcaldnuokoofpqap-auth-token\n🎯 Conclusão\n⚠️ PROBLEMA NO LOAD: Dados existem no localStorage mas não estão sendo carregados!\n📋 Próximo passo: Recarregue a página my-profile.html e observe os logs do ProfileManager no console"
+      },
+      "screenshot": "tests/results/profile-headless/screenshots/test-1-diagnostic.png"
+    }
+  ],
+  "consoleLogs": {
+    "test-1": [
+      {
+        "type": "log",
+        "text": "🔍 === DIAGNÓSTICO DE LOCALSTORAGE ==="
+      },
+      {
+        "type": "log",
+        "text": ""
+      },
+      {
+        "type": "log",
+        "text": "🔑 Chaves de autenticação encontradas: JSHandle@array"
+      },
+      {
+        "type": "log",
+        "text": "   sb-qejtjcaldnuokoofpqap-auth-token: JSHandle@object"
+      },
+      {
+        "type": "log",
+        "text": ""
+      },
+      {
+        "type": "log",
+        "text": "👤 Chaves de perfil encontradas: JSHandle@array"
+      },
+      {
+        "type": "log",
+        "text": "   garcia_profile_guest: JSHandle@object"
+      },
+      {
+        "type": "log",
+        "text": "   garcia_profile_guest RAW DATA (primeiros 500 chars): {\"basic\":{\"id\":\"abc-123-def-456\",\"email\":\"tester@example.com\",\"full_name\":\"\",\"phone\":\"\",\"first_name\":\"\",\"last_name\":\"\",\"avatar_url\":\"\",\"birthday\":\"\",\"location\":\"\",\"bio\":\"\",\"goals\":[],\"experience_level\":\"\",\"trainer_id\":null,\"trainer_name\":\"\",\"joined_date\":\"2025-11-07T17:18:22.971Z\",\"last_login\":\"2025-11-07T17:18:22.971Z\",\"updated_at\":\"2025-11-07T17:18:22.971Z\"},\"body_metrics\":{\"user_id\":\"abc-123-def-456\",\"current_weight\":null,\"height\":null,\"target_weight\":null,\"body_fat_percentage\":null,\"muscle_m"
+      },
+      {
+        "type": "log",
+        "text": "   garcia_profile_abc-123-def-456: JSHandle@object"
+      },
+      {
+        "type": "log",
+        "text": "   garcia_profile_abc-123-def-456 RAW DATA (primeiros 500 chars): {\"basic\":{\"id\":\"abc-123-def-456\",\"email\":\"tester@example.com\",\"full_name\":\"\",\"phone\":\"\",\"first_name\":\"\",\"last_name\":\"\",\"avatar_url\":\"\",\"birthday\":\"\",\"location\":\"\",\"bio\":\"\",\"goals\":[],\"experience_level\":\"\",\"trainer_id\":null,\"trainer_name\":\"\",\"joined_date\":\"2025-11-07T17:18:22.971Z\",\"last_login\":\"2025-11-07T17:18:22.971Z\",\"updated_at\":\"2025-11-07T17:18:22.971Z\"},\"body_metrics\":{\"user_id\":\"abc-123-def-456\",\"current_weight\":null,\"height\":null,\"target_weight\":null,\"body_fat_percentage\":null,\"muscle_m"
+      },
+      {
+        "type": "log",
+        "text": ""
+      },
+      {
+        "type": "log",
+        "text": "👤 gb_current_user: exists"
+      },
+      {
+        "type": "log",
+        "text": "    JSHandle@object"
+      },
+      {
+        "type": "log",
+        "text": ""
+      },
+      {
+        "type": "log",
+        "text": "📦 TODAS as chaves no localStorage: JSHandle@array"
+      },
+      {
+        "type": "log",
+        "text": ""
+      },
+      {
+        "type": "log",
+        "text": "✅ Diagnóstico completo!"
+      },
+      {
+        "type": "log",
+        "text": ""
+      },
+      {
+        "type": "log",
+        "text": "🎯 PRÓXIMOS PASSOS:"
+      },
+      {
+        "type": "log",
+        "text": "1. Se você vê dados salvos nas chaves garcia_profile_*, o problema é no LOAD"
+      },
+      {
+        "type": "log",
+        "text": "2. Se NÃO vê dados, o problema é no SAVE"
+      },
+      {
+        "type": "log",
+        "text": "3. Recarregue a página e observe os logs do ProfileManager no console"
+      }
+    ]
+  },
+  "errors": [],
+  "failedAt": "2025-11-07T17:18:29.029Z",
+  "failure": {
+    "message": "page.waitForTimeout is not a function",
+    "stack": "TypeError: page.waitForTimeout is not a function\n    at runProfileFlow (C:\\dev\\Garcia-Builder\\tools\\tests\\profile-headless-checklist.js:579:16)\n    at async C:\\dev\\Garcia-Builder\\tools\\tests\\profile-headless-checklist.js:652:27"
+  }
+}

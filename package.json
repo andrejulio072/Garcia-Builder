@@ -13,7 +13,8 @@
     "lint": "powershell -ExecutionPolicy Bypass -File validate-components.ps1",
     "build:env": "node scripts/generate-env-config.js",
     "postinstall": "node scripts/generate-env-config.js",
-    "test:profile-save": "node tools/tests/profile-save-smoke.js"
+    "test:profile-save": "node tools/tests/profile-save-smoke.js",
+    "test:profile-headless": "node tools/tests/profile-headless-checklist.js"
   },
   "keywords": [
     "stripe",

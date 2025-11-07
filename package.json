@@ -13,7 +13,7 @@
     "lint": "powershell -ExecutionPolicy Bypass -File validate-components.ps1",
     "build:env": "node scripts/generate-env-config.js",
     "postinstall": "node scripts/generate-env-config.js",
-  "test:profile-save": "node tools/tests/profile-save-smoke.js"
+    "test:profile-save": "node tools/tests/profile-save-smoke.js"
   },
   "keywords": [
     "stripe",
@@ -36,7 +36,7 @@
   "devDependencies": {
     "jsdom": "^22.1.0",
     "nodemon": "^3.0.2",
-  "playwright": "^1.56.1"
+    "playwright": "^1.56.1"
   },
   "engines": {
     "node": ">=16.0.0"

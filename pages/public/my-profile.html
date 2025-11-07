@@ -1610,6 +1610,368 @@
     <script src="../../js/auth-guard.js"></script>
     <script src="../../js/components/navigation-manager.js"></script>
     <script src="../../js/admin/profile-manager.js"></script>
+    <script>
+        (function () {
+            const params = new URLSearchParams(window.location.search);
+            const flag = params.get('seedTestUser') || params.get('testUser');
+            if (!flag && window.__GB_DEV_PROFILE_SEED !== true) {
+                return;
+            }
+
+            const host = (window.location && window.location.hostname) || '';
+            const isLocalHost = !host || host === 'localhost' || host === '127.0.0.1' || host === '0.0.0.0' || /\.local$/i.test(host) || /^192\.168\./.test(host) || /^10\./.test(host);
+            const allowOverride = flag === 'force';
+            const shouldReset = flag === 'reset' || allowOverride || window.__GB_DEV_PROFILE_SEED === true;
+
+            if (!isLocalHost && !allowOverride && window.__GB_DEV_PROFILE_SEED !== true) {
+                console.warn('[Profile Dev] seedTestUser ignored on non-local host. Append seedTestUser=force to override.');
+                return;
+            }
+
+            const parseJson = (value) => {
+                if (typeof value !== 'string') return null;
+                try { return JSON.parse(value); } catch (err) { return null; }
+            };
+
+            const existingUser = parseJson(localStorage.getItem('gb_current_user'));
+            if (existingUser && existingUser.id && !shouldReset) {
+                console.info('[Profile Dev] seedTestUser skipped because a session already exists. Use seedTestUser=reset to replace it.');
+                return;
+            }
+
+            const now = new Date();
+            const isoNow = now.toISOString();
+            const sevenDaysAgo = new Date(now.getTime() - 7 * 86400000).toISOString().slice(0, 10);
+            const fourteenDaysAgo = new Date(now.getTime() - 14 * 86400000).toISOString().slice(0, 10);
+
+            const baseUser = {
+                id: 'local-profile-tester',
+                aud: 'authenticated',
+                email: 'profile.tester@local.dev',
+                phone: '+44 7000 000000',
+                app_metadata: { provider: 'email' },
+                user_metadata: {
+                    full_name: 'Profile Tester',
+                    phone: '+44 7000 000000',
+                    birthday: '1990-01-01',
+                    location: 'Test Lab',
+                    bio: 'QA test account for profile validations.',
+                    experience_level: 'intermediate',
+                    body_metrics: {
+                        current_weight: 80,
+                        height: 180,
+                        body_fat_percentage: 18,
+                        weight_history: [
+                            { date: fourteenDaysAgo, weight: 81 },
+                            { date: sevenDaysAgo, weight: 80.5 }
+                        ]
+                    },
+                    preferences: {
+                        units: 'metric',
+                        language: 'en',
+                        notifications: { email: true, reminders: true },
+                        privacy: { profile_visible: true, progress_visible: false }
+                    },
+                    macros: {
+                        goal: 'maintain',
+                        activity_level: 'moderate',
+                        calories: 2400,
+                        protein_pct: 30,
+                        carbs_pct: 40,
+                        fats_pct: 30
+                    },
+                    habits: {}
+                },
+                created_at: isoNow,
+                last_sign_in_at: isoNow,
+                updated_at: isoNow,
+                confirmed_at: isoNow,
+                email_confirmed_at: isoNow
+            };
+
+            const overrideUser = window.__GB_DEV_PROFILE_USER && typeof window.__GB_DEV_PROFILE_USER === 'object'
+                ? window.__GB_DEV_PROFILE_USER
+                : {};
+
+            const testUser = Object.assign({}, baseUser, overrideUser);
+            testUser.user_metadata = Object.assign({}, baseUser.user_metadata, overrideUser.user_metadata || {});
+
+            const profileSnapshot = {
+                basic: {
+                    id: testUser.id,
+                    email: testUser.email,
+                    full_name: testUser.user_metadata.full_name || 'Profile Tester',
+                    first_name: '',
+                    last_name: '',
+                    phone: testUser.user_metadata.phone || '+44 7000 000000',
+                    avatar_url: testUser.user_metadata.avatar_url || '',
+                    birthday: testUser.user_metadata.birthday || '1990-01-01',
+                    location: testUser.user_metadata.location || 'Test Lab',
+                    bio: testUser.user_metadata.bio || 'QA test account for profile validations.',
+                    goals: ['Strength', 'Endurance'],
+                    experience_level: testUser.user_metadata.experience_level || 'intermediate',
+                    trainer_id: null,
+                    trainer_name: 'Coach QA',
+                    joined_date: isoNow,
+                    last_login: isoNow,
+                    updated_at: isoNow
+                },
+                body_metrics: {
+                    current_weight: testUser.user_metadata.body_metrics?.current_weight || 80,
+                    height: testUser.user_metadata.body_metrics?.height || 180,
+                    target_weight: 78,
+                    body_fat_percentage: testUser.user_metadata.body_metrics?.body_fat_percentage || 18,
+                    muscle_mass: 35,
+                    measurements: {
+                        chest: 100,
+                        waist: 85,
+                        hips: 95,
+                        arms: 35,
+                        thighs: 55
+                    },
+                    progress_photos: [],
+                    weight_history: (testUser.user_metadata.body_metrics?.weight_history || []).concat([
+                        { date: isoNow.slice(0, 10), weight: testUser.user_metadata.body_metrics?.current_weight || 80 }
+                    ]),
+                    created_at: isoNow,
+                    updated_at: isoNow
+                },
+                preferences: Object.assign({
+                    units: 'metric',
+                    language: 'en',
+                    theme: 'dark',
+                    notifications: { email: true, reminders: true },
+                    privacy: { profile_visible: true, progress_visible: false }
+                }, testUser.user_metadata.preferences || {}),
+                macros: Object.assign({
+                    goal: 'maintain',
+                    activity_level: 'moderate',
+                    calories: 2400,
+                    protein_pct: 30,
+                    carbs_pct: 40,
+                    fats_pct: 30,
+                    updated_at: isoNow
+                }, testUser.user_metadata.macros || {}),
+                habits: {
+                    daily: {},
+                    updated_at: isoNow
+                },
+                activity: {
+                    workouts_completed: 12,
+                    total_sessions: 16,
+                    streak_days: 5,
+                    achievements: ['consistency-7', 'hydration-pro'],
+                    last_workout: isoNow,
+                    weekly_goals: { workouts: 4 }
+                }
+            };
+
+            const profileKey = `garcia_profile_${testUser.id}`;
+            localStorage.setItem('gb_current_user', JSON.stringify(testUser));
+            localStorage.setItem(profileKey, JSON.stringify(profileSnapshot));
+            localStorage.setItem('garcia_profile_guest', JSON.stringify(profileSnapshot));
+
+            const sessionPayload = {
+                access_token: 'dev-local-access-token',
+                refresh_token: 'dev-local-refresh-token',
+                token_type: 'bearer',
+                expires_in: 3600,
+                expires_at: Math.floor(Date.now() / 1000) + 3600,
+                user: testUser
+            };
+
+            try {
+                localStorage.setItem('sb-qejtjcaldnuokoofpqap-auth-token', JSON.stringify(sessionPayload));
+                localStorage.setItem('sb-auth-token', JSON.stringify(sessionPayload));
+            } catch (tokenErr) {
+                console.warn('[Profile Dev] Unable to seed auth token:', tokenErr);
+            }
+
+            function createSupabaseStub(user, snapshot) {
+                const store = {
+                    profile: {
+                        id: user.id,
+                        full_name: snapshot.basic.full_name,
+                        phone: snapshot.basic.phone,
+                        avatar_url: snapshot.basic.avatar_url || null,
+                        date_of_birth: snapshot.basic.birthday || null,
+                        updated_at: isoNow
+                    },
+                    bodyMetrics: []
+                };
+
+                const normalizeDate = (value) => {
+                    if (!value) return new Date().toISOString().slice(0, 10);
+                    try {
+                        return new Date(value).toISOString().slice(0, 10);
+                    } catch (err) {
+                        return value;
+                    }
+                };
+
+                const addBodyEntry = (entry) => {
+                    const dateKey = normalizeDate(entry?.date || entry?.updated_at || isoNow);
+                    const existingIndex = store.bodyMetrics.findIndex((item) => (item.client_id && entry?.client_id && item.client_id === entry.client_id) || item.date === dateKey);
+                    const payload = {
+                        user_id: user.id,
+                        client_id: entry?.client_id || `local-${dateKey}`,
+                        date: dateKey,
+                        weight: entry?.weight ?? entry?.current_weight ?? null,
+                        height: entry?.height ?? null,
+                        body_fat: entry?.body_fat ?? entry?.body_fat_percentage ?? null,
+                        measurements: Object.assign({}, entry?.measurements || {}),
+                        updated_at: isoNow
+                    };
+                    if (existingIndex >= 0) {
+                        store.bodyMetrics[existingIndex] = Object.assign({}, store.bodyMetrics[existingIndex], payload);
+                    } else {
+                        store.bodyMetrics.push(payload);
+                    }
+                };
+
+                (snapshot.body_metrics?.weight_history || []).forEach((entry) => addBodyEntry(entry));
+                addBodyEntry({
+                    date: snapshot.body_metrics?.updated_at,
+                    weight: snapshot.body_metrics?.current_weight,
+                    height: snapshot.body_metrics?.height,
+                    body_fat: snapshot.body_metrics?.body_fat_percentage,
+                    measurements: snapshot.body_metrics?.measurements
+                });
+
+                const executeList = (table, ctx) => {
+                    if (table === 'profiles') {
+                        const list = [{
+                            id: store.profile.id,
+                            full_name: store.profile.full_name,
+                            phone: store.profile.phone,
+                            avatar_url: store.profile.avatar_url,
+                            date_of_birth: store.profile.date_of_birth,
+                            updated_at: new Date().toISOString()
+                        }];
+                        return { data: typeof ctx.limit === 'number' ? list.slice(0, ctx.limit) : list, error: null };
+                    }
+
+                    if (table === 'body_metrics') {
+                        const sorted = store.bodyMetrics.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+                        const limited = typeof ctx.limit === 'number' ? sorted.slice(0, ctx.limit) : sorted;
+                        return { data: limited, error: null };
+                    }
+
+                    return { data: [], error: null };
+                };
+
+                const executeSingle = (table) => {
+                    const list = executeList(table, { limit: 1 }).data;
+                    return list.length ? list[0] : null;
+                };
+
+                const buildQuery = (table) => {
+                    const ctx = { table, limit: undefined };
+                    const query = {
+                        select() { return query; },
+                        eq() { return query; },
+                        order() { return query; },
+                        in() { return query; },
+                        neq() { return query; },
+                        limit(value) { ctx.limit = value; return query; },
+                        maybeSingle() { return Promise.resolve({ data: executeSingle(table), error: null }); },
+                        single() { return Promise.resolve({ data: executeSingle(table), error: null }); },
+                        upsert(payload) {
+                            const rows = Array.isArray(payload) ? payload : [payload];
+                            if (table === 'profiles') {
+                                rows.forEach((row) => {
+                                    store.profile = Object.assign({}, store.profile, row || {}, { updated_at: new Date().toISOString() });
+                                });
+                            } else if (table === 'body_metrics') {
+                                rows.forEach((row) => addBodyEntry(row));
+                            }
+                            return Promise.resolve({ data: payload, error: null });
+                        },
+                        insert(payload) {
+                            if (table === 'body_metrics') {
+                                const rows = Array.isArray(payload) ? payload : [payload];
+                                rows.forEach((row) => addBodyEntry(row));
+                            }
+                            return Promise.resolve({ data: payload, error: null });
+                        },
+                        then(resolve, reject) {
+                            return Promise.resolve(executeList(table, ctx)).then(resolve, reject);
+                        }
+                    };
+                    return query;
+                };
+
+                return {
+                    auth: {
+                        getUser: async () => ({ data: { user }, error: null }),
+                        getSession: async () => ({ data: { session: { user } }, error: null }),
+                        updateUser: async ({ data }) => {
+                            user.user_metadata = Object.assign({}, user.user_metadata || {}, data || {});
+                            if (data?.full_name) store.profile.full_name = data.full_name;
+                            if (data?.phone) store.profile.phone = data.phone;
+                            if (data?.avatar_url) store.profile.avatar_url = data.avatar_url;
+                            if (data?.date_of_birth) store.profile.date_of_birth = data.date_of_birth;
+                            return { data: { user }, error: null };
+                        },
+                        onAuthStateChange: (callback) => {
+                            if (typeof callback === 'function') {
+                                setTimeout(() => callback('SIGNED_IN', { user }), 0);
+                            }
+                            return { data: { subscription: { unsubscribe() {} } }, error: null };
+                        },
+                        signOut: async () => ({ error: null })
+                    },
+                    from: (table) => buildQuery(table),
+                    rpc: async () => ({ data: null, error: null }),
+                    storage: {
+                        from: () => ({
+                            upload: async (path) => ({ data: { path }, error: null }),
+                            getPublicUrl: (path) => ({ data: { publicUrl: `https://storage.local/${path}` }, error: null }),
+                            list: async () => ({ data: [], error: null }),
+                            remove: async () => ({ data: null, error: null })
+                        })
+                    }
+                };
+            }
+
+            const supabaseStub = createSupabaseStub(testUser, profileSnapshot);
+
+            if (window.supabaseClient && !window.__REAL_SUPABASE_CLIENT) {
+                window.__REAL_SUPABASE_CLIENT = window.supabaseClient;
+            }
+
+            window.supabaseClient = supabaseStub;
+            if (!window.supabase || typeof window.supabase !== 'object') {
+                window.supabase = {};
+            }
+            window.supabase.createClient = () => supabaseStub;
+
+            if (Array.isArray(window.__supabaseReadyQueue)) {
+                window.__supabaseReadyQueue.forEach((resolver) => {
+                    try { resolver(supabaseStub); } catch (resolverErr) { console.warn('Supabase stub resolver failed:', resolverErr); }
+                });
+                window.__supabaseReadyQueue = [];
+            }
+
+            window.__GB_DEV_PROFILE_SEEDED = true;
+            window.__seedProfileTestUser = function (overrides) {
+                window.__GB_DEV_PROFILE_USER = overrides || {};
+                window.__GB_DEV_PROFILE_SEED = true;
+                window.location.reload();
+            };
+
+            try {
+                const url = new URL(window.location.href);
+                url.searchParams.delete('seedTestUser');
+                url.searchParams.delete('testUser');
+                window.history.replaceState({}, '', url);
+            } catch (historyErr) {
+                console.warn('Unable to clean seedTestUser param:', historyErr);
+            }
+
+            console.info('[Profile Dev] Local test user seeded. Reload the page if data does not appear immediately.');
+        })();
+    </script>
     <script defer src="../../js/body-metrics.js"></script>
     <script defer src="../../js/utils/user-data-export.js"></script>
 

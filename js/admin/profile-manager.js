@@ -49,10 +49,6 @@
         localStorage.setItem(userKey, guestData);
         console.log('ProfileManager: migrated guest profile cache to user key');
       }
-      if (guestData) {
-        localStorage.removeItem(guestKey);
-        console.log('ProfileManager: removed guest profile cache after migration');
-      }
     } catch (error) {
       console.warn('ProfileManager: Failed to migrate guest profile cache', error);
     }
@@ -235,70 +231,197 @@
     }
   };
 
+  const ensureProfileStructure = () => {
+    if (!profileData || typeof profileData !== 'object') {
+      profileData = {};
+    }
+
+    const buildDefaultBasic = () => ({
+      id: currentUser?.id || null,
+      email: currentUser?.email || '',
+      full_name: currentUser?.user_metadata?.full_name || '',
+      first_name: currentUser?.user_metadata?.first_name || '',
+      last_name: currentUser?.user_metadata?.last_name || '',
+      phone: currentUser?.user_metadata?.phone || '',
+      avatar_url: currentUser?.user_metadata?.avatar_url || '',
+      birthday: currentUser?.user_metadata?.date_of_birth || '',
+      location: '',
+      bio: '',
+      goals: [],
+      experience_level: '',
+      trainer_id: null,
+      trainer_name: '',
+      joined_date: new Date().toISOString(),
+      last_login: new Date().toISOString()
+    });
+
+    const buildDefaultBodyMetrics = () => ({
+      current_weight: '',
+      height: '',
+      target_weight: '',
+      body_fat_percentage: '',
+      muscle_mass: '',
+      measurements: {
+        chest: '',
+        waist: '',
+        hips: '',
+        arms: '',
+        thighs: ''
+      },
+      progress_photos: [],
+      weight_history: [],
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    });
+
+    const defaults = {
+      basic: buildDefaultBasic(),
+      body_metrics: buildDefaultBodyMetrics(),
+      preferences: {
+        units: 'metric',
+        theme: 'dark',
+        language: 'en',
+        notifications: {
+          email: true,
+          push: true,
+          reminders: true
+        },
+        privacy: {
+          profile_visible: true,
+          progress_visible: true
+        }
+      },
+      macros: {
+        goal: 'maintain',
+        activity_level: 'moderate',
+        calories: '',
+        protein_pct: 30,
+        carbs_pct: 40,
+        fats_pct: 30,
+        protein_g: '',
+        carbs_g: '',
+        fats_g: '',
+        updated_at: new Date().toISOString()
+      },
+      habits: {
+        daily: {},
+        updated_at: new Date().toISOString()
+      },
+      activity: {
+        workouts_completed: 0,
+        total_sessions: 0,
+        streak_days: 0,
+        achievements: [],
+        last_workout: null,
+        weekly_goals: {}
+      }
+    };
+
+    Object.entries(defaults).forEach(([section, value]) => {
+      if (!profileData[section]) {
+        profileData[section] = Array.isArray(value) ? [...value] : { ...value };
+      } else if (section === 'basic') {
+        profileData.basic = { ...value, ...profileData.basic };
+      }
+    });
+
+    if (!Array.isArray(profileData.basic.goals)) {
+      if (typeof profileData.basic.goals === 'string') {
+        profileData.basic.goals = profileData.basic.goals
+          .split(',')
+          .map(item => item.trim())
+          .filter(Boolean);
+      } else {
+        profileData.basic.goals = [];
+      }
+    }
+
+    if (!profileData.body_metrics.measurements || typeof profileData.body_metrics.measurements !== 'object') {
+      profileData.body_metrics.measurements = { ...defaults.body_metrics.measurements };
+    }
+    if (!Array.isArray(profileData.body_metrics.weight_history)) {
+      profileData.body_metrics.weight_history = [];
+    }
+    if (!Array.isArray(profileData.body_metrics.progress_photos)) {
+      profileData.body_metrics.progress_photos = [];
+    }
+    if (!profileData.preferences.notifications) {
+      profileData.preferences.notifications = { ...defaults.preferences.notifications };
+    }
+    if (!profileData.preferences.privacy) {
+      profileData.preferences.privacy = { ...defaults.preferences.privacy };
+    }
+    if (!profileData.habits.daily || typeof profileData.habits.daily !== 'object') {
+      profileData.habits.daily = {};
+    }
+  };
+
   // Initialize profile management
   const init = async () => {
-    // Reentrancy guard to avoid double initialization
-    if (__initState === 'in-progress') {
-      console.warn('ProfileManager init already in progress - skipping');
-      return;
-    }
     if (__initState === 'done') {
       console.log('ProfileManager already initialized - skipping');
-      return;
+      return __initPromise || Promise.resolve();
     }
+    if (__initState === 'in-progress' && __initPromise) {
+      console.warn('ProfileManager init already in progress - awaiting existing promise');
+      return __initPromise;
+    }
+
     __initState = 'in-progress';
-    try {
-      console.log('🔥 ProfileManager init START');
+    __initPromise = (async () => {
+      try {
+        console.log('🔥 ProfileManager init START');
 
-      // Check authentication
-      console.log('🔐 [INIT] Getting current user...');
-      currentUser = await getCurrentUser();
-      console.log('👤 [INIT] Current user:', currentUser?.email || 'none', 'ID:', currentUser?.id);
+        console.log('🔐 [INIT] Getting current user...');
+        currentUser = await getCurrentUser();
+        console.log('👤 [INIT] Current user:', currentUser?.email || 'none', 'ID:', currentUser?.id);
 
-      console.log('🔄 [INIT] Migrating guest profile storage...');
-      migrateGuestProfileStorage();
-      console.log('✅ [INIT] Guest profile migration complete');
+        ensureProfileStructure();
 
-      if (!currentUser) {
-        console.warn('❌ No authenticated user, redirecting to login...');
-        const ret = encodeURIComponent(window.location.pathname + window.location.search);
-        window.location.href = `login.html?redirect=${ret}`;
-        return;
+        console.log('🔄 [INIT] Migrating guest profile storage...');
+        migrateGuestProfileStorage();
+        console.log('✅ [INIT] Guest profile migration complete');
+
+        if (!currentUser) {
+          console.warn('❌ No authenticated user, redirecting to login...');
+          const ret = encodeURIComponent(window.location.pathname + window.location.search);
+          window.location.href = `login.html?redirect=${ret}`;
+          throw new Error('No authenticated user');
+        }
+
+        console.log('📥 [INIT] Loading profile data...');
+        await loadProfileData();
+        ensureProfileStructure();
+        console.log('✅ [INIT] Profile data loaded, keys:', Object.keys(profileData));
+        console.log('📊 [INIT] profileData.basic exists?', !!profileData.basic);
+        console.log('📊 [INIT] profileData.basic.full_name:', profileData.basic?.full_name);
+
+        if (!profileData.basic) {
+          console.error('❌ CRITICAL: profileData.basic is null after loadProfileData!');
+          throw new Error('Failed to initialize profile basic data');
+        }
+
+        console.log('🎨 Initializing UI...');
+        initializeUI();
+
+        console.log('🔗 Setting up event listeners...');
+        setupEventListeners();
+
+        console.log('🔄 Updating displays...');
+        updateBodyMetricsDisplays();
+
+        console.log('✅ Profile management initialized successfully');
+        __initState = 'done';
+      } catch (error) {
+        console.error('❌❌❌ Error initializing profile management:', error);
+        console.error('Error stack:', error.stack);
+        showNotification('Error loading profile. Please refresh the page.', 'error');
+        __initState = 'error';
+        throw error;
       }
+    })();
 
-      // Load profile data
-      console.log('📥 [INIT] Loading profile data...');
-      await loadProfileData();
-      console.log('✅ [INIT] Profile data loaded, keys:', Object.keys(profileData));
-      console.log('📊 [INIT] profileData.basic exists?', !!profileData.basic);
-      console.log('📊 [INIT] profileData.basic.full_name:', profileData.basic?.full_name);
-
-      // Verify critical structures exist
-      if (!profileData.basic) {
-        console.error('❌ CRITICAL: profileData.basic is null after loadProfileData!');
-        throw new Error('Failed to initialize profile basic data');
-      }
-
-      // Initialize UI
-      console.log('🎨 Initializing UI...');
-      initializeUI();
-
-      // Set up event listeners
-      console.log('🔗 Setting up event listeners...');
-      setupEventListeners();
-
-      // Initial display update
-      console.log('🔄 Updating displays...');
-      updateBodyMetricsDisplays();
-
-      console.log('✅ Profile management initialized successfully');
-      __initState = 'done';
-    } catch (error) {
-      console.error('❌❌❌ Error initializing profile management:', error);
-      console.error('Error stack:', error.stack);
-      showNotification('Error loading profile. Please refresh the page.', 'error');
-      __initState = 'error';
-    }
+    return __initPromise;
   };
 
   // Get current user
@@ -351,6 +474,7 @@
   const loadProfileData = async () => {
     try {
       console.log('📥 [LOAD_PROFILE] Loading profile data...');
+      ensureProfileStructure();
 
       // CORREÇÃO CRÍTICA #1: Carregar dados salvos ANTES de inicializar estrutura vazia
       // ORDEM ANTIGA (errada): 1. Reset → 2. Load → 3. Merge (falha!)
@@ -489,6 +613,7 @@
       }
 
       syncAuthCache();
+  ensureProfileStructure();
       console.log('✅ [LOAD_PROFILE] Profile data loaded successfully');
       console.log('📊 [LOAD_PROFILE] Profile sections:', Object.keys(profileData));
       console.log('👤 [LOAD_PROFILE] User:', profileData.basic.full_name, profileData.basic.email);
@@ -643,46 +768,29 @@
 
       const userKey = activeId ? `garcia_profile_${activeId}` : null;
       const guestKey = 'garcia_profile_guest';
+      const keys = [guestKey, userKey].filter(Boolean);
 
-      console.log('🗝️ [LOAD] Storage keys disponíveis:', { userKey, guestKey });
+      console.log('🗝️ [LOAD] Storage keys a verificar:', keys);
 
       let loadedData = null;
-      let loadedFromUser = false;
 
-      if (userKey) {
+      keys.forEach((key) => {
         try {
-          const rawUser = localStorage.getItem(userKey);
-          console.log(`📦 [LOAD] Key: ${userKey}, Tamanho raw: ${rawUser?.length || 0} chars`);
-          if (rawUser) {
-            const snapshot = parseJsonSafe(rawUser, null);
-            if (snapshot && typeof snapshot === 'object') {
-              console.log(`✅ [LOAD] Snapshot parsed para key ${userKey}:`, JSON.stringify(snapshot).substring(0, 200));
-              loadedData = snapshot;
-              mergeProfileSnapshot(snapshot);
-              loadedFromUser = true;
-            }
+          const raw = key ? localStorage.getItem(key) : null;
+          console.log(`📦 [LOAD] Key: ${key}, Tamanho raw: ${raw?.length || 0} chars`);
+
+          if (!raw) return;
+
+          const snapshot = parseJsonSafe(raw, null);
+          if (snapshot && typeof snapshot === 'object') {
+            console.log(`✅ [LOAD] Snapshot parsed para key ${key}:`, JSON.stringify(snapshot).substring(0, 200));
+            loadedData = snapshot;
+            mergeProfileSnapshot(snapshot);
           }
         } catch (innerError) {
-          console.warn(`ProfileManager: Failed to merge local snapshot for key ${userKey}`, innerError);
+          console.warn(`ProfileManager: Failed to merge local snapshot for key ${key}`, innerError);
         }
-      }
-
-      if (!loadedFromUser) {
-        try {
-          const rawGuest = localStorage.getItem(guestKey);
-          console.log(`📦 [LOAD] Key: ${guestKey}, Tamanho raw: ${rawGuest?.length || 0} chars`);
-          if (rawGuest) {
-            const snapshot = parseJsonSafe(rawGuest, null);
-            if (snapshot && typeof snapshot === 'object') {
-              console.log(`✅ [LOAD] Snapshot parsed para key ${guestKey}:`, JSON.stringify(snapshot).substring(0, 200));
-              loadedData = snapshot;
-              mergeProfileSnapshot(snapshot);
-            }
-          }
-        } catch (innerError) {
-          console.warn(`ProfileManager: Failed to merge local snapshot for key ${guestKey}`, innerError);
-        }
-      }
+      });
 
       if (!profileData.basic) profileData.basic = {};
       if (activeId && !profileData.basic.id) {
@@ -723,6 +831,7 @@
       }
     }
 
+      ensureProfileStructure();
 
       console.log(`💾 Saving profile${section ? ` (${section})` : ''}...`);
 
@@ -1184,21 +1293,8 @@
       console.log('[SAVE] Data to save (first 500 chars):', dataString.substring(0, 500));
       console.log('[SAVE] Data size (chars):', dataString.length);
 
-      const keys = [];
-      if (activeId) {
-        keys.push(primaryKey);
-      } else {
-        keys.push('garcia_profile_guest');
-      }
-
-      if (activeId) {
-        try {
-          localStorage.removeItem('garcia_profile_guest');
-          console.log('🧹 [SAVE] Removed guest profile cache after user save');
-        } catch (cleanupError) {
-          console.warn('ProfileManager: Failed to clear guest cache during save', cleanupError);
-        }
-      }
+      const keys = new Set(['garcia_profile_guest']);
+      if (activeId) keys.add(primaryKey);
 
       keys.forEach((key) => {
         if (!key) return;
@@ -1250,6 +1346,7 @@
 
   // Initialize UI components
   const initializeUI = () => {
+    ensureProfileStructure();
     // Update basic info displays
     updateBasicInfoDisplay();
 
@@ -1286,26 +1383,42 @@
 
   // Update basic info display
   const updateBasicInfoDisplay = () => {
+    const basic = profileData.basic || {};
+    const safeText = (value, fallback) => {
+      if (value === undefined || value === null) return fallback;
+      if (typeof value === 'string') {
+        const trimmed = value.trim();
+        return trimmed.length ? trimmed : fallback;
+      }
+      return value || fallback;
+    };
+
+    const goalsArray = Array.isArray(basic.goals)
+      ? basic.goals
+      : typeof basic.goals === 'string'
+        ? basic.goals.split(',').map(item => item.trim()).filter(Boolean)
+        : [];
+
     const elements = {
-      'user-name': profileData.basic.full_name || profileData.basic.first_name || 'User',
-      'user-email': profileData.basic.email,
-      'user-phone': profileData.basic.phone || 'Not provided',
-      'user-location': profileData.basic.location || 'Not provided',
-      'user-bio': profileData.basic.bio || 'No bio added yet',
-      'user-goals': profileData.basic.goals.join(', ') || 'No goals set',
-      'user-experience': profileData.basic.experience_level || 'Not specified',
-  'user-birthday': formatDate(profileData.basic.birthday),
-  'user-trainer': profileData.basic.trainer_name || 'Not assigned',
-      'member-since': formatDate(profileData.basic.joined_date),
-      'member-since-display': formatDate(profileData.basic.joined_date),
-      'last-login': formatDate(profileData.basic.last_login),
-      'profile-name': profileData.basic.full_name || profileData.basic.first_name || 'Your Profile',
-      'profile-email': profileData.basic.email
+      'user-name': safeText(basic.full_name || basic.first_name, 'User'),
+      'user-email': safeText(basic.email, ''),
+      'user-phone': safeText(basic.phone, 'Not provided'),
+      'user-location': safeText(basic.location, 'Not provided'),
+      'user-bio': safeText(basic.bio, 'No bio added yet'),
+      'user-goals': goalsArray.length ? goalsArray.join(', ') : 'No goals set',
+      'user-experience': safeText(basic.experience_level, 'Not specified'),
+      'user-birthday': formatDate(basic.birthday),
+      'user-trainer': safeText(basic.trainer_name, 'Not assigned'),
+      'member-since': formatDate(basic.joined_date),
+      'member-since-display': formatDate(basic.joined_date),
+      'last-login': formatDate(basic.last_login),
+      'profile-name': safeText(basic.full_name || basic.first_name, 'Your Profile'),
+      'profile-email': safeText(basic.email, '')
     };
 
     Object.entries(elements).forEach(([id, value]) => {
       const element = document.getElementById(id);
-      if (element) {
+      if (element && value !== undefined) {
         element.textContent = value;
       }
     });
@@ -1313,9 +1426,9 @@
     // Update avatar
     const avatars = document.querySelectorAll('.user-avatar, .main-avatar, #user-avatar');
     avatars.forEach(avatar => {
-      const src = profileData.basic.avatar_url || getAvatarFallback();
+      const src = safeText(basic.avatar_url, '') || getAvatarFallback();
       avatar.src = src;
-      const label = profileData.basic.full_name || profileData.basic.email || 'Profile avatar';
+      const label = safeText(basic.full_name || basic.email, 'Profile avatar');
       avatar.alt = `${label}'s avatar`;
     });
 
@@ -2082,21 +2195,42 @@
 
   // Update all body metrics displays
   const updateBodyMetricsDisplays = () => {
-    const metricsForm = document.getElementById('body-metrics-form');
-    if (!metricsForm) return;
+    ensureProfileStructure();
 
-    // Update all metric cards with current form values
+    const metricsForm = document.getElementById('body-metrics-form');
+    const metricsSource = profileData.body_metrics || {};
+    const measurements = metricsSource.measurements || {};
+
+    const readField = (selector, fallback) => {
+      if (metricsForm) {
+        const field = metricsForm.querySelector(selector);
+        if (field) {
+          const raw = typeof field.value === 'string' ? field.value.trim() : field.value;
+          if (raw !== undefined && raw !== null && String(raw).length > 0) {
+            return raw;
+          }
+        }
+      }
+      if (fallback === undefined || fallback === null || fallback === '') return '--';
+      return fallback;
+    };
+
+    const asDisplay = (value) => {
+      if (value === undefined || value === null || value === '') return '--';
+      return typeof value === 'number' && Number.isFinite(value) ? value : value;
+    };
+
     const metrics = {
-      'current-weight': metricsForm.querySelector('[name="current_weight"]')?.value || '--',
-      'height': metricsForm.querySelector('[name="height"]')?.value || '--',
-      'target-weight': metricsForm.querySelector('[name="target_weight"]')?.value || '--',
-      'body-fat': metricsForm.querySelector('[name="body_fat_percentage"]')?.value || '--',
-      'muscle-mass': metricsForm.querySelector('[name="muscle_mass"]')?.value || '--',
-      'chest': metricsForm.querySelector('[name="measurements_chest"]')?.value || '--',
-      'waist': metricsForm.querySelector('[name="measurements_waist"]')?.value || '--',
-      'hips': metricsForm.querySelector('[name="measurements_hips"]')?.value || '--',
-      'arms': metricsForm.querySelector('[name="measurements_arms"]')?.value || '--',
-      'thighs': metricsForm.querySelector('[name="measurements_thighs"]')?.value || '--'
+      'current-weight': readField('[name="current_weight"]', metricsSource.current_weight),
+      'height': readField('[name="height"]', metricsSource.height),
+      'target-weight': readField('[name="target_weight"]', metricsSource.target_weight),
+      'body-fat': readField('[name="body_fat_percentage"]', metricsSource.body_fat_percentage),
+      'muscle-mass': readField('[name="muscle_mass"]', metricsSource.muscle_mass),
+      'chest': readField('[name="measurements_chest"]', measurements.chest),
+      'waist': readField('[name="measurements_waist"]', measurements.waist),
+      'hips': readField('[name="measurements_hips"]', measurements.hips),
+      'arms': readField('[name="measurements_arms"]', measurements.arms),
+      'thighs': readField('[name="measurements_thighs"]', measurements.thighs)
     };
 
     Object.entries(metrics).forEach(([metric, value]) => {
@@ -2104,10 +2238,15 @@
       if (card) {
         const valueElement = card.querySelector('.metric-value');
         if (valueElement) {
-          valueElement.textContent = value;
+          valueElement.textContent = asDisplay(value);
         }
       }
     });
+
+    const bmiElement = document.getElementById('display-bmi');
+    if (bmiElement) {
+      bmiElement.textContent = calculateBMI() || '--';
+    }
   };
 
   // Update calories display
@@ -2207,6 +2346,19 @@
         showNotification('Internal error: section not defined', 'error');
         return false;
       }
+
+      if (__initState !== 'done') {
+        console.warn('ProfileManager: init not finished when submit triggered - awaiting initialization');
+        try {
+          await (__initPromise || init());
+        } catch (waitError) {
+          console.error('❌ Failed to complete initialization before save:', waitError);
+          showNotification('Profile still loading. Please try again in a moment.', 'warning');
+          return false;
+        }
+      }
+
+      ensureProfileStructure();
 
       if (form.dataset.saving === 'true') {
         console.log(`⚠️ Skipping duplicate submit for section "${section}"`);
@@ -2537,6 +2689,7 @@
 
   // Calculate BMI
   const calculateBMI = () => {
+    if (!profileData || !profileData.body_metrics) return null;
     const weight = parseFloat(profileData.body_metrics.current_weight);
     const height = parseFloat(profileData.body_metrics.height);
 
@@ -2551,6 +2704,9 @@
 
   // Update progress photos display
   const updateProgressPhotos = () => {
+    if (!profileData || !profileData.body_metrics || !Array.isArray(profileData.body_metrics.progress_photos)) {
+      return;
+    }
     const container = document.getElementById('progress-photos-container');
     if (!container) return;
 
@@ -2571,6 +2727,7 @@
   let weightChartInstance = null;
     let lastWeightDataLength = 0;
   const renderWeightHistoryChart = () => {
+    if (!profileData || !profileData.body_metrics) return;
     try {
       const entries = profileData.body_metrics?.weight_history || [];
       const empty = document.getElementById('weight-chart-empty');
@@ -2638,6 +2795,7 @@
   // Render body fat history chart (from table if available, fallback to metadata current values over time)
   let bodyFatChartInstance = null;
   const renderBodyFatHistoryChart = async () => {
+    if (!profileData || !profileData.body_metrics) return;
     try {
       const empty = document.getElementById('bodyfat-chart-empty');
       const canvas = document.getElementById('bodyfat-history-canvas');
@@ -2711,6 +2869,7 @@
   // Waist history chart from measurements.waist
   let waistChartInstance = null;
   const renderWaistHistoryChart = async () => {
+    if (!profileData || !profileData.body_metrics) return;
     try {
       const empty = document.getElementById('waist-chart-empty');
       const canvas = document.getElementById('waist-history-canvas');
@@ -2755,6 +2914,7 @@
   // Muscle mass history chart from measurements.muscle_mass
   let muscleChartInstance = null;
   const renderMuscleHistoryChart = async () => {
+    if (!profileData || !profileData.body_metrics) return;
     try {
       const empty = document.getElementById('muscle-chart-empty');
       const canvas = document.getElementById('muscle-history-canvas');

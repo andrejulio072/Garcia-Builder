@@ -1411,20 +1411,38 @@
                 });
             }
 
-            // Form auto-save functionality
+            // Form auto-save functionality (debounced per form)
+            const __gbFormSaveTimers = new WeakMap();
+            const scheduleFormSave = (form) => {
+                try {
+                    // Basic readiness guard: ensure profile manager and profile data exist
+                    const ready = !!(window.GarciaProfileManager?.handleFormSubmit && window.GarciaProfileManager?.getProfileData?.()?.basic);
+                    if (!ready) return;
+
+                    const prev = __gbFormSaveTimers.get(form);
+                    if (prev) clearTimeout(prev);
+                    const t = setTimeout(() => {
+                        try {
+                            window.GarciaProfileManager.handleFormSubmit({ target: form, preventDefault: () => {} });
+                        } catch (e) {
+                            console.warn('Autosave failed:', e);
+                        }
+                    }, 700); // slightly longer to coalesce quick edits
+                    __gbFormSaveTimers.set(form, t);
+                } catch (e) {
+                    console.warn('Failed to schedule autosave:', e);
+                }
+            };
+
             const forms = document.querySelectorAll('form[data-profile-section]');
             forms.forEach(form => {
                 const inputs = form.querySelectorAll('input, select, textarea');
                 inputs.forEach(input => {
-                    input.addEventListener('change', () => {
-                        // Auto-save after short delay
-                        setTimeout(() => {
-                            if (window.GarciaProfileManager) {
-                                const event = { target: form, preventDefault: () => {} };
-                                window.GarciaProfileManager.handleFormSubmit?.(event);
-                            }
-                        }, 500);
-                    });
+                    // Save on change; also capture input for number fields for better UX
+                    input.addEventListener('change', () => scheduleFormSave(form));
+                    if (input.tagName === 'INPUT') {
+                        input.addEventListener('input', () => scheduleFormSave(form));
+                    }
                 });
             });
         }

@@ -35,7 +35,9 @@
   },
   "devDependencies": {
     "jsdom": "^22.1.0",
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.0.2",
+    "playwright": "^1.56.1",
+    "puppeteer": "^24.29.1"
   },
   "engines": {
     "node": ">=16.0.0"

@@ -1,16 +1,19 @@
 # 🧭 Navbar & Footer Reliability Investigation
 
 ## Context
+
 - Date: 2025-10-25
-- Scope: Understand why navbar/footer render locally via `http://localhost:5173` but not when opening `index.html` with the `file://` protocol, and document other front-end console issues observed.
+- Scope: Understand why navbar/footer render locally via `http://localhost:5183` but not when opening `index.html` with the `file://` protocol, and document other front-end console issues observed.
 
 ## Observed Behaviours
+
 - ✅ When served through the Express static server, both `navbar` and `footer` load with full styling.
 - ⚠️ When opening the HTML file directly (`file://`), component fetches fail, triggering fallback markup warnings and Supabase errors in console.
 - ⚠️ Chrome DevTools "Issues" panel flags missing `alt` for a lazily-loaded hero image and an `<iframe>` without a `title`.
 - ⚠️ Console shows repeated `TypeError: failed to fetch` for Supabase endpoints when offline or using `file://` (DNS resolution fails).
 
 ## Root Cause Analysis
+
 1. **Component Fetch Strategy**
    - `component-loader-v3-simplified.js` uses `fetch()` which browsers block for `file://` origins (CORS & security).
    - Result: placeholders remain empty unless fallback is injected.
@@ -28,7 +31,9 @@
    - GTM `<iframe>` previously lacked a `title`; fixed already.
 
 ## Proposed Solutions
+
 ### Immediate (High Priority)
+
 1. **Enhance Fallback Rendering**
    - Inline cached copies of `navbar.html` and `footer.html` within the loader fallback so `file://` renders match prod.
    - Add a note explaining the fallback is only for offline previews.
@@ -38,23 +43,26 @@
    - Log a single info message to avoid console spam.
 
 ### Medium Priority
-3. **Automated Page Audit Script**
+
+1. **Automated Page Audit Script**
    - Extend `tools/validate-components.ps1` to assert:
      - `<link>` includes `navbar-component.css`.
      - `<script>` includes the loader.
      - No duplicate inline nav/footer markup.
    - Output per-page status to avoid regressions.
 
-4. **Accessibility Maintenance**
+2. **Accessibility Maintenance**
    - Add `alt` text to popup image in `newsletter-manager.js`.
    - Continue scanning Issues panel for remaining warnings once Supabase guard is in place.
 
 ### Low Priority
-5. **Optional Build Step**
+
+1. **Optional Build Step**
    - Create an npm script that inlines components into static HTML for offline builds (marketing downloads).
    - Useful if the team frequently needs to email single HTML files.
 
 ## Next Steps
+
 - [x] Implement Supabase offline guard.
 - [x] Replace fallback markup with cached component HTML.
 - [ ] Update validation tooling & document workflow.

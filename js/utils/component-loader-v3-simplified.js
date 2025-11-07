@@ -295,7 +295,7 @@ async function loadComponent(componentName) {
 
         if (isFileProtocol()) {
             console.info('[Component Loader] Running from file:// — browsers often block fetch in this context.\n' +
-                'Recommended: use the local static server (tools/static-server.js) and open http://localhost:5173');
+                'Recommended: use the local static server (tools/static-server.js) and open http://localhost:5183');
         } else if (isOffline()) {
             console.info('[Component Loader] Browser reports offline mode — component fetch skipped until connection resumes.');
         }

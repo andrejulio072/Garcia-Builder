@@ -4,7 +4,9 @@ const path = require('path');
 
 const app = express();
 app.disable('x-powered-by');
-let port = Number(process.env.PORT || 5173);
+const DEFAULT_PORT = 5183;
+const PORT_MAX = 5200;
+let port = Number(process.env.PORT || DEFAULT_PORT);
 const root = path.resolve(__dirname, '..');
 
 // Global basic headers for local dev (not production security hardening)
@@ -41,12 +43,12 @@ const start = () => {
   });
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      if (port < 5190) {
+      if (port < PORT_MAX) {
         console.warn(`Port ${port} in use, trying ${port + 1}...`);
         port += 1;
         start();
       } else {
-        console.error('No free port found between 5173-5190. Set PORT env var and retry.');
+        console.error(`No free port found between ${DEFAULT_PORT}-${PORT_MAX}. Set PORT env var and retry.`);
         process.exit(1);
       }
     } else {

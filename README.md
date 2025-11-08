@@ -1,592 +1,306 @@
-# Confirmao de E-mail para Contato
+# Garcia Builder — Professional Online Coaching Platform
 
-Agora o sistema possui confirmao de e-mail para usurios que entram em contato pelo formulrio do site.
+This repository contains the static site and serverless endpoints for Garcia Builder, a professional online fitness coaching platform supporting user authentication, payments, newsletter management and client dashboards.
 
-**Como usar:**
-- Inclua o script `assets/js/contact-send.js` no seu formulrio de contato.
-- O backend est em `api/contact.js`.
-- A pgina de confirmao  `confirm-contact.html`.
-- Veja instrues detalhadas em `docs/confirmacao-contato.md`.
+> NOTE: This README is a curated, production-ready overview. Non-essential dev/test artifacts were removed in the repository cleanup branch; core functionality (layout, front-end, Supabase auth and database, and payment integrations) remains intact.
 
-**Exemplo de formulrio:**
-```html
-<form onsubmit="enviarContato(this); return false;">
-  <input type="text" name="nome" placeholder="Seu nome" required>
-  <input type="email" name="email" placeholder="Seu e-mail" required>
-  <textarea name="mensagem" placeholder="Mensagem" required></textarea>
-  <button type="submit">Enviar</button>
-</form>
+---
+
+## Quick Project Summary
+
+- App type: Static frontend + serverless API endpoints (Supabase-backed)
+- Hosting: Static hosting (Vercel / GitHub Pages) + Supabase for auth & DB
+- Languages: HTML, CSS, JavaScript (Vanilla), small Node.js scripts for tooling
+- Key services: Supabase (auth & database), Stripe (payments)
+
+---
+
+## What this repository contains (high level)
+
+- `index.html`, marketing pages, pricing and program pages (public site)
+- `pages/public/*` — authenticated pages such as `dashboard.html`, `my-profile.html`
+- `js/` — frontend modules (auth, supabase client config, profile manager, payment helpers)
+- `api/` — serverless endpoints (contact, lead, newsletter, stripe webhook handlers)
+- `css/` and `assets/` — styles, images, i18n buckets
+- `docs/` — developer and go-live documentation
+- `database/` — SQL schema files for Supabase
+- `tools/` and `scripts/` — development helper scripts (lightweight)
+
+---
+
+## Local development
+
+Prerequisites
+
+- Node.js 18+ (for local tooling and scripts)
+- A static server for previewing pages (python simple server, `npx serve`, or similar)
+- Supabase project (for auth and DB) if you want to fully exercise protected pages
+- Optional: Stripe test keys to exercise payment flows
+
+Quick start (static preview)
+
+```pwsh
+# From repo root
+# Serve site on port 8000 (example using Node 'serve')
+npm install -g serve     # optional if not installed
+serve -s . -l 8000       # visit http://localhost:8000
+
+# Or with Python (quick preview)
+python -m http.server 8000
 ```
 
-**Importante:**
-- Configure o e-mail do remetente no backend antes de usar em produo.
-- Tokens de confirmao so armazenados localmente (troque para banco em produo).
-# Garcia Builder  Professional Online Coaching Platform
-
-Complete multilingual fitness coaching platform for **Andre Garcia (Garcia Builder)**  featuring advanced user authentication, payment processing, newsletter management, and mobile-optimized lead capture. Built with modern web technologies and deployed on **GitHub Pages**.
-
->  **Live Website:** https://andrejulio072.github.io/Garcia-Builder/
->  **Contact Form:** https://www.garciabuilder.fitness/contact.html
->  **Book Consultation:** https://calendly.com/andrenjulio072/consultation
->  **Instagram:** https://instagram.com/garcia.builder
->  **Trainerize:** https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/
+To exercise full auth+DB flows locally you will need a Supabase project and env values. See "Environment" below.
 
 ---
 
-##  Production Domains
+## Environment & Supabase setup
 
-- Primary (recommended): [https://www.garciabuilder.fitness](https://www.garciabuilder.fitness)
-- Alternate: [https://www.garciabuilder.uk](https://www.garciabuilder.uk)
+Required environment values (example):
 
-DNS setup and go-live checklists:
+- SUPABASE_URL — your Supabase project URL
+- SUPABASE_ANON_KEY — public anon key
+- PUBLIC_SITE_URL — canonical site URL (used for OAuth redirect calculations)
+- STRIPE_PUBLISHABLE_KEY — Stripe publishable key (test)
 
-- DNS + Render (Namecheap): [docs/DNS-NAMECHEAP.md](docs/DNS-NAMECHEAP.md)
-- Full Go-Live guide: [docs/GO-LIVE.md](docs/GO-LIVE.md)
+These values are injected at build/runtime via `env-config.json` or through the hosting platform's environment settings. See `docs/ENV-CONFIG-SETUP.md` for step-by-step guidance.
 
----
+Supabase notes
 
-##  Project Highlights
-
-###  **Frontend & UX**
-- **Multilingual Support** (EN/PT/ES) with complete internationalization system
-- **Professional Design** with charcoal + gold (`#F6C84E`) brand colors and glassmorphism effects
-- **Mobile-First Responsive** design optimized for all devices
-- **Exit Intent Popup** with intelligent triggers and session management
-- **18 Client Testimonials** with 5-star ratings and detailed success stories
-- **Transformation Gallery** with before/after images and lightbox functionality
-
-###  **Authentication & User Management**
-- **OAuth Integration** with Google and Facebook login
-- **Supabase Authentication** with secure session management
-- **User Dashboards** with personalized profiles and progress tracking
-- **Admin Panel** for trainer management and user oversight
-- **Auth Guards** protecting sensitive pages and content
-
-###  **Payment & Business Logic**
-- **Stripe Integration** with multiple payment methods
-- **Payment Links** for quick checkout and course sales
-- **5-Tier Pricing Plans** from 75 to 250 with clear value propositions
-- **Currency Conversion** support for international clients
-- **Discount System** with promotional codes
-
-###  **Marketing & Lead Generation**
-- **Newsletter System** with automated email sequences
-- **Lead Capture Forms** with validation and database storage
-- **Exit Intent Technology** to maximize conversion rates
-- **Contact Integration** via Formspree, Calendly, and Instagram DMs
-- **CRM Integration** with lead tracking and management
-
-###  **Analytics & Performance**
-- **SEO Optimized** with sitemap, robots.txt, and meta tags
-- **Performance Monitoring** with Google Analytics integration
-- **A/B Testing** capabilities for conversion optimization
-- **Database Analytics** for user behavior tracking
+- Authentication is handled by Supabase (OAuth + email). The client code relies on `window.supabaseClient`.
+- Database schema is under `database/` (SQL files). Keep RLS (Row Level Security) rules updated when changes are made.
 
 ---
 
-##  Tech Stack
+## Deployment
 
-### **Frontend**
-- **HTML5/CSS3/JavaScript** - Modern web standards
-- **Bootstrap 5** - Responsive framework
-- **VanillaTilt** - 3D card interactions
-- **Custom CSS** - Glassmorphism and modern effects
+- Preferred: Vercel — configuration included (`vercel.json`, `vercel.build.json`, `vercel.toml`). Update environment variables in the Vercel project dashboard.
+- Alternative: GitHub Pages for purely static hosting (keep webhooks and serverless endpoints running elsewhere).
 
-### **Backend & Database**
-- **Supabase** - Backend-as-a-Service with PostgreSQL
-- **Real-time subscriptions** - Live data updates
-- **Row Level Security** - Database security policies
-- **Edge Functions** - Serverless API endpoints
-
-### **Payment Processing**
-- **Stripe** - Complete payment infrastructure
-- **Webhook handling** - Secure payment verification
-- **Multiple currencies** - International support
-- **Subscription management** - Recurring payments
-
-### **Authentication**
-- **OAuth 2.0** - Google and Facebook integration
-- **JWT tokens** - Secure session management
-- **Password reset** - Email-based recovery
-- **Multi-factor support** - Enhanced security
-
-### **DevOps & Deployment**
-- **GitHub Pages** - Static site hosting
-- **GitHub Actions** - CI/CD pipeline
-- **Environment variables** - Secure configuration
-- **Version control** - Git workflow
+Stripe webhooks should be configured to send events to the proper endpoint (see `api/stripe-server.js` and `api/stripe-server-premium.js`).
 
 ---
 
-##  Project Structure
+## Branch strategy & cleanup performed
 
-```
-Garcia-Builder/
-  Core Pages
-    index.html                 # Homepage with lead capture
-    about.html                 # About Andre & methodology
-    pricing.html               # Pricing plans & payment links
-    programs.html              # Program descriptions
-    testimonials.html          # Client success stories
-    transformations.html       # Before/after gallery
-    contact.html               # Contact form & links
-    faq.html                   # FAQ with search
+- `main` — production-ready code (kept).
+- `backup/2025-11-08-clean` — stable backup preserved on remote.
+- `cleanup/2025-11-08` — working branch for the cleanup operation (this branch).
 
-  Authentication Pages
-    login.html                 # OAuth & email login
-    reset-password.html        # Password recovery
-    dashboard.html             # User dashboard
-    my-profile.html            # Profile management
-    admin-dashboard.html       # Admin panel
-    admin-trainers.html        # Trainer management
-    trainer-dashboard.html     # Trainer interface
+What was removed
 
-  Business Pages
-    stripe-oficial.html        # Stripe integration
-    pricing-payment-links.html # Payment processing
-    success.html               # Payment success
-    become-trainer.html        # Trainer application
-    certificacao-completa.html # Certification page
-    profile-manager.html       # Profile editing
+- Developer/test backup HTML files (eg. `pages/public/*local-backup.html`, `*previous-backup.html`) and related ad-hoc test artifacts that were not needed for production.
+- Playwright-based smoke test harness and supporting dependencies (`tools/tests/profile-save-smoke.js`, `jsdom`, `playwright`).
+- Remote branch `backup/2025-11-08-functional` was removed to keep the remote tidy.
 
-  Assets & Resources
-    assets/
-       i18n/                  # Translation files
-       images/                # Optimized images
-       logo.png               # Brand assets
-       transformations/       # Client photos
-    css/
-       global.css             # Main styles
-       newsletter.css         # Newsletter system
-       auth.css               # Authentication UI
-       dashboard.css          # Dashboard styles
-       credibility.css        # Trust elements
-    js/
-        app.js                 # Main application
-        auth.js                # Authentication logic
-        newsletter-manager.js  # Lead capture system
-        stripe-payments.js     # Payment processing
-        supabase-config.js     # Database config
-        [30+ specialized modules]
+If you need any removed file restored, check the backup branch or request specific files and I'll restore them.
 
-  Documentation
-    docs/
-       setup/                 # Setup guides
-          OAUTH-SETUP-GUIDE.md
-          SUPABASE-SETUP.md
-          README-STRIPE.md
-          NEWSLETTER-SETUP-GUIDE.md
-       testing/               # Test files
-           test-mobile-popup.html
-           test-homepage-popup.html
-           MOBILE-POPUP-TESTING.md
-    archive/                   # Archived files
-        docs-obsoletos/        # Old documentation
-        testes-obsoletos/      # Legacy tests
-        backups/               # File backups
-        config-info/           # Configuration files
+---
 
-  Database & Configuration
-    supabase-schema-update.sql # Database schema
-    newsletter-database-schema.sql # Newsletter tables
-    .env.example              # Environment template
-    package.json              # Dependencies
-    start-server.bat          # Local development
+## Contributing & Development flow
 
-  Development Tools
-     .github/                   # GitHub workflows
-     .vscode/                   # VS Code settings
-     tools/                     # Development scripts
-     robots.txt                 # SEO configuration
-     sitemap.xml                # Site structure
+1. Create a feature branch from `main` or `cleanup/2025-11-08` (for example: `git checkout -b feature/your-change`).
+2. Make small, focused commits and push frequently.
+3. Open a Pull Request against `main`. Include a description and any deployment/testing steps.
+
+Code ownership & tests
+
+- Critical flows (authentication, payments, profile persistence) should be exercised manually or with your preferred automation before merging.
+
+---
+
+## Troubleshooting & common checks
+
+- If OAuth is redirecting back to login repeatedly, clear `localStorage` keys `gb_current_user` and `gb_remember_user` then retry. The project includes strengthened session hydration logic to avoid redirect loops.
+- Ensure `PUBLIC_SITE_URL` matches your deployed origin for OAuth redirect consistency.
+- If Stripe webhooks fail, check endpoint signatures and secret configuration.
+
+---
+
+## Useful commands
+
+```pwsh
+# lint or quick checks (project has few node tasks)
+npm ci
+# Git housekeeping
+git fetch --prune
+# delete a local branch
+git branch -D <branch>
+# delete a remote branch
+git push origin --delete <branch>
 ```
 
 ---
 
-##  Getting Started
+## Contact / Support
 
-### Local Development
-```bash
----
-
-##  Quick Start
-
-### Local Development
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/Garcia-Builder.git
-cd Garcia-Builder
-
-# Start local server (choose one method)
-python -m http.server 8000         # Python 3
-python2 -m SimpleHTTPServer 8000   # Python 2
-npx serve .                        # Node.js
-php -S localhost:8000              # PHP
-
-# Open browser
-# Visit: http://localhost:8000
-```
-
-### Environment Setup
-
-1. **Create Environment File**
-   ```bash
-   cp .env.example .env
-   ```
-
-2. **Configure Variables**
-   ```env
-   # Supabase Configuration
-   VITE_SUPABASE_URL=your_supabase_url
-   VITE_SUPABASE_ANON_KEY=your_anon_key
-
-   # Stripe Configuration
-   VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...
-   STRIPE_SECRET_KEY=sk_test_...
-
-   # OAuth Keys
-   GOOGLE_CLIENT_ID=your_google_client_id
-   FACEBOOK_APP_ID=your_facebook_app_id
-
-   # API Keys
-   FORMSPREE_ENDPOINT=https://formspree.io/f/your_form_id
-   ```
-
-### GitHub Pages Deployment
-1. Push changes to **main** branch
-2. Go to **Settings  Pages**
-3. Select **Deploy from branch: main / root**
-4. Access at: `https://yourusername.github.io/Garcia-Builder/`
+If you need help restoring removed artifacts, or want a different cleanup policy (keep more tooling or automation scripts), open an issue or message the maintainer.
 
 ---
 
-##  Authentication System
-
-### OAuth Integration
-- **Google OAuth**: Complete setup with consent screens
-- **Facebook Login**: App-based authentication
-- **Session Management**: Secure JWT token handling
-- **Protected Routes**: Dashboard and admin access control
-
-### User Roles & Permissions
-- **Client**: Access to personal dashboard and programs
-- **Trainer**: Manage clients and programs
-- **Admin**: Full system access and user management
-
-### Setup Guides
--  [OAuth Setup Guide](docs/setup/OAUTH-SETUP-GUIDE.md)
--  [Authentication Quick Start](GUIA-RAPIDO-AUTH.md)
+License: MIT
 
 ---
 
-##  Payment Integration
-
-### Stripe Configuration
-- **Payment Links**: Direct checkout for programs
-- **Subscription Management**: Recurring payments
-- **Webhook Handling**: Secure payment verification
-- **Multiple Currencies**: International support
-
-### Pricing Structure
-- **5-Tier System**: 75 to 250 monthly plans
-- **Payment Options**: One-time and subscription
-- **Discount Codes**: Promotional pricing support
-
-### Setup Documentation
--  [Stripe Setup Guide](docs/setup/README-STRIPE.md)
--  [Payment Links Guide](GUIA-PAYMENT-LINKS.md)
-
----
-
-##  Newsletter & Lead Capture
-
-### Exit Intent System
-- **Mobile Optimized**: Touch-friendly popup triggers
-- **Session Control**: Smart display logic
-- **Analytics Integration**: Conversion tracking
-- **A/B Testing**: Multiple popup variants
-
-### Features
--  **Exit Intent Detection**: Captures leaving users
--  **Mobile Triggers**: Scroll and interaction based
--  **Session Management**: Prevents popup spam
--  **Lead Tracking**: Supabase integration
--  **Multilingual**: Full i18n support
-
-### Implementation Files
-- **JavaScript**: `js/newsletter-manager.js`
-- **Styling**: `css/newsletter.css`
-- **Database**: `newsletter-database-schema.sql`
-
----
-
-##  Internationalization (i18n)
-
-### Language Support
-- **English (EN)**: Default language
-- **Portuguese (PT)**: Complete Brazilian Portuguese
-- **Spanish (ES)**: Full Spanish translations
-
-### Technical Implementation
-```javascript
-// Translation structure
-const I18N = {
-  en: {
-    nav: { home: "Home", about: "About" },
-    hero: { title: "Transform Your Body", subtitle: "..." }
-  },
-  pt: { /* Portuguese translations */ },
-  es: { /* Spanish translations */ }
-};
-
-// Usage in HTML
-<h1 data-i18n="hero.title">Transform Your Body</h1>
-<input data-i18n-ph="contact.email" placeholder="Your email">
-```
-
-### Translation Features
--  **Complete Coverage**: All UI text translated
--  **Persistent Selection**: Language choice saved to localStorage
--  **Dynamic Switching**: No page reload required
--  **Form Support**: Placeholders and validation messages
-
----
-
-##  Analytics & Tracking
-
-### Conversion Tracking
-- **Newsletter Signups**: Lead capture analytics
-- **Button Clicks**: CTA performance tracking
-- **Page Views**: User journey analysis
-- **Payment Success**: Revenue tracking
-
-### Performance Monitoring
-- **Load Times**: Page speed optimization
-- **Mobile Experience**: Touch interaction tracking
-- **Error Monitoring**: JavaScript error reporting
-
----
-
-##  Development & Testing
-
-### Test Files & Validation
-```
-docs/testing/
- test-mobile-popup.html      # Mobile popup testing
- test-homepage-popup.html    # Homepage integration test
- test-newsletter.html        # Newsletter system test
- test-payment-flow.html      # Payment integration test
- MOBILE-POPUP-TESTING.md    # Testing documentation
-```
-
-### Quality Assurance
-- **Mobile Testing**: Cross-device compatibility
-- **Payment Testing**: Stripe test mode validation
-- **Authentication Testing**: OAuth flow verification
-- **Performance Testing**: Load time optimization
-
-### Development Tools
-- **Local Server**: Multiple options for development
-- **Environment Variables**: Secure configuration management
-- **Database Scripts**: Schema updates and migrations
-- **Optimization Tools**: Image compression and code minification
+## Site inventory and feature map
+
+This section documents what exists today page-by-page, plus components, CTAs, tracking, data layer, and integrations. Use it to plan improvements and keep behavior consistent across pages.
+
+### Global components and behavior
+
+- Navbar (`components/navbar.html`)
+  - Primary links: Home (`index.html`), About, Transformations, Testimonials, Pricing, Blog, FAQ, Contact.
+  - Auth buttons: Login / Register; visibility can be adjusted by auth guard scripts.
+  - Language selector (i18n): switches `gb_lang` and triggers `languageChanged` events consumed by pages.
+- Footer (`components/footer.html`)
+  - Brand/about text, help links (About, Contact, FAQ), resources (free guide), social (Instagram), and legal (Privacy, Terms).
+  - Newsletter signup form with consent checkbox (handled by `js/components/newsletter-manager.js`).
+  - Language selector and cookie preferences link.
+- Component loader: `js/utils/component-loader-v3-simplified.js` renders navbar/footer on pages using `data-component="navbar|footer"`.
+- Tracking and consent
+  - Consent Mode baseline before any tags. Google Tag Manager (GTM) `GTM-TG5TFZ2C`; Google Ads `AW-17627402053`.
+  - Meta/Facebook Pixel central init (`js/tracking/pixel-init.js`).
+  - Ads loader + config (`js/tracking/ads-loader.js`, `js/tracking/ads-config.js`).
+  - Web Vitals RUM (`js/tracking/web-vitals-rum.js`), conversion helpers (`js/tracking/conversion-helper.js`).
+
+### Public pages (key sections, CTAs, integrations)
+
+- Home (`index.html`)
+  - Sections: Hero with primary CTAs (Start Today → `contact.html`, See Plans → `pricing.html`), KPI strip, Google Reviews, Why GB, Stats, Featured Transformation, How It Works.
+  - Integrations: GTM + Ads + Pixel with consent; component loader; i18n; global app scripts.
+  - CTAs: Contact/Calendly via nav/footer; pricing links inside hero and sections.
+
+- About (`about.html`)
+  - Coaching philosophy, mission, Andre’s story, feature cards with tilt/shine effects.
+  - Trainer recruitment CTA → `become-trainer.html` (stub link).
+  - Gallery grid (local assets); newsletter section with preferences; floating Calendly button.
+  - Scripts: component loader, newsletter-manager, auth guard, tracking, i18n.
 
----
+- Transformations (`transformations.html`)
+  - Dynamic before/after cards with filters, modal details (story and stats), “Load more.”
+  - Newsletter section (“Get Your Own Transformation”) with name/email and value bullets.
+  - CTAs: Pricing button in modal footer; floating Calendly button.
+  - Scripts: `js/transformations-enhanced.js`, newsletter-manager, lightbox, auth guard.
 
-##  Deployment & Production
+- Testimonials (`testimonials.html`)
+  - Dynamic testimonials grid (40 cards via JS), category filters, compact/comfy view toggle.
+  - Stats bar (Transformations, Success Rate, Avg Rating, Countries Served).
+  - Share-your-story section with mailto and Instagram CTAs; floating Calendly button.
+  - Tracking: filter clicks, card views, CTA clicks (GA + Pixel).
 
-### Production Configuration
-- **Environment**: GitHub Pages static hosting
-- **CDN**: Optimized asset delivery
-- **SSL**: Automatic HTTPS certificates
-- **Performance**: Optimized for speed and SEO
+- Pricing (`pricing.html`)
+  - Period selector (Monthly/Quarterly/Biannual/Annual with discounts), currency converter, discount code UI, member-only discount block (requires auth).
+  - Structured data (OfferCatalog, Product) and post-purchase CTA (Calendly link via meta `booking:url`).
+  - Scripts: `js/pricing.js`, `js/core/currency-converter.js`, `js/discount-system.js`, `js/payment-links.js`, `js/stripe-discount-integration.js`.
+  - CTAs: plan buttons (Stripe Checkout via client helpers), floating Calendly button.
 
-### Monitoring & Maintenance
-- **Uptime Monitoring**: Site availability tracking
-- **Performance Metrics**: Speed and conversion monitoring
-- **Security Updates**: Regular dependency updates
-- **Backup Strategy**: Code and database backups
+- FAQ (`faq.html`)
+  - Hero with search field; 25-question accordion rendered from i18n dictionaries.
+  - Search and accordion click tracking (GA + Pixel); hash-open support (`#q12`).
+  - CTAs: Contact via navbar/footer; floating Calendly button.
 
----
+- Contact (`contact.html`)
+  - Contact form posts to `api/contact.js` (serverless). Footer provides alternative CTAs (email, Calendly).
 
-##  Prximos Passos para Vender de Verdade
+- Blog and posts (`blog*.html`)
+  - Static posts for nutrition and gym mistakes; consistent header/footer.
 
-- Guia de publicao com domnio real e Render/Vercel/Netlify: `docs/GO-LIVE.md`
-- Aes rpidas de SEO para aparecer no Google: `docs/SEO-QUICK-WINS.md`
-- Gerar sitemap com seu domnio:
+- Legal: `privacy.html`, `terms.html`, `robots.txt`, sitemaps (`sitemap*.xml`).
 
-```powershell
-$env:SITE_URL="https://www.garciabuilder.fitness"; npm run sitemap
-```
+### Authenticated/utility pages
 
-Depois faa commit do `sitemap.xml` e envie no Google Search Console.
+- Dashboard (`dashboard.html`)
+  - Supabase OAuth exchange and session hydration; profile upsert; lead tracking events.
+  - Floating WhatsApp contact shortcut with dynamic localized message. This is intentionally available post-login to provide support.
+  - Guards: `js/core/auth-guard.js` normalizes session and protects routes as needed.
 
-##  Documentation & Support
+- My profile (production) (`my-profile-production.html`)
+  - Uses similar session hydration; contains a floating WhatsApp link for quick support.
 
-### Setup Guides
--  [Supabase Setup](docs/setup/SUPABASE-SETUP.md)
--  [OAuth Configuration](docs/setup/OAUTH-SETUP-GUIDE.md)
--  [Stripe Integration](docs/setup/README-STRIPE.md)
--  [Newsletter System](docs/setup/NEWSLETTER-SETUP-GUIDE.md)
+> Note: WhatsApp links are intentionally present only on post-login pages (dashboard/profile). Public pages favor Calendly scheduling.
 
-### Testing Documentation
--  [Mobile Testing Guide](docs/testing/MOBILE-POPUP-TESTING.md)
--  [Test File Documentation](docs/testing/)
+### Newsletter touchpoints
 
-### Project History
--  [Implementation Timeline](IMPLEMENTACAO-COMPLETA.md)
--  [Feature Completion](MELHORIAS-COMPLETAS.md)
--  [Project Updates](DASHBOARD-MELHORADO.md)
+- Footer form (global across most pages) → handled by `js/components/newsletter-manager.js` → `api/newsletter.js` upsert with `{ email, name?, source }`.
+- About page form (`#aboutNewsletterForm`).
+- Transformations page form (`#transformationsNewsletterForm`).
 
----
+### CTA and integration matrix (where things appear)
 
-##  Contributing
+- Calendly booking
+  - Present as a floating button on: About, Transformations, Pricing, Testimonials, FAQ (plus footer link on most pages).
+- WhatsApp contact
+  - Present only after authentication on: Dashboard, My Profile (production variant). Not present on public marketing pages by design.
+- Pricing/Checkout
+  - Pricing page plan buttons and discount UI; client code calls Stripe Checkout helpers.
+- Newsletter
+  - Footer (site-wide), About, Transformations.
 
-### Development Workflow
-1. **Fork** the repository
-2. **Create feature branch**: `git checkout -b feature-name`
-3. **Make changes** following code style guidelines
-4. **Test thoroughly** on all supported devices
-5. **Submit pull request** with detailed description
+## APIs and contracts (serverless endpoints under `api/`)
 
-### Code Standards
-- **HTML**: Semantic markup and accessibility
-- **CSS**: Mobile-first responsive design
-- **JavaScript**: Modern ES6+ syntax
-- **Documentation**: Clear comments and README updates
+- `api/contact.js`
+  - Inserts into `contact_inquiries`. Expects JSON: `{ email: string, message: string, name?: string, source?: string }`.
+  - Returns: `{ ok: true }` on success; `{ ok: false, error }` on failure.
 
----
+- `api/lead.js`
+  - Inserts into `leads` with metadata/notes. Expects `{ email: string, name?: string, source?: string, notes?: string }`.
+  - Returns standard JSON `{ ok }`.
 
-##  License & Contact
+- `api/newsletter.js`
+  - Upserts subscriber into `newsletter_subscribers` on `email`; accepts `{ email: string, name?: string, source?: string }`.
 
-### Project Information
-- **Version**: 2.0 (Complete Platform)
-- **Status**: Production Ready
-- **Last Updated**: December 2024
-- **Maintainer**: Andre Garcia (Garcia Builder)
+- `api/stripe-server-premium.js`
+  - Express server with Helmet CSP, strict CORS allowlist, rate limiting. Serves static + API routes, initializes Stripe in strict mode.
+  - Used for secure Stripe Checkout/Webhooks; see file for route details and environment requirements.
 
-### Contact & Support
--  **Email**: andre@garciabuilder.fitness
--  **Book Consultation**: https://calendly.com/andrenjulio072/consultation
--  **Instagram**: https://instagram.com/garcia.builder
--  **Trainerize**: https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/
--  **Contact Form**: https://www.garciabuilder.fitness/contact.html
+## Data layer (Supabase) overview
 
-### Business Information
-- **Services**: Online Fitness Coaching
-- **Specialization**: Body Transformation & Strength Training
-- **Languages**: English, Portuguese, Spanish
-- **Location**: UK-based, International Clients
+Schema files under `database/`:
 
----
+- `00_complete_setup.sql`
+  - Tables: `profiles`, `body_metrics`, `leads`, `lead_events`, plus a `leads_dashboard` view.
+  - RLS policies per table; triggers and indexes for performance and integrity.
+- `01_body_metrics.sql`
+  - Reiterates `body_metrics` structure and policies for clarity.
+- `02_storage_user_assets.sql`
+  - Storage bucket `user-assets` with per-user folder policies and signed URL behavior.
 
-##  Client Success Stories
+Auth notes
 
-> *"Andre gave me structure, habits I could actually follow, and most importantly - results that last."*
-> ** Eduarda Ribeiro** 
+- Client uses `@supabase/supabase-js` (UMD on most pages) and `js/core/supabase-config.js` for initialization.
+- Guards (`js/core/auth-guard.js`) provide redirect protection and session normalization across pages.
 
-> *"As a busy dad I didn't think I had time. Andre simplified training and nutrition into something I could manage."*
-> ** Conrad Norman** 
+## i18n
 
-> *"Twelve weeks later my friends keep asking what I changed. It wasn't just my body - my whole mindset shifted."*
-> ** Mariana Vieira** 
+- Dictionaries live under `assets/i18n.js` and `assets/locales/…`. Pages use `data-i18n` attributes and listen for `languageChanged` to re-render dynamic content (e.g., FAQ, transformations modal strings).
 
-**18 verified testimonials** with detailed transformation stories available on the live website.
+## Tracking and measurement
 
----
+- Consent-aware GTM/Ads/Pixel across pages, with unified helpers to push events.
+- Page-specific events: `view_pricing`, `plan_selection` (pricing), `faq_search`/`faq_click` (FAQ), testimonial filters and card views (testimonials).
+- Web Vitals RUM script posts LCP/CLS/FID into `dataLayer`.
 
-**Ready to transform your body?** 
- [**Book Your Free Consultation**](https://calendly.com/andrenjulio072/consultation) 
+## Hosting, routing and deployment
 
-### Dynamic Components
-- **KPI Injection**: [`js/kpi6.inject.js`](js/kpi6.inject.js) creates performance metrics
-- **Credibility Cards**: [`js/credibility.inject.js`](js/credibility.inject.js) shows qualifications
-- **Pricing Grid**: [`js/pricing.js`](js/pricing.js) renders pricing plans dynamically
+- Vercel: `vercel.json`, `vercel.build.json`, `vercel.toml` provide routing and build hints, including proxying to the premium Stripe server as needed.
+- Static files include sitemaps and `_headers` hints; PowerShell scripts (`deploy-vercel.ps1`) exist for deploy convenience.
 
----
+## Known gaps and easy wins (next steps)
 
-##  External Integrations
+- Standardize CTAs: complete the transition to Calendly on all public pages; keep WhatsApp only on post-login pages (current behavior matches this).
+- Centralize tracking snippets to reduce duplication and ensure all consent paths are consistent.
+- Add a 404 page and ensure sitemaps reference the final URL set.
+- Add lightweight unit tests for the JS helpers (pricing grid, discount system, newsletter manager) and a smoke run for component loader.
+- Consolidate duplicate CSS includes and ensure font preloads are consistent (reduce layout shift risk).
 
-### Direct Links
--  **Website**: https://andrejulio072.github.io/Garcia-Builder/
--  **Calendly**: https://calendly.com/andrenjulio072/consultation
--  **Instagram**: https://instagram.com/garcia.builder
--  **Contact Form**: https://www.garciabuilder.fitness/contact.html
--  **Trainerize**: https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia/
+## Minimal contracts at a glance
 
-### Ready for Integration
--  **Stripe Checkout**: Configure payment URLs in pricing CTAs
--  **Analytics**: Ready for GA4 or Plausible integration
--  **Email Marketing**: Contact form exports to your email system
+- Newsletter submit → POST `/api/newsletter` with `{ email, name?, source? }` → 200 JSON `{ ok: true }`.
+- Contact submit → POST `/api/contact` with `{ email, message, name?, source? }` → 200 JSON `{ ok: true }`.
+- Lead capture → POST `/api/lead` with `{ email, name?, source?, notes? }` → 200 JSON `{ ok: true }`.
 
----
+## Maintenance checklist (for releases)
 
-##  Mobile & Accessibility
-
-### Mobile Optimization
--  **Responsive Design**: Works perfectly on all device sizes
--  **Touch-Friendly**: Optimized button sizes and interactions
--  **Fast Loading**: Optimized images and deferred scripts
--  **Consistent Layout**: No horizontal scrolling issues
-
-### Accessibility Features
--  **Keyboard Navigation**: Full keyboard support
--  **High Contrast**: Excellent readability ratios
--  **Screen Readers**: Semantic HTML structure
--  **Focus States**: Clear visual focus indicators
-
----
-
-##  Future Roadmap
-
-- [ ] **Stripe Integration**: Complete payment processing for pricing plans
-- [ ] **Professional Photos**: Replace placeholder avatars with client photos
-- [ ] **Analytics Dashboard**: Track visitor behavior and conversions
-- [ ] **Blog Section**: Content marketing for SEO
-- [ ] **Client Portal**: Member area for existing clients
-- [ ] **Advanced Animations**: GSAP/ScrollTrigger for enhanced UX
-- [ ] **A/B Testing**: Optimize conversion rates
-
----
-
-##  Support & Issues
-
-### Common Solutions
-1. **Language not switching**: Check browser console for JavaScript errors
-2. **Images not loading**: Verify file paths in `assets/` folder
-3. **Form not submitting**: Ensure Formspree endpoint is configured
-4. **Mobile layout issues**: Check viewport meta tag
-
-### Getting Help
--  **GitHub Issues**: Report bugs or request features
--  **Contact Form**: Send a message via https://www.garciabuilder.fitness/contact.html
--  **Calendly**: Book technical consultation
--  **Instagram**: Follow for updates
-
----
-
-##  About the Coach
-
-**Andre Garcia (Garcia Builder)**
-*Certified Online Fitness Coach*
-
-Specializing in sustainable transformations through evidence-based training and flexible nutrition. Fluent in English, Portuguese, and Spanish, serving clients worldwide with personalized coaching approaches.
-
-### Contact Andre
-- **Website**: https://andrejulio072.github.io/Garcia-Builder/
-- **Email**: andre@garciabuilder.fitness
-- **Instagram**: https://instagram.com/garcia.builder
-- **Book Consultation**: https://calendly.com/andrenjulio072/consultation
-
----
-
-##  License
-
-This project is proprietary to Garcia Builder. All rights reserved.
-
-For licensing inquiries or usage permissions, contact Andre Garcia via the links above.
-
----
-
-*Last updated: January 2025  Built with  for fitness transformations*
+- Validate component loader renders navbar/footer on all pages (fallback logs should not appear).
+- Run “GB: CI Full” task to lint components and build env config.
+- Sanity-check pricing buttons after any change to `js/pricing.js` or Stripe config.
+- Verify i18n keys exist for new text blocks; ensure language selector propagates.

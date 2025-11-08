@@ -290,10 +290,59 @@
             });
         };
 
-        document.addEventListener('DOMContentLoaded', function() {
+        const ensureAuthSession = async (timeoutMs = 2500) => {
+            const start = Date.now();
+            const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+            while (Date.now() - start < timeoutMs) {
+                try {
+                    if (window.AuthSystem?.isLoggedIn?.()) {
+                        return true;
+                    }
+
+                    const supabase = window.supabaseClient || window.supabase;
+                    if (supabase?.auth?.getSession) {
+                        const { data, error } = await supabase.auth.getSession();
+                        const user = !error ? data?.session?.user : null;
+
+                        if (user) {
+                            const normalized = {
+                                id: user.id,
+                                name: user.user_metadata?.full_name || user.email,
+                                full_name: user.user_metadata?.full_name || '',
+                                email: user.email,
+                                registeredAt: user.created_at || new Date().toISOString(),
+                                lastLogin: new Date().toISOString(),
+                                avatar_url: user.user_metadata?.avatar_url || null
+                            };
+
+                            if (!localStorage.getItem('gb_current_user')) {
+                                localStorage.setItem('gb_current_user', JSON.stringify(normalized));
+                                window.dispatchEvent(new CustomEvent('auth:session-restored', { detail: { user: normalized } }));
+                            }
+                            return true;
+                        }
+                    } else {
+                        break;
+                    }
+                } catch (sessionErr) {
+                    console.warn('ensureAuthSession warning:', sessionErr);
+                }
+
+                await wait(250);
+            }
+
+            return !!(window.AuthSystem?.isLoggedIn?.());
+        };
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            const authReady = await ensureAuthSession();
             if (typeof AuthSystem !== 'undefined' && typeof AuthSystem.requireAuth === 'function') {
                 const allowed = AuthSystem.requireAuth();
                 if (!allowed) {
+                    if (!authReady) {
+                        console.warn('Auth guard prevented access before session restoration.');
+                    }
                     return;
                 }
             }

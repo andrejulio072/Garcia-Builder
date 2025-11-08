@@ -1677,11 +1677,60 @@
     <script defer src="../../js/body-metrics.js"></script>
 
     <script>
+        const ensureAuthSession = async (timeoutMs = 2500) => {
+            const start = Date.now();
+            const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+            while (Date.now() - start < timeoutMs) {
+                try {
+                    if (window.AuthSystem?.isLoggedIn?.()) {
+                        return true;
+                    }
+
+                    const supabase = window.supabaseClient || window.supabase;
+                    if (supabase?.auth?.getSession) {
+                        const { data, error } = await supabase.auth.getSession();
+                        const user = !error ? data?.session?.user : null;
+
+                        if (user) {
+                            const normalized = {
+                                id: user.id,
+                                name: user.user_metadata?.full_name || user.email,
+                                full_name: user.user_metadata?.full_name || '',
+                                email: user.email,
+                                registeredAt: user.created_at || new Date().toISOString(),
+                                lastLogin: new Date().toISOString(),
+                                avatar_url: user.user_metadata?.avatar_url || null
+                            };
+
+                            if (!localStorage.getItem('gb_current_user')) {
+                                localStorage.setItem('gb_current_user', JSON.stringify(normalized));
+                                window.dispatchEvent(new CustomEvent('auth:session-restored', { detail: { user: normalized } }));
+                            }
+                            return true;
+                        }
+                    } else {
+                        break;
+                    }
+                } catch (sessionErr) {
+                    console.warn('ensureAuthSession warning:', sessionErr);
+                }
+
+                await wait(250);
+            }
+
+            return !!(window.AuthSystem?.isLoggedIn?.());
+        };
+
         // Profile page specific functionality
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
+            const authReady = await ensureAuthSession();
             if (typeof AuthSystem !== 'undefined' && typeof AuthSystem.requireAuth === 'function') {
                 const allowed = AuthSystem.requireAuth();
                 if (!allowed) {
+                    if (!authReady) {
+                        console.warn('Auth guard prevented access before session restoration.');
+                    }
                     return;
                 }
             }
@@ -1721,6 +1770,12 @@
             tabButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const targetTab = this.dataset.tab;
+                    const tabElement = document.getElementById(`${targetTab}-tab`);
+
+                    if (!tabElement) {
+                        console.warn('Tab content not found for target:', targetTab);
+                        return;
+                    }
 
                     // Remove active class from all buttons and contents
                     tabButtons.forEach(btn => btn.classList.remove('active'));
@@ -1728,7 +1783,7 @@
 
                     // Add active class to clicked button and target content
                     this.classList.add('active');
-                    document.getElementById(targetTab + '-tab').classList.add('active');
+                    tabElement.classList.add('active');
                 });
             });
         }
@@ -1809,24 +1864,31 @@
             });
         }
 
+        const hasValue = (value) => value !== undefined && value !== null && value !== '';
+
         function updateMetricsDisplay() {
             const profileData = window.GarciaProfileManager?.getProfileData();
             if (!profileData) return;
 
-            const metrics = profileData.body_metrics;
-            const units = profileData.preferences?.units || 'metric';
+            const metrics = profileData.body_metrics || {};
+            const units = (profileData.preferences && profileData.preferences.units) || 'metric';
+            const bmiValue = calculateBMI(metrics.current_weight, metrics.height);
 
             // Update metric displays
             const displays = {
-                'display-weight': metrics.current_weight ?
-                    `${metrics.current_weight} ${units === 'metric' ? 'kg' : 'lbs'}` : '--',
-                'display-height': metrics.height ?
-                    `${metrics.height} ${units === 'metric' ? 'cm' : 'ft'}` : '--',
-                'display-bmi': calculateBMI(metrics.current_weight, metrics.height) || '--',
-                    'display-body-fat': metrics.body_fat_percentage ?
-                        `${metrics.body_fat_percentage}%` : '--%',
-                    'display-muscle-mass': metrics.muscle_mass ?
-                        `${metrics.muscle_mass} ${units === 'metric' ? 'kg' : 'lbs'}` : '--'
+                'display-weight': hasValue(metrics.current_weight)
+                    ? `${metrics.current_weight}${units === 'metric' ? ' kg' : ' lbs'}`
+                    : '--',
+                'display-height': hasValue(metrics.height)
+                    ? `${metrics.height}${units === 'metric' ? ' cm' : ' ft'}`
+                    : '--',
+                'display-bmi': bmiValue ?? '--',
+                'display-body-fat': hasValue(metrics.body_fat_percentage)
+                    ? `${metrics.body_fat_percentage}%`
+                    : '--%',
+                'display-muscle-mass': hasValue(metrics.muscle_mass)
+                    ? `${metrics.muscle_mass}${units === 'metric' ? ' kg' : ' lbs'}`
+                    : '--'
             };
 
             Object.entries(displays).forEach(([id, value]) => {
@@ -1842,16 +1904,29 @@
             const bmi = calculateBMI(weight, height);
             const displayElement = document.getElementById('display-bmi');
 
-            if (displayElement && bmi) {
-                displayElement.textContent = bmi;
+            if (displayElement) {
+                displayElement.textContent = bmi ?? '--';
             }
         }
 
         function calculateBMI(weight, height) {
-            if (!weight || !height) return null;
+            const weightValue = Number(weight);
+            const heightValue = Number(height);
 
-            const heightInMeters = height > 3 ? height / 100 : height;
-            const bmi = weight / (heightInMeters * heightInMeters);
+            if (!Number.isFinite(weightValue) || !Number.isFinite(heightValue) || heightValue <= 0) {
+                return null;
+            }
+
+            const heightInMeters = heightValue > 3 ? heightValue / 100 : heightValue;
+
+            if (!Number.isFinite(heightInMeters) || heightInMeters <= 0) {
+                return null;
+            }
+
+            const bmi = weightValue / (heightInMeters * heightInMeters);
+            if (!Number.isFinite(bmi)) {
+                return null;
+            }
 
             return bmi.toFixed(1);
         }

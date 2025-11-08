@@ -13,7 +13,7 @@
     "lint": "powershell -ExecutionPolicy Bypass -File validate-components.ps1",
     "build:env": "node scripts/generate-env-config.js",
     "postinstall": "node scripts/generate-env-config.js",
-    "ship": "pwsh -NoLogo -File scripts/Invoke-Ship.ps1 -Project ${PROJECT:-iron-brothers}",
+    "ship": "pwsh -NoLogo -ExecutionPolicy Bypass -File scripts/Invoke-Ship.ps1 -Project ${PROJECT:-iron-brothers}",
     "ship:ib": "cross-env PROJECT=iron-brothers npm run ship",
     "ship:gb": "cross-env PROJECT=garcia-builder npm run ship",
     "ci:prep": "npm run lint && npm run test --silent",
@@ -43,8 +43,8 @@
     "stripe": "^14.25.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.0.2"
   },
   "engines": {
     "node": ">=16.0.0"

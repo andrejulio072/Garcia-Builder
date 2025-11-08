@@ -71,19 +71,6 @@ Supabase notes
 
 ---
 
-## Running the automated smoke test (profile save)
-
-This project includes a lightweight smoke test harness used during development to validate profile save flows.
-
-```pwsh
-# run from repo root
-node tools/tests/profile-save-smoke.js
-```
-
-Note: cleanup removed several ad-hoc test/backup files. If this test is required in CI, confirm `tools/tests/` exists and restore as needed.
-
----
-
 ## Deployment
 
 - Preferred: Vercel — configuration included (`vercel.json`, `vercel.build.json`, `vercel.toml`). Update environment variables in the Vercel project dashboard.
@@ -102,6 +89,7 @@ Stripe webhooks should be configured to send events to the proper endpoint (see 
 What was removed
 
 - Developer/test backup HTML files (eg. `pages/public/*local-backup.html`, `*previous-backup.html`) and related ad-hoc test artifacts that were not needed for production.
+- Playwright-based smoke test harness and supporting dependencies (`tools/tests/profile-save-smoke.js`, `jsdom`, `playwright`).
 - Remote branch `backup/2025-11-08-functional` was removed to keep the remote tidy.
 
 If you need any removed file restored, check the backup branch or request specific files and I'll restore them.
@@ -110,17 +98,13 @@ If you need any removed file restored, check the backup branch or request specif
 
 ## Contributing & Development flow
 
-1. Create a feature branch from `main` or `cleanup/2025-11-08`:
-   ```pwsh
-git checkout -b feature/your-change
-```
+1. Create a feature branch from `main` or `cleanup/2025-11-08` (for example: `git checkout -b feature/your-change`).
 2. Make small, focused commits and push frequently.
 3. Open a Pull Request against `main`. Include a description and any deployment/testing steps.
 
 Code ownership & tests
 
-- Critical flows: authentication, payments, and profile persistence must be validated by smoke tests before merging.
-- Run `npm run test:profile-save` (if present) or the smoke harness described above.
+- Critical flows (authentication, payments, profile persistence) should be exercised manually or with your preferred automation before merging.
 
 ---
 
@@ -137,8 +121,6 @@ Code ownership & tests
 ```pwsh
 # lint or quick checks (project has few node tasks)
 npm ci
-npm run test:profile-save    # smoke test harness (if available)
-
 # Git housekeeping
 git fetch --prune
 # delete a local branch

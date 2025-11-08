@@ -12,8 +12,18 @@
     "sitemap": "node tools/generate-sitemap.js",
     "lint": "powershell -ExecutionPolicy Bypass -File validate-components.ps1",
     "build:env": "node scripts/generate-env-config.js",
-    "postinstall": "node scripts/generate-env-config.js",
-    "test:profile-save": "node tools/tests/profile-save-smoke.js"
+    "postinstall": "node scripts/generate-env-config.js"
+ "ship": "pwsh -NoLogo -File scripts/Invoke-Ship.ps1 -Project ${PROJECT:-iron-brothers}",
+    "ship:ib": "cross-env PROJECT=iron-brothers npm run ship",
+    "ship:gb": "cross-env PROJECT=garcia-builder npm run ship",
+    "ci:prep": "npm run lint && npm run test --silent",
+    "ci:build": "npm run build --silent",
+    "ci:full": "npm run ci:prep && npm run ci:build",
+    "git:safe-push": "node scripts/git-safe-push.mjs",
+    "work": "cross-env PROJECT=iron-brothers node scripts/workflow.mjs",
+    "work:ib": "cross-env PROJECT=iron-brothers node scripts/workflow.mjs",
+    "work:gb": "cross-env PROJECT=garcia-builder node scripts/workflow.mjs"
+
   },
   "keywords": [
     "stripe",
@@ -34,9 +44,9 @@
     "stripe": "^14.25.0"
   },
   "devDependencies": {
-    "jsdom": "^22.1.0",
-    "nodemon": "^3.0.2",
-    "playwright": "^1.56.1"
+    "nodemon": "^3.0.2"
+ "cross-env": "^7.0.3"
+
   },
   "engines": {
     "node": ">=16.0.0"

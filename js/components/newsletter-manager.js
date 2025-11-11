@@ -135,8 +135,8 @@
       form.addEventListener('submit', handleConsultationRequest);
     });
 
-    // Transformation guide download
-    const downloadForms = document.querySelectorAll('.download-form');
+    // Transformation guide download (lead magnet)
+    const downloadForms = document.querySelectorAll('.download-form, .lead-magnet-form');
     downloadForms.forEach(form => {
       form.addEventListener('submit', handleDownloadRequest);
     });
@@ -668,12 +668,20 @@
 
     const form = event.target;
     const formData = new FormData(form);
+    const submitBtn = form.querySelector('.lead-form-submit, .btn-primary, button[type="submit"]');
+    const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+    }
 
     const downloadInfo = {
       id: generateLeadId(),
       email: formData.get('email'),
       name: formData.get('name') || '',
       goal: formData.get('goal') || 'Transformation Guide',
+      guide_id: form.dataset.guideId || formData.get('guide_id') || 'default-guide',
       type: 'download',
       source: form.dataset.source || 'Download Form',
       timestamp: new Date().toISOString(),
@@ -681,6 +689,10 @@
     };
 
     try {
+      if (!downloadInfo.email) {
+        throw new Error('Please enter a valid email address.');
+      }
+
       // Save lead
       await saveLeadToDatabase(downloadInfo);
 
@@ -693,7 +705,7 @@
       // Show success and provide immediate download
       showNotification('Sent! Check your email for the download link.', 'success');
 
-      // Immediate download
+      // Immediate download if asset available
       triggerFileDownload('transformation-guide.pdf');
 
       // Close popup if exists
@@ -703,11 +715,34 @@
         popup.remove();
       }
 
-      form.reset();
+      // Replace form content with success state for inline magnet
+      if (form.classList.contains('lead-magnet-form')) {
+        form.innerHTML = `
+          <div class="lead-form-success text-center">
+            <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
+            <h3>Guide on the way!</h3>
+            <p class="mb-0">Check your inbox (and spam) for the download link. I’ll follow up within 24 hours.</p>
+          </div>
+        `;
+      } else {
+        form.reset();
+      }
 
     } catch (error) {
-  console.error('Error processing download:', error);
-  showNotification('Erro ao processar download. Tente novamente.', 'error');
+      console.error('Error processing download:', error);
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml || 'Send';
+      }
+      const message = error?.message && error.message !== 'Request failed'
+        ? error.message
+        : 'Erro ao processar download. Tente novamente.';
+      showNotification(message, 'error');
+    }
+
+    if (submitBtn && form.classList.contains('lead-magnet-form') === false) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnHtml;
     }
   };
 

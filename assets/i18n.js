@@ -236,10 +236,11 @@
       },
       home: {
         hero: {
-          headline: "Online Coaching. Real Results."
+          headline: "Transform Your Body in 8–12 Weeks with 1:1 Online Coaching"
         },
         why: {
-          title: "Why Garcia Builder"
+          title: "Why Garcia Builder Works",
+          subtitle: "Clarity, support, and systems designed to deliver visible results in real life."
         }
       },
       featured: {
@@ -252,11 +253,11 @@
       },
       howitworks: {
         title: "How It Works",
-        subtitle: "Your transformation journey in 4 simple steps",
-        step1: { title: "Free Consultation", desc: "We discuss your goals, experience, and create your personalized plan." },
-        step2: { title: "Custom Program", desc: "Receive your tailored training and nutrition plan via Trainerize app." },
-        step3: { title: "Weekly Check-ins", desc: "Progress reviews, adjustments, and direct in-app chat support throughout." },
-        step4: { title: "Achieve Results", desc: "Hit your goals in 8-12 weeks with sustainable habits that last." },
+        subtitle: "Clarity from day one—here’s how we build momentum together",
+        step1: { title: "Assessment Call", desc: "Book a free consult to map goals, lifestyle, injuries, and the exact support you need." },
+        step2: { title: "Plan Built for You", desc: "Receive personalised training, nutrition, and habit systems inside the Trainerize app." },
+        step3: { title: "Guided Execution", desc: "Weekly check-ins plus daily WhatsApp accountability keep you consistent and confident." },
+        step4: { title: "Results That Last", desc: "Feel stronger, leaner, and in control with systems you can maintain long-term." },
         cta: "Start Your Journey Today →"
       },
       video: {
@@ -303,11 +304,11 @@
         count: "(87 reviews)"
       },
       hero: {
-        p: "Precision training, simple nutrition and relentless accountability — 100% online via Trainerize and in-app chat."
+        p: "Train from home or the gym with customised workouts, flexible nutrition guidance, and daily WhatsApp accountability."
       },
       cta: {
-        start: "Start Today",
-        plans: "See Plans",
+        start: "Book Your Free Consultation",
+        plans: "View Plans & Pricing",
         strip: {
           title: "Ready to start? Let's build your strongest body.",
           p: "Book a free consultation or DM me on Instagram. I coach in EN/PT/ES.",
@@ -324,12 +325,12 @@
         langs: "Languages"
       },
       why: {
-        f1: { title: "Personalized Plans", p: "Designed for your schedule, equipment and goal." },
-        f2: { title: "Simple Nutrition", p: "Flexible guidelines. No extremes. Sustainable." },
-        f3: { title: "Data‑Driven", p: "Progress checks & smart adjustments weekly." },
-        f4: { title: "Accountability", p: "In-app chat support + weekly reviews." },
-        f5: { title: "Injury‑Smart", p: "Technique cues and safe progressions." },
-        f6: { title: "Mindset & Habits", p: "Systems that keep you consistent." }
+        f1: { title: "Train Smarter, Not Harder", p: "Personalised programming so every session moves you closer to your goal." },
+        f2: { title: "Eat Foods You Love", p: "Balanced nutrition targets that fit your culture, schedule, and social life." },
+        f3: { title: "Progress You Can Track", p: "Weekly data reviews keep your training, nutrition, and recovery dialled in." },
+        f4: { title: "Accountability That Sticks", p: "Daily WhatsApp touchpoints and feedback when you need it, not just on check-in day." },
+        f5: { title: "Built for Real Bodies", p: "Form coaching, smart regressions, and pain-aware programming for longevity." },
+        f6: { title: "Habits That Last", p: "Simple routines that stack discipline, confidence, and consistent wins." }
       },
       footer: {
         whatsapp: "Coach Chat",
@@ -894,10 +895,11 @@
       },
       home: {
         hero: {
-          headline: "Coaching Online. Resultados Reais."
+          headline: "Transforme Seu Corpo em 8–12 Semanas com Coaching Online 1:1"
         },
         why: {
-          title: "Por que Garcia Builder"
+          title: "Por que o Garcia Builder Funciona",
+          subtitle: "Clareza, suporte e sistemas pensados para entregar resultados visíveis na vida real."
         }
       },
       featured: {
@@ -910,11 +912,11 @@
       },
       howitworks: {
         title: "Como Funciona",
-        subtitle: "Sua jornada de transformação em 4 passos simples",
-        step1: { title: "Consulta Gratuita", desc: "Conversamos sobre seus objetivos e experiência para criar seu plano personalizado." },
-        step2: { title: "Programa Personalizado", desc: "Receba seu treino e nutrição sob medida via app Trainerize." },
-        step3: { title: "Check-ins Semanais", desc: "Revisoes de progresso, ajustes e suporte direto pelo chat do app." },
-        step4: { title: "Alcance Resultados", desc: "Bata suas metas em 8–12 semanas com hábitos sustentáveis." },
+        subtitle: "Clareza desde o primeiro dia — é assim que criamos impulso juntos",
+        step1: { title: "Chamada de Avaliação", desc: "Agende uma consultoria gratuita para mapear objetivos, rotina, lesões e o suporte exato que você precisa." },
+        step2: { title: "Plano Feito para Você", desc: "Receba treino, nutrição e sistemas de hábitos personalizados dentro do app Trainerize." },
+        step3: { title: "Execução Guiada", desc: "Check-ins semanais mais responsabilidade diária no WhatsApp mantêm você consistente e confiante." },
+        step4: { title: "Resultados que Permanecem", desc: "Sinta-se mais forte, mais definido e no controle com sistemas que você consegue manter a longo prazo." },
         cta: "Comece Sua Jornada Hoje →"
       },
       video: {
@@ -961,11 +963,11 @@
         count: "(87 avaliações)"
       },
       hero: {
-        p: "Treino preciso, nutricao simples e responsabilidade implacavel — 100% online via Trainerize e chat do app."
+        p: "Treine de casa ou da academia com treinos personalizados, orientação nutricional flexível e responsabilidade diária pelo WhatsApp."
       },
       cta: {
-        start: "Começar Hoje",
-        plans: "Ver Planos",
+        start: "Agende Sua Consultoria Gratuita",
+        plans: "Ver Planos e Preços",
         strip: {
           title: "Pronto para começar? Vamos construir seu corpo mais forte.",
           p: "Agende uma consulta gratuita ou envie um DM no Instagram. Atendo em PT/EN/ES.",
@@ -982,12 +984,12 @@
         langs: "Idiomas"
       },
       why: {
-        f1: { title: "Planos Personalizados", p: "Projetados para sua rotina, equipamentos e objetivo." },
-        f2: { title: "Nutrição Simples", p: "Diretrizes flexíveis. Sem extremos. Sustentável." },
-        f3: { title: "Baseado em Dados", p: "Análise de progresso e ajustes inteligentes semanais." },
-        f4: { title: "Responsabilidade", p: "Suporte pelo chat do app + revisoes semanais." },
-        f5: { title: "Inteligente contra Lesões", p: "Dicas de técnica e progressões seguras." },
-        f6: { title: "Mentalidade e Hábitos", p: "Sistemas que mantêm você consistente." }
+        f1: { title: "Treine com Inteligência", p: "Programação personalizada para que cada sessão te aproxime da sua meta." },
+        f2: { title: "Coma o que Você Ama", p: "Metas de nutrição equilibradas que cabem na sua cultura, agenda e vida social." },
+        f3: { title: "Progresso que Você Vê", p: "Revisões semanais de dados mantêm treino, nutrição e recuperação alinhados." },
+        f4: { title: "Responsabilidade que Fica", p: "Toques diários no WhatsApp e feedback quando você precisa, não só no check-in." },
+        f5: { title: "Feito para Corpos Reais", p: "Correções de forma, regressões inteligentes e programação consciente da dor." },
+        f6: { title: "Hábitos que Permanecem", p: "Rotinas simples que constroem disciplina, confiança e vitórias consistentes." }
       },
       footer: {
         whatsapp: "Chat do coach",
@@ -1549,10 +1551,11 @@
       },
       home: {
         hero: {
-          headline: "Coaching Online. Resultados Reales."
+          headline: "Transforma Tu Cuerpo en 8–12 Semanas con Coaching Online 1:1"
         },
         why: {
-          title: "Por qué Garcia Builder"
+          title: "Por qué Garcia Builder Funciona",
+          subtitle: "Claridad, apoyo y sistemas diseñados para entregar resultados visibles en la vida real."
         }
       },
       featured: {
@@ -1565,11 +1568,11 @@
       },
       howitworks: {
         title: "Cómo Funciona",
-        subtitle: "Tu viaje de transformación en 4 pasos simples",
-        step1: { title: "Consulta Gratuita", desc: "Hablamos de tus objetivos y experiencia para crear tu plan personalizado." },
-        step2: { title: "Programa Personalizado", desc: "Recibe tu plan de entrenamiento y nutrición en el app Trainerize." },
-        step3: { title: "Check-ins Semanales", desc: "Revisiones de progreso, ajustes y soporte directo por el chat de la app." },
-        step4: { title: "Alcanza Resultados", desc: "Logra tus metas en 8–12 semanas con hábitos sostenibles." },
+        subtitle: "Claridad desde el día uno — así construimos impulso juntos",
+        step1: { title: "Llamada de Evaluación", desc: "Reserva una consulta gratuita para mapear objetivos, estilo de vida, lesiones y el soporte exacto que necesitas." },
+        step2: { title: "Plan Hecho para Ti", desc: "Recibe entrenamiento, nutrición y sistemas de hábitos personalizados dentro de la app Trainerize." },
+        step3: { title: "Ejecución Guiada", desc: "Check-ins semanales más responsabilidad diaria por WhatsApp te mantienen consistente y seguro." },
+        step4: { title: "Resultados que Permanecen", desc: "Siéntete más fuerte, más definido y en control con sistemas que puedes mantener a largo plazo." },
         cta: "Empieza Tu Viaje Hoy →"
       },
       video: {
@@ -1616,11 +1619,11 @@
         count: "(87 reseñas)"
       },
       hero: {
-        p: "Entrenamiento preciso, nutrición simple y responsabilidad implacable — 100% online vía Trainerize y chat de la app."
+        p: "Entrena desde casa o el gimnasio con rutinas personalizadas, guía nutricional flexible y responsabilidad diaria por WhatsApp."
       },
       cta: {
-        start: "Empezar Hoy",
-        plans: "Ver Planes",
+        start: "Reserva Tu Consulta Gratuita",
+        plans: "Ver Planes y Precios",
         strip: {
           title: "¿Listo para empezar? Construyamos tu cuerpo más fuerte.",
           p: "Reserva una consulta gratuita o envíame un DM en Instagram. Entreno en ES/EN/PT.",
@@ -1637,12 +1640,12 @@
         langs: "Idiomas"
       },
       why: {
-        f1: { title: "Planes Personalizados", p: "Diseñados para tu horario, equipamiento y objetivo." },
-        f2: { title: "Nutrición Simple", p: "Pautas flexibles. Sin extremos. Sostenible." },
-        f3: { title: "Basado en Datos", p: "Revisiones de progreso y ajustes inteligentes semanales." },
-        f4: { title: "Responsabilidad", p: "Soporte vía chat del app + revisiones semanales." },
-        f5: { title: "Inteligente contra Lesiones", p: "Consejos de técnica y progresiones seguras." },
-        f6: { title: "Mentalidad y Hábitos", p: "Sistemas que te mantienen consistente." }
+        f1: { title: "Entrena con Inteligencia", p: "Programación personalizada para que cada sesión te acerque a tu meta." },
+        f2: { title: "Come lo que Te Gusta", p: "Metas de nutrición equilibradas que encajan con tu cultura, agenda y vida social." },
+        f3: { title: "Progreso que Puedes Ver", p: "Revisiones semanales de datos mantienen entrenamiento, nutrición y recuperación alineados." },
+        f4: { title: "Responsabilidad que Perdura", p: "Toques diarios por WhatsApp y feedback cuando lo necesitas, no solo en el check-in." },
+        f5: { title: "Hecho para Cuerpos Reales", p: "Correcciones de técnica, regresiones inteligentes y programación consciente del dolor." },
+        f6: { title: "Hábitos que Permanecen", p: "Rutinas simples que construyen disciplina, confianza y victorias consistentes." }
       },
       footer: {
         whatsapp: "Chat del coach",

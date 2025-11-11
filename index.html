@@ -151,7 +151,7 @@ window.addEventListener('load', function() {
     try {
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
       const hasOAuthTokens = hashParams.has('access_token') || hashParams.has('refresh_token');
-      
+
       if (hasOAuthTokens) {
         console.log('[Index] OAuth tokens detected in URL, redirecting to dashboard...');
         const dashboardUrl = new URL('dashboard.html', window.location.origin);
@@ -204,11 +204,12 @@ window.addEventListener('load', function() {
 <div class="content container">
 <div class="row align-items-center">
 <div class="col-lg-12">
-<h1 class="title-gradient text-glow hero-headline" data-i18n="home.hero.headline">Online Coaching. Real Results.</h1>
-<p class="mt-2 hero-subtitle" data-i18n="hero.p">Precision training, simple nutrition and relentless accountability — 100% online via Trainerize and in-app chat.</p>
-<div class="d-flex gap-2 justify-content-center mt-3">
-<a class="btn btn-gold pulse-hover btn-hero-primary" data-i18n="cta.start" href="contact.html">Start Today</a>
-<a class="btn btn-hero-secondary" data-i18n="cta.plans" href="pricing.html">See Plans</a>
+<h1 class="title-gradient text-glow hero-headline" data-i18n="home.hero.headline">Transform Your Body in 8–12 Weeks with 1:1 Online Coaching</h1>
+<p class="mt-2 hero-subtitle" data-i18n="hero.p">Train from home or the gym with customised workouts, flexible nutrition guidance, and daily WhatsApp accountability.</p>
+<div class="d-flex gap-2 flex-wrap justify-content-center mt-3">
+<a class="btn btn-gold pulse-hover btn-hero-primary" data-i18n="cta.start" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Book Your Free Consultation</a>
+<a class="btn btn-hero-secondary" data-i18n="cta.plans" href="pricing.html">View Plans &amp; Pricing</a>
+<a class="btn btn-outline-warning" href="https://wa.me/447508497586" target="_blank" rel="noopener" aria-label="Start a WhatsApp chat with Coach André">Chat on WhatsApp</a>
 </div>
 <div class="kpis">
 <div class="kpi"><div class="num">127</div><div data-i18n="kpi.transforms">Transformations</div></div>
@@ -234,16 +235,75 @@ window.addEventListener('load', function() {
 </div>
 </section>
 <section class="section"><div class="container">
-<h2 class="title-gradient text-glow" data-i18n="home.why.title">Why Garcia Builder</h2>
-<div class="grid grid-3 mt-3">
-<div class="card feature pro"><div class="icon">🏋️</div><h3 data-i18n="why.f1.title">Personalized Plans</h3><p data-i18n="why.f1.p">Designed for your schedule, equipment and goal.</p></div>
-<div class="card feature pro"><div class="icon">🥗</div><h3 data-i18n="why.f2.title">Simple Nutrition</h3><p data-i18n="why.f2.p">Flexible guidelines. No extremes. Sustainable.</p></div>
-<div class="card feature pro"><div class="icon">📈</div><h3 data-i18n="why.f3.title">Data‑Driven</h3><p data-i18n="why.f3.p">Progress checks &amp; smart adjustments weekly.</p></div>
-<div class="card feature pro"><div class="icon">🎯</div><h3 data-i18n="why.f4.title">Accountability</h3><p data-i18n="why.f4.p">In-app chat support + weekly reviews.</p></div>
-<div class="card feature pro"><div class="icon">🛡️</div><h3 data-i18n="why.f5.title">Injury‑Smart</h3><p data-i18n="why.f5.p">Technique cues and safe progressions.</p></div>
-<div class="card feature pro"><div class="icon">🧠</div><h3 data-i18n="why.f6.title">Mindset &amp; Habits</h3><p data-i18n="why.f6.p">Systems that keep you consistent.</p></div>
+<h2 class="title-gradient text-glow" data-i18n="home.why.title">Why Garcia Builder Works</h2>
+<p class="lead text-white-soft text-center mt-3" data-i18n="home.why.subtitle">Clarity, support, and systems designed to deliver visible results in real life.</p>
+<div class="grid grid-3 mt-4">
+<div class="card feature pro"><div class="icon">🏋️</div><h3 data-i18n="why.f1.title">Train Smarter, Not Harder</h3><p data-i18n="why.f1.p">Personalised programming so every session moves you closer to your goal.</p></div>
+<div class="card feature pro"><div class="icon">🥗</div><h3 data-i18n="why.f2.title">Eat Foods You Love</h3><p data-i18n="why.f2.p">Balanced nutrition targets that fit your culture, schedule, and social life.</p></div>
+<div class="card feature pro"><div class="icon">📈</div><h3 data-i18n="why.f3.title">Progress You Can Track</h3><p data-i18n="why.f3.p">Weekly data reviews keep your training, nutrition, and recovery dialled in.</p></div>
+<div class="card feature pro"><div class="icon">🎯</div><h3 data-i18n="why.f4.title">Accountability That Sticks</h3><p data-i18n="why.f4.p">Daily WhatsApp touchpoints and feedback when you need it, not just on check-in day.</p></div>
+<div class="card feature pro"><div class="icon">🛡️</div><h3 data-i18n="why.f5.title">Built for Real Bodies</h3><p data-i18n="why.f5.p">Form coaching, smart regressions, and pain-aware programming for longevity.</p></div>
+<div class="card feature pro"><div class="icon">🧠</div><h3 data-i18n="why.f6.title">Habits That Last</h3><p data-i18n="why.f6.p">Simple routines that stack discipline, confidence, and consistent wins.</p></div>
 </div>
 </div></section>
+
+<!-- Quick Social Proof Section -->
+<section class="section social-proof-highlight">
+<div class="container">
+<div class="row align-items-center g-4">
+<div class="col-lg-5">
+<h2 class="title-gradient text-glow mb-3">Real transformations from busy professionals</h2>
+<p class="lead text-white-soft mb-4">Strong results in 8–12 weeks with coaching that adapts to your lifestyle, injuries, and schedule.</p>
+<div class="success-metrics d-flex flex-wrap gap-3 mb-4">
+<div class="success-metric">
+<span class="metric-value">127+</span>
+<span class="metric-label">Body transformations</span>
+</div>
+<div class="success-metric">
+<span class="metric-value">98%</span>
+<span class="metric-label">Client success rate</span>
+</div>
+<div class="success-metric">
+<span class="metric-value">18</span>
+<span class="metric-label">Countries coached</span>
+</div>
+</div>
+<a class="btn btn-warning btn-lg" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Start My Transformation →</a>
+</div>
+<div class="col-lg-7">
+<div class="row g-3">
+<div class="col-md-4">
+<div class="transformation-card h-100">
+<img src="assets/images/transformations/t11.jpg" class="transformation-image" alt="Client before and after 10kg fat loss transformation" loading="lazy" decoding="async" width="400" height="420">
+<div class="transformation-content">
+<p class="mb-2">“Lost 10 kg while juggling night shifts. Training blocks fit my weekly chaos.”</p>
+<span class="text-warning fw-semibold">Mariana, Dublin</span>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="transformation-card h-100">
+<img src="assets/images/transformations/t8.jpg" class="transformation-image" alt="Client celebrating visible abs after programme" loading="lazy" decoding="async" width="400" height="420">
+<div class="transformation-content">
+<p class="mb-2">“Visible abs without skipping dinners out. Flexible nutrition finally worked.”</p>
+<span class="text-warning fw-semibold">James, London</span>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="transformation-card h-100">
+<img src="assets/images/transformations/t3.png" class="transformation-image" alt="Client strength and muscle gain transformation" loading="lazy" decoding="async" width="400" height="420">
+<div class="transformation-content">
+<p class="mb-2">“Stopped guessing workouts. Stronger lifts, better posture, more confidence.”</p>
+<span class="text-warning fw-semibold">Luciana, São Paulo</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 
 <!-- Impact Stats Section -->
 <section class="section stats-section-bg">
@@ -299,8 +359,8 @@ window.addEventListener('load', function() {
 <div class="row align-items-center g-4">
 <div class="col-lg-6">
 <div class="position-relative video-container-wrapper">
-<img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80"
-  alt="Client transformation showcase"
+<img src="assets/images/transformations/client-paulo-beforeafter.png"
+  alt="Garcia Builder client transformation before and after"
   class="img-fluid video-thumbnail"
   loading="lazy" decoding="async" width="800" height="500">
 <div class="position-absolute bottom-0 start-0 p-3 bg-dark bg-opacity-75 rounded video-overlay-badge">
@@ -328,7 +388,7 @@ window.addEventListener('load', function() {
 <div class="container">
 <div class="text-center mb-5">
 <h2 class="title-gradient text-glow mb-3" data-i18n="howitworks.title">How It Works</h2>
-<p class="lead" data-i18n="howitworks.subtitle">Your transformation journey in 4 simple steps</p>
+<p class="lead" data-i18n="howitworks.subtitle">Clarity from day one—here’s how we build momentum together</p>
 </div>
 <div class="row g-4">
 <div class="col-md-6 col-lg-3">
@@ -337,12 +397,12 @@ window.addEventListener('load', function() {
 <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold process-number">1</div>
 </div>
 <div class="mb-3">
-<img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80"
-  alt="Free consultation" loading="lazy" decoding="async" width="400" height="150"
+<img src="assets/images/transformations/t4.png"
+  alt="Coach André leading a consultation session" loading="lazy" decoding="async" width="400" height="150"
   class="img-fluid rounded process-image">
 </div>
-<h4 class="mb-2" data-i18n="howitworks.step1.title">Free Consultation</h4>
-<p class="small" data-i18n="howitworks.step1.desc">We discuss your goals, experience, and create your personalized plan.</p>
+<h4 class="mb-2" data-i18n="howitworks.step1.title">Assessment Call</h4>
+<p class="small" data-i18n="howitworks.step1.desc">Book a free consult to map goals, lifestyle, injuries, and the exact support you need.</p>
 </div>
 </div>
 <div class="col-md-6 col-lg-3">
@@ -351,12 +411,12 @@ window.addEventListener('load', function() {
 <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold process-number">2</div>
 </div>
 <div class="mb-3">
-<img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=400&q=80"
-  alt="Custom program" loading="lazy" decoding="async" width="400" height="150"
+<img src="assets/images/transformations/t5.jpg"
+  alt="Customized workout plan displayed on Trainerize app" loading="lazy" decoding="async" width="400" height="150"
   class="img-fluid rounded process-image">
 </div>
-<h4 class="mb-2" data-i18n="howitworks.step2.title">Custom Program</h4>
-<p class="small" data-i18n="howitworks.step2.desc">Receive your tailored training and nutrition plan via Trainerize app.</p>
+<h4 class="mb-2" data-i18n="howitworks.step2.title">Plan Built for You</h4>
+<p class="small" data-i18n="howitworks.step2.desc">Receive personalised training, nutrition, and habit systems inside the Trainerize app.</p>
 </div>
 </div>
 <div class="col-md-6 col-lg-3">
@@ -365,12 +425,12 @@ window.addEventListener('load', function() {
 <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold process-number">3</div>
 </div>
 <div class="mb-3">
-<img src="https://images.unsplash.com/photo-1611672585731-fa10603fb9e0?w=400&q=80"
-  alt="Weekly check-ins" loading="lazy" decoding="async" width="400" height="150"
+<img src="assets/images/transformations/t6.jpg"
+  alt="Coach reviewing progress check-in on tablet" loading="lazy" decoding="async" width="400" height="150"
   class="img-fluid rounded process-image">
 </div>
-<h4 class="mb-2" data-i18n="howitworks.step3.title">Weekly Check-ins</h4>
-<p class="small" data-i18n="howitworks.step3.desc">Progress reviews, adjustments, and direct in-app chat support throughout.</p>
+<h4 class="mb-2" data-i18n="howitworks.step3.title">Guided Execution</h4>
+<p class="small" data-i18n="howitworks.step3.desc">Weekly check-ins plus daily WhatsApp accountability keep you consistent and confident.</p>
 </div>
 </div>
 <div class="col-md-6 col-lg-3">
@@ -379,17 +439,17 @@ window.addEventListener('load', function() {
 <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold process-number">4</div>
 </div>
 <div class="mb-3">
-<img src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?w=400&q=80"
-  alt="Achieve results" loading="lazy" decoding="async" width="400" height="150"
+<img src="assets/images/transformations/t8.jpg"
+  alt="Client celebrating physique results" loading="lazy" decoding="async" width="400" height="150"
   class="img-fluid rounded process-image">
 </div>
-<h4 class="mb-2" data-i18n="howitworks.step4.title">Achieve Results</h4>
-<p class="small" data-i18n="howitworks.step4.desc">Hit your goals in 8-12 weeks with sustainable habits that last.</p>
+<h4 class="mb-2" data-i18n="howitworks.step4.title">Results That Last</h4>
+<p class="small" data-i18n="howitworks.step4.desc">Feel stronger, leaner, and in control with systems you can maintain long-term.</p>
 </div>
 </div>
 </div>
 <div class="text-center mt-5">
-<a href="contact.html" class="btn btn-gold btn-lg" data-i18n="howitworks.cta">Start Your Journey Today →</a>
+<a href="https://calendly.com/andrenjulio072/consultation" class="btn btn-gold btn-lg" data-i18n="howitworks.cta" target="_blank" rel="noopener">Start Your Journey Today →</a>
 </div>
 </div>
 </section>
@@ -408,23 +468,65 @@ window.addEventListener('load', function() {
 <li class="mb-3"><i class="fas fa-check-circle text-warning me-2"></i> <span data-i18n="video.point3">24/7 support via in-app chat</span></li>
 <li class="mb-3"><i class="fas fa-check-circle text-warning me-2"></i> <span data-i18n="video.point4">Weekly progress reviews and adjustments</span></li>
 </ul>
-<a href="contact.html" class="btn btn-warning btn-lg mt-3" data-i18n="video.cta">Get Started Now →</a>
+<a href="https://calendly.com/andrenjulio072/consultation" class="btn btn-warning btn-lg mt-3" data-i18n="video.cta" target="_blank" rel="noopener">Get Started Now →</a>
 </div>
 </div>
 <div class="col-lg-6">
 <div class="method-video-wrapper">
   <div id="gb-video" class="gb-video gb-video-container" data-video-id="IODxDxX7oi4" aria-label="Play video" role="button" tabindex="0">
-    <img src="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=800&q=80"
-         alt="Training demonstration placeholder"
+    <img src="https://img.youtube.com/vi/IODxDxX7oi4/hqdefault.jpg"
+         alt="Garcia Builder coaching session highlight"
          class="img-fluid gb-video-thumbnail" loading="lazy" decoding="async" width="800" height="450">
     <div class="gb-video-play gb-video-play-button">
       <i class="fas fa-play gb-video-play-icon"></i>
     </div>
     <noscript>
-      <img src="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=800&q=80" alt="Training demonstration" width="800" height="450" class="video-fallback-img"/>
+  <img src="https://img.youtube.com/vi/IODxDxX7oi4/hqdefault.jpg" alt="Garcia Builder coaching session highlight" width="800" height="450" class="video-fallback-img"/>
     </noscript>
   </div>
   <!-- Video player now handled by js/components/video-player.js -->
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Lead Magnet Section -->
+<section class="section lead-magnet-section">
+<div class="container">
+<div class="row align-items-center g-5">
+<div class="col-lg-6">
+<h2 class="title-gradient text-glow mb-3">Download the 5-Step Fat Loss Gameplan</h2>
+<p class="lead text-white-soft mb-4">Discover how clients drop fat, keep muscle, and stay consistent without restrictive diets.</p>
+<ul class="lead-magnet-list">
+<li><i class="fas fa-check text-warning me-2"></i>Daily structure that fits work, family, and travel</li>
+<li><i class="fas fa-check text-warning me-2"></i>Nutrition cheat-sheet with flexible meal ideas</li>
+<li><i class="fas fa-check text-warning me-2"></i>Step-by-step habit stack that locks in results</li>
+</ul>
+</div>
+<div class="col-lg-6">
+<div class="lead-magnet-card">
+<div class="lead-magnet-badge">📥 Free Download</div>
+<form class="lead-magnet-form" data-source="Lead Magnet - 5 Strategies" data-attr-track>
+<div class="row g-3">
+<div class="col-12">
+<div class="lead-form-field">
+<label for="lead-magnet-name">Full Name</label>
+<input type="text" id="lead-magnet-name" name="name" placeholder="Enter your name" required autocomplete="name">
+</div>
+</div>
+<div class="col-12">
+<div class="lead-form-field">
+<label for="lead-magnet-email">Email Address</label>
+<input type="email" id="lead-magnet-email" name="email" placeholder="you@email.com" required autocomplete="email">
+</div>
+</div>
+</div>
+<button type="submit" class="lead-form-submit mt-3">
+<i class="fas fa-file-download me-2"></i>Send Me the Guide
+</button>
+<p class="small text-muted mt-3 mb-0"><i class="fas fa-lock me-1"></i>No spam. The guide arrives instantly and you can unsubscribe anytime.</p>
+</form>
 </div>
 </div>
 </div>
@@ -481,7 +583,7 @@ window.addEventListener('load', function() {
 </section>
 
 <!-- Latest Blog Posts Section -->
-<section class="section" style="background: rgba(0,0,0,0.3);">
+<section class="section bg-dark-transparent">
 <div class="container">
 <div class="text-center mb-5">
 <h2 class="title-gradient text-glow mb-3" data-i18n="blog.section.title">Expert Tips & Guides</h2>
@@ -489,47 +591,44 @@ window.addEventListener('load', function() {
 </div>
 <div class="row g-4">
 <div class="col-md-4">
-<div class="card h-100" style="overflow: hidden;">
-<img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80"
-  alt="Gym training" class="card-img-top" loading="lazy" decoding="async" width="600" height="200"
-  style="height: 200px; object-fit: cover;">
+<div class="card h-100 blog-card">
+<img src="assets/images/transformations/t7.jpg"
+  alt="Athlete performing strength training" class="card-img-top blog-img" loading="lazy" decoding="async" width="600" height="200">
 <div class="card-body">
 <div class="mb-2">
 <span class="badge bg-warning text-dark" data-i18n="blog.category.training">TRAINING</span>
 </div>
 <h4 class="mb-3" data-i18n="blog.post1.title">5 Mistakes Killing Your Gym Progress</h4>
 <p class="mb-3" data-i18n="blog.post1.excerpt">Stop spinning your wheels. Learn the most common training errors and how to fix them for faster results.</p>
-<a href="blog-gym-mistakes.html" class="btn btn-outline-warning btn-sm" data-i18n="blog.readmore">Read More →</a>
+<a href="https://www.trainerize.com/blog/the-5-worst-gym-mistakes-ever-fun-video/" class="btn btn-outline-warning btn-sm" data-i18n="blog.readmore" target="_blank" rel="noopener">Read More →</a>
 </div>
 </div>
 </div>
 <div class="col-md-4">
-<div class="card h-100" style="overflow: hidden;">
-<img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&q=80"
-  alt="Healthy nutrition" class="card-img-top" loading="lazy" decoding="async" width="600" height="200"
-  style="height: 200px; object-fit: cover;">
+<div class="card h-100 blog-card">
+<img src="assets/images/transformations/t14.jpg"
+  alt="High-protein meal preparation" class="card-img-top blog-img" loading="lazy" decoding="async" width="600" height="200">
 <div class="card-body">
 <div class="mb-2">
 <span class="badge bg-warning text-dark" data-i18n="blog.category.nutrition">NUTRITION</span>
 </div>
 <h4 class="mb-3" data-i18n="blog.post2.title">The Truth About Fat Loss Nutrition</h4>
 <p class="mb-3" data-i18n="blog.post2.excerpt">Cut through the noise and discover what actually works for sustainable, science-based fat loss.</p>
-<a href="blog-nutrition-fat-loss.html" class="btn btn-outline-warning btn-sm" data-i18n="blog.readmore">Read More →</a>
+<a href="https://www.trainerize.com/blog/70-high-protein-meals-in-10-minutes-for-trainers-and-nutrition-coaches/" class="btn btn-outline-warning btn-sm" data-i18n="blog.readmore" target="_blank" rel="noopener">Read More →</a>
 </div>
 </div>
 </div>
 <div class="col-md-4">
-<div class="card h-100" style="overflow: hidden;">
-<img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&q=80"
-  alt="Fitness mindset" class="card-img-top" loading="lazy" decoding="async" width="600" height="200"
-  style="height: 200px; object-fit: cover;">
+<div class="card h-100 blog-card">
+<img src="assets/images/transformations/t9.jpg"
+  alt="Client celebrating fitness progress" class="card-img-top blog-img" loading="lazy" decoding="async" width="600" height="200">
 <div class="card-body">
 <div class="mb-2">
 <span class="badge bg-warning text-dark" data-i18n="blog.category.mindset">MINDSET</span>
 </div>
 <h4 class="mb-3" data-i18n="blog.post3.title">Why Consistency Beats Motivation</h4>
 <p class="mb-3" data-i18n="blog.post3.excerpt">Build unbreakable habits and systems that keep you on track even when motivation fades.</p>
-<a href="blog-consistency.html" class="btn btn-outline-warning btn-sm" data-i18n="blog.readmore">Read More →</a>
+<a href="https://www.trainerize.com/blog/how-to-overcome-bad-habits/" class="btn btn-outline-warning btn-sm" data-i18n="blog.readmore" target="_blank" rel="noopener">Read More →</a>
 </div>
 </div>
 </div>
@@ -541,7 +640,7 @@ window.addEventListener('load', function() {
 </section>
 
 <!-- Social Proof Gallery Section -->
-<section class="section" style="background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(246,200,78,0.05) 100%);">
+<section class="section bg-gradient-dark">
 <div class="container">
 <div class="text-center mb-5">
 <h2 class="title-gradient text-glow mb-3" data-i18n="socialproof.title">Join Our Community</h2>
@@ -549,59 +648,51 @@ window.addEventListener('load', function() {
 </div>
 <div class="row g-3">
 <div class="col-6 col-md-3">
-<div style="border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-<img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=400&q=80"
-  alt="Client transformation" class="img-fluid" loading="lazy" decoding="async" width="400" height="250"
-  style="width: 100%; height: 250px; object-fit: cover;">
+<div class="gallery-item">
+<img src="assets/images/transformations/t1.png"
+  alt="Garcia Builder transformation showcase 1" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 <div class="col-6 col-md-3">
-<div style="border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-<img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=400&q=80"
-  alt="Client transformation" class="img-fluid" loading="lazy" decoding="async" width="400" height="250"
-  style="width: 100%; height: 250px; object-fit: cover;">
+<div class="gallery-item">
+<img src="assets/images/transformations/t2.png"
+  alt="Garcia Builder transformation showcase 2" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 <div class="col-6 col-md-3">
-<div style="border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-<img src="https://images.unsplash.com/photo-1595078475328-1ab05d0a6a0e?w=400&q=80"
-  alt="Client transformation" class="img-fluid" loading="lazy" decoding="async" width="400" height="250"
-  style="width: 100%; height: 250px; object-fit: cover;">
+<div class="gallery-item">
+<img src="assets/images/transformations/t3.png"
+  alt="Garcia Builder transformation showcase 3" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 <div class="col-6 col-md-3">
-<div style="border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-<img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80"
-  alt="Client transformation" class="img-fluid" loading="lazy" decoding="async" width="400" height="250"
-  style="width: 100%; height: 250px; object-fit: cover;">
+<div class="gallery-item">
+<img src="assets/images/transformations/t4.png"
+  alt="Garcia Builder transformation showcase 4" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 <div class="col-6 col-md-3">
-<div style="border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-<img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80"
-  alt="Client transformation" class="img-fluid" loading="lazy" decoding="async" width="400" height="250"
-  style="width: 100%; height: 250px; object-fit: cover;">
+<div class="gallery-item">
+<img src="assets/images/transformations/t5.jpg"
+  alt="Garcia Builder transformation showcase 5" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 <div class="col-6 col-md-3">
-<div style="border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-<img src="https://images.unsplash.com/photo-1605296867424-35fc25c9212a?w=400&q=80"
-  alt="Client transformation" class="img-fluid" loading="lazy" decoding="async" width="400" height="250"
-  style="width: 100%; height: 250px; object-fit: cover;">
+<div class="gallery-item">
+<img src="assets/images/transformations/t6.jpg"
+  alt="Garcia Builder transformation showcase 6" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 <div class="col-6 col-md-3">
-<div style="border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-<img src="https://images.unsplash.com/photo-1623874514711-0f321325f318?w=400&q=80"
-  alt="Client transformation" class="img-fluid" loading="lazy" decoding="async" width="400" height="250"
-  style="width: 100%; height: 250px; object-fit: cover;">
+<div class="gallery-item">
+<img src="assets/images/transformations/t7.jpg"
+  alt="Garcia Builder transformation showcase 7" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 <div class="col-6 col-md-3">
-<div style="border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-<img src="https://images.unsplash.com/photo-1558611848-73f7eb4001a1?w=400&q=80"
-  alt="Client transformation" class="img-fluid" loading="lazy" decoding="async" width="400" height="250"
-  style="width: 100%; height: 250px; object-fit: cover;">
+<div class="gallery-item">
+<img src="assets/images/transformations/t8.jpg"
+  alt="Garcia Builder transformation showcase 8" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 </div>
@@ -612,13 +703,13 @@ window.addEventListener('load', function() {
 </section>
 
 <!-- Lead Capture Section -->
-<section class="section" style="background: linear-gradient(135deg, rgba(246,200,78,0.03) 0%, rgba(0,0,0,0.7) 100%); padding: 80px 0;">
+<section class="section cta-section">
 <div class="container">
 <div class="row justify-content-center">
 <div class="col-lg-8">
 <div class="text-center mb-5">
 <h2 class="title-gradient text-glow mb-3">Ready to Transform Your Body?</h2>
-<p class="lead" style="color: rgba(255,255,255,0.8);">
+<p class="lead text-white-soft">
 Get your personalized fitness plan and join 127+ successful transformations
 </p>
 
@@ -639,7 +730,7 @@ Get your personalized fitness plan and join 127+ successful transformations
 </div>
 
 </div>
-<form class="hero-lead-form" data-source="Main CTA Form" data-attr-track style="max-width: 600px; margin: 0 auto;">
+<form class="hero-lead-form" data-source="Main CTA Form" data-attr-track>
 <div class="lead-form-header">
 <span class="badge">🔥 FREE CONSULTATION</span>
 <h3>Get Your Personalized Fitness Plan</h3>
@@ -697,7 +788,7 @@ Get your personalized fitness plan and join 127+ successful transformations
 </section>
 
 <!-- FAQ Section -->
-<section class="section" style="background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(246,200,78,0.03) 100%);">
+<section class="section faq-section-bg">
 <div class="container">
 <div class="text-center mb-5">
 <h2 class="title-gradient text-glow mb-3" data-i18n="faq.title">Frequently Asked Questions</h2>
@@ -706,9 +797,9 @@ Get your personalized fitness plan and join 127+ successful transformations
 <div class="row justify-content-center">
 <div class="col-lg-8">
 <div class="accordion" id="faqAccordion">
-<div class="accordion-item mb-3" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(246,200,78,0.2); border-radius: 10px;">
+<div class="accordion-item mb-3 faq-item">
 <h3 class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" style="background: transparent; color: white; font-weight: 600;">
+<button class="accordion-button collapsed faq-question" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
 <i class="fas fa-question-circle text-warning me-2"></i>
 <span data-i18n="faq.q1.q">How does online coaching work?</span>
 </button>
@@ -719,9 +810,9 @@ You get a personalized training program and nutrition plan delivered via the Tra
 </div>
 </div>
 </div>
-<div class="accordion-item mb-3" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(246,200,78,0.2); border-radius: 10px;">
+<div class="accordion-item mb-3 faq-item">
 <h3 class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" style="background: transparent; color: white; font-weight: 600;">
+<button class="accordion-button collapsed faq-question" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
 <i class="fas fa-question-circle text-warning me-2"></i>
 <span data-i18n="faq.q2.q">What equipment do I need?</span>
 </button>
@@ -732,9 +823,9 @@ Your program is customized to your available equipment. Whether you have a full 
 </div>
 </div>
 </div>
-<div class="accordion-item mb-3" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(246,200,78,0.2); border-radius: 10px;">
+<div class="accordion-item mb-3 faq-item">
 <h3 class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" style="background: transparent; color: white; font-weight: 600;">
+<button class="accordion-button collapsed faq-question" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
 <i class="fas fa-question-circle text-warning me-2"></i>
 <span data-i18n="faq.q3.q">How long until I see results?</span>
 </button>
@@ -745,9 +836,9 @@ Most clients see noticeable changes in 4-6 weeks and achieve their primary goals
 </div>
 </div>
 </div>
-<div class="accordion-item mb-3" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(246,200,78,0.2); border-radius: 10px;">
+<div class="accordion-item mb-3 faq-item">
 <h3 class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" style="background: transparent; color: white; font-weight: 600;">
+<button class="accordion-button collapsed faq-question" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
 <i class="fas fa-question-circle text-warning me-2"></i>
 <span data-i18n="faq.q4.q">Can I cancel anytime?</span>
 </button>
@@ -758,9 +849,9 @@ Yes. All plans are month-to-month with no long-term commitments. Cancel anytime 
 </div>
 </div>
 </div>
-<div class="accordion-item mb-3" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(246,200,78,0.2); border-radius: 10px;">
+<div class="accordion-item mb-3 faq-item">
 <h3 class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" style="background: transparent; color: white; font-weight: 600;">
+<button class="accordion-button collapsed faq-question" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
 <i class="fas fa-question-circle text-warning me-2"></i>
 <span data-i18n="faq.q5.q">What if I have injuries or pain?</span>
 </button>
@@ -771,9 +862,9 @@ We adapt exercises, tempo, and range of motion. I can coordinate with physio/GP 
 </div>
 </div>
 </div>
-<div class="accordion-item mb-3" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(246,200,78,0.2); border-radius: 10px;">
+<div class="accordion-item mb-3 faq-item">
 <h3 class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6" style="background: transparent; color: white; font-weight: 600;">
+<button class="accordion-button collapsed faq-question" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
 <i class="fas fa-question-circle text-warning me-2"></i>
 <span data-i18n="faq.q6.q">How fast will I see results?</span>
 </button>
@@ -784,9 +875,9 @@ Most feel better in 2–3 weeks, notice visible changes by 6–8 weeks, and stro
 </div>
 </div>
 </div>
-<div class="accordion-item mb-3" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(246,200,78,0.2); border-radius: 10px;">
+<div class="accordion-item mb-3 faq-item">
 <h3 class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7" style="background: transparent; color: white; font-weight: 600;">
+<button class="accordion-button collapsed faq-question" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
 <i class="fas fa-question-circle text-warning me-2"></i>
 <span data-i18n="faq.q7.q">How do weekly check-ins work?</span>
 </button>
@@ -797,9 +888,9 @@ Short form in the app + optional photos/measurements. I review adherence and tre
 </div>
 </div>
 </div>
-<div class="accordion-item mb-3" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(246,200,78,0.2); border-radius: 10px;">
+<div class="accordion-item mb-3 faq-item">
 <h3 class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq8" style="background: transparent; color: white; font-weight: 600;">
+<button class="accordion-button collapsed faq-question" type="button" data-bs-toggle="collapse" data-bs-target="#faq8">
 <i class="fas fa-question-circle text-warning me-2"></i>
 <span data-i18n="faq.q8.q">Which app do you use?</span>
 </button>
@@ -819,34 +910,74 @@ Trainerize—plans, videos, habits, messages, and progress tracking in one place
 </div>
 </section>
 
+<!-- Authority Section -->
+<section class="section authority-section">
+<div class="container">
+<div class="text-center mb-5">
+<h2 class="title-gradient text-glow mb-3">Why athletes trust Garcia Builder</h2>
+<p class="lead text-white-soft">Credentials, experience, and systems built around real people—not fitness fads.</p>
+</div>
+<div class="row g-4">
+<div class="col-12 col-sm-6 col-lg-3">
+<div class="authority-card h-100">
+<i class="fas fa-certificate authority-icon" aria-hidden="true"></i>
+<h5 class="mt-3 mb-2">ActiveIQ Level 3 PT</h5>
+<p class="small text-white-soft mb-0">Certified personal trainer recognised in the UK and EU.</p>
+</div>
+</div>
+<div class="col-12 col-sm-6 col-lg-3">
+<div class="authority-card h-100">
+<i class="fas fa-user-check authority-icon" aria-hidden="true"></i>
+<h5 class="mt-3 mb-2">12+ Years Coaching</h5>
+<p class="small text-white-soft mb-0">Hundreds of clients guided through fat loss, recomposition, and performance goals.</p>
+</div>
+</div>
+<div class="col-12 col-sm-6 col-lg-3">
+<div class="authority-card h-100">
+<i class="fas fa-language authority-icon" aria-hidden="true"></i>
+<h5 class="mt-3 mb-2">Coaching in EN • PT • ES</h5>
+<p class="small text-white-soft mb-0">Communicate in the language that keeps you motivated and accountable.</p>
+</div>
+</div>
+<div class="col-12 col-sm-6 col-lg-3">
+<div class="authority-card h-100">
+<i class="fas fa-mobile-screen-button authority-icon" aria-hidden="true"></i>
+<h5 class="mt-3 mb-2">Trainerize Ecosystem</h5>
+<p class="small text-white-soft mb-0">Clear app experience for workouts, nutrition targets, habits, and progress tracking.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
 <!-- Guarantee Badges Section -->
-<section class="section" style="background: rgba(246,200,78,0.05); padding: 40px 0;">
+<section class="section guarantee-section">
 <div class="container">
 <div class="row g-4 text-center">
 <div class="col-md-3">
 <div class="p-3">
-<i class="fas fa-shield-check" style="font-size: 2.5rem; color: #F6C84E;"></i>
+<i class="fas fa-shield-check guarantee-icon"></i>
 <h5 class="mt-3 mb-2" data-i18n="guarantee.certified">Certified Professional</h5>
 <p class="small text-muted" data-i18n="guarantee.certified.desc">Qualified personal trainer with 12+ years experience</p>
 </div>
 </div>
 <div class="col-md-3">
 <div class="p-3">
-<i class="fas fa-lock" style="font-size: 2.5rem; color: #F6C84E;"></i>
+<i class="fas fa-lock guarantee-icon"></i>
 <h5 class="mt-3 mb-2" data-i18n="guarantee.privacy">100% Private</h5>
 <p class="small text-muted" data-i18n="guarantee.privacy.desc">Your data is secure and never shared</p>
 </div>
 </div>
 <div class="col-md-3">
 <div class="p-3">
-<i class="fas fa-headset" style="font-size: 2.5rem; color: #F6C84E;"></i>
+<i class="fas fa-headset guarantee-icon"></i>
 <h5 class="mt-3 mb-2" data-i18n="guarantee.support">24/7 Support</h5>
 <p class="small text-muted" data-i18n="guarantee.support.desc">In-app chat access for questions anytime</p>
 </div>
 </div>
 <div class="col-md-3">
 <div class="p-3">
-<i class="fas fa-sync" style="font-size: 2.5rem; color: #F6C84E;"></i>
+<i class="fas fa-sync guarantee-icon"></i>
 <h5 class="mt-3 mb-2" data-i18n="guarantee.flexible">Cancel Anytime</h5>
 <p class="small text-muted" data-i18n="guarantee.flexible.desc">No long-term contracts or commitments</p>
 </div>
@@ -855,15 +986,66 @@ Trainerize—plans, videos, habits, messages, and progress tracking in one place
 </div>
 </section>
 
+<!-- Instagram Highlights Section -->
+<section class="section instagram-section">
+<div class="container">
+<div class="d-flex flex-column flex-lg-row justify-content-lg-between align-items-lg-end gap-3 mb-4">
+<div>
+<h2 class="title-gradient text-glow mb-2">Follow the journey on Instagram</h2>
+<p class="text-white-soft mb-0">Daily motivation, client wins, and behind-the-scenes coaching tips.</p>
+</div>
+<a class="btn btn-outline-warning" href="https://www.instagram.com/garcia.builder" target="_blank" rel="noopener">@garcia.builder</a>
+</div>
+<div class="row g-3">
+<div class="col-6 col-lg-3">
+<a class="instagram-card" href="https://www.instagram.com/garcia.builder" target="_blank" rel="noopener">
+<img src="assets/images/transformations/t7.jpg" alt="Instagram highlight showing strength session" loading="lazy" decoding="async" width="400" height="400">
+<span class="instagram-tag">Strength Day</span>
+</a>
+</div>
+<div class="col-6 col-lg-3">
+<a class="instagram-card" href="https://www.instagram.com/garcia.builder" target="_blank" rel="noopener">
+<img src="assets/images/transformations/t12.jpg" alt="Instagram highlight featuring client meal prep" loading="lazy" decoding="async" width="400" height="400">
+<span class="instagram-tag">Nutrition Wins</span>
+</a>
+</div>
+<div class="col-6 col-lg-3">
+<a class="instagram-card" href="https://www.instagram.com/garcia.builder" target="_blank" rel="noopener">
+<img src="assets/images/transformations/t9.jpg" alt="Instagram highlight showing client transformation" loading="lazy" decoding="async" width="400" height="400">
+<span class="instagram-tag">Client Spotlight</span>
+</a>
+</div>
+<div class="col-6 col-lg-3">
+<a class="instagram-card" href="https://www.instagram.com/garcia.builder" target="_blank" rel="noopener">
+<img src="assets/images/transformations/t15.jpg" alt="Instagram highlight sharing mobility drill" loading="lazy" decoding="async" width="400" height="400">
+<span class="instagram-tag">Mobility Drill</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Final CTA Section -->
+<section class="section final-cta-section">
+<div class="container text-center">
+<h2 class="title-gradient text-glow mb-3">Ready to transform your body, health, and routine?</h2>
+<p class="lead text-white-soft mb-4">Secure your free consultation now and get a personalised roadmap within 24 hours.</p>
+<div class="d-flex flex-wrap justify-content-center gap-3">
+<a class="btn btn-warning btn-lg" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Book My Free Consultation</a>
+<a class="btn btn-outline-warning btn-lg" href="https://wa.me/447508497586" target="_blank" rel="noopener">Prefer WhatsApp? Chat Now</a>
+</div>
+</div>
+</section>
+
 <!-- Newsletter Section -->
-<section class="section" style="background: rgba(0,0,0,0.3); padding: 50px 0; border-top: 1px solid rgba(246,200,78,0.2);">
+<section class="section newsletter-section">
 <div class="container">
 <div class="row justify-content-center">
 <div class="col-lg-6 text-center">
 <h3 class="title-gradient mb-3" data-i18n="newsletter.title">Get Weekly Expert Tips</h3>
 <p class="mb-4" data-i18n="newsletter.desc">Training advice, nutrition tips, and exclusive content delivered to your inbox.</p>
 <form class="d-flex gap-2 justify-content-center flex-wrap" id="newsletter-form-footer">
-<input type="email" class="form-control" id="newsletter-footer-email" name="email" placeholder="Enter your email" required autocomplete="email" style="max-width: 300px; background: rgba(255,255,255,0.1); border: 1px solid rgba(246,200,78,0.3); color: white;">
+<input type="email" class="form-control newsletter-input" id="newsletter-footer-email" name="email" placeholder="Enter your email" required autocomplete="email">
 <button type="submit" class="btn btn-gold" data-i18n="newsletter.cta">Subscribe</button>
 </form>
 <p class="mt-3 small text-muted" data-i18n="newsletter.privacy">

@@ -241,6 +241,10 @@
         why: {
           title: "Why Garcia Builder Works",
           subtitle: "Clarity, support, and systems designed to deliver visible results in real life."
+        },
+        finalcta: {
+          title: "Ready to transform your body, health, and routine?",
+          subtitle: "Secure your free consultation now and get a personalised roadmap within 24 hours."
         }
       },
       featured: {
@@ -309,6 +313,8 @@
       cta: {
         start: "Book Your Free Consultation",
         plans: "View Plans & Pricing",
+        whatsapp: "Chat on WhatsApp",
+        whatsapp_prefer: "Prefer WhatsApp? Chat Now",
         strip: {
           title: "Ready to start? Let's build your strongest body.",
           p: "Book a free consultation or DM me on Instagram. I coach in EN/PT/ES.",
@@ -900,6 +906,10 @@
         why: {
           title: "Por que o Garcia Builder Funciona",
           subtitle: "Clareza, suporte e sistemas pensados para entregar resultados visíveis na vida real."
+        },
+        finalcta: {
+          title: "Pronto para transformar seu corpo, saúde e rotina?",
+          subtitle: "Garanta sua consulta gratuita agora e receba um plano personalizado em até 24 horas."
         }
       },
       featured: {
@@ -968,6 +978,8 @@
       cta: {
         start: "Agende Sua Consultoria Gratuita",
         plans: "Ver Planos e Preços",
+        whatsapp: "Conversar no WhatsApp",
+        whatsapp_prefer: "Prefere WhatsApp? Converse Agora",
         strip: {
           title: "Pronto para começar? Vamos construir seu corpo mais forte.",
           p: "Agende uma consulta gratuita ou envie um DM no Instagram. Atendo em PT/EN/ES.",
@@ -1556,6 +1568,10 @@
         why: {
           title: "Por qué Garcia Builder Funciona",
           subtitle: "Claridad, apoyo y sistemas diseñados para entregar resultados visibles en la vida real."
+        },
+        finalcta: {
+          title: "¿Listo para transformar tu cuerpo, salud y rutina?",
+          subtitle: "Asegura tu consulta gratuita ahora y recibe un plan personalizado en menos de 24 horas."
         }
       },
       featured: {
@@ -1624,6 +1640,8 @@
       cta: {
         start: "Reserva Tu Consulta Gratuita",
         plans: "Ver Planes y Precios",
+        whatsapp: "Hablar por WhatsApp",
+        whatsapp_prefer: "¿Prefieres WhatsApp? Chatea Ahora",
         strip: {
           title: "¿Listo para empezar? Construyamos tu cuerpo más fuerte.",
           p: "Reserva una consulta gratuita o envíame un DM en Instagram. Entreno en ES/EN/PT.",

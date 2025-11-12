@@ -257,6 +257,8 @@
         author: "Conrad N., London",
         beforeLabel: "Before",
         afterLabel: "After",
+        angleFront: "Front Angle",
+        angleSide: "Alternate Angle",
         cta: "See More Transformations →"
       },
       howitworks: {
@@ -966,6 +968,8 @@
         author: "Conrad N., Londres",
         beforeLabel: "Antes",
         afterLabel: "Depois",
+        angleFront: "Ângulo Frontal",
+        angleSide: "Ângulo Alternativo",
         cta: "Ver Mais Transformações →"
       },
       howitworks: {
@@ -1672,6 +1676,8 @@
         author: "Conrad N., Londres",
         beforeLabel: "Antes",
         afterLabel: "Después",
+        angleFront: "Ángulo Frontal",
+        angleSide: "Ángulo Alternativo",
         cta: "Ver Más Transformaciones →"
       },
       howitworks: {

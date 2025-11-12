@@ -469,7 +469,7 @@ a{color:var(--text);text-decoration:none}
 /* Increase contrast for subtle text site-wide */
 .text-muted{ color:#d6def2 !important; opacity:.95; }
 /* NAV */
-.navbar{position:sticky;top:0;z-index:80;background:rgba(9,14,24,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.navbar{position:sticky;top:0;z-index:80;background:rgba(9,14,24,.82);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .navbar.navbar-dark.fixed-top{position:sticky}
 .navbar .inner{
   display: flex;
@@ -534,7 +534,7 @@ a{color:var(--text);text-decoration:none}
 .hamburger-lines::before,.hamburger-lines::after{content:"";position:absolute;left:0;width:20px;height:2px;background:#eaf1ff;transition:.2s}
 .hamburger-lines::before{top:-6px}
 .hamburger-lines::after{top:6px}
-.gb-more-menu{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:.2s;z-index:1200}
+.gb-more-menu{position:fixed;inset:0;background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:.2s;z-index:1200}
 .gb-more-menu.open{opacity:1;pointer-events:auto}
 .gb-more-content{position:absolute;top:0;right:0;width:min(86vw,360px);height:100%;background:linear-gradient(180deg,var(--panel),var(--panel2));border-left:1px solid var(--line);box-shadow:-20px 0 60px rgba(0,0,0,.45);transform:translateX(100%);transition:transform .25s ease}
 .gb-more-menu.open .gb-more-content{transform:none}
@@ -750,8 +750,8 @@ select option {
 .feature.pro::before{
   content:'';position:absolute;inset:-1px;border-radius:22px;
   background: conic-gradient(from 180deg, #f6c84e55, #ff9f2d33, #6bc7ff44, #f6c84e55);
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor; mask-composite: exclude;
   padding:1px; pointer-events:none; filter:blur(.4px);
   animation: spinBorder 10s linear infinite;
@@ -817,7 +817,7 @@ img { max-width: 100%; height: auto; display: block; }
 @media (min-width: 992px){ .grid-tiles { grid-template-columns: repeat(3, 1fr); } }
 
 /* 6) Cartões tocáveis e acessíveis */
-.card-touch { padding: 1.25rem; border-radius: 16px; backdrop-filter: blur(6px); }
+.card-touch { padding: 1.25rem; border-radius: 16px; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .card-touch a.btn, .card-touch button { min-height: 44px; }
 
 /* 7) Botões e inputs “dedo-friendly” */
@@ -872,6 +872,7 @@ input, select, textarea { font-size: 1rem; }
   border: 1px solid var(--line);
   border-radius: 18px;
   padding: 24px 24px 28px;
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
 }
 .form-label{ font-weight:600; }
@@ -950,6 +951,7 @@ input, select, textarea { font-size: 1rem; }
 .contact-card{
   background: rgba(11,18,32,.70);          /* vidro mais escuro */
   border: 1px solid rgba(255,255,255,.08);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
 }
 

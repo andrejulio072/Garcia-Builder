@@ -300,9 +300,9 @@
         metric2: "Client success rate",
         metric3: "Countries coached",
         cta: "Start My Transformation →",
-        quote1: { text: "Lost 10 kg while juggling night shifts. Training blocks fit my weekly chaos.", author: "Mariana, Dublin" },
-        quote2: { text: "Visible abs without skipping dinners out. Flexible nutrition finally worked.", author: "James, London" },
-        quote3: { text: "Stopped guessing workouts. Stronger lifts, better posture, more confidence.", author: "Luciana, São Paulo" }
+  quote1: { text: "Dropped 5kg in 8 weeks with simple habits that finally stuck.", author: "Jessica R., 33" },
+  quote2: { text: "Leaned out by 6kg while adding 5% muscle during a 12-week block.", author: "Tom L., 31" },
+  quote3: { text: "Lost 20kg across 24 months by rebuilding nutrition habits and confidence.", author: "Sofia L., 29" }
       },
       instagram: {
         title: "Follow the journey on Instagram",
@@ -310,7 +310,7 @@
         tag1: "Strength Day",
         tag2: "Nutrition Wins",
         tag3: "Client Spotlight",
-        tag4: "Mobility Drill"
+        tag4: "Success Story"
       },
       authority: {
         title: "Why athletes trust Garcia Builder",
@@ -383,6 +383,14 @@
         mission_text: "Garcia Builder exists to turn discipline into results. Our mission is to coach busy people to build muscle, drop fat and move with confidence — without crash diets or gimmicks. Guided by the GB mark and its gold standard, we keep the process simple: clear training blocks, flexible nutrition and weekly check‑ins that drive consistency. The vision is a community known for strong bodies and stronger habits, where progress survives real life.",
         andre_title: "Andre Garcia — My Journey",
         andre_text: "I didn't grow up with perfect conditions. The Air Force was my first coach: 05:00 alarms, inspections, and standards that didn't care about excuses. There I learned that discipline beats mood and that progress is a decision repeated daily. When I moved to London, I carried that mindset into a city where I knew no one. I worked long hours, learned a new rhythm, and rebuilt my life one training session at a time. The gym became my compass; iron gave me structure when everything else was uncertain, and reps became a language I could trust.\n\nCoaching grew naturally from that path. I studied, earned credentials, and chose to serve on the gym floor—listening, teaching, and leading by example. As a personal trainer and coach, I've helped clients in English, Portuguese and Spanish get stronger, drop fat and move without pain. More than before-and-after pictures, I'm proud of the messages that say \"I'm a different person now.\" My method is simple and relentless: clear training blocks, simple nutrition you can follow, and accountability that respects real life. No hype, no judgment—just the truth and a plan.\n\nGarcia Builder is my mission: to build people who keep their results. If you're juggling work, family, or doubt, I'll meet you where you are, set a pace you can sustain, and hold a standard that improves both your body and your character. Your story isn't stuck; it's waiting for a coach. Let's start.",
+        video: {
+          title: "How we coach technique and tempo",
+          subtitle: "Watch a quick breakdown of the cues, tempo work, and accountability clients get inside a Garcia Builder training block.",
+          point1: "See how we stack tempos and cues to protect joints while progressing loads.",
+          point2: "Understand the real-time feedback clients receive inside the coaching app.",
+          point3: "Preview how weekly check-ins keep training, nutrition, and recovery aligned.",
+          cta: "Book a strategy call →"
+        },
         gallery: "Gallery",
         assess: { title: "Assess", p: "History, goals, schedule, equipment and injuries — we start where you are." },
         build: { title: "Build", p: "Training blocks and simple nutrition tailored to your reality." },
@@ -1011,9 +1019,9 @@
         metric2: "Taxa de sucesso",
         metric3: "Países atendidos",
         cta: "Começar Minha Transformação →",
-        quote1: { text: "Perdi 10 kg mesmo trabalhando em turnos. Os treinos se encaixam no meu caos semanal.", author: "Mariana, Dublin" },
-        quote2: { text: "Consegui definição sem cortar jantares. A nutrição flexível finalmente funcionou.", author: "James, Londres" },
-        quote3: { text: "Parei de adivinhar treinos. Levanto mais forte, postura melhor e confiança renovada.", author: "Luciana, São Paulo" }
+  quote1: { text: "Eliminei 5 kg em 8 semanas com hábitos simples que permaneceram.", author: "Jessica R., 33" },
+  quote2: { text: "Reduzi 6 kg enquanto ganhei 5% de massa em um bloco de 12 semanas.", author: "Tom L., 31" },
+  quote3: { text: "Perdi 20 kg em 24 meses reconstruindo hábitos de nutrição e confiança.", author: "Sofia L., 29" }
       },
       instagram: {
         title: "Acompanhe a jornada no Instagram",
@@ -1021,7 +1029,7 @@
         tag1: "Dia de Força",
         tag2: "Vitórias na Nutrição",
         tag3: "Cliente em Destaque",
-        tag4: "Rotina de Mobilidade"
+        tag4: "História de Sucesso"
       },
       authority: {
         title: "Por que atletas confiam no Garcia Builder",
@@ -1094,6 +1102,14 @@
         mission_text: "Garcia Builder existe para transformar disciplina em resultados. Nossa missão é treinar pessoas ocupadas para ganhar músculo, perder gordura e se mover com confiança — sem dietas radicais ou truques. Guiados pela marca GB e seu padrão ouro, mantemos o processo simples: blocos de treino claros, nutrição flexível e check-ins semanais que geram consistência. A visão é uma comunidade conhecida por corpos fortes e hábitos mais fortes, onde o progresso sobrevive à vida real.",
         andre_title: "Andre Garcia — Minha Jornada",
         andre_text: "Não cresci com condições perfeitas. A Força Aérea foi meu primeiro treinador: alarmes às 05:00, inspeções e padrões que não se importavam com desculpas. Lá aprendi que disciplina vence humor e que progresso é uma decisão repetida diariamente. Quando me mudei para Londres, carreguei essa mentalidade para uma cidade onde não conhecia ninguém. Trabalhei longas horas, aprendi um novo ritmo e reconstruí minha vida uma sessão de treino por vez. A academia se tornou minha bússola; o ferro me deu estrutura quando tudo mais era incerto, e as repetições se tornaram uma linguagem em que eu podia confiar.\n\nO coaching cresceu naturalmente desse caminho. Estudei, obtive credenciais e escolhi servir no chão da academia—ouvindo, ensinando e liderando pelo exemplo. Como personal trainer e coach, ajudei clientes em inglês, português e espanhol a ficarem mais fortes, perderem gordura e se moverem sem dor. Mais que fotos de antes e depois, me orgulho das mensagens que dizem \"sou uma pessoa diferente agora.\" Meu método é simples e implacável: blocos de treino claros, nutrição simples que você pode seguir e responsabilidade que respeita a vida real. Sem exageros, sem julgamentos—apenas a verdade e um plano.\n\nGarcia Builder é minha missão: construir pessoas que mantêm seus resultados. Se você está equilibrando trabalho, família ou dúvidas, vou te encontrar onde você está, estabelecer um ritmo que você pode sustentar e manter um padrão que melhora tanto seu corpo quanto seu caráter. Sua história não está presa; está esperando por um coach. Vamos começar.",
+        video: {
+          title: "Como treinamos técnica e tempo",
+          subtitle: "Veja um resumo rápido dos comandos, tempos e acompanhamento que os alunos recebem dentro de um bloco Garcia Builder.",
+          point1: "Veja como combinamos tempos e comandos para proteger as articulações enquanto evoluímos nas cargas.",
+          point2: "Entenda o feedback em tempo real que os alunos recebem dentro do app de coaching.",
+          point3: "Veja como os check-ins semanais mantêm treino, nutrição e recuperação alinhados.",
+          cta: "Agende uma estratégia →"
+        },
         gallery: "Galeria",
         assess: { title: "Avaliar", p: "Histórico, objetivos, rotina, equipamentos e lesões — começamos onde você está." },
         build: { title: "Construir", p: "Blocos de treino e nutrição simples adaptados à sua realidade." },
@@ -1719,9 +1735,9 @@
         metric2: "Tasa de éxito",
         metric3: "Países atendidos",
         cta: "Comenzar Mi Transformación →",
-        quote1: { text: "Perdí 10 kg aun trabajando en turnos. Los bloques de entrenamiento encajan en mi caos semanal.", author: "Mariana, Dublín" },
-        quote2: { text: "Definición visible sin saltarme cenas. La nutrición flexible por fin funcionó.", author: "James, Londres" },
-        quote3: { text: "Dejé de adivinar entrenos. Levanto más fuerte, mejor postura y confianza renovada.", author: "Luciana, São Paulo" }
+  quote1: { text: "Bajé 5 kg en 8 semanas con hábitos sencillos que se mantuvieron.", author: "Jessica R., 33" },
+  quote2: { text: "Reduje 6 kg mientras gané un 5% de músculo en un bloque de 12 semanas.", author: "Tom L., 31" },
+  quote3: { text: "Perdí 20 kg en 24 meses reconstruyendo hábitos de nutrición y confianza.", author: "Sofia L., 29" }
       },
       instagram: {
         title: "Sigue la jornada en Instagram",
@@ -1729,7 +1745,7 @@
         tag1: "Día de Fuerza",
         tag2: "Logros de Nutrición",
         tag3: "Cliente Destacado",
-        tag4: "Trabajo de Movilidad"
+        tag4: "Historia de Éxito"
       },
       authority: {
         title: "Por qué los atletas confían en Garcia Builder",
@@ -1802,6 +1818,14 @@
         mission_text: "Garcia Builder existe para convertir disciplina en resultados. Nuestra misión es entrenar a personas ocupadas para ganar músculo, perder grasa y moverse con confianza — sin dietas extremas o trucos. Guiados por la marca GB y su estándar de oro, mantenemos el proceso simple: bloques de entrenamiento claros, nutrición flexible y check-ins semanales que generan consistencia. La visión es una comunidad conocida por cuerpos fuertes y hábitos más fuertes, donde el progreso sobrevive a la vida real.",
         andre_title: "Andre Garcia — Mi Viaje",
         andre_text: "No crecí con condiciones perfectas. La Fuerza Aérea fue mi primer entrenador: alarmas a las 05:00, inspecciones y estándares que no se preocupaban por excusas. Allí aprendí que la disciplina vence al estado de ánimo y que el progreso es una decisión repetida diariamente. Cuando me mudé a Londres, llevé esa mentalidad a una ciudad donde no conocía a nadie. Trabajé largas horas, aprendí un nuevo ritmo y reconstruí mi vida una sesión de entrenamiento a la vez. El gimnasio se convirtió en mi brújula; el hierro me dio estructura cuando todo lo demás era incierto, y las repeticiones se convirtieron en un lenguaje en el que podía confiar.\n\nEl coaching creció naturalmente de ese camino. Estudié, obtuve credenciales y elegí servir en el suelo del gimnasio—escuchando, enseñando y liderando con el ejemplo. Como entrenador personal y coach, he ayudado a clientes en inglés, portugués y español a volverse más fuertes, perder grasa y moverse sin dolor. Más que fotos de antes y después, me enorgullecen los mensajes que dicen \"ahora soy una persona diferente.\" Mi método es simple e implacable: bloques de entrenamiento claros, nutrición simple que puedes seguir y responsabilidad que respeta la vida real. Sin exageraciones, sin juicios—solo la verdad y un plan.\n\nGarcia Builder es mi misión: construir personas que mantengan sus resultados. Si estás haciendo malabarismos con trabajo, familia o dudas, te encontraré donde estés, estableceré un ritmo que puedas sostener y mantendré un estándar que mejore tanto tu cuerpo como tu carácter. Tu historia no está atascada; está esperando un coach. Empecemos.",
+        video: {
+          title: "Cómo trabajamos técnica y tempo",
+          subtitle: "Mira un resumen rápido de las indicaciones, tempos y responsabilidad que reciben los clientes dentro de un bloque de entrenamiento Garcia Builder.",
+          point1: "Descubre cómo combinamos tempos y cues para proteger las articulaciones mientras progresamos con las cargas.",
+          point2: "Entiende el feedback en tiempo real que reciben los clientes dentro de la app de coaching.",
+          point3: "Conoce cómo los check-ins semanales alinean entrenamiento, nutrición y recuperación.",
+          cta: "Reserva una sesión estratégica →"
+        },
         gallery: "Galería",
         assess: { title: "Evaluar", p: "Historial, objetivos, horario, equipamiento y lesiones — empezamos donde estás." },
         build: { title: "Construir", p: "Bloques de entrenamiento y nutrición simple adaptados a tu realidad." },

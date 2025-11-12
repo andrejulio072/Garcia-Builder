@@ -152,6 +152,32 @@
 }
 .card.feature:hover .shine{ opacity:.9 }
 .card.feature h3, .card.feature p{ word-break:normal; overflow-wrap:anywhere; hyphens:manual }
+
+.about-video-section{
+  background:linear-gradient(135deg, rgba(12,14,18,.88) 0%, rgba(12,14,18,.62) 100%);
+  padding:72px 0 64px;
+  border-top:1px solid rgba(255,255,255,.08);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.about-video-wrapper{
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 24px 60px rgba(246,200,78,.2);
+}
+.about-video-points li{
+  display:flex;
+  gap:12px;
+  margin-bottom:0.75rem;
+  color:#e6eaf0;
+}
+.about-video-points i{
+  color:#F6C84E;
+  margin-top:4px;
+}
+.about-video-points span{
+  flex:1;
+  line-height:1.6;
+}
 </style>
 
 <!-- EMERGENCY: Component Loader Fallback -->
@@ -180,7 +206,12 @@ window.addEventListener('load', function() {
 <!-- Navbar Component (loaded dynamically) -->
 <div data-component="navbar"></div>
 
-<section class="about-block"><div class="container"><h1 class="title-gradient" data-i18n="about.title">About Garcia Builder</h1><p class="lead" data-i18n="about.subtitle">We coach real people to build strong, athletic bodies - with simple nutrition, precise training and accountability that sticks.</p><h2 class="title-gradient" data-i18n="about.mission">Mission &amp; Vision</h2><p data-i18n="about.mission_text">Garcia Builder exists to turn discipline into results. Our mission is to coach busy people to build muscle, drop fat and move with confidence - without crash diets or gimmicks. Guided by the GB mark and its gold standard, we keep the process simple: clear training blocks, flexible nutrition and weekly check-ins that drive consistency. The vision is a community known for strong bodies and stronger habits, where progress survives real life.</p>
+<section class="about-block">
+<div class="container">
+<h1 class="title-gradient" data-i18n="about.title">About Garcia Builder</h1>
+<p class="lead" data-i18n="about.subtitle">We coach real people to build strong, athletic bodies - with simple nutrition, precise training and accountability that sticks.</p>
+<h2 class="title-gradient" data-i18n="about.mission">Mission &amp; Vision</h2>
+<p data-i18n="about.mission_text">Garcia Builder exists to turn discipline into results. Our mission is to coach busy people to build muscle, drop fat and move with confidence - without crash diets or gimmicks. Guided by the GB mark and its gold standard, we keep the process simple: clear training blocks, flexible nutrition and weekly check-ins that drive consistency. The vision is a community known for strong bodies and stronger habits, where progress survives real life.</p>
 <h2 class="about-subtitle" data-i18n="about.andre_title">Andre Garcia - My Journey</h2>
 <p class="about-text">
     I didn't grow up with perfect conditions. The Air Force was my first coach: 05:00 alarms, inspections, and standards that didn't care about excuses. There I learned that discipline beats mood and that progress is a decision repeated daily. When I moved to London, I carried that mindset into a city where I knew no one. I worked long hours, learned a new rhythm, and rebuilt my life one training session at a time. The gym became my compass; iron gave me structure when everything else was uncertain, and reps became a language I could trust.
@@ -189,6 +220,48 @@ window.addEventListener('load', function() {
   <br><br>
     Garcia Builder is my mission: to build people who keep their results. If you're juggling work, family, or doubt, I'll meet you where you are, set a pace you can sustain, and hold a standard that improves both your body and your character. Your story isn't stuck; it's waiting for a coach. Let's start.
 </p>
+</div>
+</section>
+
+<section class="section about-video-section">
+<div class="container">
+<div class="row align-items-center g-5">
+<div class="col-lg-6 order-lg-2">
+<div class="about-video-wrapper">
+  <div
+    class="gb-video gb-video-container"
+    data-video-id="ZCWFlTGFN-A"
+    data-analytics-label="about_training_short"
+    data-analytics-location="about_page_training"
+    data-video-title="Inside a Garcia Builder coaching session"
+    aria-label="Play Garcia Builder training breakdown"
+    role="button"
+    tabindex="0">
+    <img src="https://img.youtube.com/vi/ZCWFlTGFN-A/hqdefault.jpg"
+         alt="Preview of Garcia Builder training breakdown video"
+         class="img-fluid gb-video-thumbnail" loading="lazy" decoding="async" width="800" height="450">
+    <div class="gb-video-play gb-video-play-button">
+      <i class="fas fa-play gb-video-play-icon"></i>
+    </div>
+    <noscript>
+  <img src="https://img.youtube.com/vi/ZCWFlTGFN-A/hqdefault.jpg" alt="Garcia Builder training breakdown video preview" width="800" height="450" class="video-fallback-img"/>
+    </noscript>
+  </div>
+</div>
+</div>
+<div class="col-lg-6 order-lg-1">
+<h2 class="title-gradient mb-3" data-i18n="about.video.title">How we coach technique and tempo</h2>
+<p class="about-text" data-i18n="about.video.subtitle">Watch a quick breakdown of the cues, tempo work, and accountability clients get inside a Garcia Builder training block.</p>
+<ul class="about-video-points list-unstyled mt-4">
+<li><i class="fas fa-check-circle"></i><span data-i18n="about.video.point1">See how we stack tempos and cues to protect joints while progressing loads.</span></li>
+<li><i class="fas fa-check-circle"></i><span data-i18n="about.video.point2">Understand the real-time feedback clients receive inside the coaching app.</span></li>
+<li><i class="fas fa-check-circle"></i><span data-i18n="about.video.point3">Preview how weekly check-ins keep training, nutrition, and recovery aligned.</span></li>
+</ul>
+<a href="https://calendly.com/andrenjulio072/consultation" class="btn btn-warning btn-lg mt-4" data-i18n="about.video.cta" target="_blank" rel="noopener">Book a strategy call →</a>
+    </div>
+</div>
+</div>
+</section>
 
 <section class="section">
 <div class="container grid grid-3">

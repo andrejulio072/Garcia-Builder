@@ -307,8 +307,8 @@
       instagram: {
         title: "Follow the journey on Instagram",
         subtitle: "Daily motivation, client wins, and behind-the-scenes coaching tips.",
-        tag1: "Strength Day",
-        tag2: "Nutrition Wins",
+  tag1: "Strength Day",
+  tag2: "Nutrition Guide",
         tag3: "Client Spotlight",
         tag4: "Success Story"
       },
@@ -1026,8 +1026,8 @@
       instagram: {
         title: "Acompanhe a jornada no Instagram",
         subtitle: "Motivação diária, vitórias dos clientes e bastidores do coaching.",
-        tag1: "Dia de Força",
-        tag2: "Vitórias na Nutrição",
+  tag1: "Dia de Força",
+  tag2: "Guia de Nutrição",
         tag3: "Cliente em Destaque",
         tag4: "História de Sucesso"
       },
@@ -1742,8 +1742,8 @@
       instagram: {
         title: "Sigue la jornada en Instagram",
         subtitle: "Motivación diaria, logros de clientes y consejos detrás de cámaras.",
-        tag1: "Día de Fuerza",
-        tag2: "Logros de Nutrición",
+  tag1: "Día de Fuerza",
+  tag2: "Guía de Nutrición",
         tag3: "Cliente Destacado",
         tag4: "Historia de Éxito"
       },

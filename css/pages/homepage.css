@@ -229,48 +229,11 @@ html, body {
 }
 
 .gb-video {
-  position: relative;
-  padding-bottom: 56.25%;
-  height: 0;
-  overflow: hidden;
   cursor: pointer;
-}
-
-.video-thumbnail {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .gb-video-play {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px;
-  height: 80px;
-  background: rgba(246, 200, 78, 0.9);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-}
-
-.gb-video-play:hover {
-  background: rgba(246, 200, 78, 1);
-  transform: translate(-50%, -50%) scale(1.1);
-}
-
-.gb-video-play i {
-  font-size: 2rem;
-  color: #000;
-  margin-left: 5px;
+  pointer-events: auto;
 }
 
 /* ===== QUICK NAV CARDS ===== */

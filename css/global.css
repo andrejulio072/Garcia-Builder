@@ -640,20 +640,68 @@ select option {
 }
 
 /* Shared video player styling */
+
 .gb-video-container {
   position: relative;
   padding-bottom: 56.25%;
   height: 0;
   overflow: hidden;
+  border-radius: 24px;
+  background: radial-gradient(circle at 20% 20%, rgba(246,200,78,0.16), transparent 62%),
+              linear-gradient(140deg, rgba(6,14,30,0.95) 0%, rgba(9,19,38,0.92) 42%, rgba(17,32,62,0.9) 100%);
+  box-shadow: 0 35px 80px rgba(4, 9, 20, 0.65);
+  isolation: isolate;
 }
 
-.gb-video-thumbnail {
+.gb-video-container::before,
+.gb-video-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 0;
+}
+
+.gb-video-container::before {
+  background: linear-gradient(120deg, rgba(246,200,78,0.45) 0%, rgba(124,92,255,0.35) 45%, rgba(0,219,255,0.35) 100%);
+  opacity: 0.7;
+}
+
+.gb-video-container::after {
+  background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.18), transparent 58%);
+  opacity: 0.4;
+  mix-blend-mode: screen;
+}
+
+.gb-video-container:hover::before,
+.gb-video-container:hover::after {
+  opacity: 0.9;
+  transform: scale(1.01);
+}
+
+.gb-video-playing::before,
+.gb-video-playing::after {
+  opacity: 0;
+}
+
+.gb-video-thumbnail,
+.gb-video-container iframe {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: inherit;
+  z-index: 1;
+  transition: transform 0.45s ease, filter 0.45s ease;
+}
+
+.gb-video-container:hover .gb-video-thumbnail {
+  transform: scale(1.035);
+  filter: saturate(1.15);
 }
 
 .gb-video-play-button {
@@ -661,21 +709,75 @@ select option {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80px;
-  height: 80px;
-  background: rgba(246,200,78,0.9);
+  width: 88px;
+  height: 88px;
+  background: rgba(6, 12, 24, 0.78);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 22px 40px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(246, 200, 78, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  z-index: 2;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.gb-video-play-button::before {
+  content: "";
+  position: absolute;
+  inset: -16px;
+  border-radius: inherit;
+  border: 2px solid rgba(246, 200, 78, 0.35);
+  opacity: 1;
+  animation: gbVideoPulse 2.8s ease-in-out infinite;
+}
+
+.gb-video-play-button:hover {
+  background: rgba(246, 200, 78, 0.96);
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 30px 60px rgba(246, 200, 78, 0.35);
+}
+
+.gb-video-play-button:hover::before {
+  opacity: 0;
 }
 
 .gb-video-play-icon {
-  font-size: 2rem;
-  color: #000;
-  margin-left: 5px;
+  font-size: 2.1rem;
+  color: #0b1121;
+  margin-left: 6px;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes gbVideoPulse {
+  0% {
+    opacity: 0.45;
+    transform: scale(0.9);
+  }
+  45% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gb-video-container::before,
+  .gb-video-container::after,
+  .gb-video-thumbnail,
+  .gb-video-container iframe,
+  .gb-video-play-button,
+  .gb-video-play-button::before {
+    transition: none !important;
+    animation: none !important;
+  }
 }
 
 .video-fallback-img {
@@ -838,7 +940,17 @@ input, select, textarea { font-size: 1rem; }
 .hero > * { position: relative; z-index: 1; }
 
 /* 9) Tabelas/FAQs nunca estouram a tela */
-.table-responsive, .overflow-x { overflow-x:auto; -webkit-overflow-scrolling: touch; }
+.table-responsive,
+.overflow-x {
+  overflow-x: auto;
+}
+
+@supports (-webkit-overflow-scrolling: touch) {
+  .table-responsive,
+  .overflow-x {
+    -webkit-overflow-scrolling: touch;
+  }
+}
 .break-words { word-wrap: break-word; overflow-wrap: anywhere; }
 
 /* 10) Navbar colapsável – aumenta área de toque */

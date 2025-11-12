@@ -12,6 +12,8 @@
         pricing: "Pricing",
         faq: "FAQ",
         contact: "Contact",
+    currency_label: "Select currency",
+    currency_help: "Show plan prices in your currency.",
             overlay: "8kg perdidos + masa muscular",
         back_to_site: "Back to Site",
         back_to_login: "Back to Login",
@@ -471,6 +473,9 @@
       pricing: {
         title: "Pricing",
         subtitle: "Choose the coaching level that matches your goals today — and scale up as your results grow.",
+        currency_selector: {
+          title: "Show prices in your currency"
+        },
         period_selector: {
           title: "Choose Your Plan Duration",
           monthly: "Monthly",
@@ -719,6 +724,8 @@
         pricing: "Planos",
         faq: "FAQ",
         contact: "Contato",
+  currency_label: "Selecionar moeda",
+  currency_help: "Veja os planos na sua moeda preferida.",
         programs: "Programas",
         back_to_site: "Voltar ao Site",
         back_to_login: "Voltar ao Login",
@@ -1163,6 +1170,9 @@
       pricing: {
         title: "Planos",
         subtitle: "Escolha o nível de coaching que combina com seus objetivos hoje — e evolua conforme seus resultados crescem.",
+        currency_selector: {
+          title: "Veja os preços na sua moeda"
+        },
         period_selector: {
           title: "Escolha a Duração do Seu Plano",
           monthly: "Mensal",
@@ -1411,6 +1421,8 @@
         pricing: "Precios",
         faq: "FAQ",
         contact: "Contacto",
+  currency_label: "Seleccionar moneda",
+  currency_help: "Ver planes en tu moneda preferida.",
         programs: "Programas",
         back_to_site: "Volver al Sitio",
         back_to_login: "Volver al Login",
@@ -1852,6 +1864,9 @@
       pricing: {
         title: "Precios",
         subtitle: "Elige el nivel de coaching que se ajuste a tus objetivos hoy — y escala a medida que crecen tus resultados.",
+        currency_selector: {
+          title: "Ver precios en tu moneda"
+        },
         period_selector: {
           title: "Elige la Duración de tu Plan",
           monthly: "Mensual",

@@ -983,7 +983,7 @@ section#contact.section.has-bg.contact-bg {
 }
 
 /* Language and currency selector styling */
-#lang-select-navbar, #currency-select-nav {
+#lang-select-navbar {
   background: rgba(255,255,255,0.1);
   border: 1px solid rgba(246,200,78,0.3);
   color: #fff;
@@ -994,12 +994,12 @@ section#contact.section.has-bg.contact-bg {
   transition: all 0.3s ease;
 }
 
-#lang-select-navbar:hover, #currency-select-nav:hover {
+#lang-select-navbar:hover {
   background: rgba(255,255,255,0.15);
   border-color: rgba(246,200,78,0.5);
 }
 
-#lang-select-navbar option, #currency-select-nav option {
+#lang-select-navbar option {
   background: #0b1220;
   color: #fff;
 }

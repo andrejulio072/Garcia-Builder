@@ -109,7 +109,7 @@ const INLINE_FALLBACKS = {
 
             <div class="gb-navbar-actions">
                 <div class="gb-navbar-controls">
-                    <div id="auth-buttons-navbar" class="gb-auth-buttons">
+                    <div id="auth-buttons-navbar" class="gb-auth-buttons" data-auth-state="anonymous">
                         <a href="#" class="gb-btn-link" data-i18n="nav.login" data-gb-nav="pages/auth/login.html">Login</a>
                         <a href="#" class="gb-btn-primary-small" data-i18n="nav.register" data-gb-nav="pages/auth/login.html?action=register">Register</a>
                     </div>
@@ -144,7 +144,7 @@ const INLINE_FALLBACKS = {
             </nav>
 
             <div class="gb-menu-footer">
-                <div id="auth-buttons" class="gb-auth-buttons-mobile">
+                <div id="auth-buttons" class="gb-auth-buttons-mobile" data-auth-state="anonymous">
                     <a href="#" class="gb-btn-secondary" data-i18n="nav.login" data-gb-nav="pages/auth/login.html">Login</a>
                     <a href="#" class="gb-btn-primary" data-i18n="nav.register" data-gb-nav="pages/auth/login.html?action=register">Register</a>
                 </div>

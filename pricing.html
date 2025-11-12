@@ -259,6 +259,10 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
     margin: 2rem 0;
   }
 
+  .currency-selector-control {
+    position: relative;
+  }
+
   .currency-select-input {
     max-width: 220px;
     margin: 0 auto;
@@ -291,6 +295,10 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
     border-top: 2px solid var(--gold);
     border-radius: 50%;
     animation: spin 1s linear infinite;
+  }
+
+  .currency-helper-text {
+    color: rgba(255, 255, 255, 0.7);
   }
 
   @keyframes spin {
@@ -456,8 +464,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="text-muted mt-2" data-i18n="pricing.period_selector.note">Save more with longer commitments. All plans include full access from day one.</p>
     </div>
 
-    <!-- Currency Selector moved to navbar -->
-
+    <div class="currency-selector text-center" role="region" aria-live="polite">
+      <h3 class="mb-3 text-white" data-i18n="pricing.currency_selector.title">Show prices in your currency</h3>
+      <div class="currency-selector-control d-inline-flex align-items-center gap-2 flex-wrap justify-content-center">
+        <label for="currency-select" class="visually-hidden" data-i18n="nav.currency_label">Select currency</label>
+        <select id="currency-select" class="currency-select-input form-select" aria-label="Select currency" title="Select currency">
+          <option value="GBP">GBP • £</option>
+          <option value="EUR">EUR • €</option>
+          <option value="USD">USD • $</option>
+          <option value="BRL">BRL • R$</option>
+          <option value="CAD">CAD • C$</option>
+          <option value="AUD">AUD • A$</option>
+        </select>
+      </div>
+      <small class="currency-helper-text d-block mt-2" data-i18n="nav.currency_help">Show plan prices in your currency.</small>
+    </div>
 
     <div id="pricingGrid" class="price-grid mt-3"></div>
 

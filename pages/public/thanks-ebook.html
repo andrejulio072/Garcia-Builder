@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Obrigado! Seu Ebook Está Pronto - Garcia Builder</title>
+    <title>Obrigado! Seu Ebook Estï¿½ Pronto - Garcia Builder</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/global.css?v=20251003-2030">
+    <link rel="stylesheet" href="css/components/navbar-component.css?v=20251028">
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
@@ -18,7 +19,7 @@
       gtag('config', 'AW-17627402053');
     </script>
 
-    <!-- Event snippet for Visualização de página conversion page -->
+    <!-- Event snippet for Visualizaï¿½ï¿½o de pï¿½gina conversion page -->
     <script>
       function gtag_report_conversion(url) {
         var callback = function () {
@@ -129,12 +130,10 @@
             </a>
 
             <div class="gb-navbar-controls">
-                <div id="auth-buttons-navbar"></div>
-                <select id="lang-select-navbar" aria-label="Select Language" title="Select Language">
-                    <option value="en">EN</option>
-                    <option value="pt">PT</option>
-                    <option value="es">ES</option>
-                </select>
+                <div id="auth-buttons-navbar" class="gb-auth-buttons" data-auth-state="anonymous">
+                    <a href="#" class="gb-btn-link" data-i18n="nav.login" data-gb-nav="pages/auth/login.html">Login</a>
+                    <a href="#" class="gb-btn-primary-small" data-i18n="nav.register" data-gb-nav="pages/auth/login.html?action=register">Register</a>
+                </div>
             </div>
 
             <button class="gb-hamburger"
@@ -165,12 +164,15 @@
             </nav>
 
             <div class="gb-menu-footer">
-                <div id="auth-buttons"></div>
+                <div id="auth-buttons" class="gb-auth-buttons-mobile" data-auth-state="anonymous">
+                    <a href="#" class="gb-btn-secondary" data-i18n="nav.login" data-gb-nav="pages/auth/login.html">Login</a>
+                    <a href="#" class="gb-btn-primary" data-i18n="nav.register" data-gb-nav="pages/auth/login.html?action=register">Register</a>
+                </div>
 
                 <select id="lang-select" class="gb-lang-select" aria-label="Select language">
-                    <option value="en">???? English</option>
-                    <option value="pt">???? Português</option>
-                    <option value="es">???? Español</option>
+                    <option value="en">ðŸ‡¬ðŸ‡§ English</option>
+                    <option value="pt">ðŸ‡§ðŸ‡· PortuguÃªs</option>
+                    <option value="es">ðŸ‡ªðŸ‡¸ EspaÃ±ol</option>
                 </select>
             </div>
         </div>
@@ -247,8 +249,8 @@
                             <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
                         </div>
 
-                        <h1 class="h2 mb-3">?? Parabéns, <span id="userName">Guerreiro(a)</span>!</h1>
-                        <h2 class="h4 text-primary mb-4">Seu ebook está pronto para download!</h2>
+                        <h1 class="h2 mb-3">?? Parabï¿½ns, <span id="userName">Guerreiro(a)</span>!</h1>
+                        <h2 class="h4 text-primary mb-4">Seu ebook estï¿½ pronto para download!</h2>
 
                         <!-- Download Button -->
                         <a href="assets/ebook-7-passos-secar-mantendo-massa.pdf"
@@ -262,7 +264,7 @@
                         <p class="text-muted mb-4">
                             <small>
                                 <i class="fas fa-info-circle me-1"></i>
-                                O download começará automaticamente. Se não funcionar, clique no botão acima.
+                                O download comeï¿½arï¿½ automaticamente. Se nï¿½o funcionar, clique no botï¿½o acima.
                             </small>
                         </p>
 
@@ -276,7 +278,7 @@
 
                         <!-- Social Share -->
                         <div class="social-share">
-                            <p><strong>Compartilhe com amigos que também querem resultados:</strong></p>
+                            <p><strong>Compartilhe com amigos que tambï¿½m querem resultados:</strong></p>
                             <a href="#" class="facebook" title="Compartilhar no Facebook" id="shareFacebook">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
@@ -294,14 +296,14 @@
                         <!-- Testimonial -->
                         <div class="testimonial">
                             <p class="mb-2">
-                                <em>"Esse ebook mudou completamente minha abordagem. Perdi 7kg em 8 semanas sem perder força. Andre sabe do que fala!"</em>
+                                <em>"Esse ebook mudou completamente minha abordagem. Perdi 7kg em 8 semanas sem perder forï¿½a. Andre sabe do que fala!"</em>
                             </p>
                             <small><strong>- Paulo R.</strong> | Perda de 7kg em 8 semanas</small>
                         </div>
 
                         <!-- Next Steps -->
                         <div class="next-steps">
-                            <h3 class="h5 mb-3">?? Próximos Passos para Turbinar Seus Resultados:</h3>
+                            <h3 class="h5 mb-3">?? Prï¿½ximos Passos para Turbinar Seus Resultados:</h3>
 
                             <div class="step-item">
                                 <div class="d-flex align-items-center">
@@ -322,7 +324,7 @@
                                     </div>
                                     <div>
                                         <strong>2. Siga no Instagram</strong>
-                                        <br><small class="text-muted">Dicas diárias e transformações reais: @garcia.builder</small>
+                                        <br><small class="text-muted">Dicas diï¿½rias e transformaï¿½ï¿½es reais: @garcia.builder</small>
                                     </div>
                                 </div>
                             </div>
@@ -333,7 +335,7 @@
                                         <i class="fas fa-envelope text-primary fa-lg"></i>
                                     </div>
                                     <div>
-                                        <strong>3. Dúvidas? Fale pelo formulário</strong>
+                                        <strong>3. Dï¿½vidas? Fale pelo formulï¿½rio</strong>
                                         <br><small class="text-muted">Respondo pessoalmente sobre o ebook</small>
                                     </div>
                                 </div>
@@ -347,7 +349,7 @@
                                 Quer ACELERAR seus resultados?
                             </h4>
                             <p class="text-dark mb-3">
-                                O ebook te dá a base, mas com <strong>coaching personalizado</strong> você tem:
+                                O ebook te dï¿½ a base, mas com <strong>coaching personalizado</strong> vocï¿½ tem:
                             </p>
                             <div class="row text-start text-dark">
                                 <div class="col-md-6">
@@ -372,7 +374,7 @@
                                     <i class="fas fa-star me-2"></i>
                                     VER PLANOS DE COACHING
                                 </a>
-                                <a href="https://wa.me/447508497586?text=Oi André! Baixei seu ebook e quero saber mais sobre o coaching personalizado."
+                                <a href="https://wa.me/447508497586?text=Oi Andrï¿½! Baixei seu ebook e quero saber mais sobre o coaching personalizado."
                                    class="btn btn-success btn-lg"
                                    target="_blank" onclick="return gtag_report_conversion(this.href)">
                                     <i class="fas fa-envelope me-2"></i>
@@ -387,7 +389,7 @@
                                 <i class="fas fa-home me-1"></i> Voltar ao Site
                             </a>
                             <a href="transformations.html" class="btn btn-outline-primary">
-                                <i class="fas fa-before-after me-1"></i> Ver Transformações
+                                <i class="fas fa-before-after me-1"></i> Ver Transformaï¿½ï¿½es
                             </a>
                         </div>
                     </div>
@@ -440,7 +442,7 @@
         });
 
         function setupSocialSharing() {
-            const shareText = "Acabei de baixar um ebook incrível: '7 Passos para Secar Mantendo Massa' do Garcia Builder. Método científico testado!";
+            const shareText = "Acabei de baixar um ebook incrï¿½vel: '7 Passos para Secar Mantendo Massa' do Garcia Builder. Mï¿½todo cientï¿½fico testado!";
             const shareUrl = "https://garciabuilder.fitness/lead-magnet.html";
 
             document.getElementById('shareFacebook').href =
@@ -480,7 +482,7 @@
             <a href="contact.html" class="text-decoration-none mx-2" style="color: #F6C84E;" rel="noopener" aria-label="Contact Us">Contact</a>
         </div>
         <p class="mb-0" style="color: rgba(255, 255, 255, 0.7);">
-            © 2025 Garcia Builder — Online Coaching •
+            ï¿½ 2025 Garcia Builder ï¿½ Online Coaching ï¿½
             <a href="https://instagram.com/garcia.builder" target="_blank" rel="noopener" style="color: #F6C84E;" aria-label="Follow us on Instagram">@garcia.builder</a>
         </p>
     </div>

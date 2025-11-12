@@ -71,6 +71,8 @@ class AuthGuard {
         authContainers.forEach(userMenu => {
             if (!userMenu) return;
 
+            userMenu.dataset.authState = currentUser ? 'authenticated' : 'anonymous';
+
             if (currentUser) {
 
                 const firstName = (currentUser.name || currentUser.full_name || currentUser.email || 'User').toString().split(' ')[0];

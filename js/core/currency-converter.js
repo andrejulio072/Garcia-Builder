@@ -100,14 +100,19 @@
   const showLoading = (show) => {
     isLoading = show;
     const select = document.getElementById('currency-select-nav') || document.getElementById('currency-select');
-    const loadingIndicator = document.querySelector('.currency-loading');
+    if (!select) return;
+
+    const container = select.closest('.currency-selector-control') || select.parentNode;
+    if (!container) return;
+
+    const loadingIndicator = container.querySelector('.currency-loading');
 
     if (show) {
       select.disabled = true;
       if (!loadingIndicator) {
         const loader = document.createElement('span');
         loader.className = 'currency-loading';
-        select.parentNode.appendChild(loader);
+        container.appendChild(loader);
       }
     } else {
       select.disabled = false;

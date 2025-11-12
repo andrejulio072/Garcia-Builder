@@ -287,6 +287,33 @@
         subtitle: "127+ people transformed their lives with Garcia Builder",
         cta: "See All Success Stories →"
       },
+      social: {
+        sectionTitle: "Real transformations from busy professionals",
+        sectionSubtitle: "Strong results in 8–12 weeks with coaching that adapts to your lifestyle, injuries, and schedule.",
+        metric1: "Body transformations",
+        metric2: "Client success rate",
+        metric3: "Countries coached",
+        cta: "Start My Transformation →",
+        quote1: { text: "Lost 10 kg while juggling night shifts. Training blocks fit my weekly chaos.", author: "Mariana, Dublin" },
+        quote2: { text: "Visible abs without skipping dinners out. Flexible nutrition finally worked.", author: "James, London" },
+        quote3: { text: "Stopped guessing workouts. Stronger lifts, better posture, more confidence.", author: "Luciana, São Paulo" }
+      },
+      instagram: {
+        title: "Follow the journey on Instagram",
+        subtitle: "Daily motivation, client wins, and behind-the-scenes coaching tips.",
+        tag1: "Strength Day",
+        tag2: "Nutrition Wins",
+        tag3: "Client Spotlight",
+        tag4: "Mobility Drill"
+      },
+      authority: {
+        title: "Why athletes trust Garcia Builder",
+        subtitle: "Credentials, experience, and systems built around real people—not fitness fads.",
+        card1: { title: "ActiveIQ Level 3 PT", desc: "Certified personal trainer recognised in the UK and EU." },
+        card2: { title: "12+ Years Coaching", desc: "Hundreds of clients guided through fat loss, recomposition, and performance goals." },
+        card3: { title: "Coaching in EN • PT • ES", desc: "Communicate in the language that keeps you motivated and accountable." },
+        card4: { title: "Trainerize Ecosystem", desc: "Clear app experience for workouts, nutrition targets, habits, and progress tracking." }
+      },
       stats: {
         clients: "Clients Transformed",
         workouts: "Workouts Completed",
@@ -952,6 +979,33 @@
         subtitle: "127+ pessoas transformaram suas vidas com Garcia Builder",
         cta: "Ver Todas as Histórias de Sucesso →"
       },
+      social: {
+        sectionTitle: "Transformações reais de profissionais ocupados",
+        sectionSubtitle: "Resultados sólidos em 8–12 semanas com coaching que se adapta à sua rotina, lesões e agenda.",
+        metric1: "Corpos transformados",
+        metric2: "Taxa de sucesso",
+        metric3: "Países atendidos",
+        cta: "Começar Minha Transformação →",
+        quote1: { text: "Perdi 10 kg mesmo trabalhando em turnos. Os treinos se encaixam no meu caos semanal.", author: "Mariana, Dublin" },
+        quote2: { text: "Consegui definição sem cortar jantares. A nutrição flexível finalmente funcionou.", author: "James, Londres" },
+        quote3: { text: "Parei de adivinhar treinos. Levanto mais forte, postura melhor e confiança renovada.", author: "Luciana, São Paulo" }
+      },
+      instagram: {
+        title: "Acompanhe a jornada no Instagram",
+        subtitle: "Motivação diária, vitórias dos clientes e bastidores do coaching.",
+        tag1: "Dia de Força",
+        tag2: "Vitórias na Nutrição",
+        tag3: "Cliente em Destaque",
+        tag4: "Rotina de Mobilidade"
+      },
+      authority: {
+        title: "Por que atletas confiam no Garcia Builder",
+        subtitle: "Credenciais, experiência e sistemas criados para pessoas reais — não modismos de academia.",
+        card1: { title: "ActiveIQ Level 3 PT", desc: "Personal trainer certificado reconhecido no Reino Unido e na UE." },
+        card2: { title: "12+ Anos de Coaching", desc: "Centenas de clientes guiados em perda de gordura, recomposição e performance." },
+        card3: { title: "Coaching em EN • PT • ES", desc: "Fale no idioma que mantém você motivado e responsável." },
+        card4: { title: "Ecossistema Trainerize", desc: "App claro para treinos, metas de nutrição, hábitos e acompanhamento de progresso." }
+      },
       stats: {
         clients: "Clientes Transformados",
         workouts: "Treinos Completos",
@@ -1613,6 +1667,33 @@
         title: "Únete a Nuestra Comunidad",
         subtitle: "127+ personas transformaron sus vidas con Garcia Builder",
         cta: "Ver Todas las Historias de Éxito →"
+      },
+      social: {
+        sectionTitle: "Transformaciones reales de profesionales ocupados",
+        sectionSubtitle: "Resultados sólidos en 8–12 semanas con coaching que se adapta a tu estilo de vida, lesiones y agenda.",
+        metric1: "Transformaciones corporales",
+        metric2: "Tasa de éxito",
+        metric3: "Países atendidos",
+        cta: "Comenzar Mi Transformación →",
+        quote1: { text: "Perdí 10 kg aun trabajando en turnos. Los bloques de entrenamiento encajan en mi caos semanal.", author: "Mariana, Dublín" },
+        quote2: { text: "Definición visible sin saltarme cenas. La nutrición flexible por fin funcionó.", author: "James, Londres" },
+        quote3: { text: "Dejé de adivinar entrenos. Levanto más fuerte, mejor postura y confianza renovada.", author: "Luciana, São Paulo" }
+      },
+      instagram: {
+        title: "Sigue la jornada en Instagram",
+        subtitle: "Motivación diaria, logros de clientes y consejos detrás de cámaras.",
+        tag1: "Día de Fuerza",
+        tag2: "Logros de Nutrición",
+        tag3: "Cliente Destacado",
+        tag4: "Trabajo de Movilidad"
+      },
+      authority: {
+        title: "Por qué los atletas confían en Garcia Builder",
+        subtitle: "Credenciales, experiencia y sistemas creados para personas reales, no modas pasajeras.",
+        card1: { title: "ActiveIQ Level 3 PT", desc: "Entrenador personal certificado reconocido en Reino Unido y la UE." },
+        card2: { title: "12+ Años Entrenando", desc: "Cientos de clientes guiados en pérdida de grasa, recomposición y rendimiento." },
+        card3: { title: "Coaching en EN • PT • ES", desc: "Comunícate en el idioma que te mantiene motivado y responsable." },
+        card4: { title: "Ecosistema Trainerize", desc: "App claro para entrenos, objetivos de nutrición, hábitos y seguimiento del progreso." }
       },
       stats: {
         clients: "Clientes Transformados",

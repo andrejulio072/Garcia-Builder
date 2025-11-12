@@ -3,6 +3,18 @@
   if(!grid || !window.GB_TESTIMONIALS){ return; }
 
   const star = n => '★★★★★'.slice(0, Math.max(0, Math.min(5, n)));
+  const translate = (key, fallback) => {
+    if (!key) return fallback;
+    try {
+      const lang = (window.GB_I18N && typeof window.GB_I18N.getLang === 'function') ? window.GB_I18N.getLang() : 'en';
+      const dicts = window.DICTS || {};
+      const resolve = (src) => key.split('.').reduce((acc, part) => (acc && acc[part] !== undefined) ? acc[part] : undefined, src);
+      return resolve(dicts[lang]) ?? resolve(dicts.en) ?? fallback;
+    } catch (err) {
+      console.warn('i18n lookup failed for testimonial', key, err);
+      return fallback;
+    }
+  };
   const getInitials = (name) => {
     if(!name || name.toLowerCase() === 'anonymous') return 'AN';
     return name.split(/\s+/).slice(0,2).map(p=>p[0]).join('').toUpperCase();
@@ -18,13 +30,15 @@
       ? `<img src="${t.imageUrl}" alt="${t.name} avatar" width="60" height="60" loading="lazy" />`
       : `<div class="testimonial-avatar avatar-${(idx%10)+1}" aria-hidden="true">${getInitials(t.name)}</div>`;
 
+    const cardText = translate(t.textKey, t.text);
+
     return `
       <div class="card tcard" data-category="${cat}" role="listitem" tabindex="0" aria-label="${aria}">
         ${avatar}
         <div>
           <div class="name">${isAnon? 'Anonymous' : t.name}</div>
           <span class="badge" aria-label="${t.rating} star rating">${star(t.rating)}</span>
-          <p>${t.text}</p>
+          <p>${cardText}</p>
         </div>
       </div>
     `;

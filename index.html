@@ -353,30 +353,38 @@ window.addEventListener('load', function() {
 <section class="section video-section-bg">
 <div class="container">
 <div class="text-center mb-5">
-<h2 class="title-gradient text-glow mb-3" data-i18n="featured.title">Real People. Real Results.</h2>
-<p class="lead" data-i18n="featured.subtitle">Join 127+ clients who transformed their bodies and lives</p>
+<h2 class="title-gradient text-glow mb-3" data-i18n="home.featured.title">Real People. Real Results.</h2>
+<p class="lead" data-i18n="home.featured.subtitle">Join 127+ clients who transformed their bodies and lives</p>
 </div>
-<div class="row align-items-center g-4">
+<div class="row align-items-center g-4 featured-highlight">
 <div class="col-lg-6">
-<div class="position-relative video-container-wrapper">
-<img src="assets/images/transformations/client-paulo-beforeafter.png"
-  alt="Garcia Builder client transformation before and after"
-  class="img-fluid video-thumbnail"
-  loading="lazy" decoding="async" width="800" height="500">
-<div class="position-absolute bottom-0 start-0 p-3 bg-dark bg-opacity-75 rounded video-overlay-badge">
-<p class="mb-0 text-warning fw-bold" data-i18n="featured.result">-15kg · 12 weeks</p>
+<div class="featured-transform">
+<div class="featured-photo">
+<img src="assets/images/transformations/conrad-before.jpg"
+  alt="Conrad before starting the Garcia Builder coaching program"
+  loading="lazy" decoding="async" width="380" height="480">
+<span class="featured-badge" data-i18n="home.featured.beforeLabel">Before</span>
+</div>
+<div class="featured-photo">
+<img src="assets/images/transformations/conrad-after.jpg"
+  alt="Conrad after twelve weeks of Garcia Builder coaching"
+  loading="lazy" decoding="async" width="380" height="480">
+<span class="featured-badge" data-i18n="home.featured.afterLabel">After</span>
+</div>
+<div class="featured-metric">
+<span data-i18n="home.featured.result">-9kg · +3kg Lean Mass</span>
 </div>
 </div>
 </div>
 <div class="col-lg-6">
-<blockquote class="blockquote">
-<p class="fs-4 mb-3" data-i18n="featured.quote">
-"I never thought online coaching could be this personal. The weekly check-ins and constant support kept me accountable. Best investment in myself I've ever made."
+<blockquote class="blockquote featured-quote">
+<p class="fs-4 mb-3" data-i18n="home.featured.quote">
+"Andre rebuilt my training around demanding work weeks. We dropped fat, added lean muscle, and my shoulders are pain free again."
 </p>
-<footer class="blockquote-footer text-warning" data-i18n="featured.author">Sarah M., Dublin</footer>
+<footer class="blockquote-footer text-warning" data-i18n="home.featured.author">Conrad N., London</footer>
 </blockquote>
 <div class="mt-4">
-<a href="transformations.html" class="btn btn-gold" data-i18n="featured.cta">See More Transformations →</a>
+<a href="transformations.html" class="btn btn-gold" data-i18n="home.featured.cta">See More Transformations →</a>
 </div>
 </div>
 </div>
@@ -397,8 +405,8 @@ window.addEventListener('load', function() {
 <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold process-number">1</div>
 </div>
 <div class="mb-3">
-<img src="assets/images/transformations/t4.png"
-  alt="Coach André leading a consultation session" loading="lazy" decoding="async" width="400" height="150"
+<img src="assets/images/howitworks/20250822_203258.jpg"
+  alt="Coach André leading the initial assessment call" loading="lazy" decoding="async" width="400" height="150"
   class="img-fluid rounded process-image">
 </div>
 <h4 class="mb-2" data-i18n="howitworks.step1.title">Assessment Call</h4>
@@ -411,8 +419,8 @@ window.addEventListener('load', function() {
 <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold process-number">2</div>
 </div>
 <div class="mb-3">
-<img src="assets/images/transformations/t5.jpg"
-  alt="Customized workout plan displayed on Trainerize app" loading="lazy" decoding="async" width="400" height="150"
+<img src="assets/images/howitworks/Picsart_24-07-08_21-12-34-025(1).jpg"
+  alt="Coach André designing a personalised training plan" loading="lazy" decoding="async" width="400" height="150"
   class="img-fluid rounded process-image">
 </div>
 <h4 class="mb-2" data-i18n="howitworks.step2.title">Plan Built for You</h4>
@@ -425,8 +433,8 @@ window.addEventListener('load', function() {
 <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold process-number">3</div>
 </div>
 <div class="mb-3">
-<img src="assets/images/transformations/t6.jpg"
-  alt="Coach reviewing progress check-in on tablet" loading="lazy" decoding="async" width="400" height="150"
+<img src="assets/images/howitworks/Picsart_25-08-31_19-01-03-542.jpg"
+  alt="Weekly check-in feedback recorded inside Trainerize" loading="lazy" decoding="async" width="400" height="150"
   class="img-fluid rounded process-image">
 </div>
 <h4 class="mb-2" data-i18n="howitworks.step3.title">Guided Execution</h4>
@@ -439,8 +447,8 @@ window.addEventListener('load', function() {
 <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning text-dark fw-bold process-number">4</div>
 </div>
 <div class="mb-3">
-<img src="assets/images/transformations/t8.jpg"
-  alt="Client celebrating physique results" loading="lazy" decoding="async" width="400" height="150"
+<img src="assets/images/transformations/conrad-after.jpg"
+  alt="Client celebrating a leaner, stronger physique" loading="lazy" decoding="async" width="400" height="150"
   class="img-fluid rounded process-image">
 </div>
 <h4 class="mb-2" data-i18n="howitworks.step4.title">Results That Last</h4>
@@ -594,43 +602,43 @@ window.addEventListener('load', function() {
 <div class="row g-4">
 <div class="col-md-4">
 <div class="card h-100 blog-card">
-<img src="assets/images/transformations/t7.jpg"
-  alt="Athlete performing strength training" class="card-img-top blog-img" loading="lazy" decoding="async" width="600" height="200">
+<img src="assets/images/blog/competition.jpg"
+  alt="Coach André demonstrating a strength session" class="card-img-top blog-img" loading="lazy" decoding="async" width="600" height="200">
 <div class="card-body">
 <div class="mb-2">
 <span class="badge bg-warning text-dark" data-i18n="blog.category.training">TRAINING</span>
 </div>
 <h4 class="mb-3" data-i18n="blog.post1.title">5 Mistakes Killing Your Gym Progress</h4>
 <p class="mb-3" data-i18n="blog.post1.excerpt">Stop spinning your wheels. Learn the most common training errors and how to fix them for faster results.</p>
-<a href="https://www.trainerize.com/blog/the-5-worst-gym-mistakes-ever-fun-video/" class="btn btn-outline-warning btn-sm" data-i18n="blog.readmore" target="_blank" rel="noopener">Read More →</a>
+<a href="blog-gym-mistakes.html" class="btn btn-outline-warning btn-sm" data-i18n="blog.readmore">Read More →</a>
 </div>
 </div>
 </div>
 <div class="col-md-4">
 <div class="card h-100 blog-card">
-<img src="assets/images/transformations/t14.jpg"
-  alt="High-protein meal preparation" class="card-img-top blog-img" loading="lazy" decoding="async" width="600" height="200">
+<img src="assets/images/blog/creatine.jpg"
+  alt="High-protein meal prep from the Garcia Builder kitchen" class="card-img-top blog-img" loading="lazy" decoding="async" width="600" height="200">
 <div class="card-body">
 <div class="mb-2">
 <span class="badge bg-warning text-dark" data-i18n="blog.category.nutrition">NUTRITION</span>
 </div>
 <h4 class="mb-3" data-i18n="blog.post2.title">The Truth About Fat Loss Nutrition</h4>
 <p class="mb-3" data-i18n="blog.post2.excerpt">Cut through the noise and discover what actually works for sustainable, science-based fat loss.</p>
-<a href="https://www.trainerize.com/blog/70-high-protein-meals-in-10-minutes-for-trainers-and-nutrition-coaches/" class="btn btn-outline-warning btn-sm" data-i18n="blog.readmore" target="_blank" rel="noopener">Read More →</a>
+<a href="blog-nutrition-fat-loss.html" class="btn btn-outline-warning btn-sm" data-i18n="blog.readmore">Read More →</a>
 </div>
 </div>
 </div>
 <div class="col-md-4">
 <div class="card h-100 blog-card">
-<img src="assets/images/transformations/t9.jpg"
-  alt="Client celebrating fitness progress" class="card-img-top blog-img" loading="lazy" decoding="async" width="600" height="200">
+<img src="assets/images/blog/atomicHabits.jpg"
+  alt="Notebook showing consistency wins and habit tracking" class="card-img-top blog-img" loading="lazy" decoding="async" width="600" height="200">
 <div class="card-body">
 <div class="mb-2">
 <span class="badge bg-warning text-dark" data-i18n="blog.category.mindset">MINDSET</span>
 </div>
 <h4 class="mb-3" data-i18n="blog.post3.title">Why Consistency Beats Motivation</h4>
 <p class="mb-3" data-i18n="blog.post3.excerpt">Build unbreakable habits and systems that keep you on track even when motivation fades.</p>
-<a href="https://www.trainerize.com/blog/how-to-overcome-bad-habits/" class="btn btn-outline-warning btn-sm" data-i18n="blog.readmore" target="_blank" rel="noopener">Read More →</a>
+<a href="blog-consistency.html" class="btn btn-outline-warning btn-sm" data-i18n="blog.readmore">Read More →</a>
 </div>
 </div>
 </div>
@@ -651,50 +659,50 @@ window.addEventListener('load', function() {
 <div class="row g-3">
 <div class="col-6 col-md-3">
 <div class="gallery-item">
-<img src="assets/images/transformations/t1.png"
-  alt="Garcia Builder transformation showcase 1" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
+<img src="assets/images/community/20250328_190521.jpg"
+  alt="Garcia Builder community group training moment" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 <div class="col-6 col-md-3">
 <div class="gallery-item">
-<img src="assets/images/transformations/t2.png"
-  alt="Garcia Builder transformation showcase 2" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
+<img src="assets/images/community/20250515_103834(1).jpg"
+  alt="Community check-in smiling after a workout" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 <div class="col-6 col-md-3">
 <div class="gallery-item">
-<img src="assets/images/transformations/t3.png"
-  alt="Garcia Builder transformation showcase 3" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
+<img src="assets/images/community/20250610_183842(1).jpg"
+  alt="Client sharing progress photo during coaching call" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 <div class="col-6 col-md-3">
 <div class="gallery-item">
-<img src="assets/images/transformations/t4.png"
-  alt="Garcia Builder transformation showcase 4" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
+<img src="assets/images/community/20250610_185022.jpg"
+  alt="Andre reviewing training data with a client" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 <div class="col-6 col-md-3">
 <div class="gallery-item">
-<img src="assets/images/transformations/t5.jpg"
-  alt="Garcia Builder transformation showcase 5" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
+<img src="assets/images/community/20250703_112612.jpg"
+  alt="Garcia Builder athletes celebrating a milestone" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 <div class="col-6 col-md-3">
 <div class="gallery-item">
-<img src="assets/images/transformations/t6.jpg"
-  alt="Garcia Builder transformation showcase 6" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
+<img src="assets/images/community/20250708_135022.jpg"
+  alt="Coach André guiding form during a session" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 <div class="col-6 col-md-3">
 <div class="gallery-item">
-<img src="assets/images/transformations/t7.jpg"
-  alt="Garcia Builder transformation showcase 7" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
+<img src="assets/images/community/20250826_214457.jpg"
+  alt="Community accountability call screenshot" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 <div class="col-6 col-md-3">
 <div class="gallery-item">
-<img src="assets/images/transformations/t8.jpg"
-  alt="Garcia Builder transformation showcase 8" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
+<img src="assets/images/community/IMG-20250929-WA0003.jpg"
+  alt="Client flexing after finishing a transformation block" class="img-fluid" loading="lazy" decoding="async" width="400" height="250">
 </div>
 </div>
 </div>
@@ -1001,25 +1009,25 @@ Trainerize—plans, videos, habits, messages, and progress tracking in one place
 <div class="row g-3">
 <div class="col-6 col-lg-3">
 <a class="instagram-card" href="https://www.instagram.com/garcia.builder" target="_blank" rel="noopener">
-<img src="assets/images/transformations/t7.jpg" alt="Instagram highlight showing strength session" loading="lazy" decoding="async" width="400" height="400">
+<img src="assets/images/community/Screenshot_20251112_115037_Instagram.png" alt="Strength session recap posted on Instagram" loading="lazy" decoding="async" width="400" height="400">
 <span class="instagram-tag" data-i18n="home.instagram.tag1">Strength Day</span>
 </a>
 </div>
 <div class="col-6 col-lg-3">
 <a class="instagram-card" href="https://www.instagram.com/garcia.builder" target="_blank" rel="noopener">
-<img src="assets/images/transformations/t12.jpg" alt="Instagram highlight featuring client meal prep" loading="lazy" decoding="async" width="400" height="400">
+<img src="assets/images/community/Screenshot_20251112_115118_Instagram%20(2).png" alt="High-protein meal prep shared with followers" loading="lazy" decoding="async" width="400" height="400">
 <span class="instagram-tag" data-i18n="home.instagram.tag2">Nutrition Wins</span>
 </a>
 </div>
 <div class="col-6 col-lg-3">
 <a class="instagram-card" href="https://www.instagram.com/garcia.builder" target="_blank" rel="noopener">
-<img src="assets/images/transformations/t9.jpg" alt="Instagram highlight showing client transformation" loading="lazy" decoding="async" width="400" height="400">
+<img src="assets/images/community/Screenshot_20251112_115322_Instagram%20(2).png" alt="Client spotlight transformation carousel" loading="lazy" decoding="async" width="400" height="400">
 <span class="instagram-tag" data-i18n="home.instagram.tag3">Client Spotlight</span>
 </a>
 </div>
 <div class="col-6 col-lg-3">
 <a class="instagram-card" href="https://www.instagram.com/garcia.builder" target="_blank" rel="noopener">
-<img src="assets/images/transformations/t15.jpg" alt="Instagram highlight sharing mobility drill" loading="lazy" decoding="async" width="400" height="400">
+<img src="assets/images/community/Screenshot_20251112_115339_Instagram%20(2).png" alt="Mobility drill demo from the Garcia Builder feed" loading="lazy" decoding="async" width="400" height="400">
 <span class="instagram-tag" data-i18n="home.instagram.tag4">Mobility Drill</span>
 </a>
 </div>

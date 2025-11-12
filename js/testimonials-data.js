@@ -1,9 +1,11 @@
-﻿// 40 testimonials: 25 identified with Unsplash images, 15 anonymous with initials
+﻿// 41 testimonials: 26 identified with profile photos, 15 anonymous with initials
 // Each item: { id, name, text, textKey (for i18n), categories[], rating, imageUrl?, anonymous }
 // Images: unique, gender-matched, high-quality Unsplash portraits
 
 window.GB_TESTIMONIALS = [
-  // Identified - Male (13)
+  // Spotlight – Conrad (body recomposition focus)
+  { id: 41, name: "Conrad NorNam", textKey: "testimonial.conrad", text: "Andre rebuilt my training around 60-hour workweeks. We dropped 9kg of fat, added lean muscle, and my shoulders are pain-free for the first time in years.", categories: ["body-recomp","muscle-gain","identified"], rating: 5, imageUrl: "assets/images/avatars/conrad-nornam.jpg" },
+  // Identified - Male (14)
   { id: 1,  name: "Lucas Almeida", textKey: "testimonial.lucas", text: "I tried every plan on my own and kept quitting after two weeks. Andre gave me structure, habits I could actually follow and honest feedback. I lost inches from my waist and, more importantly, I feel capable again.", categories: ["weight-loss","transformation","identified"], rating: 5, imageUrl: "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?w=300&h=300&fit=crop" },
   { id: 3,  name: "Noah Williams", textKey: "testimonial.noah", text: "Sleep, stress, and steps became part of the plan. The holistic view is what finally made my results stick.", categories: ["lifestyle","health","identified"], rating: 5, imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop" },
   { id: 5,  name: "Arjun Mehta", textKey: "testimonial.arjun", text: "The technique cues on videos changed everything. I added 20kg to my squat while fixing depth and my knees feel great.", categories: ["muscle-gain","performance","identified"], rating: 5, imageUrl: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=300&h=300&fit=crop" },

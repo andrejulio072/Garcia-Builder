@@ -252,9 +252,11 @@
       featured: {
         title: "Real People. Real Results.",
         subtitle: "Join 127+ clients who transformed their bodies and lives",
-        result: "-15kg · 12 weeks",
-        quote: "I never thought online coaching could be this personal. The weekly check-ins and constant support kept me accountable. Best investment in myself I've ever made.",
-        author: "Sarah M., Dublin",
+        result: "-20lbs · +6lbs lean mass",
+        quote: "Andre rebuilt my training even with 60-hour work weeks. We dropped body fat, added lean muscle, and my shoulders no longer hurt.",
+        author: "Conrad N., London",
+        beforeLabel: "Before",
+        afterLabel: "After",
         cta: "See More Transformations →"
       },
       howitworks: {
@@ -446,6 +448,13 @@
           miles: "Distance PR",
           pullUps: "Pull-ups",
           pushUps: "Push-ups"
+        },
+        cards: {
+          conrad: {
+            overlay: "9kg Lost + 3kg Lean",
+            timeline: "12 Weeks",
+            story: "Conrad balanced consulting travel with precision coaching – 9kg fat loss, stronger shoulders, and +3kg lean mass in 12 weeks."
+          }
         }
       },
       testimonials: {
@@ -469,6 +478,9 @@
         t16: "I was afraid to start after years off. Andre's positive coaching style made it safe to learn again. I'm stronger, my posture changed and I'm proud to see my progress photos.",
         t17: "English isn't my first language but coaching in Portuguese/English made everything easy. Clear videos, simple targets and a lot of encouragement. I feel in control of my health.",
         t18: "I've trained for years but never achieved the look I wanted. Periodized blocks and nutrition tweaks made the difference. My lifts are up and I finally look like I lift."
+      },
+      testimonial: {
+        conrad: "Andre rebuilt my training around 60-hour workweeks. We dropped 9kg of fat, added lean muscle, and my shoulders are pain-free for the first time in years."
       },
       pricing: {
         title: "Pricing",
@@ -948,10 +960,12 @@
       },
       featured: {
         title: "Pessoas Reais. Resultados Reais.",
-        subtitle: "Junte-se a 127+ clientes que transformaram seus corpos e suas vidas",
-        result: "-15kg · 12 semanas",
-        quote: "Nunca imaginei que coaching online pudesse ser tão pessoal. Os check-ins semanais e o suporte constante me mantiveram responsável. Melhor investimento que já fiz em mim.",
-        author: "Sarah M., Dublin",
+        subtitle: "Junte-se a 127+ clientes que transformaram corpo e vida",
+        result: "-9kg · +3kg massa magra",
+        quote: "Andre reconstruiu meu treino mesmo com semanas de 60 horas. Perdemos gordura, ganhamos massa magra e meus ombros não doem mais.",
+        author: "Conrad N., Londres",
+        beforeLabel: "Antes",
+        afterLabel: "Depois",
         cta: "Ver Mais Transformações →"
       },
       howitworks: {
@@ -1143,6 +1157,13 @@
           miles: "Recorde de distância",
           pullUps: "Barra fixa",
           pushUps: "Flexões"
+        },
+        cards: {
+          conrad: {
+            overlay: "-9kg + 3kg massa magra",
+            timeline: "12 Semanas",
+            story: "Conrad equilibrava semanas de consultoria com 60h e coaching preciso – perdeu 9kg de gordura, ganhou +3kg de massa magra e eliminou a dor no ombro em 12 semanas."
+          }
         }
       },
       testimonials: {
@@ -1166,6 +1187,9 @@
         t16: "Tinha medo de começar após anos parada. O estilo positivo de coaching do Andre tornou seguro aprender novamente. Estou mais forte, minha postura mudou e me orgulho de ver minhas fotos de progresso.",
         t17: "Inglês não é minha primeira língua, mas o coaching em português/inglês tornou tudo fácil. Vídeos claros, objetivos simples e muito encorajamento. Me sinto no controle da minha saúde.",
         t18: "Treino há anos mas nunca consegui o visual que queria. Blocos periodizados e ajustes nutricionais fizeram a diferença. Meus levantamentos subiram e finalmente pareço que treino."
+      },
+      testimonial: {
+        conrad: "Andre reconstruiu meu treino em meio a semanas de 60 horas. Perdemos 9kg de gordura, ganhamos massa magra e meus ombros não doem mais."
       },
       pricing: {
         title: "Planos",
@@ -1643,9 +1667,11 @@
       featured: {
         title: "Personas Reales. Resultados Reales.",
         subtitle: "Únete a 127+ clientes que transformaron sus cuerpos y vidas",
-        result: "-15kg · 12 semanas",
-        quote: "Nunca pensé que el coaching online pudiera ser tan personal. Los check-ins semanales y el apoyo constante me mantuvieron responsable. La mejor inversión que he hecho en mí.",
-        author: "Sarah M., Dublín",
+        result: "-9kg · +3kg masa magra",
+        quote: "Andre reconstruyó mi entrenamiento aun con semanas de 60 horas. Perdimos grasa, ganamos masa magra y ya no tengo dolor en los hombros.",
+        author: "Conrad N., Londres",
+        beforeLabel: "Antes",
+        afterLabel: "Después",
         cta: "Ver Más Transformaciones →"
       },
       howitworks: {
@@ -1837,6 +1863,13 @@
           miles: "Récord de distancia",
           pullUps: "Dominadas",
           pushUps: "Flexiones"
+        },
+        cards: {
+          conrad: {
+            overlay: "-9kg + 3kg masa magra",
+            timeline: "12 Semanas",
+            story: "Conrad equilibró semanas de consultoría de 60 horas con coaching preciso – perdió 9kg de grasa, sumó +3kg de masa magra y quedó sin dolor de hombro en 12 semanas."
+          }
         }
       },
       testimonials: {
@@ -1860,6 +1893,9 @@
         t16: "Tenía miedo de empezar después de años sin actividad. El estilo positivo de coaching de Andre hizo seguro aprender otra vez. Estoy más fuerte, mi postura cambió y me enorgullezco de ver mis fotos de progreso.",
         t17: "El inglés no es mi primer idioma pero el coaching en portugués/inglés hizo todo fácil. Videos claros, objetivos simples y mucho aliento. Me siento en control de mi salud.",
         t18: "He entrenado por años pero nunca logré el aspecto que quería. Los bloques periodizados y ajustes nutricionales hicieron la diferencia. Mis levantamientos subieron y finalmente parezco que entreno."
+      },
+      testimonial: {
+        conrad: "Andre reconstruyó mi entrenamiento alrededor de semanas laborales de 60 horas. Perdimos 9kg de grasa, ganamos masa magra y mis hombros dejaron de doler."
       },
       pricing: {
         title: "Precios",

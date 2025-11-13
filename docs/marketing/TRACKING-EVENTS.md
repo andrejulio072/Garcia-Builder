@@ -194,22 +194,47 @@ Depois que eventos aparecerem em "Eventos":
 
 ### Checklist Rápido Antes de Publicar
 - [ ] Todos os eventos aparecem no Preview (Tag Assistant) com parâmetros completos.
-- [ ] GA4 DebugView mostra ordem do funil correta.
+- [ ] GA4 DebugView mostra ordem do funil correta (use GA4 DebugView + Google Tag Assistant + Consent Mode Debugger).
 - [ ] Pixel Helper sem warnings/críticos nos principais eventos.
 - [ ] Nenhum evento duplicado (comparar counts GA4 vs Pixel se aplicável).
 - [ ] Conversion events já marcados em GA4 antes de tráfego real.
 - [ ] Privacy / cookies aviso atualizado (se aplicável à jurisdição alvo).
 
-## 13. Publicação do Container (Histórico)
+## 13. Integração com Google Ads
+
+1. **Marcar conversões no GA4**
+   - Admin → Events → marque `lead`, `sign_up` e `purchase` como conversões ativas.
+
+2. **Vincular ao Google Ads**
+   - Admin → Product Links → Google Ads Links → vincule à conta `AW-17627402053` (garanta auto-tagging ativo).
+
+3. **Importar conversões no Google Ads**
+   - Em Google Ads: Tools & Settings → Conversions → New conversion action → Import → Google Analytics 4 → Web → selecione `lead`, `sign_up` e `purchase` → conclua importação.
+
+4. **Validar funil com Debugging**
+   - GA4 DebugView: execute jornada (plan selection → checkout → lead/signup/purchase) e verifique eventos convertendo.
+   - Google Tag Assistant: confirme firing das tags GTM (GA4 + Pixel) para cada etapa.
+   - Consent Mode / Consent Debugger: confirme estado `granted/denied` conforme banner e que eventos respeitam sinal de consentimento.
+
+5. **Pré-go live**
+   - Aguarde sincronização de conversões (pode levar até 60 min).
+   - Antes de reabrir campanhas, teste novamente com modo incógnito e compare contagem de eventos vs. pixel.
+
+
+## 14. Publicação do Container (Histórico)
+
 | Data | Versão | Descrição | Notas |
 |------|--------|-----------|-------|
 | 2025-10-04 | GA4-Pixel-v1 | GA4 base + eventos (purchase, select_item, begin_checkout, lead, sign_up, download_guide) + Pixel Base + Purchase/Lead/InitiateCheckout/ViewContent/CompleteRegistration | Publicado após validação em Preview |
 
 ---
+
 **Próximo passo agora:** preencher Measurement ID e Pixel ID neste documento, criar as Tags no GTM e validar.
 Quando o Measurement ID for confirmado, atualizar este arquivo e marcar versão v1.1.
 
 ---
+
 ### Log de Atualizações
+
 - 2025-10-04 (tarde): Publicado container `GA4-Pixel-v1` (upgrade v1.2). Migrado Pixel para GTM. Conversões configuradas.
 - 2025-10-04 (manhã): Criadas variáveis GTM (dlv_*). Próximo ciclo era configurar Tags de Evento GA4 e migrar Meta Pixel para GTM (agora concluído).

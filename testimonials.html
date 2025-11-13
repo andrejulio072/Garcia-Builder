@@ -198,6 +198,217 @@ img { max-width: 100%; height: auto; display: block; }
 .avatar-9 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
 .avatar-10 { background: linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%); }
 
+.testimonial-controls {
+  margin: 1.75rem 0 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.testimonial-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.testimonial-search input[type="search"] {
+  min-width: 260px;
+  max-width: 360px;
+  width: 100%;
+  padding: 0.65rem 2.5rem 0.65rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(15,23,42,0.75);
+  color: #f8fafc;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.testimonial-search input[type="search"]:focus {
+  outline: none;
+  border-color: rgba(245, 182, 79, 0.65);
+  box-shadow: 0 0 0 3px rgba(245, 182, 79, 0.15);
+}
+
+.testimonial-search svg {
+  position: absolute;
+  right: 0.85rem;
+  width: 1rem;
+  height: 1rem;
+  fill: rgba(248, 250, 252, 0.6);
+  pointer-events: none;
+}
+
+.testimonial-count {
+  color: rgba(248, 250, 252, 0.75);
+  font-size: 0.9rem;
+}
+
+.testimonial-count strong {
+  color: #f8e08e;
+}
+
+.testimonial-spotlight {
+  width: 100%;
+  margin: 2.5rem 0 1rem;
+}
+
+.testimonial-spotlight[hidden] {
+  display: none;
+}
+
+.spotlight-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.75rem;
+  padding: 2rem 2.25rem;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(16, 24, 40, 0.92) 0%, rgba(9, 12, 21, 0.96) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 28px 60px rgba(15, 23, 42, 0.35);
+}
+
+.spotlight-media {
+  flex: 0 0 84px;
+}
+
+.spotlight-media img,
+.spotlight-avatar {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
+}
+
+.spotlight-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #f5b64f 0%, #f8876a 100%);
+  color: #0b1323;
+}
+
+.spotlight-body {
+  flex: 1;
+  min-width: 240px;
+}
+
+.spotlight-eyebrow {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(248, 224, 142, 0.85);
+  margin-bottom: 0.35rem;
+}
+
+.spotlight-body h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.spotlight-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.spotlight-rating {
+  font-size: 1.1rem;
+  color: #fcd34d;
+  letter-spacing: 0.15rem;
+}
+
+.spotlight-copy {
+  background: rgba(248, 224, 142, 0.12);
+  color: #f8e08e;
+  border: 1px solid rgba(248, 224, 142, 0.25);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.spotlight-copy:hover,
+.spotlight-copy:focus {
+  outline: none;
+  background: rgba(248, 224, 142, 0.25);
+  border-color: rgba(248, 224, 142, 0.45);
+}
+
+.spotlight-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.2rem;
+}
+
+.spotlight-tag {
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.15);
+  color: rgba(226, 232, 240, 0.95);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.spotlight-empty {
+  padding: 1.5rem 1.75rem;
+  border-radius: 20px;
+  border: 1px dashed rgba(148, 163, 184, 0.25);
+  background: rgba(15, 23, 42, 0.6);
+  color: rgba(148, 163, 184, 0.85);
+}
+
+@media (max-width: 767px) {
+  .testimonial-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .testimonial-search {
+    width: 100%;
+  }
+
+  .testimonial-search input[type="search"] {
+    max-width: none;
+  }
+
+  .spotlight-card {
+    padding: 1.5rem 1.6rem;
+  }
+
+  .spotlight-media {
+    flex-basis: 72px;
+  }
+
+  .spotlight-body h2 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spotlight-card,
+  .testimonial-search input[type="search"] {
+    transition: none;
+  }
+}
+
 .tcard .name {
   font-weight: 700;
   font-size: 1.1rem;
@@ -218,6 +429,16 @@ img { max-width: 100%; height: auto; display: block; }
   gap: 1rem;
   margin: 2rem 0;
   flex-wrap: wrap;
+}
+.testimonial-filters .view-spacer {
+  flex-basis: 100%;
+  height: 0;
+}
+.testimonial-filters .view-toggle-group {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.5rem;
 }
 .testimonial-filters button {
   background: rgba(102, 126, 234, 0.1);
@@ -369,6 +590,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </div>
 
+  <div class="testimonial-controls">
+    <div class="testimonial-search">
+      <label for="testimonial-search" class="visually-hidden">Search testimonials</label>
+      <input id="testimonial-search" type="search" placeholder="Search by name, goal, or quote" autocomplete="off" spellcheck="false" />
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27a6 6 0 1 0-.71.71l.27.28v.79l4.5 4.5 1.49-1.49zm-5.5 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z" /></svg>
+    </div>
+    <div id="testimonial-count" class="testimonial-count" role="status" aria-live="polite" aria-atomic="true">Showing <strong>0</strong> stories</div>
+  </div>
+
+  <div id="testimonial-spotlight" class="testimonial-spotlight" hidden></div>
 <!-- Filter Buttons -->
 <div class="testimonial-filters">
   <button class="filter-btn active" data-filter="all">All Stories</button>
@@ -382,8 +613,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <button class="filter-btn" data-filter="identified">Identified</button>
 
   <!-- View toggles -->
-  <div style="flex-basis:100%;height:0"></div>
-  <div class="btn-group" role="group" aria-label="View options" style="display:flex;gap:.5rem;justify-content:center;margin-top:.5rem;">
+  <div class="view-spacer" aria-hidden="true"></div>
+  <div class="btn-group view-toggle-group" role="group" aria-label="View options">
     <button class="btn btn-sm" id="view-compact" type="button" aria-pressed="true">Compact</button>
     <button class="btn btn-sm" id="view-comfy" type="button">Comfy</button>
   </div>
@@ -395,7 +626,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     .grid.grid-3 .card{ height:100% }
   </style>
 </div>
-
 <!-- Dynamic testimonials grid (40 cards injected via JS) -->
 <div id="testimonials-grid" class="grid grid-3 mt-3 compact" role="list" aria-label="Client testimonials"></div>
 </div></section>
@@ -422,7 +652,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             andrenjulio072@gmail.com
           </a>
           <span style="color: rgba(255, 255, 255, 0.5);">or DM</span>
-          <a href="https://instagram.com/garcia.builder" target="_blank" style="color: #f5b64f; font-weight: 700; text-decoration: none; font-size: 1.15rem; transition: all 0.3s ease; display: inline-block;" onmouseover="this.style.color='#f8e08e'; this.style.transform='scale(1.05)';" onmouseout="this.style.color='#f5b64f'; this.style.transform='scale(1)';" onclick="return gtag_report_conversion(this.href)">
+          <a href="https://instagram.com/garcia.builder" target="_blank" rel="noopener" style="color: #f5b64f; font-weight: 700; text-decoration: none; font-size: 1.15rem; transition: all 0.3s ease; display: inline-block;" onmouseover="this.style.color='#f8e08e'; this.style.transform='scale(1.05)';" onmouseout="this.style.color='#f5b64f'; this.style.transform='scale(1)';" onclick="return gtag_report_conversion(this.href)">
             @garcia.builder
           </a>
           <span style="color: rgba(255, 255, 255, 0.5);">on Instagram.</span>

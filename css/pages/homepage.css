@@ -446,51 +446,152 @@ html, body {
 }
 
 @media (max-width: 768px) {
-    .gb-logo-img {
-        height: 50px;
-    }
+  .gb-logo-img {
+    height: 50px;
+  }
 
-    .gb-logo-text {
-        font-size: 1.5rem;
-    }
+  .gb-logo-text {
+    font-size: 1.5rem;
+  }
 
-    .gb-hamburger {
-        min-width: 45px;
-        min-height: 45px;
-        padding: 8px 12px;
-    }
+  .gb-hamburger {
+    min-width: 45px;
+    min-height: 45px;
+    padding: 8px 12px;
+  }
 
-    .gb-menu-link {
-        font-size: 1rem;
-        padding: 0.875rem 1rem;
-    }
+  .gb-menu-link {
+    font-size: 1rem;
+    padding: 0.875rem 1rem;
+  }
 
-    .hero h1 {
-        font-size: 2.5rem;
-    }
+  .hero {
+    min-height: unset;
+    padding: 100px 16px 60px;
+    background-attachment: scroll;
+    background-position: center top;
+  }
 
-    .kpis {
-        gap: 1rem;
-    }
+  .hero h1 {
+    font-size: 2.5rem;
+  }
 
-    .kpi .num {
-        font-size: 2.5rem;
-    }
+  .kpis {
+    gap: 1.25rem;
+  }
 
-    .stat-value {
-        font-size: 2.5rem;
-    }
+  .kpi {
+    min-width: min(160px, 100%);
+  }
+
+  .kpi .num {
+    font-size: 2.5rem;
+  }
+
+  .stat-value {
+    font-size: 2.4rem;
+  }
+
+  .video-thumbnail {
+    height: 260px;
+  }
+
+  .featured-transform {
+    gap: 12px;
+  }
+
+  .success-metrics {
+    gap: 0.75rem;
+  }
+
+  .success-metric {
+    min-width: calc(50% - 0.5rem);
+    flex: 1 1 calc(50% - 0.5rem);
+    text-align: left;
+  }
+
+  .transformation-card {
+    height: auto;
+  }
+
+  .quick-nav-card {
+    padding: 1.75rem;
+  }
+
+  .card.feature {
+    padding: 1.75rem;
+  }
 }
 
 @media (max-width: 576px) {
-    .section {
-        padding: 60px 15px;
-    }
+  .section {
+    padding: 60px 15px;
+  }
 
-    .btn {
-        width: 100%;
-        text-align: center;
-    }
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero {
+    padding: 90px 12px 50px;
+  }
+
+  .kpi .num {
+    font-size: 2.2rem;
+  }
+
+  .stat-value {
+    font-size: 2.1rem;
+  }
+
+  .stats-section-bg .display-4 {
+    font-size: 2.3rem;
+    line-height: 1.25;
+  }
+
+  .video-thumbnail {
+    height: 220px;
+  }
+
+  .transformation-image {
+    height: 180px;
+  }
+
+  .lead-magnet-card {
+    padding: 24px;
+  }
+
+  .success-metric {
+    min-width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .success-metric .metric-value {
+    font-size: 1.75rem;
+  }
+
+  .success-metric .metric-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+  }
+
+  .process-card-wrapper {
+    padding: 1.5rem 1rem;
+  }
+
+  .quick-nav-card {
+    padding: 1.5rem;
+  }
+
+  .card.feature {
+    padding: 1.5rem;
+  }
+
+  .newsletter-input {
+    max-width: 100%;
+  }
 }
 
 /* ===== MOBILE SAFETY & ACCESSIBILITY ===== */

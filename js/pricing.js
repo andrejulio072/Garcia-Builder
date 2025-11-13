@@ -111,7 +111,7 @@
     if (!dict) { setTimeout(renderPricing, 50); return; }
 
     const plans = dict.plans;
-    const order = ['starter','beginner','essentials','full','elite'];
+    const order = ['starter','consistency','performance','premium','elite'];
     container.innerHTML = order.map(key => {
       const p = plans[key]; if (!p) return '';
       const features = (p.features||[]).map(f=>`<li>${f}</li>`).join('');

@@ -12,11 +12,11 @@
 
   // Base prices in GBP (British Pounds) - Original Stripe prices
   const basePrices = {
-    starter: 75,      // £75
-    beginner: 95,     // £95
-    essentials: 115,  // £115
-    full: 155,        // £155
-    elite: 230        // £230
+    starter: 79,        // £79
+    consistency: 99,    // £99
+    performance: 125,   // £125
+    premium: 165,       // £165
+    elite: 235          // £235
   };
 
   let currentCurrency = 'GBP';

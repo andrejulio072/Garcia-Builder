@@ -53,28 +53,28 @@ app.use(express.static(path.join(__dirname, '..')));
 // Configuração dos produtos/preços para teste
 const PRICE_CONFIG = {
     starter: {
-        name: 'Starter Plan',
-        amount: 7500, // £75 em centavos
+        name: 'Starter Coaching',
+        amount: 7900, // £79 em centavos
         currency: 'gbp'
     },
-    beginner: {
-        name: 'Beginner Plan',
-        amount: 9500, // £95 em centavos
+    consistency: {
+        name: 'Consistency Plan',
+        amount: 9900, // £99 em centavos
         currency: 'gbp'
     },
-    essentials: {
-        name: 'Essentials Plan',
-        amount: 11500, // £115 em centavos
+    performance: {
+        name: 'Performance Base',
+        amount: 12500, // £125 em centavos
         currency: 'gbp'
     },
-    full: {
-        name: 'Full Plan',
-        amount: 15500, // £155 em centavos
+    premium: {
+        name: 'Coaching Premium',
+        amount: 16500, // £165 em centavos
         currency: 'gbp'
     },
     elite: {
-        name: 'Elite Plan',
-        amount: 23000, // £230 em centavos
+        name: 'Elite Mastery',
+        amount: 23500, // £235 em centavos
         currency: 'gbp'
     }
 };

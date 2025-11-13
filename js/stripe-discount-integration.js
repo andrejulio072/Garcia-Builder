@@ -18,24 +18,24 @@
   // Base payment links (monthly prices)
   const BASE_PAYMENT_LINKS = {
     starter: "https://buy.stripe.com/7sY6oG8qsexmbXEfkyak000",
-    beginner: "https://buy.stripe.com/6oU5kC7mobla2n48Waak001",
-    essentials: "https://buy.stripe.com/14A14m6ik74U9Pw2xMak002",
-    full: "https://buy.stripe.com/bJe3cu5egbla7Hodcqak003",
+    consistency: "https://buy.stripe.com/6oU5kC7mobla2n48Waak001",
+    performance: "https://buy.stripe.com/14A14m6ik74U9Pw2xMak002",
+    premium: "https://buy.stripe.com/bJe3cu5egbla7Hodcqak003",
     elite: "https://buy.stripe.com/5kQdR85eg1KA1j04FUak004"
   };
 
   // Preços base em GBP para cálculo de desconto
   const BASE_PRICES = {
-    starter: 75,
-    beginner: 95,
-    essentials: 115,
-    full: 155,
-    elite: 230
+    starter: 79,
+    consistency: 99,
+    performance: 125,
+    premium: 165,
+    elite: 235
   };
 
   /**
    * Gera um payment link personalizado com desconto aplicado
-   * @param {string} planKey - Chave do plano (starter, beginner, etc.)
+  * @param {string} planKey - Chave do plano (starter, consistency, etc.)
    * @param {string} period - Período selecionado (monthly, quarterly, etc.)
    * @returns {string} URL do payment link com parâmetros de desconto
    */

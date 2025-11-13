@@ -8,11 +8,11 @@ const STRIPE_CONFIG = {
     publishableKey: 'pk_live_51S8QxZCEdPbAOAaf5v5Y3yskMYdY3p9sRAIXs2clIAtBiJtLQQwVA3IBcZe02znzJYC8e6BTpdpKRmvkiOZLM5ee00QKktfaZT',
     apiUrl: API_BASE,
     plans: {
-        starter: { name: 'Starter Plan', price: '£75', amount: 7500 },
-        beginner: { name: 'Beginner Plan', price: '£95', amount: 9500 },
-        essentials: { name: 'Essentials Plan', price: '£115', amount: 11500 },
-        full: { name: 'Full Plan', price: '£155', amount: 15500 },
-        elite: { name: 'Elite Plan', price: '£230', amount: 23000 }
+        starter: { name: 'Starter Coaching', price: '£79', amount: 7900 },
+        consistency: { name: 'Consistency Plan', price: '£99', amount: 9900 },
+        performance: { name: 'Performance Base', price: '£125', amount: 12500 },
+        premium: { name: 'Coaching Premium', price: '£165', amount: 16500 },
+        elite: { name: 'Elite Mastery', price: '£235', amount: 23500 }
     }
 };
 

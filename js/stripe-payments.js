@@ -16,9 +16,9 @@
             apiUrl: 'http://localhost:3001/api',
             priceIds: {
                 starter: 'price_starter_id',
-                beginner: 'price_beginner_id',
-                essentials: 'price_essentials_id',
-                full: 'price_full_id',
+                consistency: 'price_consistency_id',
+                performance: 'price_performance_id',
+                premium: 'price_premium_id',
                 elite: 'price_elite_id'
             },
             successUrl: window.location.origin + '/success.html',
@@ -189,7 +189,7 @@
     function updatePricingButtons() {
         // Atualizar botões dos planos principais
         document.querySelectorAll('.price .btn-gold').forEach((btn, index) => {
-            const planKeys = ['starter', 'beginner', 'essentials', 'full', 'elite'];
+            const planKeys = ['starter', 'consistency', 'performance', 'premium', 'elite'];
             const planKey = planKeys[index];
 
             if (planKey && STRIPE_CONFIG.priceIds[planKey]) {

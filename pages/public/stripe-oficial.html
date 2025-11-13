@@ -85,6 +85,16 @@
             border-radius: 8px;
             margin: 20px 0;
         }
+        .button-group {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .success-card {
+            background-color: #d4edda;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -113,16 +123,22 @@
             </ul>
         </div>
 
-        <div style="text-align: center; margin: 30px 0;">
+        <div class="button-group">
             <h3>🧪 Testes com Test Keys Oficiais:</h3>
             <button class="test-button" onclick="testCheckout('starter')">
-                🚀 Teste Starter - £75/mês
+                🚀 Teste Starter Coaching - £79/mês
             </button>
-            <button class="test-button" onclick="testCheckout('beginner')">
-                📈 Teste Beginner - £95/mês
+            <button class="test-button" onclick="testCheckout('consistency')">
+                📈 Teste Consistency Plan - £99/mês
             </button>
-            <button class="test-button" onclick="testCheckout('essentials')">
-                💪 Teste Essentials - £115/mês
+            <button class="test-button" onclick="testCheckout('performance')">
+                💪 Teste Performance Base - £125/mês
+            </button>
+            <button class="test-button" onclick="testCheckout('premium')">
+                🌟 Teste Coaching Premium - £165/mês
+            </button>
+            <button class="test-button" onclick="testCheckout('elite')">
+                👑 Teste Elite Mastery - £235/mês
             </button>
         </div>
 
@@ -131,7 +147,7 @@
             <div id="configInfo">Carregando configuração...</div>
         </div>
 
-        <div style="background-color: #d4edda; padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <div class="success-card">
             <h4>💳 Cartões de Teste (Documentação Oficial):</h4>
             <ul>
                 <li><strong>Sucesso:</strong> 4242 4242 4242 4242</li>

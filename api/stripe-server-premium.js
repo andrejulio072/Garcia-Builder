@@ -223,44 +223,44 @@ function initializeStripe() {
 // 📋 CONFIGURAÇÃO DE PLANOS - Preços dinâmicos
 const SUBSCRIPTION_PLANS = {
     starter: {
-        name: 'Starter Plan',
-        description: 'Perfect for beginners starting their fitness journey',
-        amount: 7500, // £75.00
+        name: 'Starter Coaching',
+        description: 'Launch your routine with guided training and simple nutrition habits.',
+        amount: 7900, // £79.00
         currency: 'gbp',
         interval: 'month',
-        features: ['Basic workout plans', 'Nutrition guidelines', 'Email support']
+        features: ['Goal-based training blocks', 'Habit-focused nutrition targets', 'Weekly accountability check-in']
     },
-    beginner: {
-        name: 'Beginner Plan',
-        description: 'Enhanced plan with more features and support',
-        amount: 9500, // £95.00
+    consistency: {
+        name: 'Consistency Plan',
+        description: 'Build unstoppable momentum with lifestyle coaching and upgraded feedback.',
+        amount: 9900, // £99.00
         currency: 'gbp',
         interval: 'month',
-        features: ['Enhanced workout plans', 'Meal prep guides', 'Priority support', 'Progress tracking']
+        features: ['Everything in Starter Coaching', 'Lifestyle habit coaching system', 'Monthly nutrition refinement call', 'Progress dashboards and wins tracking']
     },
-    essentials: {
-        name: 'Essentials Plan',
-        description: 'Comprehensive fitness and nutrition coaching',
-        amount: 11500, // £115.00
+    performance: {
+        name: 'Performance Base',
+        description: 'Train smart and get visible results with structure, feedback, and accountability.',
+        amount: 12500, // £125.00
         currency: 'gbp',
         interval: 'month',
-        features: ['Custom workout plans', 'Personalized nutrition', '1-on-1 coaching calls', 'Progress analytics']
-    },
-    full: {
-        name: 'Full Plan',
-        description: 'Complete transformation package with premium support',
-        amount: 15500, // £155.00
-        currency: 'gbp',
-        interval: 'month',
-        features: ['Premium coaching', 'Weekly check-ins', '24/7 support', 'Supplement guidance', 'Lifestyle coaching']
+        features: ['Everything in Consistency Plan', 'Macro-based nutrition with monthly updates', 'Two video form reviews per month', 'Weekly planning and recovery prompts', 'Performance tracking dashboard']
     },
     premium: {
-        name: 'Premium Plan',
-        description: 'Ultimate coaching experience with exclusive access',
-        amount: 23000, // £230.00
+        name: 'Coaching Premium',
+        description: 'Full-spectrum coaching with precision nutrition, testing blocks, and close feedback.',
+        amount: 16500, // £165.00
         currency: 'gbp',
         interval: 'month',
-        features: ['VIP coaching', 'Daily support', 'Custom meal delivery', 'Exclusive content', 'Personal trainer access']
+        features: ['Everything in Performance Base', 'Periodized training blocks and testing phases', 'Bi-weekly macro updates and progress tuning', 'Technique feedback twice per week', 'Personalized mobility and prehab routines', 'Strategic mini phases: cut, recomp, build']
+    },
+    elite: {
+        name: 'Elite Mastery',
+        description: 'Immersive coaching with priority access, advanced monitoring, and lifestyle redesign.',
+        amount: 23500, // £235.00
+        currency: 'gbp',
+        interval: 'month',
+        features: ['Everything in Coaching Premium', 'Unlimited video feedback (fair use)', 'Priority voice and message access', 'Weekly 20-minute performance review call', 'Nutrition audits and meal structure redesign', 'Lifestyle optimisation for sleep and stress']
     }
 };
 

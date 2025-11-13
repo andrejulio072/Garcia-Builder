@@ -8,78 +8,78 @@
 // Simple Payment Links mapping - used directly by pricing.js
 window.PAYMENT_LINKS = {
     starter: "https://buy.stripe.com/7sY6oG8qsexmbXEfkyak000",
-    beginner: "https://buy.stripe.com/6oU5kC7mobla2n48Waak001",
-    essentials: "https://buy.stripe.com/14A14m6ik74U9Pw2xMak002",
-    full: "https://buy.stripe.com/bJe3cu5egbla7Hodcqak003",
+    consistency: "https://buy.stripe.com/6oU5kC7mobla2n48Waak001",
+    performance: "https://buy.stripe.com/14A14m6ik74U9Pw2xMak002",
+    premium: "https://buy.stripe.com/bJe3cu5egbla7Hodcqak003",
     elite: "https://buy.stripe.com/5kQdR85eg1KA1j04FUak004"
 };
 
 // Full plan details for display purposes
 const PAYMENT_LINKS = {
     starter: {
-        name: 'Starter Plan',
-        price: '£75/month',
-        description: 'Perfect for beginners starting their fitness journey',
+        name: 'Starter Coaching',
+        price: '£79/month',
+        description: 'Launch your routine with guided training and simple nutrition habit goals.',
         paymentLink: 'https://buy.stripe.com/7sY6oG8qsexmbXEfkyak000',
         features: [
-            'Basic workout plans',
-            'Nutrition guidelines',
-            'Email support',
+            'Goal-based training blocks',
+            'Habit-focused nutrition targets',
+            'Weekly accountability check-in',
             'Trainerize app access'
         ]
     },
-    beginner: {
-        name: 'Beginner Plan',
-        price: '£95/month',
-        description: 'Enhanced plan with more features and support',
+    consistency: {
+        name: 'Consistency Plan',
+        price: '£99/month',
+        description: 'Build unstoppable momentum with lifestyle coaching and upgraded feedback.',
         paymentLink: 'https://buy.stripe.com/6oU5kC7mobla2n48Waak001',
         features: [
-            'Enhanced workout plans',
-            'Meal prep guides',
-            'Priority support',
-            'Progress tracking',
+            'Everything in Starter Coaching',
+            'Lifestyle habit coaching system',
+            'Monthly nutrition refinement call',
+            'Progress dashboards and wins tracking',
             'Trainerize app access'
         ]
     },
-    essentials: {
-        name: 'Essentials Plan',
-        price: '£115/month',
-        description: 'Comprehensive fitness and nutrition coaching',
+    performance: {
+        name: 'Performance Base',
+        price: '£125/month',
+        description: 'Train smart and get visible results with structure, feedback, and accountability.',
         paymentLink: 'https://buy.stripe.com/14A14m6ik74U9Pw2xMak002',
         features: [
-            'Custom workout plans',
-            'Personalized nutrition',
-            '1-on-1 coaching calls',
-            'Progress analytics',
-            'Trainerize app access'
+            'Everything in Consistency Plan',
+            'Monthly macro-based nutrition upgrades',
+            'Two video form reviews per month',
+            'Weekly planning & recovery prompts',
+            'Performance tracking dashboard'
         ]
     },
-    full: {
-        name: 'Full Plan',
-        price: '£155/month',
-        description: 'Complete transformation package with premium support',
+    premium: {
+        name: 'Coaching Premium',
+        price: '£165/month',
+        description: 'Full-spectrum coaching with precision nutrition, testing blocks, and close feedback.',
         paymentLink: 'https://buy.stripe.com/bJe3cu5egbla7Hodcqak003',
         features: [
-            'Premium coaching',
-            'Weekly check-ins',
-            '24/7 support',
-            'Supplement guidance',
-            'Lifestyle coaching',
-            'Trainerize app access'
+            'Everything in Performance Base',
+            'Periodized training blocks and deloads',
+            'Bi-weekly macro updates and progress tuning',
+            'Technique feedback twice per week',
+            'Personalized mobility & prehab routines',
+            'Strategic mini-phases: cut, recomp, build'
         ]
     },
     elite: {
-        name: 'Elite Plan',
-        price: '£230/month',
-        description: 'Ultimate coaching experience with exclusive access',
+        name: 'Elite Mastery',
+        price: '£235/month',
+        description: 'Immersive coaching with priority access, advanced monitoring, and lifestyle redesign.',
         paymentLink: 'https://buy.stripe.com/5kQdR85eg1KA1j04FUak004',
         features: [
-            'VIP coaching',
-            'Daily support',
-            'Custom meal delivery',
-            'Exclusive content',
-            'Personal trainer access',
-            'Trainerize app access'
+            'Everything in Coaching Premium',
+            'Unlimited video feedback (fair use)',
+            'Priority voice and message access',
+            'Weekly 20-minute performance strategy call',
+            'Nutrition audits and meal structure redesign',
+            'Lifestyle optimisation for sleep and stress'
         ]
     }
 };// Função para processar seleção de plano (substitui a lógica complexa anterior)

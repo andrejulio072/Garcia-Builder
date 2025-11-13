@@ -188,6 +188,35 @@
 .gb-footer-legal a:hover {
   color: #f6c84e;
 }
+.gb-footer-auth-group {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.gb-footer-auth-link {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(246, 200, 78, 0.45);
+  color: #f6c84e;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.gb-footer-auth-link:hover {
+  background: rgba(246, 200, 78, 0.18);
+  color: #ffffff;
+  border-color: #f6c84e;
+}
+.gb-footer-auth-link--accent {
+  background: #f6c84e;
+  color: #0b1220;
+  border-color: #f6c84e;
+}
+.gb-footer-auth-link--accent:hover {
+  background: #ffd873;
+  color: #0b1220;
+}
 .gb-footer-disclaimer-ref {
   color: #888;
   font-size: 0.92em;
@@ -210,6 +239,9 @@
   .gb-footer-newsletter {
     min-width: 0;
     max-width: 100%;
+  }
+  .gb-footer-auth-group {
+    display: none;
   }
 }
 /* --- Modern Horizontal Footer --- */

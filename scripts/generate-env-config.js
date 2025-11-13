@@ -36,7 +36,8 @@ const publicEnv = {
   SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
   STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
   PUBLIC_SITE_URL:
-    process.env.PUBLIC_SITE_URL || process.env.FRONTEND_URL || null
+    process.env.PUBLIC_SITE_URL || process.env.FRONTEND_URL || null,
+  GA4_MEASUREMENT_ID: process.env.GA4_MEASUREMENT_ID || null
 };
 
 try {

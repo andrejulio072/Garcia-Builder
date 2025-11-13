@@ -8,6 +8,65 @@
 
 console.log('[Component Loader v3.0] Initializing...');
 
+function scriptExists(partialSrc) {
+    return !!document.querySelector(`script[src*="${partialSrc}"]`);
+}
+
+function ensureDeferredScript(options) {
+    if (!options || !options.src) {
+        return;
+    }
+
+    const { src, testPartial, id, attributes } = options;
+    const lookup = testPartial || src;
+
+    if (scriptExists(lookup)) {
+        return;
+    }
+
+    const tag = document.createElement('script');
+    tag.defer = true;
+    tag.src = src;
+    if (id) {
+        tag.id = id;
+    }
+    if (attributes && typeof attributes === 'object') {
+        Object.keys(attributes).forEach((key) => {
+            const value = attributes[key];
+            if (value !== undefined && value !== null) {
+                tag.setAttribute(key, value);
+            }
+        });
+    }
+
+    (document.head || document.documentElement).appendChild(tag);
+}
+
+function ensureAnalyticsScripts() {
+    try {
+        ensureDeferredScript({
+            src: 'js/tracking/ads-loader.js?v=20251025',
+            testPartial: 'js/tracking/ads-loader.js',
+            id: 'gb-ads-loader'
+        });
+
+        ensureDeferredScript({
+            src: 'js/modules/event-tracking.js?v=20251025',
+            testPartial: 'js/modules/event-tracking.js',
+            id: 'gb-event-tracking',
+            attributes: { crossorigin: 'anonymous' }
+        });
+    } catch (err) {
+        console.warn('[Component Loader] Failed to ensure analytics scripts', err);
+    }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ensureAnalyticsScripts);
+} else {
+    ensureAnalyticsScripts();
+}
+
 (function handleSupabaseRecoveryBounce() {
     try {
         if (typeof window === 'undefined' || !window.location) {

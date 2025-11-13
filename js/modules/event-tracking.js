@@ -8,6 +8,14 @@
 (function() {
     'use strict';
 
+    if (window.__EVENT_TRACKING_INITIALIZED__) {
+        if (window.DEBUG_ANALYTICS) {
+            console.warn('[EventTracking] Initialization skipped (already loaded).');
+        }
+        return;
+    }
+    window.__EVENT_TRACKING_INITIALIZED__ = true;
+
     // Initialize data layer
     window.dataLayer = window.dataLayer || [];
 

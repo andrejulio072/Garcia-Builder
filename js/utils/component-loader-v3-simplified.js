@@ -8,6 +8,86 @@
 
 console.log('[Component Loader v3.0] Initializing...');
 
+const DEFAULT_GA4_MEASUREMENT_ID = 'G-CMMHJP9LEY';
+
+function isValidGa4Id(id) {
+    return typeof id === 'string' && /^G-[A-Z0-9]+$/i.test(id.trim());
+}
+
+function bootstrapGa4Defaults() {
+    try {
+        const candidates = [];
+
+        if (window.__ENV && typeof window.__ENV.GA4_MEASUREMENT_ID === 'string') {
+            candidates.push(window.__ENV.GA4_MEASUREMENT_ID);
+        }
+
+        if (window.ADS_CONFIG && window.ADS_CONFIG.google && typeof window.ADS_CONFIG.google.ga4MeasurementId === 'string') {
+            candidates.push(window.ADS_CONFIG.google.ga4MeasurementId);
+        }
+
+        if (typeof window.GA4_MEASUREMENT_ID === 'string') {
+            candidates.push(window.GA4_MEASUREMENT_ID);
+        }
+
+        if (typeof window.GA_MEASUREMENT_ID === 'string') {
+            candidates.push(window.GA_MEASUREMENT_ID);
+        }
+
+        if (document && document.documentElement) {
+            const attrId = document.documentElement.getAttribute('data-ga4-id');
+            if (attrId) {
+                candidates.push(attrId);
+            }
+        }
+
+        if (document && document.querySelector) {
+            const meta = document.querySelector('meta[name="ga4:measurement_id"], meta[name="ga4-measurement-id"], meta[name="ga:measurement_id"]');
+            if (meta && typeof meta.getAttribute === 'function') {
+                const metaId = meta.getAttribute('content');
+                if (metaId) {
+                    candidates.push(metaId);
+                }
+            }
+        }
+
+        let resolved = null;
+        for (let i = 0; i < candidates.length; i++) {
+            const candidate = candidates[i];
+            if (isValidGa4Id(candidate)) {
+                resolved = candidate.trim().toUpperCase();
+                break;
+            }
+        }
+
+        if (!resolved && isValidGa4Id(DEFAULT_GA4_MEASUREMENT_ID)) {
+            resolved = DEFAULT_GA4_MEASUREMENT_ID;
+        }
+
+        if (!resolved) {
+            return;
+        }
+
+        if (typeof window.GA4_MEASUREMENT_ID !== 'string' || !window.GA4_MEASUREMENT_ID) {
+            window.GA4_MEASUREMENT_ID = resolved;
+        }
+
+        window.ADS_CONFIG = window.ADS_CONFIG || {};
+        window.ADS_CONFIG.google = window.ADS_CONFIG.google || {};
+        if (!window.ADS_CONFIG.google.ga4MeasurementId) {
+            window.ADS_CONFIG.google.ga4MeasurementId = resolved;
+        }
+
+        if (document && document.documentElement && !document.documentElement.getAttribute('data-ga4-id')) {
+            document.documentElement.setAttribute('data-ga4-id', resolved);
+        }
+    } catch (err) {
+        console.warn('[Component Loader] GA4 bootstrap fallback failed', err);
+    }
+}
+
+bootstrapGa4Defaults();
+
 function scriptExists(partialSrc) {
     return !!document.querySelector(`script[src*="${partialSrc}"]`);
 }

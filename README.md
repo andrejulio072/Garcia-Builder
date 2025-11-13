@@ -64,6 +64,10 @@ Required environment values (example):
 
 These values are injected at build/runtime via `env-config.json` or through the hosting platform's environment settings. See `docs/ENV-CONFIG-SETUP.md` for step-by-step guidance.
 
+Optional analytics overrides
+
+- GA4_MEASUREMENT_ID — set if you need to override the public fallback `G-CMMHJP9LEY` when generating `env-config.json` (`npm run build:env`).
+
 Supabase notes
 
 - Authentication is handled by Supabase (OAuth + email). The client code relies on `window.supabaseClient`.

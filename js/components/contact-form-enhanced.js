@@ -133,11 +133,12 @@ Looking forward to speaking with you soon!
 Best regards,
 Andre Garcia
 Garcia Builder - Online Coaching
-Email: coach@garciabuilder.com
+Email: andre@garciabuilder.fitness
 Calendly: https://calendly.com/andrenjulio072/consultation
 Site: garciabuilder.com
-• Book a free consultation call if you'd like to chat sooner
 
+If you'd like to chat sooner, feel free to book a free consultation call using the link above.
+      `);
 
       // Send confirmation email via Formspree
       await fetch('https://formspree.io/f/mldpgrwq', {
@@ -255,11 +256,11 @@ Site: garciabuilder.com
       } else {
         alertBox.classList.remove('visually-hidden');
         const apiError = responseData?.error || res.statusText || 'Unknown error';
-        alertBox.textContent = `Hmm, something went wrong (${apiError}). You can also email me at: coach@garciabuilder.com`;
+        alertBox.textContent = `Hmm, something went wrong (${apiError}). You can also email me at: andre@garciabuilder.fitness`;
       }
     } catch {
       alertBox.classList.remove('visually-hidden');
-      alertBox.textContent = 'Network issue. If it persists, email me at: coach@garciabuilder.com';
+      alertBox.textContent = 'Network issue. If it persists, email me at: andre@garciabuilder.fitness';
     } finally {
       btn.disabled = false;
       btn.classList.remove('is-loading');

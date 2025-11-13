@@ -2,21 +2,7 @@
   const form = document.getElementById('contact-form');
   if (!form) return;
 
-  const bt      if (res.ok) {
-        localStorage.setItem('gb_last_submit', Date.now().toString());
-
-        // Store user email for confirmation
-        const userEmail = emailEl.value.trim();
-        const userName = nameEl.value.trim();
-
-        form.reset(); updateCount();
-        alertBox.classList.remove('visually-hidden');
-        alertBox.textContent = 'Thanks! Your message was sent. I'll reply within 24–48h.';
-
-        // Show success popup and send confirmation email
-        showSuccessPopup(userName, userEmail);
-        sendConfirmationEmail(userName, userEmail);
-      } else {cument.getElementById('sendBtn');
+  const btn = document.getElementById('sendBtn');
   const alertBox = document.getElementById('form-alert');
   const nameEl = document.getElementById('name');
   const emailEl = document.getElementById('email');
@@ -26,16 +12,17 @@
   const experienceEl = document.getElementById('experience');
   const messageEl = document.getElementById('message');
   const consentEl = document.getElementById('consent');
+  const preferredContactEl = document.getElementById('preferredContact');
+  const budgetEl = document.getElementById('budget');
   const charCount = document.getElementById('charCount');
+  const btnLabel = btn ? btn.querySelector('[data-i18n="contact.form.submit"]') : null;
 
-  // Check if required elements exist
   if (!btn || !alertBox || !nameEl || !emailEl || !goalEl ||
       !timelineEl || !experienceEl || !messageEl || !consentEl) {
-    console.warn('Contact form: Some required elements are missing');
+    console.warn('Contact form: required elements are missing');
     return;
   }
 
-  // Character counter
   const updateCount = () => {
     if (charCount) {
       charCount.textContent = `${messageEl.value.length}/1200`;
@@ -44,12 +31,10 @@
   messageEl.addEventListener('input', updateCount);
   updateCount();
 
-  // Helpers
-  const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
-  const phoneOk = v => !v || /^[\+]?[0-9\s\-\(\)]{6,24}$/.test(v.trim());
+  const emailOk = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+  const phoneOk = value => !value || /^[+0-9\s\-()]{6,24}$/.test(value.trim());
   const setErr = (el, on) => el.classList.toggle('input-error', !!on);
 
-  // Generate specific error message
   const getErrorMessage = () => {
     const errors = [];
     if (nameEl.classList.contains('input-error')) errors.push('name');
@@ -60,82 +45,170 @@
     if (experienceEl.classList.contains('input-error')) errors.push('training experience');
     if (messageEl.classList.contains('input-error')) errors.push('message');
     if (consentEl.classList.contains('input-error')) errors.push('consent agreement');
-
     return errors.length ? `Please check: ${errors.join(', ')}` : 'Please check the highlighted fields.';
   };
 
-  // Simple submit rate-limit: 1 per 60s
   const canSubmit = () => {
-    const last = Number(localStorage.getItem('gb_last_submit')||0);
+    const last = Number(localStorage.getItem('gb_last_submit') || 0);
     return Date.now() - last > 60_000;
   };
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  const setButtonState = loading => {
+    if (!btn) return;
+    btn.disabled = loading;
+    btn.classList.toggle('is-loading', loading);
+    if (btnLabel && btn.dataset) {
+      if (loading && btn.dataset.loading) {
+        btnLabel.textContent = btn.dataset.loading;
+      } else if (!loading && btn.dataset.default) {
+        btnLabel.textContent = btn.dataset.default;
+      }
+    }
+  };
 
-    // Validate required fields
-    let bad = false;
-    setErr(nameEl, nameEl.value.trim().length < 2);       bad ||= nameEl.classList.contains('input-error');
-    setErr(emailEl, !emailOk(emailEl.value));              bad ||= emailEl.classList.contains('input-error');
-    setErr(goalEl, !goalEl.value);                         bad ||= goalEl.classList.contains('input-error');
-    setErr(timelineEl, !timelineEl.value);                 bad ||= timelineEl.classList.contains('input-error');
-    setErr(experienceEl, !experienceEl.value);             bad ||= experienceEl.classList.contains('input-error');
-    setErr(messageEl, messageEl.value.trim().length < 10); bad ||= messageEl.classList.contains('input-error');
-    setErr(consentEl, !consentEl.checked);                 // visual hint via CSS not needed here
+  const showMessage = text => {
+    alertBox.classList.remove('visually-hidden');
+    alertBox.textContent = text;
+  };
 
-    // Optional field validation
-    setErr(phoneEl, !phoneOk(phoneEl.value));              bad ||= phoneEl.classList.contains('input-error');
+  const sendConfirmationEmail = async (userName, userEmail) => {
+    const lines = [
+      `Hi ${userName},`,
+      '',
+      "Thank you for reaching out! I've received your message and will get back to you within 24-48 hours.",
+      '',
+      'In the meantime, feel free to:',
+      '- Follow me on Instagram @garcia.builder for daily tips',
+      '- Check out transformation stories at garciabuilder.com',
+      '- Book a free consultation call here: https://calendly.com/andrenjulio072/consultation',
+      '',
+      'Looking forward to speaking with you soon!',
+      '',
+      'Best regards,',
+      'Andre Garcia',
+      'Garcia Builder - Online Coaching',
+      'Email: andre@garciabuilder.fitness',
+      'Calendly: https://calendly.com/andrenjulio072/consultation',
+      'Site: garciabuilder.com',
+      '',
+      "If you'd like to chat sooner, feel free to book a free consultation call using the link above."
+    ];
 
-    if (bad) {
-      alertBox.classList.remove('visually-hidden');
-      alertBox.textContent = getErrorMessage();
+    try {
+      const confirmationData = new FormData();
+      confirmationData.append('_to', userEmail);
+      confirmationData.append('_subject', 'Message Received - Garcia Builder Coaching');
+      confirmationData.append('_template', 'table');
+      confirmationData.append('name', userName);
+      confirmationData.append('message', lines.join('\n'));
+
+      await fetch('https://formspree.io/f/mldpgrwq', {
+        method: 'POST',
+        body: confirmationData,
+        headers: { 'Accept': 'application/json' }
+      });
+    } catch (error) {
+      console.warn('Failed to send confirmation email', error);
+    }
+  };
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+
+    let hasError = false;
+    setErr(nameEl, nameEl.value.trim().length < 2);
+    hasError ||= nameEl.classList.contains('input-error');
+    setErr(emailEl, !emailOk(emailEl.value));
+    hasError ||= emailEl.classList.contains('input-error');
+    setErr(goalEl, !goalEl.value);
+    hasError ||= goalEl.classList.contains('input-error');
+    setErr(timelineEl, !timelineEl.value);
+    hasError ||= timelineEl.classList.contains('input-error');
+    setErr(experienceEl, !experienceEl.value);
+    hasError ||= experienceEl.classList.contains('input-error');
+    setErr(messageEl, messageEl.value.trim().length < 10);
+    hasError ||= messageEl.classList.contains('input-error');
+    setErr(consentEl, !consentEl.checked);
+    if (phoneEl) {
+      setErr(phoneEl, !phoneOk(phoneEl.value));
+      hasError ||= phoneEl.classList.contains('input-error');
+    }
+
+    if (hasError) {
+      showMessage(getErrorMessage());
       return;
     }
 
     if (!canSubmit()) {
-      alertBox.classList.remove('visually-hidden');
-      alertBox.textContent = 'Message already sent. Please wait a minute before trying again.';
+      showMessage('Message already sent. Please wait a minute before trying again.');
       return;
     }
 
-    // Send
-    btn.disabled = true;
-    btn.classList.add('is-loading');
-    if (btn.firstChild && btn.dataset.loading) {
-      btn.firstChild.nodeValue = btn.dataset.loading;
-    }
+    setButtonState(true);
 
     try {
-      const data = new FormData(form);
-      const res = await fetch(form.action, {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      });
+      const targetUrl = form.getAttribute('action') || '/api/contact';
+      const expectsJson = targetUrl.startsWith('/api/') || targetUrl.includes('/api/');
+      let res;
+      let responseData = {};
 
-      if (res.ok) {
-        localStorage.setItem('gb_last_submit', Date.now().toString());
-        form.reset(); updateCount();
-        alertBox.classList.remove('visually-hidden');
-        alertBox.textContent = 'Thanks! Your message was sent. I’ll reply within 24–48h.';
+      if (expectsJson) {
+        const payload = {
+          name: nameEl.value.trim(),
+          email: emailEl.value.trim(),
+          phone: phoneEl ? phoneEl.value.trim() || null : null,
+          preferred_contact: preferredContactEl ? preferredContactEl.value : null,
+          primary_goal: goalEl.value || null,
+          timeline: timelineEl.value || null,
+          experience: experienceEl.value || null,
+          budget: budgetEl ? budgetEl.value : null,
+          message: messageEl.value.trim(),
+          page_path: window.location.href,
+          user_agent: navigator.userAgent
+        };
+
+        res = await fetch(targetUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
       } else {
-        alertBox.classList.remove('visually-hidden');
-        alertBox.textContent = 'Hmm, something went wrong. You can also email me at: coach@garciabuilder.com';
+        const data = new FormData(form);
+        res = await fetch(targetUrl, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
       }
-    } catch {
-      alertBox.classList.remove('visually-hidden');
-      alertBox.textContent = 'Network issue. If it persists, email me at: coach@garciabuilder.com';
+
+      responseData = await res.json().catch(() => ({}));
+
+      if (res.ok && (responseData.ok || !responseData.error)) {
+        localStorage.setItem('gb_last_submit', Date.now().toString());
+
+        const userEmail = emailEl.value.trim();
+        const userName = nameEl.value.trim();
+
+        form.reset();
+        updateCount();
+        showMessage('Thanks! Your message was sent. I will reply within 24-48h.');
+
+        await sendConfirmationEmail(userName, userEmail);
+      } else {
+        const apiError = responseData.error || res.statusText || 'Unknown error';
+        showMessage(`Hmm, something went wrong (${apiError}). You can also email me at: andre@garciabuilder.fitness`);
+      }
+    } catch (error) {
+      console.warn('Contact form submission failed', error);
+      showMessage('Network issue. If it persists, email me at: andre@garciabuilder.fitness');
     } finally {
-      btn.disabled = false;
-      btn.classList.remove('is-loading');
-      if (btn.firstChild && btn.dataset.default) {
-        btn.firstChild.nodeValue = btn.dataset.default;
-      }
+      setButtonState(false);
     }
   });
 
-  // Ctrl/Cmd + Enter to submit from textarea
-  messageEl.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') form.requestSubmit();
+  messageEl.addEventListener('keydown', event => {
+    if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+      form.requestSubmit();
+    }
   });
 })();

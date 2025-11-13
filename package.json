@@ -7,7 +7,7 @@
     "start": "node api/stripe-server-premium.js",
     "dev": "nodemon api/stripe-server-premium.js",
     "legacy": "node api/stripe-server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+  "test": "node scripts/contact-form.check.js",
     "serve": "node tools/static-server.js",
     "sitemap": "node tools/generate-sitemap.js",
     "lint": "powershell -ExecutionPolicy Bypass -File validate-components.ps1",
@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
+    "jsdom": "^27.2.0",
     "nodemon": "^3.0.2"
   },
   "engines": {

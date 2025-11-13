@@ -4,29 +4,39 @@ $ErrorActionPreference = "Stop"
 
 if ($Project -eq "iron-brothers") {
   $Path = "C:\dev\iron-brothers\starter-website"
-  $Branch = "feature/professional-overhaul"
+  $Branch = "main"
 } else {
   $Path = "C:\dev\Garcia-Builder"
-  $Branch = "cleanup/" + (Get-Date -Format 'yyyy-MM-dd')
+  $Branch = "main"
 }
 
 Push-Location $Path
 try {
-  git status -sb | Out-Host
+  Write-Host "=== [Ship Script Running for $Project on branch '$Branch'] ==="
+
+  # garantir que estamos na main
+  git checkout $Branch
+  git pull origin $Branch
+
+  # verificar status e adicionar alterações
+  git status -sb
+  git add -A
 
   try {
-    git rev-parse --verify $Branch > $null 2>&1
-    git checkout $Branch | Out-Host
+    git commit -m "chore(ship): automated update from $Project"
   } catch {
-    git checkout -b $Branch | Out-Host
+    Write-Host "No new changes to commit."
   }
 
-  git add -A | Out-Host
-  git commit -m "chore: routine ship pipeline" 2>$null | Out-Host
+  # rodar testes/build
+  npm run ci:full
 
-  npm run ci:full | Out-Host
+  # push final para main
+  git push origin $Branch
 
-  git push --set-upstream origin $Branch | Out-Host
+  Write-Host "✅ Ship completed successfully on branch $Branch"
+} catch {
+  Write-Host "❌ Ship failed: $($_.Exception.Message)"
 } finally {
   Pop-Location
 }

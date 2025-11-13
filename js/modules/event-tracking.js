@@ -12,6 +12,88 @@
     window.dataLayer = window.dataLayer || [];
 
     /**
+     * Push unified analytics events to dataLayer and GA4 (gtag)
+     * @param {string} eventName - Event name to push
+     * @param {object} params - Additional parameters for the event
+     */
+    function triggerAnalyticsEvent(eventName, params) {
+        if (!eventName) {
+            return;
+        }
+
+        const extras = sanitizeParams(params);
+        const payload = Object.assign({
+            event: eventName,
+            event_timestamp: new Date().toISOString(),
+            page_location: extras.page_location || window.location.href
+        }, extras);
+
+        try {
+            window.dataLayer.push(payload);
+        } catch (err) {
+            console.warn('[EventTracking] Failed to push event to dataLayer', err);
+        }
+
+        if (typeof window.gtag === 'function') {
+            const gtagPayload = Object.assign({}, extras);
+            if (!gtagPayload.page_location) {
+                gtagPayload.page_location = window.location.href;
+            }
+
+            try {
+                window.gtag('event', eventName, gtagPayload);
+            } catch (err) {
+                console.warn('[EventTracking] gtag push failed', eventName, err);
+            }
+        }
+    }
+
+    /**
+     * Remove undefined / null parameters
+     * @param {object} params
+     * @returns {object}
+     */
+    function sanitizeParams(params) {
+        const source = params || {};
+        const clean = {};
+        Object.keys(source).forEach(function(key) {
+            const value = source[key];
+            if (value !== undefined && value !== null && value !== '') {
+                clean[key] = value;
+            }
+        });
+        return clean;
+    }
+
+    /**
+     * Safe trimming helper for CTA text
+     * @param {Element} el
+     * @returns {string|undefined}
+     */
+    function getNormalizedText(el) {
+        if (!el || typeof el.textContent !== 'string') {
+            return undefined;
+        }
+        return el.textContent.replace(/\s+/g, ' ').trim();
+    }
+
+    /**
+     * Derive a generic page context label
+     * @returns {string}
+     */
+    function getPageContext() {
+        const bodyContext = document.body ? (document.body.getAttribute('data-analytics-context') || document.body.dataset?.analyticsContext) : '';
+        if (bodyContext) {
+            return bodyContext;
+        }
+        const title = document.title || '';
+        if (title) {
+            return title.substring(0, 80);
+        }
+        return window.location.pathname || 'website';
+    }
+
+    /**
      * Track page view event
      */
     function trackPageView() {
@@ -29,25 +111,32 @@
      * @param {string} type - Type of inquiry (general, whatsapp, cta_click)
      * @param {string} source - Source of inquiry (website, homepage, etc)
      */
-    window.trackCoachingInquiry = function(type, source) {
+    window.trackCoachingInquiry = function(type, source, metadata) {
         type = type || 'general';
         source = source || 'website';
+        metadata = metadata || {};
 
-        // Google Analytics 4 event
-        dataLayer.push({
-            event: 'coaching_inquiry',
+        const { value, currency } = metadata;
+        const eventValue = typeof value === 'number' ? value : 50.00;
+        const eventCurrency = currency || 'EUR';
+        const additional = sanitizeParams(Object.assign({}, metadata));
+        delete additional.value;
+        delete additional.currency;
+
+        const eventMetadata = Object.assign({
             inquiry_type: type,
             inquiry_source: source,
-            value: 50.00,
-            currency: 'EUR',
-            timestamp: new Date().toISOString()
-        });
+            value: eventValue,
+            currency: eventCurrency
+        }, additional);
+
+        triggerAnalyticsEvent('coaching_inquiry', eventMetadata);
 
         // Facebook Pixel tracking
         if (typeof fbq !== 'undefined') {
             fbq('track', 'Lead', {
-                value: 50.00,
-                currency: 'EUR',
+                value: eventValue,
+                currency: eventCurrency,
                 content_category: 'coaching_inquiry'
             });
         }
@@ -56,8 +145,8 @@
         if (typeof gtag !== 'undefined') {
             gtag('event', 'conversion', {
                 send_to: 'AW-17627402053/inquiry',
-                value: 50.00,
-                currency: 'EUR'
+                value: eventValue,
+                currency: eventCurrency
             });
         }
     };
@@ -82,18 +171,43 @@
     function initClickTracking() {
         document.addEventListener('click', function(e) {
             const target = e.target;
+            const actionable = target.closest('a, button');
+            const pageContext = getPageContext();
 
-            // Track contact-float clicks
-            if (target.href && target.href.includes('wa.me')) {
-                trackCoachingInquiry('whatsapp', 'homepage');
-            }
+            if (actionable) {
+                if (isWhatsAppLink(actionable)) {
+                    const ctaText = getNormalizedText(actionable);
+                    triggerAnalyticsEvent('whatsapp_click', {
+                        cta_text: ctaText,
+                        link_url: actionable.href,
+                        engagement_location: pageContext
+                    });
 
-            // Track CTA button clicks
-            if (target.classList.contains('btn-primary') || 
-                target.classList.contains('btn-gold') ||
-                target.textContent.includes('Começar') ||
-                target.textContent.includes('Start')) {
-                trackCoachingInquiry('cta_click', 'homepage');
+                    trackCoachingInquiry('whatsapp', pageContext, {
+                        channel: 'whatsapp',
+                        cta_text: ctaText,
+                        value: 0
+                    });
+                } else if (isBookConsultationLink(actionable)) {
+                    const ctaText = getNormalizedText(actionable);
+                    triggerAnalyticsEvent('book_call_click', {
+                        cta_text: ctaText,
+                        link_url: actionable.href,
+                        engagement_location: pageContext
+                    });
+
+                    trackCoachingInquiry('cta_click', pageContext, {
+                        conversion_goal: 'book_free_consultation',
+                        cta_text: ctaText,
+                        value: 0
+                    });
+                } else if (isGenericCtaButton(actionable)) {
+                    const ctaText = getNormalizedText(actionable);
+                    trackCoachingInquiry('cta_click', pageContext, {
+                        cta_text: ctaText,
+                        value: 0
+                    });
+                }
             }
 
             // Track blog article clicks
@@ -105,8 +219,9 @@
             }
 
             // Track pricing plan clicks
-            if (target.classList.contains('pricing-cta') || target.closest('.pricing-cta')) {
-                const planName = target.getAttribute('data-plan') || 'unknown';
+            const pricingButton = actionable && actionable.classList.contains('pricing-cta') ? actionable : target.closest('.pricing-cta');
+            if (pricingButton) {
+                const planName = pricingButton.getAttribute('data-plan') || pricingButton.dataset?.plan || 'unknown';
                 dataLayer.push({
                     event: 'pricing_plan_click',
                     plan_name: planName,
@@ -114,6 +229,103 @@
                 });
             }
         });
+    }
+
+    /**
+     * Determine if element is a Calendly consultation CTA
+     * @param {Element} element
+     * @returns {boolean}
+     */
+    function isBookConsultationLink(element) {
+        if (!element) {
+            return false;
+        }
+        if (element.dataset && element.dataset.analytics === 'book-consultation') {
+            return true;
+        }
+        const href = (element.getAttribute('href') || '').toLowerCase();
+        return href.includes('calendly.com') && (href.includes('consult') || href.includes('free'));
+    }
+
+    /**
+     * Determine if element is a WhatsApp contact link
+     * @param {Element} element
+     * @returns {boolean}
+     */
+    function isWhatsAppLink(element) {
+        if (!element) {
+            return false;
+        }
+        const href = (element.getAttribute('href') || '').toLowerCase();
+        return href.includes('wa.me') || href.includes('api.whatsapp.com');
+    }
+
+    /**
+     * Determine if element is a generic CTA button worth tracking
+     * @param {Element} element
+     * @returns {boolean}
+     */
+    function isGenericCtaButton(element) {
+        if (!element || !element.classList) {
+            return false;
+        }
+        const textMatch = getNormalizedText(element) || '';
+        return element.classList.contains('btn-primary') ||
+               element.classList.contains('btn-gold') ||
+               textMatch.includes('Começar') ||
+               textMatch.includes('Start');
+    }
+
+    /**
+     * Attach lead form submission tracking to qualifying forms
+     */
+    function initLeadFormTracking() {
+        const SELECTOR = 'form.hero-lead-form, form[data-attr-track], form[data-track-lead="true"], form.lead-magnet-form, form#contact-form';
+
+        function bindForm(form) {
+            if (!form || form.dataset.analyticsBound === 'true') {
+                return;
+            }
+
+            form.dataset.analyticsBound = 'true';
+
+            form.addEventListener('submit', function() {
+                if (typeof form.checkValidity === 'function' && !form.checkValidity()) {
+                    return;
+                }
+
+                const source = form.getAttribute('data-source') || form.dataset.source || getPageContext();
+                const eventParams = sanitizeParams({
+                    form_id: form.id,
+                    form_name: form.getAttribute('name'),
+                    form_source: source,
+                    engagement_location: getPageContext()
+                });
+
+                triggerAnalyticsEvent('lead_submit', eventParams);
+                trackCoachingInquiry('lead_form', source, Object.assign({
+                    value: 0
+                }, eventParams));
+            });
+        }
+
+        document.querySelectorAll(SELECTOR).forEach(bindForm);
+
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                mutation.addedNodes.forEach(function(node) {
+                    if (!(node instanceof Element)) {
+                        return;
+                    }
+                    if (node.matches && node.matches(SELECTOR)) {
+                        bindForm(node);
+                    }
+                    node.querySelectorAll?.(SELECTOR).forEach(bindForm);
+                });
+            });
+        });
+
+        observer.observe(document.documentElement, { childList: true, subtree: true });
     }
 
     /**
@@ -169,6 +381,7 @@
         initClickTracking();
         initScrollTracking();
         initTimeTracking();
+        initLeadFormTracking();
     }
 
     // Initialize when DOM is ready

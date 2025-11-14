@@ -1,89 +1,147 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-    <!-- SEO & Social: Favicon, Meta Tags, Open Graph, Twitter Card, Structured Data -->
-    <link rel="icon" href="Logo Files/For Web/logo-nobackground-500.png" type="image/png">
-    <link rel="apple-touch-icon" href="Logo Files/For Web/logo-nobackground-500.png">
-    <title>Garcia Builder | Personalized Online Training & Nutrition</title>
-    <meta name="description" content="Personalized fitness coaching to transform your body and performance in 8-12 weeks. 1:1 support and real results.">
-    <meta property="og:title" content="Garcia Builder - Online Coaching">
-    <meta property="og:description" content="Personalized training, custom nutrition, and direct support. Transform your body efficiently.">
-    <meta property="og:image" content="https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png">
-    <meta property="og:url" content="https://garciabuilder.fitness/success.html">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Garcia Builder - Online Coaching">
-    <meta name="twitter:description" content="Personalized training, custom nutrition, and direct support. Transform your body efficiently.">
-    <meta name="twitter:image" content="https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png">
-    <!-- Dados estruturados para rich results -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "HealthAndBeautyBusiness",
-        "name": "Garcia Builder",
-        "url": "https://garciabuilder.fitness/success.html",
-        "logo": "https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png",
-        "sameAs": [
-            "https://www.instagram.com/garcia.builder"
-        ]
-    }
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Success - Garcia Builder</title>
-    <!-- Optional: set a Trainerize invite link without code changes -->
+    <title>Garcia Builder | Pagamento confirmado e onboarding</title>
+    <meta name="description" content="Pagamento confirmado! Receba acesso ao app, marque o onboarding e inicie o coaching com o Garcia Builder.">
+    <meta name="keywords" content="garcia builder pagamento, onboarding coaching online, personal trainer pagamento confirmado">
+    <meta name="author" content="Garcia Builder Coaching">
+    <meta name="robots" content="noindex, nofollow, max-snippet:-1, max-image-preview:large">
+    <meta name="google-site-verification" content="google47d3c69666bce37e">
     <meta name="trainerize:invite" content="">
-    <!-- Optional: Booking URL for onboarding consult -->
     <meta name="booking:url" content="https://calendly.com/andrenjulio072/consultation">
 
-        <!-- Google Ads Global Site Tag (gtag.js) - standardized -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
+    <link rel="canonical" href="https://garciabuilder.fitness/success.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Pagamento confirmado - Garcia Builder Coaching">
+    <meta property="og:description" content="Confirmação de pagamento concluída. Receba o acesso ao app e veja os próximos passos do programa.">
+    <meta property="og:url" content="https://garciabuilder.fitness/success.html">
+    <meta property="og:image" content="https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png">
+    <meta property="og:image:alt" content="Logotipo Garcia Builder">
+    <meta property="og:site_name" content="Garcia Builder Coaching">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:locale:alternate" content="en_IE">
+    <meta property="og:locale:alternate" content="es_ES">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pagamento confirmado - Garcia Builder">
+    <meta name="twitter:description" content="Seu pagamento foi aprovado. Veja como acessar o app, agendar onboarding e iniciar o coaching.">
+    <meta name="twitter:image" content="https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png">
+    <meta name="twitter:site" content="@garcia.builder">
+    <meta name="twitter:creator" content="@garcia.builder">
+    <meta name="theme-color" content="#0f172a">
+
+    <link rel="icon" href="Logo Files/For Web/logo-nobackground-500.png" type="image/png">
+    <link rel="apple-touch-icon" href="Logo Files/For Web/logo-nobackground-500.png">
+
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components/navbar-component.css?v=20251028">
+
+    <script src="js/utils/component-loader-v3-simplified.js?v=20251028"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Consent Mode baseline BEFORE any tags -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-            gtag('config', 'AW-17627402053');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        try {
+            const storedConsent = JSON.parse(localStorage.getItem('gb_consent_v1') || 'null');
+            if (storedConsent) {
+                const granted = storedConsent.status === 'granted';
+                gtag('consent', 'default', {
+                    ad_storage: granted ? 'granted' : 'denied',
+                    analytics_storage: granted ? 'granted' : 'denied',
+                    ad_user_data: granted ? 'granted' : 'denied',
+                    ad_personalization: granted ? 'granted' : 'denied',
+                    functionality_storage: 'granted',
+                    security_storage: 'granted'
+                });
+            } else {
+                gtag('consent', 'default', {
+                    ad_storage: 'denied',
+                    analytics_storage: 'denied',
+                    ad_user_data: 'denied',
+                    ad_personalization: 'denied',
+                    functionality_storage: 'granted',
+                    security_storage: 'granted'
+                });
+            }
+        } catch (err) {
+            gtag('consent', 'default', {
+                ad_storage: 'denied',
+                analytics_storage: 'denied',
+                ad_user_data: 'denied',
+                ad_personalization: 'denied',
+                functionality_storage: 'granted',
+                security_storage: 'granted'
+            });
+        }
     </script>
 
-    <!-- Event snippet for Visualização de página conversion page -->
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
+
+    <!-- Google Ads Global Site Tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
     <script>
-      function gtag_report_conversion(url) {
-        var callback = function () {
-          if (typeof(url) != 'undefined') {
-            window.location = url;
-          }
-        };
-        gtag('event', 'conversion', {
-            'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
-            'value': 1.0,
-            'currency': 'GBP',
-            'event_callback': callback
-        });
-        return false;
-      }
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);} 
+      gtag('js', new Date());
+      gtag('config', 'AW-17627402053');
+    </script>
+
+    <!-- Event snippet for purchase confirmation -->
+    <script>
+      gtag('event', 'conversion', {
+          'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
+          'value': 1.0,
+          'currency': 'EUR'
+      });
     </script>
 
     <!-- Central consent-aware Ads loader -->
     <script defer src="js/tracking/ads-loader.js"></script>
     <script defer src="js/tracking/ads-config.js"></script>
+    <script defer src="js/tracking/conversion-tracking.js"></script>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/components/navbar-component.css?v=20251028">
-    
-    <!-- Component Loader -->
-    <script src="js/utils/component-loader-v3-simplified.js?v=20251028"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Pagamento confirmado - Garcia Builder",
+        "description": "Confirmação de pagamento e instruções de onboarding do programa Garcia Builder.",
+        "url": "https://garciabuilder.fitness/success.html",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Garcia Builder Coaching",
+            "url": "https://garciabuilder.fitness/"
+        },
+        "isPartOf": {
+            "@type": "CreativeWork",
+            "name": "Garcia Builder Client Onboarding"
+        },
+        "potentialAction": {
+            "@type": "CommunicateAction",
+            "target": "https://calendly.com/andrenjulio072/consultation",
+            "name": "Agendar onboarding"
+        }
+    }
+    </script>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-
-    <style>
+<style>
         body {
             background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             color: #fff;
@@ -151,6 +209,8 @@
     </style>
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Navigation -->
 
 <div data-component="navbar"></div>
@@ -317,7 +377,7 @@
                 window.dataLayer = window.dataLayer || [];
                 const planKey = paymentData.plan_key || paymentData.plan || 'unknown_plan';
                 const grossValue = paymentData.amount_total ? (paymentData.amount_total/100) : (paymentData.amount/100) || 0;
-                const currency = (paymentData.currency || 'GBP').toUpperCase();
+                const currency = (paymentData.currency || 'EUR').toUpperCase();
                 const transactionId = paymentData.session_id || paymentData.subscription_id || paymentData.invoice_id || ('txn_'+Date.now());
                 const adsDebug = function(){ if(window.DEBUG_ADS) { console.log('[ADS]', ...arguments); } };
                                 const items = [{
@@ -419,21 +479,6 @@
             console.error('Payment verification error:', message);
         }
 
-        // Google Ads Conversion Tracking Function
-        function gtag_report_conversion(url) {
-            var callback = function () {
-                if (typeof(url) != 'undefined') {
-                    window.location = url;
-                }
-            };
-            gtag('event', 'conversion', {
-                'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
-                'value': 1.0,
-                'currency': 'GBP',
-                'event_callback': callback
-            });
-            return false;
-        }
     </script>
     <!-- Navbar/Auth controller -->
     <script defer src="js/core/auth-guard.js?v=20251009"></script>

@@ -3,12 +3,18 @@
 **Data:** 8 de Outubro de 2025
 **Status:** ✅ COMPLETO
 
+## 🔄 Atualização – 12 Nov 2025
+- Lead magnet (`pages/public/lead-magnet.html`) e obrigado (`pages/public/thanks-ebook.html`) agora usam o mesmo pacote de SEO, Consent Mode v2 e GTM `GTM-TG5TFZ2C` aplicado ao site principal.
+- `success.html` recebeu canonical/OG atualizados, Consent Mode, GTM e `noindex` para evitar indexação do recibo.
+- `js/tracking/conversion-tracking.js` define o rótulo padrão `mdOMCOTV3acbEMWes9VB` e moeda `EUR`, garantindo que todos os CTAs reportem conversões válidas.
+- O snippet automático de conversão (pageview) e os botões de CTA agora usam sempre `EUR` como fallback.
+
 ---
 
 ## 📋 O QUE FOI IMPLEMENTADO
 
 ### **1. Google Ads Tag Global (gtag.js)**
-**ID da Conta:** `AW-1762742053`
+**ID da Conta:** `AW-17627402053`
 
 **Páginas com Tag Instalada:**
 - ✅ `index.html` (Homepage)
@@ -17,15 +23,15 @@
 - ✅ `success.html` (Payment Success - **PRINCIPAL**)
 
 ### **2. Event Snippet de Conversão**
-**ID Completo:** `AW-1762742053/mdOMCOTV3acbEWWes9VB`
+**ID Completo:** `AW-17627402053/mdOMCOTV3acbEMWes9VB`
 **Localização:** `success.html` (página de sucesso de pagamento)
 
 **Parâmetros Configurados:**
 ```javascript
 gtag('event', 'conversion', {
-    'send_to': 'AW-1762742053/mdOMCOTV3acbEWWes9VB',
+    'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
     'value': 1.0,
-    'currency': 'GBP',
+    'currency': 'EUR',
     'transaction_id': '' // Preenchido dinamicamente
 });
 ```
@@ -61,7 +67,7 @@ gtag('event', 'conversion', {
 - **Página:** `success.html`
 - **Gatilho:** Carregamento da página após pagamento bem-sucedido
 - **Valor:** Dinâmico (baseado no plano comprado)
-- **Moeda:** GBP (British Pound)
+- **Moeda:** EUR (Euro)
 - **Transaction ID:** Único para cada compra
 
 ### **Eventos Adicionais (GA4 + Meta Pixel):**
@@ -78,7 +84,7 @@ gtag('event', 'conversion', {
 1. **Abrir Google Tag Assistant:**
    - Instalar extensão: [Google Tag Assistant](https://tagassistant.google.com/)
    - Visitar: `https://garciabuilder.fitness/success.html`
-   - Verificar se aparece: `AW-1762742053` tag carregada
+   - Verificar se aparece: `AW-17627402053` tag carregada
 
 2. **Teste com Pagamento Real:**
    - Fazer compra com cartão de teste Stripe
@@ -106,12 +112,12 @@ gtag('event', 'conversion', {
 ### **1. Tag Global (Todas as páginas):**
 ```html
 <!-- Google Ads Global Site Tag -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-1762742053"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'AW-1762742053');
+  gtag('config', 'AW-17627402053');
 </script>
 ```
 
@@ -126,9 +132,9 @@ function gtag_report_conversion(url) {
         }
     };
     gtag('event', 'conversion', {
-        'send_to': 'AW-1762742053/mdOMCOTV3acbEWWes9VB',
+        'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
         'value': 1.0,
-        'currency': 'GBP',
+        'currency': 'EUR',
         'event_callback': callback
     });
     return false;
@@ -140,11 +146,11 @@ function gtag_report_conversion(url) {
 ```javascript
 // Já implementado em success.html
 const grossValue = paymentData.amount_total ? (paymentData.amount_total/100) : 0;
-const currency = (paymentData.currency || 'GBP').toUpperCase();
+const currency = (paymentData.currency || 'EUR').toUpperCase();
 const transactionId = paymentData.session_id || 'txn_'+Date.now();
 
 gtag('event', 'conversion', {
-    'send_to': 'AW-1762742053/mdOMCOTV3acbEWWes9VB',
+    'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
     'value': grossValue,
     'currency': currency,
     'transaction_id': transactionId
@@ -188,7 +194,7 @@ gtag('event', 'conversion', {
 3. Clicar em **"+ New conversion action"**
 4. Selecionar **"Website"**
 5. Selecionar **"Manually created with code"**
-6. **ID da Conversão:** `AW-1762742053/mdOMCOTV3acbEWWes9VB`
+6. **ID da Conversão:** `AW-17627402053/mdOMCOTV3acbEMWes9VB`
 7. **Nome:** "Purchase - Coaching Plan"
 8. **Categoria:** Purchase/Sale
 9. **Valor:** Use transaction-specific value
@@ -240,7 +246,7 @@ gtag('event', 'conversion', {
 ### **Valor incorreto:**
 1. Verificar se Stripe está retornando `amount_total` correto
 2. Conferir conversão de centavos para unidade (dividir por 100)
-3. Verificar moeda (GBP vs EUR)
+3. Verificar moeda (EUR vs GBP)
 
 ### **Duplicate Conversions:**
 1. Usuário recarrega página success.html

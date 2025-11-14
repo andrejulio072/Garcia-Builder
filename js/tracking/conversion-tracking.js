@@ -27,7 +27,7 @@
             gtag('event', 'conversion', {
                 'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
                 'value': 1.0,
-                'currency': 'GBP',
+                'currency': 'EUR',
                 'event_callback': callback
             });
         } else {

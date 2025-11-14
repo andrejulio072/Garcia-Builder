@@ -164,7 +164,7 @@
             'plan_name': planName,
             'plan_duration': planDuration,
             'value': parseFloat(planPrice) || 0,
-            'currency': 'GBP'
+            'currency': 'EUR'
           });
         }
 

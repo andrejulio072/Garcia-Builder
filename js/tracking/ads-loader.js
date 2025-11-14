@@ -88,7 +88,7 @@
     IDS.forEach(id => {
       if (!id) return;
       if (id.startsWith('AW-')) {
-        gtag('config', id, { allow_enhanced_conversions:true });
+        gtag('config', id, { allow_enhanced_conversions:true, send_page_view:false });
       } else {
         gtag('config', id);
       }

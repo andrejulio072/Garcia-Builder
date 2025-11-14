@@ -32,6 +32,10 @@
 <script defer src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
 <script defer src="assets/i18n.js?v=20251025"></script>
 <script src="js/utils/component-loader-v3-simplified.js?v=20251029"></script>
+<script src="js/tracking/conversion-tracking.js?v=20251025"></script>
+<script defer src="js/tracking/ads-loader.js?v=20251025"></script>
+<script defer src="js/tracking/ads-config.js?v=20251025"></script>
+<script defer src="js/tracking/cta-tracking.js?v=20251112"></script>
 <!-- Consent baseline -->
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}try{const s=JSON.parse(localStorage.getItem('gb_consent_v1')||'null');if(s){const st=s.status==='granted';gtag('consent','default',{ad_storage:st?'granted':'denied',analytics_storage:st?'granted':'denied',ad_user_data:st?'granted':'denied',ad_personalization:st?'granted':'denied',functionality_storage:'granted',security_storage:'granted'});}else{gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});} }catch(e){gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});} </script>
 
@@ -41,25 +45,7 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'AW-17627402053');
-</script>
-
-<!-- Event snippet for Visualização de página conversion page -->
-<script>
-  function gtag_report_conversion(url) {
-    var callback = function () {
-      if (typeof(url) != 'undefined') {
-        window.location = url;
-      }
-    };
-    gtag('event', 'conversion', {
-        'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
-        'value': 1.0,
-        'currency': 'GBP',
-        'event_callback': callback
-    });
-    return false;
-  }
+  gtag('config', 'AW-17627402053', { 'send_page_view': false });
 </script>
 
 <!-- Google Tag Manager -->

@@ -14,7 +14,7 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'AW-17627402053');
+  gtag('config', 'AW-17627402053', { 'send_page_view': false });
 </script>
 
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -771,9 +771,8 @@ if (typeof dataLayer !== 'undefined') {
     'page_title': 'Pricing',
     'page_location': window.location.href
   });
-  // Explicit funnel event for pricing page view
   dataLayer.push({
-    'event': 'view_pricing',
+    'event': 'pricing_page_view',
     'page_title': 'Pricing',
     'page_location': window.location.href
   });

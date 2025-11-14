@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -12,6 +12,8 @@
   <meta name="keywords" content="contact, online coaching, questions, assessment, plans, Garcia Builder, Ireland, fitness, nutrition, training, support, transformation, personal trainer">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://garciabuilder.fitness/contact.html"/>
+  <meta name="google-site-verification" content="google47d3c69666bce37e">
+  <meta name="theme-color" content="#0f172a">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website"/>
@@ -20,12 +22,22 @@
   <meta property="og:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg">
   <meta property="og:url" content="https://garciabuilder.fitness/contact.html">
   <meta property="og:site_name" content="Garcia Builder"/>
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:locale:alternate" content="en_IE">
+  <meta property="og:locale:alternate" content="es_ES">
+  <meta property="og:image:alt" content="Garcia Builder coaching contact cover">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Contact | Garcia Builder Coaching">
   <meta name="twitter:description" content="Contact us for personalized coaching and start your transformation today.">
   <meta name="twitter:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg">
+  <meta name="twitter:site" content="@garcia.builder">
+  <meta name="twitter:creator" content="@garcia.builder">
+
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+  <link rel="preconnect" href="https://www.google-analytics.com">
+  <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -71,6 +83,13 @@
   <!-- Consent baseline -->
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}try{const s=JSON.parse(localStorage.getItem('gb_consent_v1')||'null');if(s){const st=s.status==='granted';gtag('consent','default',{ad_storage:st?'granted':'denied',analytics_storage:st?'granted':'denied',ad_user_data:st?'granted':'denied',ad_personalization:st?'granted':'denied',functionality_storage:'granted',security_storage:'granted'});}else{gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});} }catch(e){gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});} </script>
 
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
+
   <script defer src="js/tracking/web-vitals-rum.js"></script>
 
   <!-- Google Ads Global Site Tag (standardized) -->
@@ -80,24 +99,6 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'AW-17627402053');
-  </script>
-
-  <!-- Event snippet for Visualização de página conversion page -->
-  <script>
-    function gtag_report_conversion(url) {
-      var callback = function () {
-        if (typeof(url) != 'undefined') {
-          window.location = url;
-        }
-      };
-      gtag('event', 'conversion', {
-          'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
-          'value': 1.0,
-          'currency': 'GBP',
-          'event_callback': callback
-      });
-      return false;
-    }
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -115,6 +116,10 @@
   <script defer src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
   <script defer src="assets/i18n.js"></script>
 <script src="js/utils/component-loader-v3-simplified.js?v=20251029"></script>
+<script src="js/tracking/conversion-tracking.js?v=20251025"></script>
+<script defer src="js/tracking/ads-loader.js?v=20251025"></script>
+<script defer src="js/tracking/ads-config.js?v=20251025"></script>
+<script defer src="js/tracking/cta-tracking.js?v=20251112"></script>
   <script defer src="js/tracking/consent-banner.js"></script>
 
   <!-- Hardening mobile: nao altera cores/tema -->
@@ -150,6 +155,8 @@ window.addEventListener('load', function() {
 </script>
 </head>
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- NAV -->
 
@@ -250,10 +257,10 @@ window.addEventListener('load', function() {
             <label for="budget" class="form-label" data-i18n="contact.form.budget">Monthly budget (optional)</label>
             <select id="budget" name="budget" class="form-select">
               <option value="" selected data-i18n="contact.form.options.budget.notSay">Prefer not to say</option>
-              <option data-i18n="contact.form.options.budget.low">GBP 100-199</option>
-              <option data-i18n="contact.form.options.budget.medium">GBP 200-299</option>
-              <option data-i18n="contact.form.options.budget.high">GBP 300-499</option>
-              <option data-i18n="contact.form.options.budget.premium">GBP 500+</option>
+              <option data-i18n="contact.form.options.budget.low">EUR 100-199</option>
+              <option data-i18n="contact.form.options.budget.medium">EUR 200-299</option>
+              <option data-i18n="contact.form.options.budget.high">EUR 300-499</option>
+              <option data-i18n="contact.form.options.budget.premium">EUR 500+</option>
             </select>
           </div>
         </div>

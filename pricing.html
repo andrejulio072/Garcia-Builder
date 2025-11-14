@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head>
+<!doctype html><html lang="pt-BR"><head>
 <!-- ? Unified SEO / Pricing Page -->
 <!-- Consent Mode baseline BEFORE any tags -->
 <script>
@@ -17,32 +17,12 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
   gtag('config', 'AW-17627402053');
 </script>
 
-<!-- Event snippet for link/button click conversions -->
-<script>
-  function gtag_report_conversion(url){
-    try{
-      if (typeof gtag === 'function') {
-        var callback = function(){ if(typeof url !== 'undefined'){ window.location = url; } };
-        gtag('event','conversion',{
-          'send_to':'AW-17627402053/mdOMCOTV3acbEMWes9VB',
-          'value':1.0,
-          'currency':'GBP',
-          'event_callback':callback
-        });
-        return false;
-      }
-    }catch(e){}
-    if (typeof url !== 'undefined') { window.location = url; }
-    return false;
-  }
-  window.gtag_report_conversion = window.gtag_report_conversion || gtag_report_conversion;
-</script>
-
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Planos de coaching online 1:1 com acompanhamento semanal. Descontos em 3, 6 e 12 meses. Checkout seguro Stripe." />
 <meta name="theme-color" content="#0b1220"/>
 <meta name="robots" content="index,follow,max-image-preview:large" />
 <link rel="canonical" href="https://garciabuilder.fitness/pricing.html"/>
+<meta name="google-site-verification" content="google47d3c69666bce37e" />
 <meta property="og:type" content="website"/>
 <meta property="og:locale" content="en_IE"/>
 <meta property="og:locale:alternate" content="pt_BR"/>
@@ -51,18 +31,24 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
 <meta property="og:description" content="Choose the ideal plan and accelerate your transformation with personalized training and nutrition."/>
 <meta property="og:url" content="https://garciabuilder.fitness/pricing.html"/>
 <meta property="og:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg"/>
+<meta property="og:image:alt" content="Garcia Builder pricing cover"/>
 <meta property="og:site_name" content="Garcia Builder"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Pricing | Garcia Builder"/>
 <meta name="twitter:description" content="Flexible plans with professional support and measurable results."/>
 <meta name="twitter:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg"/>
+<meta name="twitter:site" content="@garcia.builder"/>
+<meta name="twitter:creator" content="@garcia.builder"/>
 
 <!-- Central consent-aware Ads loader -->
 <script defer src="js/tracking/ads-loader.js"></script>
 <script defer src="js/tracking/ads-config.js"></script>
+<script src="js/tracking/conversion-tracking.js?v=20251025"></script>
+<script defer src="js/tracking/cta-tracking.js?v=20251112"></script>
 <title>Pricing | Garcia Builder Coaching Plans</title>
 <link rel="preconnect" href="https://www.googletagmanager.com"/>
 <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+<link rel="preconnect" href="https://www.google-analytics.com">
 <link rel="preload" as="image" href="assets/images/hero/bg-fitness.jpg"/>
 <!-- Optional: booking URL for scheduling consult on pricing/success/first-workout -->
 <meta name="booking:url" content="https://calendly.com/andrenjulio072/consultation">
@@ -535,7 +521,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </section>
 <hr class="hr-shine">
-<a class="contact-float" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener" aria-label="Schedule a free consultation" onclick="return gtag_report_conversion(this.href)">
+<a class="contact-float"
+   href="https://calendly.com/andrenjulio072/consultation"
+   target="_blank"
+   rel="noopener"
+   aria-label="Schedule a free consultation"
+   onclick="return trackCTAEvent({ctaId:'floating_book_consult',ctaLocation:'pricing_float',href:this.href,conversion:true,target:this.target});">
   <i class="fas fa-calendar-check" aria-hidden="true"></i>
   Book Free Consultation
 </a>

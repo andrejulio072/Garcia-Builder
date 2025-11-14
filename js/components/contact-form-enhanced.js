@@ -243,6 +243,19 @@ If you'd like to chat sooner, feel free to book a free consultation call using t
           });
         } catch(e){ console.warn('dataLayer push failed', e); }
 
+        // Google Ads conversion (contact form submission)
+        try {
+          if (typeof window.gtag_report_conversion === 'function') {
+            window.gtag_report_conversion();
+          } else if (typeof window.gtag === 'function') {
+            window.gtag('event', 'conversion', {
+              send_to: 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
+              value: 1.0,
+              currency: 'EUR'
+            });
+          }
+        } catch(e){ console.warn('Google Ads conversion event failed', e); }
+
         // Meta Pixel Lead event (guard if fbq present)
         try {
           if (typeof fbq === 'function') {

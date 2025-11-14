@@ -110,6 +110,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- DESABILITADO: Conflita com component-loader navbar initialization -->
 <!-- <script defer src="js/components/navbar.js?v=20251025"></script> -->
 <script defer src="js/tracking/ads-config.js?v=20251025"></script>
+<script defer src="js/tracking/cta-tracking.js?v=20251112"></script>
 
 <!-- New Modular Components (Phase 3: World-Class Architecture) -->
 <!-- STRATEGY: Simplified loader without IIFE, traditional blocking load -->
@@ -207,9 +208,23 @@ window.addEventListener('load', function() {
 <h1 class="title-gradient text-glow hero-headline" data-i18n="home.hero.headline">Transform Your Body in 8–12 Weeks with 1:1 Online Coaching</h1>
 <p class="mt-2 hero-subtitle" data-i18n="hero.p">Train from home or the gym with customised workouts, flexible nutrition guidance, and daily WhatsApp accountability.</p>
 <div class="d-flex gap-2 flex-wrap justify-content-center mt-3">
-<a class="btn btn-gold pulse-hover btn-hero-primary" data-i18n="cta.start" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Book Your Free Consultation</a>
-<a class="btn btn-hero-secondary" data-i18n="cta.plans" href="pricing.html">View Plans &amp; Pricing</a>
-<a class="btn btn-outline-warning" data-i18n="cta.whatsapp" href="https://wa.me/447508497586" target="_blank" rel="noopener" aria-label="Start a WhatsApp chat with Coach André">Chat on WhatsApp</a>
+<a class="btn btn-gold pulse-hover btn-hero-primary"
+   data-i18n="cta.start"
+   href="https://calendly.com/andrenjulio072/consultation"
+   target="_blank"
+   rel="noopener"
+   onclick="return trackCTAEvent({ctaId:'hero_book_consult',ctaLocation:'hero',href:this.href,conversion:true,target:this.target});">Book Your Free Consultation</a>
+<a class="btn btn-hero-secondary"
+   data-i18n="cta.plans"
+   href="pricing.html"
+   onclick="return trackCTAEvent({ctaId:'hero_view_pricing',ctaLocation:'hero',href:this.href});">View Plans &amp; Pricing</a>
+<a class="btn btn-outline-warning"
+   data-i18n="cta.whatsapp"
+   href="https://wa.me/447508497586"
+   target="_blank"
+   rel="noopener"
+   aria-label="Start a WhatsApp chat with Coach André"
+   onclick="return trackCTAEvent({ctaId:'hero_whatsapp',ctaLocation:'hero',href:this.href,conversion:true,target:this.target});">Chat on WhatsApp</a>
 </div>
 <div class="kpis">
 <div class="kpi"><div class="num">127</div><div data-i18n="kpi.transforms">Transformations</div></div>
@@ -268,7 +283,12 @@ window.addEventListener('load', function() {
 <span class="metric-label" data-i18n="home.social.metric3">Countries coached</span>
 </div>
 </div>
-<a class="btn btn-warning btn-lg" data-i18n="home.social.cta" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Start My Transformation →</a>
+<a class="btn btn-warning btn-lg"
+   data-i18n="home.social.cta"
+   href="https://calendly.com/andrenjulio072/consultation"
+   target="_blank"
+   rel="noopener"
+   onclick="return trackCTAEvent({ctaId:'social_proof_book',ctaLocation:'social_proof',href:this.href,conversion:true,target:this.target});">Start My Transformation →</a>
 </div>
 <div class="col-lg-7">
 <div class="row g-3">
@@ -461,7 +481,12 @@ window.addEventListener('load', function() {
 </div>
 </div>
 <div class="text-center mt-5">
-<a href="https://calendly.com/andrenjulio072/consultation" class="btn btn-gold btn-lg" data-i18n="howitworks.cta" target="_blank" rel="noopener">Start Your Journey Today →</a>
+<a href="https://calendly.com/andrenjulio072/consultation"
+   class="btn btn-gold btn-lg"
+   data-i18n="howitworks.cta"
+   target="_blank"
+   rel="noopener"
+   onclick="return trackCTAEvent({ctaId:'how_it_works_book',ctaLocation:'how_it_works',href:this.href,conversion:true,target:this.target});">Start Your Journey Today →</a>
 </div>
 </div>
 </section>
@@ -480,7 +505,12 @@ window.addEventListener('load', function() {
 <li class="mb-3"><i class="fas fa-check-circle text-warning me-2"></i> <span data-i18n="video.point3">24/7 support via in-app chat</span></li>
 <li class="mb-3"><i class="fas fa-check-circle text-warning me-2"></i> <span data-i18n="video.point4">Weekly progress reviews and adjustments</span></li>
 </ul>
-<a href="https://calendly.com/andrenjulio072/consultation" class="btn btn-warning btn-lg mt-3" data-i18n="video.cta" target="_blank" rel="noopener">Get Started Now →</a>
+<a href="https://calendly.com/andrenjulio072/consultation"
+   class="btn btn-warning btn-lg mt-3"
+   data-i18n="video.cta"
+   target="_blank"
+   rel="noopener"
+   onclick="return trackCTAEvent({ctaId:'video_testimonial_book',ctaLocation:'video_section',href:this.href,conversion:true,target:this.target});">Get Started Now →</a>
 </div>
 </div>
 <div class="col-lg-6">
@@ -1103,8 +1133,18 @@ Trainerize—plans, videos, habits, messages, and progress tracking in one place
 <h2 class="title-gradient text-glow mb-3" data-i18n="home.finalcta.title">Ready to transform your body, health, and routine?</h2>
 <p class="lead text-white-soft mb-4" data-i18n="home.finalcta.subtitle">Secure your free consultation now and get a personalised roadmap within 24 hours.</p>
 <div class="d-flex flex-wrap justify-content-center gap-3">
-<a class="btn btn-warning btn-lg" data-i18n="cta.start" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Book Your Free Consultation</a>
-<a class="btn btn-outline-warning btn-lg" data-i18n="cta.whatsapp_prefer" href="https://wa.me/447508497586" target="_blank" rel="noopener">Prefer WhatsApp? Chat Now</a>
+<a class="btn btn-warning btn-lg"
+   data-i18n="cta.start"
+   href="https://calendly.com/andrenjulio072/consultation"
+   target="_blank"
+   rel="noopener"
+   onclick="return trackCTAEvent({ctaId:'cta_section_book',ctaLocation:'final_cta',href:this.href,conversion:true,target:this.target});">Book Your Free Consultation</a>
+<a class="btn btn-outline-warning btn-lg"
+   data-i18n="cta.whatsapp_prefer"
+   href="https://wa.me/447508497586"
+   target="_blank"
+   rel="noopener"
+   onclick="return trackCTAEvent({ctaId:'cta_section_whatsapp',ctaLocation:'final_cta',href:this.href,conversion:true,target:this.target});">Prefer WhatsApp? Chat Now</a>
 </div>
 </div>
 </section>

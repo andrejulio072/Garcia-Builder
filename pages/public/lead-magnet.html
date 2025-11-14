@@ -1,21 +1,45 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Ebook: 7 Passos para Secar Mantendo Massa - Garcia Builder</title>
+    <title>Garcia Builder | Ebook Grátis: 7 Passos para Secar Mantendo Massa</title>
+    <meta name="description" content="Baixe grátis o ebook com o plano em 7 passos para secar sem perder massa muscular. Estrutura usada em +100 acompanhamentos do Garcia Builder.">
+    <meta name="keywords" content="ebook grátis, secar sem perder massa, perder gordura, cutting, garcia builder, treino online">
+    <meta name="author" content="Garcia Builder Coaching">
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+    <meta name="google-site-verification" content="google47d3c69666bce37e">
 
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Baixe GRÁTIS o ebook com 7 passos científicos para perder gordura sem perder músculo. Método testado com +100 clientes.">
-    <meta name="keywords" content="ebook grátis, cutting, perder gordura, manter massa muscular, garcia builder">
-
-    <!-- Open Graph -->
-    <meta property="og:title" content="Ebook GRÁTIS: 7 Passos para Secar Mantendo Massa">
-    <meta property="og:description" content="Método científico usado por +100 clientes para transformação corporal sem perder músculo.">
-    <meta property="og:image" content="https://garciabuilder.fitness/assets/ebook-cover-7-passos.jpg">
-    <meta property="og:url" content="https://garciabuilder.fitness/lead-magnet.html">
-
+    <!-- Canonical & Social -->
     <link rel="canonical" href="https://garciabuilder.fitness/lead-magnet.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Ebook Grátis: 7 Passos para Secar Mantendo Massa">
+    <meta property="og:description" content="Método científico validado com +100 alunos para acelerar a queima de gordura sem perder massa magra. Baixe grátis.">
+    <meta property="og:url" content="https://garciabuilder.fitness/lead-magnet.html">
+    <meta property="og:image" content="https://garciabuilder.fitness/assets/ebook-cover-7-passos.jpg">
+    <meta property="og:image:alt" content="Capa do Ebook 7 Passos para Secar Mantendo Massa">
+    <meta property="og:site_name" content="Garcia Builder Coaching">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:locale:alternate" content="en_IE">
+    <meta property="og:locale:alternate" content="es_ES">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ebook Grátis: 7 Passos para Secar Mantendo Massa">
+    <meta name="twitter:description" content="Checklist completo para reduzir gordura mantendo performance. Receba agora o ebook gratuito Garcia Builder.">
+    <meta name="twitter:image" content="https://garciabuilder.fitness/assets/ebook-cover-7-passos.jpg">
+    <meta name="twitter:site" content="@garcia.builder">
+    <meta name="twitter:creator" content="@garcia.builder">
+    <meta name="theme-color" content="#0f172a">
+
+    <!-- Favicons -->
+    <link rel="icon" href="Logo Files/For Web/logo-nobackground-500.png" type="image/png">
+    <link rel="apple-touch-icon" href="Logo Files/For Web/logo-nobackground-500.png">
+
+    <!-- Preconnects -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="preconnect" href="https://connect.facebook.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,41 +48,131 @@
     <link rel="stylesheet" href="css/components/navbar-component.css?v=20251028">
     <link rel="stylesheet" href="css/components/newsletter.css?v=20251003-2030">
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
+    <!-- Consent Mode baseline BEFORE any tags -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'AW-17627402053');
-    </script>
-
-    <!-- Event snippet for Visualização de página conversion page -->
-    <script>
-      function gtag_report_conversion(url) {
-        var callback = function () {
-          if (typeof(url) != 'undefined') {
-            window.location = url;
-          }
-        };
-        gtag('event', 'conversion', {
-            'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
-            'value': 1.0,
-            'currency': 'GBP',
-            'event_callback': callback
-        });
-        return false;
-      }
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        try {
+            const storedConsent = JSON.parse(localStorage.getItem('gb_consent_v1') || 'null');
+            if (storedConsent) {
+                const granted = storedConsent.status === 'granted';
+                gtag('consent', 'default', {
+                    ad_storage: granted ? 'granted' : 'denied',
+                    analytics_storage: granted ? 'granted' : 'denied',
+                    ad_user_data: granted ? 'granted' : 'denied',
+                    ad_personalization: granted ? 'granted' : 'denied',
+                    functionality_storage: 'granted',
+                    security_storage: 'granted'
+                });
+            } else {
+                gtag('consent', 'default', {
+                    ad_storage: 'denied',
+                    analytics_storage: 'denied',
+                    ad_user_data: 'denied',
+                    ad_personalization: 'denied',
+                    functionality_storage: 'granted',
+                    security_storage: 'granted'
+                });
+            }
+        } catch (err) {
+            gtag('consent', 'default', {
+                ad_storage: 'denied',
+                analytics_storage: 'denied',
+                ad_user_data: 'denied',
+                ad_personalization: 'denied',
+                functionality_storage: 'granted',
+                security_storage: 'granted'
+            });
+        }
     </script>
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id=GTM-LEADMAGNET'+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-LEADMAGNET');</script>
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
 
-    <style>
+    <!-- Google Ads Global Site Tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-17627402053');
+    </script>
+
+    <!-- Event snippet for conversion tracking -->
+    <script>
+        function gtag_report_conversion(url) {
+            const callback = function () {
+                if (typeof url !== 'undefined') {
+                    window.location = url;
+                }
+            };
+            if (typeof gtag === 'function') {
+                gtag('event', 'conversion', {
+                    send_to: 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
+                    value: 1.0,
+                    currency: 'EUR',
+                    event_callback: callback
+                });
+            }
+            return false;
+        }
+        window.gtag_report_conversion = window.gtag_report_conversion || gtag_report_conversion;
+    </script>
+
+    <!-- Structured data for the ebook offer -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "DigitalDocument",
+        "name": "Ebook Grátis: 7 Passos para Secar Mantendo Massa",
+        "description": "Plano validado com alunos reais para reduzir gordura mantendo performance e massa magra.",
+        "inLanguage": [
+            "pt-BR",
+            "en"
+        ],
+        "headline": "7 Passos para Secar Mantendo Massa Muscular",
+        "datePublished": "2025-10-28",
+        "url": "https://garciabuilder.fitness/lead-magnet.html",
+        "image": "https://garciabuilder.fitness/assets/ebook-cover-7-passos.jpg",
+        "isAccessibleForFree": true,
+        "author": {
+            "@type": "Person",
+            "name": "André Garcia"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Garcia Builder Coaching",
+            "url": "https://garciabuilder.fitness/"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Adultos que buscam recomposição corporal guiada"
+        },
+        "keywords": [
+            "cutting inteligente",
+            "perder gordura",
+            "manter massa magra",
+            "treino online",
+            "garcia builder"
+        ],
+        "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "EUR",
+            "availability": "https://schema.org/InStock"
+        },
+        "potentialAction": {
+            "@type": "DownloadAction",
+            "target": "https://garciabuilder.fitness/lead-magnet.html#leadMagnetForm",
+            "name": "Baixar ebook gratuito"
+        }
+    }
+    </script>
+<style>
         .hero-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
@@ -111,6 +225,9 @@
     </style>
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
 
 <nav class="gb-navbar" role="navigation" aria-label="Main navigation">
     <div class="container">
@@ -230,10 +347,6 @@
     });
 })();
 </script>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-LEADMAGNET"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="container">
@@ -473,7 +586,7 @@
                 // Track conversion event
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'conversion', {
-                        'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL',
+                        'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
                         'value': 1.0,
                         'currency': 'EUR'
                     });

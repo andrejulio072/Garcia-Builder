@@ -8,6 +8,8 @@
 (function() {
     'use strict';
 
+    const DEFAULT_AW_CONVERSION_LABEL = 'mdOMCOTV3acbEMWes9VB';
+
     /**
      * Google Ads Conversion Tracking Function
      * @param {string} url - Optional URL to redirect after conversion
@@ -47,6 +49,8 @@
      * Set this value to enable purchase conversion tracking on success.html
      * Leave empty to prevent invalid events
      */
-    window.AW_CONVERSION_LABEL = window.AW_CONVERSION_LABEL || '';
+    if (!window.AW_CONVERSION_LABEL) {
+        window.AW_CONVERSION_LABEL = DEFAULT_AW_CONVERSION_LABEL;
+    }
 
 })();

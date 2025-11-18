@@ -104,24 +104,16 @@
 
     <!-- Event snippet for conversion tracking -->
     <script>
-        function gtag_report_conversion(url) {
-            const callback = function () {
-                if (typeof url !== 'undefined') {
-                    window.location = url;
-                }
-            };
-            if (typeof gtag === 'function') {
-                gtag('event', 'conversion', {
-                    send_to: 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
-                    value: 1.0,
-                    currency: 'EUR',
-                    event_callback: callback
-                });
-            }
-            return false;
-        }
-        window.gtag_report_conversion = window.gtag_report_conversion || gtag_report_conversion;
+        gtag('event', 'conversion', {
+            send_to: 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
+            value: 1.0,
+            currency: 'EUR'
+        });
     </script>
+    <script src="js/tracking/conversion-tracking.js?v=20251025"></script>
+    <script defer src="js/tracking/ads-loader.js?v=20251025"></script>
+    <script defer src="js/tracking/ads-config.js?v=20251025"></script>
+    <script defer src="js/tracking/cta-tracking.js?v=20251112"></script>
 
     <!-- Structured data for the ebook offer -->
     <script type="application/ld+json">

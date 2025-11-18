@@ -47,24 +47,10 @@
             gtag('js', new Date());
             gtag('config', 'AW-17627402053', { 'send_page_view': false });
         </script>
-
-    <!-- Event snippet for Visualização de página conversion page -->
-        <script>
-            function gtag_report_conversion(url) {
-                var callback = function () {
-                    if (typeof(url) != 'undefined') {
-                        window.location = url;
-                    }
-                };
-                gtag('event', 'conversion', {
-                        'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
-                        'value': 1.0,
-                        'currency': 'GBP',
-                        'event_callback': callback
-                });
-                return false;
-            }
-        </script>
+        <script src="js/tracking/conversion-tracking.js?v=20251025"></script>
+        <script defer src="js/tracking/ads-loader.js?v=20251025"></script>
+        <script defer src="js/tracking/ads-config.js?v=20251025"></script>
+        <script defer src="js/tracking/cta-tracking.js?v=20251112"></script>
 
     <!-- Google Site Verification -->
     <meta name="google-site-verification" content="google47d3c69666bce37e" />

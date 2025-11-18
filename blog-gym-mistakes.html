@@ -13,24 +13,6 @@
     gtag('config', 'AW-17627402053', { 'send_page_view': false });
   </script>
 
-  <!-- Event snippet for Visualização de página conversion page -->
-  <script>
-    function gtag_report_conversion(url) {
-      var callback = function () {
-        if (typeof(url) != 'undefined') {
-          window.location = url;
-        }
-      };
-      gtag('event', 'conversion', {
-          'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
-          'value': 1.0,
-          'currency': 'GBP',
-          'event_callback': callback
-      });
-      return false;
-    }
-  </script>
-
   <title>Top 5 Mistakes Beginners Make in the Gym</title>
   <meta name="description" content="Avoid the most common mistakes beginners make in the gym. Learn how to train safely and effectively for better results.">
   <meta name="keywords" content="gym mistakes, beginner fitness, workout tips, safe training, Garcia Builder, Andre Julio Garcia, online coaching, fitness advice, gym safety">
@@ -48,6 +30,10 @@
   <meta name="twitter:description" content="Avoid these common gym mistakes and get better results from your training.">
   <meta name="twitter:image" content="https://garciabuilder.fitness/assets/group-fitness.jpg">
   <link rel="stylesheet" href="css/global.css">
+  <script src="js/tracking/conversion-tracking.js?v=20251025"></script>
+  <script defer src="js/tracking/ads-loader.js?v=20251025"></script>
+  <script defer src="js/tracking/ads-config.js?v=20251025"></script>
+  <script defer src="js/tracking/cta-tracking.js?v=20251112"></script>
 </head>
 <body>
   <nav class="navbar"></nav>

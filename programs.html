@@ -53,30 +53,16 @@
   gtag('config', 'AW-17627402053', { 'send_page_view': false });
 </script>
 
-<!-- Event snippet for Visualização de página conversion page -->
-<script>
-  function gtag_report_conversion(url) {
-    var callback = function () {
-      if (typeof(url) != 'undefined') {
-        window.location = url;
-      }
-    };
-    gtag('event', 'conversion', {
-        'send_to': 'AW-17627402053/mdOMCOTV3acbEMWes9VB',
-        'value': 1.0,
-        'currency': 'GBP',
-        'event_callback': callback
-    });
-    return false;
-  }
-</script>
-
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Garcia Builder</title>
 <link rel="stylesheet" href="css/global.css?v=20251003-2030">
 <link rel="stylesheet" href="css/components/navbar-component.css?v=20251028">
 <script src="js/utils/component-loader-v3-simplified.js?v=20251028"></script>
+<script src="js/tracking/conversion-tracking.js?v=20251025"></script>
+<script defer src="js/tracking/ads-loader.js?v=20251025"></script>
+<script defer src="js/tracking/ads-config.js?v=20251025"></script>
+<script defer src="js/tracking/cta-tracking.js?v=20251112"></script>
 <link rel="alternate" id="dynamic-lang" href="?lang=en">
 </head><body>
 

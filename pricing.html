@@ -521,15 +521,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </section>
 <hr class="hr-shine">
-<a class="contact-float"
-   href="https://calendly.com/andrenjulio072/consultation"
-   target="_blank"
-   rel="noopener"
-   aria-label="Schedule a free consultation"
-   onclick="return trackCTAEvent({ctaId:'floating_book_consult',ctaLocation:'pricing_float',href:this.href,conversion:true,target:this.target});">
-  <i class="fas fa-calendar-check" aria-hidden="true"></i>
-  Book Free Consultation
-</a>
+<div class="floating-cta-stack" role="group" aria-label="Quick contact actions">
+  <a class="contact-float"
+     href="https://calendly.com/andrenjulio072/consultation"
+     target="_blank"
+     rel="noopener"
+     aria-label="Schedule a free consultation"
+     onclick="return trackCTAEvent({ctaId:'floating_book_consult',ctaLocation:'pricing_float',href:this.href,conversion:true,target:this.target});">
+    <i class="fas fa-calendar-check" aria-hidden="true"></i>
+    Book Free Consultation
+  </a>
+  <a class="whatsapp-float"
+     href="https://wa.me/447508497586"
+     target="_blank"
+     rel="noopener"
+     aria-label="Start a WhatsApp chat with Coach André"
+     onclick="return trackCTAEvent({ctaId:'floating_whatsapp_pricing',ctaLocation:'pricing_float',href:this.href,conversion:true,target:this.target});">
+    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+    Chat on WhatsApp
+  </a>
+</div>
 
 <style>
 /* Period Selector Styles */
@@ -541,6 +552,51 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   border: 1px solid rgba(255,255,255,0.1);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
+}
+
+/* Floating CTA stack (pricing only) */
+.floating-cta-stack {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 90;
+}
+
+.floating-cta-stack .contact-float,
+.floating-cta-stack .whatsapp-float {
+  position: static;
+  right: auto;
+  bottom: auto;
+  width: fit-content;
+}
+
+.floating-cta-stack .contact-float,
+.floating-cta-stack .whatsapp-float {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.floating-cta-stack .whatsapp-float {
+  padding-inline: 20px;
+}
+
+@media (max-width: 576px) {
+  .floating-cta-stack {
+    right: 12px;
+    bottom: 12px;
+    gap: 12px;
+  }
+
+  .floating-cta-stack .contact-float,
+  .floating-cta-stack .whatsapp-float {
+    font-size: 0.95rem;
+    padding: 12px 18px;
+  }
 }
 
 .period-selector .btn-group {

@@ -5,6 +5,40 @@
   <meta charset="UTF-8">
   <title>Contato enviado com sucesso</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contato confirmado. Sua mensagem foi recebida e um e-mail de confirmação foi enviado.">
+
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+
+  <!-- Consent baseline before any tags -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    try {
+      const stored = JSON.parse(localStorage.getItem('gb_consent_v1') || 'null');
+      if (stored && stored.status === 'granted') {
+        gtag('consent','default',{ad_storage:'granted',analytics_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',functionality_storage:'granted',security_storage:'granted'});
+      } else if (stored && stored.status === 'denied') {
+        gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});
+      } else {
+        gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});
+      }
+    } catch(e){
+      gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});
+    }
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-17627402053', { send_page_view: false });
+  </script>
+  <script defer src="js/tracking/ads-config.js?v=20251025"></script>
+  <script defer src="js/tracking/ads-loader.js?v=20251025"></script>
+  <script defer src="js/tracking/conversion-tracking.js?v=20251025"></script>
+  <script defer src="js/tracking/cta-tracking.js?v=20251112"></script>
+  <script defer src="js/modules/event-tracking.js?v=20251025"></script>
+
   <style>
     body { font-family: Arial, sans-serif; text-align: center; margin-top: 10vh; }
     .msg { font-size: 1.3em; margin-top: 2em; color: #2e7d32; }

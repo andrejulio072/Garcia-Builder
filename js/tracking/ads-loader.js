@@ -3,6 +3,31 @@
 (function(){
   if(window.__ADS_LOADER_INITIALIZED__) return; window.__ADS_LOADER_INITIALIZED__=true;
 
+  // Optional QA helper: force consent to granted when URL contains ?debug-consent=1
+  // This allows Google Tag tests to detect the tag even when the default is denied.
+  const DEBUG_CONSENT = typeof window !== 'undefined' &&
+    window.location &&
+    /[?&]debug-consent=1/.test(window.location.search || '');
+
+  const DEBUG_GRANTED_CHOICES = {
+    ad_storage: 'granted',
+    analytics_storage: 'granted',
+    ad_user_data: 'granted',
+    ad_personalization: 'granted'
+  };
+
+  if (DEBUG_CONSENT) {
+    try {
+      localStorage.setItem('gb_consent_v1', JSON.stringify({
+        status: 'granted',
+        choices: DEBUG_GRANTED_CHOICES,
+        ts: Date.now()
+      }));
+      window.__DEBUG_CONSENT__ = true;
+      window.dispatchEvent(new CustomEvent('consent_update', { detail: { choices: DEBUG_GRANTED_CHOICES } }));
+    } catch(_){}
+  }
+
   function isValidGa4Id(id){
     return typeof id === 'string' && /^G-[A-Z0-9]+$/i.test(id.trim());
   }
@@ -95,6 +120,11 @@
     });
     window.__ADS_BASE_READY__=true;
     if(window.DEBUG_ADS) console.log('[ADS] gtag initialized (consent-aware)', IDS);
+
+    // If QA override is active, explicitly update consent to granted after gtag loads.
+    if (DEBUG_CONSENT) {
+      try { gtag('consent','update', DEBUG_GRANTED_CHOICES); } catch(_){}
+    }
   }
   if(granted()) { load(); }
   else {

@@ -118,7 +118,11 @@
       },
       home: {
         hero: {
-          headline: "Transform Your Body in 8–12 Weeks with 1:1 Online Coaching"
+          eyebrow: "Online coaching for busy professionals",
+          headline: "Stronger, leaner, coached every week",
+          trust1: "Home or gym",
+          trust2: "Trainerize app",
+          trust3: "EN/PT/ES"
         },
         why: {
           title: "Why Garcia Builder Works",
@@ -221,7 +225,7 @@
         count: "(87 reviews)"
       },
       hero: {
-        p: "Train from home or the gym with customised workouts, flexible nutrition guidance, and daily WhatsApp accountability."
+        p: "Training, nutrition, and weekly accountability built around your schedule."
       },
       cta: {
         start: "Book Your Free Consultation",
@@ -730,7 +734,11 @@
       },
       home: {
         hero: {
-          headline: "Transforme Seu Corpo em 8–12 Semanas com Coaching Online 1:1"
+          eyebrow: "Coaching online para profissionais ocupados",
+          headline: "Mais forte, mais definido, acompanhado toda semana",
+          trust1: "Casa ou academia",
+          trust2: "App Trainerize",
+          trust3: "EN/PT/ES"
         },
         why: {
           title: "Por que o Garcia Builder Funciona",
@@ -833,7 +841,7 @@
         count: "(87 avaliações)"
       },
       hero: {
-        p: "Treine de casa ou da academia com treinos personalizados, orientação nutricional flexível e responsabilidade diária pelo WhatsApp."
+        p: "Treino, nutricao e acompanhamento semanal criados para a sua rotina."
       },
       cta: {
         start: "Agende Sua Consultoria Gratuita",
@@ -1342,7 +1350,11 @@
       },
       home: {
         hero: {
-          headline: "Transforma Tu Cuerpo en 8–12 Semanas con Coaching Online 1:1"
+          eyebrow: "Coaching online para profesionales ocupados",
+          headline: "Mas fuerte, mas definido, acompanado cada semana",
+          trust1: "Casa o gym",
+          trust2: "App Trainerize",
+          trust3: "EN/PT/ES"
         },
         why: {
           title: "Por qué Garcia Builder Funciona",
@@ -1445,7 +1457,7 @@
         count: "(87 reseñas)"
       },
       hero: {
-        p: "Entrena desde casa o el gimnasio con rutinas personalizadas, guía nutricional flexible y responsabilidad diaria por WhatsApp."
+        p: "Entrenamiento, nutricion y seguimiento semanal creados para tu rutina."
       },
       cta: {
         start: "Reserva Tu Consulta Gratuita",
@@ -1841,6 +1853,327 @@
     }
   };
 
+  const readPath = (obj, path) => {
+    if (!obj) return undefined;
+    if (Object.prototype.hasOwnProperty.call(obj, path)) return obj[path];
+
+    const parts = path.split('.');
+    let cursor = obj;
+    for (let i = 0; i < parts.length; i += 1) {
+      const remaining = parts.slice(i).join('.');
+      if (cursor && Object.prototype.hasOwnProperty.call(cursor, remaining)) {
+        return cursor[remaining];
+      }
+      if (!cursor || cursor[parts[i]] === undefined) return undefined;
+      cursor = cursor[parts[i]];
+    }
+    return cursor;
+  };
+  const writePath = (obj, path, value) => {
+    const parts = path.split('.');
+    let cursor = obj;
+    parts.slice(0, -1).forEach(part => {
+      if (!cursor[part] || typeof cursor[part] !== 'object') cursor[part] = {};
+      cursor = cursor[part];
+    });
+    cursor[parts[parts.length - 1]] = value;
+  };
+
+  const aliasPaths = [
+    ['home.social', 'social'],
+    ['home.featured', 'featured'],
+    ['home.authority', 'authority'],
+    ['home.instagram', 'instagram']
+  ];
+
+  Object.keys(DICTS).forEach(lang => {
+    aliasPaths.forEach(([alias, source]) => {
+      const value = readPath(DICTS[lang], source);
+      if (value !== undefined && readPath(DICTS[lang], alias) === undefined) {
+        writePath(DICTS[lang], alias, value);
+      }
+    });
+  });
+
+  Object.assign(DICTS.en, {
+    leadmagnet: {
+      title: "Download the 5-Step Fat Loss Gameplan",
+      subtitle: "Discover how clients drop fat, keep muscle, and stay consistent without restrictive diets.",
+      bullet1: "Daily structure that fits work, family, and travel",
+      bullet2: "Nutrition cheat-sheet with flexible meal ideas",
+      bullet3: "Step-by-step habit stack that locks in results",
+      badge: "Free Download",
+      name: "Full Name",
+      name_placeholder: "Enter your name",
+      email: "Email Address",
+      email_placeholder: "you@email.com",
+      submit: "Send Me the Guide",
+      privacy: "No spam. The guide arrives instantly and you can unsubscribe anytime."
+    },
+    leadform: {
+      section_title: "Ready to Transform Your Body?",
+      section_subtitle: "Get your personalized fitness plan and join 127+ successful transformations",
+      badge: "FREE CONSULTATION",
+      title: "Get Your Personalized Fitness Plan",
+      subtitle: "Start your transformation journey today",
+      name: "Full Name",
+      name_placeholder: "Enter your name",
+      email: "Email Address",
+      email_placeholder: "your@email.com",
+      phone: "Phone Number",
+      phone_placeholder: "+1 (555) 123-4567",
+      goal: "Primary Goal",
+      goal_select: "Select your goal",
+      goal_weight_loss: "Weight Loss",
+      goal_muscle_gain: "Muscle Gain",
+      goal_strength: "Strength Training",
+      goal_endurance: "Endurance",
+      goal_fitness: "General Fitness",
+      goal_recomp: "Body Recomposition",
+      submit: "Get My Free Consultation",
+      benefit1: "Personalized workout plan",
+      benefit2: "Nutrition guidelines",
+      benefit3: "24/7 in-app chat support",
+      benefit4: "Progress tracking"
+    },
+    explore: {
+      title: "Explore Your Journey",
+      transformations: "Transformations",
+      "transformations.desc": "127+ client results",
+      testimonials: "Testimonials",
+      "testimonials.desc": "Client success stories",
+      pricing: "Pricing",
+      "pricing.desc": "Flexible coaching plans",
+      blog: "Blog & Tips",
+      "blog.desc": "Expert resources"
+    },
+    trust: {
+      certified: "Certified Professional",
+      insured: "Fully Insured",
+      clients: "127+ Success Stories"
+    },
+    newsletter: {
+      title: "Get Weekly Expert Tips",
+      desc: "Training advice, nutrition tips, and exclusive content delivered to your inbox.",
+      cta: "Subscribe",
+      privacy: "We respect your privacy. Unsubscribe anytime."
+    }
+  });
+  Object.assign(DICTS.en.faq, {
+    subtitle: "Everything you need to know about our online coaching",
+    viewall: "View All FAQs"
+  });
+  Object.assign(DICTS.en.footer, {
+    bio_line1: "Online Coaching - Evidence-based fitness, nutrition & accountability.",
+    bio_line2: "Transform your body, sustainably.",
+    book_consultation: "Book a Free Consultation",
+    dm_instagram: "DM on Instagram",
+    links: "Links",
+    results: "Results",
+    apply_trainer: "Apply as Trainer",
+    resources: "Resources",
+    download_guide: "Download Guide (PDF)",
+    book_call: "Book a Call",
+    follow_us: "Follow us",
+    newsletter: "Newsletter",
+    email_placeholder: "Email address",
+    newsletter_consent: "I would like to receive updates and tips from Garcia Builder.",
+    subscribe: "Subscribe",
+    newsletter_privacy: "You can unsubscribe at any time and your information will be treated according to our Privacy Policy.",
+    cookie_preferences: "Cookie Preferences",
+    privacy_policy: "Privacy Policy",
+    terms: "Terms & Conditions",
+    client_login: "Client Login",
+    create_account: "Create Account",
+    disclaimer: "*DISCLAIMER: Results may vary. Results are based on individual circumstances. Timeframes for results are not guaranteed. Willpower is always required!"
+  });
+
+  Object.assign(DICTS.pt, {
+    leadmagnet: {
+      title: "Baixe o Plano de Perda de Gordura em 5 Passos",
+      subtitle: "Descubra como clientes perdem gordura, mantem musculo e seguem consistentes sem dietas restritivas.",
+      bullet1: "Estrutura diaria que cabe no trabalho, familia e viagens",
+      bullet2: "Guia de nutricao com ideias de refeicoes flexiveis",
+      bullet3: "Passo a passo de habitos para manter resultados",
+      badge: "Download Gratis",
+      name: "Nome Completo",
+      name_placeholder: "Digite seu nome",
+      email: "Email",
+      email_placeholder: "voce@email.com",
+      submit: "Enviar o Guia",
+      privacy: "Sem spam. O guia chega na hora e voce pode cancelar quando quiser."
+    },
+    leadform: {
+      section_title: "Pronto para Transformar Seu Corpo?",
+      section_subtitle: "Receba seu plano fitness personalizado e junte-se a 127+ transformacoes de sucesso",
+      badge: "CONSULTA GRATIS",
+      title: "Receba Seu Plano Fitness Personalizado",
+      subtitle: "Comece sua transformacao hoje",
+      name: "Nome Completo",
+      name_placeholder: "Digite seu nome",
+      email: "Email",
+      email_placeholder: "seu@email.com",
+      phone: "Telefone",
+      phone_placeholder: "+55 11 99999-9999",
+      goal: "Objetivo Principal",
+      goal_select: "Selecione seu objetivo",
+      goal_weight_loss: "Perda de Peso",
+      goal_muscle_gain: "Ganho de Massa",
+      goal_strength: "Treino de Forca",
+      goal_endurance: "Resistencia",
+      goal_fitness: "Condicionamento Geral",
+      goal_recomp: "Recomposicao Corporal",
+      submit: "Quero Minha Consulta Gratis",
+      benefit1: "Plano de treino personalizado",
+      benefit2: "Orientacoes de nutricao",
+      benefit3: "Suporte no app 24/7",
+      benefit4: "Acompanhamento de progresso"
+    },
+    explore: {
+      title: "Explore Sua Jornada",
+      transformations: "Transformacoes",
+      "transformations.desc": "127+ resultados de clientes",
+      testimonials: "Depoimentos",
+      "testimonials.desc": "Historias de sucesso dos clientes",
+      pricing: "Precos",
+      "pricing.desc": "Planos flexiveis de coaching",
+      blog: "Blog e Dicas",
+      "blog.desc": "Recursos de especialistas"
+    },
+    trust: {
+      certified: "Profissional Certificado",
+      insured: "Totalmente Segurado",
+      clients: "127+ Historias de Sucesso"
+    },
+    newsletter: {
+      title: "Receba Dicas Semanais",
+      desc: "Conselhos de treino, nutricao e conteudo exclusivo direto no seu email.",
+      cta: "Assinar",
+      privacy: "Respeitamos sua privacidade. Cancele quando quiser."
+    }
+  });
+  Object.assign(DICTS.pt.faq, {
+    subtitle: "Tudo que voce precisa saber sobre nosso coaching online",
+    viewall: "Ver Todas as FAQs"
+  });
+  Object.assign(DICTS.pt.footer, {
+    bio_line1: "Coaching Online - Fitness, nutricao e responsabilidade com base em evidencia.",
+    bio_line2: "Transforme seu corpo de forma sustentavel.",
+    book_consultation: "Agendar Consulta Gratis",
+    dm_instagram: "Enviar DM no Instagram",
+    links: "Links",
+    results: "Resultados",
+    apply_trainer: "Candidatar-se como Trainer",
+    resources: "Recursos",
+    download_guide: "Baixar Guia (PDF)",
+    book_call: "Agendar Chamada",
+    follow_us: "Siga-nos",
+    newsletter: "Newsletter",
+    email_placeholder: "Endereco de email",
+    newsletter_consent: "Quero receber novidades e dicas do Garcia Builder.",
+    subscribe: "Assinar",
+    newsletter_privacy: "Voce pode cancelar a qualquer momento e suas informacoes serao tratadas de acordo com nossa Politica de Privacidade.",
+    cookie_preferences: "Preferencias de Cookies",
+    privacy_policy: "Politica de Privacidade",
+    terms: "Termos e Condicoes",
+    client_login: "Login do Cliente",
+    create_account: "Criar Conta",
+    disclaimer: "*AVISO: Os resultados podem variar. Os resultados dependem das circunstancias individuais. Prazos de resultados nao sao garantidos. Forca de vontade sempre e necessaria!"
+  });
+
+  Object.assign(DICTS.es, {
+    leadmagnet: {
+      title: "Descarga el Plan de Perdida de Grasa en 5 Pasos",
+      subtitle: "Descubre como los clientes pierden grasa, mantienen musculo y son constantes sin dietas restrictivas.",
+      bullet1: "Estructura diaria que encaja con trabajo, familia y viajes",
+      bullet2: "Guia de nutricion con ideas flexibles de comidas",
+      bullet3: "Sistema paso a paso de habitos para mantener resultados",
+      badge: "Descarga Gratis",
+      name: "Nombre Completo",
+      name_placeholder: "Escribe tu nombre",
+      email: "Email",
+      email_placeholder: "tu@email.com",
+      submit: "Enviame la Guia",
+      privacy: "Sin spam. La guia llega al instante y puedes cancelar cuando quieras."
+    },
+    leadform: {
+      section_title: "Listo para Transformar Tu Cuerpo?",
+      section_subtitle: "Recibe tu plan fitness personalizado y unete a 127+ transformaciones exitosas",
+      badge: "CONSULTA GRATIS",
+      title: "Recibe Tu Plan Fitness Personalizado",
+      subtitle: "Empieza tu transformacion hoy",
+      name: "Nombre Completo",
+      name_placeholder: "Escribe tu nombre",
+      email: "Email",
+      email_placeholder: "tu@email.com",
+      phone: "Telefono",
+      phone_placeholder: "+34 666 123 456",
+      goal: "Objetivo Principal",
+      goal_select: "Selecciona tu objetivo",
+      goal_weight_loss: "Perdida de Peso",
+      goal_muscle_gain: "Ganar Musculo",
+      goal_strength: "Entrenamiento de Fuerza",
+      goal_endurance: "Resistencia",
+      goal_fitness: "Fitness General",
+      goal_recomp: "Recomposicion Corporal",
+      submit: "Quiero Mi Consulta Gratis",
+      benefit1: "Plan de entrenamiento personalizado",
+      benefit2: "Guias de nutricion",
+      benefit3: "Soporte 24/7 en la app",
+      benefit4: "Seguimiento de progreso"
+    },
+    explore: {
+      title: "Explora Tu Camino",
+      transformations: "Transformaciones",
+      "transformations.desc": "127+ resultados de clientes",
+      testimonials: "Testimonios",
+      "testimonials.desc": "Historias de exito de clientes",
+      pricing: "Precios",
+      "pricing.desc": "Planes flexibles de coaching",
+      blog: "Blog y Consejos",
+      "blog.desc": "Recursos expertos"
+    },
+    trust: {
+      certified: "Profesional Certificado",
+      insured: "Totalmente Asegurado",
+      clients: "127+ Historias de Exito"
+    },
+    newsletter: {
+      title: "Recibe Consejos Semanales",
+      desc: "Consejos de entrenamiento, nutricion y contenido exclusivo en tu email.",
+      cta: "Suscribirse",
+      privacy: "Respetamos tu privacidad. Puedes cancelar cuando quieras."
+    }
+  });
+  Object.assign(DICTS.es.faq, {
+    subtitle: "Todo lo que necesitas saber sobre nuestro coaching online",
+    viewall: "Ver Todas las FAQs"
+  });
+  Object.assign(DICTS.es.footer, {
+    bio_line1: "Coaching Online - Fitness, nutricion y responsabilidad con base en evidencia.",
+    bio_line2: "Transforma tu cuerpo de forma sostenible.",
+    book_consultation: "Reservar Consulta Gratis",
+    dm_instagram: "Enviar DM en Instagram",
+    links: "Enlaces",
+    results: "Resultados",
+    apply_trainer: "Postularse como Trainer",
+    resources: "Recursos",
+    download_guide: "Descargar Guia (PDF)",
+    book_call: "Reservar Llamada",
+    follow_us: "Siguenos",
+    newsletter: "Newsletter",
+    email_placeholder: "Email",
+    newsletter_consent: "Quiero recibir novedades y consejos de Garcia Builder.",
+    subscribe: "Suscribirse",
+    newsletter_privacy: "Puedes cancelar en cualquier momento y tu informacion sera tratada segun nuestra Politica de Privacidad.",
+    cookie_preferences: "Preferencias de Cookies",
+    privacy_policy: "Politica de Privacidad",
+    terms: "Terminos y Condiciones",
+    client_login: "Login de Cliente",
+    create_account: "Crear Cuenta",
+    disclaimer: "*AVISO: Los resultados pueden variar. Los resultados dependen de circunstancias individuales. Los plazos no estan garantizados. La fuerza de voluntad siempre es necesaria!"
+  });
+
   const KEY = "gb_lang";
   const clamp = (l) => (l==="en"||l==="pt"||l==="es") ? l : "en";
   const LANGUAGE_SELECT_IDS = ['lang-select', 'lang-select-navbar', 'lang-select-footer'];
@@ -1880,7 +2213,7 @@
     });
   }
 
-  const getByPath = (obj, path) => path.split('.').reduce((o,k)=> (o && o[k] !== undefined) ? o[k] : undefined, obj);
+  const getByPath = readPath;
   const t = (lang, key, fallback) => {
     const v1 = getByPath(DICTS[lang]||{}, key);
     if (v1 !== undefined) return v1;

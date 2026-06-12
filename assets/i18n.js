@@ -1502,7 +1502,7 @@
         video: {
           title: "Cómo trabajamos técnica y tempo",
           subtitle: "Mira un resumen rápido de las indicaciones, tempos y responsabilidad que reciben los clientes dentro de un bloque de entrenamiento Garcia Builder.",
-          point1: "Descubre cómo combinamos tempos y cues para proteger las articulaciones mientras progresamos con las cargas.",
+          point1: "Descubre cómo combinamos tempos e indicaciones para proteger las articulaciones mientras progresamos con las cargas.",
           point2: "Entiende el feedback en tiempo real que reciben los clientes dentro de la app de coaching.",
           point3: "Conoce cómo los check-ins semanales alinean entrenamiento, nutrición y recuperación.",
           cta: "Reserva una sesión estratégica →"
@@ -2063,7 +2063,7 @@
     dm_instagram: "Enviar DM no Instagram",
     links: "Links",
     results: "Resultados",
-    apply_trainer: "Candidatar-se como Trainer",
+    apply_trainer: "Candidatar-se como Treinador",
     resources: "Recursos",
     download_guide: "Baixar Guia (PDF)",
     book_call: "Agendar Chamada",
@@ -2156,7 +2156,7 @@
     dm_instagram: "Enviar DM en Instagram",
     links: "Enlaces",
     results: "Resultados",
-    apply_trainer: "Postularse como Trainer",
+    apply_trainer: "Postularse como Entrenador",
     resources: "Recursos",
     download_guide: "Descargar Guia (PDF)",
     book_call: "Reservar Llamada",
@@ -2177,6 +2177,792 @@
   const KEY = "gb_lang";
   const clamp = (l) => (l==="en"||l==="pt"||l==="es") ? l : "en";
   const LANGUAGE_SELECT_IDS = ['lang-select', 'lang-select-navbar', 'lang-select-footer'];
+  const STATIC_TEXT_TRANSLATIONS = {
+    pt: {
+      "I didn't grow up with perfect conditions. The Air Force was my first coach: 05:00 alarms, inspections, and standards that didn't care about excuses. There I learned that discipline beats mood and that progress is a decision repeated daily. When I moved to London, I carried that mindset into a city where I knew no one. I worked long hours, learned a new rhythm, and rebuilt my life one training session at a time. The gym became my compass; iron gave me structure when everything else was uncertain, and reps became a language I could trust.": "Nao cresci com condicoes perfeitas. A Forca Aerea foi meu primeiro treinador: alarmes as 05:00, inspecoes e padroes que nao aceitavam desculpas. La aprendi que disciplina vence humor e que progresso e uma decisao repetida todos os dias. Quando me mudei para Londres, levei essa mentalidade para uma cidade onde nao conhecia ninguem. Trabalhei longas horas, aprendi um novo ritmo e reconstruí minha vida uma sessao de treino por vez. A academia virou minha bussola; o ferro me deu estrutura quando todo o resto era incerto, e as repeticoes viraram uma linguagem em que eu podia confiar.",
+      "Coaching grew naturally from that path. I studied, earned credentials, and chose to serve on the gym floor - listening, teaching, and leading by example. As a personal trainer and coach, I've helped clients in English, Portuguese and Spanish get stronger, drop fat and move without pain. More than before-and-after pictures, I'm proud of the messages that say \"I'm a different person now.\" My method is simple and relentless: clear training blocks, simple nutrition you can follow, and accountability that respects real life. No hype, no judgment - just the truth and a plan.": "O coaching cresceu naturalmente desse caminho. Estudei, conquistei certificacoes e escolhi servir no chao da academia - ouvindo, ensinando e liderando pelo exemplo. Como personal trainer e coach, ajudei clientes em ingles, portugues e espanhol a ficarem mais fortes, perderem gordura e se moverem sem dor. Mais do que fotos de antes e depois, tenho orgulho das mensagens que dizem \"agora sou uma pessoa diferente\". Meu metodo e simples e firme: blocos de treino claros, nutricao simples que voce consegue seguir e responsabilidade que respeita a vida real. Sem exagero, sem julgamento - apenas verdade e um plano.",
+      "Join Our Coaching Team": "Junte-se ao Nosso Time de Coaches",
+      "Are you a certified trainer passionate about transforming lives? Garcia Builder is expanding our coaching network to help more people achieve their fitness goals with evidence-based methods and genuine accountability.": "Voce e um treinador certificado apaixonado por transformar vidas? O Garcia Builder esta expandindo sua rede de coaching para ajudar mais pessoas a alcancarem seus objetivos fitness com metodos baseados em evidencia e responsabilidade real.",
+      "Professional Standards": "Padroes Profissionais",
+      "Level 3+ qualifications and proven coaching experience required": "Qualificacao Level 3+ e experiencia comprovada em coaching sao necessarias",
+      "Client-Focused": "Foco no Cliente",
+      "Dedicated to real results through sustainable methods": "Dedicado a resultados reais por meio de metodos sustentaveis",
+      "Remote Flexibility": "Flexibilidade Remota",
+      "Work with clients worldwide through our platform": "Trabalhe com clientes no mundo todo pela nossa plataforma",
+      "Apply to Become a Trainer": "Candidatar-se como Treinador",
+      "Stay Connected with Garcia Builder": "Fique Conectado com o Garcia Builder",
+      "Get weekly training tips, nutrition insights, and exclusive content delivered straight to your inbox. Join thousands of people transforming their bodies and building lasting habits.": "Receba dicas semanais de treino, insights de nutricao e conteudo exclusivo direto no seu email. Junte-se a milhares de pessoas transformando o corpo e construindo habitos duradouros.",
+      "What would you like to receive?": "O que voce gostaria de receber?",
+      "Training Tips": "Dicas de Treino",
+      "Nutrition Advice": "Conselhos de Nutricao",
+      "Success Stories": "Historias de Sucesso",
+      "Special Offers": "Ofertas Especiais",
+      "We respect your privacy. Unsubscribe at any time.": "Respeitamos sua privacidade. Cancele quando quiser.",
+      "Book Free Consultation": "Agendar Consulta Gratis",
+      "Book a Free Call": "Agendar Chamada Gratis",
+      "Book a Free Consultation": "Agendar Consulta Gratis",
+      "Book a Call": "Agendar Chamada",
+      "Chat on WhatsApp": "Conversar no WhatsApp",
+      "Programs": "Programas",
+      "Hypertrophy": "Hipertrofia",
+      "Periodized split focused on progressive overload.": "Divisao periodizada focada em sobrecarga progressiva.",
+      "Fat Loss": "Perda de Gordura",
+      "Higher frequency training + simple nutrition targets.": "Treino com maior frequencia + metas simples de nutricao.",
+      "Strength & Conditioning": "Forca e Condicionamento",
+      "Performance-driven cycles with conditioning support.": "Ciclos focados em performance com suporte de condicionamento.",
+      "Frequently Asked Questions": "Perguntas Frequentes",
+      "Get answers about online coaching, plans, nutrition, results, and methodology": "Tire suas duvidas sobre coaching online, planos, nutricao, resultados e metodologia",
+      "Common Questions": "Perguntas Comuns",
+      "Find answers to everything you need to know about Garcia Builder coaching": "Encontre respostas para tudo que voce precisa saber sobre o coaching Garcia Builder",
+      "Real Results, Real People": "Resultados Reais, Pessoas Reais",
+      "Transformations": "Transformacoes",
+      "Success Rate": "Taxa de Sucesso",
+      "Average Rating": "Avaliacao Media",
+      "Countries Served": "Paises Atendidos",
+      "Search testimonials": "Buscar depoimentos",
+      "All Stories": "Todas as Historias",
+      "Weight Loss": "Perda de Peso",
+      "Muscle Gain": "Ganho de Massa",
+      "Body Recomposition": "Recomposicao Corporal",
+      "Health & Wellness": "Saude e Bem-estar",
+      "Performance": "Performance",
+      "Lifestyle": "Estilo de Vida",
+      "Want to share your story?": "Quer compartilhar sua historia?",
+      "We love to feature real client results!": "Adoramos mostrar resultados reais dos clientes!",
+      "Your feedback inspires others and helps us grow. Thank you!": "Seu feedback inspira outras pessoas e nos ajuda a crescer. Obrigado!",
+      "Fitness Blog": "Blog Fitness",
+      "Expert insights on training, nutrition, and lifestyle optimization": "Insights de especialistas sobre treino, nutricao e otimizacao do estilo de vida",
+      "Browse by Category": "Navegue por Categoria",
+      "Find articles that match your fitness goals and interests": "Encontre artigos alinhados aos seus objetivos e interesses fitness",
+      "All Articles": "Todos os Artigos",
+      "Training": "Treino",
+      "Nutrition": "Nutricao",
+      "Rehabilitation": "Reabilitacao",
+      "Mindset": "Mentalidade",
+      "Health": "Saude",
+      "Science": "Ciencia",
+      "Technology": "Tecnologia",
+      "Business": "Negocios",
+      "Read Article": "Ler Artigo",
+      "Privacy Policy": "Politica de Privacidade",
+      "Terms of Service": "Termos de Servico",
+      "Last updated:": "Ultima atualizacao:",
+      "Information We Collect": "Informacoes que Coletamos",
+      "How We Use Information": "Como Usamos as Informacoes",
+      "Data Sharing": "Compartilhamento de Dados",
+      "Your Rights": "Seus Direitos",
+      "Contact": "Contato",
+      "Back to Plans": "Voltar aos Planos",
+      "Contact Support": "Falar com o Suporte",
+      "Verification Error": "Erro de Verificacao",
+      "There was a problem verifying your payment. Please contact us.": "Houve um problema ao verificar seu pagamento. Entre em contato conosco.",
+      "Email Address": "Email",
+      "Your Name": "Seu Nome",
+      "Subscribe": "Assinar",
+      "Apply now": "Candidatar-se agora",
+      "Book an intro call": "Agendar chamada inicial"
+    },
+    es: {
+      "I didn't grow up with perfect conditions. The Air Force was my first coach: 05:00 alarms, inspections, and standards that didn't care about excuses. There I learned that discipline beats mood and that progress is a decision repeated daily. When I moved to London, I carried that mindset into a city where I knew no one. I worked long hours, learned a new rhythm, and rebuilt my life one training session at a time. The gym became my compass; iron gave me structure when everything else was uncertain, and reps became a language I could trust.": "No creci con condiciones perfectas. La Fuerza Aerea fue mi primer entrenador: alarmas a las 05:00, inspecciones y estandares que no aceptaban excusas. Alli aprendi que la disciplina supera al estado de animo y que el progreso es una decision repetida cada dia. Cuando me mude a Londres, lleve esa mentalidad a una ciudad donde no conocia a nadie. Trabaje muchas horas, aprendi un nuevo ritmo y reconstruí mi vida una sesion de entrenamiento a la vez. El gimnasio se volvio mi brujula; el hierro me dio estructura cuando todo lo demas era incierto, y las repeticiones se volvieron un idioma en el que podia confiar.",
+      "Coaching grew naturally from that path. I studied, earned credentials, and chose to serve on the gym floor - listening, teaching, and leading by example. As a personal trainer and coach, I've helped clients in English, Portuguese and Spanish get stronger, drop fat and move without pain. More than before-and-after pictures, I'm proud of the messages that say \"I'm a different person now.\" My method is simple and relentless: clear training blocks, simple nutrition you can follow, and accountability that respects real life. No hype, no judgment - just the truth and a plan.": "El coaching crecio naturalmente desde ese camino. Estudie, obtuve certificaciones y elegi servir en el gimnasio: escuchando, ensenando y liderando con el ejemplo. Como entrenador personal y coach, he ayudado a clientes en ingles, portugues y espanol a ser mas fuertes, perder grasa y moverse sin dolor. Mas que fotos de antes y despues, me enorgullecen los mensajes que dicen \"ahora soy una persona diferente\". Mi metodo es simple y firme: bloques de entrenamiento claros, nutricion sencilla que puedes seguir y responsabilidad que respeta la vida real. Sin exageraciones, sin juicio: solo verdad y un plan.",
+      "Join Our Coaching Team": "Unete a Nuestro Equipo de Coaches",
+      "Are you a certified trainer passionate about transforming lives? Garcia Builder is expanding our coaching network to help more people achieve their fitness goals with evidence-based methods and genuine accountability.": "Eres un entrenador certificado apasionado por transformar vidas? Garcia Builder esta expandiendo su red de coaching para ayudar a mas personas a alcanzar sus objetivos fitness con metodos basados en evidencia y responsabilidad real.",
+      "Professional Standards": "Estandares Profesionales",
+      "Level 3+ qualifications and proven coaching experience required": "Se requiere certificacion Level 3+ y experiencia comprobada en coaching",
+      "Client-Focused": "Enfoque en el Cliente",
+      "Dedicated to real results through sustainable methods": "Dedicado a resultados reales mediante metodos sostenibles",
+      "Remote Flexibility": "Flexibilidad Remota",
+      "Work with clients worldwide through our platform": "Trabaja con clientes de todo el mundo a traves de nuestra plataforma",
+      "Apply to Become a Trainer": "Postularse como Entrenador",
+      "Stay Connected with Garcia Builder": "Mantente Conectado con Garcia Builder",
+      "Get weekly training tips, nutrition insights, and exclusive content delivered straight to your inbox. Join thousands of people transforming their bodies and building lasting habits.": "Recibe consejos semanales de entrenamiento, ideas de nutricion y contenido exclusivo directo en tu email. Unete a miles de personas transformando su cuerpo y creando habitos duraderos.",
+      "What would you like to receive?": "Que te gustaria recibir?",
+      "Training Tips": "Consejos de Entrenamiento",
+      "Nutrition Advice": "Consejos de Nutricion",
+      "Success Stories": "Historias de Exito",
+      "Special Offers": "Ofertas Especiales",
+      "We respect your privacy. Unsubscribe at any time.": "Respetamos tu privacidad. Puedes cancelar cuando quieras.",
+      "Book Free Consultation": "Reservar Consulta Gratis",
+      "Book a Free Call": "Reservar Llamada Gratis",
+      "Book a Free Consultation": "Reservar Consulta Gratis",
+      "Book a Call": "Reservar Llamada",
+      "Chat on WhatsApp": "Hablar por WhatsApp",
+      "Programs": "Programas",
+      "Hypertrophy": "Hipertrofia",
+      "Periodized split focused on progressive overload.": "Division periodizada enfocada en sobrecarga progresiva.",
+      "Fat Loss": "Perdida de Grasa",
+      "Higher frequency training + simple nutrition targets.": "Entrenamiento de mayor frecuencia + metas simples de nutricion.",
+      "Strength & Conditioning": "Fuerza y Condicionamiento",
+      "Performance-driven cycles with conditioning support.": "Ciclos enfocados en rendimiento con soporte de condicionamiento.",
+      "Frequently Asked Questions": "Preguntas Frecuentes",
+      "Get answers about online coaching, plans, nutrition, results, and methodology": "Encuentra respuestas sobre coaching online, planes, nutricion, resultados y metodologia",
+      "Common Questions": "Preguntas Comunes",
+      "Find answers to everything you need to know about Garcia Builder coaching": "Encuentra todo lo que necesitas saber sobre el coaching Garcia Builder",
+      "Real Results, Real People": "Resultados Reales, Personas Reales",
+      "Transformations": "Transformaciones",
+      "Success Rate": "Tasa de Exito",
+      "Average Rating": "Calificacion Media",
+      "Countries Served": "Paises Atendidos",
+      "Search testimonials": "Buscar testimonios",
+      "All Stories": "Todas las Historias",
+      "Weight Loss": "Perdida de Peso",
+      "Muscle Gain": "Ganar Musculo",
+      "Body Recomposition": "Recomposicion Corporal",
+      "Health & Wellness": "Salud y Bienestar",
+      "Performance": "Rendimiento",
+      "Lifestyle": "Estilo de Vida",
+      "Want to share your story?": "Quieres compartir tu historia?",
+      "We love to feature real client results!": "Nos encanta mostrar resultados reales de clientes!",
+      "Your feedback inspires others and helps us grow. Thank you!": "Tu feedback inspira a otros y nos ayuda a crecer. Gracias!",
+      "Fitness Blog": "Blog Fitness",
+      "Expert insights on training, nutrition, and lifestyle optimization": "Ideas de expertos sobre entrenamiento, nutricion y optimizacion del estilo de vida",
+      "Browse by Category": "Explorar por Categoria",
+      "Find articles that match your fitness goals and interests": "Encuentra articulos alineados con tus objetivos e intereses fitness",
+      "All Articles": "Todos los Articulos",
+      "Training": "Entrenamiento",
+      "Nutrition": "Nutricion",
+      "Rehabilitation": "Rehabilitacion",
+      "Mindset": "Mentalidad",
+      "Health": "Salud",
+      "Science": "Ciencia",
+      "Technology": "Tecnologia",
+      "Business": "Negocios",
+      "Read Article": "Leer Articulo",
+      "Privacy Policy": "Politica de Privacidad",
+      "Terms of Service": "Terminos de Servicio",
+      "Last updated:": "Ultima actualizacion:",
+      "Information We Collect": "Informacion que Recopilamos",
+      "How We Use Information": "Como Usamos la Informacion",
+      "Data Sharing": "Compartir Datos",
+      "Your Rights": "Tus Derechos",
+      "Contact": "Contacto",
+      "Back to Plans": "Volver a Planes",
+      "Contact Support": "Contactar Soporte",
+      "Verification Error": "Error de Verificacion",
+      "There was a problem verifying your payment. Please contact us.": "Hubo un problema al verificar tu pago. Contactanos.",
+      "Email Address": "Email",
+      "Your Name": "Tu Nombre",
+      "Subscribe": "Suscribirse",
+      "Apply now": "Postularse ahora",
+      "Book an intro call": "Reservar llamada inicial"
+    }
+  };
+
+  Object.assign(STATIC_TEXT_TRANSLATIONS.pt, {
+    "Transforming bodies and lives with science-based coaching, accountability, and real results. Online coaching for busy professionals.": "Transformando corpos e vidas com coaching baseado em ciência, responsabilidade e resultados reais. Coaching online para profissionais ocupados.",
+    "Nutrition for Fat Loss": "Nutrição para Perda de Gordura",
+    "Data Deletion": "Exclusão de Dados",
+    "Apply": "Candidatar-se",
+    "Privacy": "Privacidade",
+    "Terms": "Termos",
+    "Free Guide": "Guia Grátis",
+    "Contact Form": "Formulário de Contato",
+    "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.": "Coaching online para transformação real. Treino baseado em evidência, nutrição personalizada e acompanhamento 1:1. Resultados em 8-12 semanas.",
+    "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8â€“12 weeks.": "Coaching online para transformação real. Treino baseado em evidência, nutrição personalizada e acompanhamento 1:1. Resultados em 8-12 semanas.",
+    "Get tips, recipes, and exclusive offers. No spam.": "Receba dicas, receitas e ofertas exclusivas. Sem spam.",
+    "View All Articles on Trainerize": "Ver todos os artigos no Trainerize",
+    "Join Newsletter": "Entrar na Newsletter",
+    "Weekly Training Tips": "Dicas Semanais de Treino",
+    "Nutrition Insights": "Insights de Nutrição",
+    "Exclusive Offers": "Ofertas Exclusivas",
+    "No spam, ever. Unsubscribe at any time with one click.": "Sem spam. Cancele a qualquer momento com um clique.",
+    "Are You a Personal Trainer?": "Você é Personal Trainer?",
+    "Client Transformations": "Transformações de Clientes",
+    "Real people. Real results. See what's possible with evidence-based coaching.": "Pessoas reais. Resultados reais. Veja o que é possível com coaching baseado em evidência.",
+    "Clients Transformed": "Clientes Transformados",
+    "Average Weeks": "Média de Semanas",
+    "Success Rate (%)": "Taxa de Sucesso (%)",
+    "Avg Kg Lost": "Média de Kg Perdidos",
+    "All Transformations": "Todas as Transformações",
+    "Strength": "Força",
+    "Endurance": "Resistência",
+    "kg Lost": "kg Perdidos",
+    "Years Old": "Anos",
+    "Weeks": "Semanas",
+    "Months": "Meses",
+    "Days": "Dias",
+    "Body Fat": "Gordura Corporal",
+    "Muscle": "Músculo",
+    "Mass": "Massa",
+    "9kg Lost · +3kg Lean": "9kg Perdidos · +3kg Magros",
+    "15kg Lost in 6m": "15kg Perdidos em 6m",
+    "-20% Body Fat": "-20% Gordura Corporal",
+    "20kg Lost": "20kg Perdidos",
+    "-8% BF + Muscle": "-8% GC + Músculo",
+    "13kg Lost": "13kg Perdidos",
+    "8kg Lost": "8kg Perdidos",
+    "8kg Lost + Muscle": "8kg Perdidos + Músculo",
+    "6kg Lost +5% Muscle": "6kg Perdidos +5% Músculo",
+    "5kg Lost in 8w": "5kg Perdidos em 8s",
+    "10kg Lost at 55": "10kg Perdidos aos 55",
+    "4kg Lost in 8w": "4kg Perdidos em 8s",
+    "4kg Lost + Muscle": "4kg Perdidos + Músculo",
+    "5kg in 20d": "5kg em 20d",
+    "10kg Lost": "10kg Perdidos",
+    "5.5kg in 20d": "5,5kg em 20d",
+    "12 Weeks": "12 Semanas",
+    "6 Months": "6 Meses",
+    "14 Months": "14 Meses",
+    "24 Months": "24 Meses",
+    "16 Weeks": "16 Semanas",
+    "18 Weeks": "18 Semanas",
+    "8 Weeks": "8 Semanas",
+    "1 Year": "1 Ano",
+    "6 Weeks": "6 Semanas",
+    "20 Days": "20 Dias",
+    "\"Conrad balanced consulting travel with precision coaching — 9kg fat loss, stronger shoulders and visible definition in just 12 weeks.\"": "\"Conrad conciliou viagens de consultoria com coaching preciso: 9kg de gordura a menos, ombros mais fortes e definição visível em apenas 12 semanas.\"",
+    "\"Corporate schedule, two kids, zero extremes. Paulo stayed consistent for six months and dropped 15kg while rebuilding energy.\"": "\"Rotina corporativa, dois filhos, zero extremos. Paulo manteve constância por seis meses e perdeu 15kg enquanto recuperava energia.\"",
+    "\"University athlete who stayed in the program for 14 months, dropping 20% body fat and adding lean strength in the process.\"": "\"Atleta universitário que ficou 14 meses no programa, reduziu 20% de gordura corporal e ganhou força magra no processo.\"",
+    "\"Sofia rebuilt habits across two years - steady fat loss, better sleep, and a confident return to strength training.\"": "\"Sofia reconstruiu hábitos ao longo de dois anos: perda de gordura constante, sono melhor e retorno confiante ao treino de força.\"",
+    "\"A structured 16-week block sharpened Hugo's conditioning, reduced body fat and rebuilt confidence under the bar.\"": "\"Um bloco estruturado de 16 semanas melhorou o condicionamento de Hugo, reduziu gordura corporal e reconstruiu confiança na barra.\"",
+    "\"Light strength work, daily walks and smart nutrition helped Maria feel mobile again while dropping 13kg.\"": "\"Treino leve de força, caminhadas diárias e nutrição inteligente ajudaram Maria a se mover melhor enquanto perdia 13kg.\"",
+    "\"Travel-heavy consultant turned routines around in 12 weeks, cutting 8kg and restoring training consistency.\"": "\"Mesmo viajando muito, este consultor virou a rotina em 12 semanas, perdeu 8kg e recuperou consistência no treino.\"",
+    "\"Body recomposition at its finest! Lost fat while building strength and muscle in just 18 weeks.\"": "\"Recomposição corporal no melhor estilo: perdeu gordura enquanto ganhava força e músculo em apenas 18 semanas.\"",
+    "\"The perfect combination! Lost 6kg of fat while gaining 5% muscle mass in just 12 weeks.\"": "\"A combinação perfeita: perdeu 6kg de gordura e ganhou 5% de massa muscular em apenas 12 semanas.\"",
+    "\"Short timeframe, amazing results! 5kg down in 8 weeks with a program that respected my busy mom life.\"": "\"Prazo curto, resultado incrível: 5kg a menos em 8 semanas com um programa que respeitou minha rotina de mãe ocupada.\"",
+    "\"Slow and steady at 55! One year of consistent habits led to a 10kg transformation and renewed energy.\"": "\"Constância aos 55: um ano de hábitos consistentes levou a uma transformação de 10kg e energia renovada.\"",
+    "\"Quick results that last! 5kg transformation in 8 weeks with sustainable habits that continue to work.\"": "\"Resultados rápidos que duram: transformação de 5kg em 8 semanas com hábitos sustentáveis que continuam funcionando.\"",
+    "\"College student success! Managed studies and training to achieve 4kg fat loss in 8 weeks.\"": "\"Sucesso de estudante universitário: conciliou estudos e treino para perder 4kg de gordura em 8 semanas.\"",
+    "\"Camila committed to dialed-in nutrition and short, purposeful sessions to shed 4kg in six weeks while staying strong.\"": "\"Camila se comprometeu com nutrição ajustada e sessões curtas e focadas para perder 4kg em seis semanas mantendo a força.\"",
+    "\"With a tight 20-day timeline, Renan tightened macros, upped steps and kept strength work heavy to make weight while staying explosive.\"": "\"Com apenas 20 dias, Renan ajustou macros, aumentou passos e manteve o treino pesado para bater o peso sem perder explosão.\"",
+    "\"Helena leaned on accountability for a full year - 8kg lost, muscle definition gained and energy levels way up.\"": "\"Helena contou com acompanhamento por um ano inteiro: 8kg a menos, mais definição muscular e energia muito maior.\"",
+    "\"Bianca followed a tight 12-week schedule - protein targets, steps and weekly check-ins to remove 10kg and feel athletic again.\"": "\"Bianca seguiu um plano firme de 12 semanas: metas de proteína, passos e check-ins semanais para perder 10kg e voltar a se sentir atlética.\"",
+    "\"Gabriel executed a precise 16-week cut - 10kg down while keeping strength numbers climbing each block.\"": "\"Gabriel executou um cutting preciso de 16 semanas: 10kg a menos enquanto os números de força continuavam subindo a cada bloco.\"",
+    "\"Short deadline, big discipline - Aline followed a tight daily plan and dropped 5.5kg in 20 days to kickstart her journey.\"": "\"Prazo curto, muita disciplina: Aline seguiu um plano diário firme e perdeu 5,5kg em 20 dias para iniciar sua jornada.\"",
+    "Load More Transformations": "Carregar Mais Transformações",
+    "Client Transformation": "Transformação do Cliente",
+    "Transformation Story": "História da Transformação",
+    "Key Results": "Resultados Principais",
+    "Start Your Transformation": "Comece Sua Transformação",
+    "Close": "Fechar",
+    "Get Your Own Transformation": "Comece Sua Própria Transformação",
+    "Inspired by these results? Join our newsletter to get weekly training tips, nutrition insights, and the exact strategies that helped these clients achieve their transformations.": "Inspirado por esses resultados? Entre na newsletter para receber dicas semanais de treino, insights de nutrição e as estratégias que ajudaram esses clientes a conquistarem suas transformações.",
+    "Start My Journey": "Começar Minha Jornada",
+    "Weekly Training Plans": "Planos Semanais de Treino",
+    "Progress Tracking Tips": "Dicas de Acompanhamento de Progresso",
+    "Community Support": "Suporte da Comunidade",
+    "Success Strategies": "Estratégias de Sucesso",
+    "Join thousands transforming their bodies. No spam, unsubscribe anytime.": "Junte-se a milhares transformando seus corpos. Sem spam, cancele quando quiser.",
+    "The Ultimate Guide to Achieving 100 Push-ups": "Guia Definitivo para Chegar a 100 Flexões",
+    "A realistic 20-week plan to build strength progressively and reach the milestone of 100 consecutive push-ups.": "Um plano realista de 20 semanas para construir força progressivamente e chegar a 100 flexões consecutivas.",
+    "Training and Nutrition in Diabetes Management": "Treino e Nutrição no Controle do Diabetes",
+    "Evidence-based strategies for using exercise and proper nutrition to manage diabetes effectively.": "Estratégias baseadas em evidência para usar exercício e nutrição adequada no controle eficaz do diabetes.",
+    "10 Myths and Facts About Nutrition and Healthy Eating": "10 Mitos e Verdades Sobre Nutrição e Alimentação Saudável",
+    "Debunking common nutrition misconceptions and revealing the science-backed truth about healthy eating.": "Desmistificando equívocos comuns de nutrição e mostrando a verdade baseada em ciência sobre alimentação saudável.",
+    "The Vital Role of Nutrition in Weight Loss": "O Papel Vital da Nutrição na Perda de Peso",
+    "Understanding how proper nutrition forms the foundation of sustainable weight loss and body composition changes.": "Entenda como a nutrição adequada forma a base da perda de peso sustentável e das mudanças na composição corporal.",
+    "Motivation for Your Weight Loss Journey": "Motivação para Sua Jornada de Perda de Peso",
+    "Practical strategies to maintain motivation and overcome challenges during your transformation process.": "Estratégias práticas para manter a motivação e superar desafios durante o processo de transformação.",
+    "The Link Between Exercise and Cognitive Function": "A Ligação Entre Exercício e Função Cognitiva",
+    "Exploring the powerful connection between physical exercise and mental performance, focus, and brain health.": "Explore a conexão poderosa entre exercício físico, desempenho mental, foco e saúde cerebral.",
+    "Achieving Body Strength and Health on a Vegan/Vegetarian Diet": "Força e Saúde com Dieta Vegana/Vegetariana",
+    "Comprehensive guide to achieving optimal body strength and health while following plant-based nutrition principles.": "Guia completo para alcançar força e saúde seguindo princípios de nutrição baseada em plantas.",
+    "Conquer Lower Back Pain": "Supere a Dor Lombar",
+    "Proven strategies and evidence-based approaches for lasting relief from lower back pain through targeted exercises.": "Estratégias comprovadas e abordagens baseadas em evidência para aliviar a dor lombar com exercícios direcionados.",
+    "Atomic Habits: Small Changes, Big Results": "Hábitos Atômicos: Pequenas Mudanças, Grandes Resultados",
+    "Transform your health and fitness through the power of tiny habits that compound into extraordinary results.": "Transforme sua saúde e fitness com pequenos hábitos que se acumulam em resultados extraordinários.",
+    "Achieving Fitness Goals on a Budget": "Alcançando Metas Fitness com Orçamento Limitado",
+    "Smart strategies for eating healthy and building strength without breaking the bank. Affordable nutrition made simple.": "Estratégias inteligentes para comer bem e ganhar força sem gastar demais. Nutrição acessível e simples.",
+    "The Power of Group Fitness": "O Poder do Treino em Grupo",
+    "Discover how training with others can accelerate your results through motivation, accountability, and community support.": "Descubra como treinar com outras pessoas pode acelerar resultados com motivação, responsabilidade e suporte.",
+    "Leveraging AI Technology in Fitness": "Usando Tecnologia de IA no Fitness",
+    "Explore how artificial intelligence is revolutionizing personal training and transforming fitness experiences.": "Veja como a inteligência artificial está revolucionando o personal training e transformando experiências fitness.",
+    "Exercise Essentials for Stroke Recovery": "Exercícios Essenciais para Recuperação Pós-AVC",
+    "Evidence-based exercise protocols to support recovery and improve quality of life after stroke.": "Protocolos de exercício baseados em evidência para apoiar a recuperação e melhorar a qualidade de vida após AVC.",
+    "Your First Bodybuilding Competition": "Sua Primeira Competição de Fisiculturismo",
+    "Complete guide to preparing for your first bodybuilding competition, from training to posing to mindset.": "Guia completo para preparar sua primeira competição de fisiculturismo, do treino à pose e mentalidade.",
+    "Creatine: The Ultimate Performance Supplement": "Creatina: O Suplemento Definitivo de Performance",
+    "Science-backed insights on creatine supplementation for enhanced strength, power, and recovery.": "Insights científicos sobre creatina para melhorar força, potência e recuperação.",
+    "Building Your Online Fitness Business": "Construindo Seu Negócio Fitness Online",
+    "Essential strategies for personal trainers to build and scale a successful online fitness business.": "Estratégias essenciais para personal trainers criarem e escalarem um negócio fitness online de sucesso.",
+    "Developing a David Goggins Mindset": "Desenvolvendo uma Mentalidade David Goggins",
+    "Unlock your potential by adopting the mental toughness and resilience principles of David Goggins.": "Desbloqueie seu potencial adotando princípios de força mental e resiliência de David Goggins.",
+    "Overcoming Shoulder Pain and Injury": "Superando Dor e Lesão no Ombro",
+    "Comprehensive approach to preventing and treating shoulder pain through targeted exercises and proper form.": "Abordagem completa para prevenir e tratar dor no ombro com exercícios direcionados e técnica adequada.",
+    "Your First Half Marathon Training Plan": "Seu Primeiro Plano de Treino para Meia Maratona",
+    "Complete 12-week training plan to safely build endurance and successfully complete your first half marathon.": "Plano completo de 12 semanas para construir resistência com segurança e completar sua primeira meia maratona.",
+    "HIIT: Maximum Results, Minimum Time": "HIIT: Máximo Resultado, Mínimo Tempo",
+    "Efficient high-intensity interval training protocols for busy professionals who want maximum fitness results.": "Protocolos eficientes de treino intervalado de alta intensidade para profissionais ocupados que querem máximo resultado.",
+    "Top 5 Mistakes Beginners Make in the Gym": "Top 5 Erros que Iniciantes Cometem na Academia",
+    "Beginner’s Guide to Nutrition for Fat Loss": "Guia de Nutrição para Iniciantes na Perda de Gordura",
+    "How to Stay Consistent With Fitness: Proven Strategies": "Como Manter Consistência no Fitness: Estratégias Comprovadas",
+    "[Placeholder for introduction about common gym mistakes.]": "[Introdução sobre erros comuns de iniciantes na academia.]",
+    "[Placeholder for content on warm-ups.]": "[Conteúdo sobre aquecimentos.]",
+    "[Placeholder for content on form and technique.]": "[Conteúdo sobre forma e técnica.]",
+    "[Placeholder for content on training volume and progression.]": "[Conteúdo sobre volume de treino e progressão.]",
+    "[Placeholder for content on rest and recovery.]": "[Conteúdo sobre descanso e recuperação.]",
+    "[Placeholder for content on nutrition basics.]": "[Conteúdo sobre princípios básicos de nutrição.]",
+    "[Placeholder for conclusion and call to action.]": "[Conclusão e chamada para ação.]",
+    "[Placeholder for introduction about nutrition basics for fat loss.]": "[Introdução sobre princípios de nutrição para perda de gordura.]",
+    "[Placeholder for content on calorie deficit.]": "[Conteúdo sobre déficit calórico.]",
+    "[Placeholder for content on protein intake.]": "[Conteúdo sobre ingestão de proteína.]",
+    "[Placeholder for content on meal planning.]": "[Conteúdo sobre planejamento de refeições.]",
+    "[Placeholder for content on common mistakes.]": "[Conteúdo sobre erros comuns.]",
+    "[Placeholder for introduction about the importance of consistency in fitness.]": "[Introdução sobre a importância da consistência no fitness.]",
+    "[Placeholder for content on goal setting.]": "[Conteúdo sobre definição de metas.]",
+    "[Placeholder for content on habit building.]": "[Conteúdo sobre criação de hábitos.]",
+    "[Placeholder for content on tracking progress.]": "[Conteúdo sobre acompanhamento de progresso.]",
+    "[Placeholder for content on coaching and community support.]": "[Conteúdo sobre coaching e suporte da comunidade.]",
+    "This Privacy Policy explains how Garcia Builder collects, uses, and protects your information.": "Esta Política de Privacidade explica como o Garcia Builder coleta, usa e protege suas informações.",
+    "Account details such as email and name": "Detalhes da conta, como email e nome",
+    "Subscription and payment metadata processed by Stripe": "Metadados de assinatura e pagamento processados pela Stripe",
+    "Usage and analytics data to improve our services": "Dados de uso e análise para melhorar nossos serviços",
+    "To provide coaching services and manage subscriptions": "Para fornecer serviços de coaching e gerenciar assinaturas",
+    "To communicate updates and respond to support requests": "Para comunicar atualizações e responder solicitações de suporte",
+    "To improve and secure our platform": "Para melhorar e proteger nossa plataforma",
+    "We do not sell personal data. We share data with processors (e.g., Stripe, Supabase) only as necessary to provide our services.": "Não vendemos dados pessoais. Compartilhamos dados com processadores (ex.: Stripe, Supabase) apenas quando necessário para fornecer nossos serviços.",
+    "You may request access, correction, or deletion of your data by contacting support@garciabuilder.fitness.": "Você pode solicitar acesso, correção ou exclusão dos seus dados entrando em contato com support@garciabuilder.fitness.",
+    "Welcome to Garcia Builder. By accessing or using our website and services, you agree to these Terms of Service.": "Bem-vindo ao Garcia Builder. Ao acessar ou usar nosso site e serviços, você concorda com estes Termos de Serviço.",
+    "1. Services": "1. Serviços",
+    "We provide online coaching programs, training plans, and related content. Some services require a paid subscription processed by Stripe.": "Fornecemos programas de coaching online, planos de treino e conteúdo relacionado. Alguns serviços exigem assinatura paga processada pela Stripe.",
+    "2. Accounts": "2. Contas",
+    "You are responsible for maintaining the confidentiality of your account and for all activities under your account.": "Você é responsável por manter a confidencialidade da sua conta e por todas as atividades realizadas nela.",
+    "3. Subscriptions & Billing": "3. Assinaturas e Cobrança",
+    "Subscriptions renew automatically each billing cycle unless cancelled. You can manage your subscription via the receipt email or by contacting support.": "As assinaturas renovam automaticamente a cada ciclo de cobrança, salvo cancelamento. Você pode gerenciar sua assinatura pelo email do recibo ou entrando em contato com o suporte.",
+    "4. Refunds": "4. Reembolsos",
+    "Refund eligibility is evaluated case-by-case. Contact support within 14 days for assistance.": "A elegibilidade para reembolso é avaliada caso a caso. Entre em contato com o suporte em até 14 dias para ajuda.",
+    "5. Acceptable Use": "5. Uso Aceitável",
+    "You agree not to misuse our services or attempt to access them using a method other than the interface we provide.": "Você concorda em não usar nossos serviços indevidamente nem tentar acessá-los por métodos diferentes da interface que fornecemos.",
+    "6. Privacy": "6. Privacidade",
+    "See our": "Veja nossa",
+    "for how we handle your information.": "para entender como tratamos suas informações.",
+    "7. Changes": "7. Alterações",
+    "We may update these Terms. Material changes will be posted here with an updated date.": "Podemos atualizar estes Termos. Alterações importantes serão publicadas aqui com a data atualizada.",
+    "8. Contact": "8. Contato",
+    "Coach with Garcia Builder": "Coach no Garcia Builder",
+    "Become a Garcia Builder Trainer": "Torne-se Treinador Garcia Builder",
+    "Join a global roster of expert coaches who combine evidence-based programming, compassionate accountability and cinematic delivery to transform lives in 12 weeks or less.": "Entre para um time global de coaches especialistas que unem programação baseada em evidência, acompanhamento humano e entrega premium para transformar vidas em 12 semanas ou menos.",
+    "Proven systems": "Sistemas comprovados",
+    "Curated client leads": "Leads qualificados de clientes",
+    "All-in-one platform": "Plataforma completa",
+    "Active online coaching clients managed in one platform.": "Clientes ativos de coaching online gerenciados em uma só plataforma.",
+    "Average client retention increase after 90 days with our check-in rhythm.": "Aumento médio de retenção de clientes após 90 dias com nosso ritmo de check-ins.",
+    "Weekly admin time saved through automated reporting & onboarding flows.": "Tempo administrativo semanal economizado com relatórios e onboarding automatizados.",
+    "Lead engine included": "Motor de leads incluído",
+    "Receive qualified prospects from our campaigns plus templates to nurture your own audience.": "Receba prospects qualificados das nossas campanhas e templates para nutrir sua própria audiência.",
+    "Coaching playbooks": "Playbooks de coaching",
+    "Plug into proven check-in scripts, training blocks and behaviour frameworks that keep clients engaged.": "Use scripts de check-in, blocos de treino e frameworks comportamentais comprovados para manter clientes engajados.",
+    "Global reach": "Alcance global",
+    "Coach multilingual clients across Europe, the UK and Brazil with built-in localisation and translation support.": "Atenda clientes multilíngues na Europa, Reino Unido e Brasil com suporte integrado de localização e tradução.",
+    "Operate like a modern coaching studio": "Opere como um estúdio moderno de coaching",
+    "Your expertise paired with our infrastructure means clients experience world-class service from the first message to their final transformation photo.": "Sua experiência combinada com nossa infraestrutura entrega uma experiência de alto nível do primeiro contato à foto final de transformação.",
+    "Client relationship OS": "Sistema de relacionamento com clientes",
+    "Centralised client dashboards with macros, photos, check-ins and schedulingno more spreadsheets.": "Painéis centralizados com macros, fotos, check-ins e agenda; sem planilhas espalhadas.",
+    "Live accountability": "Responsabilidade em tempo real",
+    "In-app messaging, automated nudges and templated playbooks keep every client seen and supported.": "Mensagens no app, lembretes automáticos e playbooks prontos mantêm cada cliente acompanhado e apoiado.",
+    "Strategic mentorship": "Mentoria estratégica",
+    "Monthly coaching labs, business reviews and marketing support to scale sustainably.": "Labs mensais de coaching, revisões de negócio e suporte de marketing para escalar de forma sustentável.",
+    "Tools youll plug into day one": "Ferramentas para usar desde o primeiro dia",
+    "Every Garcia Builder trainer gains access to the same stack that powers our flagship transformation program.": "Todo treinador Garcia Builder acessa o mesmo stack que sustenta nosso programa principal de transformação.",
+    "Program design suite": "Suite de design de programas",
+    "Video exercise library and templated periodisation blocks.": "Biblioteca de exercícios em vídeo e blocos de periodização prontos.",
+    "Automated macro calculators with cultural meal examples.": "Calculadoras automáticas de macros com exemplos de refeições culturais.",
+    "Business cockpit": "Painel de negócios",
+    "Revenue tracking, renewal prompts and churn predictions.": "Acompanhamento de receita, lembretes de renovação e previsões de churn.",
+    "Marketing asset vault, sales scripts and launch calendars.": "Biblioteca de ativos de marketing, scripts de venda e calendários de lançamento.",
+    "Four steps to start coaching": "Quatro passos para começar a treinar clientes",
+    "We review every application within 48 hours and provide feedback whether youre approved or not.": "Revisamos cada candidatura em até 48 horas e enviamos feedback, seja ela aprovada ou não.",
+    "Complete application": "Complete a candidatura",
+    "Share your experience, coaching style and ideal client avatar.": "Compartilhe sua experiência, estilo de coaching e perfil de cliente ideal.",
+    "Upload credentials": "Envie credenciais",
+    "Attach certifications or proof of practical experience.": "Anexe certificações ou provas de experiência prática.",
+    "Panel review": "Revisão do painel",
+    "Our senior coaches evaluate fit, quality and availability.": "Nossos coaches seniores avaliam compatibilidade, qualidade e disponibilidade.",
+    "Onboard & coach": "Integre-se e atenda",
+    "Get access to the platform, mentorship and your first clients.": "Receba acesso à plataforma, mentoria e seus primeiros clientes.",
+    "What we look for": "O que procuramos",
+    "2+ years coaching experience (online or in-person).": "2+ anos de experiência em coaching (online ou presencial).",
+    "Evidence-based approach with clear transformation outcomes.": "Abordagem baseada em evidência com resultados claros de transformação.",
+    "Strong communication skills and client empathy.": "Boa comunicação e empatia com clientes.",
+    "Availability for weekly check-ins and monthly team reviews.": "Disponibilidade para check-ins semanais e revisões mensais de equipe.",
+    "Nice to have": "Diferenciais",
+    "Certifications (NASM, ACE, ISSA, ACSM or equivalent).": "Certificações (NASM, ACE, ISSA, ACSM ou equivalente).",
+    "Nutrition certifications or experience with meal planning.": "Certificações em nutrição ou experiência com planejamento alimentar.",
+    "Ability to coach in English plus Portuguese or Spanish.": "Capacidade de atender em inglês e também português ou espanhol.",
+    "Comfortable on camera for weekly Loom/video check-ins.": "Conforto em vídeo para check-ins semanais via Loom ou similar.",
+    "Submit your profile": "Envie seu perfil",
+    "Trainer application": "Candidatura de treinador",
+    "Tell us about your coaching craft. Fields marked with * are required.": "Conte sobre sua prática de coaching. Campos com * são obrigatórios.",
+    "Review within 2448 h": "Revisão em 24-48h",
+    "Uploads optional but recommended": "Uploads opcionais, mas recomendados",
+    "Basic information": "Informações básicas",
+    "Full name *": "Nome completo *",
+    "Email *": "Email *",
+    "Phone *": "Telefone *",
+    "Years of experience *": "Anos de experiência *",
+    "Select experience": "Selecione a experiência",
+    "Specialisations": "Especializações",
+    "Select all the domains you actively coach.": "Selecione todas as áreas em que você atende ativamente.",
+    "Weight loss & recomposition": "Perda de peso e recomposição",
+    "Muscle building": "Ganho de massa",
+    "Strength training": "Treino de força",
+    "Cardio & conditioning": "Cardio e condicionamento",
+    "Mobility / yoga / pilates": "Mobilidade / yoga / pilates",
+    "Sport-specific prep": "Preparação esportiva específica",
+    "Nutrition coaching": "Coaching de nutrição",
+    "Rehab / corrective work": "Reabilitação / trabalho corretivo",
+    "Senior fitness": "Fitness para idosos",
+    "Certifications & philosophy": "Certificações e filosofia",
+    "List your certifications *": "Liste suas certificações *",
+    "Tell us about your approach *": "Conte sobre sua abordagem *",
+    "Upload certifications": "Enviar certificações",
+    "Upload certification documents": "Enviar documentos de certificação",
+    "Click to select or drag & drop PDF, JPG, PNG Max 10MB each": "Clique para selecionar ou arraste PDF, JPG, PNG. Máx. 10MB cada",
+    "I agree to the": "Concordo com os",
+    "and": "e",
+    "Trainer Agreement": "Acordo do Treinador",
+    "Submit application": "Enviar candidatura",
+    "Lets transform clients together": "Vamos transformar clientes juntos",
+    "Submit your application and our coaching panel will reach out within two business days. The next Garcia Builder cohort launches soonsecure your spot on the roster.": "Envie sua candidatura e nosso painel de coaches entrará em contato em até dois dias úteis. A próxima turma Garcia Builder começa em breve; garanta seu lugar no time.",
+    "Start application": "Iniciar candidatura",
+    "Email the team": "Enviar email para a equipe",
+    "Login required": "Login necessário",
+    "Create a free account or login to submit your trainer application and track the status.": "Crie uma conta grátis ou faça login para enviar sua candidatura e acompanhar o status.",
+    "Your First Workout": "Seu Primeiro Treino",
+    "A simple, effective Day 1 full-body session to start today. No app required.": "Uma sessão simples e eficaz de corpo inteiro para começar hoje. Não precisa de app.",
+    "Estimated time: 35–45 minutes • Equipment: bodyweight or light dumbbells": "Tempo estimado: 35-45 minutos • Equipamento: peso corporal ou halteres leves",
+    "Warm-up (5–7 min)": "Aquecimento (5-7 min)",
+    "2 min brisk walk in place or jump rope": "2 min de caminhada rápida no lugar ou corda",
+    "10 Arm circles forward + 10 back": "10 círculos de braço para frente + 10 para trás",
+    "10 Hip hinges + 10 Bodyweight squats": "10 dobradiças de quadril + 10 agachamentos livres",
+    "30s Plank": "30s de prancha",
+    "Main Circuit — 3 rounds": "Circuito Principal — 3 rodadas",
+    "Squat or Goblet Squat — 12 reps": "Agachamento ou goblet squat — 12 reps",
+    "Push-ups (knees ok) — 8–12 reps": "Flexões (joelhos ok) — 8-12 reps",
+    "Hip bridge — 12–15 reps": "Ponte de quadril — 12-15 reps",
+    "1-arm row (dumbbell/backpack) — 10 reps/side": "Remada unilateral (halter/mochila) — 10 reps/lado",
+    "Dead bug — 8 reps/side": "Dead bug — 8 reps/lado",
+    "Rest — 60–90s": "Descanso — 60-90s",
+    "Finisher (optional)": "Finalizador (opcional)",
+    "5 rounds: 20s fast march/jog + 40s easy pace": "5 rodadas: 20s marcha/corrida rápida + 40s ritmo leve",
+    "Cool down (3–5 min)": "Desaceleração (3-5 min)",
+    "Slow breathing + light stretching for hips, chest and upper back.": "Respiração lenta + alongamento leve para quadris, peito e parte superior das costas.",
+    "Form Cues": "Dicas de Técnica",
+    "Move with control; leave 2 reps “in the tank”.": "Mova com controle; deixe 2 repetições de reserva.",
+    "Spine neutral, heels grounded on squats.": "Coluna neutra e calcanhares firmes nos agachamentos.",
+    "Exhale on effort. Keep shoulders away from ears.": "Expire no esforço. Mantenha os ombros longe das orelhas.",
+    "Next Up": "Próximo Passo",
+    "Book your onboarding consult to personalize your plan and unlock the full Trainerize experience.": "Agende sua consulta inicial para personalizar o plano e liberar a experiência completa no Trainerize.",
+    "Schedule Consult": "Agendar Consulta",
+    "Back": "Voltar",
+    "Log it in the dashboard": "Registrar no dashboard"
+  });
+
+  Object.assign(STATIC_TEXT_TRANSLATIONS.es, {
+    "Transforming bodies and lives with science-based coaching, accountability, and real results. Online coaching for busy professionals.": "Transformando cuerpos y vidas con coaching basado en ciencia, responsabilidad y resultados reales. Coaching online para profesionales ocupados.",
+    "Nutrition for Fat Loss": "Nutrición para Pérdida de Grasa",
+    "Data Deletion": "Eliminación de Datos",
+    "Apply": "Postularse",
+    "Privacy": "Privacidad",
+    "Terms": "Términos",
+    "Free Guide": "Guía Gratis",
+    "Contact Form": "Formulario de Contacto",
+    "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.": "Coaching online para una transformación real. Entrenamiento basado en evidencia, nutrición personalizada y seguimiento 1:1. Resultados en 8-12 semanas.",
+    "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8â€“12 weeks.": "Coaching online para una transformación real. Entrenamiento basado en evidencia, nutrición personalizada y seguimiento 1:1. Resultados en 8-12 semanas.",
+    "Get tips, recipes, and exclusive offers. No spam.": "Recibe consejos, recetas y ofertas exclusivas. Sin spam.",
+    "View All Articles on Trainerize": "Ver todos los artículos en Trainerize",
+    "Join Newsletter": "Unirse al Newsletter",
+    "Weekly Training Tips": "Consejos Semanales de Entrenamiento",
+    "Nutrition Insights": "Ideas de Nutrición",
+    "Exclusive Offers": "Ofertas Exclusivas",
+    "No spam, ever. Unsubscribe at any time with one click.": "Sin spam. Cancela cuando quieras con un clic.",
+    "Are You a Personal Trainer?": "¿Eres Entrenador Personal?",
+    "Client Transformations": "Transformaciones de Clientes",
+    "Real people. Real results. See what's possible with evidence-based coaching.": "Personas reales. Resultados reales. Ve lo que es posible con coaching basado en evidencia.",
+    "Clients Transformed": "Clientes Transformados",
+    "Average Weeks": "Semanas Promedio",
+    "Success Rate (%)": "Tasa de Éxito (%)",
+    "Avg Kg Lost": "Kg Perdidos Promedio",
+    "All Transformations": "Todas las Transformaciones",
+    "Strength": "Fuerza",
+    "Endurance": "Resistencia",
+    "kg Lost": "kg Perdidos",
+    "Years Old": "Años",
+    "Weeks": "Semanas",
+    "Months": "Meses",
+    "Days": "Días",
+    "Body Fat": "Grasa Corporal",
+    "Muscle": "Músculo",
+    "Mass": "Masa",
+    "9kg Lost · +3kg Lean": "9kg Perdidos · +3kg Magros",
+    "15kg Lost in 6m": "15kg Perdidos en 6m",
+    "-20% Body Fat": "-20% Grasa Corporal",
+    "20kg Lost": "20kg Perdidos",
+    "-8% BF + Muscle": "-8% GC + Músculo",
+    "13kg Lost": "13kg Perdidos",
+    "8kg Lost": "8kg Perdidos",
+    "8kg Lost + Muscle": "8kg Perdidos + Músculo",
+    "6kg Lost +5% Muscle": "6kg Perdidos +5% Músculo",
+    "5kg Lost in 8w": "5kg Perdidos en 8s",
+    "10kg Lost at 55": "10kg Perdidos a los 55",
+    "4kg Lost in 8w": "4kg Perdidos en 8s",
+    "4kg Lost + Muscle": "4kg Perdidos + Músculo",
+    "5kg in 20d": "5kg en 20d",
+    "10kg Lost": "10kg Perdidos",
+    "5.5kg in 20d": "5,5kg en 20d",
+    "12 Weeks": "12 Semanas",
+    "6 Months": "6 Meses",
+    "14 Months": "14 Meses",
+    "24 Months": "24 Meses",
+    "16 Weeks": "16 Semanas",
+    "18 Weeks": "18 Semanas",
+    "8 Weeks": "8 Semanas",
+    "1 Year": "1 Año",
+    "6 Weeks": "6 Semanas",
+    "20 Days": "20 Días",
+    "\"Conrad balanced consulting travel with precision coaching — 9kg fat loss, stronger shoulders and visible definition in just 12 weeks.\"": "\"Conrad equilibró viajes de consultoría con coaching preciso: 9kg menos de grasa, hombros más fuertes y definición visible en solo 12 semanas.\"",
+    "\"Corporate schedule, two kids, zero extremes. Paulo stayed consistent for six months and dropped 15kg while rebuilding energy.\"": "\"Agenda corporativa, dos hijos, cero extremos. Paulo mantuvo constancia seis meses y perdió 15kg mientras recuperaba energía.\"",
+    "\"University athlete who stayed in the program for 14 months, dropping 20% body fat and adding lean strength in the process.\"": "\"Atleta universitario que permaneció 14 meses en el programa, redujo 20% de grasa corporal y ganó fuerza magra en el proceso.\"",
+    "\"Sofia rebuilt habits across two years - steady fat loss, better sleep, and a confident return to strength training.\"": "\"Sofia reconstruyó hábitos durante dos años: pérdida de grasa constante, mejor sueño y regreso confiado al entrenamiento de fuerza.\"",
+    "\"A structured 16-week block sharpened Hugo's conditioning, reduced body fat and rebuilt confidence under the bar.\"": "\"Un bloque estructurado de 16 semanas mejoró el acondicionamiento de Hugo, redujo grasa corporal y reconstruyó su confianza bajo la barra.\"",
+    "\"Light strength work, daily walks and smart nutrition helped Maria feel mobile again while dropping 13kg.\"": "\"Trabajo ligero de fuerza, caminatas diarias y nutrición inteligente ayudaron a Maria a moverse mejor mientras perdía 13kg.\"",
+    "\"Travel-heavy consultant turned routines around in 12 weeks, cutting 8kg and restoring training consistency.\"": "\"Con muchos viajes de trabajo, este consultor cambió su rutina en 12 semanas, perdió 8kg y recuperó constancia en el entrenamiento.\"",
+    "\"Body recomposition at its finest! Lost fat while building strength and muscle in just 18 weeks.\"": "\"Recomposición corporal en su mejor versión: perdió grasa mientras ganaba fuerza y músculo en solo 18 semanas.\"",
+    "\"The perfect combination! Lost 6kg of fat while gaining 5% muscle mass in just 12 weeks.\"": "\"La combinación perfecta: perdió 6kg de grasa y ganó 5% de masa muscular en solo 12 semanas.\"",
+    "\"Short timeframe, amazing results! 5kg down in 8 weeks with a program that respected my busy mom life.\"": "\"Poco tiempo, resultados increíbles: 5kg menos en 8 semanas con un programa que respetó mi vida de madre ocupada.\"",
+    "\"Slow and steady at 55! One year of consistent habits led to a 10kg transformation and renewed energy.\"": "\"Constancia a los 55: un año de hábitos sostenidos llevó a una transformación de 10kg y energía renovada.\"",
+    "\"Quick results that last! 5kg transformation in 8 weeks with sustainable habits that continue to work.\"": "\"Resultados rápidos que duran: transformación de 5kg en 8 semanas con hábitos sostenibles que siguen funcionando.\"",
+    "\"College student success! Managed studies and training to achieve 4kg fat loss in 8 weeks.\"": "\"Éxito universitario: combinó estudios y entrenamiento para perder 4kg de grasa en 8 semanas.\"",
+    "\"Camila committed to dialed-in nutrition and short, purposeful sessions to shed 4kg in six weeks while staying strong.\"": "\"Camila se comprometió con nutrición ajustada y sesiones cortas y enfocadas para perder 4kg en seis semanas manteniendo la fuerza.\"",
+    "\"With a tight 20-day timeline, Renan tightened macros, upped steps and kept strength work heavy to make weight while staying explosive.\"": "\"Con apenas 20 días, Renan ajustó macros, aumentó pasos y mantuvo el trabajo de fuerza pesado para dar el peso sin perder explosividad.\"",
+    "\"Helena leaned on accountability for a full year - 8kg lost, muscle definition gained and energy levels way up.\"": "\"Helena se apoyó en el seguimiento durante un año completo: 8kg menos, más definición muscular y mucha más energía.\"",
+    "\"Bianca followed a tight 12-week schedule - protein targets, steps and weekly check-ins to remove 10kg and feel athletic again.\"": "\"Bianca siguió un plan firme de 12 semanas: metas de proteína, pasos y check-ins semanales para perder 10kg y sentirse atlética otra vez.\"",
+    "\"Gabriel executed a precise 16-week cut - 10kg down while keeping strength numbers climbing each block.\"": "\"Gabriel ejecutó una definición precisa de 16 semanas: 10kg menos mientras sus números de fuerza seguían subiendo cada bloque.\"",
+    "\"Short deadline, big discipline - Aline followed a tight daily plan and dropped 5.5kg in 20 days to kickstart her journey.\"": "\"Plazo corto, mucha disciplina: Aline siguió un plan diario firme y perdió 5,5kg en 20 días para iniciar su camino.\"",
+    "Load More Transformations": "Cargar Más Transformaciones",
+    "Client Transformation": "Transformación del Cliente",
+    "Transformation Story": "Historia de Transformación",
+    "Key Results": "Resultados Clave",
+    "Start Your Transformation": "Empieza Tu Transformación",
+    "Close": "Cerrar",
+    "Get Your Own Transformation": "Empieza Tu Propia Transformación",
+    "Inspired by these results? Join our newsletter to get weekly training tips, nutrition insights, and the exact strategies that helped these clients achieve their transformations.": "¿Te inspiran estos resultados? Únete al newsletter para recibir consejos semanales de entrenamiento, ideas de nutrición y las estrategias que ayudaron a estos clientes a lograr sus transformaciones.",
+    "Start My Journey": "Empezar Mi Camino",
+    "Weekly Training Plans": "Planes Semanales de Entrenamiento",
+    "Progress Tracking Tips": "Consejos para Seguir el Progreso",
+    "Community Support": "Apoyo de la Comunidad",
+    "Success Strategies": "Estrategias de Éxito",
+    "Join thousands transforming their bodies. No spam, unsubscribe anytime.": "Únete a miles transformando sus cuerpos. Sin spam, cancela cuando quieras.",
+    "The Ultimate Guide to Achieving 100 Push-ups": "Guía Definitiva para Lograr 100 Flexiones",
+    "A realistic 20-week plan to build strength progressively and reach the milestone of 100 consecutive push-ups.": "Un plan realista de 20 semanas para construir fuerza progresivamente y llegar a 100 flexiones consecutivas.",
+    "Training and Nutrition in Diabetes Management": "Entrenamiento y Nutrición en el Manejo de la Diabetes",
+    "Evidence-based strategies for using exercise and proper nutrition to manage diabetes effectively.": "Estrategias basadas en evidencia para usar ejercicio y nutrición adecuada en el manejo eficaz de la diabetes.",
+    "10 Myths and Facts About Nutrition and Healthy Eating": "10 Mitos y Verdades Sobre Nutrición y Alimentación Saludable",
+    "Debunking common nutrition misconceptions and revealing the science-backed truth about healthy eating.": "Desmontando ideas equivocadas sobre nutrición y mostrando la verdad respaldada por ciencia sobre comer saludable.",
+    "The Vital Role of Nutrition in Weight Loss": "El Papel Vital de la Nutrición en la Pérdida de Peso",
+    "Understanding how proper nutrition forms the foundation of sustainable weight loss and body composition changes.": "Entiende cómo una nutrición adecuada forma la base de la pérdida de peso sostenible y los cambios de composición corporal.",
+    "Motivation for Your Weight Loss Journey": "Motivación para Tu Camino de Pérdida de Peso",
+    "Practical strategies to maintain motivation and overcome challenges during your transformation process.": "Estrategias prácticas para mantener la motivación y superar desafíos durante tu proceso de transformación.",
+    "The Link Between Exercise and Cognitive Function": "La Relación Entre Ejercicio y Función Cognitiva",
+    "Exploring the powerful connection between physical exercise and mental performance, focus, and brain health.": "Explora la poderosa conexión entre ejercicio físico, rendimiento mental, enfoque y salud cerebral.",
+    "Achieving Body Strength and Health on a Vegan/Vegetarian Diet": "Fuerza y Salud con una Dieta Vegana/Vegetariana",
+    "Comprehensive guide to achieving optimal body strength and health while following plant-based nutrition principles.": "Guía completa para lograr fuerza y salud siguiendo principios de nutrición basada en plantas.",
+    "Conquer Lower Back Pain": "Supera el Dolor Lumbar",
+    "Proven strategies and evidence-based approaches for lasting relief from lower back pain through targeted exercises.": "Estrategias comprobadas y enfoques basados en evidencia para aliviar el dolor lumbar con ejercicios específicos.",
+    "Atomic Habits: Small Changes, Big Results": "Hábitos Atómicos: Pequeños Cambios, Grandes Resultados",
+    "Transform your health and fitness through the power of tiny habits that compound into extraordinary results.": "Transforma tu salud y fitness con pequeños hábitos que se acumulan en resultados extraordinarios.",
+    "Achieving Fitness Goals on a Budget": "Lograr Metas Fitness con Bajo Presupuesto",
+    "Smart strategies for eating healthy and building strength without breaking the bank. Affordable nutrition made simple.": "Estrategias inteligentes para comer saludable y ganar fuerza sin gastar demasiado. Nutrición accesible y simple.",
+    "The Power of Group Fitness": "El Poder del Entrenamiento en Grupo",
+    "Discover how training with others can accelerate your results through motivation, accountability, and community support.": "Descubre cómo entrenar con otros puede acelerar resultados con motivación, responsabilidad y apoyo comunitario.",
+    "Leveraging AI Technology in Fitness": "Usar Tecnología de IA en Fitness",
+    "Explore how artificial intelligence is revolutionizing personal training and transforming fitness experiences.": "Explora cómo la inteligencia artificial está revolucionando el entrenamiento personal y transformando experiencias fitness.",
+    "Exercise Essentials for Stroke Recovery": "Ejercicios Esenciales para Recuperación Tras un Ictus",
+    "Evidence-based exercise protocols to support recovery and improve quality of life after stroke.": "Protocolos de ejercicio basados en evidencia para apoyar la recuperación y mejorar la calidad de vida después de un ictus.",
+    "Your First Bodybuilding Competition": "Tu Primera Competición de Fisicoculturismo",
+    "Complete guide to preparing for your first bodybuilding competition, from training to posing to mindset.": "Guía completa para preparar tu primera competición de fisicoculturismo, desde entrenamiento hasta poses y mentalidad.",
+    "Creatine: The Ultimate Performance Supplement": "Creatina: El Suplemento Definitivo de Rendimiento",
+    "Science-backed insights on creatine supplementation for enhanced strength, power, and recovery.": "Ideas respaldadas por ciencia sobre creatina para mejorar fuerza, potencia y recuperación.",
+    "Building Your Online Fitness Business": "Construir Tu Negocio Fitness Online",
+    "Essential strategies for personal trainers to build and scale a successful online fitness business.": "Estrategias esenciales para que entrenadores personales construyan y escalen un negocio fitness online exitoso.",
+    "Developing a David Goggins Mindset": "Desarrollar una Mentalidad David Goggins",
+    "Unlock your potential by adopting the mental toughness and resilience principles of David Goggins.": "Desbloquea tu potencial adoptando principios de fortaleza mental y resiliencia de David Goggins.",
+    "Overcoming Shoulder Pain and Injury": "Superar Dolor y Lesión de Hombro",
+    "Comprehensive approach to preventing and treating shoulder pain through targeted exercises and proper form.": "Enfoque completo para prevenir y tratar dolor de hombro con ejercicios específicos y técnica adecuada.",
+    "Your First Half Marathon Training Plan": "Tu Primer Plan de Entrenamiento para Media Maratón",
+    "Complete 12-week training plan to safely build endurance and successfully complete your first half marathon.": "Plan completo de 12 semanas para construir resistencia con seguridad y completar tu primera media maratón.",
+    "HIIT: Maximum Results, Minimum Time": "HIIT: Máximos Resultados, Mínimo Tiempo",
+    "Efficient high-intensity interval training protocols for busy professionals who want maximum fitness results.": "Protocolos eficientes de intervalos de alta intensidad para profesionales ocupados que quieren máximos resultados.",
+    "Top 5 Mistakes Beginners Make in the Gym": "Top 5 Errores que Cometen los Principiantes en el Gimnasio",
+    "Beginner’s Guide to Nutrition for Fat Loss": "Guía de Nutrición para Principiantes en Pérdida de Grasa",
+    "How to Stay Consistent With Fitness: Proven Strategies": "Cómo Mantener la Constancia en Fitness: Estrategias Comprobadas",
+    "[Placeholder for introduction about common gym mistakes.]": "[Introducción sobre errores comunes en el gimnasio.]",
+    "[Placeholder for content on warm-ups.]": "[Contenido sobre calentamientos.]",
+    "[Placeholder for content on form and technique.]": "[Contenido sobre forma y técnica.]",
+    "[Placeholder for content on training volume and progression.]": "[Contenido sobre volumen de entrenamiento y progresión.]",
+    "[Placeholder for content on rest and recovery.]": "[Contenido sobre descanso y recuperación.]",
+    "[Placeholder for content on nutrition basics.]": "[Contenido sobre principios básicos de nutrición.]",
+    "[Placeholder for conclusion and call to action.]": "[Conclusión y llamada a la acción.]",
+    "[Placeholder for introduction about nutrition basics for fat loss.]": "[Introducción sobre principios de nutrición para perder grasa.]",
+    "[Placeholder for content on calorie deficit.]": "[Contenido sobre déficit calórico.]",
+    "[Placeholder for content on protein intake.]": "[Contenido sobre ingesta de proteína.]",
+    "[Placeholder for content on meal planning.]": "[Contenido sobre planificación de comidas.]",
+    "[Placeholder for content on common mistakes.]": "[Contenido sobre errores comunes.]",
+    "[Placeholder for introduction about the importance of consistency in fitness.]": "[Introducción sobre la importancia de la constancia en fitness.]",
+    "[Placeholder for content on goal setting.]": "[Contenido sobre definición de objetivos.]",
+    "[Placeholder for content on habit building.]": "[Contenido sobre creación de hábitos.]",
+    "[Placeholder for content on tracking progress.]": "[Contenido sobre seguimiento del progreso.]",
+    "[Placeholder for content on coaching and community support.]": "[Contenido sobre coaching y apoyo de comunidad.]",
+    "This Privacy Policy explains how Garcia Builder collects, uses, and protects your information.": "Esta Política de Privacidad explica cómo Garcia Builder recopila, usa y protege tu información.",
+    "Account details such as email and name": "Datos de cuenta como email y nombre",
+    "Subscription and payment metadata processed by Stripe": "Metadatos de suscripción y pago procesados por Stripe",
+    "Usage and analytics data to improve our services": "Datos de uso y analítica para mejorar nuestros servicios",
+    "To provide coaching services and manage subscriptions": "Para prestar servicios de coaching y gestionar suscripciones",
+    "To communicate updates and respond to support requests": "Para comunicar actualizaciones y responder solicitudes de soporte",
+    "To improve and secure our platform": "Para mejorar y proteger nuestra plataforma",
+    "We do not sell personal data. We share data with processors (e.g., Stripe, Supabase) only as necessary to provide our services.": "No vendemos datos personales. Compartimos datos con procesadores (p. ej., Stripe, Supabase) solo cuando es necesario para prestar nuestros servicios.",
+    "You may request access, correction, or deletion of your data by contacting support@garciabuilder.fitness.": "Puedes solicitar acceso, corrección o eliminación de tus datos contactando a support@garciabuilder.fitness.",
+    "Welcome to Garcia Builder. By accessing or using our website and services, you agree to these Terms of Service.": "Bienvenido a Garcia Builder. Al acceder o usar nuestro sitio y servicios, aceptas estos Términos de Servicio.",
+    "1. Services": "1. Servicios",
+    "We provide online coaching programs, training plans, and related content. Some services require a paid subscription processed by Stripe.": "Ofrecemos programas de coaching online, planes de entrenamiento y contenido relacionado. Algunos servicios requieren una suscripción pagada procesada por Stripe.",
+    "2. Accounts": "2. Cuentas",
+    "You are responsible for maintaining the confidentiality of your account and for all activities under your account.": "Eres responsable de mantener la confidencialidad de tu cuenta y de todas las actividades realizadas en ella.",
+    "3. Subscriptions & Billing": "3. Suscripciones y Facturación",
+    "Subscriptions renew automatically each billing cycle unless cancelled. You can manage your subscription via the receipt email or by contacting support.": "Las suscripciones se renuevan automáticamente en cada ciclo de facturación salvo cancelación. Puedes gestionarla desde el email del recibo o contactando soporte.",
+    "4. Refunds": "4. Reembolsos",
+    "Refund eligibility is evaluated case-by-case. Contact support within 14 days for assistance.": "La elegibilidad de reembolso se evalúa caso por caso. Contacta soporte dentro de 14 días para recibir ayuda.",
+    "5. Acceptable Use": "5. Uso Aceptable",
+    "You agree not to misuse our services or attempt to access them using a method other than the interface we provide.": "Aceptas no usar indebidamente nuestros servicios ni intentar acceder a ellos mediante métodos distintos a la interfaz que proporcionamos.",
+    "6. Privacy": "6. Privacidad",
+    "See our": "Consulta nuestra",
+    "for how we handle your information.": "para ver cómo manejamos tu información.",
+    "7. Changes": "7. Cambios",
+    "We may update these Terms. Material changes will be posted here with an updated date.": "Podemos actualizar estos Términos. Los cambios importantes se publicarán aquí con una fecha actualizada.",
+    "8. Contact": "8. Contacto",
+    "Coach with Garcia Builder": "Coach en Garcia Builder",
+    "Become a Garcia Builder Trainer": "Conviértete en Entrenador Garcia Builder",
+    "Join a global roster of expert coaches who combine evidence-based programming, compassionate accountability and cinematic delivery to transform lives in 12 weeks or less.": "Únete a un equipo global de coaches expertos que combinan programación basada en evidencia, acompañamiento humano y entrega premium para transformar vidas en 12 semanas o menos.",
+    "Proven systems": "Sistemas comprobados",
+    "Curated client leads": "Leads cualificados de clientes",
+    "All-in-one platform": "Plataforma todo en uno",
+    "Active online coaching clients managed in one platform.": "Clientes activos de coaching online gestionados en una sola plataforma.",
+    "Average client retention increase after 90 days with our check-in rhythm.": "Aumento promedio de retención de clientes después de 90 días con nuestro ritmo de check-ins.",
+    "Weekly admin time saved through automated reporting & onboarding flows.": "Tiempo administrativo semanal ahorrado con reportes y onboarding automatizados.",
+    "Lead engine included": "Motor de leads incluido",
+    "Receive qualified prospects from our campaigns plus templates to nurture your own audience.": "Recibe prospectos cualificados de nuestras campañas y plantillas para nutrir tu propia audiencia.",
+    "Coaching playbooks": "Playbooks de coaching",
+    "Plug into proven check-in scripts, training blocks and behaviour frameworks that keep clients engaged.": "Usa scripts de check-in, bloques de entrenamiento y marcos conductuales comprobados para mantener clientes comprometidos.",
+    "Global reach": "Alcance global",
+    "Coach multilingual clients across Europe, the UK and Brazil with built-in localisation and translation support.": "Atiende clientes multilingües en Europa, Reino Unido y Brasil con soporte integrado de localización y traducción.",
+    "Operate like a modern coaching studio": "Opera como un estudio moderno de coaching",
+    "Your expertise paired with our infrastructure means clients experience world-class service from the first message to their final transformation photo.": "Tu experiencia combinada con nuestra infraestructura da a los clientes un servicio de alto nivel desde el primer mensaje hasta la foto final de transformación.",
+    "Client relationship OS": "Sistema de relación con clientes",
+    "Centralised client dashboards with macros, photos, check-ins and schedulingno more spreadsheets.": "Paneles centralizados con macros, fotos, check-ins y agenda; sin más hojas de cálculo dispersas.",
+    "Live accountability": "Responsabilidad en tiempo real",
+    "In-app messaging, automated nudges and templated playbooks keep every client seen and supported.": "Mensajes en la app, recordatorios automáticos y playbooks listos mantienen a cada cliente acompañado y apoyado.",
+    "Strategic mentorship": "Mentoría estratégica",
+    "Monthly coaching labs, business reviews and marketing support to scale sustainably.": "Labs mensuales de coaching, revisiones de negocio y soporte de marketing para escalar de forma sostenible.",
+    "Tools youll plug into day one": "Herramientas para usar desde el primer día",
+    "Every Garcia Builder trainer gains access to the same stack that powers our flagship transformation program.": "Todo entrenador Garcia Builder accede al mismo stack que impulsa nuestro programa principal de transformación.",
+    "Program design suite": "Suite de diseño de programas",
+    "Video exercise library and templated periodisation blocks.": "Biblioteca de ejercicios en video y bloques de periodización listos.",
+    "Automated macro calculators with cultural meal examples.": "Calculadoras automáticas de macros con ejemplos de comidas culturales.",
+    "Business cockpit": "Panel de negocio",
+    "Revenue tracking, renewal prompts and churn predictions.": "Seguimiento de ingresos, avisos de renovación y predicciones de churn.",
+    "Marketing asset vault, sales scripts and launch calendars.": "Biblioteca de activos de marketing, guiones de venta y calendarios de lanzamiento.",
+    "Four steps to start coaching": "Cuatro pasos para empezar a entrenar clientes",
+    "We review every application within 48 hours and provide feedback whether youre approved or not.": "Revisamos cada postulación en 48 horas y damos feedback, sea aprobada o no.",
+    "Complete application": "Completa la postulación",
+    "Share your experience, coaching style and ideal client avatar.": "Comparte tu experiencia, estilo de coaching y perfil de cliente ideal.",
+    "Upload credentials": "Sube credenciales",
+    "Attach certifications or proof of practical experience.": "Adjunta certificaciones o prueba de experiencia práctica.",
+    "Panel review": "Revisión del panel",
+    "Our senior coaches evaluate fit, quality and availability.": "Nuestros coaches senior evalúan encaje, calidad y disponibilidad.",
+    "Onboard & coach": "Incorpórate y entrena",
+    "Get access to the platform, mentorship and your first clients.": "Recibe acceso a la plataforma, mentoría y tus primeros clientes.",
+    "What we look for": "Lo que buscamos",
+    "2+ years coaching experience (online or in-person).": "2+ años de experiencia en coaching (online o presencial).",
+    "Evidence-based approach with clear transformation outcomes.": "Enfoque basado en evidencia con resultados claros de transformación.",
+    "Strong communication skills and client empathy.": "Buena comunicación y empatía con clientes.",
+    "Availability for weekly check-ins and monthly team reviews.": "Disponibilidad para check-ins semanales y revisiones mensuales de equipo.",
+    "Nice to have": "Deseable",
+    "Certifications (NASM, ACE, ISSA, ACSM or equivalent).": "Certificaciones (NASM, ACE, ISSA, ACSM o equivalente).",
+    "Nutrition certifications or experience with meal planning.": "Certificaciones en nutrición o experiencia con planificación de comidas.",
+    "Ability to coach in English plus Portuguese or Spanish.": "Capacidad de entrenar en inglés además de portugués o español.",
+    "Comfortable on camera for weekly Loom/video check-ins.": "Comodidad en cámara para check-ins semanales por Loom o video.",
+    "Submit your profile": "Envía tu perfil",
+    "Trainer application": "Postulación de entrenador",
+    "Tell us about your coaching craft. Fields marked with * are required.": "Cuéntanos sobre tu práctica de coaching. Los campos con * son obligatorios.",
+    "Review within 2448 h": "Revisión en 24-48h",
+    "Uploads optional but recommended": "Subidas opcionales, pero recomendadas",
+    "Basic information": "Información básica",
+    "Full name *": "Nombre completo *",
+    "Email *": "Email *",
+    "Phone *": "Teléfono *",
+    "Years of experience *": "Años de experiencia *",
+    "Select experience": "Selecciona experiencia",
+    "Specialisations": "Especializaciones",
+    "Select all the domains you actively coach.": "Selecciona todas las áreas en las que entrenas activamente.",
+    "Weight loss & recomposition": "Pérdida de peso y recomposición",
+    "Muscle building": "Construcción muscular",
+    "Strength training": "Entrenamiento de fuerza",
+    "Cardio & conditioning": "Cardio y acondicionamiento",
+    "Mobility / yoga / pilates": "Movilidad / yoga / pilates",
+    "Sport-specific prep": "Preparación deportiva específica",
+    "Nutrition coaching": "Coaching de nutrición",
+    "Rehab / corrective work": "Rehabilitación / trabajo correctivo",
+    "Senior fitness": "Fitness para mayores",
+    "Certifications & philosophy": "Certificaciones y filosofía",
+    "List your certifications *": "Lista tus certificaciones *",
+    "Tell us about your approach *": "Cuéntanos sobre tu enfoque *",
+    "Upload certifications": "Subir certificaciones",
+    "Upload certification documents": "Subir documentos de certificación",
+    "Click to select or drag & drop PDF, JPG, PNG Max 10MB each": "Haz clic para seleccionar o arrastra PDF, JPG, PNG. Máx. 10MB cada uno",
+    "I agree to the": "Acepto los",
+    "and": "y",
+    "Trainer Agreement": "Acuerdo del Entrenador",
+    "Submit application": "Enviar postulación",
+    "Lets transform clients together": "Transformemos clientes juntos",
+    "Submit your application and our coaching panel will reach out within two business days. The next Garcia Builder cohort launches soonsecure your spot on the roster.": "Envía tu postulación y nuestro panel de coaches te contactará en un máximo de dos días hábiles. La próxima cohorte Garcia Builder empieza pronto; asegura tu lugar en el equipo.",
+    "Start application": "Iniciar postulación",
+    "Email the team": "Enviar email al equipo",
+    "Login required": "Login requerido",
+    "Create a free account or login to submit your trainer application and track the status.": "Crea una cuenta gratis o inicia sesión para enviar tu postulación y seguir el estado.",
+    "Your First Workout": "Tu Primer Entrenamiento",
+    "A simple, effective Day 1 full-body session to start today. No app required.": "Una sesión simple y efectiva de cuerpo completo para empezar hoy. No requiere app.",
+    "Estimated time: 35–45 minutes • Equipment: bodyweight or light dumbbells": "Tiempo estimado: 35-45 minutos • Equipo: peso corporal o mancuernas ligeras",
+    "Warm-up (5–7 min)": "Calentamiento (5-7 min)",
+    "2 min brisk walk in place or jump rope": "2 min de caminata rápida en el sitio o cuerda",
+    "10 Arm circles forward + 10 back": "10 círculos de brazos adelante + 10 atrás",
+    "10 Hip hinges + 10 Bodyweight squats": "10 bisagras de cadera + 10 sentadillas sin peso",
+    "30s Plank": "30s de plancha",
+    "Main Circuit — 3 rounds": "Circuito Principal — 3 rondas",
+    "Squat or Goblet Squat — 12 reps": "Sentadilla o goblet squat — 12 reps",
+    "Push-ups (knees ok) — 8–12 reps": "Flexiones (rodillas ok) — 8-12 reps",
+    "Hip bridge — 12–15 reps": "Puente de cadera — 12-15 reps",
+    "1-arm row (dumbbell/backpack) — 10 reps/side": "Remo a un brazo (mancuerna/mochila) — 10 reps/lado",
+    "Dead bug — 8 reps/side": "Dead bug — 8 reps/lado",
+    "Rest — 60–90s": "Descanso — 60-90s",
+    "Finisher (optional)": "Finalizador (opcional)",
+    "5 rounds: 20s fast march/jog + 40s easy pace": "5 rondas: 20s marcha/trote rápido + 40s ritmo suave",
+    "Cool down (3–5 min)": "Vuelta a la calma (3-5 min)",
+    "Slow breathing + light stretching for hips, chest and upper back.": "Respiración lenta + estiramientos suaves para caderas, pecho y espalda alta.",
+    "Form Cues": "Consejos de Técnica",
+    "Move with control; leave 2 reps “in the tank”.": "Muévete con control; deja 2 repeticiones en reserva.",
+    "Spine neutral, heels grounded on squats.": "Columna neutra y talones firmes en las sentadillas.",
+    "Exhale on effort. Keep shoulders away from ears.": "Exhala en el esfuerzo. Mantén los hombros lejos de las orejas.",
+    "Next Up": "Siguiente Paso",
+    "Book your onboarding consult to personalize your plan and unlock the full Trainerize experience.": "Agenda tu consulta inicial para personalizar el plan y desbloquear la experiencia completa en Trainerize.",
+    "Schedule Consult": "Agendar Consulta",
+    "Back": "Volver",
+    "Log it in the dashboard": "Registrarlo en el dashboard"
+  });
+
+  Object.assign(STATIC_TEXT_TRANSLATIONS.pt, {
+    "+Muscle": "+Músculo",
+    "Showing": "Mostrando",
+    "stories": "histórias",
+    "or DM": "ou DM",
+    "FALAR COM O COACH": "FALAR COM O TREINADOR"
+  });
+
+  Object.assign(STATIC_TEXT_TRANSLATIONS.es, {
+    "+Muscle": "+Músculo",
+    "Showing": "Mostrando",
+    "stories": "historias",
+    "or DM": "o DM",
+    "FALAR COM O COACH": "HABLAR CON EL ENTRENADOR"
+  });
 
   function getLang() {
     try { return clamp(localStorage.getItem(KEY) || "en"); } catch { return "en"; }
@@ -2222,12 +3008,132 @@
     return fallback;
   };
 
+  const textMapCache = {};
+  const normalizeStaticText = (value) => String(value || '').replace(/\s+/g, ' ').trim();
+  const collectStaticTextPairs = (source, target, out, seen = new Set()) => {
+    if (!source || !target || typeof source !== 'object' || typeof target !== 'object' || seen.has(source)) return;
+    seen.add(source);
+
+    Object.keys(source).forEach(key => {
+      const sourceValue = source[key];
+      const targetValue = target[key];
+      if (typeof sourceValue === 'string' && typeof targetValue === 'string') {
+        const normalized = normalizeStaticText(sourceValue);
+        if (normalized && normalized.length > 1) out[normalized] = targetValue;
+      } else if (sourceValue && targetValue && typeof sourceValue === 'object' && typeof targetValue === 'object') {
+        collectStaticTextPairs(sourceValue, targetValue, out, seen);
+      }
+    });
+  };
+
+  const getStaticTextMap = (lang) => {
+    if (lang === 'en') return {};
+    if (textMapCache[lang]) return textMapCache[lang];
+
+    const map = {};
+    collectStaticTextPairs(DICTS.en, DICTS[lang] || {}, map);
+    Object.assign(map, STATIC_TEXT_TRANSLATIONS[lang] || {});
+    textMapCache[lang] = map;
+    return map;
+  };
+
+  const hasI18nAncestor = (node) => {
+    let el = node && node.parentElement;
+    while (el) {
+      if (
+        el.hasAttribute('data-i18n') ||
+        el.hasAttribute('data-i18n-ph') ||
+        el.hasAttribute('data-i18n-placeholder') ||
+        el.hasAttribute('data-no-auto-i18n')
+      ) return true;
+      el = el.parentElement;
+    }
+    return false;
+  };
+
+  const translateStaticTextNodes = (lang) => {
+    if (!document.body) return;
+    const map = getStaticTextMap(lang);
+    const skipTags = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'IFRAME', 'SVG']);
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      const parent = node.parentElement;
+      if (!parent || skipTags.has(parent.tagName) || hasI18nAncestor(node)) continue;
+
+      const original = node.__gbI18nSourceText || normalizeStaticText(node.nodeValue);
+      if (!original) continue;
+      if (!node.__gbI18nSourceText) node.__gbI18nSourceText = original;
+
+      const next = lang === 'en' ? original : map[original];
+      if (!next) continue;
+
+      const leading = (node.nodeValue.match(/^\s*/) || [''])[0];
+      const trailing = (node.nodeValue.match(/\s*$/) || [''])[0];
+      node.nodeValue = `${leading}${next}${trailing}`;
+    }
+  };
+
+  const translateStaticAttributes = (lang) => {
+    const map = getStaticTextMap(lang);
+    document.querySelectorAll('[placeholder], [title], [aria-label]').forEach(el => {
+      ['placeholder', 'title', 'aria-label'].forEach(attr => {
+        if (!el.hasAttribute(attr)) return;
+        if (el.hasAttribute('data-i18n-ph') && attr === 'placeholder') return;
+
+        const sourceAttr = `data-gb-i18n-source-${attr}`;
+        const original = el.getAttribute(sourceAttr) || normalizeStaticText(el.getAttribute(attr));
+        if (!original) return;
+        if (!el.hasAttribute(sourceAttr)) el.setAttribute(sourceAttr, original);
+
+        const next = lang === 'en' ? original : map[original];
+        if (next && el.getAttribute(attr) !== next) el.setAttribute(attr, next);
+      });
+    });
+  };
+
+  const withStaticFallback = (lang, value, source) => {
+    if (lang === 'en') return value;
+    const map = getStaticTextMap(lang);
+    const fromValue = map[normalizeStaticText(value)];
+    if (fromValue) return fromValue;
+    const fromSource = map[normalizeStaticText(source)];
+    return fromSource || value;
+  };
+
+  let staticObserver = null;
+  let staticObserverPending = false;
+  const scheduleStaticTranslations = () => {
+    if (staticObserverPending) return;
+    staticObserverPending = true;
+    setTimeout(() => {
+      staticObserverPending = false;
+      translateStaticTextNodes(getLang());
+      translateStaticAttributes(getLang());
+    }, 0);
+  };
+
+  const observeStaticTranslations = () => {
+    if (!document.body || staticObserver || typeof MutationObserver === 'undefined') return;
+    staticObserver = new MutationObserver(scheduleStaticTranslations);
+    staticObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['placeholder', 'title', 'aria-label']
+    });
+  };
+
   function apply(lang) {
     // Apply text content translations
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n'); if (!key) return;
       const current = (el.textContent || '').trim();
-      const val = t(lang, key, current);
+      const sourceAttr = 'data-gb-i18n-source-text';
+      const source = el.getAttribute(sourceAttr) || current;
+      if (!el.hasAttribute(sourceAttr) && current) el.setAttribute(sourceAttr, current);
+      const val = withStaticFallback(lang, t(lang, key, current), source);
       if (val !== undefined && val !== null) el.textContent = val;
     });
 
@@ -2235,21 +3141,28 @@
     document.querySelectorAll('[data-i18n-ph]').forEach(el => {
       const key = el.getAttribute('data-i18n-ph'); if (!key) return;
       const current = el.getAttribute('placeholder') || '';
-      const val = t(lang, key, current);
+      const sourceAttr = 'data-gb-i18n-source-placeholder';
+      const source = el.getAttribute(sourceAttr) || current;
+      if (!el.hasAttribute(sourceAttr) && current) el.setAttribute(sourceAttr, current);
+      const val = withStaticFallback(lang, t(lang, key, current), source);
       if (val !== undefined && val !== null) el.setAttribute('placeholder', val);
     });
 
     syncLanguageSelectors(lang);
+    translateStaticTextNodes(lang);
+    translateStaticAttributes(lang);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     const lang = getLang(); // EN by default
     apply(lang);
     syncLanguageSelectors(lang);
+    observeStaticTranslations();
   });
 
   document.addEventListener('componentLoaded', () => {
     apply(getLang());
+    observeStaticTranslations();
   });
 
   // Expose APIs and raw dictionaries for legacy consumers

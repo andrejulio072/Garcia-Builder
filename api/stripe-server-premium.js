@@ -7,10 +7,13 @@
  */
 
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const nodemailer = require('nodemailer');
+const { createClient } = require('@supabase/supabase-js');
 
 // Configuração de ambiente segura
 require('dotenv').config({
@@ -154,6 +157,16 @@ app.use((req, res, next) => {
     next();
 });
 
+const publicPageAliases = {
+    '/lead-magnet.html': 'lead-magnet.html',
+    '/thanks-ebook.html': 'thanks-ebook.html',
+    '/first-workout.html': 'first-workout.html'
+};
+
+app.get(Object.keys(publicPageAliases), (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'pages', 'public', publicPageAliases[req.path]));
+});
+
 // Servir arquivos estáticos
 app.use(express.static(path.join(__dirname, '..'), {
     dotfiles: 'deny',
@@ -222,45 +235,38 @@ function initializeStripe() {
 
 // 📋 CONFIGURAÇÃO DE PLANOS - Preços dinâmicos
 const SUBSCRIPTION_PLANS = {
-    starter: {
-        name: 'Starter Coaching',
-        description: 'Launch your routine with guided training and simple nutrition habits.',
-        amount: 7900, // £79.00
-        currency: 'gbp',
+    monthly: {
+        name: 'Monthly Online Coaching',
+        description: 'Standard online coaching with training, nutrition guidance, weekly check-ins, app access, support and accountability.',
+        amount: 15000, // €150.00
+        currency: 'eur',
+        mode: 'subscription',
         interval: 'month',
-        features: ['Goal-based training blocks', 'Habit-focused nutrition targets', 'Weekly accountability check-in']
+        features: ['Personalized training plan', 'Nutrition guidance', 'Weekly check-ins', 'Trainerize app access', 'Direct support and accountability']
     },
-    consistency: {
-        name: 'Consistency Plan',
-        description: 'Build unstoppable momentum with lifestyle coaching and upgraded feedback.',
-        amount: 9900, // £99.00
-        currency: 'gbp',
-        interval: 'month',
-        features: ['Everything in Starter Coaching', 'Lifestyle habit coaching system', 'Monthly nutrition refinement call', 'Progress dashboards and wins tracking']
+    eight_week: {
+        name: '8 Week Fat Loss Kickstart',
+        description: 'A focused 8-week reset with training, nutrition, shopping list, support and realistic fat-loss targets.',
+        amount: 35000, // €350.00
+        currency: 'eur',
+        mode: 'payment',
+        features: ['8-week training block', 'Nutrition targets and shopping list', 'Weekly check-ins', 'Trainerize app access', 'Expected fat loss: 5-8kg when followed consistently']
     },
-    performance: {
-        name: 'Performance Base',
-        description: 'Train smart and get visible results with structure, feedback, and accountability.',
-        amount: 12500, // £125.00
-        currency: 'gbp',
-        interval: 'month',
-        features: ['Everything in Consistency Plan', 'Macro-based nutrition with monthly updates', 'Two video form reviews per month', 'Weekly planning and recovery prompts', 'Performance tracking dashboard']
+    twelve_week: {
+        name: '12 Week Transformation',
+        description: 'The flagship 12-week transformation plan for visible fat loss, strength progress and stronger routines.',
+        amount: 60000, // €600.00
+        currency: 'eur',
+        mode: 'payment',
+        features: ['12-week progressive training plan', 'Nutrition plan with adjustments', 'Shopping list and meal structure guidance', 'Weekly accountability', 'Expected fat loss: 9-12kg when followed consistently']
     },
-    premium: {
-        name: 'Coaching Premium',
-        description: 'Full-spectrum coaching with precision nutrition, testing blocks, and close feedback.',
-        amount: 16500, // £165.00
-        currency: 'gbp',
-        interval: 'month',
-        features: ['Everything in Performance Base', 'Periodized training blocks and testing phases', 'Bi-weekly macro updates and progress tuning', 'Technique feedback twice per week', 'Personalized mobility and prehab routines', 'Strategic mini phases: cut, recomp, build']
-    },
-    elite: {
-        name: 'Elite Mastery',
-        description: 'Immersive coaching with priority access, advanced monitoring, and lifestyle redesign.',
-        amount: 23500, // £235.00
-        currency: 'gbp',
-        interval: 'month',
-        features: ['Everything in Coaching Premium', 'Unlimited video feedback (fair use)', 'Priority voice and message access', 'Weekly 20-minute performance review call', 'Nutrition audits and meal structure redesign', 'Lifestyle optimisation for sleep and stress']
+    eighteen_week: {
+        name: '18 Week Complete Transformation',
+        description: 'The most complete transformation program, built for deeper results and long-term habit building.',
+        amount: 75000, // €750.00
+        currency: 'eur',
+        mode: 'payment',
+        features: ['18-week periodized coaching block', 'Nutrition strategy and shopping list', 'Long-term habit system', 'Priority support', 'Expected fat loss: 12-15kg when followed consistently']
     }
 };
 
@@ -337,6 +343,226 @@ app.get('/health', (req, res) => {
     res.status(200).json(healthStatus);
 });
 
+function getOptionalSupabaseClient() {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!url || !serviceKey) return null;
+    return createClient(url, serviceKey, { auth: { persistSession: false } });
+}
+
+function createOptionalMailTransport() {
+    const host = process.env.SMTP_HOST;
+    const port = Number(process.env.SMTP_PORT || 587);
+    const user = process.env.SMTP_USER;
+    const pass = process.env.SMTP_PASS;
+    if (!host || !user || !pass) return null;
+    return nodemailer.createTransport({
+        host,
+        port,
+        secure: port === 465,
+        auth: { user, pass }
+    });
+}
+
+async function sendAdminEmail({ subject, html, replyTo }) {
+    const transport = createOptionalMailTransport();
+    if (!transport) return { skipped: true };
+    const from = process.env.FROM_EMAIL || 'no-reply@garciabuilder.fitness';
+    const to = process.env.ADMIN_EMAIL || 'andre@garciabuilder.fitness';
+    await transport.sendMail({ from, to, subject, html, replyTo: replyTo || undefined });
+    return { ok: true };
+}
+
+async function sendEmail({ to, subject, html, replyTo, attachments }) {
+    const transport = createOptionalMailTransport();
+    if (!transport) return { skipped: true };
+    const from = process.env.FROM_EMAIL || 'Garcia Builder <no-reply@garciabuilder.fitness>';
+    await transport.sendMail({ from, to, subject, html, replyTo: replyTo || undefined, attachments });
+    return { ok: true };
+}
+
+function getPublicBaseUrl(req) {
+    const proto = (req.headers['x-forwarded-proto'] || req.protocol || 'https').toString().split(',')[0].trim();
+    const host = (req.headers['x-forwarded-host'] || req.get('host') || 'garciabuilder.fitness').toString().split(',')[0].trim();
+    if (/^(localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/i.test(host)) {
+        return `${proto}://${host}`.replace(/\/$/, '');
+    }
+    const envBase = process.env.PUBLIC_SITE_URL || process.env.FRONTEND_URL;
+    if (envBase) return envBase.replace(/\/$/, '');
+    return `${proto}://${host}`.replace(/\/$/, '');
+}
+
+function escapeHtml(value = '') {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+app.post('/api/contact', async (req, res) => {
+    try {
+        const {
+            name,
+            email,
+            phone,
+            preferred_contact,
+            primary_goal,
+            timeline,
+            experience,
+            budget,
+            message,
+            page_path,
+            user_agent,
+        } = req.body || {};
+
+        if (!email || !message) {
+            return res.status(400).json({ error: 'Email and message are required' });
+        }
+
+        let saved = false;
+        const supa = getOptionalSupabaseClient();
+        if (supa) {
+            const { error } = await supa.from('contact_inquiries').insert([{
+                name: name || null,
+                email,
+                phone: phone || null,
+                preferred_contact: preferred_contact || null,
+                primary_goal: primary_goal || null,
+                timeline: timeline || null,
+                experience: experience || null,
+                budget: budget || null,
+                message,
+                page_path: page_path || req.headers.referer || '',
+                user_agent: user_agent || req.headers['user-agent'] || '',
+            }]);
+            if (error) {
+                console.warn('contact Supabase insert skipped/failed:', error.message);
+            } else {
+                saved = true;
+            }
+        }
+
+        const emailResult = await sendAdminEmail({
+            subject: `New coaching enquiry: ${name || email}`,
+            replyTo: email,
+            html: `
+                <div style="font-family:Inter,Arial,sans-serif;color:#0b1220">
+                    <h2>New Garcia Builder contact enquiry</h2>
+                    <p><strong>Name:</strong> ${escapeHtml(name || '')}</p>
+                    <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+                    <p><strong>Phone:</strong> ${escapeHtml(phone || '')}</p>
+                    <p><strong>Preferred contact:</strong> ${escapeHtml(preferred_contact || '')}</p>
+                    <p><strong>Goal:</strong> ${escapeHtml(primary_goal || '')}</p>
+                    <p><strong>Timeline:</strong> ${escapeHtml(timeline || '')}</p>
+                    <p><strong>Experience:</strong> ${escapeHtml(experience || '')}</p>
+                    <p><strong>Budget:</strong> ${escapeHtml(budget || '')}</p>
+                    <p><strong>Page:</strong> ${escapeHtml(page_path || req.headers.referer || '')}</p>
+                    <hr>
+                    <p>${escapeHtml(message).replace(/\n/g, '<br>')}</p>
+                </div>`
+        });
+
+        return res.status(200).json({ ok: true, saved, emailSent: !!emailResult.ok, emailSkipped: !!emailResult.skipped });
+    } catch (error) {
+        console.error('contact endpoint error', error);
+        return res.status(500).json({ error: 'Server error' });
+    }
+});
+
+app.post('/api/lead', async (req, res) => {
+    try {
+        const { email, name, source, notes, ...rest } = req.body || {};
+        const cleanEmail = String(email || '').trim().toLowerCase();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+            return res.status(400).json({ error: 'Valid email required' });
+        }
+
+        let saved = false;
+        const metadata = {
+            ...rest,
+            page_path: req.headers['x-original-url'] || req.headers.referer || null,
+            user_agent: req.headers['user-agent'] || null,
+        };
+        const cleanNotes = notes || JSON.stringify(metadata);
+
+        const supa = getOptionalSupabaseClient();
+        if (supa) {
+            const { error } = await supa.from('leads').insert([{
+                email: cleanEmail,
+                name: name || null,
+                source: source || req.headers.referer || 'website',
+                notes: cleanNotes,
+            }]);
+            if (error) {
+                console.warn('lead Supabase insert skipped/failed:', error.message);
+            } else {
+                saved = true;
+            }
+        }
+
+        const adminEmailResult = await sendAdminEmail({
+            subject: `New free guide lead: ${name || cleanEmail}`,
+            replyTo: cleanEmail,
+            html: `
+                <div style="font-family:Inter,Arial,sans-serif;color:#0b1220">
+                    <h2>New 28 Days Fat Loss Quickstart lead</h2>
+                    <p><strong>Name:</strong> ${escapeHtml(name || '')}</p>
+                    <p><strong>Email:</strong> ${escapeHtml(cleanEmail)}</p>
+                    <p><strong>Source:</strong> ${escapeHtml(source || 'website')}</p>
+                    <pre style="white-space:pre-wrap;background:#f5f5f5;padding:12px;border-radius:8px">${escapeHtml(cleanNotes)}</pre>
+                </div>`
+        }).catch(error => {
+            console.warn('lead admin email skipped/failed:', error.message);
+            return { ok: false, error: error.message };
+        });
+
+        const guidePath = path.join(__dirname, '..', 'assets', '28-days-fat-loss-quickstart.pdf');
+        const guideUrl = `${getPublicBaseUrl(req)}/assets/28-days-fat-loss-quickstart.pdf`;
+        const attachments = fs.existsSync(guidePath)
+            ? [{ filename: '28-Days-Fat-Loss-Quickstart-Garcia-Builder.pdf', path: guidePath }]
+            : undefined;
+        const customerEmailResult = await sendEmail({
+            to: cleanEmail,
+            subject: 'Your Free 28 Days Fat Loss Quickstart',
+            html: `
+                <div style="font-family:Inter,Arial,sans-serif;color:#0b1220;line-height:1.55">
+                    <h2>Your 28 Days Fat Loss Quickstart is ready</h2>
+                    <p>Hi ${escapeHtml(name || 'there')},</p>
+                    <p>Here is your free Garcia Builder guide. Use it to set your first 28 days of training, nutrition, steps and accountability.</p>
+                    <p>
+                        <a href="${guideUrl}" style="display:inline-block;background:#f6c84e;color:#0b1220;padding:12px 16px;border-radius:10px;text-decoration:none;font-weight:800">
+                            Download the PDF
+                        </a>
+                    </p>
+                    <p>The PDF is also attached to this email when attachments are supported by your inbox.</p>
+                    <p>If you want help applying it to your body, schedule a free consultation here:</p>
+                    <p><a href="https://calendly.com/andrenjulio072/consultation">Book your free consultation</a></p>
+                    <p>Andre Garcia<br>Garcia Builder Coaching</p>
+                </div>`,
+            attachments
+        }).catch(error => {
+            console.warn('lead customer email skipped/failed:', error.message);
+            return { ok: false, error: error.message };
+        });
+
+        return res.status(200).json({
+            ok: true,
+            saved,
+            adminEmailSent: !!adminEmailResult.ok,
+            adminEmailSkipped: !!adminEmailResult.skipped,
+            customerEmailSent: !!customerEmailResult.ok,
+            customerEmailSkipped: !!customerEmailResult.skipped,
+            guideUrl,
+            attached: !!attachments
+        });
+    } catch (error) {
+        console.error('lead endpoint error', error);
+        return res.status(500).json({ error: 'Server error' });
+    }
+});
+
 // 💳 ENDPOINT PRINCIPAL - Criar Checkout Session
 app.post('/api/create-checkout-session', validateStripeReady, validateRequestData, async (req, res) => {
     const startTime = Date.now();
@@ -371,7 +597,7 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
 
         console.log('💳 CRIANDO CHECKOUT SESSION');
         console.log('-'.repeat(40));
-        console.log(`📋 Plano: ${plan.name} - £${plan.amount / 100}`);
+        console.log(`📋 Plano: ${plan.name} - ${plan.currency.toUpperCase()} ${(plan.amount / 100).toFixed(2)}`);
         console.log(`👤 Cliente: ${customerEmail}`);
         console.log(`🌐 Success URL: ${successUrl}`);
         console.log(`🌐 Cancel URL: ${cancelUrl}`);
@@ -404,30 +630,35 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
             customer = null;
         }
 
+        const priceData = {
+            currency: plan.currency,
+            product_data: {
+                name: plan.name,
+                description: plan.description,
+                metadata: {
+                    plan_key: planKey,
+                    service: 'garcia-builder-coaching'
+                }
+            },
+            unit_amount: plan.amount
+        };
+
+        if (plan.mode === 'subscription') {
+            priceData.recurring = {
+                interval: plan.interval || 'month',
+                interval_count: 1
+            };
+        }
+
         // Configuração da sessão seguindo padrões oficiais
         const sessionConfig = {
             customer: customer?.id,
             customer_email: !customer ? customerEmail : undefined,
             line_items: [{
-                price_data: {
-                    currency: plan.currency,
-                    product_data: {
-                        name: plan.name,
-                        description: plan.description,
-                        metadata: {
-                            plan_key: planKey,
-                            service: 'garcia-builder-coaching'
-                        }
-                    },
-                    unit_amount: plan.amount,
-                    recurring: {
-                        interval: plan.interval,
-                        interval_count: 1
-                    }
-                },
+                price_data: priceData,
                 quantity: 1
             }],
-            mode: 'subscription',
+            mode: plan.mode === 'subscription' ? 'subscription' : 'payment',
             success_url: successUrl + '?session_id={CHECKOUT_SESSION_ID}',
             cancel_url: cancelUrl,
             automatic_tax: { enabled: true },
@@ -438,6 +669,7 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
             } : undefined,
             metadata: {
                 plan_key: planKey,
+                plan_name: plan.name,
                 customer_email: customerEmail,
                 service: 'garcia-builder',
                 created_at: new Date().toISOString(),
@@ -446,9 +678,18 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
                 trainerize_invite: trainerizeInvite || process.env.TRAINERIZE_INVITE_URL || '',
                 ...utmMeta
             },
-            subscription_data: {
+            // Configurações de experiência
+            locale: 'en',
+            allow_promotion_codes: false,
+            // Coleta de consentimento dos Termos (exige ToS URL no Stripe Dashboard → Settings → Public details)
+            // Habilite via env STRIPE_REQUIRE_TOS_CONSENT=true após configurar os links no Stripe.
+        };
+
+        if (plan.mode === 'subscription') {
+            sessionConfig.subscription_data = {
                 metadata: {
                     plan_key: planKey,
+                    plan_name: plan.name,
                     customer_email: customerEmail,
                     service: 'garcia-builder',
                     client_ip: (req.ip || req.headers['x-forwarded-for'] || '').toString().split(',')[0].trim().slice(0,45),
@@ -456,13 +697,8 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
                     trainerize_invite: trainerizeInvite || process.env.TRAINERIZE_INVITE_URL || '',
                     ...utmMeta
                 }
-            },
-            // Configurações de experiência
-            locale: 'en',
-            allow_promotion_codes: true,
-            // Coleta de consentimento dos Termos (exige ToS URL no Stripe Dashboard → Settings → Public details)
-            // Habilite via env STRIPE_REQUIRE_TOS_CONSENT=true após configurar os links no Stripe.
-        };
+            };
+        }
 
         if (REQUIRE_TOS_CONSENT) {
             sessionConfig.consent_collection = {
@@ -579,7 +815,7 @@ app.get('/api/payment-status/:sessionId', validateStripeReady, async (req, res) 
                 customer_email: session.customer_details?.email,
                 subscription_id: session.subscription?.id || session.subscription,
                 plan_key: session.metadata?.plan_key,
-                plan_name: session.metadata?.plan_key || 'Coaching Subscription',
+                plan_name: session.metadata?.plan_name || session.metadata?.plan_key || 'Coaching Plan',
                 trainerize_invite: session.metadata?.trainerize_invite || null
             });
     } catch (e) {
@@ -596,8 +832,9 @@ app.get('/api/plans', (req, res) => {
         price: {
             amount: plan.amount,
             currency: plan.currency,
-            formatted: `£${(plan.amount / 100).toFixed(2)}`,
-            interval: plan.interval
+            formatted: `€${(plan.amount / 100).toFixed(2)}`,
+            interval: plan.interval || null,
+            mode: plan.mode
         },
         features: plan.features
     }));
@@ -606,7 +843,7 @@ app.get('/api/plans', (req, res) => {
         success: true,
         plans,
         total: plans.length,
-        currency: 'GBP',
+        currency: 'EUR',
         timestamp: new Date().toISOString()
     });
 });
@@ -676,7 +913,7 @@ app.post('/api/stripe-webhook', async (req, res) => {
                 // ===== Server-side Purchase Attribution (GA4 + Meta) =====
                 try {
                     const email = session.customer_details?.email || 'unknown@unknown';
-                    const currency = (session.currency || 'gbp').toUpperCase();
+                    const currency = (session.currency || 'eur').toUpperCase();
                     const value = (session.amount_total || 0) / 100; // Stripe in minor units
                     const transactionId = session.id;
                     const planKey = session.metadata?.plan_key || session.metadata?.plan || 'unknown_plan';
@@ -705,7 +942,7 @@ app.post('/api/stripe-webhook', async (req, res) => {
                             event_id: transactionId, // dedupe potential client/server sends
                             items: [{
                                 item_id: planKey,
-                                item_name: session.metadata?.plan_key || 'Coaching Subscription',
+                                item_name: session.metadata?.plan_name || session.metadata?.plan_key || 'Coaching Plan',
                                 price: value,
                                 quantity: 1
                             }]
@@ -774,11 +1011,19 @@ app.post('/api/stripe-webhook', async (req, res) => {
                 }
                 // Onboarding email (optional; depends on SMTP env)
                 try {
-                    const { sendOnboardingEmail } = require('./onboarding-email');
+                    const { sendOnboardingEmail, sendAdminPurchaseNotification } = require('./onboarding-email');
                     const email = session.customer_details?.email;
                     const planName = session.metadata?.plan_name || session.metadata?.plan_key || 'Coaching Plan';
                     const trainerizeLink = session.metadata?.trainerize_invite || process.env.TRAINERIZE_INVITE_URL;
-                    const locale = (session.locale || session.customer_details?.address?.country === 'BR') ? 'pt' : 'en';
+                    const locale = session.locale === 'pt' || session.customer_details?.address?.country === 'BR' ? 'pt' : 'en';
+                    await sendAdminPurchaseNotification({
+                        customerEmail: email,
+                        customerName: session.customer_details?.name,
+                        planName,
+                        amount: session.amount_total,
+                        currency: session.currency,
+                        sessionId: session.id
+                    });
                     if (email && trainerizeLink) {
                         await sendOnboardingEmail({ to: email, name: session.customer_details?.name, planName, trainerizeLink, locale });
                         console.log('✉️ Onboarding email queued/sent to', email);

@@ -1,6 +1,18 @@
 {
   "rewrites": [
     {
+      "source": "/lead-magnet.html",
+      "destination": "/pages/public/lead-magnet.html"
+    },
+    {
+      "source": "/thanks-ebook.html",
+      "destination": "/pages/public/thanks-ebook.html"
+    },
+    {
+      "source": "/first-workout.html",
+      "destination": "/pages/public/first-workout.html"
+    },
+    {
       "source": "/api/:path*",
       "destination": "/api/stripe-server-premium.js"
     }

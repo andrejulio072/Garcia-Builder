@@ -327,7 +327,7 @@ const INLINE_FALLBACKS = {
         <div class="gb-footer-col">
             <span class="footer-title footer-title-ref">Resources</span>
             <ul style="margin-top:2px;">
-                <li><a href="/assets/empty-guide.pdf" download>Download Guide (PDF)</a></li>
+                <li><a href="/lead-magnet.html">Free 28 Days Fat Loss Quickstart</a></li>
                 <li><a href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Book a Call</a></li>
             </ul>
             <div class="footer-follow">

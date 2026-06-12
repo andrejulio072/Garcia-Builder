@@ -33,6 +33,16 @@ app.use(express.static(root, {
   }
 }));
 
+const publicPageAliases = {
+  '/lead-magnet.html': 'lead-magnet.html',
+  '/thanks-ebook.html': 'thanks-ebook.html',
+  '/first-workout.html': 'first-workout.html'
+};
+
+app.get(Object.keys(publicPageAliases), (req, res) => {
+  res.sendFile(path.join(root, 'pages', 'public', publicPageAliases[req.path]));
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(root, 'index.html'));
 });

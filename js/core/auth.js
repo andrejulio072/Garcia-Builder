@@ -129,6 +129,25 @@ function resolveRedirectTarget(searchParams, defaultPath = 'pages/public/dashboa
     }
     return toAbsoluteUrl(defaultPath);
 }
+
+async function getSupabaseAuthClient(timeout = 8000) {
+    if (window.supabaseClient && window.supabaseClient.auth) {
+        return window.supabaseClient;
+    }
+
+    if (typeof window.waitForSupabaseClient === 'function') {
+        try {
+            const client = await window.waitForSupabaseClient(timeout);
+            if (client && client.auth) {
+                return client;
+            }
+        } catch (err) {
+            console.warn('Supabase auth client unavailable:', err?.message || err);
+        }
+    }
+
+    return null;
+}
 class AuthSystem {
     constructor() {
         this.users = JSON.parse(localStorage.getItem('gb_users') || '[]');
@@ -552,8 +571,9 @@ class AuthSystem {
             }
 
             // SEGUNDO: Tentar Supabase para usuários normais
-            if (window.supabaseClient && window.supabaseClient.auth) {
-                const { data, error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
+            const supabaseClient = await getSupabaseAuthClient();
+            if (supabaseClient && supabaseClient.auth) {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
                 if (error) throw new Error(error.message || 'Login failed');
 
                 const supaUser = data.user;
@@ -570,7 +590,7 @@ class AuthSystem {
 
                 // Best-effort: upsert user profile record in Supabase
                 try {
-                    await window.supabaseClient
+                    await supabaseClient
                       .from('user_profiles')
                       .upsert({
                         user_id: supaUser.id,
@@ -702,11 +722,12 @@ class AuthSystem {
         this.setLoadingState(submitBtn, true);
 
         try {
-            // Prefer Supabase sign up when available (sends verification email)
-            if (window.supabaseClient && window.supabaseClient.auth) {
+            // Prefer Supabase sign up when available (sends verification email when enabled)
+            const supabaseClient = await getSupabaseAuthClient();
+            if (supabaseClient && supabaseClient.auth) {
                 const emailRedirectTo = buildHostedAuthRedirect('pages/public/dashboard.html');
 
-                const { data, error } = await window.supabaseClient.auth.signUp({
+                const { data, error } = await supabaseClient.auth.signUp({
                     email,
                     password,
                     options: {
@@ -738,6 +759,58 @@ class AuthSystem {
 
                 // Save email for convenience
                 localStorage.setItem('gb_remember_user', email);
+
+                if (data?.session && data?.user) {
+                    const supaUser = data.user;
+                    this.currentUser = {
+                        id: supaUser.id,
+                        name: supaUser.user_metadata?.full_name || name,
+                        full_name: supaUser.user_metadata?.full_name || name,
+                        email: supaUser.email || email,
+                        registeredAt: supaUser.created_at || new Date().toISOString(),
+                        lastLogin: new Date().toISOString()
+                    };
+                    localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
+
+                    try {
+                        await supabaseClient
+                            .from('user_profiles')
+                            .upsert({
+                                user_id: supaUser.id,
+                                email: supaUser.email || email,
+                                full_name: supaUser.user_metadata?.full_name || name,
+                                phone: document.getElementById('registerPhone')?.value || '',
+                                date_of_birth: document.getElementById('registerDob')?.value || null,
+                                joined_date: supaUser.created_at || new Date().toISOString(),
+                                last_login: new Date().toISOString()
+                            });
+                    } catch (profileErr) {
+                        console.warn('Profile upsert after register skipped:', profileErr?.message || profileErr);
+                    }
+
+                    try {
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                            event: 'sign_up',
+                            method: 'password',
+                            auth_provider: 'supabase_email',
+                            user_email_domain: (email.split('@')[1] || '')
+                        });
+                        if (typeof fbq !== 'undefined') {
+                            fbq('track', 'CompleteRegistration', { content_name: 'account_create', method: 'password' });
+                        }
+                    } catch (trErr) {
+                        console.warn('sign_up tracking (supabase immediate session) failed', trErr);
+                    }
+
+                    this.showSuccess('Account created successfully!', 'Redirecting to your dashboard...');
+                    setTimeout(() => {
+                        const redirectUrl = resolveRedirectTarget(new URLSearchParams(window.location.search));
+                        window.location.href = redirectUrl;
+                    }, 1200);
+                    return;
+                }
+
                 this.showSuccess('Account created successfully!', 'Check your email to verify your account.');
                 // Tracking new Supabase email/password registration
                 try {
@@ -792,7 +865,7 @@ class AuthSystem {
                 document.getElementById('loginPassword').value = password;
                 this.showForm('login');
                 setTimeout(() => {
-                    document.getElementById('loginFormElement').dispatchEvent(new Event('submit'));
+                    document.getElementById('loginFormElement').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
                 }, 300);
             }, 800);
 
@@ -860,8 +933,9 @@ class AuthSystem {
 
             const verifySupabaseSession = async () => {
                 try {
-                    if (window.supabaseClient && window.supabaseClient.auth) {
-                        const { data: sessionData, error } = await window.supabaseClient.auth.getSession();
+                    const supabaseClient = await getSupabaseAuthClient(6000);
+                    if (supabaseClient && supabaseClient.auth) {
+                        const { data: sessionData, error } = await supabaseClient.auth.getSession();
                         if (!error && sessionData?.session) {
                             const redirectUrl = resolveRedirectTarget(new URLSearchParams(window.location.search));
                             console.log('✅ Valid Supabase session found, redirecting to:', redirectUrl);
@@ -1171,10 +1245,14 @@ function setupOAuthButtons() {
             try {
                 newBtn.disabled = true;
                 newBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando ao Google...';
+                const supabaseClient = await getSupabaseAuthClient();
+                if (!supabaseClient || !supabaseClient.auth) {
+                    throw new Error('Authentication service is unavailable. Please reload the page.');
+                }
 
                 // Chamada OAuth conforme documentação Supabase v2
                 // Remover skipBrowserRedirect - deixar Supabase redirecionar automaticamente
-                const { data, error } = await window.supabaseClient.auth.signInWithOAuth({
+                const { data, error } = await supabaseClient.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
                         redirectTo: redirectTo,
@@ -1222,10 +1300,14 @@ function setupOAuthButtons() {
             try {
                 newBtn.disabled = true;
                 newBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando ao Facebook...';
+                const supabaseClient = await getSupabaseAuthClient();
+                if (!supabaseClient || !supabaseClient.auth) {
+                    throw new Error('Authentication service is unavailable. Please reload the page.');
+                }
 
                 // Chamada OAuth conforme documentação Supabase v2
                 // Remover skipBrowserRedirect - deixar Supabase redirecionar automaticamente
-                const { data, error } = await window.supabaseClient.auth.signInWithOAuth({
+                const { data, error } = await supabaseClient.auth.signInWithOAuth({
                     provider: 'facebook',
                     options: {
                         redirectTo: redirectTo,
@@ -1291,7 +1373,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sync Supabase session user to local cache so other scripts (auth-guard) see it
     (async () => {
         try {
-            if (window.supabaseClient && window.supabaseClient.auth) {
+            const supabaseClient = await getSupabaseAuthClient(10000);
+            if (supabaseClient && supabaseClient.auth) {
                 // Verificar se há tokens OAuth na URL (retorno de Google/Facebook)
                 const hashParams = new URLSearchParams(window.location.hash.substring(1));
                 const queryParams = new URLSearchParams(window.location.search);
@@ -1304,7 +1387,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (codeParam) {
                         try {
                             console.log('🔄 Trocando código OAuth por sessão (auth.js)...');
-                            const { error: exchangeError } = await window.supabaseClient.auth.exchangeCodeForSession({ code: codeParam });
+                            const { error: exchangeError } = await supabaseClient.auth.exchangeCodeForSession({ code: codeParam });
                             if (exchangeError) {
                                 throw exchangeError;
                             }
@@ -1338,7 +1421,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                const { data } = await window.supabaseClient.auth.getUser();
+                const { data } = await supabaseClient.auth.getUser();
                 const u = data?.user;
                 if (u) {
                     const normalized = {
@@ -1353,7 +1436,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 // Listen for auth state changes (OAuth redirects, logout in other tabs)
-                window.supabaseClient.auth.onAuthStateChange(async (event, session) => {
+                supabaseClient.auth.onAuthStateChange(async (event, session) => {
                     console.log(`🔔 Auth state changed: ${event}`, session?.user?.email || 'no user');
 
                     try {
@@ -1371,7 +1454,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             // Ensure user profile is upserted in Supabase after OAuth/social login
                             try {
-                                await window.supabaseClient
+                                await supabaseClient
                                   .from('user_profiles')
                                   .upsert({
                                     user_id: su.id,

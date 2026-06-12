@@ -8,11 +8,10 @@ const STRIPE_CONFIG = {
     publishableKey: 'pk_live_51S8QxZCEdPbAOAaf5v5Y3yskMYdY3p9sRAIXs2clIAtBiJtLQQwVA3IBcZe02znzJYC8e6BTpdpKRmvkiOZLM5ee00QKktfaZT',
     apiUrl: API_BASE,
     plans: {
-        starter: { name: 'Starter Coaching', price: '£79', amount: 7900 },
-        consistency: { name: 'Consistency Plan', price: '£99', amount: 9900 },
-        performance: { name: 'Performance Base', price: '£125', amount: 12500 },
-        premium: { name: 'Coaching Premium', price: '£165', amount: 16500 },
-        elite: { name: 'Elite Mastery', price: '£235', amount: 23500 }
+        monthly: { name: 'Monthly Online Coaching', price: '€150', amount: 15000, mode: 'subscription' },
+        eight_week: { name: '8 Week Fat Loss Kickstart', price: '€350', amount: 35000, mode: 'payment' },
+        twelve_week: { name: '12 Week Transformation', price: '€600', amount: 60000, mode: 'payment' },
+        eighteen_week: { name: '18 Week Complete Transformation', price: '€750', amount: 75000, mode: 'payment' }
     }
 };
 

@@ -2,6 +2,8 @@
 (() => {
   let currentCampaign = null;
   let leadData = {};
+  const GUIDE_ASSET_PATH = '/assets/28-days-fat-loss-quickstart.pdf';
+  const GUIDE_DOWNLOAD_NAME = '28-Days-Fat-Loss-Quickstart-Garcia-Builder.pdf';
 
   // Initialize newsletter system
   const init = async () => {
@@ -502,34 +504,34 @@
       en: {
         badge: '🔥 WAIT!',
         title: 'Don’t leave empty-handed!',
-        subtitle: 'Download your FREE training guide before you go',
+        subtitle: 'Get the FREE 28 Days Fat Loss Quickstart by email',
         email: 'Enter your email',
-        button: 'Download Free Guide',
-        benefit1: '7-day training plan',
-        benefit2: 'Nutrition basics',
-        benefit3: 'Coaching tips',
+        button: 'Send Me the Ebook',
+        benefit1: '28-day fat-loss structure',
+        benefit2: 'Nutrition and shopping guidance',
+        benefit3: 'Simple habits and accountability',
         close: 'Close popup'
       },
       pt: {
         badge: '🔥 ESPERA!',
         title: 'Não saia de mãos vazias!',
-        subtitle: 'Baixe seu guia de treino GRATUITO antes de ir',
+        subtitle: 'Receba por email o 28 Days Fat Loss Quickstart grátis',
         email: 'Digite seu email',
-        button: 'Baixar Guia Grátis',
-        benefit1: 'Plano de treino de 7 dias',
-        benefit2: 'Básicos da nutrição',
-        benefit3: 'Dicas de acompanhamento',
+        button: 'Enviar Ebook',
+        benefit1: 'Estrutura de perda de gordura em 28 dias',
+        benefit2: 'Nutrição e lista de compras',
+        benefit3: 'Hábitos simples e accountability',
         close: 'Fechar popup'
       },
       es: {
         badge: '🔥 ¡ESPERA!',
         title: '¡No te vayas con las manos vacías!',
-        subtitle: 'Descarga tu guía de entrenamiento GRATIS antes de irte',
+        subtitle: 'Recibe por email el 28 Days Fat Loss Quickstart gratis',
         email: 'Introduce tu correo',
-        button: 'Descargar Guía Gratis',
-        benefit1: 'Plan de entrenamiento de 7 días',
-        benefit2: 'Conceptos básicos de nutrición',
-        benefit3: 'Consejos de seguimiento',
+        button: 'Enviar Ebook',
+        benefit1: 'Estructura de perdida de grasa en 28 dias',
+        benefit2: 'Nutricion y lista de compras',
+        benefit3: 'Habitos simples y accountability',
         close: 'Cerrar popup'
       }
     };
@@ -545,7 +547,8 @@
           </div>
           <form class="exit-intent-form download-form" data-source="Exit Intent">
             <input type="email" name="email" placeholder="${t.email}" required autocomplete="email">
-            <input type="hidden" name="goal" value="Transformation Guide">
+            <input type="hidden" name="goal" value="28 Days Fat Loss Quickstart">
+            <input type="hidden" name="guide_id" value="28-days-fat-loss-quickstart">
             <button type="submit">
               <i class="fas fa-download"></i> ${t.button}
             </button>
@@ -594,30 +597,41 @@
       submitBtn.disabled = true;
 
       try {
-        await saveLeadToDatabase({
+        const leadResponse = await saveLeadToDatabase({
           id: generateLeadId(),
           email: email,
           source: 'Exit Intent Popup',
           timestamp: new Date().toISOString(),
           page: window.location.pathname,
           type: 'lead_magnet',
-          goal: 'Transformation Guide',
+          goal: '28 Days Fat Loss Quickstart',
+          guide_id: '28-days-fat-loss-quickstart',
           status: 'new'
         });
+
+        await sendDownloadLink({ email }, leadResponse);
+        triggerFileDownload();
+
+        const emailMessage = leadResponse?.customerEmailSent
+          ? 'Verifique seu email. O ebook foi enviado para sua caixa de entrada.'
+          : 'SMTP local não está configurado, então o email não foi enviado neste teste. Use o botão abaixo para baixar o ebook.';
 
         // Show success and close
         popup.querySelector('.exit-intent-content').innerHTML = `
           <div class="text-center" style="padding: 2rem; color: #fff;">
             <i class="fas fa-check-circle" style="font-size: 3rem; color: #28a745; margin-bottom: 1rem;"></i>
             <h3>Sucesso!</h3>
-            <p>Verifique seu email para o guia de treino gratuito!</p>
+            <p>${emailMessage}</p>
+            <a href="${GUIDE_ASSET_PATH}" download="${GUIDE_DOWNLOAD_NAME}" class="btn btn-primary mt-2">
+              Download ebook now
+            </a>
           </div>
         `;
 
         setTimeout(() => {
           popup.remove();
           document.body.style.overflow = ''; // Restore scrolling
-        }, 3000);
+        }, leadResponse?.customerEmailSent ? 3000 : 8000);
 
         // Track conversion
         trackEvent('lead_magnet_download', { source: 'exit_intent' });
@@ -680,8 +694,8 @@
       id: generateLeadId(),
       email: formData.get('email'),
       name: formData.get('name') || '',
-      goal: formData.get('goal') || 'Transformation Guide',
-      guide_id: form.dataset.guideId || formData.get('guide_id') || 'default-guide',
+      goal: formData.get('goal') || '28 Days Fat Loss Quickstart',
+      guide_id: form.dataset.guideId || formData.get('guide_id') || '28-days-fat-loss-quickstart',
       type: 'download',
       source: form.dataset.source || 'Download Form',
       timestamp: new Date().toISOString(),
@@ -693,20 +707,26 @@
         throw new Error('Please enter a valid email address.');
       }
 
-      // Save lead
-      await saveLeadToDatabase(downloadInfo);
+      // Save lead and send the ebook email through the backend.
+      const leadResponse = await saveLeadToDatabase(downloadInfo);
 
-      // Send download link
-      await sendDownloadLink(downloadInfo);
+      await sendDownloadLink(downloadInfo, leadResponse);
 
       // Track conversion
       trackConversion('guide_download', downloadInfo.source);
 
-      // Show success and provide immediate download
-      showNotification('Sent! Check your email for the download link.', 'success');
+      // Show success and provide immediate download.
+      const emailWasSent = leadResponse?.customerEmailSent;
+      const emailSkipped = leadResponse?.customerEmailSkipped || leadResponse?.fallback;
+      const notificationMessage = emailWasSent
+        ? 'Sent! Check your email for the ebook.'
+        : emailSkipped
+          ? 'Saved. SMTP is not configured locally; use the download link shown on the page.'
+          : 'Saved. Use the download link shown on the page.';
+      showNotification(notificationMessage, emailWasSent ? 'success' : 'info');
 
       // Immediate download if asset available
-      triggerFileDownload('transformation-guide.pdf');
+      triggerFileDownload();
 
       // Close popup if exists
       const popup = form.closest('.exit-intent-popup');
@@ -720,8 +740,11 @@
         form.innerHTML = `
           <div class="lead-form-success text-center">
             <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
-            <h3>Guide on the way!</h3>
-            <p class="mb-0">Check your inbox (and spam) for the download link. I’ll follow up within 24 hours.</p>
+            <h3>Ebook on the way!</h3>
+            <p class="mb-3">${emailWasSent ? 'Check your inbox and spam folder for the ebook.' : 'SMTP is not configured locally, so the test email was skipped.'}</p>
+            <a href="${GUIDE_ASSET_PATH}" download="${GUIDE_DOWNLOAD_NAME}" class="btn btn-primary">
+              Download ebook now
+            </a>
           </div>
         `;
       } else {
@@ -783,8 +806,7 @@
     }
 
     try {
-      await postJson('/api/lead', payload);
-      return;
+      return await postJson('/api/lead', payload);
     } catch (apiError) {
       console.warn('Lead API unavailable, falling back to direct client/local storage', apiError);
     }
@@ -801,6 +823,14 @@
       existingLeads.push(leadInfo);
       localStorage.setItem('garcia_leads', JSON.stringify(existingLeads));
     }
+
+    return {
+      ok: true,
+      fallback: true,
+      customerEmailSent: false,
+      customerEmailSkipped: true,
+      guideUrl: GUIDE_ASSET_PATH
+    };
   };
 
   // Save newsletter subscriber
@@ -856,10 +886,16 @@
     return new Promise(resolve => setTimeout(resolve, 1000));
   };
 
-  // Send download link
-  const sendDownloadLink = async (downloadInfo) => {
-    console.log('Sending download link to:', downloadInfo.email);
-    return new Promise(resolve => setTimeout(resolve, 1000));
+  // The backend sends the actual ebook email from /api/lead.
+  const sendDownloadLink = async (downloadInfo, leadResponse = {}) => {
+    if (leadResponse.customerEmailSent) {
+      console.log('Ebook email sent to:', downloadInfo.email);
+    } else if (leadResponse.customerEmailSkipped) {
+      console.warn('Ebook email skipped. Configure SMTP on the server to send emails.');
+    } else {
+      console.warn('Ebook email status unknown:', leadResponse);
+    }
+    return leadResponse;
   };
 
   // Utility functions
@@ -990,9 +1026,14 @@
     }, { passive: true });
   };
 
-  // Stubs to avoid runtime errors on optional flows
-  const triggerFileDownload = (filename) => {
-    console.log('Trigger download requested for:', filename);
+  const triggerFileDownload = () => {
+    const link = document.createElement('a');
+    link.href = GUIDE_ASSET_PATH;
+    link.download = GUIDE_DOWNLOAD_NAME;
+    link.rel = 'noopener';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   };
 
   const saveConsultationRequest = async (info) => {

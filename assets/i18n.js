@@ -377,115 +377,89 @@
         conrad: "Andre rebuilt my training around 60-hour workweeks. We dropped 9kg of fat, added lean muscle, and my shoulders are pain-free for the first time in years."
       },
       pricing: {
-        title: "Pricing",
-        subtitle: "Choose the coaching level that matches your goals today — and scale up as your results grow.",
-        currency_selector: {
-          title: "Show prices in your currency"
-        },
-        period_selector: {
-          title: "Choose Your Plan Duration",
-          monthly: "Monthly",
-          quarterly: "3 Months",
-          biannual: "6 Months",
-          annual: "12 Months",
-          note: "Save more with longer commitments. All plans include full access from day one."
+        title: "Coaching Programs",
+        subtitle: "Choose the coaching structure that fits your goal: app access, training, nutrition guidance, shopping list support, check-ins and accountability.",
+        value: {
+          title: "What every plan includes",
+          text: "Clear execution, not just a PDF: your training, nutrition and follow-up are organized so you know exactly what to do next.",
+          items: [
+            "Trainerize app access with structured workouts",
+            "Nutrition targets, meal structure guidance and shopping list support",
+            "Weekly check-ins, adjustments and accountability",
+            "Secure checkout, onboarding email and consultation scheduling after purchase"
+          ]
         },
         plans: {
-          starter: {
-            badge: "Getting Started",
-            name: "Starter",
-            price: "£79",
-            period: "/mo",
-            description: "Kickstart your fitness journey with structure and simplicity.",
+          monthly: {
+            badge: "Flexible coaching",
+            name: "Monthly Online Coaching",
+            price: "€150",
+            period: "/month",
+            meta: "Ongoing support",
+            result: "Best for steady progress and maintenance",
+            description: "Standard online coaching for clients who want structure every month without a fixed transformation block.",
             features: [
-              "Personalized training plan (refreshed monthly)",
-              "Foundational nutrition targets",
-              "Weekly automated check-in via Trainerize",
-              "Access to accountability community",
-              "Email support"
+              "Personalized training plan inside the app",
+              "Nutrition targets and habit guidance",
+              "Weekly check-in and plan adjustments",
+              "Message support and accountability",
+              "Cancel before the next monthly renewal"
             ]
           },
-          consistency: {
-            badge: "Most Popular",
-            name: "Consistency Plan",
-            price: "£99",
-            period: "/mo",
-            description: "Build discipline and stay on track with guided progress.",
+          eight_week: {
+            badge: "Entry program",
+            name: "8 Week Fat Loss Kickstart",
+            price: "€350",
+            period: " one-time",
+            meta: "8 weeks",
+            result: "Realistic target: 5-8kg fat loss",
+            description: "A focused reset for people who need a clear plan, nutrition structure and accountability fast.",
             features: [
-              "Includes all Starter features",
-              "Bi-weekly training plan updates",
-              "Video form tips library",
-              "Monthly progress review (audio or video)",
-              "Habit, step, sleep and hydration tracking",
-              "Private messaging support (48h response)"
+              "8-week training block for home or gym",
+              "Nutrition setup with simple meal structure",
+              "Shopping list guidance and swaps",
+              "Weekly accountability check-ins",
+              "Best for restarting momentum"
             ]
           },
-          performance: {
-            badge: "Result Focused",
-            name: "Performance Base",
-            price: "£125",
-            period: "/mo",
-            description: "Train smart and get visible results with structure and accountability.",
+          twelve_week: {
+            badge: "Flagship",
+            name: "12 Week Transformation",
+            price: "€600",
+            period: " one-time",
+            meta: "12 weeks",
+            result: "Realistic target: 9-12kg fat loss",
+            featured: true,
+            description: "The main Garcia Builder transformation block: enough time to lose fat, build strength and lock in routines.",
             features: [
-              "Includes all Consistency features",
-              "Macro-based nutrition plan with monthly adjustments",
-              "Two video form reviews per month",
-              "Progress calendar with weekly tasks",
-              "Performance tracking dashboard"
+              "Full 12-week progressive training plan",
+              "Calories, macros and nutrition guidance",
+              "Shopping list support and eating-out strategy",
+              "Weekly check-ins with plan adjustments",
+              "App access, support and accountability"
             ]
           },
-          premium: {
-            badge: "High Touch",
-            name: "Coaching Premium",
-            price: "£165",
-            period: "/mo",
-            description: "Take your body and performance to the next level with full-spectrum support.",
+          eighteen_week: {
+            badge: "Most complete",
+            name: "18 Week Complete Transformation",
+            price: "€750",
+            period: " one-time",
+            meta: "18 weeks",
+            result: "Realistic target: 12-15kg fat loss + long-term habits",
+            description: "A deeper coaching block for bigger goals, more habit work and a smoother transition into maintenance.",
             features: [
-              "Includes all Performance Base features",
-              "Periodized training blocks, testing and deloads",
-              "Bi-weekly macro updates and progress tuning",
-              "Technique feedback twice per week",
-              "Personalized mobility and prehab routines",
-              "Strategic mini-phases: cut, recomp, build"
-            ]
-          },
-          elite: {
-            badge: "All Access",
-            name: "Elite Mastery",
-            price: "£235",
-            period: "/mo",
-            description: "Your coach in your pocket—fully immersed and built for advanced goals.",
-            features: [
-              "Includes all Premium features",
-              "Unlimited video form feedback (fair use)",
-              "Priority messaging and voice notes",
-              "Weekly 20-minute performance review call",
-              "Nutrition audits and meal structure redesign",
-              "Lifestyle optimisation for sleep and stress",
-              "Travel and event planning strategies",
-              "Custom cut, build and peak phases",
-              "Advanced testing and data monitoring"
+              "18-week training and nutrition roadmap",
+              "Fat-loss phase plus habit-building phase",
+              "Advanced accountability and progress reviews",
+              "Shopping lists, travel strategy and social eating support",
+              "Maintenance plan so results are easier to keep"
             ]
           }
         },
         cta: {
-          choose: "Choose Plan",
+          choose: "Start Secure Checkout",
           popular: "Most Popular",
           contact: "Contact for Details"
-        },
-        member_discount: {
-          title: "Exclusive Member Discount",
-          discount: "discount",
-          features: [
-            "Valid on 3+ month plans",
-            "Code: MEMBER15",
-            "Valid until 31/12/2025"
-          ],
-          description: "As a registered user, you have access to special discount on all long-term plans!",
-          cta: "Use Discount"
-        },
-        discount: {
-          prompt: "Have a discount code?"
         },
         group_coaching: {
           title: "Group & Corporate Coaching - Coming Soon!",
@@ -496,13 +470,18 @@
         },
         post_purchase: {
           title: "After purchase:",
-          schedule: "Schedule consult",
-          preview: "Preview the first workout"
+          schedule: "Schedule consult"
         }
       },
       contact: {
         title: "Contact",
   subtitle: "Tell me about your goal. I'll get back within 24–48h.",
+        quick: {
+          whatsapp: "Chat on WhatsApp",
+          consult: "Book a free 15-min consult",
+          instagram: "Message on Instagram",
+          note: "Prefer the form? It goes directly to andre@garciabuilder.fitness."
+        },
         form: {
           name: "Your name",
           email: "Your email",
@@ -521,13 +500,14 @@
             selectGoal: "Select your goal",
             selectTimeline: "Select",
             selectExperience: "Select",
-            budget: "£200-300 or $250-375",
+            budget: "€200-300",
             message: "Current fitness level, schedule, any injuries or concerns..."
           },
           options: {
             contact: {
               email: "Email",
-              whatsapp: "Instagram DM",
+              whatsapp: "WhatsApp",
+              instagram: "Instagram DM",
               phone: "Phone call"
             },
             goals: {
@@ -993,115 +973,89 @@
         conrad: "Andre reconstruiu meu treino em meio a semanas de 60 horas. Perdemos 9kg de gordura, ganhamos massa magra e meus ombros não doem mais."
       },
       pricing: {
-        title: "Planos",
-        subtitle: "Escolha o nível de coaching que combina com seus objetivos hoje — e evolua conforme seus resultados crescem.",
-        currency_selector: {
-          title: "Veja os preços na sua moeda"
-        },
-        period_selector: {
-          title: "Escolha a Duração do Seu Plano",
-          monthly: "Mensal",
-          quarterly: "3 Meses",
-          biannual: "6 Meses",
-          annual: "12 Meses",
-          note: "Economize mais com compromissos de longo prazo. Todos os planos incluem acesso completo desde o primeiro dia."
+        title: "Programas de Coaching",
+        subtitle: "Escolha a estrutura certa para o seu objetivo: acesso ao app, treino, nutrição, lista de compras, check-ins e accountability.",
+        value: {
+          title: "O que todos os planos incluem",
+          text: "Execução clara, não apenas um PDF: treino, nutrição e acompanhamento organizados para você saber exatamente o próximo passo.",
+          items: [
+            "Acesso ao app Trainerize com treinos estruturados",
+            "Metas nutricionais, orientação alimentar e suporte para lista de compras",
+            "Check-ins semanais, ajustes e accountability",
+            "Checkout seguro, email de onboarding e agendamento de consulta após a compra"
+          ]
         },
         plans: {
-          starter: {
-            badge: "Começo guiado",
-            name: "Starter",
-            price: "€79",
+          monthly: {
+            badge: "Coaching flexível",
+            name: "Coaching Online Mensal",
+            price: "€150",
             period: "/mês",
-            description: "Comece com estrutura simples para criar ritmo.",
+            meta: "Suporte contínuo",
+            result: "Melhor para progresso estável e manutenção",
+            description: "Coaching online padrão para quem quer estrutura todos os meses sem um bloco fechado de transformação.",
             features: [
-              "Plano de treino personalizado (atualizado mensalmente)",
-              "Metas básicas de nutrição",
-              "Check-in automatizado semanal via Trainerize",
-              "Acesso à comunidade de accountability",
-              "Suporte por email"
+              "Plano de treino personalizado dentro do app",
+              "Metas de nutrição e orientação de hábitos",
+              "Check-in semanal e ajustes no plano",
+              "Suporte por mensagem e accountability",
+              "Cancele antes da próxima renovação mensal"
             ]
           },
-          consistency: {
-            badge: "Mais escolhido",
-            name: "Plano Consistência",
-            price: "€99",
-            period: "/mês",
-            description: "Construa disciplina e mantenha o progresso com orientação leve.",
+          eight_week: {
+            badge: "Programa de entrada",
+            name: "8 Semanas Fat Loss Kickstart",
+            price: "€350",
+            period: " pagamento único",
+            meta: "8 semanas",
+            result: "Meta realista: 5-8kg de perda de gordura",
+            description: "Um reset focado para quem precisa de plano claro, estrutura alimentar e accountability rapidamente.",
             features: [
-              "Inclui todos os recursos do Starter",
-              "Atualização de treino a cada 15 dias",
-              "Biblioteca de dicas de técnica em vídeo",
-              "Revisão mensal de progresso (áudio ou vídeo)",
-              "Acompanhamento de hábitos, passos, sono e hidratação",
-              "Suporte por mensagens privadas (resposta em até 48h)"
+              "Bloco de treino de 8 semanas para casa ou ginásio",
+              "Configuração nutricional com estrutura simples de refeições",
+              "Orientação de lista de compras e substituições",
+              "Check-ins semanais de accountability",
+              "Ideal para recuperar ritmo e consistência"
             ]
           },
-          performance: {
-            badge: "Foco em resultado",
-            name: "Performance Base",
-            price: "€125",
-            period: "/mês",
-            description: "Treine com estratégia e veja resultados visíveis com acompanhamento.",
+          twelve_week: {
+            badge: "Principal",
+            name: "Transformação 12 Semanas",
+            price: "€600",
+            period: " pagamento único",
+            meta: "12 semanas",
+            result: "Meta realista: 9-12kg de perda de gordura",
+            featured: true,
+            description: "O bloco principal Garcia Builder: tempo suficiente para perder gordura, ganhar força e consolidar rotina.",
             features: [
-              "Inclui os recursos do Plano Consistência",
-              "Plano de nutrição baseado em macros com ajustes mensais",
-              "Duas revisões de técnica em vídeo por mês",
-              "Calendário de progresso com tarefas semanais",
-              "Dashboard de performance"
+              "Plano progressivo completo de 12 semanas",
+              "Calorias, macros e orientação nutricional",
+              "Suporte para lista de compras e estratégia para comer fora",
+              "Check-ins semanais com ajustes do plano",
+              "Acesso ao app, suporte e accountability"
             ]
           },
-          premium: {
-            badge: "Suporte completo",
-            name: "Coaching Premium",
-            price: "€165",
-            period: "/mês",
-            description: "Eleve corpo e performance com suporte completo.",
+          eighteen_week: {
+            badge: "Mais completo",
+            name: "Transformação Completa 18 Semanas",
+            price: "€750",
+            period: " pagamento único",
+            meta: "18 semanas",
+            result: "Meta realista: 12-15kg de perda + hábitos de longo prazo",
+            description: "Um bloco mais profundo para metas maiores, mais trabalho de hábitos e transição mais segura para manutenção.",
             features: [
-              "Inclui os recursos do Performance Base",
-              "Blocos periodizados com testes e deloads",
-              "Atualizações de macros quinzenais e ajustes finos",
-              "Feedback de técnica duas vezes por semana",
-              "Rotinas personalizadas de mobilidade e prehab",
-              "Mini-fases estratégicas: cut, recomp, build"
-            ]
-          },
-          elite: {
-            badge: "Imersão total",
-            name: "Elite Mastery",
-            price: "€235",
-            period: "/mês",
-            description: "Coach no bolso: imersão total para metas avançadas.",
-            features: [
-              "Inclui os recursos do Premium",
-              "Feedback de técnica ilimitado (uso justo)",
-              "Mensagens prioritárias e áudios",
-              "Call semanal de performance (20 min)",
-              "Auditorias de nutrição e redesign das refeições",
-              "Otimização de sono e estresse",
-              "Estratégias para viagens e eventos",
-              "Fases customizadas de cut, build e peak",
-              "Monitoramento avançado de dados e testes"
+              "Roadmap de treino e nutrição por 18 semanas",
+              "Fase de perda de gordura + fase de construção de hábitos",
+              "Accountability avançado e revisões de progresso",
+              "Listas de compras, estratégia de viagem e suporte para eventos sociais",
+              "Plano de manutenção para facilitar manter os resultados"
             ]
           }
         },
         cta: {
-          choose: "Escolher Plano",
+          choose: "Iniciar checkout seguro",
           popular: "Mais Popular",
           contact: "Contato para Detalhes"
-        },
-        member_discount: {
-          title: "Desconto Exclusivo para Membros",
-          discount: "desconto",
-          features: [
-            "Válido em planos de 3+ meses",
-            "Código: MEMBER15",
-            "Válido até 31/12/2025"
-          ],
-          description: "Como usuário registrado, você tem acesso a desconto especial em todos os planos de longa duração!",
-          cta: "Usar Desconto"
-        },
-        discount: {
-          prompt: "Tem um código de desconto?"
         },
         group_coaching: {
           title: "Coaching em Grupo e Corporativo - Em breve!",
@@ -1119,6 +1073,12 @@
       contact: {
         title: "Contato",
         subtitle: "Conte-me sobre o seu objetivo. Respondo em até 24–48h.",
+        quick: {
+          whatsapp: "Conversar no WhatsApp",
+          consult: "Agendar consulta gratuita de 15 min",
+          instagram: "Mensagem no Instagram",
+          note: "Prefere o formulário? Ele vai direto para andre@garciabuilder.fitness."
+        },
         form: {
           name: "Seu nome",
           email: "Seu email",
@@ -1143,7 +1103,8 @@
           options: {
             contact: {
               email: "Email",
-              whatsapp: "Mensagem no Instagram",
+              whatsapp: "WhatsApp",
+              instagram: "Mensagem no Instagram",
               phone: "Ligação"
             },
             goals: {
@@ -1609,115 +1570,89 @@
         conrad: "Andre reconstruyó mi entrenamiento alrededor de semanas laborales de 60 horas. Perdimos 9kg de grasa, ganamos masa magra y mis hombros dejaron de doler."
       },
       pricing: {
-        title: "Precios",
-        subtitle: "Elige el nivel de coaching que se ajuste a tus objetivos hoy — y escala a medida que crecen tus resultados.",
-        currency_selector: {
-          title: "Ver precios en tu moneda"
-        },
-        period_selector: {
-          title: "Elige la Duración de tu Plan",
-          monthly: "Mensual",
-          quarterly: "3 Meses",
-          biannual: "6 Meses",
-          annual: "12 Meses",
-          note: "Ahorra más con compromisos a largo plazo. Todos los planes incluyen acceso completo desde el primer día."
+        title: "Programas de Coaching",
+        subtitle: "Elige la estructura que encaja con tu objetivo: acceso a la app, entrenamiento, nutrición, lista de compra, check-ins y accountability.",
+        value: {
+          title: "Qué incluye cada plan",
+          text: "Ejecución clara, no solo un PDF: entrenamiento, nutrición y seguimiento organizados para que sepas exactamente el siguiente paso.",
+          items: [
+            "Acceso a Trainerize con entrenamientos estructurados",
+            "Objetivos de nutrición, guía de comidas y apoyo con lista de compra",
+            "Check-ins semanales, ajustes y accountability",
+            "Checkout seguro, email de onboarding y agenda de consulta después de comprar"
+          ]
         },
         plans: {
-          starter: {
-            badge: "Inicio guiado",
-            name: "Starter",
-            price: "€79",
+          monthly: {
+            badge: "Coaching flexible",
+            name: "Coaching Online Mensual",
+            price: "€150",
             period: "/mes",
-            description: "Inicia tu camino con estructura sencilla y claridad.",
+            meta: "Soporte continuo",
+            result: "Ideal para progreso estable y mantenimiento",
+            description: "Coaching online estándar para clientes que quieren estructura mensual sin un bloque cerrado de transformación.",
             features: [
-              "Plan de entrenamiento personalizado (actualizado cada mes)",
-              "Objetivos básicos de nutrición",
-              "Check-in automatizado semanal vía Trainerize",
-              "Acceso a la comunidad de accountability",
-              "Soporte por email"
+              "Plan de entrenamiento personalizado en la app",
+              "Objetivos de nutrición y guía de hábitos",
+              "Check-in semanal y ajustes del plan",
+              "Soporte por mensaje y accountability",
+              "Cancela antes de la siguiente renovación mensual"
             ]
           },
-          consistency: {
-            badge: "Más popular",
-            name: "Plan Consistencia",
-            price: "€99",
-            period: "/mes",
-            description: "Construye disciplina y mantén el rumbo con guía ligera.",
+          eight_week: {
+            badge: "Programa inicial",
+            name: "8 Semanas Fat Loss Kickstart",
+            price: "€350",
+            period: " pago único",
+            meta: "8 semanas",
+            result: "Objetivo realista: 5-8kg de pérdida de grasa",
+            description: "Un reset enfocado para quien necesita un plan claro, estructura nutricional y accountability rápido.",
             features: [
-              "Incluye todas las funciones de Starter",
-              "Actualización del plan de entrenamiento cada 15 días",
-              "Biblioteca de consejos de técnica en video",
-              "Revisión mensual de progreso (audio o video)",
-              "Seguimiento de hábitos, pasos, sueño e hidratación",
-              "Mensajería privada con respuesta en 48h"
+              "Bloque de entrenamiento de 8 semanas para casa o gimnasio",
+              "Configuración nutricional con estructura simple de comidas",
+              "Guía de lista de compra y sustituciones",
+              "Check-ins semanales de accountability",
+              "Ideal para recuperar ritmo y consistencia"
             ]
           },
-          performance: {
-            badge: "Enfoque en resultados",
-            name: "Performance Base",
-            price: "€125",
-            period: "/mes",
-            description: "Entrena con inteligencia y logra resultados visibles con acompañamiento.",
+          twelve_week: {
+            badge: "Principal",
+            name: "Transformación 12 Semanas",
+            price: "€600",
+            period: " pago único",
+            meta: "12 semanas",
+            result: "Objetivo realista: 9-12kg de pérdida de grasa",
+            featured: true,
+            description: "El bloque principal Garcia Builder: tiempo suficiente para perder grasa, ganar fuerza y consolidar rutinas.",
             features: [
-              "Incluye las funciones del Plan Consistencia",
-              "Plan de nutrición basado en macros con ajustes mensuales",
-              "Dos revisiones de técnica en video al mes",
-              "Calendario de progreso con tareas semanales",
-              "Panel de seguimiento de rendimiento"
+              "Plan progresivo completo de 12 semanas",
+              "Calorías, macros y orientación nutricional",
+              "Apoyo con lista de compra y estrategia para comer fuera",
+              "Check-ins semanales con ajustes del plan",
+              "Acceso a la app, soporte y accountability"
             ]
           },
-          premium: {
-            badge: "Soporte integral",
-            name: "Coaching Premium",
-            price: "€165",
-            period: "/mes",
-            description: "Lleva tu cuerpo y rendimiento al siguiente nivel con soporte integral.",
+          eighteen_week: {
+            badge: "Más completo",
+            name: "Transformación Completa 18 Semanas",
+            price: "€750",
+            period: " pago único",
+            meta: "18 semanas",
+            result: "Objetivo realista: 12-15kg de pérdida + hábitos a largo plazo",
+            description: "Un bloque más profundo para metas grandes, más trabajo de hábitos y una transición más segura a mantenimiento.",
             features: [
-              "Incluye las funciones de Performance Base",
-              "Bloques periodizados con tests y deloads",
-              "Actualizaciones de macros quincenales y ajustes finos",
-              "Feedback de técnica dos veces por semana",
-              "Rutinas personalizadas de movilidad y prehab",
-              "Mini-fases estratégicas: cut, recomp, build"
-            ]
-          },
-          elite: {
-            badge: "Acceso total",
-            name: "Elite Mastery",
-            price: "€235",
-            period: "/mes",
-            description: "Tu coach en el bolsillo: inmersión total para metas avanzadas.",
-            features: [
-              "Incluye las funciones del Premium",
-              "Feedback de técnica ilimitado (uso justo)",
-              "Mensajería prioritaria y notas de voz",
-              "Llamada semanal de rendimiento (20 min)",
-              "Auditorías de nutrición y rediseño de comidas",
-              "Optimización de sueño y estrés",
-              "Estrategias para viajes y eventos",
-              "Fases personalizadas de cut, build y peak",
-              "Monitoreo avanzado de datos y pruebas"
+              "Roadmap de entrenamiento y nutrición por 18 semanas",
+              "Fase de pérdida de grasa + fase de construcción de hábitos",
+              "Accountability avanzado y revisiones de progreso",
+              "Listas de compra, estrategia para viajes y apoyo social",
+              "Plan de mantenimiento para conservar mejor los resultados"
             ]
           }
         },
         cta: {
-          choose: "Elegir Plan",
+          choose: "Iniciar checkout seguro",
           popular: "Más Popular",
           contact: "Contacto para Detalles"
-        },
-        member_discount: {
-          title: "Descuento Exclusivo para Miembros",
-          discount: "descuento",
-          features: [
-            "Válido en planes de 3+ meses",
-            "Código: MEMBER15",
-            "Válido hasta 31/12/2025"
-          ],
-          description: "Como usuario registrado, tienes acceso a descuento especial en todos los planes de larga duración!",
-          cta: "Usar Descuento"
-        },
-        discount: {
-          prompt: "¿Tienes un código de descuento?"
         },
         group_coaching: {
           title: "Coaching grupal y corporativo - ¡Próximamente!",
@@ -1735,6 +1670,12 @@
       contact: {
         title: "Contacto",
         subtitle: "Cuéntame tu objetivo. Respondo en 24–48h.",
+        quick: {
+          whatsapp: "Hablar por WhatsApp",
+          consult: "Agendar consulta gratis de 15 min",
+          instagram: "Enviar mensaje en Instagram",
+          note: "¿Prefieres el formulario? Llega directo a andre@garciabuilder.fitness."
+        },
         form: {
           name: "Tu nombre",
           email: "Tu email",
@@ -1759,7 +1700,8 @@
           options: {
             contact: {
               email: "Email",
-              whatsapp: "DM en Instagram",
+              whatsapp: "WhatsApp",
+              instagram: "DM en Instagram",
               phone: "Llamada telefónica"
             },
             goals: {
@@ -1897,8 +1839,8 @@
 
   Object.assign(DICTS.en, {
     leadmagnet: {
-      title: "Download the 5-Step Fat Loss Gameplan",
-      subtitle: "Discover how clients drop fat, keep muscle, and stay consistent without restrictive diets.",
+      title: "Download the 28 Days Fat Loss Quickstart",
+      subtitle: "Start with a practical 4-week structure for training, nutrition, steps and accountability.",
       bullet1: "Daily structure that fits work, family, and travel",
       bullet2: "Nutrition cheat-sheet with flexible meal ideas",
       bullet3: "Step-by-step habit stack that locks in results",
@@ -1907,7 +1849,7 @@
       name_placeholder: "Enter your name",
       email: "Email Address",
       email_placeholder: "you@email.com",
-      submit: "Send Me the Guide",
+      submit: "Send Me the 28-Day Guide",
       privacy: "No spam. The guide arrives instantly and you can unsubscribe anytime."
     },
     leadform: {
@@ -1972,7 +1914,7 @@
     results: "Results",
     apply_trainer: "Apply as Trainer",
     resources: "Resources",
-    download_guide: "Download Guide (PDF)",
+    download_guide: "Download 28-Day Guide (PDF)",
     book_call: "Book a Call",
     follow_us: "Follow us",
     newsletter: "Newsletter",
@@ -1990,8 +1932,8 @@
 
   Object.assign(DICTS.pt, {
     leadmagnet: {
-      title: "Baixe o Plano de Perda de Gordura em 5 Passos",
-      subtitle: "Descubra como clientes perdem gordura, mantem musculo e seguem consistentes sem dietas restritivas.",
+      title: "Baixe o 28 Days Fat Loss Quickstart",
+      subtitle: "Comece com uma estrutura pratica de 4 semanas para treino, nutricao, passos e accountability.",
       bullet1: "Estrutura diaria que cabe no trabalho, familia e viagens",
       bullet2: "Guia de nutricao com ideias de refeicoes flexiveis",
       bullet3: "Passo a passo de habitos para manter resultados",
@@ -2000,7 +1942,7 @@
       name_placeholder: "Digite seu nome",
       email: "Email",
       email_placeholder: "voce@email.com",
-      submit: "Enviar o Guia",
+      submit: "Enviar o Guia de 28 Dias",
       privacy: "Sem spam. O guia chega na hora e voce pode cancelar quando quiser."
     },
     leadform: {
@@ -2065,7 +2007,7 @@
     results: "Resultados",
     apply_trainer: "Candidatar-se como Treinador",
     resources: "Recursos",
-    download_guide: "Baixar Guia (PDF)",
+    download_guide: "Baixar Guia de 28 Dias (PDF)",
     book_call: "Agendar Chamada",
     follow_us: "Siga-nos",
     newsletter: "Newsletter",
@@ -2083,8 +2025,8 @@
 
   Object.assign(DICTS.es, {
     leadmagnet: {
-      title: "Descarga el Plan de Perdida de Grasa en 5 Pasos",
-      subtitle: "Descubre como los clientes pierden grasa, mantienen musculo y son constantes sin dietas restrictivas.",
+      title: "Descarga el 28 Days Fat Loss Quickstart",
+      subtitle: "Empieza con una estructura practica de 4 semanas para entrenamiento, nutricion, pasos y accountability.",
       bullet1: "Estructura diaria que encaja con trabajo, familia y viajes",
       bullet2: "Guia de nutricion con ideas flexibles de comidas",
       bullet3: "Sistema paso a paso de habitos para mantener resultados",
@@ -2093,7 +2035,7 @@
       name_placeholder: "Escribe tu nombre",
       email: "Email",
       email_placeholder: "tu@email.com",
-      submit: "Enviame la Guia",
+      submit: "Enviame la Guia de 28 Dias",
       privacy: "Sin spam. La guia llega al instante y puedes cancelar cuando quieras."
     },
     leadform: {
@@ -2158,7 +2100,7 @@
     results: "Resultados",
     apply_trainer: "Postularse como Entrenador",
     resources: "Recursos",
-    download_guide: "Descargar Guia (PDF)",
+    download_guide: "Descargar Guia de 28 Dias (PDF)",
     book_call: "Reservar Llamada",
     follow_us: "Siguenos",
     newsletter: "Newsletter",

@@ -332,7 +332,7 @@ const INLINE_FALLBACKS = {
             </ul>
             <div class="footer-follow">
                 <span class="footer-subhead">Follow us</span>
-                <a href="https://instagram.com/garcia.builder" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://instagram.com/garciabuilder.fitness" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 <a href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener" aria-label="Schedule a free consultation"><i class="fas fa-calendar-check"></i></a>
             </div>
         </div>

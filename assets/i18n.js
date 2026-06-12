@@ -222,7 +222,7 @@
       },
       reviews: {
         google: "Rated 5.0 on Google",
-        count: "(87 reviews)"
+        count: "(25 reviews)"
       },
       hero: {
         p: "Training, nutrition, and weekly accountability built around your schedule."
@@ -838,7 +838,7 @@
       },
       reviews: {
         google: "Avaliado 5.0 no Google",
-        count: "(87 avaliações)"
+        count: "(25 avaliações)"
       },
       hero: {
         p: "Treino, nutricao e acompanhamento semanal criados para a sua rotina."
@@ -1454,7 +1454,7 @@
       },
       reviews: {
         google: "Calificado 5.0 en Google",
-        count: "(87 reseñas)"
+        count: "(25 reseñas)"
       },
       hero: {
         p: "Entrenamiento, nutricion y seguimiento semanal creados para tu rutina."
@@ -2511,7 +2511,7 @@
     "To communicate updates and respond to support requests": "Para comunicar atualizações e responder solicitações de suporte",
     "To improve and secure our platform": "Para melhorar e proteger nossa plataforma",
     "We do not sell personal data. We share data with processors (e.g., Stripe, Supabase) only as necessary to provide our services.": "Não vendemos dados pessoais. Compartilhamos dados com processadores (ex.: Stripe, Supabase) apenas quando necessário para fornecer nossos serviços.",
-    "You may request access, correction, or deletion of your data by contacting support@garciabuilder.fitness.": "Você pode solicitar acesso, correção ou exclusão dos seus dados entrando em contato com support@garciabuilder.fitness.",
+    "You may request access, correction, or deletion of your data by contacting andre@garciabuilder.fitness.": "Você pode solicitar acesso, correção ou exclusão dos seus dados entrando em contato com andre@garciabuilder.fitness.",
     "Welcome to Garcia Builder. By accessing or using our website and services, you agree to these Terms of Service.": "Bem-vindo ao Garcia Builder. Ao acessar ou usar nosso site e serviços, você concorda com estes Termos de Serviço.",
     "1. Services": "1. Serviços",
     "We provide online coaching programs, training plans, and related content. Some services require a paid subscription processed by Stripe.": "Fornecemos programas de coaching online, planos de treino e conteúdo relacionado. Alguns serviços exigem assinatura paga processada pela Stripe.",
@@ -2811,7 +2811,7 @@
     "To communicate updates and respond to support requests": "Para comunicar actualizaciones y responder solicitudes de soporte",
     "To improve and secure our platform": "Para mejorar y proteger nuestra plataforma",
     "We do not sell personal data. We share data with processors (e.g., Stripe, Supabase) only as necessary to provide our services.": "No vendemos datos personales. Compartimos datos con procesadores (p. ej., Stripe, Supabase) solo cuando es necesario para prestar nuestros servicios.",
-    "You may request access, correction, or deletion of your data by contacting support@garciabuilder.fitness.": "Puedes solicitar acceso, corrección o eliminación de tus datos contactando a support@garciabuilder.fitness.",
+    "You may request access, correction, or deletion of your data by contacting andre@garciabuilder.fitness.": "Puedes solicitar acceso, corrección o eliminación de tus datos contactando a andre@garciabuilder.fitness.",
     "Welcome to Garcia Builder. By accessing or using our website and services, you agree to these Terms of Service.": "Bienvenido a Garcia Builder. Al acceder o usar nuestro sitio y servicios, aceptas estos Términos de Servicio.",
     "1. Services": "1. Servicios",
     "We provide online coaching programs, training plans, and related content. Some services require a paid subscription processed by Stripe.": "Ofrecemos programas de coaching online, planes de entrenamiento y contenido relacionado. Algunos servicios requieren una suscripción pagada procesada por Stripe.",

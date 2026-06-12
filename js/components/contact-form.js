@@ -78,7 +78,7 @@
       "Thank you for reaching out! I've received your message and will get back to you within 24-48 hours.",
       '',
       'In the meantime, feel free to:',
-      '- Follow me on Instagram @garcia.builder for daily tips',
+      '- Follow me on Instagram @garciabuilder.fitness for daily tips',
       '- Check out transformation stories at garciabuilder.com',
       '- Book a free consultation call here: https://calendly.com/andrenjulio072/consultation',
       '',

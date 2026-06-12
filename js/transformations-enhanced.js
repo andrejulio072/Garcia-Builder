@@ -3,6 +3,17 @@
  * Garcia Builder - Client Transformations with Advanced Features
  */
 
+(() => {
+const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
+
+if (isBrowser && window.__GB_TRANSFORMATIONS_ENHANCED_LOADED__) {
+    return;
+}
+
+if (isBrowser) {
+    window.__GB_TRANSFORMATIONS_ENHANCED_LOADED__ = true;
+}
+
 class TransformationsManager {
     constructor() {
         this.currentFilter = 'all';
@@ -455,17 +466,44 @@ class TransformationsManager {
     // Setup scroll animations
     setupScrollAnimations() {
         const cards = document.querySelectorAll('.transformation-card');
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         const cardObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
+                    entry.target.classList.add('is-visible');
+                    cardObserver.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.2 });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.18 });
 
-        cards.forEach(card => {
+        cards.forEach((card, index) => {
+            card.style.setProperty('--reveal-delay', `${(index % 6) * 65}ms`);
             cardObserver.observe(card);
+
+            if (reducedMotion) {
+                return;
+            }
+
+            card.addEventListener('pointermove', (event) => {
+                const rect = card.getBoundingClientRect();
+                const x = (event.clientX - rect.left) / rect.width;
+                const y = (event.clientY - rect.top) / rect.height;
+                const tiltY = (x - 0.5) * 6;
+                const tiltX = (0.5 - y) * 6;
+
+                card.style.setProperty('--tilt-x', `${tiltX.toFixed(2)}deg`);
+                card.style.setProperty('--tilt-y', `${tiltY.toFixed(2)}deg`);
+                card.style.setProperty('--shine-x', `${(x * 100).toFixed(1)}%`);
+                card.style.setProperty('--shine-y', `${(y * 100).toFixed(1)}%`);
+            });
+
+            card.addEventListener('pointerleave', () => {
+                card.style.setProperty('--tilt-x', '0deg');
+                card.style.setProperty('--tilt-y', '0deg');
+                card.style.setProperty('--shine-x', '50%');
+                card.style.setProperty('--shine-y', '0%');
+            });
         });
     }
 
@@ -495,17 +533,6 @@ class TransformationsManager {
 
 // Enhanced CSS animations
 const transformationStyles = `
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 @keyframes pulse {
     0%, 100% {
         transform: scale(1);
@@ -527,22 +554,46 @@ const transformationStyles = `
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.transformation-overlay {
-    animation: float 3s ease-in-out infinite;
+@media (prefers-reduced-motion: reduce) {
+    .transformation-card,
+    .transformation-card.is-visible,
+    .transformation-card:hover {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .transformation-overlay,
+    .transformations-hero::before {
+        animation: none;
+    }
 }
 `;
 
 // Inject enhanced styles
-const styleSheet = document.createElement('style');
-styleSheet.textContent = transformationStyles;
-document.head.appendChild(styleSheet);
+if (isBrowser) {
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = transformationStyles;
+    document.head.appendChild(styleSheet);
+}
 
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    window.transformationsManager = new TransformationsManager();
-});
+if (isBrowser) {
+    const initTransformations = () => {
+        if (!window.transformationsManager) {
+            window.transformationsManager = new TransformationsManager();
+        }
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTransformations);
+    } else {
+        initTransformations();
+    }
+}
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = TransformationsManager;
 }
+})();

@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Workout Templates | Garcia Builder</title>
+  <meta name="description" content="Browse Garcia Builder workout templates for fat loss, muscle gain, home training, men, women, beginners, intermediate and advanced lifters.">
+  <meta name="keywords" content="workout templates, beginner workout, intermediate workout, advanced workout, fat loss workout, muscle gain workout, home workout, Garcia Builder">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://garciabuilder.fitness/workouts.html">
+  <link rel="icon" href="Logo Files/For Web/logo-nobackground-500.png" type="image/png">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/workouts.css">
+  <script defer src="assets/i18n.js"></script>
+  <script defer src="js/app.js"></script>
+  <script defer src="js/workouts.js"></script>
+</head>
+<body class="workouts-page">
+  <div class="navbar">
+    <div class="container inner">
+      <a class="brand" href="index.html">
+        <img src="assets/logo.png" alt="Garcia Builder logo">
+        <span class="text-glow title-gradient">Garcia&nbsp;Builder</span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a data-i18n="nav.home" href="index.html">Home</a>
+        <a data-i18n="nav.programs" href="programs.html">Programs</a>
+        <a data-i18n="nav.workouts" href="workouts.html" class="active">Workouts</a>
+        <a data-i18n="nav.pricing" href="pricing.html">Pricing</a>
+        <a data-i18n="nav.transformations" href="transformations.html">Transformations</a>
+        <a data-i18n="nav.testimonials" href="testimonials.html">Testimonials</a>
+        <a data-i18n="nav.about" href="about.html">About</a>
+        <a data-i18n="nav.faq" href="faq.html">FAQ</a>
+        <a data-i18n="nav.contact" href="contact.html">Contact</a>
+      </nav>
+      <div class="lang">
+        <span class="small">Language</span>
+        <select id="lang-select" aria-label="Select language">
+          <option value="en">EN</option>
+          <option value="pt">PT</option>
+          <option value="es">ES</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <header class="workouts-hero">
+    <div class="container workouts-hero-inner">
+      <p class="eyebrow">Workout library</p>
+      <h1>Templates for every body, goal and training level.</h1>
+      <p class="hero-copy">Choose a focused plan for fat loss, muscle gain, home training, gym strength, men's physique, women's strength, or low-impact rebuilding.</p>
+      <div class="hero-actions" aria-label="Workout actions">
+        <a class="btn btn-gold" href="#workout-library">Browse templates</a>
+        <a class="btn" href="contact.html">Customize my plan</a>
+      </div>
+      <div class="workout-stats" aria-label="Workout library summary">
+        <div><strong>18</strong><span>Templates</span></div>
+        <div><strong>3</strong><span>Levels</span></div>
+        <div><strong>4-12</strong><span>Week blocks</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="workout-library">
+    <section class="workout-intro section">
+      <div class="container intro-grid">
+        <div>
+          <p class="eyebrow">Built for action</p>
+          <h2 class="title-gradient text-glow">Start with a template. Progress with structure.</h2>
+        </div>
+        <p>Each workout template includes a weekly split, training focus, equipment, session structure and progression cue. These are starting points for healthy adults. Stop if pain feels sharp or unusual, and get medical guidance for injuries or health conditions.</p>
+      </div>
+    </section>
+
+    <section class="workout-filter-band" aria-label="Workout filters">
+      <div class="container filter-shell">
+        <div class="search-wrap">
+          <label for="workout-search">Search workouts</label>
+          <input id="workout-search" type="search" placeholder="Search by goal, level, equipment or focus">
+        </div>
+
+        <div class="filter-group" aria-label="Goal filter">
+          <span>Goal</span>
+          <button type="button" class="active" data-filter-group="goal" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" data-filter-group="goal" data-filter="fat-loss">Fat loss</button>
+          <button type="button" data-filter-group="goal" data-filter="muscle">Muscle</button>
+          <button type="button" data-filter-group="goal" data-filter="strength">Strength</button>
+          <button type="button" data-filter-group="goal" data-filter="mobility">Mobility</button>
+        </div>
+
+        <div class="filter-group" aria-label="Level filter">
+          <span>Level</span>
+          <button type="button" class="active" data-filter-group="level" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" data-filter-group="level" data-filter="beginner">Beginner</button>
+          <button type="button" data-filter-group="level" data-filter="intermediate">Intermediate</button>
+          <button type="button" data-filter-group="level" data-filter="advanced">Advanced</button>
+        </div>
+
+        <div class="filter-group" aria-label="Training place filter">
+          <span>Place</span>
+          <button type="button" class="active" data-filter-group="place" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" data-filter-group="place" data-filter="home">Home</button>
+          <button type="button" data-filter-group="place" data-filter="gym">Gym</button>
+        </div>
+
+        <p class="result-count"><span id="workout-count">18</span> templates showing</p>
+      </div>
+    </section>
+
+    <section class="section workout-grid-section">
+      <div class="container">
+        <div class="workout-grid" id="workout-grid">
+          <article class="workout-card" data-goal="fat-loss strength" data-level="beginner" data-place="home gym" data-audience="all beginners lose weight">
+            <div class="workout-card-head">
+              <span class="level level-beginner">Beginner</span>
+              <span>3 days/week</span>
+            </div>
+            <h3>Lose Weight Starter</h3>
+            <p>Simple full-body sessions built around low-skill strength work and steady conditioning.</p>
+            <ul class="quick-facts">
+              <li>Best for: new trainees</li>
+              <li>Equipment: dumbbells or machines</li>
+              <li>Block: 6 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Mon full body strength, Wed incline walk and core, Fri full body strength, Sat optional steps.</p>
+                <h4>Session focus</h4>
+                <p>Squat pattern, push, pull, hinge, loaded carry, then 10-15 minutes easy conditioning.</p>
+                <h4>Progression</h4>
+                <p>Add 1-2 reps each week before adding load. Keep 2 reps in reserve on most sets.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="fat-loss strength" data-level="intermediate" data-place="gym" data-audience="all lose weight">
+            <div class="workout-card-head">
+              <span class="level level-intermediate">Intermediate</span>
+              <span>4 days/week</span>
+            </div>
+            <h3>Fat Loss Engine</h3>
+            <p>An upper/lower split with conditioning finishers and enough volume to keep muscle while cutting.</p>
+            <ul class="quick-facts">
+              <li>Best for: consistent gym users</li>
+              <li>Equipment: full gym</li>
+              <li>Block: 8 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Upper strength, lower strength, upper pump plus intervals, lower posterior chain plus carries.</p>
+                <h4>Session focus</h4>
+                <p>Start with a compound lift, add 3-4 accessories, finish with sled pushes, bike intervals or incline walking.</p>
+                <h4>Progression</h4>
+                <p>Hold the same rest times and improve total reps before raising intensity.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="fat-loss strength" data-level="advanced" data-place="gym" data-audience="all lose weight advanced">
+            <div class="workout-card-head">
+              <span class="level level-advanced">Advanced</span>
+              <span>5 days/week</span>
+            </div>
+            <h3>Advanced Cut Athletic</h3>
+            <p>High-output strength, hypertrophy and conditioning for experienced lifters in a calorie deficit.</p>
+            <ul class="quick-facts">
+              <li>Best for: advanced cutting phases</li>
+              <li>Equipment: full gym</li>
+              <li>Block: 6 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Push, pull, legs, upper density, lower conditioning, with two low-intensity cardio days.</p>
+                <h4>Session focus</h4>
+                <p>Heavy first movement, controlled accessory supersets, short metabolic finishers.</p>
+                <h4>Progression</h4>
+                <p>Use double progression and deload if performance drops for two sessions in a row.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="muscle strength" data-level="beginner" data-place="gym" data-audience="men beginners muscle">
+            <div class="workout-card-head">
+              <span class="level level-beginner">Beginner</span>
+              <span>3 days/week</span>
+            </div>
+            <h3>Men's Muscle Foundation</h3>
+            <p>A full-body muscle-building plan focused on technique, strength standards and repeatable habits.</p>
+            <ul class="quick-facts">
+              <li>Best for: first serious bulk</li>
+              <li>Equipment: gym machines and free weights</li>
+              <li>Block: 8 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Three full-body sessions alternating squat, bench, row, hinge, overhead press and pulldown emphasis.</p>
+                <h4>Session focus</h4>
+                <p>Practice big lifts, add stable machine work, finish with arms, calves or core.</p>
+                <h4>Progression</h4>
+                <p>Add load only when all sets hit the top of the rep range with clean form.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="muscle strength" data-level="intermediate" data-place="gym" data-audience="men muscle">
+            <div class="workout-card-head">
+              <span class="level level-intermediate">Intermediate</span>
+              <span>4 days/week</span>
+            </div>
+            <h3>Men's Hypertrophy Split</h3>
+            <p>Upper/lower training with targeted chest, back, shoulder, arm and leg volume.</p>
+            <ul class="quick-facts">
+              <li>Best for: visible size gain</li>
+              <li>Equipment: full gym</li>
+              <li>Block: 10 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Upper strength, lower strength, upper hypertrophy, lower hypertrophy.</p>
+                <h4>Session focus</h4>
+                <p>Compounds in the 5-8 range, accessories in the 8-15 range, isolation work in the 12-20 range.</p>
+                <h4>Progression</h4>
+                <p>Track top sets and back-off sets. Increase volume only when recovery is stable.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="muscle strength" data-level="advanced" data-place="gym" data-audience="men advanced muscle">
+            <div class="workout-card-head">
+              <span class="level level-advanced">Advanced</span>
+              <span>5-6 days/week</span>
+            </div>
+            <h3>Men's Advanced Mass Block</h3>
+            <p>A push/pull/legs rotation with specialization work for lagging body parts.</p>
+            <ul class="quick-facts">
+              <li>Best for: experienced lifters</li>
+              <li>Equipment: full gym</li>
+              <li>Block: 12 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Push, pull, legs, rest or active recovery, repeat with varied rep targets.</p>
+                <h4>Session focus</h4>
+                <p>One priority lift, one secondary compound, 4-6 accessories, optional specialization finisher.</p>
+                <h4>Progression</h4>
+                <p>Rotate hard weeks with controlled weeks. Keep joint stress managed with exercise swaps.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="muscle strength" data-level="beginner" data-place="home gym" data-audience="women beginners muscle">
+            <div class="workout-card-head">
+              <span class="level level-beginner">Beginner</span>
+              <span>3 days/week</span>
+            </div>
+            <h3>Women's Strength Starter</h3>
+            <p>Confidence-building strength training with glutes, back, core and posture emphasis.</p>
+            <ul class="quick-facts">
+              <li>Best for: first structured plan</li>
+              <li>Equipment: dumbbells or machines</li>
+              <li>Block: 6 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Lower body, upper body, full body with glute and core finishers.</p>
+                <h4>Session focus</h4>
+                <p>Goblet squat, hip thrust, row, press, Romanian deadlift, carries and anti-rotation core.</p>
+                <h4>Progression</h4>
+                <p>Build range of motion first, then load. Stop sets before form breaks.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="muscle strength" data-level="intermediate" data-place="gym" data-audience="women muscle">
+            <div class="workout-card-head">
+              <span class="level level-intermediate">Intermediate</span>
+              <span>4 days/week</span>
+            </div>
+            <h3>Women's Lean Muscle Build</h3>
+            <p>Lower-body emphasis with balanced upper-body training for strength, shape and performance.</p>
+            <ul class="quick-facts">
+              <li>Best for: glutes, legs and upper tone</li>
+              <li>Equipment: full gym</li>
+              <li>Block: 8 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Glutes and hamstrings, upper pull and push, quads and core, full body pump.</p>
+                <h4>Session focus</h4>
+                <p>Hip thrusts, split squats, rows, presses, cable work, carries and controlled tempos.</p>
+                <h4>Progression</h4>
+                <p>Alternate heavy weeks with volume weeks so joints and recovery stay consistent.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="muscle strength fat-loss" data-level="advanced" data-place="gym" data-audience="women advanced muscle">
+            <div class="workout-card-head">
+              <span class="level level-advanced">Advanced</span>
+              <span>5 days/week</span>
+            </div>
+            <h3>Women's Shape and Strength</h3>
+            <p>An advanced lower-body specialization block with strong upper-body maintenance.</p>
+            <ul class="quick-facts">
+              <li>Best for: experienced training phases</li>
+              <li>Equipment: full gym</li>
+              <li>Block: 10 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Glute strength, upper strength, quad focus, upper hypertrophy, lower pump and conditioning.</p>
+                <h4>Session focus</h4>
+                <p>Heavy hip extension, unilateral leg work, controlled back volume and short conditioning blocks.</p>
+                <h4>Progression</h4>
+                <p>Progress one priority lift per session while keeping accessory quality high.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="fat-loss strength" data-level="beginner" data-place="home" data-audience="home beginners">
+            <div class="workout-card-head">
+              <span class="level level-beginner">Beginner</span>
+              <span>3 days/week</span>
+            </div>
+            <h3>Home Bodyweight Beginner</h3>
+            <p>A no-gym plan using bodyweight strength, mobility and walking targets.</p>
+            <ul class="quick-facts">
+              <li>Best for: training at home</li>
+              <li>Equipment: chair and mat</li>
+              <li>Block: 4 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Full body A, mobility walk, full body B, optional core circuit.</p>
+                <h4>Session focus</h4>
+                <p>Squat to chair, incline push-up, hip hinge, dead bug, plank and step-ups.</p>
+                <h4>Progression</h4>
+                <p>Increase reps first, then reduce rest, then move to harder variations.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="muscle fat-loss strength" data-level="intermediate" data-place="home" data-audience="home">
+            <div class="workout-card-head">
+              <span class="level level-intermediate">Intermediate</span>
+              <span>4 days/week</span>
+            </div>
+            <h3>Home Dumbbell Progression</h3>
+            <p>A compact dumbbell plan for people who want muscle and conditioning without a gym.</p>
+            <ul class="quick-facts">
+              <li>Best for: home equipment users</li>
+              <li>Equipment: adjustable dumbbells and bands</li>
+              <li>Block: 8 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Upper, lower, full body density, conditioning and core.</p>
+                <h4>Session focus</h4>
+                <p>Dumbbell presses, rows, split squats, Romanian deadlifts, band pull-aparts and carries.</p>
+                <h4>Progression</h4>
+                <p>Use tempo and pauses when load options are limited.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="fat-loss strength" data-level="advanced" data-place="home" data-audience="home advanced">
+            <div class="workout-card-head">
+              <span class="level level-advanced">Advanced</span>
+              <span>5 days/week</span>
+            </div>
+            <h3>Home Advanced Density</h3>
+            <p>Short, demanding sessions using density blocks, unilateral work and conditioning.</p>
+            <ul class="quick-facts">
+              <li>Best for: advanced home training</li>
+              <li>Equipment: dumbbells, bands and timer</li>
+              <li>Block: 6 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Upper density, lower unilateral, conditioning, full body strength, core and mobility.</p>
+                <h4>Session focus</h4>
+                <p>Timed sets, antagonistic supersets, split stance lifts and loaded carries.</p>
+                <h4>Progression</h4>
+                <p>Beat previous total quality reps without turning strength sets into sloppy cardio.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="strength muscle" data-level="beginner" data-place="gym" data-audience="gym beginners">
+            <div class="workout-card-head">
+              <span class="level level-beginner">Beginner</span>
+              <span>3 days/week</span>
+            </div>
+            <h3>Gym Strength Basics</h3>
+            <p>A beginner gym plan that teaches the main movement patterns without overloading recovery.</p>
+            <ul class="quick-facts">
+              <li>Best for: new gym members</li>
+              <li>Equipment: machines and free weights</li>
+              <li>Block: 6 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Full body A, full body B, full body C with repeated movement practice.</p>
+                <h4>Session focus</h4>
+                <p>Leg press or squat, chest press, seated row, hinge, pulldown and core.</p>
+                <h4>Progression</h4>
+                <p>Keep reps smooth and controlled. Add one small load jump only after two clean sessions.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="strength muscle" data-level="intermediate" data-place="gym" data-audience="gym">
+            <div class="workout-card-head">
+              <span class="level level-intermediate">Intermediate</span>
+              <span>4 days/week</span>
+            </div>
+            <h3>Gym Upper Lower Builder</h3>
+            <p>A balanced strength and hypertrophy split for reliable progression across the whole body.</p>
+            <ul class="quick-facts">
+              <li>Best for: consistent progress</li>
+              <li>Equipment: full gym</li>
+              <li>Block: 8 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Upper heavy, lower heavy, upper volume, lower volume.</p>
+                <h4>Session focus</h4>
+                <p>Bench or press, row, squat or leg press, hinge, single-leg work and direct core.</p>
+                <h4>Progression</h4>
+                <p>Use rep ranges and keep 1-3 reps in reserve on most work sets.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="strength fat-loss" data-level="advanced" data-place="gym" data-audience="gym advanced performance">
+            <div class="workout-card-head">
+              <span class="level level-advanced">Advanced</span>
+              <span>5 days/week</span>
+            </div>
+            <h3>Strength and Conditioning Pro</h3>
+            <p>Heavy lifting paired with athletic conditioning for performance-focused clients.</p>
+            <ul class="quick-facts">
+              <li>Best for: strength plus engine</li>
+              <li>Equipment: full gym and conditioning tools</li>
+              <li>Block: 8 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Lower strength, upper strength, conditioning, full body power, aerobic base.</p>
+                <h4>Session focus</h4>
+                <p>Low-rep compounds, explosive intent, sleds, carries, intervals and recovery work.</p>
+                <h4>Progression</h4>
+                <p>Separate hard lifting days from hard conditioning days where possible.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="fat-loss" data-level="beginner intermediate" data-place="home gym" data-audience="busy beginners lose weight">
+            <div class="workout-card-head">
+              <span class="level level-beginner">Beginner+</span>
+              <span>30 minutes</span>
+            </div>
+            <h3>Busy Schedule Fat Loss</h3>
+            <p>A time-efficient plan for parents, shift workers and busy professionals.</p>
+            <ul class="quick-facts">
+              <li>Best for: limited time</li>
+              <li>Equipment: flexible</li>
+              <li>Block: 4-6 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Three 30-minute full-body sessions plus two step targets.</p>
+                <h4>Session focus</h4>
+                <p>Five movements, 2-3 sets each, minimal setup changes and clear rest periods.</p>
+                <h4>Progression</h4>
+                <p>Keep workouts short. Progress by consistency first, not by adding more days too quickly.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="strength mobility fat-loss" data-level="beginner" data-place="home gym" data-audience="low impact beginners">
+            <div class="workout-card-head">
+              <span class="level level-beginner">Beginner</span>
+              <span>2-3 days/week</span>
+            </div>
+            <h3>Low Impact Rebuild</h3>
+            <p>A gentle strength re-entry plan with low joint impact and controlled conditioning.</p>
+            <ul class="quick-facts">
+              <li>Best for: returning after a break</li>
+              <li>Equipment: machines, bands or dumbbells</li>
+              <li>Block: 4 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Full body strength, mobility and walk, full body strength, optional recovery session.</p>
+                <h4>Session focus</h4>
+                <p>Supported squats, rows, presses, hip hinges, carries and easy cardio.</p>
+                <h4>Progression</h4>
+                <p>Leave every session feeling better than when you started. Increase only one variable per week.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="mobility strength" data-level="intermediate advanced" data-place="home gym" data-audience="lifters mobility core">
+            <div class="workout-card-head">
+              <span class="level level-intermediate">All levels</span>
+              <span>2 add-ons/week</span>
+            </div>
+            <h3>Mobility and Core for Lifters</h3>
+            <p>A supporting template for lifters who need better positions, trunk control and recovery.</p>
+            <ul class="quick-facts">
+              <li>Best for: lifting support</li>
+              <li>Equipment: band, mat and cable optional</li>
+              <li>Block: ongoing</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Two 20-minute add-ons after upper or lower sessions.</p>
+                <h4>Session focus</h4>
+                <p>Hip mobility, thoracic rotation, ankle work, dead bugs, side planks and loaded carries.</p>
+                <h4>Progression</h4>
+                <p>Improve control and range before adding intensity or longer holds.</p>
+              </div>
+            </details>
+          </article>
+        </div>
+
+        <p class="no-results" id="no-results" hidden>No matching workout templates. Try another goal, level or search term.</p>
+      </div>
+    </section>
+
+    <section class="section workout-paths">
+      <div class="container path-grid">
+        <div>
+          <p class="eyebrow">Template paths</p>
+          <h2>Quick routes for common goals.</h2>
+        </div>
+        <div class="path-list">
+          <a href="#workout-library" data-jump-filter="fat-loss">Lose weight workouts</a>
+          <a href="#workout-library" data-jump-filter="muscle">Build muscle workouts</a>
+          <a href="#workout-library" data-jump-filter="home">Home workout plans</a>
+          <a href="#workout-library" data-jump-filter="strength">Strength workouts</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section workout-cta">
+      <div class="container cta-panel">
+        <p class="eyebrow">Need personalization?</p>
+        <h2>Turn any template into a plan built around your body, schedule and equipment.</h2>
+        <p>Garcia Builder coaching adjusts exercises, volume, progression, nutrition and check-ins so the plan fits your real life.</p>
+        <a class="btn btn-gold" href="contact.html">Start with Andre</a>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer">
+    <div class="container small">&copy; 2026 Garcia Builder - Online Coaching</div>
+  </div>
+</body>
+</html>

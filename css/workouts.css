@@ -1,0 +1,437 @@
+.workouts-page {
+  background:
+    linear-gradient(180deg, rgba(8, 13, 21, .76), rgba(8, 13, 21, 1) 38%),
+    radial-gradient(900px 520px at 86% 10%, rgba(107, 199, 255, .18), transparent 60%),
+    var(--bg);
+}
+
+.workouts-hero {
+  min-height: 72vh;
+  display: grid;
+  align-items: end;
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, .2), rgba(8, 13, 21, .94)),
+    linear-gradient(90deg, rgba(8, 13, 21, .86), rgba(8, 13, 21, .28)),
+    url('../assets/pexels-rdne-stock-project-7551752.jpg') center / cover no-repeat;
+}
+
+.workouts-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 160px;
+  background: linear-gradient(180deg, transparent, var(--bg));
+  z-index: 0;
+  pointer-events: none;
+}
+
+.workouts-hero-inner {
+  position: relative;
+  z-index: 1;
+  padding-top: 96px;
+  padding-bottom: 54px;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.workouts-hero h1 {
+  max-width: 860px;
+  margin: 0;
+  font-size: clamp(40px, 7vw, 82px);
+  line-height: .96;
+  color: #fff;
+}
+
+.hero-copy {
+  max-width: 680px;
+  margin: 18px 0 0;
+  color: #e6eeff;
+  font-size: clamp(17px, 2vw, 21px);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.workout-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 560px;
+  margin-top: 34px;
+}
+
+.workout-stats div {
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 8px;
+  background: rgba(8, 13, 21, .62);
+  padding: 14px;
+  backdrop-filter: blur(8px);
+}
+
+.workout-stats strong {
+  display: block;
+  color: var(--gold);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.workout-stats span {
+  display: block;
+  margin-top: 6px;
+  color: #dbe7ff;
+  font-size: 13px;
+}
+
+.intro-grid,
+.path-grid {
+  display: grid;
+  grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+  gap: 36px;
+  align-items: start;
+}
+
+.intro-grid h2,
+.path-grid h2,
+.cta-panel h2 {
+  margin: 0;
+  font-size: clamp(30px, 4vw, 50px);
+  line-height: 1.05;
+}
+
+.intro-grid p:last-child {
+  margin: 0;
+  color: #dbe7ff;
+  font-size: 18px;
+}
+
+.workout-filter-band {
+  position: sticky;
+  top: 72px;
+  z-index: 30;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  background: rgba(8, 13, 21, .92);
+  backdrop-filter: blur(14px);
+}
+
+.filter-shell {
+  display: grid;
+  grid-template-columns: 1.1fr repeat(3, auto) auto;
+  gap: 14px;
+  align-items: center;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.search-wrap {
+  display: grid;
+  gap: 6px;
+}
+
+.search-wrap label,
+.filter-group span {
+  color: #d7e2f8;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.search-wrap input {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #0b1220;
+  color: #fff;
+  padding: 10px 12px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.filter-group button {
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .06);
+  color: #edf4ff;
+  min-height: 38px;
+  padding: 8px 11px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.filter-group button:hover,
+.filter-group button.active {
+  border-color: rgba(246, 200, 78, .8);
+  background: rgba(246, 200, 78, .15);
+  color: #ffe8a3;
+}
+
+.result-count {
+  margin: 0;
+  color: #dbe7ff;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.workout-grid-section {
+  padding-top: 44px;
+}
+
+.workout-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.workout-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(18, 28, 47, .96), rgba(13, 21, 38, .98)),
+    linear-gradient(120deg, rgba(246, 200, 78, .08), rgba(107, 199, 255, .05));
+  box-shadow: 0 22px 54px rgba(0, 0, 0, .34);
+  padding: 18px;
+  overflow: hidden;
+}
+
+.workout-card[hidden] {
+  display: none;
+}
+
+.workout-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  color: #d6e0f5;
+  font-size: 13px;
+}
+
+.level {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  border-radius: 999px;
+  padding: 4px 9px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.level-beginner { background: rgba(56, 242, 165, .16); color: #98ffd2; }
+.level-intermediate { background: rgba(107, 199, 255, .16); color: #b7e8ff; }
+.level-advanced { background: rgba(255, 159, 45, .18); color: #ffd39b; }
+
+.workout-card h3 {
+  margin: 16px 0 8px;
+  font-size: 25px;
+  line-height: 1.12;
+}
+
+.workout-card p {
+  margin: 0;
+  color: #e0e8fb;
+}
+
+.quick-facts {
+  display: grid;
+  gap: 7px;
+  margin: 16px 0;
+  padding: 0;
+  list-style: none;
+  color: #cfdaf1;
+  font-size: 14px;
+}
+
+.quick-facts li {
+  border-left: 3px solid rgba(246, 200, 78, .65);
+  padding-left: 10px;
+}
+
+.workout-card details {
+  margin-top: auto;
+}
+
+.workout-card summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  border-radius: 8px;
+  border: 1px solid rgba(246, 200, 78, .45);
+  color: var(--gold);
+  padding: 8px 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.workout-detail {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, .09);
+  padding-top: 14px;
+}
+
+.workout-detail h4 {
+  margin: 10px 0 0;
+  color: #fff;
+  font-size: 15px;
+}
+
+.workout-detail h4:first-child {
+  margin-top: 0;
+}
+
+.workout-detail p {
+  color: #dbe7ff;
+  font-size: 14px;
+}
+
+.no-results {
+  border: 1px solid rgba(246, 200, 78, .35);
+  border-radius: 8px;
+  background: rgba(246, 200, 78, .08);
+  color: #ffe8a3;
+  padding: 18px;
+}
+
+.workout-paths {
+  background:
+    linear-gradient(90deg, rgba(107, 199, 255, .09), transparent 58%),
+    rgba(255, 255, 255, .025);
+}
+
+.path-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.path-list a {
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .06);
+  color: #f2f6ff;
+  padding: 16px;
+  font-weight: 900;
+}
+
+.path-list a:hover {
+  border-color: rgba(246, 200, 78, .75);
+  color: #ffe8a3;
+}
+
+.workout-cta {
+  padding-top: 44px;
+}
+
+.cta-panel {
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(246, 200, 78, .18), rgba(107, 199, 255, .08)),
+    rgba(12, 19, 33, .92);
+  padding: clamp(24px, 5vw, 54px);
+}
+
+.cta-panel p {
+  max-width: 760px;
+  color: #e2ebff;
+  font-size: 18px;
+}
+
+@media (max-width: 1180px) {
+  .filter-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-group {
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .result-count {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 1024px) {
+  .workouts-page .navbar .inner {
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .workouts-page .navbar .nav {
+    display: flex !important;
+    flex-wrap: nowrap;
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .workouts-page .navbar .nav a {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .workouts-page .hamburger-btn {
+    display: none !important;
+  }
+
+  .workout-filter-band {
+    top: 118px;
+  }
+}
+
+@media (max-width: 980px) {
+  .workout-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .intro-grid,
+  .path-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .workouts-hero {
+    min-height: 78vh;
+  }
+
+  .workout-stats,
+  .workout-grid,
+  .path-list {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-group span {
+    min-width: 44px;
+  }
+
+  .filter-group button {
+    white-space: nowrap;
+  }
+}

@@ -92,6 +92,7 @@
       const links = [
         { href: 'index.html', key: 'nav.home', text: 'Home', active: path === 'index.html' || path === '' },
         { href: 'about.html', key: 'nav.about', text: 'About', active: path === 'about.html' },
+        { href: 'workouts.html', key: 'nav.workouts', text: 'Workouts', active: path === 'workouts.html' },
         { href: 'transformations.html', key: 'nav.trans', text: 'Transformations', active: path === 'transformations.html' },
         { href: 'testimonials.html', key: 'nav.testi', text: 'Testimonials', active: path === 'testimonials.html' },
         { href: 'pricing.html', key: 'nav.pricing', text: 'Pricing', active: path === 'pricing.html' },

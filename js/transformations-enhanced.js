@@ -88,7 +88,7 @@ class TransformationsManager {
     // Initialize filter system
     initializeFilters() {
         this.totalItems = document.querySelectorAll('.transformation-item').length;
-        this.updateVisibility();
+        this.applyVisibility(false);
     }
 
     // Filter transformations by category
@@ -97,89 +97,72 @@ class TransformationsManager {
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.classList.remove('active');
         });
-        document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+        const activeButton = document.querySelector(`[data-filter="${filter}"]`);
+        if (activeButton) activeButton.classList.add('active');
 
         this.currentFilter = filter;
         this.visibleItems = 6; // Reset visible items
+        this.applyVisibility(true);
+    }
 
-        // Show/hide items based on filter
+    getFilteredItems() {
         const items = document.querySelectorAll('.transformation-item');
-        let visibleCount = 0;
-
-        items.forEach((item, index) => {
+        return Array.from(items).filter(item => {
             const category = item.dataset.category;
-            const shouldShow = filter === 'all' || category === filter;
-
-            if (shouldShow && visibleCount < this.visibleItems) {
-                item.style.display = 'block';
-                item.style.animation = `fadeInUp 0.6s ease forwards ${index * 0.1}s`;
-                visibleCount++;
-            } else if (shouldShow) {
-                item.style.display = 'none'; // Hidden but will be shown with "Load More"
-            } else {
-                item.style.display = 'none';
-            }
+            return this.currentFilter === 'all' || category === this.currentFilter;
         });
-
-        this.updateLoadMoreButton();
     }
 
     // Load more transformations
     loadMoreTransformations() {
-        const additionalSection = document.getElementById('additional-transformations');
-        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        this.visibleItems += 6;
+        this.applyVisibility(true);
+    }
 
-        if (additionalSection && additionalSection.style.display === 'none') {
-            // Show additional transformations section with proper display
-            additionalSection.style.display = 'flex';
-            additionalSection.style.flexWrap = 'wrap';
+    applyVisibility(animate) {
+        const filteredItems = this.getFilteredItems();
+        const allItems = document.querySelectorAll('.transformation-item');
+        let visibleCount = 0;
 
-            // Animate each card container (not just the card)
-            const additionalCards = additionalSection.querySelectorAll('.transformation-item');
-            additionalCards.forEach((cardContainer, index) => {
-                const card = cardContainer.querySelector('.transformation-card');
-                if (card) {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(30px)';
+        allItems.forEach(item => {
+            item.hidden = true;
+            item.classList.remove('is-visible');
+        });
 
-                    setTimeout(() => {
-                        card.style.transition = 'all 0.6s ease';
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, index * 100);
+        filteredItems.forEach((item, index) => {
+            const shouldShow = index < this.visibleItems;
+            item.hidden = !shouldShow;
+
+            if (shouldShow) {
+                visibleCount++;
+                if (animate) {
+                    item.style.transitionDelay = `${Math.min(index, 5) * 70}ms`;
+                } else {
+                    item.style.transitionDelay = '0ms';
                 }
-            });
+                window.requestAnimationFrame(() => {
+                    item.classList.add('is-visible');
+                });
+            }
+        });
 
-            // Update button text and eventually hide it
-            loadMoreBtn.innerHTML = '<i class="fas fa-check me-2"></i>All Transformations Loaded';
-            loadMoreBtn.disabled = true;
-
-            // Hide button after 2 seconds
-            setTimeout(() => {
-                loadMoreBtn.style.display = 'none';
-            }, 2000);
-        }
+        this.updateLoadMoreButton(filteredItems.length, visibleCount);
     }
 
     // Update load more button visibility
-    updateLoadMoreButton() {
-        const items = document.querySelectorAll('.transformation-item');
-        const filteredItems = Array.from(items).filter(item => {
-            const category = item.dataset.category;
-            return this.currentFilter === 'all' || category === this.currentFilter;
-        });
-
-        const visibleItems = filteredItems.filter(item => item.style.display !== 'none').length;
+    updateLoadMoreButton(total, visible) {
         const loadMoreBtn = document.getElementById('loadMoreBtn');
 
         if (loadMoreBtn) {
-            if (visibleItems >= filteredItems.length) {
+            const remaining = Math.max(total - visible, 0);
+            if (remaining === 0) {
                 loadMoreBtn.style.display = 'none';
             } else {
                 loadMoreBtn.style.display = 'inline-block';
+                loadMoreBtn.disabled = false;
                 loadMoreBtn.innerHTML = `
                     <i class="fas fa-plus me-2"></i>
-                    Load More (${filteredItems.length - visibleItems} remaining)
+                    Load More (${remaining} remaining)
                 `;
             }
         }
@@ -189,6 +172,7 @@ class TransformationsManager {
     setupModal() {
         const modalElement = document.getElementById('transformationModal');
         if (!modalElement) return;
+        if (typeof bootstrap === 'undefined' || !bootstrap.Modal) return;
 
         // Create single modal instance
         this.modalInstance = new bootstrap.Modal(modalElement, {
@@ -316,18 +300,19 @@ class TransformationsManager {
 
     // Setup scroll animations
     setupScrollAnimations() {
-        const cards = document.querySelectorAll('.transformation-card');
+        const items = document.querySelectorAll('.transformation-item');
 
         const cardObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
+                    entry.target.classList.add('is-visible');
+                    cardObserver.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.2 });
 
-        cards.forEach(card => {
-            cardObserver.observe(card);
+        items.forEach(item => {
+            cardObserver.observe(item);
         });
     }
 
@@ -399,10 +384,19 @@ const styleSheet = document.createElement('style');
 styleSheet.textContent = transformationStyles;
 document.head.appendChild(styleSheet);
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    window.transformationsManager = new TransformationsManager();
-});
+const initTransformationsManager = () => {
+    if (!window.transformationsManager) {
+        window.TransformationsManager = TransformationsManager;
+        window.transformationsManager = new TransformationsManager();
+    }
+};
+
+// Initialize even when this script loads after DOMContentLoaded.
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTransformationsManager);
+} else {
+    initTransformationsManager();
+}
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {

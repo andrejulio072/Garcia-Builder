@@ -946,6 +946,123 @@
     });
   };
 
+  const ensureWorkoutModal = () => {
+    let modal = document.getElementById('workout-modal');
+    if (modal) return modal;
+
+    document.body.insertAdjacentHTML('beforeend', `
+      <div class="workout-modal" id="workout-modal" role="dialog" aria-modal="true" aria-labelledby="workout-modal-title" hidden>
+        <div class="workout-modal-backdrop" data-workout-close></div>
+        <div class="workout-modal-panel" role="document">
+          <header class="workout-modal-header">
+            <div>
+              <p class="workout-modal-kicker">Workout template</p>
+              <h2 class="workout-modal-title" id="workout-modal-title"></h2>
+              <p class="workout-modal-summary" id="workout-modal-summary"></p>
+              <div class="workout-modal-meta" id="workout-modal-meta"></div>
+            </div>
+            <button type="button" class="workout-modal-close" data-workout-close aria-label="Close workout template">&times;</button>
+          </header>
+          <div class="workout-modal-body" id="workout-modal-body"></div>
+          <footer class="workout-modal-footer">
+            <a class="btn btn-gold" href="contact.html">Customize this plan</a>
+            <button type="button" class="btn" data-workout-close>Close plan</button>
+          </footer>
+        </div>
+      </div>
+    `);
+
+    modal = document.getElementById('workout-modal');
+    modal.querySelectorAll('[data-workout-close]').forEach((control) => {
+      control.addEventListener('click', () => closeWorkoutModal());
+    });
+    return modal;
+  };
+
+  const closeWorkoutModal = () => {
+    const modal = document.getElementById('workout-modal');
+    if (!modal) return;
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  };
+
+  const openWorkoutModal = (card) => {
+    const modal = ensureWorkoutModal();
+    const title = card.querySelector('h3')?.textContent.trim() || 'Workout template';
+    const summary = card.querySelector(':scope > p')?.textContent.trim() || '';
+    const detail = card.querySelector('.workout-detail');
+    const facts = Array.from(card.querySelectorAll('.quick-facts li')).map((item) => item.textContent.trim());
+    const schedule = card.querySelector('.workout-card-head span:last-child')?.textContent.trim();
+    const level = card.querySelector('.level')?.textContent.trim();
+
+    document.getElementById('workout-modal-title').textContent = title;
+    document.getElementById('workout-modal-summary').textContent = summary;
+    document.getElementById('workout-modal-meta').innerHTML = [level, schedule, ...facts]
+      .filter(Boolean)
+      .map((item) => `<span>${escapeHtml(item)}</span>`)
+      .join('');
+    document.getElementById('workout-modal-body').innerHTML = detail ? detail.innerHTML : '';
+
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    modal.querySelector('.workout-modal-close')?.focus();
+  };
+
+  const setupWorkoutModal = () => {
+    document.body.classList.add('workout-js');
+
+    cards.forEach((card) => {
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-label', `Open ${card.querySelector('h3')?.textContent.trim() || 'workout'} template`);
+
+      const summary = card.querySelector('summary');
+      summary?.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        openWorkoutModal(card);
+      });
+
+      card.addEventListener('click', (event) => {
+        if (event.target.closest('a, button, input, select, textarea')) return;
+        event.preventDefault();
+        openWorkoutModal(card);
+      });
+
+      card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openWorkoutModal(card);
+        }
+      });
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeWorkoutModal();
+    });
+  };
+
+  const setupCardAnimations = () => {
+    if (!('IntersectionObserver' in window)) {
+      cards.forEach((card) => card.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    cards.forEach((card, index) => {
+      card.style.transitionDelay = `${Math.min(index, 8) * 45}ms`;
+      observer.observe(card);
+    });
+  };
+
   const tokenList = (value) => (value || '').toLowerCase().split(/\s+/).filter(Boolean);
 
   const matchesFilter = (card, group, value) => {
@@ -1025,5 +1142,7 @@
 
   setupMenu();
   renderWorkoutPlans();
+  setupWorkoutModal();
+  setupCardAnimations();
   applyFilters();
 })();

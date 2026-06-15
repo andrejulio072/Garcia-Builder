@@ -233,9 +233,28 @@
 #transformations-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    gap: 18px;
     margin-top: 30px;
     max-width: 100%;
+}
+
+#transformations-grid .transformation-item {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0 !important;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+#transformations-grid .transformation-item.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#transformations-grid .transformation-item[hidden] {
+    display: none !important;
 }
 
 @media (max-width: 768px) {
@@ -965,8 +984,7 @@
 
     <!-- Transformations Grid -->
   <div class="transformations-grid" id="transformations-grid">
-    <!-- All transformation-item cards will be rendered here by JS, no duplicates, unified grid. -->
-  </div>
+    <!-- Transformation cards are progressively revealed by js/transformations-enhanced.js. -->
       <!-- Elena S. - 18 Weeks Body Recomp -->
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
@@ -1182,9 +1200,163 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Load More Section removido: cards agora são renderizados dinamicamente, sem duplicidade. -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="muscle-gain">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Daniel R. (29)" data-story="Lean muscle phase - stronger shoulders, back and posture in 16 weeks"
+             data-before="assets/t13.jpg" data-after="assets/t13.jpg"
+             data-weight-lost="3" data-timeline="16 weeks" data-age="29" data-muscle="+4kg lean mass" data-bench="+20kg">
+          <div class="before-after-container">
+            <div class="transformation-overlay">+4kg Lean Mass</div>
+            <div class="before-after-slider">
+              <img src="assets/t13.jpg" alt="Client 13 lean muscle gain and improved posture" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Daniel R. (29)</h3>
+            <div class="timeline-badge">16 Weeks</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small"><div class="stat-value">+4kg</div><div class="stat-unit">Lean Mass</div></div>
+              <div class="stat-item-small"><div class="stat-value">+20kg</div><div class="stat-unit">Bench</div></div>
+              <div class="stat-item-small"><div class="stat-value">29</div><div class="stat-unit">Years Old</div></div>
+            </div>
+            <p class="transformation-story">
+              "A focused muscle-building block with better food structure, progressive training and weekly adjustments."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Nadia P. (37)" data-story="Body recomposition - waist down, strength up and more confidence"
+             data-before="assets/t14.jpg" data-after="assets/t14.jpg"
+             data-weight-lost="7" data-timeline="14 weeks" data-age="37" data-muscle="+2kg">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-7kg Recomp</div>
+            <div class="before-after-slider">
+              <img src="assets/t14.jpg" alt="Client 14 body recomposition and waist reduction" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Nadia P. (37)</h3>
+            <div class="timeline-badge">14 Weeks</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small"><div class="stat-value">-7</div><div class="stat-unit">kg Lost</div></div>
+              <div class="stat-item-small"><div class="stat-value">+2kg</div><div class="stat-unit">Muscle</div></div>
+              <div class="stat-item-small"><div class="stat-value">37</div><div class="stat-unit">Years Old</div></div>
+            </div>
+            <p class="transformation-story">
+              "The plan made training and nutrition feel clear. The biggest win was feeling strong again."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="muscle-gain">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Marco T. (34)" data-story="Strength rebuild - added muscle, improved technique and hit new gym numbers"
+             data-before="assets/t15.jpg" data-after="assets/t15.jpg"
+             data-weight-lost="2" data-timeline="20 weeks" data-age="34" data-muscle="+5kg lean mass" data-squat="+35kg" data-deadlift="+40kg">
+          <div class="before-after-container">
+            <div class="transformation-overlay">Strength Rebuild</div>
+            <div class="before-after-slider">
+              <img src="assets/t15.jpg" alt="Client 15 muscle gain and strength rebuild" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Marco T. (34)</h3>
+            <div class="timeline-badge">20 Weeks</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small"><div class="stat-value">+5kg</div><div class="stat-unit">Lean Mass</div></div>
+              <div class="stat-item-small"><div class="stat-value">+40kg</div><div class="stat-unit">Deadlift</div></div>
+              <div class="stat-item-small"><div class="stat-value">34</div><div class="stat-unit">Years Old</div></div>
+            </div>
+            <p class="transformation-story">
+              "Better technique, better recovery and a clear progression system turned the gym into a routine again."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="endurance">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Priya S. (40)" data-story="Endurance and fat loss - stronger weekly runs with a leaner body"
+             data-before="assets/t16.jpg" data-after="assets/t16.jpg"
+             data-weight-lost="6" data-timeline="12 weeks" data-age="40" data-run-time="-4 min 5K" data-miles="+18 weekly">
+          <div class="before-after-container">
+            <div class="transformation-overlay">5K Improved</div>
+            <div class="before-after-slider">
+              <img src="assets/t16.jpg" alt="Client 16 endurance and fat loss result" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Priya S. (40)</h3>
+            <div class="timeline-badge">12 Weeks</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small"><div class="stat-value">-6</div><div class="stat-unit">kg Lost</div></div>
+              <div class="stat-item-small"><div class="stat-value">-4m</div><div class="stat-unit">5K Time</div></div>
+              <div class="stat-item-small"><div class="stat-value">40</div><div class="stat-unit">Years Old</div></div>
+            </div>
+            <p class="transformation-story">
+              "Strength training, running structure and recovery habits helped her get leaner without burning out."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Rafael C. (46)" data-story="Lifestyle transformation - 9kg down while working long hours"
+             data-before="assets/t17.jpg" data-after="assets/t17.jpg"
+             data-weight-lost="9" data-timeline="16 weeks" data-age="46">
+          <div class="before-after-container">
+            <div class="transformation-overlay">-9kg Lifestyle</div>
+            <div class="before-after-slider">
+              <img src="assets/t17.jpg" alt="Client 17 lifestyle fat loss transformation" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Rafael C. (46)</h3>
+            <div class="timeline-badge">16 Weeks</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small"><div class="stat-value">-9</div><div class="stat-unit">kg Lost</div></div>
+              <div class="stat-item-small"><div class="stat-value">4</div><div class="stat-unit">Days/Week</div></div>
+              <div class="stat-item-small"><div class="stat-value">46</div><div class="stat-unit">Years Old</div></div>
+            </div>
+            <p class="transformation-story">
+              "Simple training, flexible nutrition and accountability made the plan fit a demanding work schedule."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="endurance">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Emma W. (28)" data-story="Hybrid performance - leaner, stronger and ready for her first half marathon"
+             data-before="assets/t18.jpg" data-after="assets/t18.jpg"
+             data-weight-lost="5" data-timeline="18 weeks" data-age="28" data-marathon="Half marathon ready" data-pull-ups="+6">
+          <div class="before-after-container">
+            <div class="transformation-overlay">Hybrid Athlete</div>
+            <div class="before-after-slider">
+              <img src="assets/t18.jpg" alt="Client 18 hybrid performance transformation" class="before-img">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Emma W. (28)</h3>
+            <div class="timeline-badge">18 Weeks</div>
+            <div class="transformation-stats">
+              <div class="stat-item-small"><div class="stat-value">-5</div><div class="stat-unit">kg Lost</div></div>
+              <div class="stat-item-small"><div class="stat-value">+6</div><div class="stat-unit">Pull-ups</div></div>
+              <div class="stat-item-small"><div class="stat-value">28</div><div class="stat-unit">Years Old</div></div>
+            </div>
+            <p class="transformation-story">
+              "A hybrid block balanced lifting and running so she could look, feel and perform better."
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Load More Button -->
     <div class="text-center mt-5">
@@ -1294,7 +1466,7 @@
 </section>
 
 <hr class="hr-shine">
-<div class="footer"><div class="container small">© 2025 Garcia Builder — Online Coaching • <a href="https://instagram.com/garcia.builder" target="_blank" onclick="return gtag_report_conversion(this.href)">@garcia.builder</a> • <a href="https://calendly.com/andrenjulio072/consultation" target="_blank" onclick="return gtag_report_conversion(this.href)">Book a call</a></div></div>
+<div class="footer"><div class="container small">© 2025 Garcia Builder — Online Coaching • <a href="https://garciabuilder.fitness" target="_blank" rel="noopener" onclick="return gtag_report_conversion(this.href)">garciabuilder.fitness</a> • <a href="https://calendly.com/andrenjulio072/consultation" target="_blank" onclick="return gtag_report_conversion(this.href)">Book a call</a></div></div>
 <a class="whatsapp-float" href="https://wa.me/447508497586?text=Hi%20Andre%21%20I%20came%20from%20your%20website%20and%20want%20coaching." target="_blank" onclick="return gtag_report_conversion(this.href)">WhatsApp</a>
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Supabase -->
@@ -1302,7 +1474,7 @@
 <script defer src="js/supabase-config.js"></script>
 <script defer src="js/app.js"></script>
 <script defer src="js/lightbox.js"></script>
-<script defer src="js/transformations-enhanced.js"></script>
+<script defer src="js/transformations-enhanced.js?v=20260615"></script>
 <script defer src="js/newsletter-manager.js"></script>
 <script defer src="js/auth.js"></script>
 <script defer src="js/auth-guard.js?v=20251009"></script>

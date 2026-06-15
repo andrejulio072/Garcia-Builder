@@ -39,7 +39,6 @@ function renderEmailHtml({ name, planName, trainerizeLink, locale = 'en' }) {
   const steps = nextSteps[locale] || nextSteps.en;
   const header = titles[locale] || titles.en;
   const bookingUrl = process.env.BOOKING_URL || '';
-  const firstWorkoutUrl = process.env.FIRST_WORKOUT_URL || 'https://garciabuilder.fitness/first-workout.html';
 
   return `
   <div style="font-family:Inter,Arial,sans-serif;color:#0b1220">
@@ -52,7 +51,6 @@ function renderEmailHtml({ name, planName, trainerizeLink, locale = 'en' }) {
       </a>
     </p>
     ${bookingUrl ? `<p><a href="${bookingUrl}">Schedule your onboarding consult</a></p>` : ''}
-    <p><a href="${firstWorkoutUrl}">Start your first workout now</a></p>
     <ol>
       ${steps.map(s => `<li>${s}</li>`).join('')}
     </ol>
@@ -72,4 +70,40 @@ async function sendOnboardingEmail({ to, name, planName, trainerizeLink, locale 
   return { ok: true };
 }
 
-module.exports = { sendOnboardingEmail };
+function renderAdminNotificationHtml({ customerEmail, customerName, planName, amount, currency, sessionId }) {
+  const bookingUrl = process.env.BOOKING_URL || 'https://calendly.com/andrenjulio072/consultation';
+  const trainerizeLink = process.env.TRAINERIZE_INVITE_URL || '';
+
+  return `
+  <div style="font-family:Inter,Arial,sans-serif;color:#0b1220">
+    <h2>New Garcia Builder purchase</h2>
+    <p><strong>Plan:</strong> ${planName || 'Coaching Plan'}</p>
+    <p><strong>Customer:</strong> ${customerName || 'Not provided'} (${customerEmail || 'No email'})</p>
+    <p><strong>Amount:</strong> ${(currency || 'EUR').toUpperCase()} ${amount ? (amount / 100).toFixed(2) : 'unknown'}</p>
+    <p><strong>Stripe session:</strong> ${sessionId || 'unknown'}</p>
+    <hr>
+    <p><strong>Action checklist:</strong></p>
+    <ol>
+      <li>Confirm the customer received the onboarding email.</li>
+      <li>Check Calendly for the onboarding consultation.</li>
+      <li>Create or approve the client in Trainerize.</li>
+      <li>Prepare assessment questions, nutrition targets, and first training block.</li>
+    </ol>
+    <p><a href="${bookingUrl}">Booking page</a>${trainerizeLink ? ` | <a href="${trainerizeLink}">Trainerize invite</a>` : ''}</p>
+  </div>`;
+}
+
+async function sendAdminPurchaseNotification({ customerEmail, customerName, planName, amount, currency, sessionId }) {
+  const transport = createTransport();
+  if (!transport) {
+    return { skipped: true };
+  }
+  const to = process.env.ADMIN_EMAIL || 'andre@garciabuilder.fitness';
+  const from = process.env.FROM_EMAIL || 'no-reply@garciabuilder.fitness';
+  const subject = `New coaching purchase: ${planName || 'Garcia Builder plan'}`;
+  const html = renderAdminNotificationHtml({ customerEmail, customerName, planName, amount, currency, sessionId });
+  await transport.sendMail({ from, to, subject, html, replyTo: customerEmail || undefined });
+  return { ok: true };
+}
+
+module.exports = { sendOnboardingEmail, sendAdminPurchaseNotification };

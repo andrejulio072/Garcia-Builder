@@ -37,6 +37,13 @@
   const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
   const phoneOk = v => !v || /^[\+]?[0-9\s\-\(\)]{6,24}$/.test(v.trim());
   const setErr = (el, on) => el.classList.toggle('input-error', !!on);
+  const escapeHtml = value => String(value || '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  }[char]));
 
   // Generate specific error message
   const getErrorMessage = () => {
@@ -61,6 +68,9 @@
 
   // Success popup function
   const showSuccessPopup = (userName, userEmail) => {
+    const safeName = escapeHtml(userName);
+    const safeEmail = escapeHtml(userEmail);
+
     // Create modal HTML
     const modalHTML = `
       <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
@@ -68,14 +78,15 @@
           <div class="modal-content">
             <div class="modal-header border-0">
               <h1 class="modal-title fs-4 text-center w-100" id="successModalLabel">
-                <i class="text-success">✅</i> Message Sent Successfully!
+                Message Sent Successfully
               </h1>
             </div>
             <div class="modal-body text-center">
-              <p class="mb-3">Thank you <strong>${userName}</strong>!</p>
-              <p class="text-muted mb-3">Your message has been sent successfully and a confirmation email has been sent to:</p>
-              <p class="text-primary fw-bold">${userEmail}</p>
-              <p class="text-muted small">I'll reply within 24-48 hours. Check your spam folder if you don't receive the confirmation email.</p>
+              <p class="mb-3">Thank you <strong>${safeName}</strong>!</p>
+              <p class="text-muted mb-3">Your message was sent directly to Andre. A confirmation email was also sent to:</p>
+              <p class="text-primary fw-bold">${safeEmail}</p>
+              <p class="text-muted small">If you want to move faster, book the free consultation now.</p>
+              <a class="btn btn-warning" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Book Free Consultation</a>
             </div>
             <div class="modal-footer border-0 justify-content-center">
                 <button type="button" class="btn btn-gradient px-4" data-bs-dismiss="modal">Got it!</button>

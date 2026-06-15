@@ -126,8 +126,41 @@
   <style id="mobile-safe-overrides">
     html, body { max-width: 100%; overflow-x: hidden; }
     img, video { max-width: 100%; height: auto; display: block; }
+    .contact-quick-actions {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin: 22px 0 28px;
+    }
+    .contact-quick-actions .quick-action {
+      align-items: center;
+      background: rgba(15, 23, 42, .78);
+      border: 1px solid rgba(246, 200, 78, .28);
+      border-radius: 16px;
+      color: #fff;
+      display: flex;
+      font-weight: 800;
+      gap: 10px;
+      justify-content: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .contact-quick-actions .quick-action:hover {
+      background: rgba(246, 200, 78, .14);
+      border-color: rgba(246, 200, 78, .6);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+    .contact-quick-note {
+      color: rgba(255,255,255,.76);
+      font-size: .95rem;
+      margin: -14px 0 22px;
+      text-align: center;
+    }
     @media (max-width: 575.98px){
       .container, .container.inner { padding-left: 16px; padding-right: 16px; }
+      .contact-quick-actions { grid-template-columns: 1fr; }
     }
     @media (prefers-reduced-motion: reduce) {
       * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
@@ -170,6 +203,22 @@ window.addEventListener('load', function() {
       <h1 class="title-gradient text-glow" data-i18n="contact.title">Contact</h1>
   <p class="page-subtitle text-readable" data-i18n="contact.subtitle">Tell me about your goal. I'll get back within 24-48h.</p>
 
+  <div class="contact-quick-actions" aria-label="Fast contact options">
+    <a class="quick-action" href="https://wa.me/447508497586?text=Hi%20Andre%2C%20I%20want%20to%20start%20coaching." target="_blank" rel="noopener" data-attr-track="contact_whatsapp">
+      <i class="fab fa-whatsapp" aria-hidden="true"></i>
+      <span data-i18n="contact.quick.whatsapp">Chat on WhatsApp</span>
+    </a>
+    <a class="quick-action" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener" data-attr-track="contact_consult">
+      <i class="fas fa-calendar-check" aria-hidden="true"></i>
+      <span data-i18n="contact.quick.consult">Book a free 15-min consult</span>
+    </a>
+    <a class="quick-action" href="https://instagram.com/garciabuilder.fitness" target="_blank" rel="noopener" data-attr-track="contact_instagram">
+      <i class="fab fa-instagram" aria-hidden="true"></i>
+      <span data-i18n="contact.quick.instagram">Message on Instagram</span>
+    </a>
+  </div>
+  <p class="contact-quick-note" data-i18n="contact.quick.note">Prefer the form? It goes directly to andre@garciabuilder.fitness.</p>
+
   <form id="contact-form"
             action="/api/contact"
             method="POST"
@@ -210,7 +259,8 @@ window.addEventListener('load', function() {
             <label for="preferredContact" class="form-label" data-i18n="contact.form.preferredContact">Preferred contact</label>
             <select id="preferredContact" name="preferredContact" class="form-select">
               <option value="Email" selected data-i18n="contact.form.options.contact.email">Email</option>
-              <option value="Instagram DM" data-i18n="contact.form.options.contact.whatsapp">Instagram DM</option>
+              <option value="WhatsApp" data-i18n="contact.form.options.contact.whatsapp">WhatsApp</option>
+              <option value="Instagram DM" data-i18n="contact.form.options.contact.instagram">Instagram DM</option>
               <option value="Phone call" data-i18n="contact.form.options.contact.phone">Phone call</option>
             </select>
           </div>
@@ -284,7 +334,7 @@ window.addEventListener('load', function() {
 
         <!-- Hidden metadata -->
         <input type="hidden" name="_subject" value="New inquiry via Garcia Builder">
-        <input type="hidden" name="source" value="garcia-builder.github.io">
+        <input type="hidden" name="source" value="garciabuilder.fitness">
 
   <button id="sendBtn" type="submit" class="btn btn-gradient w-100 mt-4"
     data-default="Send" data-loading="Sending...">

@@ -468,7 +468,212 @@
     });
 })();
 </script>
-  <div class="navbar">
+<style>
+body > .programs-legacy-nav,
+body > .programs-legacy-nav + .section,
+body > .programs-legacy-nav + .section + .footer {
+  display: none !important;
+}
+.programs-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(72px, 10vw, 124px) 0 64px;
+  background:
+    linear-gradient(180deg, rgba(8, 13, 21, .76), rgba(8, 13, 21, .96)),
+    linear-gradient(90deg, rgba(8, 13, 21, .92), rgba(8, 13, 21, .42)),
+    url('assets/hero.jpg') center / cover no-repeat;
+}
+.programs-hero h1 {
+  max-width: 900px;
+  margin: 0;
+  font-size: clamp(42px, 7vw, 84px);
+  line-height: .95;
+}
+.programs-hero p {
+  max-width: 720px;
+  color: #dbe7ff;
+  font-size: clamp(17px, 2vw, 21px);
+}
+.programs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.program-card {
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(18, 28, 47, .96), rgba(13, 21, 38, .98)),
+    radial-gradient(420px 220px at 90% 0%, rgba(246, 200, 78, .12), transparent 65%);
+  box-shadow: 0 22px 54px rgba(0, 0, 0, .34);
+  padding: clamp(22px, 4vw, 34px);
+}
+.program-card h2 {
+  margin: 0 0 10px;
+  color: #fff;
+  font-size: clamp(24px, 3vw, 34px);
+}
+.program-card p,
+.program-card li {
+  color: #dbe7ff;
+}
+.program-card ul {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.program-card li {
+  border-left: 3px solid rgba(246, 200, 78, .72);
+  padding-left: 10px;
+}
+.program-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0;
+}
+.program-meta span {
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .06);
+  color: #ffe8a3;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 800;
+}
+.program-choice {
+  background: rgba(255, 255, 255, .035);
+}
+.program-choice .container {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: 34px;
+  align-items: start;
+}
+.choice-list {
+  display: grid;
+  gap: 12px;
+}
+.choice-list div {
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 8px;
+  background: rgba(8, 13, 21, .78);
+  color: #dbe7ff;
+  padding: 16px;
+}
+.program-cta {
+  border-top: 1px solid rgba(255, 255, 255, .08);
+}
+@media (max-width: 900px) {
+  .programs-grid,
+  .program-choice .container {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+  <main>
+    <section class="programs-hero">
+      <div class="container">
+        <p class="badge">Coaching programs</p>
+        <h1 class="title-gradient text-glow">Choose the training path that matches your goal.</h1>
+        <p class="mt-16">Each Garcia Builder program is built around progressive training, realistic nutrition, weekly accountability and adjustments that fit your equipment, schedule and recovery.</p>
+        <div class="mt-24">
+          <a class="btn btn-gold" href="pricing.html">View coaching plans</a>
+          <a class="btn" href="workouts.html">Browse workout templates</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="programs-grid">
+          <article class="program-card">
+            <p class="badge">Muscle gain</p>
+            <h2>Hypertrophy</h2>
+            <p>Structured muscle-building blocks for lifters who want visible size, better technique and measurable strength progress.</p>
+            <div class="program-meta"><span>3-5 days/week</span><span>Gym or home</span><span>8-16 week blocks</span></div>
+            <ul>
+              <li>Progressive overload with planned volume increases.</li>
+              <li>Exercise selection matched to joints, equipment and weak points.</li>
+              <li>Nutrition targets for lean gaining without unnecessary fat gain.</li>
+            </ul>
+          </article>
+
+          <article class="program-card">
+            <p class="badge">Fat loss</p>
+            <h2>Fat Loss</h2>
+            <p>A sustainable cut focused on keeping muscle, improving habits and making the scale move without crash dieting.</p>
+            <div class="program-meta"><span>3-4 days/week</span><span>Steps and cardio</span><span>Weekly check-ins</span></div>
+            <ul>
+              <li>Strength sessions that protect muscle while calories are lower.</li>
+              <li>Simple calorie, protein and meal structure guidance.</li>
+              <li>Adjustments when energy, hunger or progress changes.</li>
+            </ul>
+          </article>
+
+          <article class="program-card">
+            <p class="badge">Performance</p>
+            <h2>Strength and Conditioning</h2>
+            <p>For people who want to lift heavier, move better and build conditioning that supports real performance.</p>
+            <div class="program-meta"><span>4-5 days/week</span><span>Strength blocks</span><span>Conditioning finishers</span></div>
+            <ul>
+              <li>Main lift progression for squat, hinge, press and pull patterns.</li>
+              <li>Conditioning that improves output without wrecking recovery.</li>
+              <li>Mobility and core work to support better positions.</li>
+            </ul>
+          </article>
+
+          <article class="program-card">
+            <p class="badge">Self-guided</p>
+            <h2>Workout Templates</h2>
+            <p>Use the template library when you want a complete starting plan before upgrading to full coaching.</p>
+            <div class="program-meta"><span>18 templates</span><span>Beginner to advanced</span><span>Home and gym</span></div>
+            <ul>
+              <li>Plans for fat loss, muscle gain, strength, mobility and busy schedules.</li>
+              <li>Exercise prescriptions with sets, reps, rest and coaching notes.</li>
+              <li>Full-screen template view for easier reading on every device.</li>
+            </ul>
+            <a class="btn mt-24" href="workouts.html">Explore workouts</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section program-choice">
+      <div class="container">
+        <div>
+          <p class="badge">How to choose</p>
+          <h2 class="title-gradient text-glow">The right program is the one you can recover from and repeat.</h2>
+        </div>
+        <div class="choice-list">
+          <div><strong>New or returning:</strong> start with 3 full-body days, simple nutrition targets and steady weekly progression.</div>
+          <div><strong>Intermediate:</strong> use upper/lower or focused hypertrophy blocks with clear performance targets.</div>
+          <div><strong>Advanced:</strong> rotate specific phases for strength, muscle, conditioning or cutting to avoid spinning wheels.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section program-cta">
+      <div class="container center">
+        <p class="badge">Need the plan built around you?</p>
+        <h2 class="title-gradient text-glow">Turn a training goal into a coached system.</h2>
+        <p class="mt-16">Get training, nutrition, check-ins and weekly adjustments built around your body, schedule and equipment.</p>
+        <div class="mt-24">
+          <a class="btn btn-gold" href="contact.html">Start coaching</a>
+          <a class="btn" href="pricing.html">Compare plans</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer">
+    <div class="container small">© 2025 Garcia Builder — Online Coaching • <a href="https://garciabuilder.fitness" target="_blank" rel="noopener" onclick="return gtag_report_conversion(this.href)">garciabuilder.fitness</a> • <a data-i18n="cta.strip.book" href="https://calendly.com/andrenjulio072/consultation" target="_blank" onclick="return gtag_report_conversion(this.href)">Book a call</a> • <a href="assets/empty-guide.pdf" download>Download Training Guide (PDF)</a></div>
+  </div>
+
+  <div class="navbar programs-legacy-nav" aria-hidden="true">
     <div class="container inner">
   <a class="brand" href="index.html"><img loading="lazy" decoding="async" src="Logo Files/For Web/logo-nobackground-500.png" alt="G"> <span class="text-glow title-gradient">Garcia&nbsp;Builder</span></a>
       <nav class="nav">

@@ -1,5 +1,7 @@
 // Visual enhancements: staggered reveal + premium pointer depth.
 (() => {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return;
+
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const applyPointerDepth = (card) => {
@@ -28,18 +30,19 @@
 
   const init = () => {
     const cards = document.querySelectorAll('.grid .tcard');
+    const canObserve = 'IntersectionObserver' in window;
 
-    const io = new IntersectionObserver((entries) => {
+    const io = canObserve ? new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('is-visible');
           io.unobserve(entry.target);
         }
       });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.14 });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.14 }) : null;
 
     const observeRevealTarget = (target) => {
-      if (reducedMotion) {
+      if (reducedMotion || !io) {
         target.classList.add('is-visible');
         return;
       }

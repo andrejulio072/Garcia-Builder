@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile System Fix</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                        <h3>🔧 Profile System Diagnostic & Fix</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="status" class="mb-4"></div>
+
+                        <!-- Diagnostic Tests -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>🔍 System Diagnostics</h5>
+                            </div>
+                            <div class="card-body">
+                                <button id="runDiagnostics" class="btn btn-primary">Run Full Diagnostics</button>
+                                <div id="diagnosticResults" class="mt-3"></div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Manager Test -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>📝 Test Profile Save</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="testProfileForm">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Name</label>
+                                            <input type="text" class="form-control" name="full_name" value="Test User" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Phone</label>
+                                            <input type="tel" class="form-control" name="phone" value="+44 20 1234 5678">
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Birthday</label>
+                                            <input type="date" class="form-control" name="birthday" value="1990-01-01">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Location</label>
+                                            <input type="text" class="form-control" name="location" value="London, UK">
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label class="form-label">Bio</label>
+                                        <textarea class="form-control" name="bio" rows="3">Test bio for profile system</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-success mt-3">Test Profile Save</button>
+                                </form>
+                                <div id="profileTestResult" class="mt-3"></div>
+                            </div>
+                        </div>
+
+                        <!-- SQL Generator -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>🗄️ Database Schema</h5>
+                            </div>
+                            <div class="card-body">
+                                <button id="generateSQL" class="btn btn-info">Generate Profiles Table SQL</button>
+                                <div id="sqlOutput" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase configuration
+        const supabaseUrl = 'https://qejtjcaldnuokoofpqap.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlanRqY2FsZG51b2tvb2ZwcWFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5OTY2MjgsImV4cCI6MjA3NDU3MjYyOH0.-4KmNNRpmNLu4-xPtnC4-FJJTBbvrSk03v2WCaT5Kyw';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        function showStatus(message, type = 'info') {
+            document.getElementById('status').innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+
+        function showDiagnosticResults(html) {
+            document.getElementById('diagnosticResults').innerHTML = html;
+        }
+
+        function showProfileTestResult(message, type = 'info') {
+            document.getElementById('profileTestResult').innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+
+        function showSQLOutput(html) {
+            document.getElementById('sqlOutput').innerHTML = html;
+        }
+
+        // Run full diagnostics
+        document.getElementById('runDiagnostics').addEventListener('click', async () => {
+            showStatus('Running diagnostics...', 'info');
+
+            let diagnostics = '<div class="card"><div class="card-body">';
+
+            try {
+                // Test 1: Supabase connection
+                const { data: user, error: userError } = await supabaseClient.auth.getUser();
+                diagnostics += `<h6>✅ Supabase Connection</h6>`;
+                diagnostics += `<p>Status: ${userError ? '❌ Error' : '✅ Connected'}</p>`;
+                if (userError) diagnostics += `<p>Error: ${userError.message}</p>`;
+                if (user) diagnostics += `<p>User: ${user.email || 'Not logged in'}</p>`;
+
+                // Test 2: Profiles table
+                diagnostics += `<hr><h6>🗄️ Profiles Table</h6>`;
+                try {
+                    const { data: profiles, error: profilesError } = await supabaseClient
+                        .from('profiles')
+                        .select('*')
+                        .limit(1);
+
+                    if (profilesError) {
+                        diagnostics += `<p>❌ Profiles table error: ${profilesError.message}</p>`;
+                        diagnostics += `<p><strong>Solution:</strong> Use "Generate Profiles Table SQL" below</p>`;
+                    } else {
+                        diagnostics += `<p>✅ Profiles table exists</p>`;
+                        diagnostics += `<p>Records found: ${profiles.length}</p>`;
+                    }
+                } catch (e) {
+                    diagnostics += `<p>❌ Profiles table access error: ${e.message}</p>`;
+                }
+
+                // Test 3: Profile Manager availability
+                diagnostics += `<hr><h6>📝 Profile Manager</h6>`;
+                if (window.GarciaProfileManager) {
+                    diagnostics += `<p>✅ Profile Manager loaded</p>`;
+                } else {
+                    diagnostics += `<p>❌ Profile Manager not found</p>`;
+                    diagnostics += `<p><strong>Solution:</strong> Load profile-manager.js</p>`;
+                }
+
+                // Test 4: LocalStorage functionality
+                diagnostics += `<hr><h6>💾 LocalStorage</h6>`;
+                try {
+                    localStorage.setItem('garcia_test', 'working');
+                    const test = localStorage.getItem('garcia_test');
+                    if (test === 'working') {
+                        diagnostics += `<p>✅ LocalStorage working</p>`;
+                        localStorage.removeItem('garcia_test');
+                    } else {
+                        diagnostics += `<p>❌ LocalStorage not working</p>`;
+                    }
+                } catch (e) {
+                    diagnostics += `<p>❌ LocalStorage error: ${e.message}</p>`;
+                }
+
+                // Test 5: Current user data
+                diagnostics += `<hr><h6>👤 User Data</h6>`;
+                const localUser = JSON.parse(localStorage.getItem('garcia_current_user') || '{}');
+                if (localUser.email) {
+                    diagnostics += `<p>✅ Local user found: ${localUser.email}</p>`;
+                    diagnostics += `<p>Role: ${localUser.role || 'Not set'}</p>`;
+                } else {
+                    diagnostics += `<p>❌ No local user data found</p>`;
+                    diagnostics += `<p><strong>Solution:</strong> Login first</p>`;
+                }
+
+            } catch (error) {
+                diagnostics += `<p>❌ Diagnostic error: ${error.message}</p>`;
+            }
+
+            diagnostics += '</div></div>';
+            showDiagnosticResults(diagnostics);
+            showStatus('Diagnostics completed!', 'success');
+        });
+
+        // Test profile save
+        document.getElementById('testProfileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            showProfileTestResult('Testing profile save...', 'info');
+
+            try {
+                const formData = new FormData(e.target);
+                const profileData = Object.fromEntries(formData);
+
+                // Get current user
+                const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+
+                if (userError || !user) {
+                    showProfileTestResult('❌ No authenticated user. Please login first.', 'danger');
+                    return;
+                }
+
+                // Test 1: Save to profiles table
+                const profilePayload = {
+                    id: user.id,
+                    full_name: profileData.full_name,
+                    phone: profileData.phone,
+                    birthday: profileData.birthday,
+                    location: profileData.location,
+                    bio: profileData.bio,
+                    updated_at: new Date().toISOString()
+                };
+
+                const { data, error } = await supabaseClient
+                    .from('profiles')
+                    .upsert(profilePayload, { onConflict: 'id' });
+
+                if (error) {
+                    showProfileTestResult(`❌ Profiles table error: ${error.message}`, 'danger');
+
+                    // Test 2: Fallback to user metadata
+                    showProfileTestResult('Trying user metadata fallback...', 'warning');
+
+                    const { error: metaError } = await supabaseClient.auth.updateUser({
+                        data: {
+                            full_name: profileData.full_name,
+                            phone: profileData.phone,
+                            profile: {
+                                birthday: profileData.birthday,
+                                location: profileData.location,
+                                bio: profileData.bio
+                            }
+                        }
+                    });
+
+                    if (metaError) {
+                        showProfileTestResult(`❌ User metadata error: ${metaError.message}`, 'danger');
+                    } else {
+                        showProfileTestResult('✅ Profile saved to user metadata!', 'success');
+                    }
+                } else {
+                    showProfileTestResult('✅ Profile saved to profiles table!', 'success');
+                }
+
+                // Test 3: Save to localStorage
+                const localProfileData = {
+                    ...profileData,
+                    user_id: user.id,
+                    updated_at: new Date().toISOString()
+                };
+
+                localStorage.setItem(`garcia_profile_${user.id}`, JSON.stringify(localProfileData));
+                showProfileTestResult('✅ Profile also saved to localStorage!', 'info');
+
+            } catch (error) {
+                showProfileTestResult(`❌ Test error: ${error.message}`, 'danger');
+            }
+        });
+
+        // Generate SQL
+        document.getElementById('generateSQL').addEventListener('click', () => {
+            const sql = `
+-- Garcia Builder Profiles Table
+-- Run this SQL in your Supabase SQL Editor
+
+-- Create profiles table
+CREATE TABLE IF NOT EXISTS public.profiles (
+    id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
+    full_name TEXT,
+    phone TEXT,
+    birthday DATE,
+    location TEXT,
+    bio TEXT,
+    avatar_url TEXT,
+    role TEXT DEFAULT 'client' CHECK (role IN ('admin', 'trainer', 'client')),
+    preferences JSONB DEFAULT '{}',
+    body_metrics JSONB DEFAULT '{}',
+    fitness_data JSONB DEFAULT '{}',
+    is_verified BOOLEAN DEFAULT false,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable Row Level Security (RLS)
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+
+-- Create policies
+CREATE POLICY "Public profiles are viewable by everyone." ON profiles
+    FOR SELECT USING (true);
+
+CREATE POLICY "Users can insert their own profile." ON profiles
+    FOR INSERT WITH CHECK (auth.uid() = id);
+
+CREATE POLICY "Users can update own profile." ON profiles
+    FOR UPDATE USING (auth.uid() = id);
+
+-- Create function to handle updated_at
+CREATE OR REPLACE FUNCTION public.handle_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = now();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- Create trigger for updated_at
+CREATE TRIGGER on_profiles_updated
+    BEFORE UPDATE ON public.profiles
+    FOR EACH ROW EXECUTE PROCEDURE public.handle_updated_at();
+
+-- Create trigger to create profile on user signup
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO public.profiles (id, full_name, role)
+    VALUES (
+        new.id,
+        new.raw_user_meta_data->>'full_name',
+        COALESCE(new.raw_user_meta_data->>'role', 'client')
+    );
+    RETURN new;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER on_auth_user_created
+    AFTER INSERT ON auth.users
+    FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
+            `;
+
+            showSQLOutput(`
+                <div class="alert alert-info">
+                    <h6>SQL Schema for Profiles Table</h6>
+                    <p>Copy and paste this SQL into your Supabase SQL Editor:</p>
+                    <pre style="background: #f8f9fa; padding: 15px; border-radius: 5px; font-size: 12px; overflow-x: auto;">${sql}</pre>
+                    <p><strong>Steps:</strong></p>
+                    <ol>
+                        <li>Open your Supabase Dashboard</li>
+                        <li>Go to SQL Editor</li>
+                        <li>Paste this SQL</li>
+                        <li>Click "Run"</li>
+                        <li>Test profile save again</li>
+                    </ol>
+                </div>
+            `);
+        });
+
+        // Initialize
+        window.addEventListener('load', () => {
+            showStatus('Profile System Diagnostic Tool Ready', 'info');
+        });
+    </script>
+</body>
+</html>

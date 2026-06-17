@@ -159,7 +159,7 @@ Garcia Builder - Online Coaching
     setErr(timelineEl, !timelineEl.value);                 bad ||= timelineEl.classList.contains('input-error');
     setErr(experienceEl, !experienceEl.value);             bad ||= experienceEl.classList.contains('input-error');
     setErr(messageEl, messageEl.value.trim().length < 10); bad ||= messageEl.classList.contains('input-error');
-    setErr(consentEl, !consentEl.checked);                 // visual hint via CSS not needed here
+    setErr(consentEl, !consentEl.checked);                 bad ||= consentEl.classList.contains('input-error');
 
     // Optional field validation
     setErr(phoneEl, !phoneOk(phoneEl.value));              bad ||= phoneEl.classList.contains('input-error');
@@ -200,7 +200,7 @@ Garcia Builder - Online Coaching
 
         form.reset(); updateCount();
         alertBox.classList.remove('visually-hidden');
-        alertBox.textContent = 'Thanks! Your message was sent. I'll reply within 24–48h.';
+        alertBox.textContent = 'Thanks! Your message was sent. I’ll reply within 24–48h.';
 
         // Show success popup and send confirmation email
         showSuccessPopup(userName, userEmail);

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Admin Account</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Setup Admin Account</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="status" class="mb-3"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Create Admin Account</h5>
+                                <button id="createAdmin" class="btn btn-success mb-3">Create Admin</button>
+
+                                <h5>Current Local Users</h5>
+                                <div id="localUsers"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <h5>Test Login</h5>
+                                <form id="testLogin">
+                                    <div class="mb-2">
+                                        <input type="email" class="form-control" id="testEmail" value="admin@local" placeholder="Email">
+                                    </div>
+                                    <div class="mb-2">
+                                        <input type="password" class="form-control" id="testPassword" value="admingarciabuilder" placeholder="Password">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Test Login</button>
+                                </form>
+                                <div id="loginResult" class="mt-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showStatus(message, type = 'info') {
+            document.getElementById('status').innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+
+        function showLoginResult(message, type = 'info') {
+            document.getElementById('loginResult').innerHTML = `<div class="alert alert-${type} alert-sm">${message}</div>`;
+        }
+
+        function updateLocalUsersList() {
+            const users = JSON.parse(localStorage.getItem('garcia_users') || '[]');
+            const usersList = document.getElementById('localUsers');
+
+            if (users.length === 0) {
+                usersList.innerHTML = '<p class="text-muted">No local users found</p>';
+                return;
+            }
+
+            let html = '<div class="list-group">';
+            users.forEach(user => {
+                html += `
+                    <div class="list-group-item">
+                        <strong>${user.email}</strong><br>
+                        <small>Role: ${user.role} | Local: ${user.is_local_admin ? 'Yes' : 'No'}</small>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            usersList.innerHTML = html;
+        }
+
+        // Create admin account
+        document.getElementById('createAdmin').addEventListener('click', () => {
+            const adminData = {
+                id: 'admin-local-' + Date.now(),
+                email: 'admin@local',
+                password: 'admingarciabuilder', // Em produção, isso seria hasheado
+                name: 'Garcia Builder Admin',
+                role: 'admin',
+                is_local_admin: true,
+                fake_email: true,
+                created_at: new Date().toISOString(),
+                last_login: null,
+                permissions: {
+                    manage_users: true,
+                    manage_trainers: true,
+                    view_analytics: true,
+                    system_settings: true
+                }
+            };
+
+            // Obter usuários existentes
+            let users = JSON.parse(localStorage.getItem('garcia_users') || '[]');
+
+            // Verificar se admin já existe
+            const existingAdmin = users.find(u => u.email === 'admin@local');
+            if (existingAdmin) {
+                showStatus('Admin account already exists!', 'warning');
+                updateLocalUsersList();
+                return;
+            }
+
+            // Adicionar novo admin
+            users.push(adminData);
+            localStorage.setItem('garcia_users', JSON.stringify(users));
+
+            showStatus('✅ Admin account created successfully!', 'success');
+            updateLocalUsersList();
+        });
+
+        // Test login
+        document.getElementById('testLogin').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('testEmail').value;
+            const password = document.getElementById('testPassword').value;
+
+            const users = JSON.parse(localStorage.getItem('garcia_users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                showLoginResult('✅ Login successful!', 'success');
+
+                // Set current user
+                localStorage.setItem('garcia_current_user', JSON.stringify(user));
+
+                // Redirect to admin dashboard
+                setTimeout(() => {
+                    window.location.href = 'enhanced-admin-dashboard.html';
+                }, 1500);
+            } else {
+                showLoginResult('❌ Invalid credentials', 'danger');
+            }
+        });
+
+        // Initialize page
+        window.addEventListener('load', () => {
+            updateLocalUsersList();
+
+            const users = JSON.parse(localStorage.getItem('garcia_users') || '[]');
+            if (users.length === 0) {
+                showStatus('No local users found. Click "Create Admin" to create an admin account.', 'info');
+            } else {
+                showStatus(`Found ${users.length} local user(s).`, 'info');
+            }
+        });
+    </script>
+</body>
+</html>

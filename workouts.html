@@ -10,10 +10,10 @@
   <link rel="canonical" href="https://garciabuilder.fitness/workouts.html">
   <link rel="icon" href="Logo Files/For Web/logo-nobackground-500.png" type="image/png">
   <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" href="css/workouts.css">
+  <link rel="stylesheet" href="css/workouts.css?v=20260617">
   <script defer src="assets/i18n.js"></script>
   <script defer src="js/app.js"></script>
-  <script defer src="js/workouts.js"></script>
+  <script defer src="js/workouts.js?v=20260617"></script>
 </head>
 <body class="workouts-page">
   <nav class="gb-navbar" role="navigation" aria-label="Main navigation">
@@ -127,7 +127,10 @@
           <button type="button" data-filter-group="place" data-filter="gym">Gym</button>
         </div>
 
-        <p class="result-count"><span id="workout-count">18</span> templates showing</p>
+        <div class="filter-results">
+          <p class="result-count" aria-live="polite" aria-atomic="true"><span id="workout-count">18</span> templates showing</p>
+          <button type="button" class="clear-filters" id="clear-workout-filters" hidden>Clear filters</button>
+        </div>
       </div>
     </section>
 

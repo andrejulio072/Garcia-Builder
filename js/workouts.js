@@ -934,7 +934,36 @@
   const search = document.getElementById('workout-search');
   const count = document.getElementById('workout-count');
   const noResults = document.getElementById('no-results');
+  const clearFilters = document.getElementById('clear-workout-filters');
   const jumpLinks = Array.from(document.querySelectorAll('[data-jump-filter]'));
+  let modalTrigger = null;
+
+  const validFilterValues = {
+    goal: new Set(['all', 'fat-loss', 'muscle', 'strength', 'mobility']),
+    level: new Set(['all', 'beginner', 'intermediate', 'advanced']),
+    place: new Set(['all', 'home', 'gym'])
+  };
+
+  const restoreFiltersFromUrl = () => {
+    const params = new URLSearchParams(window.location.search);
+    Object.keys(filters).forEach((group) => {
+      const value = params.get(group);
+      if (value && validFilterValues[group].has(value)) filters[group] = value;
+    });
+    if (search) search.value = params.get('q') || '';
+  };
+
+  const syncFiltersToUrl = () => {
+    if (!window.history?.replaceState) return;
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([group, value]) => {
+      if (value !== 'all') params.set(group, value);
+    });
+    const term = (search?.value || '').trim();
+    if (term) params.set('q', term);
+    const query = params.toString();
+    window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`);
+  };
 
   const renderWorkoutPlans = () => {
     cards.forEach((card) => {
@@ -952,7 +981,7 @@
 
     document.body.insertAdjacentHTML('beforeend', `
       <div class="workout-modal" id="workout-modal" role="dialog" aria-modal="true" aria-labelledby="workout-modal-title" hidden>
-        <div class="workout-modal-backdrop" data-workout-close></div>
+        <div class="workout-modal-backdrop" data-workout-close aria-hidden="true"></div>
         <div class="workout-modal-panel" role="document">
           <header class="workout-modal-header">
             <div>
@@ -966,6 +995,7 @@
           <div class="workout-modal-body" id="workout-modal-body"></div>
           <footer class="workout-modal-footer">
             <a class="btn btn-gold" href="contact.html">Customize this plan</a>
+            <button type="button" class="btn" id="print-workout-plan">Print plan</button>
             <button type="button" class="btn" data-workout-close>Close plan</button>
           </footer>
         </div>
@@ -976,18 +1006,22 @@
     modal.querySelectorAll('[data-workout-close]').forEach((control) => {
       control.addEventListener('click', () => closeWorkoutModal());
     });
+    modal.querySelector('#print-workout-plan')?.addEventListener('click', () => window.print());
     return modal;
   };
 
   const closeWorkoutModal = () => {
     const modal = document.getElementById('workout-modal');
-    if (!modal) return;
+    if (!modal || modal.hidden) return;
     modal.hidden = true;
     document.body.style.overflow = '';
+    modalTrigger?.focus();
+    modalTrigger = null;
   };
 
   const openWorkoutModal = (card) => {
     const modal = ensureWorkoutModal();
+    modalTrigger = card;
     const title = card.querySelector('h3')?.textContent.trim() || 'Workout template';
     const summary = card.querySelector(':scope > p')?.textContent.trim() || '';
     const detail = card.querySelector('.workout-detail');
@@ -1038,7 +1072,25 @@
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeWorkoutModal();
+      const modal = document.getElementById('workout-modal');
+      if (!modal || modal.hidden) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeWorkoutModal();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const focusable = Array.from(modal.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'));
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     });
   };
 
@@ -1093,7 +1145,7 @@
       });
   };
 
-  const applyFilters = () => {
+  const applyFilters = ({ syncUrl = true } = {}) => {
     const term = (search?.value || '').trim().toLowerCase();
     let visible = 0;
 
@@ -1110,6 +1162,17 @@
 
     if (count) count.textContent = String(visible);
     if (noResults) noResults.hidden = visible !== 0;
+    const hasActiveFilters = Object.values(filters).some((value) => value !== 'all') || Boolean(term);
+    if (clearFilters) clearFilters.hidden = !hasActiveFilters;
+    if (syncUrl) syncFiltersToUrl();
+  };
+
+  const resetFilters = () => {
+    Object.keys(filters).forEach((group) => { filters[group] = 'all'; });
+    if (search) search.value = '';
+    Object.keys(filters).forEach((group) => setButtonState(group, filters[group]));
+    applyFilters();
+    search?.focus();
   };
 
   buttons.forEach((button) => {
@@ -1123,6 +1186,7 @@
   });
 
   search?.addEventListener('input', applyFilters);
+  clearFilters?.addEventListener('click', resetFilters);
 
   jumpLinks.forEach((link) => {
     link.addEventListener('click', () => {
@@ -1141,8 +1205,10 @@
   });
 
   setupMenu();
+  restoreFiltersFromUrl();
+  Object.keys(filters).forEach((group) => setButtonState(group, filters[group]));
   renderWorkoutPlans();
   setupWorkoutModal();
   setupCardAnimations();
-  applyFilters();
+  applyFilters({ syncUrl: false });
 })();

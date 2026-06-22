@@ -8,7 +8,7 @@
 
 console.log('[Component Loader v3.0] Initializing...');
 
-const DEFAULT_GA4_MEASUREMENT_ID = 'G-CMMHJP9LEY';
+const COMPONENT_LOADER_DEFAULT_GA4_MEASUREMENT_ID = 'G-CMMHJP9LEY';
 
 function isValidGa4Id(id) {
     return typeof id === 'string' && /^G-[A-Z0-9]+$/i.test(id.trim());
@@ -60,8 +60,8 @@ function bootstrapGa4Defaults() {
             }
         }
 
-        if (!resolved && isValidGa4Id(DEFAULT_GA4_MEASUREMENT_ID)) {
-            resolved = DEFAULT_GA4_MEASUREMENT_ID;
+        if (!resolved && isValidGa4Id(COMPONENT_LOADER_DEFAULT_GA4_MEASUREMENT_ID)) {
+            resolved = COMPONENT_LOADER_DEFAULT_GA4_MEASUREMENT_ID;
         }
 
         if (!resolved) {
@@ -238,6 +238,7 @@ const INLINE_FALLBACKS = {
             <nav class="gb-navbar-links" role="menubar" aria-label="Primary">
                 <a href="#" class="gb-navbar-link" data-i18n="nav.home" role="menuitem" data-gb-nav="index.html">Home</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.about" role="menuitem" data-gb-nav="about.html">About</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.workouts" role="menuitem" data-gb-nav="workouts.html">Workouts</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="transformations.html">Transformations</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.testi" role="menuitem" data-gb-nav="testimonials.html">Testimonials</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.pricing" role="menuitem" data-gb-nav="pricing.html">Pricing</a>
@@ -274,6 +275,7 @@ const INLINE_FALLBACKS = {
             <nav class="gb-menu-links" role="menubar">
                 <a href="#" class="gb-menu-link" data-i18n="nav.home" role="menuitem" data-gb-nav="index.html">Home</a>
                 <a href="#" class="gb-menu-link" data-i18n="nav.about" role="menuitem" data-gb-nav="about.html">About</a>
+                <a href="#" class="gb-menu-link" data-i18n="nav.workouts" role="menuitem" data-gb-nav="workouts.html">Workouts</a>
                 <a href="#" class="gb-menu-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="transformations.html">Transformations</a>
                 <a href="#" class="gb-menu-link" data-i18n="nav.testi" role="menuitem" data-gb-nav="testimonials.html">Testimonials</a>
                 <a href="#" class="gb-menu-link" data-i18n="nav.pricing" role="menuitem" data-gb-nav="pricing.html">Pricing</a>

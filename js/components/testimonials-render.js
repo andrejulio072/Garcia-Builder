@@ -224,6 +224,7 @@
       const shouldShow = matchesFilter && matchesQuery;
       item.el.style.display = shouldShow ? '' : 'none';
       if (shouldShow) {
+        item.el.classList.add('is-visible');
         visible.push(item);
       }
     });

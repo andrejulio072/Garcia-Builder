@@ -7,6 +7,7 @@
       nav: {
         home: "Home",
         about: "About",
+        workouts: "Workouts",
         trans: "Transformations",
         testi: "Testimonials",
         blog: "Blog",
@@ -603,6 +604,7 @@
       nav: {
         home: "Início",
         about: "Sobre",
+        workouts: "Treinos",
         trans: "Transformações",
         testi: "Depoimentos",
         blog: "Blog",
@@ -1200,6 +1202,7 @@
       nav: {
         home: "Inicio",
         about: "Sobre mí",
+        workouts: "Entrenamientos",
         trans: "Transformaciones",
         testi: "Testimonios",
         blog: "Blog",

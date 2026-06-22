@@ -29,7 +29,7 @@
     align-items: center;
     justify-content: flex-start;
     padding: 16px 0;
-    gap: clamp(24px, 3vw, 48px);
+    gap: clamp(18px, 2.4vw, 34px);
     flex-wrap: nowrap;
 }
 
@@ -37,10 +37,10 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: clamp(16px, 2.4vw, 28px);
+    gap: clamp(12px, 1.8vw, 22px);
     margin-left: 0;
     margin-right: auto;
-    padding-right: clamp(60px, 8vw, 150px);
+    padding-right: 0;
     flex: 0 1 auto;
     min-width: 0;
 }

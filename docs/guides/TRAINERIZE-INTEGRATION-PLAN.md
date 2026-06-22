@@ -1,4 +1,6 @@
-# 🔗 PLANO DE INTEGRAÇÃO TRAINERIZE - GARCIA BUILDER
+# PLANO DE INTEGRAÇÃO TRAINERIZE - GARCIA BUILDER (ARQUIVADO)
+
+> **Decisão de 23 de junho de 2026:** esta integração não faz mais parte do roadmap ativo. O produto deve priorizar uma API própria para o futuro Garcia Builder Fitness App. My PT Hub pode ser avaliado separadamente como solução temporária, sem acoplamento do banco de dados principal.
 
 **Data:** 8 de Outubro de 2025
 **Prioridade:** 🔥 ALTA

@@ -20,10 +20,10 @@
 7. Usuários podem deixar review
 8. Implementar descontos e preços para 3, 6 e 12 meses
 9. Conversão de moedas no checkout (libra, euro, reais, etc.) — considerar preços diferentes por moeda
-10. Conectar com Trainerize e automatizar processo de clientes e perfil
+10. Preparar uma API estável para o futuro Garcia Builder Fitness App; avaliar My PT Hub apenas como integração temporária
 
 ## 💡 Opções Futuras
-- Conectar com Trainerize Blogs
+- Integrar conteúdo e treinos com o futuro Garcia Builder Fitness App
 - Criar sistema de newsletter para e-mail
 - Criar e-book gratuito
 # 🚧 IMPLEMENTAÇÕES FUTURAS - Garcia Builder

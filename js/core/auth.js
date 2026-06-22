@@ -187,7 +187,15 @@ async function syncUserProfile(supabaseClient, user, extra = {}) {
 }
 class AuthSystem {
     constructor() {
-        this.users = JSON.parse(localStorage.getItem('gb_users') || '[]');
+        if (!isLocalAuthFallbackEnabled()) {
+            // Legacy local accounts stored plaintext passwords. They are never
+            // valid production identities and should not persist outside an
+            // explicitly enabled localhost demo session.
+            localStorage.removeItem('gb_users');
+        }
+        this.users = isLocalAuthFallbackEnabled()
+            ? JSON.parse(localStorage.getItem('gb_users') || '[]')
+            : [];
         this.currentUser = JSON.parse(localStorage.getItem('gb_current_user') || 'null');
         
         // Prevent redirect loop: if on login page, verify session before trusting currentUser
@@ -1041,6 +1049,10 @@ class AuthSystem {
             {
                 match: ['network error', 'fetch failed', 'failed to fetch', 'network request failed'],
                 text: 'Network issue detected. Check your connection and try again.'
+            },
+            {
+                match: ['online account service is unavailable', 'supabase client unavailable', 'supabase auth client unavailable'],
+                text: 'The account service is temporarily unavailable. No account was created. Please try again later.'
             }
         ];
 

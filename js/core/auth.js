@@ -148,6 +148,43 @@ async function getSupabaseAuthClient(timeout = 8000) {
 
     return null;
 }
+
+function isLocalAuthFallbackEnabled() {
+    if (typeof window === 'undefined' || !window.location) return false;
+    const params = new URLSearchParams(window.location.search || '');
+    const explicitlyEnabled = params.get('dev') === '1' || params.get('local') === '1';
+    return explicitlyEnabled && (
+        window.location.protocol === 'file:' ||
+        isLocalLikeHost(window.location.hostname || '')
+    );
+}
+
+async function syncUserProfile(supabaseClient, user, extra = {}) {
+    if (!supabaseClient || !user?.id) {
+        throw new Error('Cannot synchronize profile without an authenticated Supabase user.');
+    }
+
+    const payload = {
+        user_id: user.id,
+        email: user.email || '',
+        full_name: user.user_metadata?.full_name || '',
+        joined_date: user.created_at || new Date().toISOString(),
+        last_login: new Date().toISOString(),
+        ...extra
+    };
+
+    const { data, error } = await supabaseClient
+        .from('user_profiles')
+        .upsert(payload, { onConflict: 'user_id' })
+        .select()
+        .single();
+
+    if (error) {
+        throw new Error(`Profile synchronization failed: ${error.message}`);
+    }
+
+    return data;
+}
 class AuthSystem {
     constructor() {
         this.users = JSON.parse(localStorage.getItem('gb_users') || '[]');
@@ -533,8 +570,10 @@ class AuthSystem {
 
         try {
             // PRIMEIRO: Verificar se é admin local
-            const isAdminLocal = email === 'admin@local' || email === 'admin' ||
-                                email.startsWith('admin@') && email.length < 20;
+            const isAdminLocal = isLocalAuthFallbackEnabled() && (
+                email === 'admin@local' || email === 'admin' ||
+                (email.startsWith('admin@') && email.length < 20)
+            );
 
             if (isAdminLocal) {
                 // Buscar admin no localStorage
@@ -590,20 +629,12 @@ class AuthSystem {
 
                 // Best-effort: upsert user profile record in Supabase
                 try {
-                    await supabaseClient
-                      .from('user_profiles')
-                      .upsert({
-                        user_id: supaUser.id,
-                        email: supaUser.email,
-                        full_name: supaUser.user_metadata?.full_name || '',
-                        joined_date: supaUser.created_at || new Date().toISOString(),
-                        last_login: new Date().toISOString()
-                      });
+                    await syncUserProfile(supabaseClient, supaUser);
                 } catch (e) {
-                    console.warn('Profile upsert skipped:', e?.message || e);
+                    console.error('Profile synchronization after login failed:', e?.message || e);
                 }
-            } else {
-                // Fallback: local auth
+            } else if (isLocalAuthFallbackEnabled()) {
+                // Explicit localhost-only fallback for development demos.
                 // Simulate API delay
                 await this.delay(500);
                 const user = this.users.find(u => u.email.toLowerCase() === email.toLowerCase());
@@ -623,6 +654,8 @@ class AuthSystem {
                     lastLogin: user.lastLogin
                 };
                 localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
+            } else {
+                throw new Error('Online account service is unavailable. No local account was created. Please try again later.');
             }
 
             if (rememberMe) {
@@ -773,19 +806,12 @@ class AuthSystem {
                     localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
 
                     try {
-                        await supabaseClient
-                            .from('user_profiles')
-                            .upsert({
-                                user_id: supaUser.id,
-                                email: supaUser.email || email,
-                                full_name: supaUser.user_metadata?.full_name || name,
-                                phone: document.getElementById('registerPhone')?.value || '',
-                                date_of_birth: document.getElementById('registerDob')?.value || null,
-                                joined_date: supaUser.created_at || new Date().toISOString(),
-                                last_login: new Date().toISOString()
-                            });
+                        await syncUserProfile(supabaseClient, supaUser, {
+                            phone: document.getElementById('registerPhone')?.value || '',
+                            date_of_birth: document.getElementById('registerDob')?.value || null
+                        });
                     } catch (profileErr) {
-                        console.warn('Profile upsert after register skipped:', profileErr?.message || profileErr);
+                        console.error('Profile synchronization after registration failed:', profileErr?.message || profileErr);
                     }
 
                     try {
@@ -830,7 +856,11 @@ class AuthSystem {
                 return;
             }
 
-            // Fallback: local registration
+            if (!isLocalAuthFallbackEnabled()) {
+                throw new Error('Online account service is unavailable. No local account was created. Please try again later.');
+            }
+
+            // Explicit localhost-only fallback for development demos.
             await this.delay(800);
             if (this.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
                 this.showError('This email is already registered');
@@ -1454,17 +1484,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             // Ensure user profile is upserted in Supabase after OAuth/social login
                             try {
-                                await supabaseClient
-                                  .from('user_profiles')
-                                  .upsert({
-                                    user_id: su.id,
-                                    email: su.email,
-                                    full_name: su.user_metadata?.full_name || '',
-                                    joined_date: su.created_at || new Date().toISOString(),
-                                    last_login: new Date().toISOString()
-                                  });
+                                await syncUserProfile(supabaseClient, su);
                             } catch (e) {
-                                console.warn('Profile upsert (OAuth) skipped:', e?.message || e);
+                                console.error('Profile synchronization after OAuth failed:', e?.message || e);
                             }
 
                             // OAuth / external provider tracking

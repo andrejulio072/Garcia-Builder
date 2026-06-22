@@ -29,6 +29,32 @@
   const init = () => {
     const cards = document.querySelectorAll('.grid .tcard');
 
+    if (typeof window.IntersectionObserver !== 'function') {
+      cards.forEach((card, idx) => {
+        card.style.setProperty('--reveal-delay', `${(idx % 8) * 55}ms`);
+        card.classList.add('is-visible');
+        applyPointerDepth(card);
+      });
+      document.querySelectorAll('.spotlight-card').forEach((card) => card.classList.add('is-visible'));
+
+      const spotlightRoot = document.getElementById('testimonial-spotlight');
+      if (spotlightRoot && typeof window.MutationObserver === 'function') {
+        const observer = new MutationObserver(() => {
+          spotlightRoot.querySelectorAll('.spotlight-card').forEach((card) => card.classList.add('is-visible'));
+        });
+        observer.observe(spotlightRoot, { childList: true });
+      }
+      return;
+    }
+
+    document.documentElement.classList.add('testimonials-reveal');
+    window.setTimeout(() => {
+      if (!document.querySelector('.tcard.is-visible, .spotlight-card.is-visible')) {
+        document.documentElement.classList.remove('testimonials-reveal');
+        document.querySelectorAll('.tcard, .spotlight-card').forEach((card) => card.classList.add('is-visible'));
+      }
+    }, 1200);
+
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -55,7 +81,7 @@
     document.querySelectorAll('.spotlight-card').forEach(observeRevealTarget);
 
     const spotlightRoot = document.getElementById('testimonial-spotlight');
-    if (spotlightRoot) {
+    if (spotlightRoot && typeof window.MutationObserver === 'function') {
       const observer = new MutationObserver(() => {
         spotlightRoot.querySelectorAll('.spotlight-card').forEach(observeRevealTarget);
       });

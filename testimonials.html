@@ -137,8 +137,8 @@ img { max-width: 100%; height: auto; display: block; }
   border: 1px solid rgba(248, 224, 142, 0.14);
   border-radius: 14px;
   box-shadow: 0 16px 34px rgba(0,0,0,0.22);
-  transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(16px);
-  opacity: 0;
+  transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(0);
+  opacity: 1;
   transition:
     opacity 0.55s ease,
     transform 0.55s cubic-bezier(.2,.8,.2,1),
@@ -148,6 +148,11 @@ img { max-width: 100%; height: auto; display: block; }
   cursor: pointer;
   position: relative;
   overflow: hidden;
+}
+
+.testimonials-reveal .tcard {
+  opacity: 0;
+  transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(16px);
 }
 
 .tcard.is-visible {
@@ -311,9 +316,14 @@ img { max-width: 100%; height: auto; display: block; }
     linear-gradient(145deg, rgba(18, 27, 43, 0.96), rgba(8, 11, 19, 0.98));
   border: 1px solid rgba(248, 224, 142, 0.22);
   box-shadow: 0 28px 60px rgba(0,0,0,0.36);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(.2,.8,.2,1), border-color 0.25s ease;
+}
+
+.testimonials-reveal .spotlight-card {
   opacity: 0;
   transform: translateY(14px);
-  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(.2,.8,.2,1), border-color 0.25s ease;
 }
 
 .spotlight-card.is-visible {
@@ -803,12 +813,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </a>
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script defer src="js/testimonials-data.js"></script>
-<script defer src="js/components/testimonials-render.js"></script>
+<script defer src="js/components/testimonials-render.js?v=20260622"></script>
 <script defer src="js/components/app.js"></script>
 <script defer src="js/components/lightbox.js"></script>
 <!-- testimonials-filter.js replaced by testimonials-render.js dynamic filtering -->
 <script defer src="js/components/number-animate.js"></script>
-<script defer src="js/components/testimonials-visual.js?v=20260612"></script>
+<script defer src="js/components/testimonials-visual.js?v=20260622d"></script>
 <script defer src="js/core/i18n-shim.js"></script>
 <script defer src="assets/i18n.js?v=20251025"></script>
 <script defer src="js/core/auth.js"></script>

@@ -59,7 +59,7 @@
     const cat = (t.categories || []).join(' ');
 
     const avatar = (!isAnon && t.imageUrl)
-      ? `<img src="${t.imageUrl}" alt="${t.name} avatar" width="60" height="60" loading="lazy" />`
+      ? `<img src="${t.imageUrl}" alt="${t.name} avatar" width="60" height="60" loading="lazy" data-avatar-fallback="${escapeHtml(getInitials(t.name))}" data-avatar-index="${(idx % 10) + 1}" />`
       : `<div class="testimonial-avatar avatar-${(idx % 10) + 1}" aria-hidden="true">${getInitials(t.name)}</div>`;
 
     const cardText = translate(t.textKey, t.text);
@@ -80,6 +80,19 @@
   const anonymous = window.GB_TESTIMONIALS.filter(t => (t.categories || []).includes('anonymous'));
   const ordered = [...identified, ...anonymous];
   grid.innerHTML = ordered.map((t, i) => makeCard(t, i)).join('');
+
+  grid.querySelectorAll('img[data-avatar-fallback]').forEach((img) => {
+    const showFallback = () => {
+      if (!img.isConnected) return;
+      const fallback = document.createElement('div');
+      fallback.className = `testimonial-avatar avatar-${img.dataset.avatarIndex || '1'}`;
+      fallback.setAttribute('aria-hidden', 'true');
+      fallback.textContent = img.dataset.avatarFallback || 'GB';
+      img.replaceWith(fallback);
+    };
+    img.addEventListener('error', showFallback, { once: true });
+    if (img.complete && img.naturalWidth === 0) showFallback();
+  });
 
   const meta = Array.from(grid.querySelectorAll('.tcard')).map((el, idx) => {
     const categories = (el.getAttribute('data-category') || '').split(/\s+/).filter(Boolean);
@@ -169,6 +182,19 @@
         </div>
       </div>
     `;
+
+    const spotlightImage = spotlightEl.querySelector('.spotlight-media img');
+    if (spotlightImage) {
+      const showSpotlightFallback = () => {
+        if (!spotlightImage.isConnected) return;
+        const fallback = document.createElement('div');
+        fallback.className = 'spotlight-avatar';
+        fallback.textContent = getInitials(name);
+        spotlightImage.replaceWith(fallback);
+      };
+      spotlightImage.addEventListener('error', showSpotlightFallback, { once: true });
+      if (spotlightImage.complete && spotlightImage.naturalWidth === 0) showSpotlightFallback();
+    }
 
     const copyBtn = spotlightEl.querySelector('.spotlight-copy');
     if (copyBtn) {

@@ -5,7 +5,7 @@
     if(!document.querySelector('link[href*="credibility.css"]')){
       const link = document.createElement('link');
       link.rel = 'stylesheet';
-      link.href = 'css/credibility.css';
+      link.href = 'css/components/credibility.css';
       document.head.appendChild(link);
     }
   }

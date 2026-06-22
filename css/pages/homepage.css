@@ -382,6 +382,18 @@ html, body {
   text-shadow: 0 0 20px rgba(246, 200, 78, 0.5);
 }
 
+/* Keep the multiline hero headline crisp. Transparent gradient text combined
+   with a glow can bleed through glyphs and create horizontal seams. */
+.hero .hero-headline {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: #F8D778;
+  color: #F8D778;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 3px 16px rgba(0, 0, 0, 0.58);
+}
+
 /* ===== BUTTONS ===== */
 .btn-warning {
   background: linear-gradient(135deg, #F6C84E 0%, #FFD700 100%);
@@ -796,6 +808,9 @@ html {
         radial-gradient(circle at 50% 35%, rgba(246, 200, 78, 0.18), transparent 32%),
         linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.78) 100%);
     pointer-events: none;
+    transform: scale(1.04);
+    transform-origin: center;
+    animation: heroAmbientGlow 10s ease-in-out infinite alternate;
 }
 
 .hero .content {
@@ -818,6 +833,9 @@ html {
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+    box-shadow: 0 10px 34px rgba(0, 0, 0, 0.28), inset 0 0 0 1px rgba(246, 200, 78, 0.04);
+    backdrop-filter: blur(10px);
+    animation: heroBadgeIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .hero-eyebrow::before {
@@ -830,17 +848,22 @@ html {
 }
 
 .hero-headline {
-    max-width: 980px;
-    margin-inline: auto;
-    font-size: clamp(2.75rem, 6vw, 5.2rem);
-    letter-spacing: 0;
+    max-width: 18ch;
+    margin: 0 auto 1.25rem;
+    font-size: clamp(3.15rem, 6vw, 5.2rem);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+    animation: heroHeadlineIn 0.82s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .hero-subtitle {
     max-width: 760px;
     margin-inline: auto;
     font-size: clamp(1.08rem, 2vw, 1.35rem);
+    line-height: 1.55;
     opacity: 0.95;
+    animation: heroContentIn 0.7s 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .hero-trust-row {
@@ -850,9 +873,12 @@ html {
     gap: 10px;
     margin: 22px auto 4px;
     max-width: 840px;
+    animation: heroContentIn 0.7s 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .hero-trust-row span {
+    position: relative;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
     min-height: 38px;
@@ -864,6 +890,14 @@ html {
     font-size: 0.92rem;
     font-weight: 700;
     backdrop-filter: blur(8px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 8px 24px rgba(0, 0, 0, 0.16);
+    transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+
+.hero-trust-row span:hover {
+    transform: translateY(-2px);
+    border-color: rgba(246, 200, 78, 0.38);
+    background: rgba(246, 200, 78, 0.1);
 }
 
 .hero-trust-row span::before {
@@ -874,9 +908,25 @@ html {
 
 /* CTA buttons in hero */
 .btn-hero-primary {
+    position: relative;
+    overflow: hidden;
     padding: 14px 32px;
     font-size: 1.1rem;
     font-weight: 600;
+    box-shadow: 0 14px 36px rgba(246, 200, 78, 0.24);
+}
+
+.btn-hero-primary::after {
+    content: "";
+    position: absolute;
+    top: -60%;
+    bottom: -60%;
+    left: -35%;
+    width: 24%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.48), transparent);
+    transform: translateX(-180%) rotate(16deg);
+    animation: heroButtonSheen 4.8s 1.4s ease-in-out infinite;
+    pointer-events: none;
 }
 
 .btn-hero-secondary {
@@ -889,6 +939,36 @@ html {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+}
+
+.hero-actions {
+    animation: heroContentIn 0.7s 0.44s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes heroBadgeIn {
+    from { opacity: 0; transform: translateY(-10px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes heroHeadlineIn {
+    from { opacity: 0; transform: translateY(24px) scale(0.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes heroContentIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroAmbientGlow {
+    from { opacity: 0.78; transform: scale(1.03) translate3d(-0.5%, -0.5%, 0); }
+    to { opacity: 1; transform: scale(1.08) translate3d(0.8%, 0.5%, 0); }
+}
+
+@keyframes heroButtonSheen {
+    0%, 70% { transform: translateX(-180%) rotate(16deg); opacity: 0; }
+    76% { opacity: 1; }
+    92%, 100% { transform: translateX(620%) rotate(16deg); opacity: 0; }
 }
 
 .hero .kpis,
@@ -1261,12 +1341,18 @@ html {
 
 /* Responsive typography adjustments */
 @media (max-width: 768px) {
-    .hero-headline {
-        font-size: 2.05rem;
+    .hero .hero-headline {
+        max-width: 19ch;
+        margin-bottom: 1rem;
+        font-size: clamp(2.05rem, 8.5vw, 2.75rem);
+        line-height: 1.02;
+        letter-spacing: -0.04em;
     }
 
     .hero-subtitle {
         font-size: 0.96rem;
+        max-width: 38ch;
+        line-height: 1.5;
     }
 
     .hero-eyebrow {
@@ -1291,6 +1377,7 @@ html {
 
     .hero-actions {
         width: 100%;
+        gap: 10px !important;
     }
 
     .btn-hero-primary,
@@ -1320,6 +1407,58 @@ html {
 
     .process-image {
         height: 120px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero {
+        padding: 50px 14px 34px;
+    }
+
+    .hero .content.container {
+        padding-inline: 0;
+    }
+
+    .hero-eyebrow {
+        max-width: min(100%, 340px);
+        min-height: 38px;
+        white-space: normal;
+        line-height: 1.25;
+    }
+
+    .hero .hero-headline {
+        max-width: 18ch;
+        font-size: clamp(2rem, 9.2vw, 2.35rem);
+        line-height: 1.01;
+    }
+
+    .hero-trust-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
+        margin-top: 18px;
+    }
+
+    .hero-trust-row span {
+        width: 100%;
+        min-width: 0;
+        min-height: 40px;
+    }
+
+    .hero-trust-row span:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .btn-hero-primary,
+    .btn-hero-secondary,
+    .hero-actions .btn-outline-warning {
+        width: 100%;
+        max-width: none;
+    }
+
+    .btn-hero-primary {
+        min-height: 54px;
+        font-size: 1.02rem;
     }
 }
 

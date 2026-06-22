@@ -7,7 +7,7 @@
     "start": "node api/stripe-server-premium.js",
     "dev": "nodemon api/stripe-server-premium.js",
     "legacy": "node api/stripe-server.js",
-  "test": "node scripts/contact-form.check.js",
+    "test": "node scripts/contact-form.check.js",
     "serve": "node tools/static-server.js",
     "sitemap": "node tools/generate-sitemap.js",
     "lint": "powershell -ExecutionPolicy Bypass -File validate-components.ps1",
@@ -39,7 +39,7 @@
     "express": "^4.18.2",
     "express-rate-limit": "^8.1.0",
     "helmet": "^8.1.0",
-    "nodemailer": "^6.9.8",
+    "nodemailer": "^9.0.1",
     "stripe": "^14.25.0"
   },
   "devDependencies": {

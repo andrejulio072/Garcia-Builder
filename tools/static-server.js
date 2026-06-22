@@ -44,6 +44,10 @@ app.get(Object.keys(publicPageAliases), (req, res) => {
 });
 
 app.get('*', (req, res) => {
+  if (path.extname(req.path)) {
+    res.status(404).type('text/plain').send('Not found');
+    return;
+  }
   res.sendFile(path.join(root, 'index.html'));
 });
 

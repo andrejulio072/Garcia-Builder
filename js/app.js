@@ -37,11 +37,9 @@ if (hero){
     hero.style.setProperty('--my', my.toFixed(3));
   });
 }
-// count-up when visible
-const io = new IntersectionObserver((entries)=>{
-  entries.forEach(en=>{
-    if(en.isIntersecting){
-      en.target.querySelectorAll('.num[data-target]').forEach(el=>{
+// count-up when visible, with a fallback for browsers without a complete observer implementation
+const animateKpis = (root) => {
+  root.querySelectorAll('.num[data-target]').forEach(el=>{
         const target = +el.dataset.target;
         const start = 0; const dur = 1200; const t0 = performance.now();
         const step = (t)=>{
@@ -54,12 +52,22 @@ const io = new IntersectionObserver((entries)=>{
         };
         requestAnimationFrame(step);
         el.removeAttribute('data-target');
-      });
-      io.unobserve(en.target);
-    }
   });
-}, {threshold:.6});
-document.querySelectorAll('.kpis').forEach(k=>io.observe(k));
+};
+
+if (typeof window.IntersectionObserver === 'function') {
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){
+        animateKpis(en.target);
+        io.unobserve(en.target);
+      }
+    });
+  }, {threshold:.6});
+  document.querySelectorAll('.kpis').forEach(k=>io.observe(k));
+} else {
+  document.querySelectorAll('.kpis').forEach(animateKpis);
+}
 
 (function(){
   const isSmall = window.matchMedia('(max-width: 767.98px)').matches;

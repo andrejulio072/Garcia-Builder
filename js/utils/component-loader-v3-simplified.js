@@ -912,9 +912,6 @@ async function injectComponent(element) {
                 const fallback = INLINE_FALLBACKS[componentName] || `<!-- No fallback for ${componentName} -->`;
 
                 element.outerHTML = fallback;
-                // still execute any scripts on the page
-                executeScripts(document.body);
-
                 if (componentName === 'navbar') {
                         setTimeout(() => initializeNavbar(), 200);
                 }
@@ -926,8 +923,6 @@ async function injectComponent(element) {
         }
 
         element.outerHTML = html;
-    executeScripts(document.body);
-
     if (componentName === 'navbar') {
         // Give extra time for DOM to settle before initializing navbar
         setTimeout(() => {

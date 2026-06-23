@@ -170,54 +170,71 @@
     const originalAssign = window.location.assign;
     const originalReplace = window.location.replace;
 
-    window.location.assign = function(...args) {
-        navigationAttempts++;
-        console.log('🔄 Navigation attempt via assign():', args[0]);
-        
-        if (navigationAttempts > 2) {
-            console.error('🚨 Too many navigation attempts!');
-            handleLoopDetected();
-            return;
-        }
-        
-        return originalAssign.apply(this, args);
-    };
+    try {
+        window.location.assign = function(...args) {
+            navigationAttempts++;
+            console.log('🔄 Navigation attempt via assign():', args[0]);
 
-    window.location.replace = function(...args) {
-        navigationAttempts++;
-        console.log('🔄 Navigation attempt via replace():', args[0]);
-        
-        if (navigationAttempts > 2) {
-            console.error('🚨 Too many navigation attempts!');
-            handleLoopDetected();
-            return;
-        }
-        
-        return originalReplace.apply(this, args);
-    };
-
-    // Monitor href changes
-    let hrefSetCount = 0;
-    Object.defineProperty(window.location, 'href', {
-        set: function(url) {
-            hrefSetCount++;
-            console.log('🔄 Navigation attempt via href:', url);
-            
-            if (hrefSetCount > 2) {
-                console.error('🚨 Too many href changes!');
+            if (navigationAttempts > 2) {
+                console.error('🚨 Too many navigation attempts!');
                 handleLoopDetected();
                 return;
             }
-            
-            // Call original setter
-            Object.getOwnPropertyDescriptor(window.Location.prototype, 'href')
-                .set.call(this, url);
-        },
-        get: function() {
-            return Object.getOwnPropertyDescriptor(window.Location.prototype, 'href')
-                .get.call(this);
+
+            return originalAssign.apply(this, args);
+        };
+    } catch (assignPatchError) {
+        console.warn('Loop prevention could not patch location.assign:', assignPatchError?.message || assignPatchError);
+    }
+
+    try {
+        window.location.replace = function(...args) {
+            navigationAttempts++;
+            console.log('🔄 Navigation attempt via replace():', args[0]);
+
+            if (navigationAttempts > 2) {
+                console.error('🚨 Too many navigation attempts!');
+                handleLoopDetected();
+                return;
+            }
+
+            return originalReplace.apply(this, args);
+        };
+    } catch (replacePatchError) {
+        console.warn('Loop prevention could not patch location.replace:', replacePatchError?.message || replacePatchError);
+    }
+
+    // Monitor href changes
+    let hrefSetCount = 0;
+    try {
+        const hrefDescriptor = Object.getOwnPropertyDescriptor(window.location, 'href')
+            || Object.getOwnPropertyDescriptor(window.Location.prototype, 'href');
+
+        if (!hrefDescriptor || hrefDescriptor.configurable === false || !hrefDescriptor.set || !hrefDescriptor.get) {
+            console.info('Loop prevention skipped href patch; browser location.href is not configurable.');
+        } else {
+            Object.defineProperty(window.location, 'href', {
+                configurable: true,
+                set: function(url) {
+                    hrefSetCount++;
+                    console.log('🔄 Navigation attempt via href:', url);
+
+                    if (hrefSetCount > 2) {
+                        console.error('🚨 Too many href changes!');
+                        handleLoopDetected();
+                        return;
+                    }
+
+                    hrefDescriptor.set.call(this, url);
+                },
+                get: function() {
+                    return hrefDescriptor.get.call(this);
+                }
+            });
         }
-    });
+    } catch (hrefPatchError) {
+        console.warn('Loop prevention could not patch location.href:', hrefPatchError?.message || hrefPatchError);
+    }
 
     // Reset counter after successful page load
     window.addEventListener('load', () => {

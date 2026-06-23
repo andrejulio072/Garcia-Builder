@@ -658,7 +658,15 @@
                     throw new Error('Supabase project keys are missing.');
                 }
 
-                const supabaseModuleClient = createClient(url, key);
+                const supabaseModuleClient = createClient(url, key, {
+                    auth: {
+                        autoRefreshToken: true,
+                        persistSession: true,
+                        detectSessionInUrl: true,
+                        storage: window.localStorage,
+                        storageKey: 'sb-auth-token'
+                    }
+                });
                 window.supabaseOAuthClient = supabaseModuleClient;
                 attachGoogleLogin(supabaseModuleClient, url);
             } catch (error) {
@@ -689,7 +697,6 @@
                 const normalize = (value) => (value || '').replace(/\/$/, '');
 
                 const anchorChecks = [
-                    { selector: 'a[data-i18n="auth.back_to_login"]', expected: 'login.html' },
                     { selector: 'a[data-i18n="auth.terms_link"]', expected: '../../terms.html' }
                 ];
 

@@ -164,13 +164,36 @@ async function syncUserProfile(supabaseClient, user, extra = {}) {
         throw new Error('Cannot synchronize profile without an authenticated Supabase user.');
     }
 
+    const metadata = user.user_metadata || {};
+    const profileBirthday = extra.birthday || extra.date_of_birth || metadata.birthday || metadata.date_of_birth || null;
+    const allowedExtraKeys = [
+        'first_name',
+        'last_name',
+        'phone',
+        'location',
+        'bio',
+        'goals',
+        'experience_level',
+        'trainer_id',
+        'trainer_name'
+    ];
+    const sanitizedExtra = {};
+
+    allowedExtraKeys.forEach((key) => {
+        if (Object.prototype.hasOwnProperty.call(extra, key)) {
+            sanitizedExtra[key] = extra[key];
+        }
+    });
+
     const payload = {
         user_id: user.id,
         email: user.email || '',
-        full_name: user.user_metadata?.full_name || '',
+        full_name: extra.full_name || metadata.full_name || metadata.name || '',
+        avatar_url: extra.avatar_url || metadata.avatar_url || metadata.picture || null,
+        birthday: profileBirthday || null,
         joined_date: user.created_at || new Date().toISOString(),
         last_login: new Date().toISOString(),
-        ...extra
+        ...sanitizedExtra
     };
 
     const { data, error } = await supabaseClient
@@ -776,6 +799,7 @@ class AuthSystem {
                         data: {
                             full_name: name,
                             phone: document.getElementById('registerPhone')?.value || '',
+                            birthday: document.getElementById('registerDob')?.value || '',
                             date_of_birth: document.getElementById('registerDob')?.value || ''
                         }
                     }
@@ -816,7 +840,7 @@ class AuthSystem {
                     try {
                         await syncUserProfile(supabaseClient, supaUser, {
                             phone: document.getElementById('registerPhone')?.value || '',
-                            date_of_birth: document.getElementById('registerDob')?.value || null
+                            birthday: document.getElementById('registerDob')?.value || null
                         });
                     } catch (profileErr) {
                         console.error('Profile synchronization after registration failed:', profileErr?.message || profileErr);

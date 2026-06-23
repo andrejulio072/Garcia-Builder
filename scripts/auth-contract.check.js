@@ -27,6 +27,18 @@ assert.match(authSource, /Online account service is unavailable\. No local accou
 assert.match(authSource, /async function syncUserProfile\(/);
 assert.match(authSource, /if \(error\) \{\s*throw new Error\(`Profile synchronization failed:/);
 assert.match(authSource, /localStorage\.removeItem\('gb_users'\)/);
+assert.match(authSource, /birthday: profileBirthday \|\| null/);
+assert.doesNotMatch(
+  authSource,
+  /syncUserProfile\(supabaseClient,\s*supaUser,\s*\{[\s\S]{0,400}date_of_birth:/,
+  'Auth profile sync should map registration DOB to user_profiles.birthday, not date_of_birth'
+);
+
+assert.match(
+  loginHtml,
+  /createClient\(url,\s*key,\s*\{[\s\S]{0,500}storageKey:\s*'sb-auth-token'/,
+  'Google OAuth helper must share the main Supabase auth storage key'
+);
 
 assert.doesNotMatch(
   loginHtml,

@@ -198,7 +198,8 @@ class SupabaseAuthSystem {
                 // Dados adicionais do metadata
                 avatar_url: user.user_metadata?.avatar_url || user.user_metadata?.picture || null,
                 phone: user.user_metadata?.phone || null,
-                date_of_birth: user.user_metadata?.date_of_birth || null,
+                birthday: user.user_metadata?.birthday || user.user_metadata?.date_of_birth || null,
+                date_of_birth: user.user_metadata?.date_of_birth || user.user_metadata?.birthday || null,
                 // Dados do provedor social
                 google_data: user.app_metadata?.provider === 'google' ? {
                     picture: user.user_metadata?.picture,
@@ -223,7 +224,8 @@ class SupabaseAuthSystem {
                     // Mesclar dados do perfil
                     userData.profile = profile;
                     userData.phone = profile.phone || userData.phone;
-                    userData.date_of_birth = profile.date_of_birth || userData.date_of_birth;
+                    userData.birthday = profile.birthday || profile.date_of_birth || userData.birthday;
+                    userData.date_of_birth = profile.birthday || profile.date_of_birth || userData.date_of_birth;
                     userData.city = profile.city || null;
                     userData.country = profile.country || null;
                     userData.bio = profile.bio || null;
@@ -259,15 +261,8 @@ class SupabaseAuthSystem {
                 email: user.email,
                 full_name: userData.full_name,
                 phone: userData.phone,
-                date_of_birth: userData.date_of_birth,
+                birthday: userData.birthday || userData.date_of_birth || null,
                 avatar_url: userData.avatar_url,
-                provider: userData.provider,
-                preferences: {
-                    currency: 'EUR',
-                    language: 'en',
-                    email_notifications: true,
-                    theme: 'dark'
-                },
                 created_at: new Date().toISOString()
             };
 
@@ -355,7 +350,7 @@ class SupabaseAuthSystem {
                 document.querySelector('input[name="phone"]')
             )?.value.trim() || null;
 
-            const date_of_birth = (
+            const birthday = (
                 document.getElementById("registerDob") ||
                 document.querySelector('input[name="date_of_birth"]')
             )?.value || null;
@@ -369,7 +364,7 @@ class SupabaseAuthSystem {
                 email,
                 password,
                 options: {
-                    data: { full_name, phone, date_of_birth },
+                    data: { full_name, phone, birthday, date_of_birth: birthday },
                     emailRedirectTo: buildDashboardRedirectUrl()
                 }
             });

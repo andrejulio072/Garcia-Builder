@@ -923,7 +923,29 @@
     });
   };
 
+  const templateProjects = {
+    'Lose Weight Starter': { project: 'projeto-verao', label: 'Projeto Verão', duration: '12 weeks', keywords: 'summer fat loss beginner emagrecimento verão shape' },
+    'Fat Loss Engine': { project: 'projeto-verao', label: 'Projeto Verão', duration: '12 weeks', keywords: 'summer conditioning fat loss verão performance' },
+    'Advanced Cut Athletic': { project: 'projeto-verao', label: 'Projeto Verão', duration: '12 weeks', keywords: 'advanced cut athletic summer definição verão' },
+    'Busy Schedule Fat Loss': { project: 'projeto-verao', label: 'Projeto Verão', duration: '12 weeks', keywords: 'busy fat loss summer rotina rápida verão' },
+    'Women\'s Strength Starter': { project: 'bumbum-na-lua', label: 'Projeto Bumbum na Lua', duration: '16 weeks', keywords: 'glutes legs women beginner bumbum glúteos pernas' },
+    'Women\'s Lean Muscle Build': { project: 'bumbum-na-lua', label: 'Projeto Bumbum na Lua', duration: '16 weeks', keywords: 'glutes lean muscle women bumbum glúteos shape' },
+    'Women\'s Shape and Strength': { project: 'bumbum-na-lua', label: 'Projeto Bumbum na Lua', duration: '16 weeks', keywords: 'glutes strength women advanced bumbum na lua' },
+    'Home Dumbbell Progression': { project: 'bumbum-na-lua', label: 'Projeto Bumbum na Lua', duration: '16 weeks', keywords: 'home dumbbell glutes progression bumbum' },
+    'Men\'s Muscle Foundation': { project: 'pai-sarado', label: 'Pai Sarado', duration: '20 weeks', keywords: 'dad muscle beginner pai sarado força shape' },
+    'Men\'s Hypertrophy Split': { project: 'pai-sarado', label: 'Pai Sarado', duration: '20 weeks', keywords: 'dad hypertrophy muscle pai sarado' },
+    'Men\'s Advanced Mass Block': { project: 'pai-sarado', label: 'Pai Sarado', duration: '20 weeks', keywords: 'dad advanced mass pai sarado músculo' },
+    'Gym Strength Basics': { project: 'pai-sarado', label: 'Pai Sarado', duration: '20 weeks', keywords: 'gym strength basics pai sarado força' },
+    'Gym Upper Lower Builder': { project: 'pai-sarado', label: 'Pai Sarado', duration: '20 weeks', keywords: 'upper lower strength pai sarado builder' },
+    'Strength and Conditioning Pro': { project: 'pai-sarado', label: 'Pai Sarado', duration: '20 weeks', keywords: 'conditioning strength dad pai sarado performance' },
+    'Home Bodyweight Beginner': { project: 'projeto-verao', label: 'Projeto Verão', duration: '12 weeks', keywords: 'home bodyweight beginner verão emagrecimento' },
+    'Home Advanced Density': { project: 'projeto-verao', label: 'Projeto Verão', duration: '12 weeks', keywords: 'home density advanced verão fat loss' },
+    'Low Impact Rebuild': { project: 'projeto-verao', label: 'Projeto Verão', duration: '12 weeks', keywords: 'low impact rebuild beginner consistency verão' },
+    'Mobility and Core for Lifters': { project: 'pai-sarado', label: 'Pai Sarado', duration: '20 weeks', keywords: 'mobility core lifters pai sarado support' }
+  };
+
   const filters = {
+    project: 'all',
     goal: 'all',
     level: 'all',
     place: 'all'
@@ -936,12 +958,33 @@
   const noResults = document.getElementById('no-results');
   const clearFilters = document.getElementById('clear-workout-filters');
   const jumpLinks = Array.from(document.querySelectorAll('[data-jump-filter]'));
+  const projectLinks = Array.from(document.querySelectorAll('[data-project-filter]'));
   let modalTrigger = null;
 
   const validFilterValues = {
+    project: new Set(['all', 'projeto-verao', 'bumbum-na-lua', 'pai-sarado']),
     goal: new Set(['all', 'fat-loss', 'muscle', 'strength', 'mobility']),
     level: new Set(['all', 'beginner', 'intermediate', 'advanced']),
     place: new Set(['all', 'home', 'gym'])
+  };
+
+  const hydrateProjectMeta = () => {
+    cards.forEach((card) => {
+      const title = card.querySelector('h3')?.textContent.trim();
+      const meta = templateProjects[title];
+      if (!meta) return;
+
+      card.dataset.project = meta.project;
+      card.dataset.duration = meta.duration;
+      card.dataset.audience = `${card.dataset.audience || ''} ${meta.label} ${meta.duration} ${meta.keywords}`.trim();
+
+      if (!card.querySelector('.project-pill')) {
+        const pill = document.createElement('span');
+        pill.className = 'project-pill';
+        pill.textContent = `${meta.label} · ${meta.duration}`;
+        card.querySelector('.workout-card-head')?.insertAdjacentElement('afterend', pill);
+      }
+    });
   };
 
   const restoreFiltersFromUrl = () => {
@@ -1028,10 +1071,11 @@
     const facts = Array.from(card.querySelectorAll('.quick-facts li')).map((item) => item.textContent.trim());
     const schedule = card.querySelector('.workout-card-head span:last-child')?.textContent.trim();
     const level = card.querySelector('.level')?.textContent.trim();
+    const project = card.querySelector('.project-pill')?.textContent.trim();
 
     document.getElementById('workout-modal-title').textContent = title;
     document.getElementById('workout-modal-summary').textContent = summary;
-    document.getElementById('workout-modal-meta').innerHTML = [level, schedule, ...facts]
+    document.getElementById('workout-modal-meta').innerHTML = [project, level, schedule, ...facts]
       .filter(Boolean)
       .map((item) => `<span>${escapeHtml(item)}</span>`)
       .join('');
@@ -1119,7 +1163,7 @@
 
   const matchesFilter = (card, group, value) => {
     if (value === 'all') return true;
-    const source = group === 'place' ? card.dataset.place : card.dataset[group];
+    const source = card.dataset[group];
     return tokenList(source).includes(value);
   };
 
@@ -1127,6 +1171,8 @@
     if (!term) return true;
     const haystack = [
       card.textContent,
+      card.dataset.project,
+      card.dataset.duration,
       card.dataset.goal,
       card.dataset.level,
       card.dataset.place,
@@ -1151,6 +1197,7 @@
 
     cards.forEach((card) => {
       const isVisible =
+        matchesFilter(card, 'project', filters.project) &&
         matchesFilter(card, 'goal', filters.goal) &&
         matchesFilter(card, 'level', filters.level) &&
         matchesFilter(card, 'place', filters.place) &&
@@ -1192,11 +1239,13 @@
     link.addEventListener('click', () => {
       const value = link.dataset.jumpFilter;
       const group = value === 'home' ? 'place' : 'goal';
+      filters.project = 'all';
       filters.goal = 'all';
       filters.level = 'all';
       filters.place = 'all';
       filters[group] = value;
       if (search) search.value = '';
+      setButtonState('project', filters.project);
       setButtonState('goal', filters.goal);
       setButtonState('level', filters.level);
       setButtonState('place', filters.place);
@@ -1204,7 +1253,24 @@
     });
   });
 
+  projectLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      filters.project = link.dataset.projectFilter;
+      filters.goal = 'all';
+      filters.level = 'all';
+      filters.place = 'all';
+      if (search) search.value = '';
+      setButtonState('project', filters.project);
+      setButtonState('goal', filters.goal);
+      setButtonState('level', filters.level);
+      setButtonState('place', filters.place);
+      applyFilters();
+      document.getElementById('workout-library')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
   setupMenu();
+  hydrateProjectMeta();
   restoreFiltersFromUrl();
   Object.keys(filters).forEach((group) => setButtonState(group, filters[group]));
   renderWorkoutPlans();

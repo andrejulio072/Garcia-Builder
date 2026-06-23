@@ -23,16 +23,16 @@
   <header class="workouts-hero">
     <div class="container workouts-hero-inner">
       <p class="eyebrow">Workout library</p>
-      <h1>Templates for every body, goal and training level.</h1>
-      <p class="hero-copy">Choose a focused plan for fat loss, muscle gain, home training, gym strength, men's physique, women's strength, or low-impact rebuilding.</p>
+      <h1>Training templates organized into real transformation projects.</h1>
+      <p class="hero-copy">Choose a focused workout template or follow a longer 12, 16, or 20 week project built around fat loss, glutes, strength, confidence and consistency.</p>
       <div class="hero-actions" aria-label="Workout actions">
         <a class="btn btn-gold" href="#workout-library">Browse templates</a>
         <a class="btn" href="contact.html">Customize my plan</a>
       </div>
       <div class="workout-stats" aria-label="Workout library summary">
         <div><strong>18</strong><span>Templates</span></div>
-        <div><strong>3</strong><span>Levels</span></div>
-        <div><strong>4-12</strong><span>Week blocks</span></div>
+        <div><strong>3</strong><span>Projects</span></div>
+        <div><strong>12-20</strong><span>Week options</span></div>
       </div>
     </div>
   </header>
@@ -44,7 +44,36 @@
           <p class="eyebrow">Built for action</p>
           <h2 class="title-gradient text-glow">Start with a template. Progress with structure.</h2>
         </div>
-        <p>Each workout template includes a weekly split, training focus, equipment, session structure and progression cue. These are starting points for healthy adults. Stop if pain feels sharp or unusual, and get medical guidance for injuries or health conditions.</p>
+        <p>Each workout template includes a weekly split, training focus, equipment, session structure and progression cue. Projects group templates into longer roadmaps so users can start with structure and progress through 12, 16, or 20 week phases.</p>
+      </div>
+    </section>
+
+    <section class="section workout-projects" aria-label="Template projects">
+      <div class="container">
+        <div class="section-heading compact-heading">
+          <p class="eyebrow">Template projects</p>
+          <h2>Choose the goal first. Then pick the template level.</h2>
+        </div>
+        <div class="project-grid">
+          <article class="project-card project-card-summer">
+            <span class="project-duration">12 weeks</span>
+            <h3>Projeto Verão</h3>
+            <p>Fat-loss, conditioning, shape and routine for people who want a clear summer-ready plan without guessing every week.</p>
+            <button type="button" data-project-filter="projeto-verao">View templates</button>
+          </article>
+          <article class="project-card project-card-glutes">
+            <span class="project-duration">16 weeks</span>
+            <h3>Projeto Bumbum na Lua</h3>
+            <p>Glute, legs, posture and lower-body progression with strength phases and shape-focused accessories.</p>
+            <button type="button" data-project-filter="bumbum-na-lua">View templates</button>
+          </article>
+          <article class="project-card project-card-dad">
+            <span class="project-duration">20 weeks</span>
+            <h3>Pai Sarado</h3>
+            <p>Strength, muscle and fat-loss structure for busy dads who need efficient training, confidence and visible progress.</p>
+            <button type="button" data-project-filter="pai-sarado">View templates</button>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -52,7 +81,15 @@
       <div class="container filter-shell">
         <div class="search-wrap">
           <label for="workout-search">Search workouts</label>
-          <input id="workout-search" type="search" placeholder="Search by goal, level, equipment or focus">
+          <input id="workout-search" type="search" placeholder="Search project, goal, level, equipment or focus">
+        </div>
+
+        <div class="filter-group" aria-label="Project filter">
+          <span>Project</span>
+          <button type="button" class="active" data-filter-group="project" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" data-filter-group="project" data-filter="projeto-verao">Verão</button>
+          <button type="button" data-filter-group="project" data-filter="bumbum-na-lua">Bumbum</button>
+          <button type="button" data-filter-group="project" data-filter="pai-sarado">Pai Sarado</button>
         </div>
 
         <div class="filter-group" aria-label="Goal filter">

@@ -12,9 +12,10 @@
   position: relative;
   isolation: isolate;
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, .2), rgba(8, 13, 21, .94)),
-    linear-gradient(90deg, rgba(8, 13, 21, .86), rgba(8, 13, 21, .28)),
-    url('../assets/pexels-rdne-stock-project-7551752.jpg') center / cover no-repeat;
+    radial-gradient(760px 420px at 72% 24%, rgba(246, 200, 78, .16), transparent 62%),
+    linear-gradient(180deg, rgba(0, 0, 0, .16), rgba(8, 13, 21, .95)),
+    linear-gradient(90deg, rgba(8, 13, 21, .92), rgba(8, 13, 21, .42) 58%, rgba(8, 13, 21, .72)),
+    url('../assets/images/workouts/workout-templates-hero-bg.png') center / cover no-repeat;
 }
 
 .workouts-hero::after {
@@ -128,6 +129,124 @@
   line-height: 1.55;
 }
 
+.workout-projects {
+  padding-top: 18px;
+}
+
+.compact-heading {
+  max-width: 760px;
+  margin-bottom: 22px;
+}
+
+.compact-heading h2 {
+  margin: 0;
+  color: #f8fbff;
+  font-size: clamp(28px, 4vw, 46px);
+  line-height: 1.05;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.project-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(8, 13, 21, .18), rgba(8, 13, 21, .93)),
+    radial-gradient(360px 240px at 86% 0%, rgba(246, 200, 78, .2), transparent 64%),
+    rgba(13, 21, 38, .96);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, .36);
+  padding: 24px;
+  isolation: isolate;
+}
+
+.project-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .34;
+  background:
+    linear-gradient(135deg, rgba(246, 200, 78, .16), transparent 42%),
+    radial-gradient(240px 180px at 80% 20%, rgba(107, 199, 255, .18), transparent 68%);
+}
+
+.project-card-summer::before {
+  background:
+    linear-gradient(135deg, rgba(246, 200, 78, .22), transparent 46%),
+    radial-gradient(260px 180px at 84% 18%, rgba(255, 135, 51, .22), transparent 64%);
+}
+
+.project-card-glutes::before {
+  background:
+    linear-gradient(135deg, rgba(246, 200, 78, .2), transparent 48%),
+    radial-gradient(260px 180px at 82% 18%, rgba(255, 105, 180, .16), transparent 64%);
+}
+
+.project-card-dad::before {
+  background:
+    linear-gradient(135deg, rgba(107, 199, 255, .18), transparent 46%),
+    radial-gradient(260px 180px at 84% 18%, rgba(246, 200, 78, .2), transparent 64%);
+}
+
+.project-duration {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  border: 1px solid rgba(246, 200, 78, .58);
+  border-radius: 999px;
+  background: rgba(246, 200, 78, .12);
+  color: #ffe8a3;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.project-card h3 {
+  margin: 16px 0 8px;
+  color: #fff4c7;
+  font-size: clamp(26px, 3vw, 38px);
+  line-height: 1;
+}
+
+.project-card p {
+  margin: 0 0 18px;
+  color: #dbe7ff;
+  line-height: 1.55;
+}
+
+.project-card button {
+  border: 1px solid rgba(246, 200, 78, .72);
+  border-radius: 999px;
+  background: rgba(246, 200, 78, .12);
+  color: #ffe8a3;
+  padding: 10px 16px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+}
+
+.project-card button:hover,
+.project-card button:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(246, 200, 78, .95);
+  background: rgba(246, 200, 78, .2);
+}
+
 .workout-filter-band {
   position: sticky;
   top: 92px;
@@ -140,7 +259,7 @@
 
 .filter-shell {
   display: grid;
-  grid-template-columns: minmax(220px, .9fr) minmax(0, 2.1fr) minmax(220px, .85fr);
+  grid-template-columns: minmax(230px, .78fr) minmax(0, 1.38fr) minmax(0, 1.1fr) minmax(180px, .66fr);
   gap: 18px;
   align-items: end;
   padding-top: 16px;
@@ -182,22 +301,27 @@
   flex-wrap: wrap;
 }
 
-.filter-group[aria-label="Goal filter"],
-.filter-group[aria-label="Level filter"] {
+.filter-group[aria-label="Project filter"],
+.filter-group[aria-label="Goal filter"] {
   grid-column: 2;
 }
 
-.filter-group[aria-label="Goal filter"] {
+.filter-group[aria-label="Project filter"] {
   grid-row: 1;
 }
 
-.filter-group[aria-label="Level filter"] {
+.filter-group[aria-label="Goal filter"] {
   grid-row: 2;
+}
+
+.filter-group[aria-label="Level filter"] {
+  grid-column: 3;
+  grid-row: 1;
 }
 
 .filter-group[aria-label="Training place filter"] {
   grid-column: 3;
-  grid-row: 1;
+  grid-row: 2;
 }
 
 .filter-group button {
@@ -233,8 +357,8 @@
   display: grid;
   justify-items: end;
   gap: 5px;
-  grid-column: 3;
-  grid-row: 2;
+  grid-column: 4;
+  grid-row: 1 / span 2;
   align-self: center;
 }
 
@@ -333,6 +457,22 @@
   align-items: center;
   color: #d6e0f5;
   font-size: 13px;
+}
+
+.project-pill {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  min-height: 30px;
+  margin-top: 14px;
+  border: 1px solid rgba(246, 200, 78, .42);
+  border-radius: 999px;
+  background: rgba(246, 200, 78, .1);
+  color: #ffe8a3;
+  padding: 0 11px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .02em;
 }
 
 .level {
@@ -735,6 +875,7 @@
     align-items: stretch;
   }
 
+  .filter-group[aria-label="Project filter"],
   .filter-group[aria-label="Goal filter"],
   .filter-group[aria-label="Level filter"],
   .filter-group[aria-label="Training place filter"],
@@ -768,6 +909,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
   .intro-grid,
   .path-grid {
     grid-template-columns: 1fr;
@@ -786,6 +931,7 @@
 
   .workout-stats,
   .workout-grid,
+  .project-grid,
   .path-list {
     grid-template-columns: 1fr;
   }

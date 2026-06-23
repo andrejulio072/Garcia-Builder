@@ -134,6 +134,52 @@
           subtitle: "Secure your free consultation now and get a personalised roadmap within 24 hours."
         }
       },
+      workouts: {
+        hero: {
+          eyebrow: "Workout library",
+          title: "Training templates organized into real transformation projects.",
+          copy: "Choose a focused workout template or follow a longer 12, 16, or 20 week project built around fat loss, glutes, strength, confidence and consistency.",
+          browse: "Browse templates",
+          customize: "Customize my plan",
+          stat_templates: "Templates",
+          stat_projects: "Projects",
+          stat_weeks: "Week options"
+        },
+        intro: {
+          eyebrow: "Built for action",
+          title: "Start with a template. Progress with structure.",
+          copy: "Each workout template includes a weekly split, training focus, equipment, session structure and progression cue. Projects group templates into longer roadmaps so users can start with structure and progress through 12, 16, or 20 week phases."
+        },
+        projects: {
+          eyebrow: "Signature template projects",
+          heading: "Choose the goal first. Then pick the template level.",
+          view_templates: "View templates",
+          summer: {
+            title: "Summer Shred",
+            duration: "12 weeks",
+            desc: "Fat-loss, conditioning, shape and routine for people who want a clear summer-ready plan without guessing every week."
+          },
+          glutes: {
+            title: "Glute Launch",
+            duration: "16 weeks",
+            desc: "Glute, legs, posture and lower-body progression with strength phases and shape-focused accessories."
+          },
+          dad: {
+            title: "Fit Dad Blueprint",
+            duration: "20 weeks",
+            desc: "Strength, muscle and fat-loss structure for busy dads who need efficient training, confidence and visible progress."
+          }
+        },
+        filters: {
+          search_label: "Search workouts",
+          search_placeholder: "Search project, goal, level, equipment or focus",
+          project: "Project",
+          all: "All",
+          summer: "Summer",
+          glutes: "Glutes",
+          fit_dad: "Fit Dad"
+        }
+      },
       featured: {
         title: "Real People. Real Results.",
         subtitle: "Join 127+ clients who transformed their bodies and lives",
@@ -2294,6 +2340,32 @@
   };
 
   Object.assign(STATIC_TEXT_TRANSLATIONS.pt, {
+    "Workout library": "Biblioteca de treinos",
+    "Training templates organized into real transformation projects.": "Templates de treino organizados em projetos reais de transformacao.",
+    "Choose a focused workout template or follow a longer 12, 16, or 20 week project built around fat loss, glutes, strength, confidence and consistency.": "Escolha um template focado ou siga um projeto mais longo de 12, 16 ou 20 semanas para perda de gordura, gluteos, forca, confianca e consistencia.",
+    "Browse templates": "Ver templates",
+    "Customize my plan": "Personalizar meu plano",
+    "Projects": "Projetos",
+    "Week options": "Opcoes em semanas",
+    "Built for action": "Feito para acao",
+    "Start with a template. Progress with structure.": "Comece com um template. Evolua com estrutura.",
+    "Each workout template includes a weekly split, training focus, equipment, session structure and progression cue. Projects group templates into longer roadmaps so users can start with structure and progress through 12, 16, or 20 week phases.": "Cada template inclui divisao semanal, foco de treino, equipamento, estrutura da sessao e progressao. Os projetos agrupam templates em jornadas mais longas para o usuario evoluir por fases de 12, 16 ou 20 semanas.",
+    "Signature template projects": "Projetos de templates",
+    "Choose the goal first. Then pick the template level.": "Escolha o objetivo primeiro. Depois escolha o nivel do template.",
+    "View templates": "Ver templates",
+    "Summer Shred": "Projeto Verao Shred",
+    "Glute Launch": "Gluteos em Orbita",
+    "Fit Dad Blueprint": "Pai Sarado Blueprint",
+    "Fat-loss, conditioning, shape and routine for people who want a clear summer-ready plan without guessing every week.": "Perda de gordura, condicionamento, forma e rotina para quem quer um plano claro para o verao sem adivinhar o que fazer toda semana.",
+    "Glute, legs, posture and lower-body progression with strength phases and shape-focused accessories.": "Progressao de gluteos, pernas, postura e membros inferiores com fases de forca e acessorios focados em shape.",
+    "Strength, muscle and fat-loss structure for busy dads who need efficient training, confidence and visible progress.": "Estrutura de forca, musculo e perda de gordura para pais ocupados que precisam de treinos eficientes, confianca e progresso visivel.",
+    "Search workouts": "Buscar treinos",
+    "Search project, goal, level, equipment or focus": "Buscar por projeto, objetivo, nivel, equipamento ou foco",
+    "Project": "Projeto",
+    "All": "Todos",
+    "Summer": "Verao",
+    "Glutes": "Gluteos",
+    "Fit Dad": "Pai Sarado",
     "Transforming bodies and lives with science-based coaching, accountability, and real results. Online coaching for busy professionals.": "Transformando corpos e vidas com coaching baseado em ciência, responsabilidade e resultados reais. Coaching online para profissionais ocupados.",
     "Nutrition for Fat Loss": "Nutrição para Perda de Gordura",
     "Data Deletion": "Exclusão de Dados",
@@ -2594,6 +2666,32 @@
   });
 
   Object.assign(STATIC_TEXT_TRANSLATIONS.es, {
+    "Workout library": "Biblioteca de entrenamientos",
+    "Training templates organized into real transformation projects.": "Plantillas de entrenamiento organizadas en proyectos reales de transformacion.",
+    "Choose a focused workout template or follow a longer 12, 16, or 20 week project built around fat loss, glutes, strength, confidence and consistency.": "Elige una plantilla enfocada o sigue un proyecto mas largo de 12, 16 o 20 semanas para perdida de grasa, gluteos, fuerza, confianza y constancia.",
+    "Browse templates": "Ver plantillas",
+    "Customize my plan": "Personalizar mi plan",
+    "Projects": "Proyectos",
+    "Week options": "Opciones en semanas",
+    "Built for action": "Hecho para actuar",
+    "Start with a template. Progress with structure.": "Empieza con una plantilla. Progresa con estructura.",
+    "Each workout template includes a weekly split, training focus, equipment, session structure and progression cue. Projects group templates into longer roadmaps so users can start with structure and progress through 12, 16, or 20 week phases.": "Cada plantilla incluye division semanal, enfoque de entrenamiento, equipo, estructura de sesion y progresion. Los proyectos agrupan plantillas en rutas mas largas para progresar por fases de 12, 16 o 20 semanas.",
+    "Signature template projects": "Proyectos de plantillas",
+    "Choose the goal first. Then pick the template level.": "Elige primero el objetivo. Luego elige el nivel de la plantilla.",
+    "View templates": "Ver plantillas",
+    "Summer Shred": "Reto Verano Shred",
+    "Glute Launch": "Gluteos en Orbita",
+    "Fit Dad Blueprint": "Papa en Forma Blueprint",
+    "Fat-loss, conditioning, shape and routine for people who want a clear summer-ready plan without guessing every week.": "Perdida de grasa, acondicionamiento, forma y rutina para quienes quieren un plan claro de verano sin improvisar cada semana.",
+    "Glute, legs, posture and lower-body progression with strength phases and shape-focused accessories.": "Progresion de gluteos, piernas, postura y tren inferior con fases de fuerza y accesorios enfocados en forma.",
+    "Strength, muscle and fat-loss structure for busy dads who need efficient training, confidence and visible progress.": "Estructura de fuerza, musculo y perdida de grasa para padres ocupados que necesitan entrenamiento eficiente, confianza y progreso visible.",
+    "Search workouts": "Buscar entrenamientos",
+    "Search project, goal, level, equipment or focus": "Buscar por proyecto, objetivo, nivel, equipo o enfoque",
+    "Project": "Proyecto",
+    "All": "Todos",
+    "Summer": "Verano",
+    "Glutes": "Gluteos",
+    "Fit Dad": "Papa fit",
     "Transforming bodies and lives with science-based coaching, accountability, and real results. Online coaching for busy professionals.": "Transformando cuerpos y vidas con coaching basado en ciencia, responsabilidad y resultados reales. Coaching online para profesionales ocupados.",
     "Nutrition for Fat Loss": "Nutrición para Pérdida de Grasa",
     "Data Deletion": "Eliminación de Datos",

@@ -923,25 +923,44 @@
     });
   };
 
+  const projectLabels = {
+    'summer-shred': { key: 'summer', title: 'Summer Shred', duration: '12 weeks' },
+    'glute-launch': { key: 'glutes', title: 'Glute Launch', duration: '16 weeks' },
+    'fit-dad-blueprint': { key: 'dad', title: 'Fit Dad Blueprint', duration: '20 weeks' }
+  };
+
+  const localizedProjectLabels = {
+    pt: {
+      'summer-shred': { title: 'Projeto Verao Shred', duration: '12 semanas' },
+      'glute-launch': { title: 'Gluteos em Orbita', duration: '16 semanas' },
+      'fit-dad-blueprint': { title: 'Pai Sarado Blueprint', duration: '20 semanas' }
+    },
+    es: {
+      'summer-shred': { title: 'Reto Verano Shred', duration: '12 semanas' },
+      'glute-launch': { title: 'Gluteos en Orbita', duration: '16 semanas' },
+      'fit-dad-blueprint': { title: 'Papa en Forma Blueprint', duration: '20 semanas' }
+    }
+  };
+
   const templateProjects = {
-    'Lose Weight Starter': { project: 'projeto-verao', label: 'Projeto Verão', duration: '12 weeks', keywords: 'summer fat loss beginner emagrecimento verão shape' },
-    'Fat Loss Engine': { project: 'projeto-verao', label: 'Projeto Verão', duration: '12 weeks', keywords: 'summer conditioning fat loss verão performance' },
-    'Advanced Cut Athletic': { project: 'projeto-verao', label: 'Projeto Verão', duration: '12 weeks', keywords: 'advanced cut athletic summer definição verão' },
-    'Busy Schedule Fat Loss': { project: 'projeto-verao', label: 'Projeto Verão', duration: '12 weeks', keywords: 'busy fat loss summer rotina rápida verão' },
-    'Women\'s Strength Starter': { project: 'bumbum-na-lua', label: 'Projeto Bumbum na Lua', duration: '16 weeks', keywords: 'glutes legs women beginner bumbum glúteos pernas' },
-    'Women\'s Lean Muscle Build': { project: 'bumbum-na-lua', label: 'Projeto Bumbum na Lua', duration: '16 weeks', keywords: 'glutes lean muscle women bumbum glúteos shape' },
-    'Women\'s Shape and Strength': { project: 'bumbum-na-lua', label: 'Projeto Bumbum na Lua', duration: '16 weeks', keywords: 'glutes strength women advanced bumbum na lua' },
-    'Home Dumbbell Progression': { project: 'bumbum-na-lua', label: 'Projeto Bumbum na Lua', duration: '16 weeks', keywords: 'home dumbbell glutes progression bumbum' },
-    'Men\'s Muscle Foundation': { project: 'pai-sarado', label: 'Pai Sarado', duration: '20 weeks', keywords: 'dad muscle beginner pai sarado força shape' },
-    'Men\'s Hypertrophy Split': { project: 'pai-sarado', label: 'Pai Sarado', duration: '20 weeks', keywords: 'dad hypertrophy muscle pai sarado' },
-    'Men\'s Advanced Mass Block': { project: 'pai-sarado', label: 'Pai Sarado', duration: '20 weeks', keywords: 'dad advanced mass pai sarado músculo' },
-    'Gym Strength Basics': { project: 'pai-sarado', label: 'Pai Sarado', duration: '20 weeks', keywords: 'gym strength basics pai sarado força' },
-    'Gym Upper Lower Builder': { project: 'pai-sarado', label: 'Pai Sarado', duration: '20 weeks', keywords: 'upper lower strength pai sarado builder' },
-    'Strength and Conditioning Pro': { project: 'pai-sarado', label: 'Pai Sarado', duration: '20 weeks', keywords: 'conditioning strength dad pai sarado performance' },
-    'Home Bodyweight Beginner': { project: 'projeto-verao', label: 'Projeto Verão', duration: '12 weeks', keywords: 'home bodyweight beginner verão emagrecimento' },
-    'Home Advanced Density': { project: 'projeto-verao', label: 'Projeto Verão', duration: '12 weeks', keywords: 'home density advanced verão fat loss' },
-    'Low Impact Rebuild': { project: 'projeto-verao', label: 'Projeto Verão', duration: '12 weeks', keywords: 'low impact rebuild beginner consistency verão' },
-    'Mobility and Core for Lifters': { project: 'pai-sarado', label: 'Pai Sarado', duration: '20 weeks', keywords: 'mobility core lifters pai sarado support' }
+    'Lose Weight Starter': { project: 'summer-shred', keywords: 'summer shred fat loss beginner emagrecimento verao verano shape' },
+    'Fat Loss Engine': { project: 'summer-shred', keywords: 'summer shred conditioning fat loss verao verano performance' },
+    'Advanced Cut Athletic': { project: 'summer-shred', keywords: 'advanced cut athletic summer shred definicao definido verao verano' },
+    'Busy Schedule Fat Loss': { project: 'summer-shred', keywords: 'busy fat loss summer shred rotina rapida verao verano' },
+    'Women\'s Strength Starter': { project: 'glute-launch', keywords: 'glute launch glutes legs women beginner bumbum gluteos gluteos piernas' },
+    'Women\'s Lean Muscle Build': { project: 'glute-launch', keywords: 'glute launch lean muscle women bumbum gluteos shape' },
+    'Women\'s Shape and Strength': { project: 'glute-launch', keywords: 'glute launch strength women advanced bumbum na lua gluteos' },
+    'Home Dumbbell Progression': { project: 'glute-launch', keywords: 'home dumbbell glute launch progression bumbum gluteos' },
+    'Men\'s Muscle Foundation': { project: 'fit-dad-blueprint', keywords: 'fit dad blueprint dad muscle beginner pai sarado papa en forma strength shape' },
+    'Men\'s Hypertrophy Split': { project: 'fit-dad-blueprint', keywords: 'fit dad blueprint dad hypertrophy muscle pai sarado papa en forma' },
+    'Men\'s Advanced Mass Block': { project: 'fit-dad-blueprint', keywords: 'fit dad blueprint dad advanced mass pai sarado papa en forma muscle' },
+    'Gym Strength Basics': { project: 'fit-dad-blueprint', keywords: 'fit dad blueprint gym strength basics pai sarado papa en forma' },
+    'Gym Upper Lower Builder': { project: 'fit-dad-blueprint', keywords: 'fit dad blueprint upper lower strength pai sarado papa en forma builder' },
+    'Strength and Conditioning Pro': { project: 'fit-dad-blueprint', keywords: 'fit dad blueprint conditioning strength dad pai sarado papa en forma performance' },
+    'Home Bodyweight Beginner': { project: 'summer-shred', keywords: 'home bodyweight beginner summer shred verao verano emagrecimento' },
+    'Home Advanced Density': { project: 'summer-shred', keywords: 'home density advanced summer shred verao verano fat loss' },
+    'Low Impact Rebuild': { project: 'summer-shred', keywords: 'low impact rebuild beginner consistency summer shred verao verano' },
+    'Mobility and Core for Lifters': { project: 'fit-dad-blueprint', keywords: 'fit dad blueprint mobility core lifters pai sarado papa en forma support' }
   };
 
   const filters = {
@@ -962,26 +981,51 @@
   let modalTrigger = null;
 
   const validFilterValues = {
-    project: new Set(['all', 'projeto-verao', 'bumbum-na-lua', 'pai-sarado']),
+    project: new Set(['all', 'summer-shred', 'glute-launch', 'fit-dad-blueprint']),
     goal: new Set(['all', 'fat-loss', 'muscle', 'strength', 'mobility']),
     level: new Set(['all', 'beginner', 'intermediate', 'advanced']),
     place: new Set(['all', 'home', 'gym'])
+  };
+
+  const translateProjectText = (project, field, fallback) => {
+    const projectMeta = projectLabels[project];
+    const lang = window.GB_I18N?.getLang?.() || 'en';
+    const localValue = localizedProjectLabels[lang]?.[project]?.[field];
+    if (localValue) return localValue;
+    const value = projectMeta && window.DICTS?.[lang]?.workouts?.projects?.[projectMeta.key]?.[field];
+    return value || fallback;
+  };
+
+  const getProjectPillText = (project) => {
+    const meta = projectLabels[project] || {};
+    const title = translateProjectText(project, 'title', meta.title || project);
+    const duration = translateProjectText(project, 'duration', meta.duration || '');
+    return [title, duration].filter(Boolean).join(' · ');
+  };
+
+  const syncProjectPills = () => {
+    cards.forEach((card) => {
+      const pill = card.querySelector('.project-pill');
+      if (!pill || !card.dataset.project) return;
+      pill.textContent = getProjectPillText(card.dataset.project);
+    });
   };
 
   const hydrateProjectMeta = () => {
     cards.forEach((card) => {
       const title = card.querySelector('h3')?.textContent.trim();
       const meta = templateProjects[title];
+      const projectMeta = meta && projectLabels[meta.project];
       if (!meta) return;
 
       card.dataset.project = meta.project;
-      card.dataset.duration = meta.duration;
-      card.dataset.audience = `${card.dataset.audience || ''} ${meta.label} ${meta.duration} ${meta.keywords}`.trim();
+      card.dataset.duration = projectMeta?.duration || '';
+      card.dataset.audience = `${card.dataset.audience || ''} ${projectMeta?.title || ''} ${projectMeta?.duration || ''} ${meta.keywords}`.trim();
 
       if (!card.querySelector('.project-pill')) {
         const pill = document.createElement('span');
         pill.className = 'project-pill';
-        pill.textContent = `${meta.label} · ${meta.duration}`;
+        pill.textContent = getProjectPillText(meta.project);
         card.querySelector('.workout-card-head')?.insertAdjacentElement('afterend', pill);
       }
     });
@@ -1268,6 +1312,8 @@
       document.getElementById('workout-library')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
+
+  document.addEventListener('languageChanged', syncProjectPills);
 
   setupMenu();
   hydrateProjectMeta();

@@ -22,17 +22,17 @@
 
   <header class="workouts-hero">
     <div class="container workouts-hero-inner">
-      <p class="eyebrow">Workout library</p>
-      <h1>Training templates organized into real transformation projects.</h1>
-      <p class="hero-copy">Choose a focused workout template or follow a longer 12, 16, or 20 week project built around fat loss, glutes, strength, confidence and consistency.</p>
+      <p class="eyebrow" data-i18n="workouts.hero.eyebrow">Workout library</p>
+      <h1 data-i18n="workouts.hero.title">Training templates organized into real transformation projects.</h1>
+      <p class="hero-copy" data-i18n="workouts.hero.copy">Choose a focused workout template or follow a longer 12, 16, or 20 week project built around fat loss, glutes, strength, confidence and consistency.</p>
       <div class="hero-actions" aria-label="Workout actions">
-        <a class="btn btn-gold" href="#workout-library">Browse templates</a>
-        <a class="btn" href="contact.html">Customize my plan</a>
+        <a class="btn btn-gold" href="#workout-library" data-i18n="workouts.hero.browse">Browse templates</a>
+        <a class="btn" href="contact.html" data-i18n="workouts.hero.customize">Customize my plan</a>
       </div>
       <div class="workout-stats" aria-label="Workout library summary">
-        <div><strong>18</strong><span>Templates</span></div>
-        <div><strong>3</strong><span>Projects</span></div>
-        <div><strong>12-20</strong><span>Week options</span></div>
+        <div><strong>18</strong><span data-i18n="workouts.hero.stat_templates">Templates</span></div>
+        <div><strong>3</strong><span data-i18n="workouts.hero.stat_projects">Projects</span></div>
+        <div><strong>12-20</strong><span data-i18n="workouts.hero.stat_weeks">Week options</span></div>
       </div>
     </div>
   </header>
@@ -41,37 +41,37 @@
     <section class="workout-intro section">
       <div class="container intro-grid">
         <div>
-          <p class="eyebrow">Built for action</p>
-          <h2 class="title-gradient text-glow">Start with a template. Progress with structure.</h2>
+          <p class="eyebrow" data-i18n="workouts.intro.eyebrow">Built for action</p>
+          <h2 class="title-gradient text-glow" data-i18n="workouts.intro.title">Start with a template. Progress with structure.</h2>
         </div>
-        <p>Each workout template includes a weekly split, training focus, equipment, session structure and progression cue. Projects group templates into longer roadmaps so users can start with structure and progress through 12, 16, or 20 week phases.</p>
+        <p data-i18n="workouts.intro.copy">Each workout template includes a weekly split, training focus, equipment, session structure and progression cue. Projects group templates into longer roadmaps so users can start with structure and progress through 12, 16, or 20 week phases.</p>
       </div>
     </section>
 
     <section class="section workout-projects" aria-label="Template projects">
       <div class="container">
         <div class="section-heading compact-heading">
-          <p class="eyebrow">Template projects</p>
-          <h2>Choose the goal first. Then pick the template level.</h2>
+          <p class="eyebrow" data-i18n="workouts.projects.eyebrow">Signature template projects</p>
+          <h2 data-i18n="workouts.projects.heading">Choose the goal first. Then pick the template level.</h2>
         </div>
         <div class="project-grid">
           <article class="project-card project-card-summer">
-            <span class="project-duration">12 weeks</span>
-            <h3>Projeto Verão</h3>
-            <p>Fat-loss, conditioning, shape and routine for people who want a clear summer-ready plan without guessing every week.</p>
-            <button type="button" data-project-filter="projeto-verao">View templates</button>
+            <span class="project-duration" data-i18n="workouts.projects.summer.duration">12 weeks</span>
+            <h3 data-i18n="workouts.projects.summer.title">Summer Shred</h3>
+            <p data-i18n="workouts.projects.summer.desc">Fat-loss, conditioning, shape and routine for people who want a clear summer-ready plan without guessing every week.</p>
+            <button type="button" data-project-filter="summer-shred" data-i18n="workouts.projects.view_templates">View templates</button>
           </article>
           <article class="project-card project-card-glutes">
-            <span class="project-duration">16 weeks</span>
-            <h3>Projeto Bumbum na Lua</h3>
-            <p>Glute, legs, posture and lower-body progression with strength phases and shape-focused accessories.</p>
-            <button type="button" data-project-filter="bumbum-na-lua">View templates</button>
+            <span class="project-duration" data-i18n="workouts.projects.glutes.duration">16 weeks</span>
+            <h3 data-i18n="workouts.projects.glutes.title">Glute Launch</h3>
+            <p data-i18n="workouts.projects.glutes.desc">Glute, legs, posture and lower-body progression with strength phases and shape-focused accessories.</p>
+            <button type="button" data-project-filter="glute-launch" data-i18n="workouts.projects.view_templates">View templates</button>
           </article>
           <article class="project-card project-card-dad">
-            <span class="project-duration">20 weeks</span>
-            <h3>Pai Sarado</h3>
-            <p>Strength, muscle and fat-loss structure for busy dads who need efficient training, confidence and visible progress.</p>
-            <button type="button" data-project-filter="pai-sarado">View templates</button>
+            <span class="project-duration" data-i18n="workouts.projects.dad.duration">20 weeks</span>
+            <h3 data-i18n="workouts.projects.dad.title">Fit Dad Blueprint</h3>
+            <p data-i18n="workouts.projects.dad.desc">Strength, muscle and fat-loss structure for busy dads who need efficient training, confidence and visible progress.</p>
+            <button type="button" data-project-filter="fit-dad-blueprint" data-i18n="workouts.projects.view_templates">View templates</button>
           </article>
         </div>
       </div>
@@ -80,16 +80,16 @@
     <section class="workout-filter-band" aria-label="Workout filters">
       <div class="container filter-shell">
         <div class="search-wrap">
-          <label for="workout-search">Search workouts</label>
-          <input id="workout-search" type="search" placeholder="Search project, goal, level, equipment or focus">
+          <label for="workout-search" data-i18n="workouts.filters.search_label">Search workouts</label>
+          <input id="workout-search" type="search" placeholder="Search project, goal, level, equipment or focus" data-i18n-ph="workouts.filters.search_placeholder">
         </div>
 
         <div class="filter-group" aria-label="Project filter">
-          <span>Project</span>
-          <button type="button" class="active" data-filter-group="project" data-filter="all" aria-pressed="true">All</button>
-          <button type="button" data-filter-group="project" data-filter="projeto-verao">Verão</button>
-          <button type="button" data-filter-group="project" data-filter="bumbum-na-lua">Bumbum</button>
-          <button type="button" data-filter-group="project" data-filter="pai-sarado">Pai Sarado</button>
+          <span data-i18n="workouts.filters.project">Project</span>
+          <button type="button" class="active" data-filter-group="project" data-filter="all" aria-pressed="true" data-i18n="workouts.filters.all">All</button>
+          <button type="button" data-filter-group="project" data-filter="summer-shred" data-i18n="workouts.filters.summer">Summer</button>
+          <button type="button" data-filter-group="project" data-filter="glute-launch" data-i18n="workouts.filters.glutes">Glutes</button>
+          <button type="button" data-filter-group="project" data-filter="fit-dad-blueprint" data-i18n="workouts.filters.fit_dad">Fit Dad</button>
         </div>
 
         <div class="filter-group" aria-label="Goal filter">

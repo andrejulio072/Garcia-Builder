@@ -658,6 +658,14 @@
                     throw new Error('Supabase project keys are missing.');
                 }
 
+                // Quick diagnostic for common misconfiguration (placeholder keys)
+                const placeholderPattern = /coloque|your_key|replace_me|changeme|dummy/i;
+                if (placeholderPattern.test(String(key || ''))) {
+                    const message = 'Supabase anon key looks like a placeholder. Please update env-config.json with your SUPABASE_ANON_KEY and SUPABASE_URL.';
+                    console.error(message, { key });
+                    showSupabaseConfigWarning(message);
+                }
+
                 const supabaseModuleClient = createClient(url, key, {
                     auth: {
                         autoRefreshToken: true,
@@ -671,6 +679,7 @@
                 attachGoogleLogin(supabaseModuleClient, url);
             } catch (error) {
                 console.error('Failed to initialize Google login:', error);
+                showSupabaseConfigWarning(error && error.message ? String(error.message) : 'Supabase initialization failed.');
             }
         });
     </script>
@@ -682,6 +691,28 @@
     <script src="../../js/auth-guard.js?v=20251009" defer></script>
     <script src="../../js/tracking/conversion-helper.js" defer></script>
     <script>
+        function showSupabaseConfigWarning(message) {
+            try {
+                const existing = document.getElementById('supabase-config-warning');
+                if (existing) {
+                    existing.textContent = message;
+                    existing.classList.remove('d-none');
+                    return;
+                }
+                const banner = document.createElement('div');
+                banner.id = 'supabase-config-warning';
+                banner.className = 'alert alert-danger text-center';
+                banner.style.position = 'fixed';
+                banner.style.top = '72px';
+                banner.style.left = '50%';
+                banner.style.transform = 'translateX(-50%)';
+                banner.style.zIndex = '1050';
+                banner.style.maxWidth = '920px';
+                banner.textContent = message;
+                document.body.appendChild(banner);
+            } catch (e) { console.error('Failed to show supabase config warning', e); }
+        }
+
         window.addEventListener('load', () => {
             console.log('[GB] ready', {
                 url: window.NEXT_PUBLIC_SUPABASE_URL,

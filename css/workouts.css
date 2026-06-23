@@ -928,6 +928,7 @@
     position: static;
     top: auto;
     background: rgba(8, 13, 21, .98);
+    overflow: hidden;
   }
 
   .intro-grid .title-gradient {
@@ -943,9 +944,17 @@
   }
 
   .filter-shell {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     gap: 10px;
     padding-top: 12px;
     padding-bottom: 12px;
+  }
+
+  .filter-shell > * {
+    max-width: 100%;
+    min-width: 0;
   }
 
   .search-wrap input {
@@ -963,6 +972,9 @@
   .filter-group {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     gap: 8px;
     align-items: stretch;
   }
@@ -975,10 +987,15 @@
 
   .filter-group button {
     flex: none;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     min-height: 36px;
     border-radius: 10px;
     padding-inline: 10px;
     font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .filter-results {
@@ -989,5 +1006,24 @@
   .result-count,
   .clear-filters {
     font-size: 12px;
+  }
+
+  .workouts-page .whatsapp-float {
+    right: 10px;
+    bottom: 10px;
+    width: 48px;
+    height: 48px;
+    max-width: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 0;
+  }
+
+  .workouts-page .whatsapp-float::after {
+    content: "WA";
+    font-size: 13px;
+    line-height: 1;
   }
 }

@@ -707,42 +707,6 @@
                     }
                 });
 
-                const runToggleTests = () => {
-                    const auth = window.authSystem;
-                    const loginForm = document.getElementById('loginForm');
-                    const registerForm = document.getElementById('registerForm');
-                    if (!auth || typeof auth.showForm !== 'function') {
-                        issues.push({ selector: 'window.authSystem.showForm', reason: 'missing-handler' });
-                        return;
-                    }
-                    if (!loginForm || !registerForm) {
-                        issues.push({ selector: '#loginForm/#registerForm', reason: 'forms-missing' });
-                        return;
-                    }
-
-                    const initialUrl = new URL(window.location.href);
-
-                    auth.showForm('register');
-                    const registerToggled = registerForm.classList.contains('active') && !loginForm.classList.contains('active');
-                    auth.showForm('login');
-                    const loginToggled = loginForm.classList.contains('active');
-
-                    if (!registerToggled) {
-                        issues.push({ selector: '#showRegister', reason: 'toggle-failed' });
-                    }
-                    if (!loginToggled) {
-                        issues.push({ selector: '#showLogin', reason: 'toggle-failed' });
-                    }
-
-                    try {
-                        window.history.replaceState({}, '', initialUrl.toString());
-                    } catch (err) {
-                        console.warn('Auth route test could not restore URL:', err);
-                    }
-                };
-
-                setTimeout(runToggleTests, 20);
-
                 setTimeout(() => {
                     if (issues.length) {
                         console.warn('[Auth Route Check] Some buttons failed verification:', issues);

@@ -924,6 +924,12 @@
     min-height: 78vh;
   }
 
+  .workout-filter-band {
+    position: static;
+    top: auto;
+    background: rgba(8, 13, 21, .98);
+  }
+
   .intro-grid .title-gradient {
     font-size: clamp(32px, 13vw, 48px);
     letter-spacing: -.045em;
@@ -937,20 +943,51 @@
   }
 
   .filter-shell {
-    gap: 14px;
+    gap: 10px;
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
 
   .search-wrap input {
     font-size: 16px;
+    min-height: 42px;
+    border-radius: 12px;
+  }
+
+  .search-wrap label,
+  .filter-group span {
+    font-size: 11px;
+    letter-spacing: .04em;
+  }
+
+  .filter-group {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    align-items: stretch;
   }
 
   .filter-group span {
+    grid-column: 1 / -1;
     flex-basis: 100%;
     min-width: 0;
   }
 
   .filter-group button {
-    flex: 1 1 calc(50% - 8px);
+    flex: none;
+    min-height: 36px;
+    border-radius: 10px;
     padding-inline: 10px;
+    font-size: 13px;
+  }
+
+  .filter-results {
+    justify-items: stretch;
+    gap: 3px;
+  }
+
+  .result-count,
+  .clear-filters {
+    font-size: 12px;
   }
 }

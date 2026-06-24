@@ -22,6 +22,22 @@
         }
     };
 
+    const isLocalLikeHost = (hostname) => {
+        try {
+            return !!hostname && (
+                hostname === 'localhost' ||
+                hostname === '127.0.0.1' ||
+                hostname === '0.0.0.0' ||
+                hostname === '::1' ||
+                /^192\.168\./.test(hostname) ||
+                /^10\./.test(hostname) ||
+                /\.local$/i.test(hostname)
+            );
+        } catch {
+            return false;
+        }
+    };
+
     const normalizeEnv = (data) => {
         if (!data || typeof data !== 'object') return null;
         const env = {
@@ -52,11 +68,10 @@
             window.STRIPE_PUBLISHABLE_KEY = env.STRIPE_PUBLISHABLE_KEY;
         }
 
-        if (!window.__ENV.PUBLIC_SITE_URL) {
-            const detectedBase = computeSiteBaseUrl();
-            if (detectedBase) {
-                window.__ENV.PUBLIC_SITE_URL = detectedBase;
-            }
+        const detectedBase = computeSiteBaseUrl();
+        const localCurrentHost = isLocalLikeHost(window.location?.hostname || '');
+        if (detectedBase && (localCurrentHost || !window.__ENV.PUBLIC_SITE_URL)) {
+            window.__ENV.PUBLIC_SITE_URL = detectedBase;
         }
 
         console.debug('[env.js] Public env loaded', {

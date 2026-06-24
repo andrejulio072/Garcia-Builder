@@ -13,7 +13,10 @@ function computeSiteBaseUrl() {
         ? window.__ENV.PUBLIC_SITE_URL
         : null;
 
-    if (envBase) {
+    const currentHost = window.location?.hostname || '';
+    const shouldUseEnvBase = envBase && !isLocalLikeHost(currentHost);
+
+    if (shouldUseEnvBase) {
         window.__SITE_BASE_URL = envBase.replace(/\/$/, '');
         return window.__SITE_BASE_URL;
     }

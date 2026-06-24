@@ -1,0 +1,135 @@
+body.blog-article-page {
+  background: #0b1220;
+  color: #f8fafc;
+}
+
+.blog-article-shell {
+  width: min(100% - 32px, 920px);
+  margin: 0 auto;
+  padding: 132px 0 72px;
+}
+
+.blog-article-hero {
+  margin-bottom: 34px;
+}
+
+.blog-article-kicker {
+  color: #f6c84e;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+
+.blog-article-page h1 {
+  color: #fff;
+  font-size: clamp(2.25rem, 5vw, 4.2rem);
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.05;
+  margin: 0 0 18px;
+}
+
+.blog-article-meta,
+.blog-article-lede {
+  color: rgba(248, 250, 252, 0.78);
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.blog-article-lede {
+  font-size: 1.18rem;
+  margin-top: 18px;
+}
+
+.blog-article-image {
+  border: 1px solid rgba(246, 200, 78, 0.18);
+  border-radius: 12px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+  display: block;
+  height: auto;
+  margin: 28px 0 34px;
+  width: 100%;
+}
+
+.blog-article-content {
+  background: rgba(15, 23, 42, 0.62);
+  border: 1px solid rgba(246, 200, 78, 0.12);
+  border-radius: 12px;
+  padding: clamp(22px, 4vw, 44px);
+}
+
+.blog-article-content h2 {
+  color: #f6c84e;
+  font-size: 1.5rem;
+  font-weight: 850;
+  margin: 34px 0 12px;
+}
+
+.blog-article-content h2:first-child {
+  margin-top: 0;
+}
+
+.blog-article-content p,
+.blog-article-content li {
+  color: rgba(248, 250, 252, 0.84);
+  font-size: 1.02rem;
+  line-height: 1.8;
+}
+
+.blog-article-content ul,
+.blog-article-content ol {
+  padding-left: 1.35rem;
+}
+
+.blog-article-content a {
+  color: #f6c84e;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.blog-article-callout {
+  background: rgba(246, 200, 78, 0.1);
+  border-left: 4px solid #f6c84e;
+  border-radius: 8px;
+  color: #fff;
+  margin: 26px 0;
+  padding: 18px 20px;
+}
+
+.blog-article-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.blog-article-button {
+  align-items: center;
+  background: linear-gradient(135deg, #f6c84e, #f59e0b);
+  border-radius: 999px;
+  color: #08111f;
+  display: inline-flex;
+  font-weight: 800;
+  min-height: 44px;
+  padding: 0 18px;
+  text-decoration: none;
+}
+
+.blog-article-button.secondary {
+  background: transparent;
+  border: 1px solid rgba(246, 200, 78, 0.45);
+  color: #f6c84e;
+}
+
+@media (max-width: 640px) {
+  .blog-article-shell {
+    width: min(100% - 24px, 920px);
+    padding-top: 112px;
+  }
+
+  .blog-article-content {
+    padding: 20px;
+  }
+}

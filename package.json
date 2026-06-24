@@ -12,6 +12,7 @@
     "sitemap": "node tools/generate-sitemap.js",
     "lint": "powershell -ExecutionPolicy Bypass -File validate-components.ps1",
     "build:env": "node scripts/generate-env-config.js",
+    "filter:backup": "node scripts/filter-supabase-backup.js",
     "postinstall": "node scripts/generate-env-config.js",
     "ship": "pwsh -NoLogo -ExecutionPolicy Bypass -File scripts/Invoke-Ship.ps1 -Project iron-brothers",
     "ship:ib": "pwsh -NoLogo -ExecutionPolicy Bypass -File scripts/Invoke-Ship.ps1 -Project iron-brothers",

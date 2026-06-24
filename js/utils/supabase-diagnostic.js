@@ -111,8 +111,10 @@
 
     // 6. Check for Supabase Auth Token in LocalStorage
     console.log('\n6️⃣ CHECKING SUPABASE AUTH TOKEN...');
-    const storageKey = 'sb-qejtjcaldnuokoofpqap-auth-token';
-    const authToken = localStorage.getItem(storageKey);
+    const supabaseUrl = window.NEXT_PUBLIC_SUPABASE_URL || window.SUPABASE_URL || window.__ENV?.SUPABASE_URL || '';
+    const projectRef = (String(supabaseUrl).match(/https:\/\/([a-z0-9]+)\.supabase\.co/i) || [])[1];
+    const storageKey = projectRef ? `sb-${projectRef}-auth-token` : 'sb-auth-token';
+    const authToken = localStorage.getItem(storageKey) || localStorage.getItem('sb-auth-token');
     if (authToken) {
         try {
             const parsed = JSON.parse(authToken);

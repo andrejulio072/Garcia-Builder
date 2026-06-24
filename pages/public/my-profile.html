@@ -1781,7 +1781,11 @@
             };
 
             try {
-                localStorage.setItem('sb-qejtjcaldnuokoofpqap-auth-token', JSON.stringify(sessionPayload));
+                const supabaseUrl = window.NEXT_PUBLIC_SUPABASE_URL || window.SUPABASE_URL || window.__ENV?.SUPABASE_URL || '';
+                const projectRef = (supabaseUrl.match(/https:\/\/([a-z0-9]+)\.supabase\.co/i) || [])[1];
+                if (projectRef) {
+                    localStorage.setItem(`sb-${projectRef}-auth-token`, JSON.stringify(sessionPayload));
+                }
                 localStorage.setItem('sb-auth-token', JSON.stringify(sessionPayload));
             } catch (tokenErr) {
                 console.warn('[Profile Dev] Unable to seed auth token:', tokenErr);

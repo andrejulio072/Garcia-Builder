@@ -44,6 +44,10 @@ archive/
 archive-backup-*/
 improved/
 
+# Local database exports/backups
+supabase/*.backup
+supabase/*.public-only.sql
+
 # Analysis files
 CLEANUP-ANALYSIS.md
 .vercel

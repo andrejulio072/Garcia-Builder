@@ -24,6 +24,7 @@ create table if not exists public.user_profiles (
 
 alter table public.user_profiles enable row level security;
 
+revoke all on public.user_profiles from public, anon, authenticated;
 grant select, insert, update on public.user_profiles to authenticated;
 
 do $$
@@ -92,8 +93,30 @@ create trigger on_user_profiles_updated
 revoke all on function public.update_updated_at_column() from public, anon, authenticated;
 
 -- Harden existing helper functions if they are present from an earlier partial setup.
-alter function if exists public.handle_new_user() set search_path = public, auth;
-revoke all on function public.handle_new_user() from public, anon, authenticated;
+do $$
+begin
+  if exists (
+    select 1
+    from pg_proc p
+    join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname = 'public'
+      and p.proname = 'handle_new_user'
+      and pg_get_function_arguments(p.oid) = ''
+  ) then
+    alter function public.handle_new_user() set search_path = public, auth;
+    revoke all on function public.handle_new_user() from public, anon, authenticated;
+  end if;
 
-alter function if exists public.rls_auto_enable() set search_path = public;
-revoke all on function public.rls_auto_enable() from public, anon, authenticated;
+  if exists (
+    select 1
+    from pg_proc p
+    join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname = 'public'
+      and p.proname = 'rls_auto_enable'
+      and pg_get_function_arguments(p.oid) = ''
+  ) then
+    alter function public.rls_auto_enable() set search_path = public;
+    revoke all on function public.rls_auto_enable() from public, anon, authenticated;
+  end if;
+end
+$$;

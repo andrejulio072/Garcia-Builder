@@ -287,6 +287,32 @@
     </div>
 
     <script>
+        const isSocialOAuthEnabled = (provider) => {
+            const env = window.__ENV || {};
+            if (provider === 'google') {
+                return env.GOOGLE_OAUTH_ENABLED === true || window.GOOGLE_OAUTH_ENABLED === true;
+            }
+            if (provider === 'facebook') {
+                return env.FACEBOOK_OAUTH_ENABLED === true || window.FACEBOOK_OAUTH_ENABLED === true;
+            }
+            return false;
+        };
+
+        const disableSocialOAuthButtons = (provider, label) => {
+            const selectors = provider === 'google'
+                ? '#login-with-google, #google-btn-register'
+                : '#facebook-btn-login, #facebook-btn-register';
+            const buttons = document.querySelectorAll(selectors);
+
+            buttons.forEach((btn) => {
+                if (!btn) return;
+                btn.disabled = true;
+                btn.title = `${label} está desativado neste ambiente.`;
+                btn.style.opacity = '0.55';
+                btn.style.cursor = 'not-allowed';
+            });
+        };
+
         // Show warning if using file:// protocol
         if (window.location.protocol === 'file:') {
             const warningBanner = document.getElementById('file-protocol-warning');
@@ -311,6 +337,14 @@
 
                 btn.addEventListener('click', reminder, { once: true });
             });
+        }
+
+        if (!isSocialOAuthEnabled('google')) {
+            disableSocialOAuthButtons('google', 'Google OAuth');
+        }
+
+        if (!isSocialOAuthEnabled('facebook')) {
+            disableSocialOAuthButtons('facebook', 'Facebook OAuth');
         }
     </script>
 
@@ -505,6 +539,12 @@
         const attachGoogleLogin = (client, projectUrl) => {
             if (!client) {
                 console.error('Supabase client is unavailable.');
+                return;
+            }
+
+            if (!isSocialOAuthEnabled('google')) {
+                disableSocialOAuthButtons('google', 'Google OAuth');
+                showErrorBanner('Google OAuth não está habilitado neste projeto. Use login por e-mail/senha ou ative o provedor no Supabase.');
                 return;
             }
 

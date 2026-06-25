@@ -1442,12 +1442,37 @@ function setupOAuthButtons() {
     console.log('🔗 OAuth redirect URL configurada:', redirectTo, '| base local:', baseUrl);
 
     // GOOGLE OAUTH - Seguindo documentação oficial
+    const isOAuthEnabled = (provider) => {
+        const env = window.__ENV || {};
+        if (provider === 'google') {
+            return env.GOOGLE_OAUTH_ENABLED === true || window.GOOGLE_OAUTH_ENABLED === true;
+        }
+        if (provider === 'facebook') {
+            return env.FACEBOOK_OAUTH_ENABLED === true || window.FACEBOOK_OAUTH_ENABLED === true;
+        }
+        return false;
+    };
+
+    const disableOAuthButton = (btn, providerLabel, message) => {
+        if (!btn) return;
+        btn.disabled = true;
+        btn.title = message;
+        btn.style.opacity = '0.55';
+        btn.style.cursor = 'not-allowed';
+        btn.innerHTML = providerLabel;
+    };
+
     const setupGoogleButton = (btnId) => {
         const btn = document.getElementById(btnId);
         if (!btn) return;
 
         if (btn.dataset.useModule === 'true') {
             console.log(`🔵 Botão Google ${btnId} gerenciado pelo módulo dedicado; ignorando handler legacy.`);
+            return;
+        }
+
+        if (!isOAuthEnabled('google')) {
+            disableOAuthButton(btn, '<i class="fab fa-google me-2"></i>Continuar com Google', 'Google OAuth está desativado neste projeto.');
             return;
         }
 
@@ -1505,6 +1530,11 @@ function setupOAuthButtons() {
     const setupFacebookButton = (btnId) => {
         const btn = document.getElementById(btnId);
         if (!btn) return;
+
+        if (!isOAuthEnabled('facebook')) {
+            disableOAuthButton(btn, '<i class="fab fa-facebook-f me-2"></i>Continuar com Facebook', 'Facebook OAuth está desativado neste projeto.');
+            return;
+        }
 
         console.log(`🔷 Configurando botão Facebook: ${btnId}`);
 

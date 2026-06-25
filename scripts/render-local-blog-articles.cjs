@@ -256,12 +256,124 @@ function esc(value) {
   return String(value).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 }
 
+function slugify(value) {
+  return String(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+const playbooks = {
+  Training: {
+    summary: 'Training advice is built around progressive overload, stable technique, recovery, and a plan that fits real weekly schedules.',
+    plan: [
+      'Choose the smallest weekly schedule you can repeat for four weeks.',
+      'Track sets, reps, load, effort, and one recovery marker after each session.',
+      'Increase only one variable at a time: reps, load, sets, or session density.',
+      'Review progress every Sunday and adjust the next week before motivation becomes the plan.'
+    ],
+    checklist: [
+      'Warm up the exact movement patterns you will train.',
+      'Keep most working sets one to three reps away from technical failure.',
+      'Stop or regress any movement that creates sharp, radiating, or worsening pain.',
+      'Use photos, measurements, and performance logs instead of relying on feelings alone.'
+    ],
+    faqs: [
+      ['How many days per week should I train?', 'Most people progress well with three to four focused sessions per week when the plan is consistent and recoverable.'],
+      ['Should I change exercises often?', 'Keep the main patterns stable for four to six weeks so technique and progression can be measured.'],
+      ['What if I miss a session?', 'Do the next planned session and keep the week moving. One missed workout should not become a full reset.']
+    ]
+  },
+  Nutrition: {
+    summary: 'Nutrition guidance prioritizes energy balance, protein, food quality, adherence, and simple systems that survive busy weeks.',
+    plan: [
+      'Pick two repeatable breakfasts or lunches that include protein and fibre.',
+      'Track normal intake for a few days before making aggressive changes.',
+      'Create one planned flexible meal so social life does not break the plan.',
+      'Review weekly averages instead of reacting to one scale reading.'
+    ],
+    checklist: [
+      'Include a protein source at most meals.',
+      'Use vegetables, fruit, potatoes, oats, legumes, and lean proteins to manage hunger.',
+      'Audit oils, sauces, drinks, and snacks before cutting full meals.',
+      'Keep nutrition changes compatible with training performance and sleep.'
+    ],
+    faqs: [
+      ['Do I need to cut carbs?', 'No. Fat loss depends on a sustainable calorie deficit. Carbohydrates can support training when portions fit the goal.'],
+      ['Is meal timing important?', 'Timing matters less than total intake, protein, and consistency, but it should help hunger and training performance.'],
+      ['Should I use supplements?', 'Use supplements only to solve a specific gap. Food quality, calories, protein, sleep, and training come first.']
+    ]
+  },
+  Rehabilitation: {
+    summary: 'Mobility and injury-prevention content is educational and should support, not replace, qualified assessment when pain or symptoms persist.',
+    plan: [
+      'Identify the movement or workload that usually triggers symptoms.',
+      'Reduce range, load, or volume while keeping pain-free activity in the week.',
+      'Add controlled strength through the range you can own.',
+      'Seek professional guidance when symptoms change gait, daily life, or keep returning.'
+    ],
+    checklist: [
+      'Warm up gradually instead of jumping into heavy or fast work cold.',
+      'Avoid changing exercise, volume, intensity, and equipment all in the same week.',
+      'Use discomfort as information, not as a test of toughness.',
+      'Build capacity with consistent submaximal work before chasing intensity.'
+    ],
+    faqs: [
+      ['Is soreness the same as injury?', 'No. Normal soreness usually fades and does not change movement. Sharp, worsening, or radiating pain deserves caution.'],
+      ['Should I stretch every day?', 'Stretching can help, but strength and workload management usually matter more for long-term capacity.'],
+      ['When should I see a clinician?', 'Get assessed if pain affects daily life, changes movement, includes numbness, or keeps returning.']
+    ]
+  },
+  Health: {
+    summary: 'Recovery content connects sleep, stress, nutrition, and training load so progress is built instead of forced.',
+    plan: [
+      'Set a realistic sleep window before adding more training volume.',
+      'Use one low-stress recovery habit after evening meals.',
+      'Reduce training dose during unusually stressful weeks instead of quitting entirely.',
+      'Review energy, mood, soreness, and performance together.'
+    ],
+    checklist: [
+      'Protect a consistent sleep opportunity most nights.',
+      'Avoid using caffeine to cover chronic sleep debt.',
+      'Fuel hard training with enough protein and total energy.',
+      'Schedule lighter weeks before performance and motivation crash.'
+    ],
+    faqs: [
+      ['How do I know I need more recovery?', 'Look for several signals at once: worse sleep, low mood, persistent soreness, falling performance, and unusual fatigue.'],
+      ['Is a deload the same as stopping?', 'No. A deload keeps the habit while reducing volume or intensity so the body can absorb the work.'],
+      ['Can stress affect fat loss or muscle gain?', 'Yes. Stress can reduce sleep, increase hunger, and lower training quality, which indirectly affects results.']
+    ]
+  },
+  Mindset: {
+    summary: 'Mindset content focuses on behavior design: small actions, environment, tracking, accountability, and quick restarts.',
+    plan: [
+      'Define the minimum version of your week before adding ambition.',
+      'Attach one new habit to a routine that already happens daily.',
+      'Track controllable behaviors before judging body composition outcomes.',
+      'Build a restart rule for travel, work stress, low energy, and missed sessions.'
+    ],
+    checklist: [
+      'Make the first five minutes of the habit almost frictionless.',
+      'Keep proof of progress visible: logs, photos, measurements, or check-ins.',
+      'Use accountability to adjust the plan, not to create shame.',
+      'Treat missed days as data, not identity.'
+    ],
+    faqs: [
+      ['What if I lose motivation?', 'Expect motivation to fluctuate. Use a minimum action and a planned schedule so the habit does not depend on mood.'],
+      ['How long does habit change take?', 'It varies by person and behavior. Repetition, context, and low friction matter more than a magic number of days.'],
+      ['Should I track everything?', 'Track the few behaviors that drive your goal. Too much tracking can become noise if it does not change decisions.']
+    ]
+  }
+};
+
 function readingMinutes(post) {
   const words = [
     post.title,
     post.description,
     post.intro,
-    ...post.sections.flat()
+    ...post.sections.flat(),
+    ...(playbooks[post.category]?.plan || []),
+    ...(playbooks[post.category]?.checklist || [])
   ].join(' ').trim().split(/\s+/).filter(Boolean).length;
   return Math.max(4, Math.round(words / 190));
 }
@@ -284,14 +396,98 @@ function renderCoachNote(post) {
   return `        <aside class="blog-coach-note" aria-label="Coach note">
           <img src="assets/images/about/about5.jpg" alt="Andre Julio Garcia coaching avatar" loading="lazy" decoding="async">
           <div>
-            <span>Coach André note</span>
-            <p>I wrote this for real people with busy weeks, not perfect conditions. Start with “${esc(firstAction)}”, keep the plan measurable, and let consistency beat intensity.</p>
+            <span>Coach Andre note</span>
+            <p>I wrote this for real people with busy weeks, not perfect conditions. Start with &quot;${esc(firstAction)}&quot;, keep the plan measurable, and let consistency beat intensity.</p>
           </div>
         </aside>`;
 }
 
 function renderTakeaways(post) {
   return post.sections.slice(0, 3).map(([heading]) => `          <li>${esc(heading)}</li>`).join('\n');
+}
+
+function renderTableOfContents(post) {
+  const items = post.sections.map(([heading]) => `          <li><a href="#${esc(slugify(heading))}">${esc(heading)}</a></li>`).join('\n');
+  return `        <nav class="blog-toc" aria-label="Article sections">
+          <span>In this guide</span>
+          <ol>
+${items}
+            <li><a href="#weekly-implementation">7-day implementation plan</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#references">References</a></li>
+          </ol>
+        </nav>`;
+}
+
+function renderEvidenceSnapshot(post) {
+  const playbook = playbooks[post.category] || playbooks.Training;
+  const citationCards = post.refs.slice(0, 3).map((key) => {
+    const [label, url] = refs[key];
+    return `          <a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`;
+  }).join('\n');
+
+  return `        <section class="blog-evidence-panel" aria-label="Evidence and coaching context">
+          <div>
+            <span>Evidence snapshot</span>
+            <p>${esc(playbook.summary)}</p>
+          </div>
+          <div class="blog-evidence-links">
+${citationCards}
+          </div>
+        </section>`;
+}
+
+function renderImplementationPlan(post) {
+  const playbook = playbooks[post.category] || playbooks.Training;
+  return `        <section class="blog-implementation" id="weekly-implementation">
+          <h2>How to apply this in the next 7 days</h2>
+          <div class="blog-step-grid">
+${playbook.plan.map((step, index) => `            <div class="blog-step-card">
+              <span>Day ${index + 1}${index === 3 ? '-7' : ''}</span>
+              <p>${esc(step)}</p>
+            </div>`).join('\n')}
+          </div>
+        </section>`;
+}
+
+function renderCoachChecklist(post) {
+  const playbook = playbooks[post.category] || playbooks.Training;
+  return `        <section class="blog-checklist" aria-label="Coach checklist">
+          <h2>Coach checklist</h2>
+          <ul>
+${playbook.checklist.map((item) => `            <li>${esc(item)}</li>`).join('\n')}
+          </ul>
+        </section>`;
+}
+
+function renderFaqSection(post) {
+  const playbook = playbooks[post.category] || playbooks.Training;
+  return `        <section class="blog-faq" id="faq">
+          <h2>FAQ</h2>
+${playbook.faqs.map(([question, answer]) => `          <details>
+            <summary>${esc(question)}</summary>
+            <p>${esc(answer)}</p>
+          </details>`).join('\n')}
+        </section>`;
+}
+
+function relatedPosts(post) {
+  const sameCategory = posts.filter((candidate) => candidate.file !== post.file && candidate.category === post.category);
+  const otherCategory = posts.filter((candidate) => candidate.file !== post.file && candidate.category !== post.category);
+  return [...sameCategory, ...otherCategory].slice(0, 3);
+}
+
+function renderRelatedArticles(post) {
+  return `        <section class="blog-related" aria-label="Related articles">
+          <h2>Read next</h2>
+          <div class="blog-related-grid">
+${relatedPosts(post).map((item) => `            <a class="blog-related-card" href="${esc(item.file)}">
+              <span>${esc(item.category)}</span>
+              <strong>${esc(item.title)}</strong>
+              <small>${esc(item.description)}</small>
+            </a>`).join('\n')}
+          </div>
+        </section>`;
 }
 
 function renderReferences(post) {
@@ -301,8 +497,51 @@ function renderReferences(post) {
   }).join('\n');
 }
 
+function renderJsonLd(post, minutes) {
+  const playbook = playbooks[post.category] || playbooks.Training;
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.description,
+    image: `https://garciabuilder.fitness/${post.image}`,
+    author: {
+      '@type': 'Person',
+      name: 'Andre Julio Garcia',
+      url: 'https://garciabuilder.fitness/about.html'
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Garcia Builder',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png'
+      }
+    },
+    mainEntityOfPage: `https://garciabuilder.fitness/${post.file}`,
+    dateModified: '2026-06-25',
+    timeRequired: `PT${minutes}M`,
+    citation: post.refs.map((key) => refs[key][1])
+  };
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: playbook.faqs.map(([question, answer]) => ({
+      '@type': 'Question',
+      name: question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: answer
+      }
+    }))
+  };
+
+  return JSON.stringify([articleSchema, faqSchema], null, 2);
+}
+
 function renderPost(post) {
-  const sections = post.sections.map(([heading, text]) => `        <h2>${esc(heading)}</h2>\n        <p>${esc(text)}</p>`).join('\n\n');
+  const sections = post.sections.map(([heading, text]) => `        <h2 id="${esc(slugify(heading))}">${esc(heading)}</h2>\n        <p>${esc(text)}</p>`).join('\n\n');
   const minutes = readingMinutes(post);
   return `<!DOCTYPE html>
 <html lang="en">
@@ -328,12 +567,15 @@ function renderPost(post) {
   <link rel="stylesheet" href="css/components/navbar-component.css?v=20251028">
   <link rel="stylesheet" href="css/global.css?v=20251025">
   <link rel="stylesheet" href="css/components/enhanced-navbar.css?v=20251025">
-  <link rel="stylesheet" href="css/blog-article.css?v=20260624">
+  <link rel="stylesheet" href="css/blog-article.css?v=20260625">
   <script src="js/utils/component-loader-v3-simplified.js?v=20251029"></script>
   <script src="js/tracking/conversion-tracking.js?v=20251025"></script>
   <script defer src="js/tracking/ads-loader.js?v=20251025"></script>
   <script defer src="js/tracking/ads-config.js?v=20251025"></script>
   <script defer src="js/tracking/cta-tracking.js?v=20251112"></script>
+  <script type="application/ld+json">
+${renderJsonLd(post, minutes)}
+  </script>
 </head>
 <body class="blog-article-page">
   <div data-component="navbar"></div>
@@ -353,7 +595,10 @@ function renderPost(post) {
         <div class="blog-value-grid">
 ${renderValueStack(post)}
         </div>
-        <img class="blog-article-image" src="${esc(post.image)}" alt="${esc(post.alt)}" loading="eager" decoding="async">
+        <figure class="blog-article-figure">
+          <img class="blog-article-image" src="${esc(post.image)}" alt="${esc(post.alt)}" loading="eager" decoding="async">
+          <figcaption>${esc(post.alt)}. Editorial image selected for Garcia Builder education.</figcaption>
+        </figure>
       </header>
       <div class="blog-article-content">
         <div class="blog-quick-take">
@@ -363,21 +608,33 @@ ${renderTakeaways(post)}
           </ul>
         </div>
 
+${renderTableOfContents(post)}
+
 ${renderCoachNote(post)}
 
+${renderEvidenceSnapshot(post)}
+
 ${sections}
+
+${renderImplementationPlan(post)}
+
+${renderCoachChecklist(post)}
 
         <div class="blog-article-callout">
           <strong>Garcia Builder value:</strong> simple structure, honest feedback, and weekly accountability. Use this article as education, not individual medical care. If you have pain, a diagnosed condition, pregnancy considerations, medication interactions, or a history of injury, get clearance from a qualified professional before changing training or nutrition.
         </div>
 
-        <h2>References</h2>
+${renderFaqSection(post)}
+
+        <h2 id="references">References</h2>
         <ol>
 ${renderReferences(post)}
         </ol>
 
+${renderRelatedArticles(post)}
+
         <div class="blog-article-actions">
-          <a class="blog-article-button" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Build My Plan With André</a>
+          <a class="blog-article-button" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Build My Plan With Andre</a>
           <a class="blog-article-button secondary" href="blog.html">Back to Blog</a>
         </div>
       </div>

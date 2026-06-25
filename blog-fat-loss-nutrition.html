@@ -22,12 +22,74 @@
   <link rel="stylesheet" href="css/components/navbar-component.css?v=20251028">
   <link rel="stylesheet" href="css/global.css?v=20251025">
   <link rel="stylesheet" href="css/components/enhanced-navbar.css?v=20251025">
-  <link rel="stylesheet" href="css/blog-article.css?v=20260624">
+  <link rel="stylesheet" href="css/blog-article.css?v=20260625">
   <script src="js/utils/component-loader-v3-simplified.js?v=20251029"></script>
   <script src="js/tracking/conversion-tracking.js?v=20251025"></script>
   <script defer src="js/tracking/ads-loader.js?v=20251025"></script>
   <script defer src="js/tracking/ads-config.js?v=20251025"></script>
   <script defer src="js/tracking/cta-tracking.js?v=20251112"></script>
+  <script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Fat Loss Nutrition - Calories, Protein, and Meal Timing",
+    "description": "A practical fat loss nutrition article covering the hierarchy of calories, protein, food quality, meal timing, and references.",
+    "image": "https://garciabuilder.fitness/assets/images/blog/preview-fat-loss-nutrition-photo.jpg",
+    "author": {
+      "@type": "Person",
+      "name": "Andre Julio Garcia",
+      "url": "https://garciabuilder.fitness/about.html"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Garcia Builder",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png"
+      }
+    },
+    "mainEntityOfPage": "https://garciabuilder.fitness/blog-fat-loss-nutrition.html",
+    "dateModified": "2026-06-25",
+    "timeRequired": "PT4M",
+    "citation": [
+      "https://www.who.int/news-room/fact-sheets/detail/healthy-diet",
+      "https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8",
+      "https://pubmed.ncbi.nlm.nih.gov/28698222/"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Do I need to cut carbs?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Fat loss depends on a sustainable calorie deficit. Carbohydrates can support training when portions fit the goal."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is meal timing important?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Timing matters less than total intake, protein, and consistency, but it should help hunger and training performance."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Should I use supplements?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use supplements only to solve a specific gap. Food quality, calories, protein, sleep, and training come first."
+        }
+      }
+    ]
+  }
+]
+  </script>
 </head>
 <body class="blog-article-page">
   <div data-component="navbar"></div>
@@ -58,7 +120,10 @@
             <p>Nutrition clients who want structure, accountability, and clear next steps.</p>
           </div>
         </div>
-        <img class="blog-article-image" src="assets/images/blog/preview-fat-loss-nutrition-photo.jpg" alt="Healthy meal prep for sustainable fat loss" loading="eager" decoding="async">
+        <figure class="blog-article-figure">
+          <img class="blog-article-image" src="assets/images/blog/preview-fat-loss-nutrition-photo.jpg" alt="Healthy meal prep for sustainable fat loss" loading="eager" decoding="async">
+          <figcaption>Healthy meal prep for sustainable fat loss. Editorial image selected for Garcia Builder education.</figcaption>
+        </figure>
       </header>
       <div class="blog-article-content">
         <div class="blog-quick-take">
@@ -70,42 +135,137 @@
           </ul>
         </div>
 
+        <nav class="blog-toc" aria-label="Article sections">
+          <span>In this guide</span>
+          <ol>
+          <li><a href="#the-nutrition-hierarchy">The nutrition hierarchy</a></li>
+          <li><a href="#meal-timing-should-fit-your-life">Meal timing should fit your life</a></li>
+          <li><a href="#high-volume-foods-help-hunger">High volume foods help hunger</a></li>
+          <li><a href="#common-fat-loss-mistakes">Common fat loss mistakes</a></li>
+          <li><a href="#a-useful-weekly-review">A useful weekly review</a></li>
+            <li><a href="#weekly-implementation">7-day implementation plan</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#references">References</a></li>
+          </ol>
+        </nav>
+
         <aside class="blog-coach-note" aria-label="Coach note">
           <img src="assets/images/about/about5.jpg" alt="Andre Julio Garcia coaching avatar" loading="lazy" decoding="async">
           <div>
-            <span>Coach André note</span>
-            <p>I wrote this for real people with busy weeks, not perfect conditions. Start with “The nutrition hierarchy”, keep the plan measurable, and let consistency beat intensity.</p>
+            <span>Coach Andre note</span>
+            <p>I wrote this for real people with busy weeks, not perfect conditions. Start with &quot;The nutrition hierarchy&quot;, keep the plan measurable, and let consistency beat intensity.</p>
           </div>
         </aside>
 
-        <h2>The nutrition hierarchy</h2>
+        <section class="blog-evidence-panel" aria-label="Evidence and coaching context">
+          <div>
+            <span>Evidence snapshot</span>
+            <p>Nutrition guidance prioritizes energy balance, protein, food quality, adherence, and simple systems that survive busy weeks.</p>
+          </div>
+          <div class="blog-evidence-links">
+          <a href="https://www.who.int/news-room/fact-sheets/detail/healthy-diet" target="_blank" rel="noopener">World Health Organization. Healthy diet fact sheet.</a>
+          <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8" target="_blank" rel="noopener">International Society of Sports Nutrition. Position stand: protein and exercise.</a>
+          <a href="https://pubmed.ncbi.nlm.nih.gov/28698222/" target="_blank" rel="noopener">Morton RW, et al. Protein supplementation and resistance training meta-analysis.</a>
+          </div>
+        </section>
+
+        <h2 id="the-nutrition-hierarchy">The nutrition hierarchy</h2>
         <p>Start with weekly calorie balance. Then set protein high enough to support training and fullness. Then make most food choices minimally processed and high in fibre. Only after those pieces are in place should you worry about the exact timing of meals. This order matters because a perfect eating window cannot compensate for an inconsistent calorie target.</p>
 
-        <h2>Meal timing should fit your life</h2>
+        <h2 id="meal-timing-should-fit-your-life">Meal timing should fit your life</h2>
         <p>Some clients prefer breakfast because it controls hunger. Others prefer a later first meal because mornings are busy. Both can work. The useful question is whether your timing helps you hit calories and protein without evening overeating. If you train hard, place a protein rich meal within a few hours before or after training and include carbohydrates around demanding sessions.</p>
 
-        <h2>High volume foods help hunger</h2>
+        <h2 id="high-volume-foods-help-hunger">High volume foods help hunger</h2>
         <p>Vegetables, potatoes, oats, berries, soups, lean proteins, and legumes create more fullness per calorie than oils, pastries, alcohol, and snack foods. You do not need to ban enjoyable foods, but you need portions that match the goal. A flexible plan can include treats if the base diet is structured enough to keep hunger stable.</p>
 
-        <h2>Common fat loss mistakes</h2>
+        <h2 id="common-fat-loss-mistakes">Common fat loss mistakes</h2>
         <p>The most common mistakes are underestimating oils and sauces, drinking calories, skipping protein early in the day, and reacting emotionally to one high scale reading. Another mistake is changing the plan every week. Keep one clear target for at least two weeks before judging it. Consistency gives you data; constant changes only create noise.</p>
 
-        <h2>A useful weekly review</h2>
+        <h2 id="a-useful-weekly-review">A useful weekly review</h2>
         <p>At the end of each week, ask four questions: Did I hit protein most days? Did I track the meals that mattered? Did my average weight move in the expected direction? Did training performance stay acceptable? The answers tell you whether to continue, adjust calories, improve meal prep, or address recovery.</p>
+
+        <section class="blog-implementation" id="weekly-implementation">
+          <h2>How to apply this in the next 7 days</h2>
+          <div class="blog-step-grid">
+            <div class="blog-step-card">
+              <span>Day 1</span>
+              <p>Pick two repeatable breakfasts or lunches that include protein and fibre.</p>
+            </div>
+            <div class="blog-step-card">
+              <span>Day 2</span>
+              <p>Track normal intake for a few days before making aggressive changes.</p>
+            </div>
+            <div class="blog-step-card">
+              <span>Day 3</span>
+              <p>Create one planned flexible meal so social life does not break the plan.</p>
+            </div>
+            <div class="blog-step-card">
+              <span>Day 4-7</span>
+              <p>Review weekly averages instead of reacting to one scale reading.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="blog-checklist" aria-label="Coach checklist">
+          <h2>Coach checklist</h2>
+          <ul>
+            <li>Include a protein source at most meals.</li>
+            <li>Use vegetables, fruit, potatoes, oats, legumes, and lean proteins to manage hunger.</li>
+            <li>Audit oils, sauces, drinks, and snacks before cutting full meals.</li>
+            <li>Keep nutrition changes compatible with training performance and sleep.</li>
+          </ul>
+        </section>
 
         <div class="blog-article-callout">
           <strong>Garcia Builder value:</strong> simple structure, honest feedback, and weekly accountability. Use this article as education, not individual medical care. If you have pain, a diagnosed condition, pregnancy considerations, medication interactions, or a history of injury, get clearance from a qualified professional before changing training or nutrition.
         </div>
 
-        <h2>References</h2>
+        <section class="blog-faq" id="faq">
+          <h2>FAQ</h2>
+          <details>
+            <summary>Do I need to cut carbs?</summary>
+            <p>No. Fat loss depends on a sustainable calorie deficit. Carbohydrates can support training when portions fit the goal.</p>
+          </details>
+          <details>
+            <summary>Is meal timing important?</summary>
+            <p>Timing matters less than total intake, protein, and consistency, but it should help hunger and training performance.</p>
+          </details>
+          <details>
+            <summary>Should I use supplements?</summary>
+            <p>Use supplements only to solve a specific gap. Food quality, calories, protein, sleep, and training come first.</p>
+          </details>
+        </section>
+
+        <h2 id="references">References</h2>
         <ol>
         <li>World Health Organization. Healthy diet fact sheet. <a href="https://www.who.int/news-room/fact-sheets/detail/healthy-diet" target="_blank" rel="noopener">https://www.who.int/news-room/fact-sheets/detail/healthy-diet</a></li>
         <li>International Society of Sports Nutrition. Position stand: protein and exercise. <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8" target="_blank" rel="noopener">https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8</a></li>
         <li>Morton RW, et al. Protein supplementation and resistance training meta-analysis. <a href="https://pubmed.ncbi.nlm.nih.gov/28698222/" target="_blank" rel="noopener">https://pubmed.ncbi.nlm.nih.gov/28698222/</a></li>
         </ol>
 
+        <section class="blog-related" aria-label="Related articles">
+          <h2>Read next</h2>
+          <div class="blog-related-grid">
+            <a class="blog-related-card" href="blog-nutrition-fat-loss.html">
+              <span>Nutrition</span>
+              <strong>Beginner Nutrition for Fat Loss - Evidence Based Guide</strong>
+              <small>A deeper beginner guide to fat loss nutrition, including calories, protein, meal structure, adherence, and references.</small>
+            </a>
+            <a class="blog-related-card" href="blog-supplements-explained.html">
+              <span>Nutrition</span>
+              <strong>Supplements Explained - What Actually Works</strong>
+              <small>A practical supplement guide that separates useful basics from marketing, with references for creatine, protein, caffeine, and safety.</small>
+            </a>
+            <a class="blog-related-card" href="blog-strength-beginners.html">
+              <span>Training</span>
+              <strong>Strength Training for Beginners - 12 Week Starter Plan</strong>
+              <small>A practical 12 week beginner strength plan covering technique, progression, recovery, and simple nutrition targets.</small>
+            </a>
+          </div>
+        </section>
+
         <div class="blog-article-actions">
-          <a class="blog-article-button" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Build My Plan With André</a>
+          <a class="blog-article-button" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Build My Plan With Andre</a>
           <a class="blog-article-button secondary" href="blog.html">Back to Blog</a>
         </div>
       </div>

@@ -22,12 +22,74 @@
   <link rel="stylesheet" href="css/components/navbar-component.css?v=20251028">
   <link rel="stylesheet" href="css/global.css?v=20251025">
   <link rel="stylesheet" href="css/components/enhanced-navbar.css?v=20251025">
-  <link rel="stylesheet" href="css/blog-article.css?v=20260624">
+  <link rel="stylesheet" href="css/blog-article.css?v=20260625">
   <script src="js/utils/component-loader-v3-simplified.js?v=20251029"></script>
   <script src="js/tracking/conversion-tracking.js?v=20251025"></script>
   <script defer src="js/tracking/ads-loader.js?v=20251025"></script>
   <script defer src="js/tracking/ads-config.js?v=20251025"></script>
   <script defer src="js/tracking/cta-tracking.js?v=20251112"></script>
+  <script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Recovery, Sleep, and Stress - Performance Essentials",
+    "description": "A recovery guide for people who train hard, covering sleep, stress, deloads, nutrition, and monitoring fatigue.",
+    "image": "https://garciabuilder.fitness/assets/images/blog/preview-recovery-sleep-stress-photo.jpg",
+    "author": {
+      "@type": "Person",
+      "name": "Andre Julio Garcia",
+      "url": "https://garciabuilder.fitness/about.html"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Garcia Builder",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png"
+      }
+    },
+    "mainEntityOfPage": "https://garciabuilder.fitness/blog-recovery-sleep-stress.html",
+    "dateModified": "2026-06-25",
+    "timeRequired": "PT4M",
+    "citation": [
+      "https://www.cdc.gov/sleep/about/index.html",
+      "https://www.who.int/publications/i/item/9789240015128",
+      "https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I know I need more recovery?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Look for several signals at once: worse sleep, low mood, persistent soreness, falling performance, and unusual fatigue."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is a deload the same as stopping?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. A deload keeps the habit while reducing volume or intensity so the body can absorb the work."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can stress affect fat loss or muscle gain?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Stress can reduce sleep, increase hunger, and lower training quality, which indirectly affects results."
+        }
+      }
+    ]
+  }
+]
+  </script>
 </head>
 <body class="blog-article-page">
   <div data-component="navbar"></div>
@@ -58,7 +120,10 @@
             <p>Health clients who want structure, accountability, and clear next steps.</p>
           </div>
         </div>
-        <img class="blog-article-image" src="assets/images/blog/preview-recovery-sleep-stress-photo.jpg" alt="Recovery routine with sleep mask, book, foam roller, and training shoes" loading="eager" decoding="async">
+        <figure class="blog-article-figure">
+          <img class="blog-article-image" src="assets/images/blog/preview-recovery-sleep-stress-photo.jpg" alt="Recovery routine with sleep mask, book, foam roller, and training shoes" loading="eager" decoding="async">
+          <figcaption>Recovery routine with sleep mask, book, foam roller, and training shoes. Editorial image selected for Garcia Builder education.</figcaption>
+        </figure>
       </header>
       <div class="blog-article-content">
         <div class="blog-quick-take">
@@ -70,42 +135,137 @@
           </ul>
         </div>
 
+        <nav class="blog-toc" aria-label="Article sections">
+          <span>In this guide</span>
+          <ol>
+          <li><a href="#sleep-is-the-foundation">Sleep is the foundation</a></li>
+          <li><a href="#stress-changes-training-tolerance">Stress changes training tolerance</a></li>
+          <li><a href="#use-deloads-before-burnout">Use deloads before burnout</a></li>
+          <li><a href="#nutrition-supports-recovery">Nutrition supports recovery</a></li>
+          <li><a href="#track-simple-recovery-markers">Track simple recovery markers</a></li>
+            <li><a href="#weekly-implementation">7-day implementation plan</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#references">References</a></li>
+          </ol>
+        </nav>
+
         <aside class="blog-coach-note" aria-label="Coach note">
           <img src="assets/images/about/about5.jpg" alt="Andre Julio Garcia coaching avatar" loading="lazy" decoding="async">
           <div>
-            <span>Coach André note</span>
-            <p>I wrote this for real people with busy weeks, not perfect conditions. Start with “Sleep is the foundation”, keep the plan measurable, and let consistency beat intensity.</p>
+            <span>Coach Andre note</span>
+            <p>I wrote this for real people with busy weeks, not perfect conditions. Start with &quot;Sleep is the foundation&quot;, keep the plan measurable, and let consistency beat intensity.</p>
           </div>
         </aside>
 
-        <h2>Sleep is the foundation</h2>
+        <section class="blog-evidence-panel" aria-label="Evidence and coaching context">
+          <div>
+            <span>Evidence snapshot</span>
+            <p>Recovery content connects sleep, stress, nutrition, and training load so progress is built instead of forced.</p>
+          </div>
+          <div class="blog-evidence-links">
+          <a href="https://www.cdc.gov/sleep/about/index.html" target="_blank" rel="noopener">Centers for Disease Control and Prevention. About sleep.</a>
+          <a href="https://www.who.int/publications/i/item/9789240015128" target="_blank" rel="noopener">World Health Organization. Guidelines on physical activity and sedentary behaviour.</a>
+          <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8" target="_blank" rel="noopener">International Society of Sports Nutrition. Position stand: protein and exercise.</a>
+          </div>
+        </section>
+
+        <h2 id="sleep-is-the-foundation">Sleep is the foundation</h2>
         <p>Most adults need a consistent sleep opportunity of around seven or more hours, and athletes often benefit from more when training load is high. Build a repeatable evening routine: dim lights, reduce late caffeine, keep the room cool, and stop intense work close to bedtime. The aim is not a perfect night; it is a stable pattern.</p>
 
-        <h2>Stress changes training tolerance</h2>
+        <h2 id="stress-changes-training-tolerance">Stress changes training tolerance</h2>
         <p>Work, family pressure, travel, and emotional stress all draw from the same recovery budget. On high stress weeks, keep the habit but reduce the dose. That might mean fewer sets, lower loads, or more easy cardio instead of intervals. Adjusting training to life is a strength, not a lack of discipline.</p>
 
-        <h2>Use deloads before burnout</h2>
+        <h2 id="use-deloads-before-burnout">Use deloads before burnout</h2>
         <p>A deload is a planned reduction in volume or intensity. It can be scheduled every four to eight weeks or used when performance drops, joints ache, sleep worsens, and motivation disappears. Most people do not need a week off; they need a week with lighter sets, cleaner movement, and more recovery.</p>
 
-        <h2>Nutrition supports recovery</h2>
+        <h2 id="nutrition-supports-recovery">Nutrition supports recovery</h2>
         <p>Protein supports muscle repair, carbohydrates support hard training, and total calories determine whether the body has enough energy to adapt. During aggressive fat loss phases, recovery can suffer. If performance is a priority, avoid combining high training volume, low calories, low sleep, and high stress for long periods.</p>
 
-        <h2>Track simple recovery markers</h2>
+        <h2 id="track-simple-recovery-markers">Track simple recovery markers</h2>
         <p>Use a short checklist: sleep duration, energy, mood, soreness, resting heart rate if available, and training performance. One bad marker is normal. Several bad markers for multiple days suggest you should reduce load. The goal is to keep progress moving without waiting for the body to force a break.</p>
+
+        <section class="blog-implementation" id="weekly-implementation">
+          <h2>How to apply this in the next 7 days</h2>
+          <div class="blog-step-grid">
+            <div class="blog-step-card">
+              <span>Day 1</span>
+              <p>Set a realistic sleep window before adding more training volume.</p>
+            </div>
+            <div class="blog-step-card">
+              <span>Day 2</span>
+              <p>Use one low-stress recovery habit after evening meals.</p>
+            </div>
+            <div class="blog-step-card">
+              <span>Day 3</span>
+              <p>Reduce training dose during unusually stressful weeks instead of quitting entirely.</p>
+            </div>
+            <div class="blog-step-card">
+              <span>Day 4-7</span>
+              <p>Review energy, mood, soreness, and performance together.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="blog-checklist" aria-label="Coach checklist">
+          <h2>Coach checklist</h2>
+          <ul>
+            <li>Protect a consistent sleep opportunity most nights.</li>
+            <li>Avoid using caffeine to cover chronic sleep debt.</li>
+            <li>Fuel hard training with enough protein and total energy.</li>
+            <li>Schedule lighter weeks before performance and motivation crash.</li>
+          </ul>
+        </section>
 
         <div class="blog-article-callout">
           <strong>Garcia Builder value:</strong> simple structure, honest feedback, and weekly accountability. Use this article as education, not individual medical care. If you have pain, a diagnosed condition, pregnancy considerations, medication interactions, or a history of injury, get clearance from a qualified professional before changing training or nutrition.
         </div>
 
-        <h2>References</h2>
+        <section class="blog-faq" id="faq">
+          <h2>FAQ</h2>
+          <details>
+            <summary>How do I know I need more recovery?</summary>
+            <p>Look for several signals at once: worse sleep, low mood, persistent soreness, falling performance, and unusual fatigue.</p>
+          </details>
+          <details>
+            <summary>Is a deload the same as stopping?</summary>
+            <p>No. A deload keeps the habit while reducing volume or intensity so the body can absorb the work.</p>
+          </details>
+          <details>
+            <summary>Can stress affect fat loss or muscle gain?</summary>
+            <p>Yes. Stress can reduce sleep, increase hunger, and lower training quality, which indirectly affects results.</p>
+          </details>
+        </section>
+
+        <h2 id="references">References</h2>
         <ol>
         <li>Centers for Disease Control and Prevention. About sleep. <a href="https://www.cdc.gov/sleep/about/index.html" target="_blank" rel="noopener">https://www.cdc.gov/sleep/about/index.html</a></li>
         <li>World Health Organization. Guidelines on physical activity and sedentary behaviour. <a href="https://www.who.int/publications/i/item/9789240015128" target="_blank" rel="noopener">https://www.who.int/publications/i/item/9789240015128</a></li>
         <li>International Society of Sports Nutrition. Position stand: protein and exercise. <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8" target="_blank" rel="noopener">https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8</a></li>
         </ol>
 
+        <section class="blog-related" aria-label="Related articles">
+          <h2>Read next</h2>
+          <div class="blog-related-grid">
+            <a class="blog-related-card" href="blog-strength-beginners.html">
+              <span>Training</span>
+              <strong>Strength Training for Beginners - 12 Week Starter Plan</strong>
+              <small>A practical 12 week beginner strength plan covering technique, progression, recovery, and simple nutrition targets.</small>
+            </a>
+            <a class="blog-related-card" href="blog-nutrition-fat-loss.html">
+              <span>Nutrition</span>
+              <strong>Beginner Nutrition for Fat Loss - Evidence Based Guide</strong>
+              <small>A deeper beginner guide to fat loss nutrition, including calories, protein, meal structure, adherence, and references.</small>
+            </a>
+            <a class="blog-related-card" href="blog-fat-loss-nutrition.html">
+              <span>Nutrition</span>
+              <strong>Fat Loss Nutrition - Calories, Protein, and Meal Timing</strong>
+              <small>A practical fat loss nutrition article covering the hierarchy of calories, protein, food quality, meal timing, and references.</small>
+            </a>
+          </div>
+        </section>
+
         <div class="blog-article-actions">
-          <a class="blog-article-button" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Build My Plan With André</a>
+          <a class="blog-article-button" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Build My Plan With Andre</a>
           <a class="blog-article-button secondary" href="blog.html">Back to Blog</a>
         </div>
       </div>

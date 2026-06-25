@@ -104,14 +104,26 @@ body.blog-article-page {
   margin: 0;
 }
 
+.blog-article-figure {
+  margin: 28px 0 34px;
+}
+
 .blog-article-image {
   border: 1px solid rgba(246, 200, 78, 0.18);
   border-radius: 12px;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
   display: block;
   height: auto;
-  margin: 28px 0 34px;
+  margin: 0;
   width: 100%;
+}
+
+.blog-article-figure figcaption {
+  color: rgba(248, 250, 252, 0.56);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  margin-top: 10px;
+  text-align: center;
 }
 
 .blog-article-content {
@@ -158,6 +170,83 @@ body.blog-article-page {
   margin: 0;
 }
 
+.blog-toc,
+.blog-evidence-panel,
+.blog-checklist,
+.blog-faq,
+.blog-related {
+  margin: 28px 0 34px;
+}
+
+.blog-toc {
+  background: rgba(2, 6, 23, 0.36);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 16px;
+  padding: 18px 20px;
+}
+
+.blog-toc span,
+.blog-evidence-panel span,
+.blog-step-card span,
+.blog-related-card span {
+  color: #f6c84e;
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.blog-toc ol {
+  columns: 2;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.blog-toc li {
+  break-inside: avoid;
+  margin-bottom: 6px;
+}
+
+.blog-evidence-panel {
+  background:
+    linear-gradient(135deg, rgba(246, 200, 78, 0.12), rgba(37, 99, 235, 0.08)),
+    rgba(2, 6, 23, 0.38);
+  border: 1px solid rgba(246, 200, 78, 0.2);
+  border-radius: 18px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1.05fr 0.95fr;
+  padding: 20px;
+}
+
+.blog-evidence-panel p {
+  margin: 0;
+}
+
+.blog-evidence-links {
+  display: grid;
+  gap: 10px;
+}
+
+.blog-evidence-links a {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(246, 200, 78, 0.14);
+  border-radius: 12px;
+  color: rgba(248, 250, 252, 0.86);
+  display: block;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  padding: 12px 14px;
+  text-decoration: none;
+}
+
+.blog-evidence-links a:hover {
+  border-color: rgba(246, 200, 78, 0.42);
+  color: #f6c84e;
+}
+
 .blog-article-content h2 {
   color: #f6c84e;
   font-size: 1.5rem;
@@ -187,6 +276,56 @@ body.blog-article-page {
   text-underline-offset: 3px;
 }
 
+.blog-step-grid,
+.blog-related-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.blog-step-card,
+.blog-related-card {
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.blog-step-card p,
+.blog-related-card small {
+  margin: 0;
+}
+
+.blog-checklist {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(246, 200, 78, 0.16);
+  border-radius: 18px;
+  padding: 2px 20px 18px;
+}
+
+.blog-checklist li {
+  list-style: none;
+  margin-bottom: 10px;
+  padding-left: 28px;
+  position: relative;
+}
+
+.blog-checklist li::before {
+  background: #f6c84e;
+  border-radius: 999px;
+  color: #08111f;
+  content: "✓";
+  font-size: 0.78rem;
+  font-weight: 900;
+  height: 18px;
+  left: 0;
+  line-height: 18px;
+  position: absolute;
+  text-align: center;
+  top: 6px;
+  width: 18px;
+}
+
 .blog-article-callout {
   background: rgba(246, 200, 78, 0.1);
   border-left: 4px solid #f6c84e;
@@ -194,6 +333,51 @@ body.blog-article-page {
   color: #fff;
   margin: 26px 0;
   padding: 18px 20px;
+}
+
+.blog-faq details {
+  background: rgba(2, 6, 23, 0.38);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 14px;
+  margin-bottom: 12px;
+  padding: 14px 16px;
+}
+
+.blog-faq summary {
+  color: #fff;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.blog-faq details p {
+  margin: 10px 0 0;
+}
+
+.blog-related-card {
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  min-height: 160px;
+  text-decoration: none !important;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.blog-related-card:hover {
+  background: rgba(246, 200, 78, 0.08);
+  border-color: rgba(246, 200, 78, 0.36);
+  transform: translateY(-3px);
+}
+
+.blog-related-card strong {
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.35;
+  margin-bottom: 10px;
+}
+
+.blog-related-card small {
+  color: rgba(248, 250, 252, 0.68);
+  line-height: 1.55;
 }
 
 .blog-article-actions {
@@ -232,6 +416,16 @@ body.blog-article-page {
   }
 
   .blog-value-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-toc ol {
+    columns: 1;
+  }
+
+  .blog-evidence-panel,
+  .blog-step-grid,
+  .blog-related-grid {
     grid-template-columns: 1fr;
   }
 

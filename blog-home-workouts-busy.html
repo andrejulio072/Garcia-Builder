@@ -22,12 +22,74 @@
   <link rel="stylesheet" href="css/components/navbar-component.css?v=20251028">
   <link rel="stylesheet" href="css/global.css?v=20251025">
   <link rel="stylesheet" href="css/components/enhanced-navbar.css?v=20251025">
-  <link rel="stylesheet" href="css/blog-article.css?v=20260624">
+  <link rel="stylesheet" href="css/blog-article.css?v=20260625">
   <script src="js/utils/component-loader-v3-simplified.js?v=20251029"></script>
   <script src="js/tracking/conversion-tracking.js?v=20251025"></script>
   <script defer src="js/tracking/ads-loader.js?v=20251025"></script>
   <script defer src="js/tracking/ads-config.js?v=20251025"></script>
   <script defer src="js/tracking/cta-tracking.js?v=20251112"></script>
+  <script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Home Workouts for Busy People - 20 Minute Routines",
+    "description": "Efficient home workouts for busy people, including equipment options, progression, weekly structure, and safety notes.",
+    "image": "https://garciabuilder.fitness/assets/images/blog/preview-home-workouts-busy-photo.jpg",
+    "author": {
+      "@type": "Person",
+      "name": "Andre Julio Garcia",
+      "url": "https://garciabuilder.fitness/about.html"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Garcia Builder",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png"
+      }
+    },
+    "mainEntityOfPage": "https://garciabuilder.fitness/blog-home-workouts-busy.html",
+    "dateModified": "2026-06-25",
+    "timeRequired": "PT4M",
+    "citation": [
+      "https://www.who.int/publications/i/item/9789240015128",
+      "https://pubmed.ncbi.nlm.nih.gov/19204579/",
+      "https://pubmed.ncbi.nlm.nih.gov/20538161/"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How many days per week should I train?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Most people progress well with three to four focused sessions per week when the plan is consistent and recoverable."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Should I change exercises often?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Keep the main patterns stable for four to six weeks so technique and progression can be measured."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What if I miss a session?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Do the next planned session and keep the week moving. One missed workout should not become a full reset."
+        }
+      }
+    ]
+  }
+]
+  </script>
 </head>
 <body class="blog-article-page">
   <div data-component="navbar"></div>
@@ -58,7 +120,10 @@
             <p>Training clients who want structure, accountability, and clear next steps.</p>
           </div>
         </div>
-        <img class="blog-article-image" src="assets/images/blog/preview-home-workouts-busy-photo.jpg" alt="Person doing a home workout with dumbbells and a timer" loading="eager" decoding="async">
+        <figure class="blog-article-figure">
+          <img class="blog-article-image" src="assets/images/blog/preview-home-workouts-busy-photo.jpg" alt="Person doing a home workout with dumbbells and a timer" loading="eager" decoding="async">
+          <figcaption>Person doing a home workout with dumbbells and a timer. Editorial image selected for Garcia Builder education.</figcaption>
+        </figure>
       </header>
       <div class="blog-article-content">
         <div class="blog-quick-take">
@@ -70,42 +135,137 @@
           </ul>
         </div>
 
+        <nav class="blog-toc" aria-label="Article sections">
+          <span>In this guide</span>
+          <ol>
+          <li><a href="#choose-simple-equipment">Choose simple equipment</a></li>
+          <li><a href="#use-density-instead-of-chaos">Use density instead of chaos</a></li>
+          <li><a href="#a-practical-three-day-template">A practical three day template</a></li>
+          <li><a href="#progress-without-adding-time">Progress without adding time</a></li>
+          <li><a href="#protect-consistency">Protect consistency</a></li>
+            <li><a href="#weekly-implementation">7-day implementation plan</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#references">References</a></li>
+          </ol>
+        </nav>
+
         <aside class="blog-coach-note" aria-label="Coach note">
           <img src="assets/images/about/about5.jpg" alt="Andre Julio Garcia coaching avatar" loading="lazy" decoding="async">
           <div>
-            <span>Coach André note</span>
-            <p>I wrote this for real people with busy weeks, not perfect conditions. Start with “Choose simple equipment”, keep the plan measurable, and let consistency beat intensity.</p>
+            <span>Coach Andre note</span>
+            <p>I wrote this for real people with busy weeks, not perfect conditions. Start with &quot;Choose simple equipment&quot;, keep the plan measurable, and let consistency beat intensity.</p>
           </div>
         </aside>
 
-        <h2>Choose simple equipment</h2>
+        <section class="blog-evidence-panel" aria-label="Evidence and coaching context">
+          <div>
+            <span>Evidence snapshot</span>
+            <p>Training advice is built around progressive overload, stable technique, recovery, and a plan that fits real weekly schedules.</p>
+          </div>
+          <div class="blog-evidence-links">
+          <a href="https://www.who.int/publications/i/item/9789240015128" target="_blank" rel="noopener">World Health Organization. Guidelines on physical activity and sedentary behaviour.</a>
+          <a href="https://pubmed.ncbi.nlm.nih.gov/19204579/" target="_blank" rel="noopener">American College of Sports Medicine. Progression models in resistance training for healthy adults.</a>
+          <a href="https://pubmed.ncbi.nlm.nih.gov/20538161/" target="_blank" rel="noopener">Lally P, et al. How are habits formed: modelling habit formation in the real world.</a>
+          </div>
+        </section>
+
+        <h2 id="choose-simple-equipment">Choose simple equipment</h2>
         <p>You can train with body weight only, but a pair of adjustable dumbbells, a resistance band, and a mat give far more options. The goal is to cover squat, hinge, push, pull, core, and conditioning patterns. If space is limited, keep equipment visible and ready. Removing setup friction can be the difference between doing the session and skipping it.</p>
 
-        <h2>Use density instead of chaos</h2>
+        <h2 id="use-density-instead-of-chaos">Use density instead of chaos</h2>
         <p>A good short workout is not random intensity. Use timed blocks with clean movement. For example, perform three rounds of goblet squats, push ups, band rows, Romanian deadlifts, and dead bugs, resting only as needed to keep form stable. Track total reps or load so the workout can progress next week.</p>
 
-        <h2>A practical three day template</h2>
+        <h2 id="a-practical-three-day-template">A practical three day template</h2>
         <p>Day one can focus on lower body and push. Day two can focus on hinge and pull. Day three can be full body conditioning with lighter loads. Keep warm ups short: breathing, hip mobility, shoulder circles, and one easy set of each first movement. Finish with two minutes of easy walking or mobility to downshift.</p>
 
-        <h2>Progress without adding time</h2>
+        <h2 id="progress-without-adding-time">Progress without adding time</h2>
         <p>If the session must stay at twenty minutes, progress by improving range of motion, adding load, adding reps inside the same time, or reducing rest slightly. Do not sacrifice form just to beat the clock. Short sessions work best when they are repeatable and leave you ready for the next one.</p>
 
-        <h2>Protect consistency</h2>
+        <h2 id="protect-consistency">Protect consistency</h2>
         <p>Schedule home workouts like meetings. Put the phone on do not disturb, set a timer, and use the same training space. If the full session is not possible, complete one ten minute block. A shortened session keeps the identity of being consistent alive, and that matters over months.</p>
+
+        <section class="blog-implementation" id="weekly-implementation">
+          <h2>How to apply this in the next 7 days</h2>
+          <div class="blog-step-grid">
+            <div class="blog-step-card">
+              <span>Day 1</span>
+              <p>Choose the smallest weekly schedule you can repeat for four weeks.</p>
+            </div>
+            <div class="blog-step-card">
+              <span>Day 2</span>
+              <p>Track sets, reps, load, effort, and one recovery marker after each session.</p>
+            </div>
+            <div class="blog-step-card">
+              <span>Day 3</span>
+              <p>Increase only one variable at a time: reps, load, sets, or session density.</p>
+            </div>
+            <div class="blog-step-card">
+              <span>Day 4-7</span>
+              <p>Review progress every Sunday and adjust the next week before motivation becomes the plan.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="blog-checklist" aria-label="Coach checklist">
+          <h2>Coach checklist</h2>
+          <ul>
+            <li>Warm up the exact movement patterns you will train.</li>
+            <li>Keep most working sets one to three reps away from technical failure.</li>
+            <li>Stop or regress any movement that creates sharp, radiating, or worsening pain.</li>
+            <li>Use photos, measurements, and performance logs instead of relying on feelings alone.</li>
+          </ul>
+        </section>
 
         <div class="blog-article-callout">
           <strong>Garcia Builder value:</strong> simple structure, honest feedback, and weekly accountability. Use this article as education, not individual medical care. If you have pain, a diagnosed condition, pregnancy considerations, medication interactions, or a history of injury, get clearance from a qualified professional before changing training or nutrition.
         </div>
 
-        <h2>References</h2>
+        <section class="blog-faq" id="faq">
+          <h2>FAQ</h2>
+          <details>
+            <summary>How many days per week should I train?</summary>
+            <p>Most people progress well with three to four focused sessions per week when the plan is consistent and recoverable.</p>
+          </details>
+          <details>
+            <summary>Should I change exercises often?</summary>
+            <p>Keep the main patterns stable for four to six weeks so technique and progression can be measured.</p>
+          </details>
+          <details>
+            <summary>What if I miss a session?</summary>
+            <p>Do the next planned session and keep the week moving. One missed workout should not become a full reset.</p>
+          </details>
+        </section>
+
+        <h2 id="references">References</h2>
         <ol>
         <li>World Health Organization. Guidelines on physical activity and sedentary behaviour. <a href="https://www.who.int/publications/i/item/9789240015128" target="_blank" rel="noopener">https://www.who.int/publications/i/item/9789240015128</a></li>
         <li>American College of Sports Medicine. Progression models in resistance training for healthy adults. <a href="https://pubmed.ncbi.nlm.nih.gov/19204579/" target="_blank" rel="noopener">https://pubmed.ncbi.nlm.nih.gov/19204579/</a></li>
         <li>Lally P, et al. How are habits formed: modelling habit formation in the real world. <a href="https://pubmed.ncbi.nlm.nih.gov/20538161/" target="_blank" rel="noopener">https://pubmed.ncbi.nlm.nih.gov/20538161/</a></li>
         </ol>
 
+        <section class="blog-related" aria-label="Related articles">
+          <h2>Read next</h2>
+          <div class="blog-related-grid">
+            <a class="blog-related-card" href="blog-strength-beginners.html">
+              <span>Training</span>
+              <strong>Strength Training for Beginners - 12 Week Starter Plan</strong>
+              <small>A practical 12 week beginner strength plan covering technique, progression, recovery, and simple nutrition targets.</small>
+            </a>
+            <a class="blog-related-card" href="blog-muscle-gain-plan.html">
+              <span>Training</span>
+              <strong>Muscle Gain - Progressive Overload Plan</strong>
+              <small>A practical hypertrophy plan for muscle gain covering training volume, progressive overload, protein, calories, and recovery.</small>
+            </a>
+            <a class="blog-related-card" href="blog-running-endurance.html">
+              <span>Training</span>
+              <strong>Running and Endurance - Beginner to Half Marathon</strong>
+              <small>A safe beginner running progression from walk-run intervals toward longer endurance goals, with strength and recovery guidance.</small>
+            </a>
+          </div>
+        </section>
+
         <div class="blog-article-actions">
-          <a class="blog-article-button" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Build My Plan With André</a>
+          <a class="blog-article-button" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Build My Plan With Andre</a>
           <a class="blog-article-button secondary" href="blog.html">Back to Blog</a>
         </div>
       </div>

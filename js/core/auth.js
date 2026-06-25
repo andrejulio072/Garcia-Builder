@@ -1033,6 +1033,22 @@ class AuthSystem {
                 return;
             }
 
+            const isLocalDemoUser = !!(
+                this.currentUser?.is_local_user ||
+                this.currentUser?.is_local_admin ||
+                (isLocalAuthFallbackEnabled() && this.currentUser?.email && /@gb\.local$/i.test(this.currentUser.email))
+            );
+
+            if (isLocalDemoUser) {
+                if (this.currentUser?.role === 'admin') {
+                    window.location.href = toAbsoluteUrl('pages/admin/enhanced-admin-dashboard.html');
+                } else {
+                    const redirectUrl = resolveRedirectTarget(new URLSearchParams(window.location.search));
+                    window.location.href = redirectUrl;
+                }
+                return;
+            }
+
             const previouslyFailed = sessionStorage.getItem('gb_oauth_retry_blocked');
             if (previouslyFailed === '1') {
                 clearStaleUserAndStay('⚠️ Previous session verification failed. Keeping user on login page.');

@@ -93,7 +93,7 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
   }
 
   /* ===== Subtitle ===== */
-  .subtitle{font-size:1.05rem;color:#c9d4ffcc;margin-top:-6px}
+  .subtitle{font-size:1.05rem;color:rgba(214,225,255,.86);margin-top:-6px}
 
   /* ===== Reveal (progressive enhancement) =====
      Visible by default. When JS runs, <html> gets class "js",
@@ -107,7 +107,7 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
   @media (min-width:992px){.price-grid{gap:22px}}
 
   .program-meta {
-    color: rgba(255,255,255,.72);
+    color: rgba(214,225,255,.74);
     text-align: center;
     font-weight: 700;
     letter-spacing: .04em;
@@ -117,10 +117,10 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
   }
 
   .result-band {
-    background: rgba(246, 200, 78, .1);
-    border: 1px solid rgba(246, 200, 78, .32);
+    background: linear-gradient(135deg, rgba(246, 200, 78, .12), rgba(107, 199, 255, .08));
+    border: 1px solid rgba(246, 200, 78, .34);
     border-radius: 12px;
-    color: #ffe08a;
+    color: #ffebad;
     font-weight: 800;
     line-height: 1.35;
     margin: 0 0 14px;
@@ -134,10 +134,10 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
   }
 
   .pricing-value-panel {
-    background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(246,200,78,.08));
-    border: 1px solid rgba(255,255,255,.14);
+    background: linear-gradient(135deg, rgba(11,18,32,.9), rgba(20,30,48,.92));
+    border: 1px solid rgba(246,200,78,.22);
     border-radius: 18px;
-    color: #fff;
+    color: rgba(242,247,255,.94);
     margin-top: 28px;
     padding: 22px;
   }
@@ -174,13 +174,17 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
       margin: 0;
       font-size: clamp(40px, 7vw, 78px);
       line-height: 0.98;
-      color: #fff;
+      background: linear-gradient(135deg, #fff3c4 0%, #f6c84e 45%, #6bc7ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 10px 30px rgba(0,0,0,.42);
     }
 
     .pricing-hero p {
       max-width: 760px;
       margin: 16px auto 0;
-      color: rgba(255,255,255,0.82);
+      color: rgba(221,230,248,0.88);
       font-size: clamp(17px, 2vw, 20px);
     }
 
@@ -193,10 +197,10 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
     }
 
     .pricing-hero-stats span {
-      border: 1px solid rgba(246, 200, 78, 0.2);
-      background: rgba(8, 13, 21, 0.62);
+      border: 1px solid rgba(246, 200, 78, 0.26);
+      background: rgba(11, 18, 32, 0.72);
       border-radius: 999px;
-      color: #fff;
+      color: #f8e8b0;
       font-weight: 800;
       padding: 10px 16px;
     }
@@ -308,9 +312,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 .period-selector {
   margin: 2rem 0;
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.1) 100%);
+  background: linear-gradient(135deg, rgba(11,18,32,0.92) 0%, rgba(20,30,48,0.96) 100%);
   border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(246,200,78,0.18);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
@@ -361,10 +365,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 
 .period-selector .btn-group {
-  background: rgba(0,0,0,0.3);
+  background: rgba(246,200,78,0.08);
   border-radius: 15px;
   padding: 5px;
-  box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.34);
 }
 
 .period-selector .btn {

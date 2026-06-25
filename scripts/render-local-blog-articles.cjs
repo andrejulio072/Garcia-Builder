@@ -39,7 +39,7 @@ const posts = [
     title: 'Beginner Nutrition for Fat Loss - Evidence Based Guide',
     category: 'Nutrition',
     date: 'Updated June 2026',
-    image: 'assets/images/blog/preview-fat-loss-nutrition-photo.jpg',
+    image: 'assets/images/blog/preview-nutrition-fat-loss.svg',
     alt: 'Balanced meal prep containers and nutrition tracking notebook',
     description: 'A deeper beginner guide to fat loss nutrition, including calories, protein, meal structure, adherence, and references.',
     intro: 'Fat loss is simple in physiology and complex in real life. The body needs a sustained energy deficit, but the person needs a plan they can follow on busy days, weekends, social events, and stressful weeks. This guide turns the science into a repeatable system.',
@@ -201,7 +201,7 @@ const posts = [
     title: 'Habit Formation and Mindset for Sustainable Fitness',
     category: 'Mindset',
     date: 'Updated June 2026',
-    image: 'assets/images/blog/preview-habits-mindset-photo.jpg',
+    image: 'assets/images/blog/preview-consistency.svg',
     alt: 'Fitness habit tracker with shoes and gym bag',
     description: 'A behavior-based approach to fitness consistency using small habits, tracking, accountability, identity, and environment design.',
     intro: 'Sustainable fitness is less about finding permanent motivation and more about building systems that make the desired action easier to repeat. Motivation rises and falls. Habits, environment, accountability, and identity carry the plan when motivation is ordinary.',
@@ -256,6 +256,44 @@ function esc(value) {
   return String(value).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 }
 
+function readingMinutes(post) {
+  const words = [
+    post.title,
+    post.description,
+    post.intro,
+    ...post.sections.flat()
+  ].join(' ').trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(4, Math.round(words / 190));
+}
+
+function renderValueStack(post) {
+  const values = [
+    ['What you will get', post.description],
+    ['Coach focus', 'A practical system you can apply this week without chasing extremes or random motivation.'],
+    ['Best for', `${post.category} clients who want structure, accountability, and clear next steps.`]
+  ];
+
+  return values.map(([label, text]) => `          <div class="blog-value-card">
+            <span>${esc(label)}</span>
+            <p>${esc(text)}</p>
+          </div>`).join('\n');
+}
+
+function renderCoachNote(post) {
+  const firstAction = post.sections[0]?.[0] || 'Start with the basics';
+  return `        <aside class="blog-coach-note" aria-label="Coach note">
+          <img src="assets/images/about/about5.jpg" alt="Andre Julio Garcia coaching avatar" loading="lazy" decoding="async">
+          <div>
+            <span>Coach André note</span>
+            <p>I wrote this for real people with busy weeks, not perfect conditions. Start with “${esc(firstAction)}”, keep the plan measurable, and let consistency beat intensity.</p>
+          </div>
+        </aside>`;
+}
+
+function renderTakeaways(post) {
+  return post.sections.slice(0, 3).map(([heading]) => `          <li>${esc(heading)}</li>`).join('\n');
+}
+
 function renderReferences(post) {
   return post.refs.map((key) => {
     const [label, url] = refs[key];
@@ -265,6 +303,7 @@ function renderReferences(post) {
 
 function renderPost(post) {
   const sections = post.sections.map(([heading, text]) => `        <h2>${esc(heading)}</h2>\n        <p>${esc(text)}</p>`).join('\n\n');
+  const minutes = readingMinutes(post);
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -303,15 +342,33 @@ function renderPost(post) {
       <header class="blog-article-hero">
         <p class="blog-article-kicker">${esc(post.category)}</p>
         <h1>${esc(post.title)}</h1>
-        <p class="blog-article-meta">By Andre Julio Garcia | ${esc(post.date)}</p>
+        <div class="blog-author-row">
+          <img src="assets/images/about/about5.jpg" alt="Andre Julio Garcia" loading="lazy" decoding="async">
+          <div>
+            <p class="blog-article-meta">By Andre Julio Garcia | ${esc(post.date)} | ${minutes} min read</p>
+            <p class="blog-author-role">Online coach, strength-focused fat loss, habits, and accountability.</p>
+          </div>
+        </div>
         <p class="blog-article-lede">${esc(post.intro)}</p>
+        <div class="blog-value-grid">
+${renderValueStack(post)}
+        </div>
         <img class="blog-article-image" src="${esc(post.image)}" alt="${esc(post.alt)}" loading="eager" decoding="async">
       </header>
       <div class="blog-article-content">
+        <div class="blog-quick-take">
+          <span>Quick take</span>
+          <ul>
+${renderTakeaways(post)}
+          </ul>
+        </div>
+
+${renderCoachNote(post)}
+
 ${sections}
 
         <div class="blog-article-callout">
-          Use this article as education, not individual medical care. If you have pain, a diagnosed condition, pregnancy considerations, medication interactions, or a history of injury, get clearance from a qualified professional before changing training or nutrition.
+          <strong>Garcia Builder value:</strong> simple structure, honest feedback, and weekly accountability. Use this article as education, not individual medical care. If you have pain, a diagnosed condition, pregnancy considerations, medication interactions, or a history of injury, get clearance from a qualified professional before changing training or nutrition.
         </div>
 
         <h2>References</h2>
@@ -320,7 +377,7 @@ ${renderReferences(post)}
         </ol>
 
         <div class="blog-article-actions">
-          <a class="blog-article-button" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Book Free Consultation</a>
+          <a class="blog-article-button" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Build My Plan With André</a>
           <a class="blog-article-button secondary" href="blog.html">Back to Blog</a>
         </div>
       </div>

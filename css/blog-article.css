@@ -38,9 +38,70 @@ body.blog-article-page {
   line-height: 1.75;
 }
 
+.blog-author-row {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  margin: 18px 0 10px;
+}
+
+.blog-author-row img {
+  border: 2px solid rgba(246, 200, 78, 0.8);
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  height: 58px;
+  object-fit: cover;
+  object-position: center 35%;
+  width: 58px;
+}
+
+.blog-author-row .blog-article-meta {
+  margin: 0;
+}
+
+.blog-author-role {
+  color: rgba(248, 250, 252, 0.58);
+  font-size: 0.93rem;
+  line-height: 1.45;
+  margin: 2px 0 0;
+}
+
 .blog-article-lede {
   font-size: 1.18rem;
   margin-top: 18px;
+}
+
+.blog-value-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 24px 0 8px;
+}
+
+.blog-value-card {
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(246, 200, 78, 0.14);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.blog-value-card span,
+.blog-quick-take span,
+.blog-coach-note span {
+  color: #f6c84e;
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  margin-bottom: 7px;
+  text-transform: uppercase;
+}
+
+.blog-value-card p {
+  color: rgba(248, 250, 252, 0.78);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin: 0;
 }
 
 .blog-article-image {
@@ -58,6 +119,43 @@ body.blog-article-page {
   border: 1px solid rgba(246, 200, 78, 0.12);
   border-radius: 12px;
   padding: clamp(22px, 4vw, 44px);
+}
+
+.blog-quick-take {
+  background: linear-gradient(135deg, rgba(246, 200, 78, 0.12), rgba(15, 23, 42, 0.48));
+  border: 1px solid rgba(246, 200, 78, 0.2);
+  border-radius: 16px;
+  margin-bottom: 28px;
+  padding: 18px 20px;
+}
+
+.blog-quick-take ul {
+  margin: 0;
+}
+
+.blog-coach-note {
+  align-items: center;
+  background: rgba(2, 6, 23, 0.45);
+  border: 1px solid rgba(246, 200, 78, 0.18);
+  border-radius: 18px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 82px 1fr;
+  margin: 28px 0 34px;
+  padding: 18px;
+}
+
+.blog-coach-note img {
+  border: 2px solid rgba(246, 200, 78, 0.78);
+  border-radius: 999px;
+  height: 82px;
+  object-fit: cover;
+  object-position: center 34%;
+  width: 82px;
+}
+
+.blog-coach-note p {
+  margin: 0;
 }
 
 .blog-article-content h2 {
@@ -127,6 +225,18 @@ body.blog-article-page {
   .blog-article-shell {
     width: min(100% - 24px, 920px);
     padding-top: 112px;
+  }
+
+  .blog-author-row {
+    align-items: flex-start;
+  }
+
+  .blog-value-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-coach-note {
+    grid-template-columns: 1fr;
   }
 
   .blog-article-content {

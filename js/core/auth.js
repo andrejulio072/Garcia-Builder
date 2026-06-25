@@ -1267,14 +1267,14 @@ class AuthSystem {
 
     static requireAuth() {
         if (!AuthSystem.isLoggedIn()) {
-            // In local dev mode with flags, auto-provision a local user and continue
+            // Only explicit guest/autologin flags may bypass auth in local preview.
             try {
                 const sp = new URLSearchParams(window.location.search);
-                const isDevFlag = sp.get('dev') === '1' || sp.get('guest') === '1' || sp.get('local') === '1';
+                const allowGuestAutoLogin = sp.get('guest') === '1' || sp.get('autologin') === '1';
                 const isFile = window.location.protocol === 'file:';
                 const host = (window.location && window.location.hostname) || '';
                 const isLocalHost = isLocalLikeHost(host);
-                if ((isLocalHost || isFile) && isDevFlag) {
+                if ((isLocalHost || isFile) && allowGuestAutoLogin) {
                     const tmp = {
                         id: `local-${Date.now()}`,
                         name: 'Local User',

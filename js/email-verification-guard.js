@@ -37,6 +37,26 @@
                     return false; // Page doesn't require verification
                 }
 
+                // Local fallback users don't have Supabase sessions, so skip verification checks.
+                // This keeps local preview/test accounts from being redirected back to login.
+                try {
+                    const rawCurrent = localStorage.getItem('gb_current_user');
+                    if (rawCurrent) {
+                        const localCurrent = JSON.parse(rawCurrent);
+                        const isLocalDemoUser = !!(
+                            localCurrent?.is_local_user ||
+                            localCurrent?.is_local_admin ||
+                            (localCurrent?.email && /@gb\.local$/i.test(localCurrent.email))
+                        );
+                        if (isLocalDemoUser) {
+                            console.log('🔧 Local demo user detected: skipping email verification guard');
+                            return false;
+                        }
+                    }
+                } catch (parseError) {
+                    console.warn('Unable to parse local current user for verification guard', parseError);
+                }
+
                 // Skip verification in dev mode
                 const isLocal = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1');
                 const isDev = new URLSearchParams(window.location.search).get('dev') === '1';

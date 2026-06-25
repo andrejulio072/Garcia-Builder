@@ -249,6 +249,15 @@ const INLINE_FALLBACKS = {
 
             <div class="gb-navbar-actions">
                 <div class="gb-navbar-controls">
+                    <div class="gb-navbar-language" role="group" aria-label="Site language selector">
+                        <span class="gb-navbar-language-icon" aria-hidden="true">🌐</span>
+                        <label for="lang-select-navbar" class="gb-navbar-language-label">Language</label>
+                        <select id="lang-select-navbar" class="gb-lang-select gb-lang-select--desktop" aria-label="Select site language" title="Select language">
+                            <option value="en">EN</option>
+                            <option value="pt">PT</option>
+                            <option value="es">ES</option>
+                        </select>
+                    </div>
                     <div id="auth-buttons-navbar" class="gb-auth-buttons" data-auth-state="anonymous">
                         <a href="#" class="gb-btn-link" data-i18n="nav.login" data-gb-nav="pages/auth/login.html">Login</a>
                         <a href="#" class="gb-btn-primary-small" data-i18n="nav.register" data-gb-nav="pages/auth/login.html?action=register">Register</a>

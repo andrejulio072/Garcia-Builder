@@ -564,7 +564,7 @@ function renderPost(post) {
   <meta name="twitter:description" content="${esc(post.description)}">
   <meta name="twitter:image" content="https://garciabuilder.fitness/${esc(post.image)}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="css/components/navbar-component.css?v=20251028">
+  <link rel="stylesheet" href="css/components/navbar-component.css?v=20260626">
   <link rel="stylesheet" href="css/global.css?v=20251025">
   <link rel="stylesheet" href="css/components/enhanced-navbar.css?v=20251025">
   <link rel="stylesheet" href="css/blog-article.css?v=20260626">

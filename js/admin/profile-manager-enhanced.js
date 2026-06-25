@@ -53,7 +53,7 @@
       }
 
       // Method 3: Local storage (for admin users)
-      const localUser = JSON.parse(localStorage.getItem('garcia_current_user') || 'null');
+      const localUser = JSON.parse(localStorage.getItem('gb_current_user') || localStorage.getItem('garcia_current_user') || 'null');
       if (localUser && localUser.email) {
         console.log('User from localStorage:', localUser.email);
         return localUser;
@@ -339,10 +339,29 @@
   // Save to localStorage
   const saveToLocalStorage = () => {
     try {
-      localStorage.setItem(
-        `garcia_profile_${currentUser.id}`,
-        JSON.stringify(profileData)
-      );
+      const serializedProfile = JSON.stringify(profileData);
+      localStorage.setItem(`garcia_profile_${currentUser.id}`, serializedProfile);
+
+      const cachedRaw = localStorage.getItem('gb_current_user') || localStorage.getItem('garcia_current_user');
+      const cachedUser = cachedRaw ? JSON.parse(cachedRaw) : {};
+      const nextUser = {
+        ...cachedUser,
+        id: cachedUser.id || currentUser.id,
+        email: profileData.basic.email || cachedUser.email || currentUser.email || '',
+        full_name: profileData.basic.full_name || cachedUser.full_name || currentUser.full_name || currentUser.email || 'User',
+        phone: profileData.basic.phone || cachedUser.phone || null,
+        avatar_url: profileData.basic.avatar_url || cachedUser.avatar_url || null,
+        user_metadata: {
+          ...(cachedUser.user_metadata || {}),
+          full_name: profileData.basic.full_name || cachedUser.user_metadata?.full_name || currentUser.full_name || currentUser.email || 'User',
+          phone: profileData.basic.phone || cachedUser.user_metadata?.phone || null,
+          avatar_url: profileData.basic.avatar_url || cachedUser.user_metadata?.avatar_url || null,
+          body_metrics: profileData.body_metrics,
+          preferences: profileData.preferences
+        }
+      };
+
+      localStorage.setItem('gb_current_user', JSON.stringify(nextUser));
     } catch (error) {
       console.warn('⚠️ localStorage save error:', error);
     }

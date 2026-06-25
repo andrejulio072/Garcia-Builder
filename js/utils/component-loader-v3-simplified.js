@@ -125,13 +125,13 @@ function ensureDeferredScript(options) {
 function ensureAnalyticsScripts() {
     try {
         ensureDeferredScript({
-            src: 'js/tracking/ads-loader.js?v=20251025',
+            src: '/js/tracking/ads-loader.js?v=20251025',
             testPartial: 'js/tracking/ads-loader.js',
             id: 'gb-ads-loader'
         });
 
         ensureDeferredScript({
-            src: 'js/modules/event-tracking.js?v=20251025',
+            src: '/js/modules/event-tracking.js?v=20251025',
             testPartial: 'js/modules/event-tracking.js',
             id: 'gb-event-tracking',
             attributes: { crossorigin: 'anonymous' }

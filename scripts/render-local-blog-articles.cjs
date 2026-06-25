@@ -567,7 +567,7 @@ function renderPost(post) {
   <link rel="stylesheet" href="css/components/navbar-component.css?v=20251028">
   <link rel="stylesheet" href="css/global.css?v=20251025">
   <link rel="stylesheet" href="css/components/enhanced-navbar.css?v=20251025">
-  <link rel="stylesheet" href="css/blog-article.css?v=20260625">
+  <link rel="stylesheet" href="css/blog-article.css?v=20260626">
   <script src="js/utils/component-loader-v3-simplified.js?v=20251029"></script>
   <script src="js/tracking/conversion-tracking.js?v=20251025"></script>
   <script defer src="js/tracking/ads-loader.js?v=20251025"></script>
@@ -634,8 +634,8 @@ ${renderReferences(post)}
 ${renderRelatedArticles(post)}
 
         <div class="blog-article-actions">
-          <a class="blog-article-button" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Build My Plan With Andre</a>
-          <a class="blog-article-button secondary" href="blog.html">Back to Blog</a>
+          <a class="blog-article-button" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener"><i class="fas fa-dumbbell" aria-hidden="true"></i> Build My Plan With Andre</a>
+          <a class="blog-article-button secondary" href="blog.html"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to Blog</a>
         </div>
       </div>
     </article>

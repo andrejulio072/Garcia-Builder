@@ -275,6 +275,32 @@
     }
   };
 
+  const syncCachedUserBodyMetrics = (entryData = {}) => {
+    try {
+      const cachedRaw = localStorage.getItem('gb_current_user');
+      if (!cachedRaw) return;
+
+      const cachedUser = JSON.parse(cachedRaw);
+      const mergedMetrics = {
+        ...(cachedUser?.user_metadata?.body_metrics || {}),
+        ...(entryData || {}),
+        updated_at: new Date().toISOString()
+      };
+
+      const nextUser = {
+        ...cachedUser,
+        user_metadata: {
+          ...(cachedUser.user_metadata || {}),
+          body_metrics: mergedMetrics
+        }
+      };
+
+      localStorage.setItem('gb_current_user', JSON.stringify(nextUser));
+    } catch (error) {
+      console.warn('BodyMetrics: failed to sync cached user body metrics', error);
+    }
+  };
+
   const init = () => {
     checkUserAuth();
 
@@ -738,6 +764,15 @@
         Object.assign(entryData, normalizedEntry);
       }
 
+      syncCachedUserBodyMetrics({
+        current_weight: normalizedEntry.weight ?? normalizedEntry.current_weight ?? null,
+        height: normalizedEntry.height ?? null,
+        body_fat_percentage: normalizedEntry.body_fat ?? normalizedEntry.body_fat_percentage ?? null,
+        measurements: normalizedEntry.measurements || {},
+        updated_at: normalizedEntry.updated_at || new Date().toISOString(),
+        last_entry_date: normalizedEntry.date || normalizedEntry.last_entry_date || null
+      });
+
       return { savedViaSupabase, savedLocally: true };
     } catch (error) {
       console.error('BodyMetrics: error saving body metrics:', error);
@@ -747,6 +782,14 @@
         if (entryData && typeof entryData === 'object') {
           Object.assign(entryData, normalizedEntry);
         }
+        syncCachedUserBodyMetrics({
+          current_weight: normalizedEntry.weight ?? normalizedEntry.current_weight ?? null,
+          height: normalizedEntry.height ?? null,
+          body_fat_percentage: normalizedEntry.body_fat ?? normalizedEntry.body_fat_percentage ?? null,
+          measurements: normalizedEntry.measurements || {},
+          updated_at: normalizedEntry.updated_at || new Date().toISOString(),
+          last_entry_date: normalizedEntry.date || normalizedEntry.last_entry_date || null
+        });
       } catch (localErr) {
         console.error('BodyMetrics: also failed to persist locally:', localErr);
       }
@@ -848,7 +891,11 @@
 
   const loadRecentEntries = () => {
     const entriesList = document.getElementById('recent-entries-list');
-    if (!entriesList || !bodyMetrics.length) {
+    if (!entriesList) {
+      return;
+    }
+
+    if (!bodyMetrics.length) {
       entriesList.innerHTML = '<div class="text-muted text-center py-3">No entries yet</div>';
       return;
     }

@@ -266,6 +266,173 @@ img { max-width: 100%; height: auto; display: block; }
   color: #f8e08e;
 }
 
+.testimonials-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 120px 0 72px;
+  background:
+    linear-gradient(180deg, rgba(8, 13, 21, 0.72), rgba(8, 13, 21, 0.9)),
+    url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  border-bottom: 1px solid rgba(248, 224, 142, 0.14);
+}
+
+.testimonials-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 28%, rgba(248, 224, 142, 0.12) 0%, transparent 68%);
+}
+
+.testimonials-hero-inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.testimonials-hero h1 {
+  margin: 0;
+  font-size: clamp(40px, 7vw, 78px);
+  line-height: 0.98;
+  color: #fff;
+}
+
+.testimonials-hero p {
+  max-width: 760px;
+  margin: 16px auto 0;
+  color: rgba(255,255,255,0.82);
+  font-size: clamp(17px, 2vw, 20px);
+}
+
+.testimonials-hero-stats {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.testimonials-hero-stats span {
+  border: 1px solid rgba(248, 224, 142, 0.2);
+  background: rgba(8, 13, 21, 0.62);
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 800;
+  padding: 10px 16px;
+}
+
+.testimonials-cta {
+  position: relative;
+  overflow: hidden;
+  padding: 80px 0;
+}
+
+.testimonials-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(11, 18, 32, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+  z-index: 0;
+}
+
+.testimonials-cta-card {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 60px 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.testimonials-cta-title {
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #f8e08e 0%, #f5b64f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.testimonials-cta-copy {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.testimonials-cta-links {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 2rem;
+  line-height: 1.8;
+}
+
+.testimonials-cta-links p {
+  margin-bottom: 1rem;
+}
+
+.testimonials-cta-link-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.testimonials-cta-link {
+  color: #f5b64f;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 1.15rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.testimonials-cta-link:hover,
+.testimonials-cta-link:focus {
+  color: #f8e08e;
+  transform: scale(1.05);
+}
+
+.testimonials-cta-muted {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.testimonials-cta-note {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 2rem;
+  font-style: italic;
+}
+
+.testimonials-cta-decor {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.testimonials-cta-decor--top {
+  top: -50px;
+  right: -50px;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(248, 224, 142, 0.15) 0%, transparent 70%);
+}
+
+.testimonials-cta-decor--bottom {
+  bottom: -30px;
+  left: -30px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(245, 182, 79, 0.15) 0%, transparent 70%);
+}
+
 .testimonial-spotlight {
   width: 100%;
   margin: 2.5rem 0 1rem;
@@ -668,9 +835,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- Navbar Component (loaded dynamically) -->
 <div data-component="navbar"></div>
 
+<section class="testimonials-hero">
+  <div class="container testimonials-hero-inner">
+    <p class="eyebrow">Client stories</p>
+    <h1 data-i18n="testimonials.title">Testimonials</h1>
+    <p data-i18n="testimonials.subtitle">What clients say about their Garcia Builder experience.</p>
+    <div class="testimonials-hero-stats" aria-label="Testimonials summary">
+      <span>127+ transformations</span>
+      <span>5.0 average rating</span>
+      <span>Weekly accountability</span>
+    </div>
+  </div>
+</section>
+
 <section class="section"><div class="container">
-<h1 class="title-gradient text-glow" data-i18n="testimonials.title">Testimonials</h1>
-<p class="lead text-center" data-i18n="testimonials.subtitle">What clients say about their Garcia Builder experience.</p>
 
 <!-- Statistics Bar -->
 <div class="testimonial-stats">
@@ -736,41 +914,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div></section>
 
 <!-- Testimonial Submission CTA - Moved to end of page -->
-<section class="section" style="padding: 80px 0; position: relative; overflow: hidden;">
-  <div style="position: absolute; inset: 0; background: linear-gradient(135deg, rgba(11, 18, 32, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%); z-index: 1;"></div>
-
-  <div class="container" style="position: relative; z-index: 2;">
-    <div style="max-width: 900px; margin: 0 auto; text-align: center; background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 60px 40px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
-
-      <h3 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1.5rem; background: linear-gradient(135deg, #f8e08e 0%, #f5b64f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-        Want to share your story?
-      </h3>
-
-      <p style="font-size: 1.2rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem; line-height: 1.6;">
-        We love to feature real client results!
-      </p>
-
-      <div style="font-size: 1.1rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem; line-height: 1.8;">
-        <p style="margin-bottom: 1rem;">Email your testimonial (with or without a photo) to</p>
-        <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
-          <a href="mailto:andre@garciabuilder.fitness" style="color: #f5b64f; font-weight: 700; text-decoration: none; font-size: 1.15rem; transition: all 0.3s ease; display: inline-block;" onmouseover="this.style.color='#f8e08e'; this.style.transform='scale(1.05)';" onmouseout="this.style.color='#f5b64f'; this.style.transform='scale(1)';" onclick="return gtag_report_conversion(this.href)">
-            andre@garciabuilder.fitness
-          </a>
-          <span style="color: rgba(255, 255, 255, 0.5);">or DM</span>
-          <a href="https://instagram.com/garciabuilder.fitness" target="_blank" rel="noopener" style="color: #f5b64f; font-weight: 700; text-decoration: none; font-size: 1.15rem; transition: all 0.3s ease; display: inline-block;" onmouseover="this.style.color='#f8e08e'; this.style.transform='scale(1.05)';" onmouseout="this.style.color='#f5b64f'; this.style.transform='scale(1)';" onclick="return gtag_report_conversion(this.href)">
-            @garciabuilder.fitness
-          </a>
-          <span style="color: rgba(255, 255, 255, 0.5);">on Instagram.</span>
+<section class="testimonials-cta">
+  <div class="container">
+    <div class="testimonials-cta-card">
+      <h3 class="testimonials-cta-title">Want to share your story?</h3>
+      <p class="testimonials-cta-copy">We love to feature real client results!</p>
+      <div class="testimonials-cta-links">
+        <p>Email your testimonial (with or without a photo) to</p>
+        <div class="testimonials-cta-link-row">
+          <a href="mailto:andre@garciabuilder.fitness" class="testimonials-cta-link" onclick="return gtag_report_conversion(this.href)">andre@garciabuilder.fitness</a>
+          <span class="testimonials-cta-muted">or DM</span>
+          <a href="https://instagram.com/garciabuilder.fitness" target="_blank" rel="noopener" class="testimonials-cta-link" onclick="return gtag_report_conversion(this.href)">@garciabuilder.fitness</a>
+          <span class="testimonials-cta-muted">on Instagram.</span>
         </div>
       </div>
-
-      <p style="font-size: 1rem; color: rgba(255, 255, 255, 0.6); margin-top: 2rem; font-style: italic;">
-        Your feedback inspires others and helps us grow. Thank you!
-      </p>
-
-      <!-- Decorative elements -->
-      <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(248, 224, 142, 0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
-      <div style="position: absolute; bottom: -30px; left: -30px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(245, 182, 79, 0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+      <p class="testimonials-cta-note">Your feedback inspires others and helps us grow. Thank you!</p>
+      <div class="testimonials-cta-decor testimonials-cta-decor--top"></div>
+      <div class="testimonials-cta-decor testimonials-cta-decor--bottom"></div>
     </div>
   </div>
 </section>

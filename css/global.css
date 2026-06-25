@@ -861,6 +861,16 @@ select option {
   will-change: transform, opacity;
   transform: translate(calc(var(--mx)*-6px), calc(var(--my)*-6px)) scale(1.06);
 }
+
+@media (min-width: 992px) {
+  .hero::before {
+    background:
+      linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.50)),
+      url('../assets/images/hero/bg-fitness.jpg') center top / contain no-repeat;
+    transform: translate(calc(var(--mx)*-3px), calc(var(--my)*-3px)) scale(1);
+    background-color: #0b1220;
+  }
+}
 .hero::after{
   content:'';position:absolute;inset:-10%;
   background: radial-gradient(60% 40% at 50% 20%, #ffb64922 0%, transparent 60%),

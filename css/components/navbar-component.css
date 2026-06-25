@@ -9,8 +9,8 @@
     top: 0;
     z-index: 1000;
     background: rgba(9, 14, 24, 0.95);
-    backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(246, 200, 78, 0.2);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
@@ -144,30 +144,18 @@
 
 .gb-navbar-language {
     align-items: center;
-    background: rgba(255, 255, 255, 0.035);
-    border: 1px solid rgba(246, 200, 78, 0.22);
-    border-radius: 999px;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
     display: inline-flex;
-    gap: 6px;
+    gap: 0;
     min-height: 36px;
-    padding: 4px 6px 4px 8px;
+    padding: 0;
     white-space: nowrap;
 }
 
 .gb-navbar-language-icon {
-    align-items: center;
-    background: rgba(246, 200, 78, 0.14);
-    border: 1px solid rgba(246, 200, 78, 0.24);
-    border-radius: 999px;
-    color: #f6c84e;
-    display: inline-flex;
-    font-size: 0.68rem;
-    font-weight: 900;
-    height: 24px;
-    justify-content: center;
-    line-height: 1;
-    letter-spacing: 0.03em;
-    width: 28px;
+    display: none;
 }
 
 .gb-navbar-language-label {
@@ -622,16 +610,16 @@
 
 #lang-select-navbar.gb-lang-select--desktop,
 .gb-navbar-language .gb-lang-select--desktop {
-    background-color: transparent;
-    border-color: transparent;
-    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.04);
+    border-color: rgba(246, 200, 78, 0.22);
+    border-radius: 12px;
     color: rgba(255, 255, 255, 0.9);
     flex: 0 0 auto;
-    font-size: 0.78rem;
-    font-weight: 900;
+    font-size: 0.82rem;
+    font-weight: 700;
     line-height: 1;
-    min-width: 52px;
-    padding: 6px 22px 6px 6px;
+    min-width: 80px;
+    padding: 8px 28px 8px 12px;
     width: auto;
 }
 
@@ -640,8 +628,8 @@
 .gb-navbar-language .gb-lang-select--desktop:hover,
 .gb-navbar-language .gb-lang-select--desktop:focus {
     background-color: rgba(246, 200, 78, 0.08);
-    border-color: rgba(246, 200, 78, 0.28);
-    box-shadow: 0 0 0 3px rgba(246, 200, 78, 0.1);
+    border-color: rgba(246, 200, 78, 0.4);
+    box-shadow: 0 0 0 3px rgba(246, 200, 78, 0.08);
     color: #ffd966;
 }
 

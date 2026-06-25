@@ -211,6 +211,45 @@ async function syncUserProfile(supabaseClient, user, extra = {}) {
 
     return data;
 }
+
+const LOCAL_DEMO_ACCOUNTS = [
+    { id: '11111111-1111-4111-8111-111111111111', name: 'Admin Garcia', full_name: 'Admin Garcia', email: 'admin@admin.com', password: 'Admin2025!', role: 'admin', username: 'admin' },
+    { id: '22222222-2222-4222-8222-222222222222', name: 'Client One', full_name: 'Client One', email: 'client1@gb.local', password: 'Client2025!1', role: 'client' },
+    { id: '33333333-3333-4333-8333-333333333333', name: 'Client Two', full_name: 'Client Two', email: 'client2@gb.local', password: 'Client2025!2', role: 'client' },
+    { id: '44444444-4444-4444-8444-444444444444', name: 'Client Three', full_name: 'Client Three', email: 'client3@gb.local', password: 'Client2025!3', role: 'client' },
+    { id: '55555555-5555-4555-8555-555555555555', name: 'Client Four', full_name: 'Client Four', email: 'client4@gb.local', password: 'Client2025!4', role: 'client' },
+    { id: '66666666-6666-4666-8666-666666666666', name: 'Coach Andre', full_name: 'Coach Andre Garcia', email: 'coach@gb.local', password: 'Coach2025!', role: 'coach', username: 'coach' }
+];
+
+function seedLocalDemoAccounts() {
+    if (!isLocalAuthFallbackEnabled()) {
+        return [];
+    }
+
+    const existing = JSON.parse(localStorage.getItem('gb_users') || '[]');
+    if (Array.isArray(existing) && existing.length > 0) {
+        return existing;
+    }
+
+    const timestamp = new Date().toISOString();
+    const seededUsers = LOCAL_DEMO_ACCOUNTS.map((account, index) => ({
+        id: account.id || `00000000-0000-4000-8000-00000000000${index + 1}`,
+        name: account.name,
+        full_name: account.full_name,
+        username: account.username || account.email.split('@')[0],
+        email: account.email.toLowerCase(),
+        password: account.password,
+        role: account.role,
+        registeredAt: timestamp,
+        lastLogin: null,
+        created_at: timestamp
+    }));
+
+    localStorage.setItem('gb_users', JSON.stringify(seededUsers));
+    console.log('✅ Local demo accounts seeded:', seededUsers.map(user => user.email));
+    return seededUsers;
+}
+
 class AuthSystem {
     constructor() {
         if (!isLocalAuthFallbackEnabled()) {
@@ -220,7 +259,7 @@ class AuthSystem {
             localStorage.removeItem('gb_users');
         }
         this.users = isLocalAuthFallbackEnabled()
-            ? JSON.parse(localStorage.getItem('gb_users') || '[]')
+            ? seedLocalDemoAccounts()
             : [];
         this.currentUser = JSON.parse(localStorage.getItem('gb_current_user') || 'null');
         
@@ -244,18 +283,19 @@ class AuthSystem {
         this.setupPasswordToggle();
         this.setupPasswordStrength();
 
-        // Dev/Local mode: allow quick local login when running locally with ?dev=1, ?guest=1 or ?local=1
+        // Dev/Local mode: allow quick guest login only when explicitly requested.
         try {
             const sp = new URLSearchParams(window.location.search);
-            const isDevFlag = sp.get('dev') === '1' || sp.get('guest') === '1' || sp.get('local') === '1';
+            const isGuestFlag = sp.get('guest') === '1' || sp.get('autologin') === '1';
+            const isDevFlag = sp.get('dev') === '1' || sp.get('local') === '1';
             const isFile = window.location.protocol === 'file:';
             const host = (window.location && window.location.hostname) || '';
             const isLocalHost = isLocalLikeHost(host);
 
-            if ((isLocalHost || isFile) && isDevFlag && !localStorage.getItem('gb_current_user')) {
+            if ((isLocalHost || isFile) && isGuestFlag && !localStorage.getItem('gb_current_user')) {
                 const now = new Date();
                 const devUser = {
-                    id: `local-${now.getTime()}`,
+                    id: '99999999-9999-4999-8999-999999999999',
                     name: 'Local User',
                     full_name: 'Local User',
                     email: 'local.user@dev',
@@ -267,10 +307,12 @@ class AuthSystem {
                 localStorage.setItem('gb_current_user', JSON.stringify(devUser));
 
                 // Redirect to the canonical dashboard path used in the app
-                const target = toAbsoluteUrl('pages/public/dashboard.html?dev=1');
+                const target = toAbsoluteUrl('pages/public/dashboard.html?guest=1');
                 if (window.location.pathname.endsWith('login.html')) {
                     window.location.href = target;
                 }
+            } else if ((isLocalHost || isFile) && isDevFlag && !localStorage.getItem('gb_current_user')) {
+                console.log('ℹ️ Local demo mode enabled. Demo accounts are available on the login form.');
             }
         } catch (e) {
             console.warn('Dev mode init skipped:', e?.message || e);
@@ -603,49 +645,53 @@ class AuthSystem {
         this.setLoadingState(submitBtn, true);
 
         try {
-            // PRIMEIRO: Verificar se é admin local
-            const isAdminLocal = isLocalAuthFallbackEnabled() && (
-                email === 'admin@local' || email === 'admin' ||
-                (email.startsWith('admin@') && email.length < 20)
-            );
-
-            if (isAdminLocal) {
-                // Buscar admin no localStorage
+            // PRIMEIRO: validar contas locais quando modo local/dev estiver ativo.
+            // Isso permite usar credenciais de teste sem depender do Supabase.
+            if (isLocalAuthFallbackEnabled()) {
                 const users = JSON.parse(localStorage.getItem('gb_users') || '[]');
-                const adminUser = users.find(u =>
-                    u.email === email ||
-                    (u.role === 'admin' && (u.email === 'admin@local' || u.username === 'admin'))
-                );
+                const localUser = users.find((u) => {
+                    const emailMatch = (u.email || '').toLowerCase() === email.toLowerCase();
+                    const adminAliasMatch = (u.role === 'admin') && (
+                        email.toLowerCase() === 'admin' ||
+                        email.toLowerCase() === 'admin@local' ||
+                        (u.username || '').toLowerCase() === email.toLowerCase()
+                    );
+                    return emailMatch || adminAliasMatch;
+                });
 
-                if (adminUser && adminUser.password === password) {
-                    // Login admin local bem-sucedido
-                    adminUser.lastLogin = new Date().toISOString();
+                if (localUser) {
+                    if (localUser.password !== password) {
+                        throw new Error('Incorrect password');
+                    }
+
+                    localUser.lastLogin = new Date().toISOString();
                     localStorage.setItem('gb_users', JSON.stringify(users));
 
                     this.currentUser = {
-                        id: adminUser.id,
-                        name: adminUser.full_name || adminUser.username,
-                        full_name: adminUser.full_name || '',
-                        email: adminUser.email,
-                        role: adminUser.role,
-                        registeredAt: adminUser.created_at || new Date().toISOString(),
-                        lastLogin: new Date().toISOString(),
-                        is_local_admin: true
+                        id: localUser.id,
+                        name: localUser.full_name || localUser.name || localUser.username || localUser.email,
+                        full_name: localUser.full_name || localUser.name || '',
+                        email: localUser.email,
+                        role: localUser.role || 'client',
+                        registeredAt: localUser.created_at || localUser.registeredAt || new Date().toISOString(),
+                        lastLogin: localUser.lastLogin,
+                        is_local_user: true,
+                        is_local_admin: localUser.role === 'admin'
                     };
                     localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
 
-                    // Redirecionar admin para dashboard admin
-                    this.setLoadingState(submitBtn, false);
-                    this.redirectAdminAfterLogin();
-                    return;
-                } else {
-                    throw new Error('Invalid admin credentials');
+                    if (this.currentUser.role === 'admin') {
+                        this.setLoadingState(submitBtn, false);
+                        this.redirectAdminAfterLogin();
+                        return;
+                    }
                 }
             }
 
             // SEGUNDO: Tentar Supabase para usuários normais
-            const supabaseClient = await getSupabaseAuthClient();
-            if (supabaseClient && supabaseClient.auth) {
+            if (!this.currentUser) {
+                const supabaseClient = await getSupabaseAuthClient();
+                if (supabaseClient && supabaseClient.auth) {
                 const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
                 if (error) throw new Error(error.message || 'Login failed');
 
@@ -667,7 +713,7 @@ class AuthSystem {
                 } catch (e) {
                     console.error('Profile synchronization after login failed:', e?.message || e);
                 }
-            } else if (isLocalAuthFallbackEnabled()) {
+                } else if (isLocalAuthFallbackEnabled()) {
                 // Explicit localhost-only fallback for development demos.
                 // Simulate API delay
                 await this.delay(500);
@@ -688,8 +734,9 @@ class AuthSystem {
                     lastLogin: user.lastLogin
                 };
                 localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
-            } else {
+                } else {
                 throw new Error('Online account service is unavailable. No local account was created. Please try again later.');
+                }
             }
 
             if (rememberMe) {

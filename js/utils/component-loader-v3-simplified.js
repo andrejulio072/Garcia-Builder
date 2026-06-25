@@ -667,7 +667,7 @@ function ensureNavbarLogoPath(logoEl) {
 }
 
 function ensureNavbarLinks() {
-    const anchors = document.querySelectorAll('.gb-navbar [data-gb-nav]');
+    const anchors = document.querySelectorAll('.gb-navbar [data-gb-nav], .gb-footer [data-gb-nav]');
     if (!anchors.length) {
         return;
     }

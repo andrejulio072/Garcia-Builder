@@ -24,15 +24,22 @@ class AdminDashboard {
     }
 
     checkAuth() {
-        // Simple auth check
-        const authData = localStorage.getItem('gb_currentUser');
+        // Accept both legacy and current auth storage keys.
+        // Fallback to enhancedAuth in case another script already initialized auth state.
+        const authData = localStorage.getItem('gb_current_user') || localStorage.getItem('gb_currentUser');
         if (!authData) {
-            window.location.href = 'login.html';
-            return false;
+            if (window.enhancedAuth && window.enhancedAuth.currentUser) {
+                this.currentUser = window.enhancedAuth.currentUser;
+            } else {
+                window.location.href = 'login.html';
+                return false;
+            }
         }
 
         try {
-            this.currentUser = JSON.parse(authData);
+            if (!this.currentUser) {
+                this.currentUser = JSON.parse(authData);
+            }
             if (this.currentUser.role !== 'admin') {
                 alert('Access denied. Admin privileges required.');
                 window.location.href = 'dashboard.html';

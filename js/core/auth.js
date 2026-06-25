@@ -155,11 +155,24 @@ async function getSupabaseAuthClient(timeout = 8000) {
 function isLocalAuthFallbackEnabled() {
     if (typeof window === 'undefined' || !window.location) return false;
     const params = new URLSearchParams(window.location.search || '');
-    const explicitlyEnabled = params.get('dev') === '1' || params.get('local') === '1';
-    return explicitlyEnabled && (
+    const host = window.location.hostname || '';
+    const isLocalEnvironment = (
         window.location.protocol === 'file:' ||
-        isLocalLikeHost(window.location.hostname || '')
+        isLocalLikeHost(host)
     );
+
+    if (!isLocalEnvironment) {
+        return false;
+    }
+
+    // Allow explicit opt-out for debugging remote-only auth behavior.
+    if (params.get('local') === '0') {
+        return false;
+    }
+
+    // In localhost/file preview, local fallback should be available even
+    // when the URL was opened from a regular login link without dev params.
+    return true;
 }
 
 async function syncUserProfile(supabaseClient, user, extra = {}) {
@@ -227,27 +240,67 @@ function seedLocalDemoAccounts() {
     }
 
     const existing = JSON.parse(localStorage.getItem('gb_users') || '[]');
-    if (Array.isArray(existing) && existing.length > 0) {
-        return existing;
-    }
+    const merged = Array.isArray(existing) ? [...existing] : [];
 
     const timestamp = new Date().toISOString();
-    const seededUsers = LOCAL_DEMO_ACCOUNTS.map((account, index) => ({
-        id: account.id || `00000000-0000-4000-8000-00000000000${index + 1}`,
-        name: account.name,
-        full_name: account.full_name,
-        username: account.username || account.email.split('@')[0],
-        email: account.email.toLowerCase(),
-        password: account.password,
-        role: account.role,
-        registeredAt: timestamp,
-        lastLogin: null,
-        created_at: timestamp
-    }));
+    let changed = false;
 
-    localStorage.setItem('gb_users', JSON.stringify(seededUsers));
-    console.log('✅ Local demo accounts seeded:', seededUsers.map(user => user.email));
-    return seededUsers;
+    LOCAL_DEMO_ACCOUNTS.forEach((account, index) => {
+        const email = (account.email || '').toLowerCase();
+        const demoRecord = {
+            id: account.id || `00000000-0000-4000-8000-00000000000${index + 1}`,
+            name: account.name,
+            full_name: account.full_name,
+            username: account.username || email.split('@')[0],
+            email,
+            password: account.password,
+            role: account.role,
+            registeredAt: timestamp,
+            lastLogin: null,
+            created_at: timestamp
+        };
+
+        const existingIndex = merged.findIndex((u) => {
+            const sameId = !!u?.id && u.id === demoRecord.id;
+            const sameEmail = ((u?.email || '').toLowerCase() === email);
+            return sameId || sameEmail;
+        });
+
+        if (existingIndex === -1) {
+            merged.push(demoRecord);
+            changed = true;
+            return;
+        }
+
+        const current = merged[existingIndex] || {};
+        const normalized = {
+            ...current,
+            id: demoRecord.id,
+            name: demoRecord.name,
+            full_name: demoRecord.full_name,
+            username: current.username || demoRecord.username,
+            email: demoRecord.email,
+            password: demoRecord.password,
+            role: demoRecord.role,
+            registeredAt: current.registeredAt || demoRecord.registeredAt,
+            created_at: current.created_at || demoRecord.created_at,
+            lastLogin: current.lastLogin || null
+        };
+
+        const before = JSON.stringify(current);
+        const after = JSON.stringify(normalized);
+        if (before !== after) {
+            merged[existingIndex] = normalized;
+            changed = true;
+        }
+    });
+
+    if (changed || merged.length === 0) {
+        localStorage.setItem('gb_users', JSON.stringify(merged));
+    }
+
+    console.log('✅ Local demo accounts ready:', merged.map(user => user.email));
+    return merged;
 }
 
 class AuthSystem {
@@ -648,16 +701,52 @@ class AuthSystem {
             // PRIMEIRO: validar contas locais quando modo local/dev estiver ativo.
             // Isso permite usar credenciais de teste sem depender do Supabase.
             if (isLocalAuthFallbackEnabled()) {
-                const users = JSON.parse(localStorage.getItem('gb_users') || '[]');
-                const localUser = users.find((u) => {
+                const users = seedLocalDemoAccounts();
+                const normalizedEmail = email.toLowerCase();
+                let localUser = users.find((u) => {
                     const emailMatch = (u.email || '').toLowerCase() === email.toLowerCase();
                     const adminAliasMatch = (u.role === 'admin') && (
-                        email.toLowerCase() === 'admin' ||
-                        email.toLowerCase() === 'admin@local' ||
-                        (u.username || '').toLowerCase() === email.toLowerCase()
+                        normalizedEmail === 'admin' ||
+                        normalizedEmail === 'admin@local' ||
+                        (u.username || '').toLowerCase() === normalizedEmail
                     );
                     return emailMatch || adminAliasMatch;
                 });
+
+                // Self-heal: if a known demo account disappeared from storage,
+                // reconstruct it from LOCAL_DEMO_ACCOUNTS and continue login.
+                if (!localUser) {
+                    const template = LOCAL_DEMO_ACCOUNTS.find((account) => {
+                        const accountEmail = (account.email || '').toLowerCase();
+                        const accountUsername = (account.username || '').toLowerCase();
+                        const emailMatch = accountEmail === normalizedEmail;
+                        const adminAliasMatch = account.role === 'admin' && (
+                            normalizedEmail === 'admin' ||
+                            normalizedEmail === 'admin@local' ||
+                            accountUsername === normalizedEmail
+                        );
+                        return emailMatch || adminAliasMatch;
+                    });
+
+                    if (template) {
+                        const now = new Date().toISOString();
+                        localUser = {
+                            id: template.id,
+                            name: template.name,
+                            full_name: template.full_name,
+                            username: template.username || template.email.split('@')[0],
+                            email: template.email.toLowerCase(),
+                            password: template.password,
+                            role: template.role,
+                            registeredAt: now,
+                            created_at: now,
+                            lastLogin: null
+                        };
+                        users.push(localUser);
+                        localStorage.setItem('gb_users', JSON.stringify(users));
+                        console.log('♻️ Restored missing local demo account:', localUser.email);
+                    }
+                }
 
                 if (localUser) {
                     if (localUser.password !== password) {

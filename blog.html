@@ -862,8 +862,8 @@ window.addEventListener('load', function() {
             </div>
 
             <div class="text-center mt-5">
-                <a href="https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia" target="_blank" class="btn btn-outline-light btn-lg" onclick="return gtag_report_conversion(this.href)">
-                    <i class="fas fa-book-open me-2"></i>View All Articles on Trainerize
+                <a href="blog-strength-beginners.html" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-book-open me-2"></i>Start With Garcia Builder Guides
                 </a>
             </div>
         </div>
@@ -886,7 +886,25 @@ window.addEventListener('load', function() {
     <script>
     // Blog UX enhancements: staggered reveal, tilt interaction, keyboard accessibility, and filtering
     document.addEventListener('DOMContentLoaded', function(){
+      function ensureBlogCardAuthor(card) {
+        if (card.querySelector('.blog-card-author')) return;
+        const content = card.querySelector('.blog-content');
+        const link = card.querySelector('.blog-link');
+        if (!content || !link) return;
+        const author = document.createElement('div');
+        author.className = 'blog-card-author';
+        author.innerHTML = `
+          <img src="assets/images/about/about5.jpg" alt="Coach Andre avatar" loading="lazy" decoding="async">
+          <div>
+            <span>Coach Andre</span>
+            <small>Practical coaching notes</small>
+          </div>
+        `;
+        content.insertBefore(author, link);
+      }
+
       const cards = Array.from(document.querySelectorAll('.blog-card'));
+      cards.forEach(ensureBlogCardAuthor);
 
       // Disable CSS animation initially so we can trigger on intersection with delay
       cards.forEach(c => { c.style.animation = 'none'; });
@@ -952,6 +970,8 @@ window.addEventListener('load', function() {
 
       // Keyboard accessibility: allow Enter to open first link inside card
       cards.forEach(card => {
+        const link = card.querySelector('.blog-link');
+        if (link && link.target === '_blank') link.rel = 'noopener';
         card.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             const a = card.querySelector('.blog-link');

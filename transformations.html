@@ -50,8 +50,9 @@
 /* Transformations Enhanced Styles */
 .transformations-hero {
     background:
-        linear-gradient(135deg, rgba(246,200,78,0.13), rgba(121,146,153,0.08) 38%, rgba(6,9,16,0.98)),
-        rgba(7, 10, 18, 0.96);
+    linear-gradient(135deg, rgba(246,200,78,0.10), rgba(121,146,153,0.06) 38%, rgba(6,9,16,0.84)),
+    url('assets/images/transformations/client-paulo-beforeafter.png') center/cover no-repeat,
+    rgba(7, 10, 18, 0.96);
     padding: 80px 0 60px;
     margin-bottom: 60px;
     border-radius: 0 0 28px 28px;
@@ -68,7 +69,7 @@
     right: 0;
     bottom: 0;
     background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23F6C84E" fill-opacity="0.1"><path d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/></g></g></svg>') repeat;
-    opacity: 0.08;
+  opacity: 0.05;
     animation: float 22s ease-in-out infinite;
 }
 
@@ -85,6 +86,7 @@
   border-radius: 16px;
   padding: 30px;
   margin: 40px 0;
+  -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   border: 1px solid rgba(246,200,78,0.22);
   box-shadow: 0 24px 48px rgba(12, 18, 32, 0.28);
@@ -262,6 +264,7 @@
   text-transform: uppercase;
   background: rgba(0,0,0,0.75);
   color: #fff;
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   transition: opacity 0.35s ease, transform 0.35s ease;
   pointer-events: none;

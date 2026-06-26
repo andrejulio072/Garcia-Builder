@@ -19,6 +19,19 @@
   ],
   "headers": [
     {
+      "source": "/assets/28-days-fat-loss-quickstart.pdf",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/pdf"
+        },
+        {
+          "key": "Content-Disposition",
+          "value": "attachment; filename=\"28-Days-Fat-Loss-Quickstart-Garcia-Builder.pdf\""
+        }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
         {

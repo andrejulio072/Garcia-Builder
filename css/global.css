@@ -849,7 +849,7 @@ select option {
 .whatsapp-float{position:fixed;right:18px;bottom:18px;z-index:90;background:#25D366;color:#04120c;border-radius:999px;padding:14px 18px;font-weight:900;border:2px solid #1ca851;box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .contact-float{position:fixed;right:18px;bottom:18px;z-index:90;background:linear-gradient(135deg,#F6C84E 0%,#FF8C00 100%);color:#0a0f1e;border-radius:999px;padding:14px 20px;font-weight:800;border:2px solid rgba(255,215,0,.65);box-shadow:0 8px 24px rgba(0,0,0,.3);text-decoration:none;display:flex;align-items:center;gap:8px;transition:transform .2s ease,box-shadow .2s ease}
 .contact-float:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(246,200,78,.35);color:#0a0f1e}
-@media (max-width: 576px){.contact-float{right:12px;bottom:12px;max-width:calc(100vw - 24px);padding:12px 16px;font-size:.9rem;line-height:1.2;white-space:normal;text-align:center}.whatsapp-float{right:12px;bottom:12px;max-width:calc(100vw - 24px)}}
+@media (max-width: 576px){.contact-float{right:14px;bottom:14px;width:56px;height:56px;padding:0;justify-content:center;gap:0;font-size:0;line-height:1;border-width:2px}.contact-float i{font-size:1.25rem}.whatsapp-float{right:12px;bottom:12px;max-width:calc(100vw - 24px)}}
 
 /* === Stage 10 additions: hero visuals, parallax & count-up === */
 .hero{--mx:0;--my:0}

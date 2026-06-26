@@ -25,8 +25,8 @@
     <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/components/navbar-component.css?v=20251028">
-    <link rel="stylesheet" href="css/global.css?v=20251025">
+    <link rel="stylesheet" href="css/components/navbar-component.css?v=20260627">
+    <link rel="stylesheet" href="css/global.css?v=20260627">
     <link rel="stylesheet" href="css/components/enhanced-navbar.css?v=20251025">
     
     <!-- Component Loader -->
@@ -362,6 +362,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            min-height: 44px;
             transition: color 0.3s, gap 0.3s;
             margin-top: auto;
             font-size: 0.9rem;
@@ -440,6 +441,82 @@
             border: 1px solid rgba(246, 200, 78, 0.08);
             backdrop-filter: blur(10px);
         }
+        .blog-search-panel {
+            width: min(100%, 820px);
+            margin: 18px auto 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: center;
+        }
+        .blog-search-field {
+            position: relative;
+        }
+        .blog-search-field i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(246, 200, 78, 0.88);
+            pointer-events: none;
+        }
+        .blog-search-input {
+            width: 100%;
+            min-height: 48px;
+            border: 1.5px solid rgba(246, 200, 78, 0.24);
+            border-radius: 999px;
+            background: rgba(11, 18, 32, 0.76);
+            color: #fff;
+            padding: 12px 18px 12px 46px;
+            outline: none;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+        .blog-search-input::placeholder {
+            color: rgba(255, 255, 255, 0.56);
+        }
+        .blog-search-input:focus {
+            background: rgba(11, 18, 32, 0.92);
+            border-color: rgba(246, 200, 78, 0.72);
+            box-shadow: 0 0 0 4px rgba(246, 200, 78, 0.12);
+        }
+        .blog-clear-search {
+            min-height: 48px;
+            border: 1px solid rgba(246, 200, 78, 0.28);
+            border-radius: 999px;
+            background: rgba(246, 200, 78, 0.1);
+            color: #F6C84E;
+            font-weight: 800;
+            padding: 0 18px;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+        .blog-clear-search:hover,
+        .blog-clear-search:focus {
+            background: #F6C84E;
+            border-color: #F6C84E;
+            color: #0b1220;
+        }
+        .blog-result-status {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.92rem;
+            font-weight: 700;
+            margin: 14px 0 0;
+            min-height: 1.4em;
+        }
+        .blog-empty-state {
+            display: none;
+            width: min(100%, 760px);
+            margin: 24px auto 0;
+            padding: 28px 22px;
+            border: 1px solid rgba(246, 200, 78, 0.18);
+            border-radius: 16px;
+            background: rgba(15, 23, 42, 0.72);
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+        }
+        .blog-empty-state.is-visible {
+            display: block;
+        }
         .filter-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -504,10 +581,72 @@
                 gap: 20px;
             }
             .filter-buttons {
-                flex-direction: column;
-                align-items: center;
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                gap: 10px;
+                margin-inline: -16px;
+                padding: 0 16px 4px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x proximity;
+            }
+            .filter-btn {
+                flex: 0 0 auto;
+                min-height: 44px;
+                scroll-snap-align: start;
             }
             .blog-content { padding: 20px 16px 16px 16px; }
+            .blog-search-panel {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .blog-clear-search {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-section {
+                padding: 112px 0 42px;
+            }
+            .hero-title {
+                font-size: 2rem;
+                line-height: 1.08;
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            .filter-section {
+                margin-bottom: 32px;
+                padding: 24px 16px;
+                border-radius: 14px;
+            }
+            .section-title {
+                font-size: 1.65rem;
+                line-height: 1.15;
+            }
+            .section-subtitle {
+                font-size: 0.95rem;
+                margin-bottom: 18px;
+            }
+            .blog-section {
+                padding-top: 36px;
+            }
+            .blog-grid {
+                width: 100%;
+            }
+            .blog-card {
+                border-radius: 14px;
+            }
+            .blog-image {
+                height: 190px;
+            }
+            .blog-link {
+                width: 100%;
+                justify-content: space-between;
+                border-top: 1px solid rgba(246, 200, 78, 0.12);
+                padding-top: 12px;
+            }
         }
 
         /* Animations */
@@ -581,6 +720,14 @@ window.addEventListener('load', function() {
                 <button class="filter-btn" data-filter="technology">Technology</button>
                 <button class="filter-btn" data-filter="business">Business</button>
             </div>
+            <div class="blog-search-panel" role="search" aria-label="Search blog articles">
+                <label class="blog-search-field" for="blogSearchInput">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input class="blog-search-input" id="blogSearchInput" type="search" placeholder="Search training, nutrition, recovery, mindset..." autocomplete="off">
+                </label>
+                <button class="blog-clear-search" id="blogClearSearch" type="button">Clear</button>
+            </div>
+            <p class="blog-result-status" id="blogResultStatus" aria-live="polite"></p>
         </div>
     </div>
 
@@ -896,6 +1043,9 @@ window.addEventListener('load', function() {
                     <i class="fas fa-book-open me-2"></i>View All Articles on Trainerize
                 </a>
             </div>
+            <div class="blog-empty-state" id="blogEmptyState">
+                No articles match that search. Try a broader topic or choose another category.
+            </div>
         </div>
     </section>
 
@@ -964,19 +1114,7 @@ window.addEventListener('load', function() {
         btn.addEventListener('click', () => {
           buttons.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
-          const filter = btn.dataset.filter;
-          cards.forEach((card, i) => {
-            if (filter === 'all' || card.dataset.category === filter) {
-              // show
-              card.style.display = '';
-              // small timeout to ensure display applied before removing hidden class
-              setTimeout(() => card.classList.remove('hidden'), 20);
-            } else {
-              // hide with animation
-              card.classList.add('hidden');
-              setTimeout(() => { card.style.display = 'none'; }, 280);
-            }
-          });
+          window.applyBlogFilters?.();
         });
       });
 
@@ -1084,13 +1222,7 @@ window.addEventListener('load', function() {
         btn.addEventListener('click', () => {
           buttons.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
-          const filter = btn.dataset.filter;
-          const all = Array.from(document.querySelectorAll('.blog-card'));
-          all.forEach((card) => {
-            if (filter === 'all' || card.dataset.category === filter) {
-              card.style.display=''; setTimeout(()=>card.classList.remove('hidden'),20);
-            } else { card.classList.add('hidden'); setTimeout(()=>{ card.style.display='none'; },280); }
-          });
+          window.applyBlogFilters?.();
         });
       });
 
@@ -1124,7 +1256,80 @@ window.addEventListener('load', function() {
           `;
           content.insertBefore(author, link);
         }
+
+        card.dataset.search = [
+          card.querySelector('h3')?.textContent,
+          card.querySelector('p')?.textContent,
+          card.dataset.category,
+          card.querySelector('.blog-card-meta')?.textContent,
+          card.querySelector('.blog-card-author')?.textContent
+        ].filter(Boolean).join(' ').toLowerCase();
       });
+
+      const searchInput = document.getElementById('blogSearchInput');
+      const clearSearch = document.getElementById('blogClearSearch');
+      const resultStatus = document.getElementById('blogResultStatus');
+      const emptyState = document.getElementById('blogEmptyState');
+      const getActiveCategory = () => document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+      let filterRun = 0;
+
+      function applyBlogFilters() {
+        filterRun += 1;
+        const currentRun = filterRun;
+        const query = (searchInput?.value || '').trim().toLowerCase();
+        const activeCategory = getActiveCategory();
+        const allCards = Array.from(document.querySelectorAll('.blog-card'));
+        let visibleCount = 0;
+
+        allCards.forEach((card) => {
+          const categoryMatch = activeCategory === 'all' || card.dataset.category === activeCategory;
+          const searchText = card.dataset.search || card.textContent.toLowerCase();
+          const searchMatch = !query || searchText.includes(query);
+          const show = categoryMatch && searchMatch;
+
+          if (show) {
+            visibleCount += 1;
+            card.style.display = '';
+            card.dataset.blogVisible = 'true';
+            window.setTimeout(() => {
+              if (filterRun === currentRun && card.dataset.blogVisible === 'true') {
+                card.classList.remove('hidden');
+              }
+            }, 20);
+          } else {
+            card.dataset.blogVisible = 'false';
+            card.classList.add('hidden');
+            window.setTimeout(() => {
+              if (filterRun === currentRun && card.dataset.blogVisible === 'false') {
+                card.style.display = 'none';
+              }
+            }, 280);
+          }
+        });
+
+        if (resultStatus) {
+          const categoryLabel = activeCategory === 'all' ? 'all categories' : activeCategory;
+          resultStatus.textContent = query
+            ? `${visibleCount} article${visibleCount === 1 ? '' : 's'} for "${query}" in ${categoryLabel}.`
+            : `${visibleCount} article${visibleCount === 1 ? '' : 's'} showing in ${categoryLabel}.`;
+        }
+        emptyState?.classList.toggle('is-visible', visibleCount === 0);
+      }
+
+      window.applyBlogFilters = applyBlogFilters;
+
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', applyBlogFilters);
+      });
+
+      searchInput?.addEventListener('input', applyBlogFilters);
+      clearSearch?.addEventListener('click', () => {
+        if (searchInput) searchInput.value = '';
+        applyBlogFilters();
+        searchInput?.focus();
+      });
+
+      applyBlogFilters();
     })();
     </script>
 

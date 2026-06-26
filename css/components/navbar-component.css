@@ -454,9 +454,10 @@
 /* Mobile Menu Overlay */
 
 .gb-menu {
+    display: none;
     position: fixed;
     top: 0;
-    right: -120%;
+    right: 0;
     left: auto;
     width: clamp(280px, 90vw, 360px);
     height: 100vh;
@@ -469,11 +470,17 @@
     z-index: 1001;
     overflow-y: auto;
     padding: 96px 24px 32px;
-    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(calc(100% + 24px));
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.35s ease;
+    visibility: hidden;
+    max-width: calc(100vw - 24px);
+    contain: layout paint;
 }
 
 .gb-menu.active {
-    right: 0;
+    display: block;
+    transform: translateX(0);
+    visibility: visible;
 }
 
 .gb-menu-inner {
@@ -487,6 +494,7 @@
     .gb-menu {
         width: min(92vw, 360px);
         padding: 88px 20px 28px;
+        max-width: calc(100vw - 16px);
     }
 
     .gb-menu-inner {
@@ -504,6 +512,7 @@
 .gb-menu-link {
     display: block;
     padding: 14px 16px;
+    min-height: 48px;
     font-size: 1.1rem;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.85);
@@ -542,6 +551,18 @@
     flex-wrap: wrap;
     gap: 12px;
     justify-content: flex-start;
+    width: 100%;
+}
+
+.gb-auth-buttons-mobile > .d-flex {
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.gb-auth-buttons-mobile .gb-btn-secondary,
+.gb-auth-buttons-mobile .gb-btn-primary {
+    flex: 1 1 140px;
+    min-height: 48px;
 }
 
 /* Mobile Auth Buttons */

@@ -62,6 +62,20 @@ Required environment values (example):
 - PUBLIC_SITE_URL — canonical site URL (used for OAuth redirect calculations)
 - STRIPE_PUBLISHABLE_KEY — Stripe publishable key (test)
 
+Required backend values for real ebook email delivery (`api/lead.js`):
+
+- SUPABASE_SERVICE_ROLE_KEY — service role key used by serverless endpoints to write leads/subscribers.
+- SMTP_HOST — SMTP host (example: smtp.resend.com, smtp.sendgrid.net).
+- SMTP_PORT — SMTP port (usually `587` or `465`).
+- SMTP_USER — SMTP username.
+- SMTP_PASS — SMTP password / API key.
+- FROM_EMAIL — sender address used for the ebook email.
+
+Optional ebook delivery values:
+
+- EBOOK_DOWNLOAD_URL — absolute URL to the ebook PDF sent in the email (fallback is `/assets/28-days-fat-loss-quickstart.pdf` on the current site).
+- PUBLIC_SITE_URL — used as fallback base URL when generating the ebook link on server responses.
+
 These values are injected at build/runtime via `env-config.json` or through the hosting platform's environment settings. See `docs/ENV-CONFIG-SETUP.md` for step-by-step guidance.
 
 Optional analytics overrides

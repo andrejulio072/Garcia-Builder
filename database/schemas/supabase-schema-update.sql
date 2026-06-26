@@ -97,6 +97,11 @@ BEGIN
     ) THEN
         CREATE POLICY "User can upsert own user_profiles" ON public.user_profiles
             FOR INSERT WITH CHECK (auth.uid() = user_id);
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE policyname = 'User can update own user_profiles' AND tablename = 'user_profiles'
+    ) THEN
         CREATE POLICY "User can update own user_profiles" ON public.user_profiles
             FOR UPDATE USING (auth.uid() = user_id);
     END IF;
@@ -133,6 +138,11 @@ BEGIN
     ) THEN
         CREATE POLICY "User can upsert own body_metrics" ON public.body_metrics
             FOR INSERT WITH CHECK (auth.uid() = user_id);
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE policyname = 'User can update own body_metrics' AND tablename = 'body_metrics'
+    ) THEN
         CREATE POLICY "User can update own body_metrics" ON public.body_metrics
             FOR UPDATE USING (auth.uid() = user_id);
     END IF;
@@ -166,6 +176,11 @@ BEGIN
     ) THEN
         CREATE POLICY "User can upsert own user_preferences" ON public.user_preferences
             FOR INSERT WITH CHECK (auth.uid() = user_id);
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE policyname = 'User can update own user_preferences' AND tablename = 'user_preferences'
+    ) THEN
         CREATE POLICY "User can update own user_preferences" ON public.user_preferences
             FOR UPDATE USING (auth.uid() = user_id);
     END IF;

@@ -92,6 +92,28 @@ function scriptExists(partialSrc) {
     return !!document.querySelector(`script[src*="${partialSrc}"]`);
 }
 
+function resolvePageAssetPath(path) {
+    if (typeof path !== 'string' || !path) {
+        return path;
+    }
+
+    if (/^(?:[a-z]+:)?\/\//i.test(path) || path.startsWith('/') || path.startsWith('./') || path.startsWith('../')) {
+        return path;
+    }
+
+    try {
+        const pathname = (window.location && window.location.pathname) ? window.location.pathname : '/';
+        const normalizedPath = pathname.replace(/\\/g, '/');
+        const segments = normalizedPath.split('/').filter(Boolean);
+        const directoryDepth = normalizedPath.endsWith('/') ? segments.length : Math.max(segments.length - 1, 0);
+        const prefix = directoryDepth > 0 ? '../'.repeat(directoryDepth) : '';
+        return `${prefix}${path}`;
+    } catch (err) {
+        console.warn('[Component Loader] Failed to resolve asset path', path, err);
+        return path;
+    }
+}
+
 function ensureDeferredScript(options) {
     if (!options || !options.src) {
         return;
@@ -99,6 +121,7 @@ function ensureDeferredScript(options) {
 
     const { src, testPartial, id, attributes } = options;
     const lookup = testPartial || src;
+    const resolvedSrc = resolvePageAssetPath(src);
 
     if (scriptExists(lookup)) {
         return;
@@ -106,7 +129,7 @@ function ensureDeferredScript(options) {
 
     const tag = document.createElement('script');
     tag.defer = true;
-    tag.src = src;
+    tag.src = resolvedSrc;
     if (id) {
         tag.id = id;
     }

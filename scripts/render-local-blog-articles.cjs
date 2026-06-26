@@ -249,6 +249,330 @@ const posts = [
       ['Mistake 5: having no measurable target', 'A vague goal like get fit is hard to execute. Set measurable targets such as three sessions per week, eight thousand steps, protein at three meals, or adding five reps across a lift in a month. Clear targets make decisions easier and coaching feedback more useful.']
     ],
     refs: ['acsmProgression', 'whoActivity', 'issnProtein']
+  },
+  {
+    file: 'blog-body-recomposition.html',
+    title: 'Body Recomposition - Lose Fat and Build Muscle',
+    category: 'Nutrition',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/preview-muscle-gain-plan-photo.jpg',
+    alt: 'Strength training setup with dumbbells and workout tracking for body recomposition',
+    description: 'A practical guide to body recomposition: training, protein, calories, progress tracking, and realistic expectations.',
+    intro: 'Body recomposition means improving the ratio of muscle to fat rather than chasing scale weight alone. It works best for beginners, returning lifters, clients with inconsistent training history, and people willing to measure progress with more than one number.',
+    sections: [
+      ['Choose the right calorie target', 'Recomposition usually works best at maintenance calories or a small deficit. Aggressive dieting can reduce training quality, while a large surplus may add fat faster than muscle. Start with a stable calorie range, high protein, and progressive strength training. If waist measurement drops while gym performance improves, the plan is working even when the scale moves slowly.'],
+      ['Train like muscle gain still matters', 'The training stimulus must tell the body to keep or build muscle. Prioritize compound lifts, controlled accessory work, and progressive overload. Do not turn every session into calorie burning. Lifting should be measured by performance quality, not sweat alone. Cardio can support health and calorie balance, but resistance training drives the muscle side of recomposition.'],
+      ['Protein anchors the process', 'A protein serving at each meal improves satiety, recovery, and lean mass retention. Most clients do better with repeatable meals than with constant novelty. Build each day around three or four protein feedings, vegetables or fruit, a useful carbohydrate source, and enough dietary fat for taste and adherence.'],
+      ['Track more than body weight', 'Use waist measurement, progress photos, strength logs, energy, and clothing fit. Recomposition can hide on the scale because muscle gain, water, and glycogen can offset fat loss. A four to eight week trend is more useful than daily judgment. If every marker is flat, adjust calories or training volume slightly rather than changing everything.'],
+      ['Set realistic timeframes', 'Recomposition is slower than a dedicated fat loss phase or a dedicated muscle gain phase. That is the tradeoff. The benefit is sustainability and a better relationship with training. Give the plan at least twelve weeks of honest execution before deciding whether to shift into a clearer fat loss or muscle gain block.']
+    ],
+    refs: ['issnProtein', 'proteinMeta', 'acsmProgression', 'whoActivity']
+  },
+  {
+    file: 'blog-steps-neat-fat-loss.html',
+    title: 'Steps and NEAT - The Underrated Fat Loss Lever',
+    category: 'Health',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/marathon.webp',
+    alt: 'Runner outdoors representing daily movement and endurance habits',
+    description: 'How daily steps and non-exercise activity support fat loss, health, appetite control, and long-term adherence.',
+    intro: 'Fat loss is not only about gym sessions. Non-exercise activity thermogenesis, often called NEAT, includes walking, chores, commuting, standing, and general movement. For busy clients, increasing daily movement is often easier to recover from than adding more intense workouts.',
+    sections: [
+      ['Why steps matter', 'Steps create a low-stress way to increase total energy expenditure. Unlike hard intervals, walking is easy to repeat, does not usually increase soreness, and can improve mood and recovery. A realistic step target also gives structure to days when training is not scheduled.'],
+      ['Start from your baseline', 'Do not copy a random ten thousand step target if your current average is four thousand. Track normal steps for a week, then add one to two thousand per day. The body responds better to gradual change, and adherence improves when the target fits your work, family, weather, and commute.'],
+      ['Use steps to protect nutrition', 'Walking can reduce the pressure to cut calories aggressively. A moderate calorie deficit combined with higher daily movement often feels better than very low food intake. If hunger becomes difficult, increase high-volume foods and keep walking easy rather than turning every walk into a workout.'],
+      ['Make movement automatic', 'Anchor steps to existing routines: ten minutes after lunch, a call while walking, parking farther away, or an evening loop after dinner. Small repeated walking blocks are easier than waiting for one perfect long walk. Consistency matters more than the exact format.'],
+      ['Know when to adjust', 'If fatigue rises, sleep drops, or legs feel heavy for strength sessions, reduce steps temporarily. Movement should support the program, not compete with it. The right target is the highest level you can repeat while still training well and recovering.']
+    ],
+    refs: ['whoActivity', 'cdcSleep', 'lallyHabits']
+  },
+  {
+    file: 'blog-strength-after-40.html',
+    title: 'Strength Training After 40 - Build Muscle Safely',
+    category: 'Training',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/preview-strength-beginners-photo.jpg',
+    alt: 'Coach supporting safe strength training technique in a gym',
+    description: 'A mature lifter guide to strength after 40: joint-friendly loading, recovery, protein, mobility, and progression.',
+    intro: 'Strength training after 40 is not about training timidly. It is about training intelligently. The goal is to keep building muscle, strength, bone loading, and confidence while respecting recovery, joint history, and the reality that warm-ups and sleep matter more than they did at twenty.',
+    sections: [
+      ['Keep the main patterns', 'You still need squats, hinges, pushes, pulls, carries, and trunk work. The exercise variation can change. A trap bar deadlift, goblet squat, cable row, machine press, or split squat may be a better tool than forcing a lift that irritates old injuries. The pattern matters more than the ego attached to one exercise.'],
+      ['Use slower progression', 'Progress can still be steady, but jumps should be smaller. Add reps before load, use controlled tempo, and keep one or two reps in reserve on most sets. The best program is one you can repeat without needing a recovery crisis every few weeks.'],
+      ['Warm up with purpose', 'A mature warm-up should raise temperature, rehearse the first lift, and check readiness. Five to ten minutes is enough for most clients. Include light cardio, joint-specific movement, and ramp-up sets. If the warm-up reveals stiffness or pain, modify the session instead of forcing the original plan.'],
+      ['Prioritize protein and sleep', 'Muscle protein synthesis, recovery, and appetite control all benefit from consistent protein intake. Sleep protects training quality and decision making. If results stall, audit recovery before adding more volume. More sets on poor sleep often create more fatigue, not more progress.'],
+      ['Measure capacity, not just maxes', 'Track strength, pain-free range of motion, resting energy, steps, waist, and photos. A stronger body after 40 should feel more capable outside the gym. Personal records can still happen, but the bigger win is building a body that tolerates life better.']
+    ],
+    refs: ['whoActivity', 'acsmProgression', 'issnProtein', 'proteinMeta']
+  },
+  {
+    file: 'blog-gym-confidence-beginners.html',
+    title: 'Gym Confidence for Beginners - Stop Feeling Lost',
+    category: 'Mindset',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/preview-gym-mistakes-photo.jpg',
+    alt: 'Personal trainer guiding a beginner through a gym exercise',
+    description: 'A practical confidence guide for beginners who feel intimidated in the gym and need a clear first-month system.',
+    intro: 'Gym confidence does not appear before action. It is built by having a simple plan, knowing what to do first, and repeating small wins until the room feels familiar. Most people are paying less attention to you than you think.',
+    sections: [
+      ['Use a written plan', 'Anxiety rises when every decision happens in public. Walk in with the exercises, sets, reps, and backup options already decided. A plan turns the gym from a room full of choices into a checklist. Start with machines and dumbbells if they help you feel safer while learning movement patterns.'],
+      ['Learn the layout first', 'Your first session does not need to be intense. Find the changing area, water, toilets, dumbbells, machines, cables, and stretching space. Knowing where things are reduces friction. If possible, visit at a quieter time for the first week so you can learn without pressure.'],
+      ['Use simple etiquette rules', 'Put weights back, wipe equipment, do not block racks while texting, and ask politely if someone is using a station. These basics cover most gym situations. You do not need to know every unwritten rule before starting. Respect and awareness go a long way.'],
+      ['Track confidence behaviors', 'Instead of only tracking weight or calories, track confidence actions: completed first session, asked a staff member a question, used a new machine, recorded a lift, or trained during a busier hour. Confidence grows when you can see evidence that you handled discomfort.'],
+      ['Get help early if needed', 'A coach can shorten the learning curve by giving you exercise selection, technique cues, and structure. One good session can remove months of guessing. Asking for help is not weakness; it is efficient.']
+    ],
+    refs: ['lallyHabits', 'bctTaxonomy', 'whoActivity']
+  },
+  {
+    file: 'blog-protein-meal-prep.html',
+    title: 'Protein Meal Prep - Simple Systems for Busy Weeks',
+    category: 'Nutrition',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/preview-fat-loss-nutrition-photo.jpg',
+    alt: 'Prepared balanced meals with vegetables and lean protein',
+    description: 'A premium meal prep guide for hitting protein targets without boring food, decision fatigue, or weekend overwhelm.',
+    intro: 'Protein meal prep is not about eating the same dry chicken every day. It is about removing the hardest decision from busy weeks: what am I eating that supports my goal and actually keeps me full?',
+    sections: [
+      ['Prep components, not prison meals', 'Cook two proteins, two carbohydrates, and two vegetables, then mix them with different sauces or seasonings. This keeps structure without monotony. For example, chicken and tofu, rice and potatoes, broccoli and peppers can become several meals without starting from zero each time.'],
+      ['Set a protein anchor', 'Decide the protein first for each meal. Once the anchor is clear, calories and food quality become easier to manage. Greek yogurt, eggs, lean meat, fish, legumes, tofu, cottage cheese, protein powder, and tempeh all work. The best choices are the ones you can repeat.'],
+      ['Control portions with containers', 'Containers help remove guesswork. You do not need perfection, but you do need consistency. If fat loss is the goal, measure calorie-dense ingredients like oils, nuts, cheese, and sauces. If muscle gain is the goal, add carbohydrates around training and keep protein steady.'],
+      ['Plan for the danger meals', 'Most people do not fail because every meal is chaotic. They fail at the same two or three moments: lunch at work, evening snacks, or weekends. Prep for those first. A reliable lunch and a high-protein evening option can change the whole week.'],
+      ['Keep food enjoyable', 'Seasoning, texture, and variety matter. Use herbs, citrus, spices, salsa, yogurt-based sauces, pickled vegetables, and different cooking methods. Enjoyable food improves adherence, and adherence beats the theoretically perfect plan that nobody wants to eat.']
+    ],
+    refs: ['issnProtein', 'proteinMeta', 'whoDiet']
+  },
+  {
+    file: 'blog-deload-recovery.html',
+    title: 'Deload Weeks - Recover Without Losing Progress',
+    category: 'Health',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/preview-recovery-sleep-stress-photo.jpg',
+    alt: 'Recovery routine with sleep and training equipment',
+    description: 'How to use deload weeks to manage fatigue, protect joints, and keep strength progress moving.',
+    intro: 'A deload is not quitting. It is a planned reduction in training stress so your body can absorb previous work. Lifters who never deload often end up taking unplanned breaks through pain, burnout, or performance crashes.',
+    sections: [
+      ['Understand the purpose', 'Training creates stress and signals adaptation. Recovery turns that signal into progress. When stress accumulates faster than recovery, performance drops. A deload reduces volume, intensity, or both so fatigue falls while the training habit stays alive.'],
+      ['Use performance signals', 'You may need a deload when loads feel unusually heavy, joints ache, motivation drops, sleep worsens, and multiple sessions underperform. One bad workout is normal. A pattern across several sessions suggests the program needs adjustment.'],
+      ['Choose the right deload style', 'Some clients reduce sets by half while keeping technique crisp. Others keep the same exercises but lower load. Some switch to machines, mobility, walking, and easy conditioning for a week. The best deload keeps you moving without adding more fatigue.'],
+      ['Do not panic about losing gains', 'You do not lose meaningful muscle or strength from one lighter week. Many clients return stronger because fatigue stops masking fitness. A deload is especially useful after high-volume blocks, travel stress, poor sleep, or hard dieting phases.'],
+      ['Return gradually', 'After a deload, do not immediately double the workload. Resume normal training with clean technique and realistic loads. If the same fatigue pattern returns quickly, the main program may have too much volume or too little recovery for your current life.']
+    ],
+    refs: ['acsmProgression', 'cdcSleep', 'whoActivity']
+  },
+  {
+    file: 'blog-lower-back-resilience.html',
+    title: 'Lower Back Resilience - Train Around Pain Wisely',
+    category: 'Rehabilitation',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/Woman-holding-lower-back.jpg',
+    alt: 'Person holding lower back while considering pain management',
+    description: 'A practical lower back resilience guide covering movement, strength, load management, and when to seek help.',
+    intro: 'Lower back discomfort is common, but fear and complete rest often make people feel more fragile. The goal is not to ignore pain. The goal is to find tolerable movement, rebuild capacity, and know when professional assessment is needed.',
+    sections: [
+      ['Separate pain from damage', 'Pain is a signal, not always a precise damage report. Sharp, radiating, worsening, or neurological symptoms deserve medical attention. But mild stiffness or discomfort often improves with graded movement. Avoid catastrophizing and focus on what movements are currently tolerable.'],
+      ['Keep moving within tolerance', 'Walking, gentle hip hinges, breathing drills, and modified strength work can maintain confidence. Use pain as feedback. If symptoms rise significantly during or after a movement, reduce range, load, speed, or choose another option. The target is tolerable progress.'],
+      ['Strengthen the surrounding system', 'The lower back is influenced by hips, trunk, hamstrings, glutes, and overall workload. Split squats, carries, rows, dead bugs, side planks, hip thrusts, and controlled hinges can all help when appropriately scaled. There is no single magic exercise.'],
+      ['Manage workload spikes', 'Back flare-ups often follow sudden increases in lifting, sitting, running, stress, poor sleep, or unfamiliar tasks. Review the week before symptoms appeared. The answer is often not one bad rep but too much total stress too quickly.'],
+      ['Know when to get assessed', 'Seek qualified care if pain follows trauma, includes numbness or weakness, affects bladder or bowel control, worsens at night, or does not improve with sensible modification. Coaching and clinical care can work together when symptoms need more support.']
+    ],
+    refs: ['whoActivity', 'acsmProgression']
+  },
+  {
+    file: 'blog-shoulder-mobility-strength.html',
+    title: 'Shoulder Mobility and Strength - Press Without Pain',
+    category: 'Rehabilitation',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/preview-mobility-injury-prevention-photo.jpg',
+    alt: 'Athlete using mobility tools for joint preparation',
+    description: 'A shoulder guide for improving pressing, rows, warm-ups, scapular control, and workload decisions.',
+    intro: 'Shoulder pain often leads people to either stop upper-body training completely or push through every warning sign. A better approach is to adjust range, load, exercise selection, and weekly volume while rebuilding control.',
+    sections: [
+      ['Check the pattern first', 'Pain during pressing can come from load, range, grip, elbow position, fatigue, or exercise choice. Before blaming your shoulder, test simpler variations: push-up handles, landmine press, neutral-grip dumbbell press, cable press, or machine press. The right variation can keep training productive.'],
+      ['Train pulling quality', 'Rows, pulldowns, face pulls, carries, and rear delt work support shoulder capacity when performed with control. Pulling is not a cure-all, but many programs are press-heavy and underdose upper-back work. Balance matters.'],
+      ['Use warm-ups that transfer', 'Band pull-aparts, scapular push-ups, wall slides, light rows, and ramp-up pressing sets prepare the joint better than random stretching. A warm-up should make the first working set feel smoother, not exhaust the shoulder before training starts.'],
+      ['Respect volume limits', 'Shoulders often react to total weekly pressing volume, not one set. Bench press, overhead press, dips, push-ups, and even some machine work all count. If symptoms rise, reduce total pressing exposure and rebuild gradually.'],
+      ['Escalate when needed', 'If pain is sharp, persistent, affects sleep, causes weakness, or limits daily tasks, get assessed. Training modifications are useful, but they are not a substitute for clinical evaluation when symptoms are significant.']
+    ],
+    refs: ['acsmProgression', 'whoActivity']
+  },
+  {
+    file: 'blog-travel-fitness.html',
+    title: 'Travel Fitness - Stay Consistent Without a Gym',
+    category: 'Training',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/preview-home-workouts-busy-photo.jpg',
+    alt: 'Home workout setup with dumbbells and exercise mat',
+    description: 'A travel fitness system for hotel rooms, busy schedules, restaurant meals, steps, and flexible expectations.',
+    intro: 'Travel does not need to erase progress. The goal is not to train perfectly on the road. The goal is to preserve the identity of being consistent while adapting to equipment, sleep, food, and schedule changes.',
+    sections: [
+      ['Define the travel minimum', 'Before leaving, decide the minimum that counts: two bodyweight sessions, a step target, protein at breakfast, and water with meals. A realistic minimum prevents the all-or-nothing pattern that turns one missed gym session into a week off.'],
+      ['Pack simple tools', 'Resistance bands, a skipping rope, or a suspension trainer can expand options, but bodyweight is enough. Squats, split squats, push-ups, hip hinges, rows with bands, planks, and carries with luggage can maintain momentum. Keep sessions short and repeatable.'],
+      ['Use steps as the foundation', 'Travel often includes walking opportunities. Airport walks, city exploring, hotel stairs, and short post-meal walks can support energy balance and digestion. Steps are usually easier to recover from than hard workouts after poor sleep.'],
+      ['Handle restaurant meals simply', 'Choose protein first, add vegetables or fruit, then pick the carbohydrate or fat source you actually want. Avoid trying to make every meal perfect. The win is reducing damage while enjoying the trip.'],
+      ['Restart fast when home', 'Plan the first normal workout before you return. Do not punish yourself for travel. Resume the program at slightly reduced loads if sleep was poor, then build back over the week.']
+    ],
+    refs: ['whoActivity', 'whoDiet', 'lallyHabits']
+  },
+  {
+    file: 'blog-vegetarian-muscle.html',
+    title: 'Vegetarian Muscle Gain - Protein Without Guesswork',
+    category: 'Nutrition',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/preview-fat-loss-nutrition-photo.jpg',
+    alt: 'Meal prep containers with vegetables and balanced nutrition',
+    description: 'A vegetarian muscle gain guide covering protein quality, meal planning, calories, supplements, and training support.',
+    intro: 'Vegetarian muscle gain is absolutely possible, but it rewards planning. The main challenges are total protein, protein quality, calories, convenience, and digestion. Solve those and training can progress normally.',
+    sections: [
+      ['Hit total protein first', 'Vegetarian clients should build meals around protein sources: Greek yogurt, eggs if included, cottage cheese, tofu, tempeh, seitan, lentils, beans, soy milk, edamame, and protein powder. Do not rely on small incidental protein from grains alone if muscle gain is the goal.'],
+      ['Use complementary foods', 'Different plant proteins have different amino acid profiles. Variety across the day helps. Soy foods are especially useful because they are protein-dense. Combining legumes, grains, dairy, eggs, or protein powder makes targets easier without overloading one food.'],
+      ['Eat enough calories', 'High-fibre diets can be filling, which is helpful for health but sometimes challenging for muscle gain. Add calorie-dense foods such as olive oil, avocado, nuts, dried fruit, granola, rice, pasta, and smoothies when body weight and performance are not moving.'],
+      ['Support hard training', 'Muscle gain still requires progressive overload. Track lifts, sets, reps, and body weight trend. If training performance is flat and soreness is high, review sleep and total calories before blaming vegetarian eating.'],
+      ['Consider practical supplements', 'Creatine monohydrate and protein powder can be useful for vegetarian lifters. B12, vitamin D, iron, omega-3, and iodine may also matter depending on food choices and bloodwork. Supplement decisions should match individual needs, not marketing.']
+    ],
+    refs: ['issnProtein', 'proteinMeta', 'issnCreatine', 'whoDiet']
+  },
+  {
+    file: 'blog-alcohol-fat-loss.html',
+    title: 'Alcohol and Fat Loss - How to Stay in Control',
+    category: 'Nutrition',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/preview-fat-loss-nutrition-photo.jpg',
+    alt: 'Prepared meals representing planned nutrition choices',
+    description: 'A realistic guide to alcohol, calories, sleep, appetite, training recovery, and social flexibility during fat loss.',
+    intro: 'Alcohol does not make fat loss impossible, but it makes the system harder. It adds calories, can reduce sleep quality, lowers inhibition around food, and often affects the next day of movement and training.',
+    sections: [
+      ['Count the real cost', 'The drink itself is only part of the equation. Mixers, late-night food, skipped workouts, poor sleep, and next-day cravings can matter more than the alcohol calories alone. Track the whole pattern honestly before deciding what needs to change.'],
+      ['Plan the social meal', 'If you know drinks are part of the evening, build the day around protein, vegetables, hydration, and a realistic calorie buffer. Avoid starving all day, because that usually backfires. Arrive fed enough to make choices, not desperate.'],
+      ['Set drink rules before drinking', 'Decision quality drops as alcohol increases. Decide your limit, drink type, and food plan before the event. Alternate with water, avoid high-calorie mixers when possible, and choose a stopping point that protects tomorrow.'],
+      ['Protect sleep and training', 'If sleep is disrupted, adjust the next workout. Do not force a max-effort session to compensate. Walk, hydrate, eat protein, and return to normal. The fastest recovery is returning to the plan, not punishing yourself.'],
+      ['Know your non-negotiables', 'Some goals require stricter alcohol boundaries, especially aggressive fat loss, competition prep, or health concerns. Other phases can allow moderate flexibility. The right rule is the one that matches the goal and your honest behavior pattern.']
+    ],
+    refs: ['whoDiet', 'cdcSleep', 'lallyHabits']
+  },
+  {
+    file: 'blog-stress-eating-control.html',
+    title: 'Stress Eating - Build Control Without Shame',
+    category: 'Mindset',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/preview-habits-mindset-photo.jpg',
+    alt: 'Workout planning setup for building better habits',
+    description: 'A compassionate system for stress eating: triggers, environment, protein anchors, emotional regulation, and recovery.',
+    intro: 'Stress eating is not a character flaw. It is a coping pattern. The solution is not more shame; it is building better defaults before stress peaks and having a restart process after difficult moments.',
+    sections: [
+      ['Find the trigger pattern', 'Look for timing, emotion, environment, and food type. Is it late work? Conflict? Boredom? Restriction during the day? Once the pattern is visible, you can design a specific solution instead of relying on vague willpower.'],
+      ['Eat enough earlier', 'Many evening binges begin with under-eating, low protein, or chaotic meals during the day. A protein-rich breakfast or lunch, planned snack, and enough carbohydrates can reduce the intensity of night cravings. Structure beats white-knuckling hunger.'],
+      ['Change the environment', 'Keep trigger foods in smaller portions or outside the house during high-stress periods. Put easier choices in sight. This is not about banning foods forever. It is about not asking a tired brain to make heroic decisions every night.'],
+      ['Build a pause routine', 'Before eating from stress, use a two-minute interruption: water, breathing, short walk, shower, journaling, or texting accountability. If you still choose the food, portion it intentionally. The pause creates space for choice.'],
+      ['Restart quickly', 'One overeating episode does not ruin progress. The damage usually comes from the shame spiral afterward. Return to normal meals, hydration, steps, and training. Do not compensate with extreme restriction, because that often recreates the same cycle.']
+    ],
+    refs: ['lallyHabits', 'bctTaxonomy', 'cdcSleep']
+  },
+  {
+    file: 'blog-workout-tracking.html',
+    title: 'Workout Tracking - The Logbook System That Works',
+    category: 'Training',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/preview-habits-mindset-photo.jpg',
+    alt: 'Fitness planning setup with notebook and training equipment',
+    description: 'How to track workouts without overcomplication: exercises, sets, reps, load, effort, recovery, and decisions.',
+    intro: 'A training log turns effort into information. Without tracking, it is easy to confuse feeling tired with making progress. The logbook does not need to be complex; it needs to show what to do next.',
+    sections: [
+      ['Track the basics', 'Record exercise, sets, reps, load, and a simple effort rating. Add notes only when they change future decisions: pain, form issue, poor sleep, or equipment change. Too much detail can make tracking harder to sustain.'],
+      ['Use progression rules', 'Decide what earns a load increase before the session starts. For example, when all sets hit the top of the rep range with stable technique, increase weight next time. Clear rules reduce emotional decisions and ego lifting.'],
+      ['Review trends weekly', 'Look for patterns across weeks. Are key lifts improving? Is soreness manageable? Are you missing the same session? Is one exercise always painful? A weekly review turns the log into coaching information.'],
+      ['Track recovery context', 'Sleep, stress, nutrition, and steps explain performance. If a lift drops after poor sleep and low food, the program may not be broken. Context prevents unnecessary changes and helps you identify the real limiter.'],
+      ['Keep it simple enough to repeat', 'The best tracking system is the one you use. Notes app, spreadsheet, training app, or paper notebook can all work. The goal is better decisions, not a perfect archive.']
+    ],
+    refs: ['acsmProgression', 'lallyHabits', 'whoActivity']
+  },
+  {
+    file: 'blog-warm-up-guide.html',
+    title: 'The 10 Minute Warm-Up Guide for Better Training',
+    category: 'Training',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/preview-mobility-injury-prevention-photo.jpg',
+    alt: 'Mobility tools and warm-up setup before training',
+    description: 'A simple warm-up system for strength training: temperature, mobility, activation, ramp-up sets, and readiness checks.',
+    intro: 'A good warm-up is not random stretching. It prepares the specific workout ahead, improves confidence in the first working sets, and helps you notice whether the plan needs adjusting.',
+    sections: [
+      ['Raise temperature first', 'Start with three to five minutes of easy cardio, walking, cycling, rowing, or dynamic movement. The goal is to feel warmer, not tired. This prepares the body without stealing energy from the session.'],
+      ['Mobilize what you need', 'Choose mobility based on the first lift. Squats may need ankles, hips, and trunk. Pressing may need shoulders and upper back. Hinges may need hamstrings and hip control. Avoid turning the warm-up into a separate workout.'],
+      ['Activate with purpose', 'Activation drills should improve the lift, not create fatigue. Glute bridges, band rows, dead bugs, lateral walks, and scapular push-ups can be useful when matched to the session. If a drill does not change movement quality, remove it.'],
+      ['Use ramp-up sets', 'The best warm-up for a lift is often lighter versions of the lift. Gradually increase load while keeping reps low. Ramp-up sets build skill and reveal readiness. If the ramp-up feels unusually bad, adjust the work sets.'],
+      ['Keep it repeatable', 'Most lifters need a reliable ten-minute template, not thirty minutes of complexity. A warm-up should make training better and easier to start. If it becomes a barrier, simplify it.']
+    ],
+    refs: ['acsmProgression', 'whoActivity']
+  },
+  {
+    file: 'blog-cardio-strength-balance.html',
+    title: 'Cardio and Strength - How to Balance Both',
+    category: 'Training',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/marathon-training-plans.jpg',
+    alt: 'Runner training plan representing cardio and strength balance',
+    description: 'A guide to combining cardio and strength training without losing muscle, performance, or recovery.',
+    intro: 'You do not need to choose between strength and cardio. Most clients need both. The challenge is arranging them so endurance supports health without interfering with lifting progress and recovery.',
+    sections: [
+      ['Decide the priority', 'If muscle gain is the priority, strength sessions should get the freshest energy. If a race is the priority, key runs come first. When everything is treated as equally important, recovery often becomes the limiting factor.'],
+      ['Use mostly easy cardio', 'Easy cardio improves aerobic fitness with lower recovery cost. Walking, cycling, incline treadmill, and easy runs can support heart health and fat loss without crushing legs. Keep hard intervals limited and intentional.'],
+      ['Separate hard sessions when possible', 'Heavy lower body lifting and intense running intervals compete for recovery. Separate them by a day when possible, or put the priority session first. If scheduling forces same-day work, keep the second session easier.'],
+      ['Fuel the work', 'Carbohydrates support high-intensity training, protein supports recovery, and total calories determine whether the body has enough resources. Low calories plus high cardio plus hard lifting is a common recipe for fatigue.'],
+      ['Watch performance markers', 'If lifts drop, resting fatigue rises, soreness lingers, and motivation falls, reduce either cardio intensity or lifting volume. The best balance is the one that improves health while preserving the main goal.']
+    ],
+    refs: ['whoActivity', 'acsmProgression', 'issnProtein']
+  },
+  {
+    file: 'blog-client-check-ins.html',
+    title: 'Weekly Check-Ins - The Accountability System That Changes Results',
+    category: 'Mindset',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/preview-habits-mindset-photo.jpg',
+    alt: 'Laptop and workout planning setup for weekly fitness check-ins',
+    description: 'How weekly coaching check-ins turn data, honesty, and adjustments into better training and nutrition outcomes.',
+    intro: 'A weekly check-in is where coaching becomes specific. It turns body weight, photos, training logs, hunger, energy, stress, and adherence into the next best decision. Without check-ins, people often change plans based on emotion.',
+    sections: [
+      ['Review the right data', 'A useful check-in includes weekly weight average, waist, photos, training performance, steps, sleep, hunger, and adherence. No single metric tells the whole story. The pattern across metrics tells the coach what to adjust.'],
+      ['Separate effort from outcome', 'Sometimes effort is high and the outcome needs more time. Sometimes the outcome is flat because the plan was not followed. Honest check-ins separate these situations without blame. That clarity protects motivation and improves decisions.'],
+      ['Make one or two changes', 'Changing calories, training, cardio, sleep, and supplements all at once makes it impossible to know what worked. A good check-in usually produces one or two precise changes. Small adjustments compound when reviewed consistently.'],
+      ['Use check-ins for obstacles', 'Travel, stress, pain, social events, and low motivation should be discussed before they become excuses. The point of coaching is not to judge obstacles; it is to design around them.'],
+      ['Build trust through consistency', 'The check-in habit teaches clients to report honestly and restart quickly. That skill matters after coaching too. Accountability is not dependency when it teaches better self-coaching.']
+    ],
+    refs: ['bctTaxonomy', 'lallyHabits', 'whoActivity']
+  },
+  {
+    file: 'blog-menopause-strength.html',
+    title: 'Menopause Strength Training - Muscle, Bone, and Confidence',
+    category: 'Training',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/preview-womens-strength-hormones-photo.jpg',
+    alt: 'Woman strength training with a barbell in a gym',
+    description: 'A menopause-focused strength guide covering resistance training, protein, recovery, bone loading, and symptom-aware programming.',
+    intro: 'Menopause changes the conversation around training, but it does not remove the ability to get stronger. Strength work, protein, sleep support, and smart recovery become even more valuable when body composition, energy, and symptoms feel less predictable.',
+    sections: [
+      ['Lift with intent', 'Resistance training should be challenging enough to maintain or build muscle. Machines, dumbbells, cables, kettlebells, and barbells can all work. The exercise choice should fit joints, confidence, and access. The effort still needs to be real.'],
+      ['Include bone-loading patterns', 'Squats, hinges, carries, step-ups, and impact as tolerated can support bone and physical capacity. The right level depends on history and symptoms. Start where movement feels safe, then progress gradually.'],
+      ['Protein becomes non-negotiable', 'Consistent protein supports muscle retention, recovery, and satiety. Many women under-eat protein while trying to control weight. Build meals around protein first, then adjust calories based on the goal.'],
+      ['Respect recovery and sleep', 'Hot flushes, stress, and sleep disruption can reduce training tolerance. This does not mean avoiding hard work; it means adjusting volume during poor recovery periods. A sustainable plan flexes without disappearing.'],
+      ['Measure strength and function', 'Track lifts, energy, waist, photos, sleep, symptoms, and daily confidence. Scale weight alone can be misleading. The goal is a body that feels capable, strong, and resilient.']
+    ],
+    refs: ['whoActivity', 'issnProtein', 'acogExercise', 'acsmProgression']
+  },
+  {
+    file: 'blog-busy-parent-fitness.html',
+    title: 'Busy Parent Fitness - Build Results Around Real Life',
+    category: 'Mindset',
+    date: 'Updated June 2026',
+    image: 'assets/images/blog/preview-home-workouts-busy-photo.jpg',
+    alt: 'Home workout setup for busy schedules',
+    description: 'A realistic fitness system for parents balancing training, nutrition, sleep disruption, work, and family routines.',
+    intro: 'Busy parents do not need a perfect fitness plan. They need a plan that survives interruptions. The winning system is shorter, clearer, more flexible, and built around the parts of the week that actually exist.',
+    sections: [
+      ['Use minimum effective training', 'Three focused sessions of thirty to forty-five minutes can work. If that is not possible, use two strength sessions plus short home workouts. The goal is enough stimulus to progress without creating stress that the family schedule cannot absorb.'],
+      ['Prep the default meals', 'Parents often eat leftovers, snacks, or whatever is available. Create two default breakfasts, two lunches, and one emergency dinner that hit protein and vegetables. Defaults reduce decision fatigue when the day becomes chaotic.'],
+      ['Train around sleep reality', 'Poor sleep changes recovery and hunger. On rough nights, keep the habit but reduce intensity. Walk, lift lighter, or complete a shorter session. Consistency during imperfect weeks is the skill that protects long-term progress.'],
+      ['Make family movement count', 'Walks, playground time, bike rides, and active chores all support health and energy expenditure. They may not replace strength training, but they reduce the pressure to solve everything in the gym.'],
+      ['Drop guilt-based standards', 'A parent plan must be flexible. Missing a session because a child is sick is not failure. The plan should include restart rules, not shame. Progress comes from returning quickly.']
+    ],
+    refs: ['whoActivity', 'lallyHabits', 'cdcSleep', 'whoDiet']
   }
 ];
 

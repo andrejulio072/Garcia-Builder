@@ -1008,7 +1008,25 @@ window.addEventListener('load', function() {
         {href:'blog-mobility-injury-prevention.html', img:'assets/images/blog/preview-mobility-injury-prevention-photo.jpg', title:'Mobility and Injury Prevention - Stay Pain Free', excerpt:'Daily mobility, workload, and strength strategies to reduce common training setbacks.', category:'rehabilitation', read:'4 min read'},
         {href:'blog-recovery-sleep-stress.html', img:'assets/images/blog/preview-recovery-sleep-stress-photo.jpg', title:'Recovery, Sleep, and Stress - Performance Essentials', excerpt:'Sleep and stress strategies to improve recovery and training adaptations.', category:'health', read:'4 min read'},
         {href:'blog-habits-mindset.html', img:'assets/images/blog/preview-habits-mindset-photo.jpg', title:'Habit Formation and Mindset for Sustainable Fitness', excerpt:'Behavior design and accountability strategies to make habits stick.', category:'mindset', read:'4 min read'},
-        {href:'blog-consistency.html', img:'assets/images/blog/preview-habits-mindset-photo.jpg', title:'How to Stay Consistent With Fitness', excerpt:'Practical systems for staying on track when motivation and schedules change.', category:'mindset', read:'4 min read'}
+        {href:'blog-consistency.html', img:'assets/images/blog/preview-habits-mindset-photo.jpg', title:'How to Stay Consistent With Fitness', excerpt:'Practical systems for staying on track when motivation and schedules change.', category:'mindset', read:'4 min read'},
+        {href:'blog-body-recomposition.html', img:'assets/images/blog/preview-muscle-gain-plan-photo.jpg', title:'Body Recomposition - Lose Fat and Build Muscle', excerpt:'Training, protein, calories, and tracking for changing body composition without scale obsession.', category:'nutrition', read:'5 min read'},
+        {href:'blog-steps-neat-fat-loss.html', img:'assets/images/blog/marathon.webp', title:'Steps and NEAT - The Underrated Fat Loss Lever', excerpt:'Use daily movement to support fat loss, health, recovery, and appetite control.', category:'health', read:'5 min read'},
+        {href:'blog-strength-after-40.html', img:'assets/images/blog/preview-strength-beginners-photo.jpg', title:'Strength Training After 40 - Build Muscle Safely', excerpt:'Joint-friendly loading, protein, recovery, and progression for mature lifters.', category:'training', read:'5 min read'},
+        {href:'blog-gym-confidence-beginners.html', img:'assets/images/blog/preview-gym-mistakes-photo.jpg', title:'Gym Confidence for Beginners - Stop Feeling Lost', excerpt:'A first-month system for building confidence, etiquette, and consistency in the gym.', category:'mindset', read:'5 min read'},
+        {href:'blog-protein-meal-prep.html', img:'assets/images/blog/preview-fat-loss-nutrition-photo.jpg', title:'Protein Meal Prep - Simple Systems for Busy Weeks', excerpt:'Hit protein targets without boring meals, decision fatigue, or weekend overwhelm.', category:'nutrition', read:'5 min read'},
+        {href:'blog-deload-recovery.html', img:'assets/images/blog/preview-recovery-sleep-stress-photo.jpg', title:'Deload Weeks - Recover Without Losing Progress', excerpt:'Use planned lighter weeks to manage fatigue, protect joints, and keep progress moving.', category:'health', read:'5 min read'},
+        {href:'blog-lower-back-resilience.html', img:'assets/images/blog/Woman-holding-lower-back.jpg', title:'Lower Back Resilience - Train Around Pain Wisely', excerpt:'Movement, strength, workload management, and when to seek help for back discomfort.', category:'rehabilitation', read:'5 min read'},
+        {href:'blog-shoulder-mobility-strength.html', img:'assets/images/blog/preview-mobility-injury-prevention-photo.jpg', title:'Shoulder Mobility and Strength - Press Without Pain', excerpt:'Improve pressing with smarter warm-ups, pulling volume, scapular control, and load management.', category:'rehabilitation', read:'5 min read'},
+        {href:'blog-travel-fitness.html', img:'assets/images/blog/preview-home-workouts-busy-photo.jpg', title:'Travel Fitness - Stay Consistent Without a Gym', excerpt:'Hotel-room workouts, restaurant rules, steps, and restart systems for busy travel weeks.', category:'training', read:'5 min read'},
+        {href:'blog-vegetarian-muscle.html', img:'assets/images/blog/preview-fat-loss-nutrition-photo.jpg', title:'Vegetarian Muscle Gain - Protein Without Guesswork', excerpt:'Protein quality, calories, supplements, and training support for vegetarian lifters.', category:'nutrition', read:'5 min read'},
+        {href:'blog-alcohol-fat-loss.html', img:'assets/images/blog/preview-fat-loss-nutrition-photo.jpg', title:'Alcohol and Fat Loss - How to Stay in Control', excerpt:'Manage social drinking, calories, sleep, appetite, and recovery without all-or-nothing thinking.', category:'nutrition', read:'5 min read'},
+        {href:'blog-stress-eating-control.html', img:'assets/images/blog/preview-habits-mindset-photo.jpg', title:'Stress Eating - Build Control Without Shame', excerpt:'Triggers, environment, protein anchors, pause routines, and fast recovery after hard days.', category:'mindset', read:'5 min read'},
+        {href:'blog-workout-tracking.html', img:'assets/images/blog/preview-habits-mindset-photo.jpg', title:'Workout Tracking - The Logbook System That Works', excerpt:'Track sets, reps, load, effort, and recovery so every week has a clear next step.', category:'training', read:'5 min read'},
+        {href:'blog-warm-up-guide.html', img:'assets/images/blog/preview-mobility-injury-prevention-photo.jpg', title:'The 10 Minute Warm-Up Guide for Better Training', excerpt:'Temperature, mobility, activation, ramp-up sets, and readiness checks before lifting.', category:'training', read:'5 min read'},
+        {href:'blog-cardio-strength-balance.html', img:'assets/images/blog/marathon-training-plans.jpg', title:'Cardio and Strength - How to Balance Both', excerpt:'Combine endurance and lifting without sacrificing muscle, performance, or recovery.', category:'training', read:'5 min read'},
+        {href:'blog-client-check-ins.html', img:'assets/images/blog/preview-habits-mindset-photo.jpg', title:'Weekly Check-Ins - The Accountability System That Changes Results', excerpt:'Turn data, honesty, and coaching adjustments into better training and nutrition outcomes.', category:'mindset', read:'5 min read'},
+        {href:'blog-menopause-strength.html', img:'assets/images/blog/preview-womens-strength-hormones-photo.jpg', title:'Menopause Strength Training - Muscle, Bone, and Confidence', excerpt:'Resistance training, protein, recovery, and symptom-aware programming for menopause.', category:'training', read:'5 min read'},
+        {href:'blog-busy-parent-fitness.html', img:'assets/images/blog/preview-home-workouts-busy-photo.jpg', title:'Busy Parent Fitness - Build Results Around Real Life', excerpt:'A flexible fitness system for parents balancing training, nutrition, sleep, and family routines.', category:'mindset', read:'5 min read'}
       ];
       const grid = document.getElementById('blogGrid');
       if (!grid) return;
@@ -1074,6 +1092,38 @@ window.addEventListener('load', function() {
             } else { card.classList.add('hidden'); setTimeout(()=>{ card.style.display='none'; },280); }
           });
         });
+      });
+
+      Array.from(document.querySelectorAll('.blog-card')).forEach((card) => {
+        const link = card.querySelector('.blog-link');
+        const content = card.querySelector('.blog-content');
+        if (!content || !link) return;
+
+        const isLocal = Boolean(link.getAttribute('href')?.startsWith('blog-'));
+        card.classList.toggle('blog-card--local', isLocal);
+        card.classList.toggle('blog-card--external', !isLocal);
+
+        if (!content.querySelector('.blog-card-meta')) {
+          const meta = document.createElement('div');
+          meta.className = 'blog-card-meta';
+          meta.innerHTML = isLocal
+            ? '<span>Garcia Builder guide</span><span>4 min read</span>'
+            : '<span>Trainerize article</span><span>External read</span>';
+          content.insertBefore(meta, content.firstElementChild);
+        }
+
+        if (!content.querySelector('.blog-card-author')) {
+          const author = document.createElement('div');
+          author.className = 'blog-card-author';
+          author.innerHTML = `
+            <img src="assets/images/about/about5.jpg" alt="Coach Andre avatar" loading="lazy" decoding="async">
+            <div>
+              <span>${isLocal ? 'Coach André' : 'Curated by André'}</span>
+              <small>${isLocal ? 'Practical coaching notes' : 'Trainerize education pick'}</small>
+            </div>
+          `;
+          content.insertBefore(author, link);
+        }
       });
     })();
     </script>

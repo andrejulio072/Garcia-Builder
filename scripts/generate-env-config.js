@@ -24,6 +24,15 @@ const requiredKeys = [
   'STRIPE_PUBLISHABLE_KEY'
 ];
 
+function parseBooleanEnv(value, fallback = false) {
+  if (value === undefined || value === null || value === '') {
+    return fallback;
+  }
+
+  const normalized = String(value).trim().toLowerCase();
+  return ['1', 'true', 'yes', 'on'].includes(normalized);
+}
+
 const missing = requiredKeys.filter((key) => !process.env[key]);
 
 if (missing.length > 0) {
@@ -42,7 +51,9 @@ const publicEnv = {
   STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
   PUBLIC_SITE_URL:
     process.env.PUBLIC_SITE_URL || process.env.FRONTEND_URL || null,
-  GA4_MEASUREMENT_ID: process.env.GA4_MEASUREMENT_ID || null
+  GA4_MEASUREMENT_ID: process.env.GA4_MEASUREMENT_ID || null,
+  GOOGLE_OAUTH_ENABLED: parseBooleanEnv(process.env.GOOGLE_OAUTH_ENABLED, false),
+  FACEBOOK_OAUTH_ENABLED: parseBooleanEnv(process.env.FACEBOOK_OAUTH_ENABLED, false)
 };
 
 try {

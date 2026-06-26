@@ -11,9 +11,10 @@
     "serve": "node tools/static-server.js",
     "sitemap": "node tools/generate-sitemap.js",
     "lint": "powershell -ExecutionPolicy Bypass -File validate-components.ps1",
+    "build": "npm run build:env",
     "build:env": "node scripts/generate-env-config.js",
     "filter:backup": "node scripts/filter-supabase-backup.js",
-    "postinstall": "node scripts/generate-env-config.js",
+    "postinstall": "node scripts/generate-env-config.js --optional",
     "ship": "pwsh -NoLogo -ExecutionPolicy Bypass -File scripts/Invoke-Ship.ps1 -Project iron-brothers",
     "ship:ib": "pwsh -NoLogo -ExecutionPolicy Bypass -File scripts/Invoke-Ship.ps1 -Project iron-brothers",
     "ship:gb": "pwsh -NoLogo -ExecutionPolicy Bypass -File scripts/Invoke-Ship.ps1 -Project garcia-builder",
@@ -34,21 +35,22 @@
   "author": "Garcia Builder",
   "license": "MIT",
   "dependencies": {
-    "@supabase/supabase-js": "^2.44.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
+    "@supabase/supabase-js": "^2.108.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
     "express": "^4.18.2",
     "express-rate-limit": "^8.1.0",
-    "helmet": "^8.1.0",
+    "helmet": "^8.2.0",
     "nodemailer": "^9.0.1",
     "stripe": "^14.25.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
     "jsdom": "^26.1.0",
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.1.14"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
   }
 }

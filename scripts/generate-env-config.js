@@ -1,6 +1,6 @@
 /*
  * Auto-generate a public environment bundle for the static frontend.
- * This script runs during postinstall (local and Vercel) and writes
+ * This script runs during build/postinstall and writes
  * `env-config.json` at the project root containing ONLY public keys.
  *
  * Required environment variables:
@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 
 const OUTPUT_FILE = path.join(__dirname, '..', 'env-config.json');
+const optional = process.argv.includes('--optional');
 
 const requiredKeys = [
   'SUPABASE_URL',
@@ -27,6 +28,10 @@ const missing = requiredKeys.filter((key) => !process.env[key]);
 
 if (missing.length > 0) {
   const message = `Missing required env vars: ${missing.join(', ')}`;
+  if (optional) {
+    console.warn(`[env-config] ${message}. Skipping optional postinstall generation.`);
+    process.exit(0);
+  }
   console.error(`\n[env-config] ${message}`);
   throw new Error(message);
 }

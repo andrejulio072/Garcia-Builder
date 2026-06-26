@@ -122,9 +122,16 @@ Code ownership & tests
 
 ## Useful commands
 
+Prerequisites:
+
+- Node.js `>=20.0.0` (the local `.nvmrc` pins the current development runtime to `22.11.0`)
+- npm `>=10.0.0`
+
 ```pwsh
 # lint or quick checks (project has few node tasks)
 npm ci
+npm test --silent
+npm run ci:build
 # Git housekeeping
 git fetch --prune
 # delete a local branch

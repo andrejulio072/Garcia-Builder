@@ -243,6 +243,15 @@
             border-color: rgba(246, 200, 78, 0.4);
         }
 
+        .blog-card--local {
+            border-color: rgba(246, 200, 78, 0.34);
+            box-shadow: 0 12px 34px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(246, 200, 78, 0.08);
+        }
+
+        .blog-card--local .blog-content h3 {
+            font-size: 1.2rem;
+        }
+
 
         .blog-image {
             position: relative;
@@ -400,6 +409,25 @@
             color: rgba(255, 255, 255, 0.56);
             display: block;
             font-size: 0.76rem;
+        }
+
+        .blog-card-meta {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .blog-card-meta span {
+            background: rgba(246, 200, 78, 0.1);
+            border: 1px solid rgba(246, 200, 78, 0.2);
+            border-radius: 999px;
+            color: rgba(255, 255, 255, 0.84);
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            padding: 5px 9px;
         }
 
 
@@ -968,25 +996,25 @@ window.addEventListener('load', function() {
     <script>
     (function(){
       const posts = [
-        {href:'blog-strength-beginners.html', img:'assets/images/blog/preview-strength-beginners-photo.jpg', title:'Strength Training for Beginners - 12 Week Starter Plan', excerpt:'A practical starter plan to build foundational strength and technique safely.', category:'training'},
-        {href:'blog-gym-mistakes.html', img:'assets/images/blog/preview-gym-mistakes-photo.jpg', title:'Top Beginner Gym Mistakes and How to Fix Them', excerpt:'The common technique, warm-up, progression, and recovery errors that slow early results.', category:'training'},
-        {href:'blog-muscle-gain-plan.html', img:'assets/images/blog/preview-muscle-gain-plan-photo.jpg', title:'Muscle Gain - Progressive Overload Plan', excerpt:'Programming, nutrition, and recovery to support consistent hypertrophy.', category:'training'},
-        {href:'blog-home-workouts-busy.html', img:'assets/images/blog/preview-home-workouts-busy-photo.jpg', title:'Home Workouts for Busy People - 20 Minute Routines', excerpt:'Efficient home sessions that maintain momentum when the week is packed.', category:'training'},
-        {href:'blog-running-endurance.html', img:'assets/images/blog/marathon.webp', title:'Running and Endurance - Beginner to Half Marathon', excerpt:'A safe, progressive approach from walk-run intervals toward longer endurance goals.', category:'training'},
-        {href:'blog-womens-strength-hormones.html', img:'assets/images/blog/preview-womens-strength-hormones-photo.jpg', title:"Women's Strength Training and Hormonal Considerations", excerpt:'Practical strength guidance across cycle changes, pregnancy, postpartum, and menopause.', category:'training'},
-        {href:'blog-nutrition-fat-loss.html', img:'assets/images/blog/preview-nutrition-fat-loss.svg', title:'Beginner Nutrition for Fat Loss - Evidence Based Guide', excerpt:'Calories, protein, meal structure, and adherence strategies for fat loss.', category:'nutrition'},
-        {href:'blog-fat-loss-nutrition.html', img:'assets/images/blog/preview-fat-loss-nutrition.svg', title:'Fat Loss Nutrition - Calories, Protein, and Meal Timing', excerpt:'A deeper look at the hierarchy that makes fat loss sustainable.', category:'nutrition'},
-        {href:'blog-supplements-explained.html', img:'assets/images/blog/creatine.jpg', title:'Supplements Explained - What Actually Works', excerpt:'Evidence-backed overview of practical supplements to prioritize.', category:'nutrition'},
-        {href:'blog-mobility-injury-prevention.html', img:'assets/images/blog/preview-mobility-injury-prevention-photo.jpg', title:'Mobility and Injury Prevention - Stay Pain Free', excerpt:'Daily mobility, workload, and strength strategies to reduce common training setbacks.', category:'rehabilitation'},
-        {href:'blog-recovery-sleep-stress.html', img:'assets/images/blog/preview-recovery-sleep-stress-photo.jpg', title:'Recovery, Sleep, and Stress - Performance Essentials', excerpt:'Sleep and stress strategies to improve recovery and training adaptations.', category:'health'},
-        {href:'blog-habits-mindset.html', img:'assets/images/blog/preview-habits-mindset-photo.jpg', title:'Habit Formation and Mindset for Sustainable Fitness', excerpt:'Behavior design and accountability strategies to make habits stick.', category:'mindset'},
-        {href:'blog-consistency.html', img:'assets/images/blog/preview-consistency.svg', title:'How to Stay Consistent With Fitness', excerpt:'Practical systems for staying on track when motivation and schedules change.', category:'mindset'}
+        {href:'blog-strength-beginners.html', img:'assets/images/blog/preview-strength-beginners-photo.jpg', title:'Strength Training for Beginners - 12 Week Starter Plan', excerpt:'A practical starter plan to build foundational strength and technique safely.', category:'training', read:'4 min read'},
+        {href:'blog-gym-mistakes.html', img:'assets/images/blog/preview-gym-mistakes-photo.jpg', title:'Top Beginner Gym Mistakes and How to Fix Them', excerpt:'The common technique, warm-up, progression, and recovery errors that slow early results.', category:'training', read:'4 min read'},
+        {href:'blog-muscle-gain-plan.html', img:'assets/images/blog/preview-muscle-gain-plan-photo.jpg', title:'Muscle Gain - Progressive Overload Plan', excerpt:'Programming, nutrition, and recovery to support consistent hypertrophy.', category:'training', read:'4 min read'},
+        {href:'blog-home-workouts-busy.html', img:'assets/images/blog/preview-home-workouts-busy-photo.jpg', title:'Home Workouts for Busy People - 20 Minute Routines', excerpt:'Efficient home sessions that maintain momentum when the week is packed.', category:'training', read:'4 min read'},
+        {href:'blog-running-endurance.html', img:'assets/images/blog/marathon.webp', title:'Running and Endurance - Beginner to Half Marathon', excerpt:'A safe, progressive approach from walk-run intervals toward longer endurance goals.', category:'training', read:'4 min read'},
+        {href:'blog-womens-strength-hormones.html', img:'assets/images/blog/preview-womens-strength-hormones-photo.jpg', title:"Women's Strength Training and Hormonal Considerations", excerpt:'Practical strength guidance across cycle changes, pregnancy, postpartum, and menopause.', category:'training', read:'4 min read'},
+        {href:'blog-nutrition-fat-loss.html', img:'assets/images/blog/preview-fat-loss-nutrition-photo.jpg', title:'Beginner Nutrition for Fat Loss - Evidence Based Guide', excerpt:'Calories, protein, meal structure, and adherence strategies for fat loss.', category:'nutrition', read:'4 min read'},
+        {href:'blog-fat-loss-nutrition.html', img:'assets/images/blog/preview-fat-loss-nutrition-photo.jpg', title:'Fat Loss Nutrition - Calories, Protein, and Meal Timing', excerpt:'A deeper look at the hierarchy that makes fat loss sustainable.', category:'nutrition', read:'4 min read'},
+        {href:'blog-supplements-explained.html', img:'assets/images/blog/creatine.jpg', title:'Supplements Explained - What Actually Works', excerpt:'Evidence-backed overview of practical supplements to prioritize.', category:'nutrition', read:'4 min read'},
+        {href:'blog-mobility-injury-prevention.html', img:'assets/images/blog/preview-mobility-injury-prevention-photo.jpg', title:'Mobility and Injury Prevention - Stay Pain Free', excerpt:'Daily mobility, workload, and strength strategies to reduce common training setbacks.', category:'rehabilitation', read:'4 min read'},
+        {href:'blog-recovery-sleep-stress.html', img:'assets/images/blog/preview-recovery-sleep-stress-photo.jpg', title:'Recovery, Sleep, and Stress - Performance Essentials', excerpt:'Sleep and stress strategies to improve recovery and training adaptations.', category:'health', read:'4 min read'},
+        {href:'blog-habits-mindset.html', img:'assets/images/blog/preview-habits-mindset-photo.jpg', title:'Habit Formation and Mindset for Sustainable Fitness', excerpt:'Behavior design and accountability strategies to make habits stick.', category:'mindset', read:'4 min read'},
+        {href:'blog-consistency.html', img:'assets/images/blog/preview-habits-mindset-photo.jpg', title:'How to Stay Consistent With Fitness', excerpt:'Practical systems for staying on track when motivation and schedules change.', category:'mindset', read:'4 min read'}
       ];
       const grid = document.getElementById('blogGrid');
       if (!grid) return;
       posts.forEach((p, i) => {
         const div = document.createElement('div');
-        div.className = 'blog-card';
+        div.className = 'blog-card blog-card--local';
         div.setAttribute('data-tilt','');
         div.setAttribute('data-tilt-max','5');
         div.setAttribute('data-tilt-speed','400');
@@ -997,6 +1025,10 @@ window.addEventListener('load', function() {
             <div class="blog-category ${p.category}">${p.category.charAt(0).toUpperCase()+p.category.slice(1)}</div>
           </div>
           <div class="blog-content">
+            <div class="blog-card-meta">
+              <span>Garcia Builder guide</span>
+              <span>${p.read}</span>
+            </div>
             <h3>${p.title}</h3>
             <p>${p.excerpt}</p>
             <div class="blog-card-author">
@@ -1009,8 +1041,8 @@ window.addEventListener('load', function() {
             <a href="${p.href}" class="blog-link">Read Article <i class="fas fa-external-link-alt"></i></a>
           </div>
         `;
-        // Insert before the grid's closing so these appear at the end
-        grid.appendChild(div);
+        // Show Garcia Builder guides first so visitors reach the in-depth local content before external reads.
+        grid.insertBefore(div, grid.children[i] || null);
         // Basic interactions: tilt, focusable, keyboard open, reveal with stagger
         div.style.animation = 'none';
         div.style.transformOrigin = 'center center';

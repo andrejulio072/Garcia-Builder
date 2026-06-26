@@ -57,8 +57,8 @@ const posts = [
     title: 'Fat Loss Nutrition - Calories, Protein, and Meal Timing',
     category: 'Nutrition',
     date: 'Updated June 2026',
-    image: 'assets/images/blog/diabetes.jpg',
-    alt: 'Nutrition tracking and health check-in for sustainable fat loss',
+    image: 'assets/images/blog/preview-fat-loss-nutrition-photo.jpg',
+    alt: 'Prepared balanced meals for sustainable fat loss nutrition',
     description: 'A practical fat loss nutrition article covering the hierarchy of calories, protein, food quality, meal timing, and references.',
     intro: 'Most fat loss plans fail because they argue about details before fixing the basics. Meal timing, fasting windows, low carb plans, and supplements can all be tools, but the hierarchy starts with total energy intake, protein, food quality, and adherence.',
     sections: [
@@ -201,8 +201,8 @@ const posts = [
     title: 'Habit Formation and Mindset for Sustainable Fitness',
     category: 'Mindset',
     date: 'Updated June 2026',
-    image: 'assets/images/blog/atomicHabits.jpg',
-    alt: 'Fitness habit tracker with shoes and gym bag',
+    image: 'assets/images/blog/preview-habits-mindset-photo.jpg',
+    alt: 'Workout mat, laptop, and light dumbbells for building sustainable fitness habits',
     description: 'A behavior-based approach to fitness consistency using small habits, tracking, accountability, identity, and environment design.',
     intro: 'Sustainable fitness is less about finding permanent motivation and more about building systems that make the desired action easier to repeat. Motivation rises and falls. Habits, environment, accountability, and identity carry the plan when motivation is ordinary.',
     sections: [

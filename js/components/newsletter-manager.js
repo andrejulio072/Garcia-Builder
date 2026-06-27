@@ -1060,12 +1060,23 @@
         const { data: leads } = await window.supabaseClient
           .from('leads')
           .select('*')
-          .order('timestamp', { ascending: false });
+          .order('created_at', { ascending: false });
 
-        const { data: subscribers } = await window.supabaseClient
+        let subscribersQuery = window.supabaseClient
           .from('newsletter_subscribers')
-          .select('*')
-          .order('timestamp', { ascending: false });
+          .select('*');
+
+        let subscribers = [];
+        let subscribersError = null;
+
+        ({ data: subscribers, error: subscribersError } = await subscribersQuery.order('created_at', { ascending: false }));
+        if (subscribersError) {
+          ({ data: subscribers, error: subscribersError } = await subscribersQuery.order('timestamp', { ascending: false }));
+        }
+        if (subscribersError) {
+          console.warn('newsletter subscribers sort warning:', subscribersError);
+          subscribers = subscribers || [];
+        }
 
         leadData = { leads: leads || [], subscribers: subscribers || [] };
       } else {

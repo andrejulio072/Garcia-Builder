@@ -3,6 +3,15 @@ import nodemailer from 'nodemailer';
 
 const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
 
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function parseBody(req) {
   if (!req) return {};
   if (req.body && typeof req.body === 'object') return req.body;
@@ -28,6 +37,71 @@ function getSupabase() {
     throw new Error('Supabase environment variables are missing');
   }
   return createClient(url, key, { auth: { persistSession: false } });
+}
+
+function getBaseUrl(req) {
+  const envBase = process.env.PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_SITE_URL;
+  if (envBase) return String(envBase).replace(/\/$/, '');
+
+  const host = req?.headers?.host;
+  if (!host) return 'https://garciabuilder.fitness';
+
+  const proto = req?.headers?.['x-forwarded-proto'] || (host.includes('localhost') ? 'http' : 'https');
+  return `${proto}://${host}`;
+}
+
+function getLogoUrl(req) {
+  const explicit = process.env.BRAND_LOGO_URL;
+  if (explicit) return explicit;
+  return `${getBaseUrl(req)}/Logo%20Files/For%20Web/logo-nobackground-500.png`;
+}
+
+function getGuideUrl(req) {
+  const explicit = process.env.EBOOK_DOWNLOAD_URL || process.env.GUIDE_DOWNLOAD_URL;
+  if (explicit) return explicit;
+  return `${getBaseUrl(req)}/assets/28-days-fat-loss-quickstart.pdf`;
+}
+
+function buildPremiumEmailFrame({ req, preheader, title, intro, ctaLabel, ctaUrl, bodyBlocks = [] }) {
+  const logoUrl = getLogoUrl(req);
+  const safePreheader = escapeHtml(preheader);
+  const safeTitle = escapeHtml(title);
+  const safeIntro = intro;
+  const safeCtaLabel = escapeHtml(ctaLabel);
+  const safeCtaUrl = escapeHtml(ctaUrl);
+  const extraBlocks = Array.isArray(bodyBlocks) ? bodyBlocks.join('') : '';
+
+  return `
+    <div style="display:none;max-height:0;overflow:hidden;opacity:0;visibility:hidden;mso-hide:all;">${safePreheader}</div>
+    <div style="background:#0b1220;padding:26px 12px;font-family:Arial,sans-serif;">
+      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:18px;overflow:hidden;box-shadow:0 20px 45px rgba(7,12,22,.26);">
+        <tr>
+          <td style="background:linear-gradient(135deg,#0f172a 0%,#1f2937 52%,#111827 100%);padding:30px 32px 24px;text-align:center;">
+            <img src="${logoUrl}" alt="Garcia Builder" width="184" style="display:block;margin:0 auto 14px;max-width:184px;height:auto;" />
+            <div style="display:inline-block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#f8e5a8;background:rgba(246,200,78,.18);border:1px solid rgba(246,200,78,.35);border-radius:999px;padding:6px 10px;">Garcia Builder Coaching</div>
+            <h1 style="margin:18px 0 0;font-size:28px;line-height:1.2;color:#ffffff;font-weight:800;">${safeTitle}</h1>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:30px 32px 10px;color:#0f172a;font-size:16px;line-height:1.65;">
+            ${safeIntro}
+            ${extraBlocks}
+            <div style="margin:24px 0 16px;text-align:center;">
+              <a href="${safeCtaUrl}" style="display:inline-block;background:#f6c84e;color:#111827;text-decoration:none;font-weight:800;font-size:15px;padding:14px 24px;border-radius:12px;">${safeCtaLabel}</a>
+            </div>
+            <p style="margin:18px 0 0;color:#475569;font-size:13px;">If the button does not work, copy and paste this URL:</p>
+            <p style="margin:8px 0 0;color:#0f172a;font-size:13px;word-break:break-all;">${safeCtaUrl}</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:16px 32px 26px;background:#f8fafc;border-top:1px solid #e2e8f0;color:#334155;font-size:12px;line-height:1.6;">
+            <p style="margin:0 0 6px;"><strong>Garcia Builder Team</strong> · Online Coaching</p>
+            <p style="margin:0;">You are receiving this email because you subscribed at garciabuilder.fitness.</p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  `;
 }
 
 function createMailTransport() {
@@ -79,27 +153,27 @@ async function sendBrevoEmail({ to, name, subject, html }) {
   return { ok: true };
 }
 
-async function sendNewsletterWelcomeEmail({ to, name }) {
+async function sendNewsletterWelcomeEmail({ req, to, name }) {
   const safeName = typeof name === 'string' && name.trim() ? name.trim() : '';
-  const subject = 'Welcome to Garcia Builder Newsletter';
-  const guideUrl = process.env.EBOOK_DOWNLOAD_URL || process.env.GUIDE_DOWNLOAD_URL || 'https://garciabuilder.fitness/assets/28-days-fat-loss-quickstart.pdf';
+  const subject = 'Welcome to Garcia Builder';
+  const guideUrl = getGuideUrl(req);
 
-  const html = `
-    <div style="font-family:Inter,Arial,sans-serif;line-height:1.55;color:#0f172a;max-width:640px;margin:0 auto;">
-      <h2 style="margin-bottom:8px;">Welcome to Garcia Builder</h2>
-      <p style="margin-top:0;">Hi${safeName ? ` ${safeName}` : ''}, thanks for subscribing.</p>
-      <p>You will now receive practical training and nutrition tips. As a welcome gift, here is your quickstart guide:</p>
-      <p>
-        <a href="${guideUrl}" style="display:inline-block;background:#f6c84e;color:#111827;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:10px;">
-          Download the 28 Days Fat Loss Quickstart
-        </a>
-      </p>
-      <p style="color:#475569;">If the button does not work, copy and paste this URL in your browser:</p>
-      <p style="word-break:break-all;color:#0f172a;">${guideUrl}</p>
-      <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;" />
-      <p style="color:#64748b;font-size:14px;">Garcia Builder Team</p>
-    </div>
-  `;
+  const greeting = safeName
+    ? `<p style="margin:0 0 12px;">Hi <strong>${escapeHtml(safeName)}</strong>,</p>`
+    : '<p style="margin:0 0 12px;">Hi,</p>';
+
+  const html = buildPremiumEmailFrame({
+    req,
+    preheader: 'Welcome to the Garcia Builder newsletter.',
+    title: 'Welcome to Garcia Builder',
+    intro: `${greeting}<p style="margin:0 0 12px;">Thanks for joining our newsletter. You will receive actionable training and nutrition strategies to help you build a stronger, leaner body.</p>`,
+    ctaLabel: 'Get the 28 Days Quickstart',
+    ctaUrl: guideUrl,
+    bodyBlocks: [
+      '<p style="margin:0 0 12px;">As a welcome gift, here is your free <strong>28 Days Fat Loss Quickstart</strong>.</p>',
+      '<p style="margin:0;">Stay tuned for weekly insights from our coaching team.</p>'
+    ]
+  });
 
   try {
     const brevoResult = await sendBrevoEmail({ to, name: safeName, subject, html });
@@ -126,7 +200,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { email, name, source } = parseBody(req);
+    const { email, name, source, notes } = parseBody(req);
     const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
     if (!normalizedEmail) {
       return res.status(400).json({ error: 'Email required' });
@@ -140,6 +214,8 @@ export default async function handler(req, res) {
           email: normalizedEmail,
           name: name || null,
           source: source || req.headers.referer || 'website',
+          type: 'newsletter',
+          notes: typeof notes === 'string' && notes.trim() ? notes.trim() : null,
           status: 'subscribed'
         },
         { onConflict: 'email' }
@@ -155,6 +231,7 @@ export default async function handler(req, res) {
 
     try {
       const emailResult = await sendNewsletterWelcomeEmail({
+        req,
         to: normalizedEmail,
         name,
       });

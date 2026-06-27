@@ -490,6 +490,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // UTM Parameter Capture
+        function resolveApiBaseUrl() {
+            const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+            return isLocalhost ? 'http://localhost:3001/api' : '/api';
+        }
+
         function captureUTMParams() {
             const urlParams = new URLSearchParams(window.location.search);
             document.getElementById('utmSource').value = urlParams.get('utm_source') || 'direct';
@@ -565,21 +570,35 @@
                     device_type: /Mobile|Android|iPhone|iPad/.test(navigator.userAgent) ? 'mobile' : 'desktop'
                 };
 
-                const response = await fetch('/api/lead', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name: leadData.name,
-                        email: leadData.email,
-                        source: '28-days-fat-loss-quickstart',
-                        notes: JSON.stringify(leadData),
-                        ...leadData
-                    })
-                });
+                let responseData = {};
+                try {
+                    const response = await fetch(`${resolveApiBaseUrl()}/lead`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name: leadData.name,
+                            email: leadData.email,
+                            source: '28-days-fat-loss-quickstart',
+                            notes: JSON.stringify(leadData),
+                            ...leadData
+                        })
+                    });
 
-                const responseData = await response.json().catch(() => ({}));
-                if (!response.ok || responseData.error) {
-                    throw new Error(responseData.error || 'Lead submission failed');
+                    responseData = await response.json().catch(() => ({}));
+                    if (!response.ok || responseData.error) {
+                        throw new Error(responseData.error || 'Lead submission failed');
+                    }
+                } catch (submitError) {
+                    console.warn('Lead API unavailable, saving lead locally', submitError);
+                    const existingLeads = JSON.parse(localStorage.getItem('garcia_leads') || '[]');
+                    existingLeads.push(leadData);
+                    localStorage.setItem('garcia_leads', JSON.stringify(existingLeads));
+                    responseData = {
+                        fallback: true,
+                        customerEmailSent: false,
+                        customerEmailSkipped: true,
+                        guideUrl: '/assets/28-days-fat-loss-quickstart.pdf'
+                    };
                 }
 
                 // Track conversion event

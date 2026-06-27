@@ -4,6 +4,17 @@
   let leadData = {};
   const GUIDE_ASSET_PATH = '/assets/28-days-fat-loss-quickstart.pdf';
   const GUIDE_DOWNLOAD_NAME = '28-Days-Fat-Loss-Quickstart-Garcia-Builder.pdf';
+  const resolveApiBaseUrl = () => {
+    const configuredBase = window.STRIPE_ENV_CONFIG?.apiUrl;
+    if (configuredBase) {
+      return String(configuredBase).replace(/\/$/, '');
+    }
+
+    const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+    return isLocalhost ? 'http://localhost:3001/api' : '/api';
+  };
+
+  const getApiUrl = (path) => `${resolveApiBaseUrl()}${path}`;
 
   // Initialize newsletter system
   const init = async () => {
@@ -806,7 +817,7 @@
     }
 
     try {
-      return await postJson('/api/lead', payload);
+      return await postJson(getApiUrl('/lead'), payload);
     } catch (apiError) {
       console.warn('Lead API unavailable, saving locally as fallback', apiError);
     }
@@ -837,7 +848,7 @@
     };
 
     try {
-      await postJson('/api/newsletter', payload);
+      await postJson(getApiUrl('/newsletter'), payload);
       return;
     } catch (apiError) {
       console.warn('Newsletter API unavailable, falling back to direct client/local storage', apiError);

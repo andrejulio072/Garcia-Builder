@@ -40,8 +40,8 @@ const saveLeadBlock = extractBetween(
 );
 
 assert(
-  saveLeadBlock.includes("postJson('/api/lead', payload)"),
-  'saveLeadToDatabase must send lead captures through /api/lead.'
+  saveLeadBlock.includes("postJson(getApiUrl('/lead'), payload)"),
+  'saveLeadToDatabase must send lead captures through the resolved API base.'
 );
 
 assert(
@@ -57,6 +57,11 @@ assert(
 assert(
   saveLeadBlock.includes("localStorage.getItem('garcia_leads')"),
   'saveLeadToDatabase should keep a local fallback if /api/lead is unavailable.'
+);
+
+assert(
+  newsletterManager.includes('resolveApiBaseUrl') && newsletterManager.includes('getApiUrl'),
+  'newsletter-manager should route lead and newsletter requests through the resolved API base.'
 );
 
 const leadApi = read('api/lead.js');

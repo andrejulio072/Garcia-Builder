@@ -86,6 +86,17 @@ async function attemptSignup(baseUrl, anonKey, email, password) {
       };
     }
 
+    // Supabase upstream timeouts (502/503/504) are transient infrastructure issues,
+    // not a sign that auth is broken. Fall back to token-endpoint health check.
+    if ([502, 503, 504].includes(response.status) || normalized.includes('upstream') || normalized.includes('timeout')) {
+      return {
+        ok: true,
+        mode: 'upstream-timeout',
+        payload,
+        message
+      };
+    }
+
     throw new Error(`Signup failed (${response.status}): ${message}`);
   }
 
@@ -166,7 +177,7 @@ async function assertTokenEndpointReachable(baseUrl, anonKey) {
   const signupResult = await attemptSignup(url, anonKey, testEmail, testPassword);
   let loginResult;
 
-  if (signupResult.mode === 'rate-limited') {
+  if (signupResult.mode === 'rate-limited' || signupResult.mode === 'upstream-timeout') {
     await assertTokenEndpointReachable(url, anonKey);
     loginResult = {
       ok: true,

@@ -35,6 +35,22 @@ function parseBooleanEnv(value, fallback = false) {
   return ['1', 'true', 'yes', 'on'].includes(normalized);
 }
 
+// Attempt to seed missing env vars from an existing env-config.json so that
+// local builds work without needing shell-level environment variables.
+const existingConfigPath = path.join(__dirname, '..', 'env-config.json');
+if (fs.existsSync(existingConfigPath)) {
+  try {
+    const existingConfig = JSON.parse(fs.readFileSync(existingConfigPath, 'utf8'));
+    for (const key of requiredKeys) {
+      if (!process.env[key] && existingConfig[key]) {
+        process.env[key] = existingConfig[key];
+      }
+    }
+  } catch (_) {
+    // ignore parse errors — fall through to missing-key check below
+  }
+}
+
 const missing = requiredKeys.filter((key) => !process.env[key]);
 
 if (missing.length > 0) {

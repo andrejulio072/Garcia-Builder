@@ -37,7 +37,7 @@
 <link rel="preload" as="image" href="assets/images/hero/hero.jpg" imagesrcset="assets/images/hero/hero.jpg 1x"/>
 
 <!-- CRITICAL: Preload component loader with highest priority -->
-<link rel="preload" as="script" href="js/utils/component-loader-v3-simplified.js?v=20251029" crossorigin="anonymous"/>
+<link rel="preload" as="script" href="js/utils/component-loader-v3-simplified.js?v=20260628" crossorigin="anonymous"/>
 <link rel="preload" as="fetch" href="components/navbar.html" crossorigin="anonymous"/>
 <link rel="preload" as="fetch" href="components/footer.html" crossorigin="anonymous"/>
 
@@ -116,7 +116,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- STRATEGY: Simplified loader without IIFE, traditional blocking load -->
 
 <!-- Method 1: Simplified v3.0 loader (NO IIFE, NO DEFER) -->
-<script src="js/utils/component-loader-v3-simplified.js?v=20251029"></script>
+  <script src="js/utils/component-loader-v3-simplified.js?v=20260628"></script>
 
 <!-- Method 2: Defer for other scripts (load after DOM) -->
 <script defer src="js/components/video-player.js?v=20251025"></script>
@@ -1162,7 +1162,7 @@ Trainerize—plans, videos, habits, messages, and progress tracking in one place
 <div class="col-lg-6 text-center">
 <h3 class="title-gradient mb-3" data-i18n="newsletter.title">Get Weekly Expert Tips</h3>
 <p class="mb-4" data-i18n="newsletter.desc">Training advice, nutrition tips, and exclusive content delivered to your inbox.</p>
-<form class="d-flex gap-2 justify-content-center flex-wrap" id="newsletter-form-footer">
+<form class="d-flex gap-2 justify-content-center flex-wrap newsletter-form" id="footer-newsletter" action="/api/newsletter" method="post">
 <input type="email" class="form-control newsletter-input" id="newsletter-footer-email" name="email" placeholder="Enter your email" required autocomplete="email">
 <button type="submit" class="btn btn-gold" data-i18n="newsletter.cta">Subscribe</button>
 </form>

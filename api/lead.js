@@ -1,6 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
 import nodemailer from 'nodemailer';
 
+const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function parseBody(req) {
   if (!req) return {};
   if (req.body && typeof req.body === 'object') return req.body;
@@ -45,6 +56,64 @@ function getGuideUrl(req) {
   return `${getBaseUrl(req)}/assets/28-days-fat-loss-quickstart.pdf`;
 }
 
+function getLogoUrl(req) {
+  const explicit = process.env.BRAND_LOGO_URL;
+  if (explicit) return explicit;
+  return `${getBaseUrl(req)}/Logo%20Files/For%20Web/logo-nobackground-500.png`;
+}
+
+function buildPremiumEmailFrame({ req, preheader, title, intro, ctaLabel, ctaUrl, bodyBlocks = [] }) {
+  const logoUrl = getLogoUrl(req);
+  const safePreheader = escapeHtml(preheader);
+  const safeTitle = escapeHtml(title);
+  const safeIntro = intro;
+  const extraBlocks = Array.isArray(bodyBlocks) ? bodyBlocks.join('') : '';
+  const safeCtaLabel = escapeHtml(ctaLabel);
+  const safeCtaUrl = escapeHtml(ctaUrl);
+
+  return `
+    <div style="display:none;max-height:0;overflow:hidden;opacity:0;visibility:hidden;mso-hide:all;">${safePreheader}</div>
+    <div style="background:#0b1220;padding:26px 12px;font-family:Arial,sans-serif;">
+      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:18px;overflow:hidden;box-shadow:0 20px 45px rgba(7,12,22,.26);">
+        <tr>
+          <td style="background:linear-gradient(135deg,#0f172a 0%,#1f2937 52%,#111827 100%);padding:26px 24px 18px;text-align:center;">
+            <img src="${logoUrl}" alt="Garcia Builder" width="160" style="display:block;margin:0 auto 8px;max-width:160px;height:auto;border-radius:8px;" />
+            <div style="margin-top:6px;color:#f8e5a8;font-weight:700;letter-spacing:.08em;font-size:12px;">Garcia Builder</div>
+            <h1 style="margin:12px 0 0;font-size:26px;line-height:1.18;color:#ffffff;font-weight:900;">${safeTitle}</h1>
+            <p style="margin:10px 0 0;color:rgba(255,255,255,0.85);font-size:14px;max-width:520px;margin-left:auto;margin-right:auto;">A practical guide to lose fat while keeping strength — no gimmicks, just evidence-based coaching.</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:26px 28px 10px;color:#0f172a;font-size:16px;line-height:1.6;">
+            ${safeIntro}
+            ${extraBlocks}
+            <ul style="margin:18px 0 6px 18px;color:#0f172a;font-size:15px;">
+              <li>4-week progressive training framework</li>
+              <li>Simple nutrition wins you can start today</li>
+              <li>Meal templates and tracking tips</li>
+            </ul>
+            <div style="margin:22px 0 12px;text-align:center;">
+              <a href="${safeCtaUrl}" style="display:inline-block;background:linear-gradient(90deg,#ffc94d,#f6c84e);color:#0b1220;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:12px;box-shadow:0 8px 18px rgba(246,200,78,0.2);">${safeCtaLabel}</a>
+            </div>
+            <p style="margin:14px 0 0;color:#475569;font-size:13px;">If the button doesn't work, copy and paste this link:</p>
+            <p style="margin:6px 0 0;color:#0f172a;font-size:13px;word-break:break-all;">${safeCtaUrl}</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:18px 28px 26px;background:#f8fafc;border-top:1px solid #e2e8f0;color:#334155;font-size:12px;line-height:1.6;">
+            <p style="margin:0 0 6px;"><strong>Garcia Builder</strong> · Evidence-based online coaching</p>
+            <p style="margin:0;font-size:12px;color:#667085;">You are receiving this email because you requested the 28 Days Quickstart on our website.</p>
+            <div style="margin-top:10px;font-size:13px;color:#0f172a;">
+              <a href="https://www.instagram.com/garciabuilder.fitness" style="color:#f6c84e;text-decoration:none;margin-right:10px;">Instagram</a>
+              <a href="https://calendly.com/andrenjulio072/consultation" style="color:#0f172a;text-decoration:none;margin-left:6px;">Book a consultation</a>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  `;
+}
+
 function isMissingColumnError(error) {
   const message = String(error?.message || '').toLowerCase();
   return error?.code === 'PGRST204' || message.includes('schema cache') || message.includes('could not find');
@@ -84,31 +153,76 @@ function createMailTransport() {
   });
 }
 
-async function sendEbookEmail({ to, name, guideUrl }) {
+async function sendBrevoEmail({ to, name, subject, html }) {
+  const apiKey = process.env.BREVO_API_KEY;
+  if (!apiKey) {
+    return { skipped: true };
+  }
+
+  const senderEmail = process.env.BREVO_SENDER_EMAIL || process.env.FROM_EMAIL || process.env.SMTP_FROM_EMAIL || 'no-reply@garciabuilder.fitness';
+  const senderName = process.env.BREVO_SENDER_NAME || 'Garcia Builder';
+
+  const response = await fetch(BREVO_API_URL, {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'content-type': 'application/json',
+      'api-key': apiKey
+    },
+    body: JSON.stringify({
+      sender: { email: senderEmail, name: senderName },
+      to: [{ email: to, name: name || undefined }],
+      subject,
+      htmlContent: html,
+      tags: ['lead-magnet', 'ebook']
+    })
+  });
+
+  if (!response.ok) {
+    const details = await response.text().catch(() => 'Brevo request failed');
+    throw new Error(`Brevo send failed: ${response.status} ${details}`);
+  }
+
+  return { ok: true };
+}
+
+async function sendEbookEmail({ req, to, name, guideUrl }) {
+  const subject = 'Your 28 Days Fat Loss Quickstart is ready';
+  const safeName = name ? String(name).trim() : '';
+
+  const greeting = safeName
+    ? `<p style="margin:0 0 12px;">Hi <strong>${escapeHtml(safeName)}</strong>,</p>`
+    : '<p style="margin:0 0 12px;">Hi,</p>';
+
+  const html = buildPremiumEmailFrame({
+    req,
+    preheader: 'Your 28 Days Fat Loss Quickstart is ready for download.',
+    title: 'Your Quickstart Is Ready',
+    intro: `${greeting}<p style="margin:0 0 12px;">Thanks for requesting the <strong>28 Days Fat Loss Quickstart</strong>. You can access your guide right now using the button below.</p>`,
+    ctaLabel: 'Download the Ebook',
+    ctaUrl: guideUrl,
+    bodyBlocks: [
+      '<p style="margin:0 0 12px;">Inside this guide you will find a practical 4-week structure to help you lose fat while keeping strength and energy.</p>',
+      '<p style="margin:0;">If you want personalized support, reply to this email and our team will help you choose the right coaching plan.</p>'
+    ]
+  });
+
+  // Prefer Brevo transactional API when configured.
+  try {
+    const brevoResult = await sendBrevoEmail({ to, name: safeName, subject, html });
+    if (brevoResult?.ok) {
+      return { ok: true, provider: 'brevo' };
+    }
+  } catch (brevoError) {
+    console.warn('lead.js Brevo email warning', brevoError);
+  }
+
   const transport = createMailTransport();
   if (!transport) {
     return { skipped: true };
   }
 
   const from = process.env.FROM_EMAIL || process.env.SMTP_FROM_EMAIL || 'no-reply@garciabuilder.fitness';
-  const subject = 'Your 28 Days Fat Loss Quickstart is ready';
-  const safeName = name ? String(name).trim() : '';
-
-  const html = `
-    <div style="font-family:Inter,Arial,sans-serif;line-height:1.55;color:#0f172a;max-width:640px;margin:0 auto;">
-      <h2 style="margin-bottom:8px;">Your free ebook is here</h2>
-      <p style="margin-top:0;">Hi${safeName ? ` ${safeName}` : ''}, thanks for requesting the <strong>28 Days Fat Loss Quickstart</strong>.</p>
-      <p>
-        <a href="${guideUrl}" style="display:inline-block;background:#f6c84e;color:#111827;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:10px;">
-          Download the ebook
-        </a>
-      </p>
-      <p style="color:#475569;">If the button does not work, copy and paste this URL in your browser:</p>
-      <p style="word-break:break-all;color:#0f172a;">${guideUrl}</p>
-      <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;" />
-      <p style="color:#64748b;font-size:14px;">Garcia Builder Team</p>
-    </div>
-  `;
 
   await transport.sendMail({
     from,
@@ -117,7 +231,7 @@ async function sendEbookEmail({ to, name, guideUrl }) {
     html,
   });
 
-  return { ok: true };
+  return { ok: true, provider: 'smtp' };
 }
 
 export default async function handler(req, res) {
@@ -131,6 +245,7 @@ export default async function handler(req, res) {
       name,
       source,
       notes,
+      resendOnly,
       ...rest
     } = parseBody(req);
 
@@ -141,6 +256,33 @@ export default async function handler(req, res) {
 
     const supa = getSupabase();
     const guideUrl = getGuideUrl(req);
+
+    if (resendOnly === true || resendOnly === 'true') {
+      let customerEmailSent = false;
+      let customerEmailSkipped = false;
+
+      try {
+        const emailResult = await sendEbookEmail({
+          req,
+          to: normalizedEmail,
+          name,
+          guideUrl,
+        });
+        customerEmailSent = emailResult?.ok === true;
+        customerEmailSkipped = emailResult?.skipped === true;
+      } catch (mailError) {
+        console.error('lead.js resend ebook email error', mailError);
+      }
+
+      return res.status(200).json({
+        ok: true,
+        resent: true,
+        guideUrl,
+        customerEmailSent,
+        customerEmailSkipped,
+      });
+    }
+
     const metadata = {
       ...rest,
       page_path: req.headers['x-original-url'] || req.headers.referer || null,
@@ -179,8 +321,7 @@ export default async function handler(req, res) {
 
     const leadInsert = await insertLeadWithSchemaFallback(supa, insertCandidates);
     if (!leadInsert.ok) {
-      console.error('lead.js supabase error', leadInsert.error);
-      return res.status(500).json({ error: leadInsert.error?.message || 'Lead save failed' });
+      console.warn('lead.js leads table insert warning', leadInsert.error);
     }
 
     // Keep lead magnet contacts in the newsletter audience as well.
@@ -198,13 +339,20 @@ export default async function handler(req, res) {
       );
 
     if (newsletterError) {
-      console.warn('lead.js newsletter sync warning', newsletterError);
+      console.error('lead.js newsletter sync error', newsletterError);
+      if (!leadInsert.ok) {
+        return res.status(500).json({
+          error: 'Lead save failed',
+          details: newsletterError.message || leadInsert.error?.message || 'Unknown persistence error'
+        });
+      }
     }
 
     let customerEmailSent = false;
     let customerEmailSkipped = false;
     try {
       const emailResult = await sendEbookEmail({
+        req,
         to: normalizedEmail,
         name,
         guideUrl,
@@ -218,6 +366,8 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       saved: true,
+      leadSaved: leadInsert.ok,
+      newsletterSaved: !newsletterError,
       guideUrl,
       customerEmailSent,
       customerEmailSkipped,

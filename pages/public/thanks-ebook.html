@@ -611,6 +611,11 @@
                                         <strong id="emailStatusTitle" data-i18n="thanksebook.email_sent_title">Guia enviado para:</strong> <span id="userEmail">seu email</span>
                                         <br>
                                         <small id="emailStatusHelp" data-i18n="thanksebook.email_sent_help">Verifique sua caixa de entrada (e spam) em alguns minutos.</small>
+                                        <div class="mt-2">
+                                            <button type="button" class="btn btn-sm btn-outline-light" id="resendEmailBtn" style="display:none;">
+                                                Reenviar link por email
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <!-- Social Share -->
@@ -783,6 +788,15 @@
             return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         }
 
+        function resolveApiBaseUrl() {
+            const configuredBase = window.STRIPE_ENV_CONFIG && window.STRIPE_ENV_CONFIG.apiUrl;
+            if (configuredBase) {
+                return String(configuredBase).replace(/\/$/, '');
+            }
+            const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+            return isLocalhost ? 'http://localhost:3001/api' : '/api';
+        }
+
         // Set user info
         document.addEventListener('DOMContentLoaded', function() {
             syncThanksEbookMetadata();
@@ -808,9 +822,55 @@
                 emailStatusAlert.classList.add('alert-warning');
                 document.getElementById('emailStatusTitle').textContent = getThanksEbookText('email_pending_title');
                 document.getElementById('emailStatusHelp').textContent = getThanksEbookText('email_pending_help');
+                if (userEmail) {
+                    const resendBtn = document.getElementById('resendEmailBtn');
+                    resendBtn.style.display = 'inline-flex';
+                }
             } else {
                 document.getElementById('emailStatusTitle').textContent = getThanksEbookText('email_sent_title');
                 document.getElementById('emailStatusHelp').textContent = getThanksEbookText('email_sent_help');
+            }
+
+            const resendBtn = document.getElementById('resendEmailBtn');
+            if (resendBtn && userEmail) {
+                resendBtn.addEventListener('click', async () => {
+                    const originalLabel = resendBtn.textContent;
+                    resendBtn.disabled = true;
+                    resendBtn.textContent = 'Reenviando...';
+
+                    try {
+                        const response = await fetch(`${resolveApiBaseUrl()}/lead`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                email: userEmail,
+                                name: userName || null,
+                                source: 'thanks-ebook-resend',
+                                resendOnly: true
+                            })
+                        });
+
+                        const payload = await response.json().catch(() => ({}));
+                        if (!response.ok || payload.error) {
+                            throw new Error(payload.error || 'Unable to resend email');
+                        }
+
+                        const sent = payload.customerEmailSent === true;
+                        document.getElementById('emailStatusHelp').textContent = sent
+                            ? 'Pronto! Reenviamos o link. Confira sua caixa de entrada e spam.'
+                            : 'Reenvio solicitado. Se nao receber, use o botao de download direto acima.';
+                        if (sent) {
+                            const emailStatusAlert = document.getElementById('emailStatusAlert');
+                            emailStatusAlert.classList.remove('alert-warning');
+                            emailStatusAlert.classList.add('alert-info');
+                        }
+                    } catch (error) {
+                        document.getElementById('emailStatusHelp').textContent = 'Nao foi possivel reenviar agora. Tente novamente em instantes.';
+                    } finally {
+                        resendBtn.disabled = false;
+                        resendBtn.textContent = originalLabel;
+                    }
+                });
             }
 
             // Auto-download after 3 seconds

@@ -1931,6 +1931,7 @@
     thanksebook: {
       title: "28 Days Fat Loss Quickstart unlocked",
       description: "Your free guide is ready for download. Review the next steps and talk to coach Andre Garcia.",
+      badge: "GUIDE READY",
       intro_prefix: "Congratulations, ",
       ready_title: "Your 28 Days Fat Loss Quickstart is ready for download.",
       download_now: "DOWNLOAD GUIDE NOW",
@@ -1959,6 +1960,8 @@
       bullet6: "A safer, more organized journey",
       coaching_cta: "VIEW COACHING PLANS",
       whatsapp_cta: "TALK TO THE COACH",
+      share_subject: "Garcia Builder 28 Days Fat Loss Quickstart",
+      share_message: "I just downloaded Garcia Builder's free 28 Days Fat Loss Quickstart.",
       back_home: "Back to Site",
       view_transformations: "See Transformations"
     },
@@ -2085,6 +2088,7 @@
     thanksebook: {
       title: "28 Days Fat Loss Quickstart liberado",
       description: "Seu guia gratuito 28 Days Fat Loss Quickstart está pronto para download. Veja os próximos passos e fale com o coach André Garcia.",
+      badge: "GUIA LIBERADO",
       intro_prefix: "Parabéns, ",
       ready_title: "Seu 28 Days Fat Loss Quickstart está pronto para download.",
       download_now: "BAIXAR GUIA AGORA",
@@ -2113,6 +2117,8 @@
       bullet6: "Jornada mais segura e organizada",
       coaching_cta: "VER PLANOS DE COACHING",
       whatsapp_cta: "FALAR COM O COACH",
+      share_subject: "Garcia Builder 28 Days Fat Loss Quickstart",
+      share_message: "Acabei de baixar o 28 Days Fat Loss Quickstart gratuito do Garcia Builder.",
       back_home: "Voltar ao Site",
       view_transformations: "Ver Transformações"
     },
@@ -2239,6 +2245,7 @@
     thanksebook: {
       title: "28 Days Fat Loss Quickstart liberado",
       description: "Tu guía gratuita 28 Days Fat Loss Quickstart está lista para descargar. Revisa los próximos pasos y habla con el coach André Garcia.",
+      badge: "GUÍA LISTA",
       intro_prefix: "¡Felicidades, ",
       ready_title: "Tu 28 Days Fat Loss Quickstart está listo para descargar.",
       download_now: "DESCARGAR GUÍA AHORA",
@@ -2267,6 +2274,8 @@
       bullet6: "Un camino más seguro y organizado",
       coaching_cta: "VER PLANES DE COACHING",
       whatsapp_cta: "HABLAR CON EL COACH",
+      share_subject: "Garcia Builder 28 Days Fat Loss Quickstart",
+      share_message: "Acabo de descargar la guía gratuita 28 Days Fat Loss Quickstart de Garcia Builder.",
       back_home: "Volver al Sitio",
       view_transformations: "Ver Transformaciones"
     },

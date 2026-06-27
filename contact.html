@@ -357,7 +357,7 @@ window.addEventListener('load', function() {
           <h2 class="newsletter-title" data-i18n="contact.newsletter.title">Stay Informed While You Wait</h2>
           <p class="newsletter-description" data-i18n="contact.newsletter.description">While I review your inquiry, join thousands getting weekly training tips, nutrition insights, and exclusive updates.</p>
 
-          <form class="newsletter-form contact-newsletter-form" id="contactNewsletterForm">
+          <form class="newsletter-form contact-newsletter-form" id="contactNewsletterForm" action="/api/newsletter" method="post">
             <div class="newsletter-input-group">
               <input
                 type="text"

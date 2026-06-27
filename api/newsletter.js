@@ -76,27 +76,37 @@ function buildPremiumEmailFrame({ req, preheader, title, intro, ctaLabel, ctaUrl
     <div style="background:#0b1220;padding:26px 12px;font-family:Arial,sans-serif;">
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:18px;overflow:hidden;box-shadow:0 20px 45px rgba(7,12,22,.26);">
         <tr>
-          <td style="background:linear-gradient(135deg,#0f172a 0%,#1f2937 52%,#111827 100%);padding:30px 32px 24px;text-align:center;">
-            <img src="${logoUrl}" alt="Garcia Builder" width="184" style="display:block;margin:0 auto 14px;max-width:184px;height:auto;" />
-            <div style="display:inline-block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#f8e5a8;background:rgba(246,200,78,.18);border:1px solid rgba(246,200,78,.35);border-radius:999px;padding:6px 10px;">Garcia Builder Coaching</div>
-            <h1 style="margin:18px 0 0;font-size:28px;line-height:1.2;color:#ffffff;font-weight:800;">${safeTitle}</h1>
+          <td style="background:linear-gradient(135deg,#0f172a 0%,#1f2937 52%,#111827 100%);padding:26px 24px 18px;text-align:center;">
+            <img src="${logoUrl}" alt="Garcia Builder" width="160" style="display:block;margin:0 auto 8px;max-width:160px;height:auto;border-radius:8px;" />
+            <div style="margin-top:6px;color:#f8e5a8;font-weight:700;letter-spacing:.08em;font-size:12px;">Garcia Builder</div>
+            <h1 style="margin:12px 0 0;font-size:26px;line-height:1.18;color:#ffffff;font-weight:900;">${safeTitle}</h1>
+            <p style="margin:10px 0 0;color:rgba(255,255,255,0.85);font-size:14px;max-width:520px;margin-left:auto;margin-right:auto;">Actionable training and nutrition strategies to help you build strength and lose fat sustainably.</p>
           </td>
         </tr>
         <tr>
-          <td style="padding:30px 32px 10px;color:#0f172a;font-size:16px;line-height:1.65;">
+          <td style="padding:26px 28px 10px;color:#0f172a;font-size:16px;line-height:1.6;">
             ${safeIntro}
             ${extraBlocks}
-            <div style="margin:24px 0 16px;text-align:center;">
-              <a href="${safeCtaUrl}" style="display:inline-block;background:#f6c84e;color:#111827;text-decoration:none;font-weight:800;font-size:15px;padding:14px 24px;border-radius:12px;">${safeCtaLabel}</a>
+            <ul style="margin:18px 0 6px 18px;color:#0f172a;font-size:15px;">
+              <li>Short, practical workouts you can do at home or the gym</li>
+              <li>Nutrition tips that don't ruin your life</li>
+              <li>Quick habit wins for consistent progress</li>
+            </ul>
+            <div style="margin:22px 0 12px;text-align:center;">
+              <a href="${safeCtaUrl}" style="display:inline-block;background:linear-gradient(90deg,#ffc94d,#f6c84e);color:#0b1220;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:12px;box-shadow:0 8px 18px rgba(246,200,78,0.2);">${safeCtaLabel}</a>
             </div>
-            <p style="margin:18px 0 0;color:#475569;font-size:13px;">If the button does not work, copy and paste this URL:</p>
-            <p style="margin:8px 0 0;color:#0f172a;font-size:13px;word-break:break-all;">${safeCtaUrl}</p>
+            <p style="margin:14px 0 0;color:#475569;font-size:13px;">If the button doesn't work, copy and paste this link:</p>
+            <p style="margin:6px 0 0;color:#0f172a;font-size:13px;word-break:break-all;">${safeCtaUrl}</p>
           </td>
         </tr>
         <tr>
-          <td style="padding:16px 32px 26px;background:#f8fafc;border-top:1px solid #e2e8f0;color:#334155;font-size:12px;line-height:1.6;">
-            <p style="margin:0 0 6px;"><strong>Garcia Builder Team</strong> · Online Coaching</p>
-            <p style="margin:0;">You are receiving this email because you subscribed at garciabuilder.fitness.</p>
+          <td style="padding:18px 28px 26px;background:#f8fafc;border-top:1px solid #e2e8f0;color:#334155;font-size:12px;line-height:1.6;">
+            <p style="margin:0 0 6px;"><strong>Garcia Builder</strong> · Evidence-based coaching</p>
+            <p style="margin:0;font-size:12px;color:#667085;">You are receiving this email because you subscribed at garciabuilder.fitness.</p>
+            <div style="margin-top:10px;font-size:13px;color:#0f172a;">
+              <a href="https://www.instagram.com/garciabuilder.fitness" style="color:#f6c84e;text-decoration:none;margin-right:10px;">Instagram</a>
+              <a href="https://calendly.com/andrenjulio072/consultation" style="color:#0f172a;text-decoration:none;margin-left:6px;">Book a consultation</a>
+            </div>
           </td>
         </tr>
       </table>

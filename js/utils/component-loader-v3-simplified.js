@@ -380,7 +380,7 @@ const INLINE_FALLBACKS = {
         </div>
         <div class="gb-footer-col gb-footer-newsletter">
             <span class="footer-title footer-title-ref">Newsletter</span>
-            <form class="newsletter-form newsletter-form-ref" data-source="Footer Newsletter" aria-label="Footer newsletter signup">
+            <form class="newsletter-form newsletter-form-ref" id="footer-newsletter" action="/api/newsletter" method="post" data-source="Footer Newsletter" aria-label="Footer newsletter signup">
                 <input type="email" class="newsletter-input-ref" id="footer-newsletter-email-fallback" name="email" placeholder="Email address" required autocomplete="email" />
                 <label class="newsletter-checkbox-ref" for="footer-newsletter-consent-fallback">
                     <input type="checkbox" id="footer-newsletter-consent-fallback" name="consent" value="yes" required /> I would like to receive updates and tips from Garcia Builder.

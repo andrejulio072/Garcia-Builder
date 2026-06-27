@@ -794,6 +794,10 @@ function bindFooterNewsletterForms() {
         form.dataset.gbNewsletterBound = '1';
 
         form.addEventListener('submit', async (event) => {
+            // Defensive: ensure JS intercept prevents native form submit and page reload
+            if (!event || typeof event.preventDefault !== 'function') {
+                return;
+            }
             event.preventDefault();
 
             const emailInput = form.querySelector('input[name="email"]');
@@ -830,10 +834,30 @@ function bindFooterNewsletterForms() {
                 }
 
                 form.reset();
-                alert('Subscribed successfully. Check your inbox for your welcome email.');
+                // provide non-blocking success UI instead of relying on alert in production
+                try {
+                    const msgEl = document.createElement('div');
+                    msgEl.className = 'newsletter-success-msg';
+                    msgEl.textContent = 'Subscribed successfully. Check your inbox.';
+                    msgEl.style.cssText = 'margin-top:8px;color:#c4e3b6;font-weight:700;';
+                    form.parentNode && form.parentNode.appendChild(msgEl);
+                    setTimeout(() => msgEl.remove(), 7000);
+                } catch (e) {
+                    alert('Subscribed successfully. Check your inbox for your welcome email.');
+                }
             } catch (err) {
                 console.warn('[Footer Newsletter] Submit failed', err);
-                alert('Unable to subscribe right now. Please try again in a moment.');
+                // show inline error message
+                try {
+                    const errEl = document.createElement('div');
+                    errEl.className = 'newsletter-error-msg';
+                    errEl.textContent = 'Unable to subscribe right now. Please try again in a moment.';
+                    errEl.style.cssText = 'margin-top:8px;color:#ffb3b3;font-weight:700;';
+                    form.parentNode && form.parentNode.appendChild(errEl);
+                    setTimeout(() => errEl.remove(), 7000);
+                } catch (e) {
+                    alert('Unable to subscribe right now. Please try again in a moment.');
+                }
             } finally {
                 if (submitBtn) {
                     submitBtn.disabled = false;

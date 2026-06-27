@@ -219,6 +219,10 @@
   color: #0b1220;
   border-color: #f6c84e;
 }
+.gb-footer-auth-link--accent {
+  padding: 12px 22px;
+  font-size: 1.02em;
+}
 .gb-footer-auth-link--accent:hover {
   background: linear-gradient(135deg, #fff1b8 0%, #ffd873 60%, #f6c84e 100%);
   color: #0b1220;

@@ -1,6 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 import nodemailer from 'nodemailer';
 
+const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
+
 function parseBody(req) {
   if (!req) return {};
   if (req.body && typeof req.body === 'object') return req.body;
@@ -84,13 +86,40 @@ function createMailTransport() {
   });
 }
 
-async function sendEbookEmail({ to, name, guideUrl }) {
-  const transport = createMailTransport();
-  if (!transport) {
+async function sendBrevoEmail({ to, name, subject, html }) {
+  const apiKey = process.env.BREVO_API_KEY;
+  if (!apiKey) {
     return { skipped: true };
   }
 
-  const from = process.env.FROM_EMAIL || process.env.SMTP_FROM_EMAIL || 'no-reply@garciabuilder.fitness';
+  const senderEmail = process.env.BREVO_SENDER_EMAIL || process.env.FROM_EMAIL || process.env.SMTP_FROM_EMAIL || 'no-reply@garciabuilder.fitness';
+  const senderName = process.env.BREVO_SENDER_NAME || 'Garcia Builder';
+
+  const response = await fetch(BREVO_API_URL, {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'content-type': 'application/json',
+      'api-key': apiKey
+    },
+    body: JSON.stringify({
+      sender: { email: senderEmail, name: senderName },
+      to: [{ email: to, name: name || undefined }],
+      subject,
+      htmlContent: html,
+      tags: ['lead-magnet', 'ebook']
+    })
+  });
+
+  if (!response.ok) {
+    const details = await response.text().catch(() => 'Brevo request failed');
+    throw new Error(`Brevo send failed: ${response.status} ${details}`);
+  }
+
+  return { ok: true };
+}
+
+async function sendEbookEmail({ to, name, guideUrl }) {
   const subject = 'Your 28 Days Fat Loss Quickstart is ready';
   const safeName = name ? String(name).trim() : '';
 
@@ -110,6 +139,23 @@ async function sendEbookEmail({ to, name, guideUrl }) {
     </div>
   `;
 
+  // Prefer Brevo transactional API when configured.
+  try {
+    const brevoResult = await sendBrevoEmail({ to, name: safeName, subject, html });
+    if (brevoResult?.ok) {
+      return { ok: true, provider: 'brevo' };
+    }
+  } catch (brevoError) {
+    console.warn('lead.js Brevo email warning', brevoError);
+  }
+
+  const transport = createMailTransport();
+  if (!transport) {
+    return { skipped: true };
+  }
+
+  const from = process.env.FROM_EMAIL || process.env.SMTP_FROM_EMAIL || 'no-reply@garciabuilder.fitness';
+
   await transport.sendMail({
     from,
     to,
@@ -117,7 +163,7 @@ async function sendEbookEmail({ to, name, guideUrl }) {
     html,
   });
 
-  return { ok: true };
+  return { ok: true, provider: 'smtp' };
 }
 
 export default async function handler(req, res) {
@@ -131,6 +177,7 @@ export default async function handler(req, res) {
       name,
       source,
       notes,
+      resendOnly,
       ...rest
     } = parseBody(req);
 
@@ -141,6 +188,32 @@ export default async function handler(req, res) {
 
     const supa = getSupabase();
     const guideUrl = getGuideUrl(req);
+
+    if (resendOnly === true || resendOnly === 'true') {
+      let customerEmailSent = false;
+      let customerEmailSkipped = false;
+
+      try {
+        const emailResult = await sendEbookEmail({
+          to: normalizedEmail,
+          name,
+          guideUrl,
+        });
+        customerEmailSent = emailResult?.ok === true;
+        customerEmailSkipped = emailResult?.skipped === true;
+      } catch (mailError) {
+        console.error('lead.js resend ebook email error', mailError);
+      }
+
+      return res.status(200).json({
+        ok: true,
+        resent: true,
+        guideUrl,
+        customerEmailSent,
+        customerEmailSkipped,
+      });
+    }
+
     const metadata = {
       ...rest,
       page_path: req.headers['x-original-url'] || req.headers.referer || null,

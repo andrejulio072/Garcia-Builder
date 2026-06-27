@@ -157,8 +157,10 @@
 
   // Setup newsletter subscription forms
   const setupNewsletterForms = () => {
-    const newsletterForms = document.querySelectorAll('.newsletter-form');
+    const newsletterForms = document.querySelectorAll('.newsletter-form, .newsletter-form-ref');
     newsletterForms.forEach(form => {
+      if (form.dataset.newsletterBound === '1') return;
+      form.dataset.newsletterBound = '1';
       form.addEventListener('submit', handleNewsletterSignup);
     });
 
@@ -253,10 +255,7 @@
 
     try {
       // Save to database
-      await saveNewsletterSubscriber(subscriberInfo);
-
-      // Send confirmation email
-      await sendNewsletterConfirmation(subscriberInfo);
+      const saveResult = await saveNewsletterSubscriber(subscriberInfo);
 
       // Track conversion
       trackConversion('newsletter_signup', subscriberInfo.source);
@@ -266,8 +265,14 @@
         window.gbMarkUserConverted();
       }
 
-  // Show success message (PT-BR)
-  showNotification('Inscrição realizada com sucesso! Confira seu e-mail para confirmar.', 'success');
+      // Show success message (PT-BR)
+      if (saveResult?.welcomeEmailSent) {
+        showNotification('Inscrição realizada com sucesso! Enviamos um email de boas-vindas.', 'success');
+      } else if (saveResult?.welcomeEmailSkipped) {
+        showNotification('Inscrição realizada com sucesso! Seu email de boas-vindas será enviado em breve.', 'success');
+      } else {
+        showNotification('Inscrição realizada com sucesso!', 'success');
+      }
 
       // Reset form
       form.reset();
@@ -848,8 +853,7 @@
     };
 
     try {
-      await postJson(getApiUrl('/newsletter'), payload);
-      return;
+      return await postJson(getApiUrl('/newsletter'), payload);
     } catch (apiError) {
       console.warn('Newsletter API unavailable, falling back to direct client/local storage', apiError);
     }
@@ -860,6 +864,7 @@
         .insert([subscriberInfo]);
 
       if (error) throw error;
+      return { ok: true, fallback: true, welcomeEmailSent: false, welcomeEmailSkipped: true };
     } else {
       // Fallback to localStorage
       const existingSubscribers = JSON.parse(
@@ -870,6 +875,7 @@
       // Write to canonical key and mirror to legacy key for compatibility
       localStorage.setItem('garcia_newsletter_subscribers', JSON.stringify(existingSubscribers));
       localStorage.setItem('garcia_newsletter', JSON.stringify(existingSubscribers));
+      return { ok: true, fallback: true, welcomeEmailSent: false, welcomeEmailSkipped: true };
     }
   };
 

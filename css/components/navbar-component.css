@@ -291,7 +291,7 @@
 
 @media (min-width: 1025px) {
     #auth-buttons-navbar[data-auth-state="anonymous"] {
-        display: none !important;
+        display: flex !important;
     }
 }
 

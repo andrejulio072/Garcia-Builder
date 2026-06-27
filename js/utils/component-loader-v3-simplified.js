@@ -380,7 +380,7 @@ const INLINE_FALLBACKS = {
         </div>
         <div class="gb-footer-col gb-footer-newsletter">
             <span class="footer-title footer-title-ref">Newsletter</span>
-            <form class="newsletter-form-ref" aria-label="Footer newsletter signup">
+            <form class="newsletter-form newsletter-form-ref" data-source="Footer Newsletter" aria-label="Footer newsletter signup">
                 <input type="email" class="newsletter-input-ref" id="footer-newsletter-email-fallback" name="email" placeholder="Email address" required autocomplete="email" />
                 <label class="newsletter-checkbox-ref" for="footer-newsletter-consent-fallback">
                     <input type="checkbox" id="footer-newsletter-consent-fallback" name="consent" value="yes" required /> I would like to receive updates and tips from Garcia Builder.
@@ -766,6 +766,84 @@ function normalizeGlobalAssets() {
     });
 }
 
+function resolveApiBaseUrl() {
+    try {
+        const configuredBase = window.STRIPE_ENV_CONFIG && window.STRIPE_ENV_CONFIG.apiUrl;
+        if (configuredBase) {
+            return String(configuredBase).replace(/\/$/, '');
+        }
+    } catch (err) {
+        console.warn('[Footer Newsletter] Failed to read STRIPE_ENV_CONFIG.apiUrl', err);
+    }
+
+    const hostname = (window.location && window.location.hostname) ? window.location.hostname : '';
+    const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
+    return isLocalhost ? 'http://localhost:3001/api' : '/api';
+}
+
+function bindFooterNewsletterForms() {
+    const forms = document.querySelectorAll('.newsletter-form, .newsletter-form-ref');
+    if (!forms.length) {
+        return;
+    }
+
+    forms.forEach((form) => {
+        if (form.dataset.gbNewsletterBound === '1') {
+            return;
+        }
+        form.dataset.gbNewsletterBound = '1';
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const emailInput = form.querySelector('input[name="email"]');
+            const nameInput = form.querySelector('input[name="name"]');
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const email = (emailInput && emailInput.value ? emailInput.value : '').trim();
+            const name = (nameInput && nameInput.value ? nameInput.value : '').trim();
+
+            if (!email) {
+                alert('Please enter a valid email.');
+                return;
+            }
+
+            const originalLabel = submitBtn ? submitBtn.innerHTML : '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'Sending...';
+            }
+
+            try {
+                const response = await fetch(`${resolveApiBaseUrl()}/newsletter`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email,
+                        name: name || null,
+                        source: form.dataset.source || 'Footer Newsletter'
+                    })
+                });
+
+                const payload = await response.json().catch(() => ({}));
+                if (!response.ok || payload.error) {
+                    throw new Error(payload.error || 'Newsletter subscription failed');
+                }
+
+                form.reset();
+                alert('Subscribed successfully. Check your inbox for your welcome email.');
+            } catch (err) {
+                console.warn('[Footer Newsletter] Submit failed', err);
+                alert('Unable to subscribe right now. Please try again in a moment.');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalLabel;
+                }
+            }
+        });
+    });
+}
+
 function canonicalizeNavTarget(target) {
     if (!target || typeof target !== 'string') {
         return target;
@@ -1007,6 +1085,7 @@ async function initComponents() {
 
     console.log(`[Component Loader] ✓ All ${elements.length} components loaded!`);
     normalizeGlobalAssets();
+    bindFooterNewsletterForms();
 }
 
 // EXPOSE TO WINDOW (NO IIFE!)
@@ -1021,6 +1100,7 @@ window.ComponentLoader = {
 };
 
 document.addEventListener('componentLoaded', normalizeGlobalAssets);
+document.addEventListener('componentLoaded', bindFooterNewsletterForms);
 
 // AUTO-INITIALIZE
 console.log('[Component Loader] Document state:', document.readyState);

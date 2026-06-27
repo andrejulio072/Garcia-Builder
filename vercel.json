@@ -13,11 +13,28 @@
       "destination": "/pages/public/first-workout.html"
     },
     {
+      "source": "/28-day-fat-loss-kickstart.pdf",
+      "destination": "/assets/28-days-fat-loss-quickstart.pdf"
+    },
+    {
       "source": "/api/:path*",
       "destination": "/api/stripe-server-premium.js"
     }
   ],
   "headers": [
+    {
+      "source": "/28-day-fat-loss-kickstart.pdf",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/pdf"
+        },
+        {
+          "key": "Content-Disposition",
+          "value": "attachment; filename=\"28-Day-Fat-Loss-Kickstart-Garcia-Builder.pdf\""
+        }
+      ]
+    },
     {
       "source": "/assets/28-days-fat-loss-quickstart.pdf",
       "headers": [

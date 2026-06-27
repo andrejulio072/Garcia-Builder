@@ -10,6 +10,8 @@
  *
  * Optional environment variables:
  *   - PUBLIC_SITE_URL
+ *   - GOOGLE_OAUTH_ENABLED
+ *   - FACEBOOK_OAUTH_ENABLED
  */
 
 const fs = require('fs');
@@ -52,7 +54,7 @@ const publicEnv = {
   PUBLIC_SITE_URL:
     process.env.PUBLIC_SITE_URL || process.env.FRONTEND_URL || null,
   GA4_MEASUREMENT_ID: process.env.GA4_MEASUREMENT_ID || null,
-  GOOGLE_OAUTH_ENABLED: parseBooleanEnv(process.env.GOOGLE_OAUTH_ENABLED, false),
+  GOOGLE_OAUTH_ENABLED: parseBooleanEnv(process.env.GOOGLE_OAUTH_ENABLED, true),
   FACEBOOK_OAUTH_ENABLED: parseBooleanEnv(process.env.FACEBOOK_OAUTH_ENABLED, false)
 };
 

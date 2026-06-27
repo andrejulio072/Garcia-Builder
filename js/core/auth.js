@@ -1444,13 +1444,11 @@ function setupOAuthButtons() {
     // GOOGLE OAUTH - Seguindo documentação oficial
     const isOAuthEnabled = (provider) => {
         const env = window.__ENV || {};
-        if (provider === 'google') {
-            return env.GOOGLE_OAUTH_ENABLED === true || window.GOOGLE_OAUTH_ENABLED === true;
-        }
-        if (provider === 'facebook') {
-            return env.FACEBOOK_OAUTH_ENABLED === true || window.FACEBOOK_OAUTH_ENABLED === true;
-        }
-        return false;
+        const key = provider === 'google' ? 'GOOGLE_OAUTH_ENABLED' : 'FACEBOOK_OAUTH_ENABLED';
+        const values = [env[key], window[key]].filter((value) => value !== undefined && value !== null && value !== '');
+        if (values.some((value) => value === false || String(value).toLowerCase() === 'false')) return false;
+        if (values.some((value) => value === true || String(value).toLowerCase() === 'true')) return true;
+        return provider === 'google';
     };
 
     const disableOAuthButton = (btn, providerLabel, message) => {

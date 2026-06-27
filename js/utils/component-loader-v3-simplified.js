@@ -335,6 +335,13 @@ const INLINE_FALLBACKS = {
 </nav>`.trim(),
         footer: `
 <footer class="gb-footer" aria-label="Site footer (offline fallback)">
+    <div class="gb-footer-cta">
+        <div>
+            <span class="gb-footer-cta-eyebrow">Ready to start?</span>
+            <strong>Build a plan that fits your real life.</strong>
+        </div>
+        <a href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener" class="gb-footer-cta-link">Book a Free Consultation</a>
+    </div>
     <div class="gb-footer-main gb-footer-ref">
         <div class="gb-footer-col gb-footer-brand-col">
             <img src="Logo%20Files/For%20Web/logo-nobackground-500.png" alt="Garcia Builder Logo" data-gb-logo-src="Logo%20Files/For%20Web/logo-nobackground-500.png" width="56" height="56" loading="lazy" style="margin-bottom:10px;"/>
@@ -348,19 +355,21 @@ const INLINE_FALLBACKS = {
         <div class="gb-footer-col">
             <span class="footer-title footer-title-ref">Links</span>
             <ul style="margin-top:2px;">
-                <li><a href="/index.html">Home</a></li>
-                <li><a href="/about.html">About</a></li>
-                <li><a href="/blog.html">Blog</a></li>
-                <li><a href="/transformations.html">Results</a></li>
-                <li><a href="/faq.html">FAQ</a></li>
-                <li><a href="/pricing.html">Pricing</a></li>
-                <li><a href="/pages/public/become-trainer.html">Apply as Trainer</a></li>
+                <li><a href="#" data-gb-nav="index.html">Home</a></li>
+                <li><a href="#" data-gb-nav="about.html">About</a></li>
+                <li><a href="#" data-gb-nav="workouts.html">Workouts</a></li>
+                <li><a href="#" data-gb-nav="transformations.html">Results</a></li>
+                <li><a href="#" data-gb-nav="pricing.html">Pricing</a></li>
+                <li><a href="#" data-gb-nav="blog.html">Blog</a></li>
+                <li><a href="#" data-gb-nav="faq.html">FAQ</a></li>
             </ul>
         </div>
         <div class="gb-footer-col">
             <span class="footer-title footer-title-ref">Resources</span>
             <ul style="margin-top:2px;">
-                <li><a href="/lead-magnet.html">Free 28 Days Fat Loss Quickstart</a></li>
+                <li><a href="#" data-gb-nav="pages/public/lead-magnet.html">Free 28 Days Fat Loss Quickstart</a></li>
+                <li><a href="#" data-gb-nav="contact.html">Contact</a></li>
+                <li><a href="#" data-gb-nav="pages/public/become-trainer.html">Apply as Trainer</a></li>
                 <li><a href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Book a Call</a></li>
             </ul>
             <div class="footer-follow">
@@ -383,10 +392,14 @@ const INLINE_FALLBACKS = {
     </div>
     <div class="gb-footer-bottom gb-footer-bottom-ref">
         <div class="gb-footer-legal small">
-            <span>© 2025 Garcia Builder</span>
+            <span>&copy; 2026 Garcia Builder</span>
             <a href="#" onclick="openConsentPreferences();return false;">Cookie Preferences</a>
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
+            <a href="#" data-gb-nav="privacy.html">Privacy Policy</a>
+            <a href="#" data-gb-nav="terms.html">Terms & Conditions</a>
+            <div class="gb-footer-auth-group" role="group" aria-label="Client account links">
+                <a class="gb-footer-auth-link" href="#" data-gb-nav="pages/auth/login.html">Client Login</a>
+                <a class="gb-footer-auth-link gb-footer-auth-link--accent" href="#" data-gb-nav="pages/auth/login.html?action=register">Create Account</a>
+            </div>
         </div>
         <div class="gb-footer-disclaimer-ref">*DISCLAIMER: Results may vary. Results are based on individual circumstances. Timeframes for results are not guaranteed. Willpower is always required!</div>
     </div>

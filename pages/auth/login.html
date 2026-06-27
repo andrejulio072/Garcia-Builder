@@ -289,11 +289,10 @@
     <script>
         const getSocialOAuthFlag = (provider) => {
             const env = window.__ENV || {};
-            const envFlag = provider === 'google' ? env.GOOGLE_OAUTH_ENABLED : env.FACEBOOK_OAUTH_ENABLED;
-            const globalFlag = provider === 'google' ? window.GOOGLE_OAUTH_ENABLED : window.FACEBOOK_OAUTH_ENABLED;
-
-            if (envFlag === true || globalFlag === true) return true;
-            if (envFlag === false || globalFlag === false) return false;
+            const key = provider === 'google' ? 'GOOGLE_OAUTH_ENABLED' : 'FACEBOOK_OAUTH_ENABLED';
+            const values = [env[key], window[key]].filter((value) => value !== undefined && value !== null && value !== '');
+            if (values.some((value) => value === false || String(value).toLowerCase() === 'false')) return false;
+            if (values.some((value) => value === true || String(value).toLowerCase() === 'true')) return true;
             return null;
         };
 
@@ -364,7 +363,7 @@
             const hash = window.location.hash;
             const searchParams = new URLSearchParams(window.location.search);
             
-            if (hash.includes('access_token') || searchParams.has('code')) {
+            if (hash.includes('access_token')) {
                 console.log('🔐 OAuth tokens detected on login page, redirecting to dashboard for processing...');
                 
                 // Extract redirect parameter if exists
@@ -381,6 +380,10 @@
                 console.log('📍 Redirecting to:', fullUrl);
                 window.location.replace(fullUrl);
                 return;
+            }
+
+            if (searchParams.has('code')) {
+                console.log('🔐 OAuth authorization code detected on login page; auth.js will exchange it for a session.');
             }
         })();
     </script>
@@ -504,6 +507,7 @@
 
             // Prefer current origin for local-like and non-production hosts
             const origin = window.location.origin || 'http://localhost:8000';
+            const currentBase = getSiteBaseUrl() || origin;
             const hostname = (window.location.hostname || '').toLowerCase();
             const isLocal = isLocalLikeHost(hostname);
             const isProd = /garciabuilder\.fitness$/i.test(hostname);
@@ -511,7 +515,7 @@
             try {
                 let baseOrigin;
                 if (isLocal || !isProd) {
-                    baseOrigin = origin;
+                    baseOrigin = currentBase;
                 } else {
                     const envBase = (window.__ENV && typeof window.__ENV.PUBLIC_SITE_URL === 'string' && window.__ENV.PUBLIC_SITE_URL)
                         ? window.__ENV.PUBLIC_SITE_URL.replace(/\/$/, '')
@@ -545,7 +549,7 @@
 
             if (getSocialOAuthFlag('google') === false) {
                 disableSocialOAuthButtons('google', 'Google OAuth');
-                showErrorBanner('Google OAuth não está habilitado neste projeto. Use login por e-mail/senha ou ative o provedor no Supabase.');
+                showErrorBanner('Google OAuth está desativado neste ambiente. Ative GOOGLE_OAUTH_ENABLED ou use e-mail/senha.');
                 return;
             }
 

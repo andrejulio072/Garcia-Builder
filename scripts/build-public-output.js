@@ -48,7 +48,15 @@ function copyRecursive(source, destination) {
   }
 
   fs.mkdirSync(path.dirname(destination), { recursive: true });
-  fs.copyFileSync(source, destination);
+  try {
+    fs.copyFileSync(source, destination);
+  } catch (error) {
+    if ((error.code === 'EPERM' || error.code === 'EACCES') && fs.existsSync(destination)) {
+      console.warn(`[public-build] Skipped locked existing file ${path.relative(rootDir, destination)}`);
+      return;
+    }
+    throw error;
+  }
 }
 
 function copyIfExists(relativePath) {
@@ -60,7 +68,6 @@ function copyIfExists(relativePath) {
   copyRecursive(source, path.join(outputDir, relativePath));
 }
 
-fs.rmSync(outputDir, { recursive: true, force: true });
 fs.mkdirSync(outputDir, { recursive: true });
 
 for (const entry of fs.readdirSync(rootDir)) {

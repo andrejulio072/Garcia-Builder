@@ -808,21 +808,12 @@
     try {
       return await postJson('/api/lead', payload);
     } catch (apiError) {
-      console.warn('Lead API unavailable, falling back to direct client/local storage', apiError);
+      console.warn('Lead API unavailable, saving locally as fallback', apiError);
     }
 
-    if (window.supabaseClient) {
-      const { error } = await window.supabaseClient
-        .from('leads')
-        .insert([leadInfo]);
-
-      if (error) throw error;
-    } else {
-      // Fallback to localStorage
-      const existingLeads = JSON.parse(localStorage.getItem('garcia_leads') || '[]');
-      existingLeads.push(leadInfo);
-      localStorage.setItem('garcia_leads', JSON.stringify(existingLeads));
-    }
+    const existingLeads = JSON.parse(localStorage.getItem('garcia_leads') || '[]');
+    existingLeads.push(leadInfo);
+    localStorage.setItem('garcia_leads', JSON.stringify(existingLeads));
 
     return {
       ok: true,

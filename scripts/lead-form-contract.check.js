@@ -60,22 +60,32 @@ assert(
 );
 
 const leadApi = read('api/lead.js');
-const insertPayloadBlock = extractBetween(
+const leadInsertBlock = extractBetween(
   leadApi,
   'const insertPayload = {',
-  '    const { error } = await supa.from'
+  '    const leadInsert = await insertLeadWithSchemaFallback'
 );
 
 ['email:', 'name:', 'source:', 'notes:'].forEach((field) => {
-  assert(insertPayloadBlock.includes(field), `api/lead.js insertPayload missing ${field}`);
+  assert(leadInsertBlock.includes(field), `api/lead.js insert candidates missing ${field}`);
 });
 
 ['guide_id:', 'page:', 'page_path:', 'source_page:', 'user_agent:'].forEach((field) => {
   assert(
-    !insertPayloadBlock.includes(field),
-    `api/lead.js insertPayload should not send metadata column ${field}; use notes instead.`
+    !leadInsertBlock.includes(field),
+    `api/lead.js insert candidates should not send metadata column ${field}; use notes instead.`
   );
 });
+
+assert(
+  leadApi.includes('insertLeadWithSchemaFallback'),
+  'api/lead.js should retry lead inserts against narrower schemas.'
+);
+
+assert(
+  leadInsertBlock.includes('insertPayload') && leadInsertBlock.includes('insertCandidates'),
+  'api/lead.js should include full and fallback insert payloads.'
+);
 
 assert(
   leadApi.includes('SUPABASE_URL') && leadApi.includes('NEXT_PUBLIC_SUPABASE_URL'),

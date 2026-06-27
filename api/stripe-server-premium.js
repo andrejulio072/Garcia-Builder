@@ -489,16 +489,39 @@ app.post('/api/lead', async (req, res) => {
 
         const supa = getOptionalSupabaseClient();
         if (supa) {
-            const { error } = await supa.from('leads').insert([{
+            const leadName = name || cleanEmail;
+            const leadSource = source || req.headers.referer || 'website';
+            const insertCandidates = [
+              {
                 email: cleanEmail,
-                name: name || null,
-                source: source || req.headers.referer || 'website',
+                name: leadName,
+                source: leadSource,
                 notes: cleanNotes,
-            }]);
-            if (error) {
-                console.warn('lead Supabase insert skipped/failed:', error.message);
-            } else {
-                saved = true;
+              },
+              {
+                email: cleanEmail,
+                name: leadName,
+                source: leadSource,
+              },
+              {
+                email: cleanEmail,
+                name: leadName,
+              },
+            ];
+
+            for (const candidate of insertCandidates) {
+                const { error } = await supa.from('leads').insert([candidate]);
+                if (!error) {
+                    saved = true;
+                    break;
+                }
+
+                const message = String(error.message || '').toLowerCase();
+                const isMissingColumn = error.code === 'PGRST204' || message.includes('schema cache') || message.includes('could not find');
+                if (!isMissingColumn) {
+                    console.warn('lead Supabase insert skipped/failed:', error.message);
+                    break;
+                }
             }
         }
 

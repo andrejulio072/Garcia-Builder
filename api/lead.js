@@ -45,6 +45,29 @@ function getGuideUrl(req) {
   return `${getBaseUrl(req)}/assets/28-days-fat-loss-quickstart.pdf`;
 }
 
+function isMissingColumnError(error) {
+  const message = String(error?.message || '').toLowerCase();
+  return error?.code === 'PGRST204' || message.includes('schema cache') || message.includes('could not find');
+}
+
+async function insertLeadWithSchemaFallback(supa, candidates) {
+  let lastError = null;
+
+  for (const payload of candidates) {
+    const { error } = await supa.from('leads').insert([payload]);
+    if (!error) {
+      return { ok: true, payload };
+    }
+
+    lastError = error;
+    if (!isMissingColumnError(error)) {
+      break;
+    }
+  }
+
+  return { ok: false, error: lastError };
+}
+
 function createMailTransport() {
   const host = process.env.SMTP_HOST;
   const user = process.env.SMTP_USER;
@@ -130,17 +153,34 @@ export default async function handler(req, res) {
         ? JSON.stringify(metadata)
         : null;
 
+    const leadName = typeof name === 'string' && name.trim()
+      ? name.trim()
+      : normalizedEmail;
+    const leadSource = source || req.headers.referer || 'website';
     const insertPayload = {
       email: normalizedEmail,
-      name: name || null,
-      source: source || req.headers.referer || 'website',
+      name: leadName,
+      source: leadSource,
       notes: sanitizedNotes,
     };
 
-    const { error } = await supa.from('leads').insert([insertPayload]);
-    if (error) {
-      console.error('lead.js supabase error', error);
-      return res.status(500).json({ error: error.message });
+    const insertCandidates = [
+      insertPayload,
+      {
+        email: normalizedEmail,
+        name: leadName,
+        source: leadSource,
+      },
+      {
+        email: normalizedEmail,
+        name: leadName,
+      },
+    ];
+
+    const leadInsert = await insertLeadWithSchemaFallback(supa, insertCandidates);
+    if (!leadInsert.ok) {
+      console.error('lead.js supabase error', leadInsert.error);
+      return res.status(500).json({ error: leadInsert.error?.message || 'Lead save failed' });
     }
 
     // Keep lead magnet contacts in the newsletter audience as well.
@@ -177,6 +217,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       ok: true,
+      saved: true,
       guideUrl,
       customerEmailSent,
       customerEmailSkipped,

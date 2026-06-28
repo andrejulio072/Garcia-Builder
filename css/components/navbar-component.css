@@ -41,8 +41,10 @@
     margin-left: 0;
     margin-right: auto;
     padding-right: 0;
-    flex: 0 1 auto;
+    /* Allow links to shrink so auth area won't overlap */
+    flex: 1 1 auto;
     min-width: 0;
+    overflow: hidden;
 }
 
 .gb-navbar-link {
@@ -90,11 +92,12 @@
     display: inline-flex;
     align-items: center;
     justify-content: flex-end;
-    gap: clamp(10px, 1.8vw, 18px);
+    gap: clamp(8px, 1.6vw, 16px);
     margin-left: 0;
     flex-wrap: nowrap;
     flex: 0 0 auto;
     min-width: 0;
+    flex-shrink: 0; /* Prevent action buttons from shrinking into logo/links */
 }
 
 /* Logo Section */
@@ -177,7 +180,7 @@
 .gb-auth-buttons {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: nowrap;
 }
 
@@ -310,8 +313,8 @@
 .gb-btn-link {
     display: inline-flex;
     align-items: center;
-    padding: clamp(8px, 1.1vw, 10px) clamp(14px, 2vw, 20px);
-    font-size: clamp(0.9rem, 1vw, 0.98rem);
+    padding: 6px 12px;
+    font-size: 0.9rem;
     font-weight: 600;
     color: #F6C84E !important;
     text-decoration: none;
@@ -334,8 +337,8 @@
 .gb-btn-primary-small {
     display: inline-flex;
     align-items: center;
-    padding: clamp(9px, 1.2vw, 12px) clamp(16px, 2.2vw, 24px);
-    font-size: clamp(0.9rem, 1.05vw, 1rem);
+    padding: 8px 14px;
+    font-size: 0.95rem;
     font-weight: 700;
     color: #000 !important;
     text-decoration: none;

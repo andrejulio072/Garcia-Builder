@@ -73,8 +73,8 @@
         const originalText = submitBtn ? submitBtn.innerHTML : '';
 
         // Show loading state
-        if (submitBtn) {
-          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+          if (submitBtn) {
+          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
           submitBtn.disabled = true;
         }
 
@@ -95,7 +95,7 @@
 
           // Validate required fields
           if (!leadData.name || !leadData.email || !leadData.goal) {
-            throw new Error('Por favor, preencha todos os campos obrigatórios');
+            throw new Error('Please fill in all required fields');
           }
 
           // Save to database
@@ -105,9 +105,9 @@
           form.innerHTML = `
             <div class="lead-form-success">
               <i class="fas fa-check-circle"></i>
-              <h3>Obrigado!</h3>
-              <p>Entraremos em contato em até 24 horas para agendar sua consulta gratuita.</p>
-              <p><strong>Próximos passos:</strong> Verifique seu email para uma mensagem de boas-vindas com dicas de preparação.</p>
+              <h3>Thank you!</h3>
+              <p>We will contact you within 24 hours to schedule your free consultation.</p>
+              <p><strong>Next steps:</strong> Check your email for a welcome message with preparation tips.</p>
             </div>
           `;
 
@@ -126,7 +126,7 @@
           errorDiv.className = 'alert alert-danger mt-3';
           errorDiv.innerHTML = `
             <i class="fas fa-exclamation-triangle"></i>
-            ${error.message || 'Algo deu errado. Tente novamente ou entre em contato diretamente.'}
+            ${error.message || 'Something went wrong. Please try again or contact us directly.'}
           `;
           form.appendChild(errorDiv);
 
@@ -206,8 +206,8 @@
         window.gbMarkUserConverted();
       }
 
-  // Show success message (PT-BR)
-  showNotification('Obrigado! Entraremos em contato em breve para sua consulta gratuita.', 'success');
+  // Show success message (EN)
+  showNotification('Thank you! We will contact you soon to schedule your free consultation.', 'success');
 
       // Redirect to thank you page or show additional content
       setTimeout(() => {
@@ -218,8 +218,8 @@
       form.reset();
 
     } catch (error) {
-  console.error('Error capturing lead:', error);
-  showNotification('Erro ao enviar. Por favor, tente novamente.', 'error');
+    console.error('Error capturing lead:', error);
+    showNotification('Error sending. Please try again.', 'error');
     }
   };
 
@@ -233,7 +233,7 @@
     const name = formData.get('name') || '';
 
     if (!email || !isValidEmail(email)) {
-      showNotification('Por favor, insira um e-mail válido.', 'error');
+      showNotification('Please enter a valid email.', 'error');
       return;
     }
 
@@ -267,11 +267,11 @@
 
       // Show success message (PT-BR)
       if (saveResult?.welcomeEmailSent) {
-        showNotification('Inscrição realizada com sucesso! Enviamos um email de boas-vindas.', 'success');
+        showNotification('Subscription successful! We sent a welcome email.', 'success');
       } else if (saveResult?.welcomeEmailSkipped) {
-        showNotification('Inscrição realizada com sucesso! Seu email de boas-vindas será enviado em breve.', 'success');
+        showNotification('Subscription successful! Your welcome email will be sent shortly.', 'success');
       } else {
-        showNotification('Inscrição realizada com sucesso!', 'success');
+        showNotification('Subscription successful!', 'success');
       }
 
       // Reset form
@@ -279,7 +279,7 @@
 
     } catch (error) {
   console.error('Error subscribing to newsletter:', error);
-  showNotification('Erro na inscrição. Tente novamente.', 'error');
+  showNotification('Subscription error. Please try again.', 'error');
     }
   };
 
@@ -315,11 +315,12 @@
       // Notify admin
       await notifyAdminNewConsultation(consultationInfo);
 
-      // Track conversion
-      trackConversion('consultation_request', 'Consultation Form');
 
-  // Show success message (PT-BR)
-  showNotification('Solicitação enviada! Entraremos em contato em até 24 horas.', 'success');
+        // Track conversion
+        trackConversion('consultation_request', 'Consultation Form');
+
+      // Show success message (EN)
+      showNotification('Request sent! We will contact you within 24 hours.', 'success');
 
       // Show calendar booking option
       showCalendarBooking();
@@ -328,7 +329,7 @@
 
     } catch (error) {
   console.error('Error requesting consultation:', error);
-  showNotification('Erro ao enviar solicitação. Tente novamente.', 'error');
+  showNotification('Error sending request. Please try again.', 'error');
     }
   };
 

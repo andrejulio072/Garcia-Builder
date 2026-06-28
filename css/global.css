@@ -1211,42 +1211,111 @@ input, select, textarea { font-size: 1rem; }
 /* Card do formulário mais destacado sobre o bg */
 .contact-card{
   background: rgba(11,18,32,.70);          /* vidro mais escuro */
-
-/* Footer auth buttons - accessibility improvements */
-.gb-footer-auth-group { gap: 12px; align-items: center; }
-.gb-footer-auth-link {
-  min-width: 140px;
-  padding: 12px 20px;
-  border-radius: 8px;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
-  background: rgba(255,255,255,0.02);
-  color: #fff;
-  border: 1px solid rgba(246,200,78,0.85);
-}
-.gb-footer-auth-link:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(246,200,78,0.18), 0 8px 24px rgba(0,0,0,0.55);
-  border-color: rgba(246,200,78,1);
-}
-.gb-footer-auth-link:active { transform: translateY(1px); }
-.gb-footer-auth-link--accent {
-  background: linear-gradient(135deg, #ffd966 0%, #f6c84e 60%, #e9b930 100%);
-  color: #0b1220;
-  font-weight: 900;
-  box-shadow: 0 10px 26px rgba(246,200,78,0.18);
-  border: 1px solid rgba(246,200,78,0.95);
-}
-.gb-footer-auth-link--accent:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(246,200,78,0.2), 0 10px 28px rgba(0,0,0,0.55);
-  border-color: rgba(246,200,78,1);
-}
-@media (max-width:700px) {
-  .gb-footer-auth-link { width: 100%; text-align: center; min-width: 0; }
-}
   border: 1px solid rgba(255,255,255,.08);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
+}
+
+/* Footer auth buttons - accessibility improvements (use site button pattern) */
+.footer .gb-footer-auth-link,
+.gb-footer .gb-footer-auth-link {
+  background: transparent;
+  color: var(--gold);
+  border: 2px solid rgba(246,200,78,0.95);
+  padding: 12px 22px;
+  font-weight: 800;
+  min-width: 140px;
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: none;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.footer .gb-footer-auth-link:hover,
+.gb-footer .gb-footer-auth-link:hover {
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
+  color: #0b1220;
+  border-color: rgba(246,200,78,1);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(246,200,78,0.22);
+}
+
+.footer .gb-footer-auth-link:focus-visible,
+.gb-footer .gb-footer-auth-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(246,200,78,0.18), 0 10px 20px rgba(0,0,0,0.6);
+  border-color: rgba(246,200,78,1);
+}
+
+.footer .gb-footer-auth-link--accent,
+.gb-footer .gb-footer-auth-link--accent {
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
+  color: #0b1220;
+  border: none;
+  padding: 12px 24px;
+  font-weight: 900;
+  box-shadow: 0 18px 36px rgba(246,200,78,0.22);
+}
+
+@media (max-width:700px) {
+  .footer .gb-footer-auth-link, .gb-footer .gb-footer-auth-link { width: 100%; text-align:center; min-width: 0; }
+}
+
+/* Force readable text color inside footer CTA elements to avoid overrides */
+.footer .gb-footer-auth-link,
+.gb-footer .gb-footer-auth-link,
+.footer .gb-footer-auth-link *,
+.gb-footer .gb-footer-auth-link * {
+  color: var(--gold) !important;
+}
+.footer .gb-footer-auth-link--accent,
+.gb-footer .gb-footer-auth-link--accent * {
+  color: #0b1220 !important;
+}
+
+/* Enforce high-contrast footer CTA pattern (page standard) */
+.gb-footer-bottom-ref .gb-footer-auth-group .gb-footer-auth-link {
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  line-height: 1;
+  border: 2px solid rgba(246,200,78,0.95) !important;
+  background: transparent !important;
+  color: var(--gold) !important;
+}
+
+.gb-footer-bottom-ref .gb-footer-auth-group .gb-footer-auth-link--accent {
+  background: linear-gradient(90deg, var(--gold), var(--gold2)) !important;
+  color: #0b1220 !important;
+  border: none !important;
+  box-shadow: 0 18px 36px rgba(246,200,78,0.22) !important;
+}
+
+.gb-footer-bottom-ref .gb-footer-auth-group .gb-footer-auth-link:not(.gb-footer-auth-link--accent) {
+  background: rgba(255,255,255,0.02) !important;
+  color: var(--gold) !important;
+  border: 2px solid rgba(246,200,78,0.85) !important;
+}
+
+.gb-footer-bottom-ref .gb-footer-auth-group .gb-footer-auth-link,
+.gb-footer-bottom-ref .gb-footer-auth-group .gb-footer-auth-link * {
+  text-decoration: none !important;
+}
+
+.gb-footer-bottom-ref .gb-footer-auth-group .gb-footer-auth-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(246,200,78,0.18), 0 12px 28px rgba(0,0,0,0.6) !important;
+}
+
+@media (max-width: 700px) {
+  .gb-footer-bottom-ref .gb-footer-auth-group .gb-footer-auth-link { width: 100% !important; text-align:center !important; min-width: 0 !important; }
 }
 
 /* Inputs iguais ao FAQ, mas com melhor contraste do placeholder */

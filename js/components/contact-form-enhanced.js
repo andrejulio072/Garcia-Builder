@@ -16,6 +16,18 @@
   const consentEl = document.getElementById('consent');
   const charCount = document.getElementById('charCount');
   const btnLabel = btn ? btn.querySelector('[data-i18n="contact.form.submit"]') : null;
+  const getCurrentLang = () => {
+    try {
+      return (window.GB_I18N?.getLang?.() || localStorage.getItem('gb_lang') || 'en').toLowerCase();
+    } catch {
+      return 'en';
+    }
+  };
+  const getI18nText = (key, fallback) => {
+    const readPath = (obj, path) => String(path || '').split('.').reduce((acc, part) => acc?.[part], obj);
+    const lang = getCurrentLang();
+    return readPath(window.DICTS?.[lang], key) || readPath(window.DICTS?.en, key) || fallback;
+  };
 
   // Check if required elements exist
   if (!btn || !alertBox || !nameEl || !emailEl || !goalEl ||
@@ -78,18 +90,18 @@
           <div class="modal-content">
             <div class="modal-header border-0">
               <h1 class="modal-title fs-4 text-center w-100" id="successModalLabel">
-                Message Sent Successfully
+                ${getI18nText('contact.form.success_title', 'Message sent successfully')}
               </h1>
             </div>
             <div class="modal-body text-center">
-              <p class="mb-3">Thank you <strong>${safeName}</strong>!</p>
-              <p class="text-muted mb-3">Your message was sent directly to Andre. A confirmation email was also sent to:</p>
+              <p class="mb-3">${getI18nText('contact.form.success_greeting', 'Thank you')} <strong>${safeName}</strong>!</p>
+              <p class="text-muted mb-3">${getI18nText('contact.form.success_email_note', 'Your message was received. Please check your inbox for the confirmation email sent by Garcia Builder Fitness:')}</p>
               <p class="text-primary fw-bold">${safeEmail}</p>
-              <p class="text-muted small">If you want to move faster, book the free consultation now.</p>
-              <a class="btn btn-warning" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Book Free Consultation</a>
+              <p class="text-muted small">${getI18nText('contact.form.success_next_step', 'Andre will review your enquiry and reply within 24-48 hours.')}</p>
+              <a class="btn btn-warning" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">${getI18nText('contact.form.book_consultation', 'Book Free Consultation')}</a>
             </div>
             <div class="modal-footer border-0 justify-content-center">
-                <button type="button" class="btn btn-gradient px-4" data-bs-dismiss="modal">Got it!</button>
+                <button type="button" class="btn btn-gradient px-4" data-bs-dismiss="modal">${getI18nText('contact.form.success_dismiss', 'Got it')}</button>
             </div>
           </div>
         </div>
@@ -120,50 +132,6 @@
     });
   };
 
-  // Send confirmation email function
-  const sendConfirmationEmail = async (userName, userEmail) => {
-    try {
-      // Create confirmation email data
-      const confirmationData = new FormData();
-      confirmationData.append('_to', userEmail);
-      confirmationData.append('_subject', 'Message Received - Garcia Builder Coaching');
-      confirmationData.append('_template', 'table');
-      confirmationData.append('name', userName);
-      confirmationData.append('message', `
-Hi ${userName},
-
-Thank you for reaching out! I've received your message and will get back to you within 24-48 hours.
-
-In the meantime, feel free to:
-- Follow me on Instagram @garciabuilder.fitness for daily tips
-- Check out transformation stories at garciabuilder.com
-- Book a free consultation call here: https://calendly.com/andrenjulio072/consultation
-
-Looking forward to speaking with you soon!
-
-Best regards,
-Andre Garcia
-Garcia Builder - Online Coaching
-Email: andre@garciabuilder.fitness
-Calendly: https://calendly.com/andrenjulio072/consultation
-Site: garciabuilder.com
-
-If you'd like to chat sooner, feel free to book a free consultation call using the link above.
-      `);
-
-      // Send confirmation email via Formspree
-      await fetch('https://formspree.io/f/mldpgrwq', {
-        method: 'POST',
-        body: confirmationData,
-        headers: { 'Accept': 'application/json' }
-      });
-
-      console.log('Confirmation email sent successfully');
-    } catch (error) {
-      console.warn('Failed to send confirmation email:', error);
-    }
-  };
-
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -188,34 +156,35 @@ If you'd like to chat sooner, feel free to book a free consultation call using t
 
     if (!canSubmit()) {
       alertBox.classList.remove('visually-hidden');
-      alertBox.textContent = 'Message already sent. Please wait a minute before trying again.';
+      alertBox.textContent = getI18nText('contact.form.rate_limit', 'Message already sent. Please wait a minute before trying again.');
       return;
     }
 
     // Send
     btn.disabled = true;
     btn.classList.add('is-loading');
-    if (btnLabel && btn.dataset.loading) {
-      btnLabel.textContent = btn.dataset.loading;
+    if (btnLabel) {
+      btnLabel.textContent = getI18nText('contact.form.sending', btn.dataset.loading || 'Sending...');
     }
 
     try {
-      const targetUrl = form.getAttribute('action') || '/api/contact';
       const payload = {
         name: nameEl.value.trim(),
         email: emailEl.value.trim(),
         phone: phoneEl.value.trim() || null,
-        preferred_contact: preferredContactEl ? preferredContactEl.value : null,
-        primary_goal: goalEl.value || null,
-        timeline: timelineEl.value || null,
+        goal: goalEl.value || null,
         experience: experienceEl.value || null,
-        budget: budgetEl ? budgetEl.value : null,
-        message: messageEl.value.trim(),
-        page_path: window.location.href,
-        user_agent: navigator.userAgent,
+        availability: timelineEl.value || null,
+        message: [
+          messageEl.value.trim(),
+          preferredContactEl?.value ? `Preferred contact: ${preferredContactEl.value}` : '',
+          budgetEl?.value ? `Monthly budget: ${budgetEl.value}` : ''
+        ].filter(Boolean).join('\n\n'),
+        source: 'Contact Page',
+        page: window.location.href,
       };
 
-      const res = await fetch(targetUrl, {
+      const res = await fetch('/api/inquiry', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -234,11 +203,10 @@ If you'd like to chat sooner, feel free to book a free consultation call using t
 
         form.reset(); updateCount();
         alertBox.classList.remove('visually-hidden');
-          alertBox.textContent = 'Thanks! Your message was sent. I\'ll reply within 24-48h.';
+        alertBox.textContent = getI18nText('contact.form.success_inline', 'Thank you. Your enquiry has been sent. Please check your inbox for confirmation.');
 
-        // Show success popup and send confirmation email
+        // Show success popup. Confirmation and admin emails are sent by /api/inquiry.
         showSuccessPopup(userName, userEmail);
-        sendConfirmationEmail(userName, userEmail);
 
         // ---- Analytics / Tracking ----
         try {
@@ -280,16 +248,16 @@ If you'd like to chat sooner, feel free to book a free consultation call using t
       } else {
         alertBox.classList.remove('visually-hidden');
         const apiError = responseData?.error || res.statusText || 'Unknown error';
-        alertBox.textContent = `Hmm, something went wrong (${apiError}). You can also email me at: andre@garciabuilder.fitness`;
+        alertBox.textContent = `${getI18nText('contact.form.error', 'Unable to send your request right now. Please try again in a moment.')} (${apiError})`;
       }
     } catch {
       alertBox.classList.remove('visually-hidden');
-      alertBox.textContent = 'Network issue. If it persists, email me at: andre@garciabuilder.fitness';
+      alertBox.textContent = getI18nText('contact.form.network_error', 'Network issue. If it persists, email inquiries@garciabuilder.fitness.');
     } finally {
       btn.disabled = false;
       btn.classList.remove('is-loading');
       if (btnLabel && btn.dataset.default) {
-        btnLabel.textContent = btn.dataset.default;
+        btnLabel.textContent = getI18nText('contact.form.submit', btn.dataset.default);
       }
     }
   });

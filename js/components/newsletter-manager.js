@@ -15,6 +15,18 @@
   };
 
   const getApiUrl = (path) => `${resolveApiBaseUrl()}${path}`;
+  const getCurrentLang = () => {
+    try {
+      return (window.GB_I18N?.getLang?.() || localStorage.getItem('gb_lang') || 'en').toLowerCase();
+    } catch {
+      return 'en';
+    }
+  };
+  const getI18nText = (key, fallback) => {
+    const lang = getCurrentLang();
+    const readPath = (obj, path) => String(path || '').split('.').reduce((acc, part) => acc?.[part], obj);
+    return readPath(window.DICTS?.[lang], key) || readPath(window.DICTS?.en, key) || fallback;
+  };
 
   // Initialize newsletter system
   const init = async () => {
@@ -105,9 +117,8 @@
           form.innerHTML = `
             <div class="lead-form-success">
               <i class="fas fa-check-circle"></i>
-              <h3>Thank you!</h3>
-              <p>We will contact you within 24 hours to schedule your free consultation.</p>
-              <p><strong>Next steps:</strong> Check your email for a welcome message with preparation tips.</p>
+              <h3>${getI18nText('consultation.thank_you', 'Thank you.')}</h3>
+              <p>${getI18nText('consultation.success', 'Thank you. Your consultation request has been sent. Please check your inbox for confirmation.')}</p>
             </div>
           `;
 
@@ -206,8 +217,10 @@
         window.gbMarkUserConverted();
       }
 
-  // Show success message (EN)
-  showNotification('Thank you! We will contact you soon to schedule your free consultation.', 'success');
+      showNotification(
+        getI18nText('consultation.success', 'Thank you. Your consultation request has been sent. Please check your inbox for confirmation.'),
+        'success'
+      );
 
       // Redirect to thank you page or show additional content
       setTimeout(() => {
@@ -289,47 +302,58 @@
 
     const form = event.target;
     const formData = new FormData(form);
+    const submitBtn = form.querySelector('.lead-form-submit, .btn-primary, button[type="submit"]');
+    const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
 
     const consultationInfo = {
-      id: generateLeadId(),
       email: formData.get('email'),
       name: formData.get('name'),
-      phone: formData.get('phone'),
-      goal: formData.get('goal'),
-      experience: formData.get('experience'),
-      availability: formData.get('availability'),
-      message: formData.get('message'),
-      type: 'consultation',
-      source: 'Consultation Form',
-      timestamp: new Date().toISOString(),
-      status: 'pending'
+      phone: formData.get('phone') || '',
+      goal: formData.get('goal') || '',
+      experience: formData.get('experience') || '',
+      availability: formData.get('availability') || '',
+      message: formData.get('message') || '',
+      source: form.dataset.source || 'Consultation Form',
+      page: window.location.pathname
     };
 
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin me-2"></i>${getI18nText('consultation.sending', 'Sending...')}`;
+    }
+
     try {
-      // Save consultation request
-      await saveConsultationRequest(consultationInfo);
+      if (!consultationInfo.email || !isValidEmail(consultationInfo.email)) {
+        throw new Error(getI18nText('consultation.error', 'Unable to send your request right now. Please try again in a moment.'));
+      }
 
-      // Send confirmation to user
-      await sendConsultationConfirmation(consultationInfo);
+      const inquiryResponse = await postJson(getApiUrl('/inquiry'), consultationInfo);
+      if (!inquiryResponse?.ok) {
+        throw new Error(getI18nText('consultation.error', 'Unable to send your request right now. Please try again in a moment.'));
+      }
 
-      // Notify admin
-      await notifyAdminNewConsultation(consultationInfo);
+      // Track conversion only after the backend accepts the request.
+      trackConversion('consultation_request', 'Consultation Form');
 
+      showNotification(
+        getI18nText('consultation.success', 'Thank you. Your consultation request has been sent. Please check your inbox for confirmation.'),
+        'success'
+      );
 
-        // Track conversion
-        trackConversion('consultation_request', 'Consultation Form');
-
-      // Show success message (EN)
-      showNotification('Request sent! We will contact you within 24 hours.', 'success');
-
-      // Show calendar booking option
       showCalendarBooking();
-
       form.reset();
 
     } catch (error) {
-  console.error('Error requesting consultation:', error);
-  showNotification('Error sending request. Please try again.', 'error');
+      console.error('Error requesting consultation:', error);
+      showNotification(
+        getI18nText('consultation.error', 'Unable to send your request right now. Please try again in a moment.'),
+        'error'
+      );
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
     }
   };
 
@@ -1043,15 +1067,6 @@
     document.body.appendChild(link);
     link.click();
     link.remove();
-  };
-
-  const saveConsultationRequest = async (info) => {
-    console.log('Consultation request captured:', info);
-    await saveLeadToDatabase(info);
-  };
-
-  const notifyAdminNewConsultation = async (info) => {
-    console.log('Notify admin (stub):', info.email);
   };
 
   // Load leads data for admin

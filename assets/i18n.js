@@ -527,7 +527,7 @@
           whatsapp: "Chat on WhatsApp",
           consult: "Book a free 15-min consult",
           instagram: "Message on Instagram",
-          note: "Prefer the form? It goes directly to andre@garciabuilder.fitness."
+          note: "Prefer the form? It goes directly to inquiries@garciabuilder.fitness."
         },
         form: {
           name: "Your name",
@@ -540,6 +540,7 @@
           budget: "Monthly budget (optional)",
           message: "Tell me about your situation",
           submit: "Send",
+          sending: "Sending...",
           placeholders: {
             name: "Your name",
             email: "you@example.com",
@@ -585,7 +586,17 @@
             }
           },
           consent: "I agree to be contacted about coaching and understand my data will be used only to respond to this inquiry.",
-          footnote: "Average reply time: 24–48h. No spam, ever."
+          footnote: "Average reply time: 24–48h. No spam, ever.",
+          success_title: "Message sent successfully",
+          success_greeting: "Thank you",
+          success_email_note: "Your message was received. Please check your inbox for the confirmation email sent by Garcia Builder Fitness:",
+          success_next_step: "Andre will review your enquiry and reply within 24-48 hours.",
+          success_inline: "Thank you. Your enquiry has been sent. Please check your inbox for confirmation.",
+          success_dismiss: "Got it",
+          book_consultation: "Book Free Consultation",
+          rate_limit: "Message already sent. Please wait a minute before trying again.",
+          error: "Unable to send your request right now. Please try again in a moment.",
+          network_error: "Network issue. If it persists, email inquiries@garciabuilder.fitness."
         },
         newsletter: {
           title: "Stay Informed While You Wait",
@@ -598,6 +609,14 @@
           remote: "Work remotely with global clients",
           cta: "Apply Now"
         }
+      },
+      consultation: {
+        thank_you: "Thank you.",
+        sending: "Sending...",
+        success: "Thank you. Your consultation request has been sent. Please check your inbox for confirmation.",
+        error: "Unable to send your request right now. Please try again in a moment.",
+        email_confirmation_title: "We received your consultation request",
+        next_steps: "Please check your inbox for confirmation."
       },
       auth: {
         login_title: "Login",
@@ -1125,7 +1144,7 @@
           whatsapp: "Conversar no WhatsApp",
           consult: "Agendar consulta gratuita de 15 min",
           instagram: "Mensagem no Instagram",
-          note: "Prefere o formulário? Ele vai direto para andre@garciabuilder.fitness."
+          note: "Prefere o formulário? Ele vai direto para inquiries@garciabuilder.fitness."
         },
         form: {
           name: "Seu nome",
@@ -1138,6 +1157,7 @@
           budget: "Orçamento mensal (opcional)",
           message: "Conte sobre sua situação",
           submit: "Enviar",
+          sending: "Enviando...",
           placeholders: {
             name: "Seu nome",
             email: "voce@exemplo.com",
@@ -1183,7 +1203,17 @@
             }
           },
           consent: "Concordo em ser contatado sobre o coaching e entendo que meus dados serão usados apenas para responder a este contato.",
-          footnote: "Tempo médio de resposta: 24–48h. Sem spam."
+          footnote: "Tempo médio de resposta: 24–48h. Sem spam.",
+          success_title: "Mensagem enviada com sucesso",
+          success_greeting: "Obrigado",
+          success_email_note: "Sua mensagem foi recebida. Verifique seu email para a confirmação enviada pela Garcia Builder Fitness:",
+          success_next_step: "Andre vai analisar sua solicitação e responder em até 24-48 horas.",
+          success_inline: "Obrigado! Sua solicitação foi enviada. Verifique seu email para a confirmação.",
+          success_dismiss: "Entendi",
+          book_consultation: "Agendar Consulta Gratuita",
+          rate_limit: "Mensagem já enviada. Aguarde um minuto antes de tentar novamente.",
+          error: "Não foi possível enviar sua solicitação agora. Tente novamente em instantes.",
+          network_error: "Problema de conexão. Se persistir, envie email para inquiries@garciabuilder.fitness."
         },
         newsletter: {
           title: "Fique Informado Enquanto Aguarda",
@@ -1196,6 +1226,14 @@
           remote: "Trabalhe remotamente com clientes no mundo todo",
           cta: "Candidatar-se"
         }
+      },
+      consultation: {
+        thank_you: "Obrigado!",
+        sending: "Enviando...",
+        success: "Obrigado! Sua solicitação foi enviada. Verifique seu email para a confirmação.",
+        error: "Não foi possível enviar sua solicitação agora. Tente novamente em instantes.",
+        email_confirmation_title: "Recebemos sua solicitação de consulta",
+        next_steps: "Verifique seu email para a confirmação."
       },
       auth: {
         login_title: "Login",
@@ -1723,7 +1761,7 @@
           whatsapp: "Hablar por WhatsApp",
           consult: "Agendar consulta gratis de 15 min",
           instagram: "Enviar mensaje en Instagram",
-          note: "¿Prefieres el formulario? Llega directo a andre@garciabuilder.fitness."
+          note: "¿Prefieres el formulario? Llega directo a inquiries@garciabuilder.fitness."
         },
         form: {
           name: "Tu nombre",
@@ -1736,6 +1774,7 @@
           budget: "Presupuesto mensual (opcional)",
           message: "Cuéntame sobre tu situación",
           submit: "Enviar",
+          sending: "Enviando...",
           placeholders: {
             name: "Tu nombre",
             email: "tu@ejemplo.com",
@@ -1781,7 +1820,17 @@
             }
           },
           consent: "Acepto ser contactado sobre el coaching y entiendo que mis datos se usarán solo para responder a esta consulta.",
-          footnote: "Tiempo medio de respuesta: 24–48h. Sin spam."
+          footnote: "Tiempo medio de respuesta: 24–48h. Sin spam.",
+          success_title: "Mensaje enviado correctamente",
+          success_greeting: "Gracias",
+          success_email_note: "Tu mensaje fue recibido. Revisa tu email para la confirmación enviada por Garcia Builder Fitness:",
+          success_next_step: "Andre revisará tu solicitud y responderá en 24-48 horas.",
+          success_inline: "Gracias. Tu solicitud ha sido enviada. Revisa tu email para la confirmación.",
+          success_dismiss: "Entendido",
+          book_consultation: "Reservar Consulta Gratis",
+          rate_limit: "Mensaje ya enviado. Espera un minuto antes de intentarlo de nuevo.",
+          error: "No se pudo enviar tu solicitud ahora. Inténtalo de nuevo en unos momentos.",
+          network_error: "Problema de conexión. Si persiste, escribe a inquiries@garciabuilder.fitness."
         },
         newsletter: {
           title: "Mantente Informado Mientras Esperas",
@@ -1794,6 +1843,14 @@
           remote: "Trabaja de manera remota con clientes globales",
           cta: "Postularse"
         }
+      },
+      consultation: {
+        thank_you: "Gracias.",
+        sending: "Enviando...",
+        success: "Gracias. Tu solicitud ha sido enviada. Revisa tu email para la confirmación.",
+        error: "No se pudo enviar tu solicitud ahora. Inténtalo de nuevo en unos momentos.",
+        email_confirmation_title: "Recibimos tu solicitud de consulta",
+        next_steps: "Revisa tu email para la confirmación."
       },
       auth: {
         login_title: "Iniciar sesión",

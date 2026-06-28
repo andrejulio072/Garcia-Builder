@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config();
 
 const OUTPUT_FILE = path.join(__dirname, '..', 'env-config.json');
 const optional = process.argv.includes('--optional');

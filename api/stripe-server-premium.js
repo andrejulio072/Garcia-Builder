@@ -368,7 +368,7 @@ async function sendAdminEmail({ subject, html, replyTo }) {
     const transport = createOptionalMailTransport();
     if (!transport) return { skipped: true };
     const from = process.env.FROM_EMAIL || 'no-reply@garciabuilder.fitness';
-    const to = process.env.ADMIN_EMAIL || 'andre@garciabuilder.fitness';
+    const to = process.env.INQUIRY_NOTIFY_EMAIL || process.env.ADMIN_EMAIL || 'inquiries@garciabuilder.fitness';
     await transport.sendMail({ from, to, subject, html, replyTo: replyTo || undefined });
     return { ok: true };
 }
@@ -417,28 +417,37 @@ app.post('/api/contact', async (req, res) => {
             user_agent,
         } = req.body || {};
 
-        if (!email || !message) {
-            return res.status(400).json({ error: 'Email and message are required' });
+        const cleanEmail = String(email || '').trim().toLowerCase();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail) || !message) {
+            return res.status(400).json({ error: 'Valid email and message are required' });
         }
 
         let saved = false;
         const supa = getOptionalSupabaseClient();
+        const submittedAt = new Date().toISOString();
+        const notes = JSON.stringify({
+            phone: phone || '',
+            preferred_contact: preferred_contact || '',
+            goal: primary_goal || '',
+            timeline: timeline || '',
+            experience: experience || '',
+            budget: budget || '',
+            message,
+            page: page_path || req.headers.referer || '',
+            user_agent: user_agent || req.headers['user-agent'] || '',
+            submitted_at: submittedAt,
+        });
         if (supa) {
-            const { error } = await supa.from('contact_inquiries').insert([{
+            const { error } = await supa.from('leads').upsert({
                 name: name || null,
-                email,
-                phone: phone || null,
-                preferred_contact: preferred_contact || null,
-                primary_goal: primary_goal || null,
-                timeline: timeline || null,
-                experience: experience || null,
-                budget: budget || null,
-                message,
-                page_path: page_path || req.headers.referer || '',
-                user_agent: user_agent || req.headers['user-agent'] || '',
-            }]);
+                email: cleanEmail,
+                source: 'Contact Page',
+                notes,
+                type: 'consultation',
+                status: 'new',
+            }, { onConflict: 'email' });
             if (error) {
-                console.warn('contact Supabase insert skipped/failed:', error.message);
+                console.warn('contact lead Supabase upsert skipped/failed:', error.message);
             } else {
                 saved = true;
             }
@@ -451,7 +460,7 @@ app.post('/api/contact', async (req, res) => {
                 <div style="font-family:Inter,Arial,sans-serif;color:#0b1220">
                     <h2>New Garcia Builder contact enquiry</h2>
                     <p><strong>Name:</strong> ${escapeHtml(name || '')}</p>
-                    <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+                    <p><strong>Email:</strong> ${escapeHtml(cleanEmail)}</p>
                     <p><strong>Phone:</strong> ${escapeHtml(phone || '')}</p>
                     <p><strong>Preferred contact:</strong> ${escapeHtml(preferred_contact || '')}</p>
                     <p><strong>Goal:</strong> ${escapeHtml(primary_goal || '')}</p>
@@ -464,7 +473,32 @@ app.post('/api/contact', async (req, res) => {
                 </div>`
         });
 
-        return res.status(200).json({ ok: true, saved, emailSent: !!emailResult.ok, emailSkipped: !!emailResult.skipped });
+        const customerEmailResult = await sendEmail({
+            to: cleanEmail,
+            subject: 'We received your consultation request',
+            html: `
+                <div style="font-family:Inter,Arial,sans-serif;color:#0b1220;line-height:1.55">
+                    <h2>We received your consultation request</h2>
+                    <p>Hi ${escapeHtml(name || cleanEmail)},</p>
+                    <p>Thanks for reaching out to Garcia Builder Fitness.</p>
+                    <p>I received your consultation request and I'll review your details personally. I'll get back to you within 24 hours with the next step.</p>
+                    <p>In the meantime, you can book a call here:</p>
+                    <p><a href="https://calendly.com/andrenjulio072/consultation">https://calendly.com/andrenjulio072/consultation</a></p>
+                    <p>Andre Garcia<br>Garcia Builder Fitness</p>
+                </div>`
+        }).catch(error => {
+            console.warn('contact customer email skipped/failed:', error.message);
+            return { ok: false, error: error.message };
+        });
+
+        return res.status(200).json({
+            ok: true,
+            saved,
+            customerEmailSent: !!customerEmailResult.ok,
+            adminEmailSent: !!emailResult.ok,
+            customerEmailSkipped: !!customerEmailResult.skipped,
+            adminEmailSkipped: !!emailResult.skipped
+        });
     } catch (error) {
         console.error('contact endpoint error', error);
         return res.status(500).json({ error: 'Server error' });

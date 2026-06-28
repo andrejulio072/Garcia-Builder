@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import nodemailer from 'nodemailer';
+const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
 
 function getJsonBody(req) {
   if (!req) return {};
@@ -70,16 +71,50 @@ async function notifyAdminAboutContact({ req, payload }) {
         <p style="color:#666;font-size:12px;margin-top:10px;">This message was generated automatically by the site.</p>
       </div>
     `;
-
     const transport = createMailTransport();
-    if (!transport) {
-      // SMTP not configured - just log and skip
-      console.warn('notifyAdminAboutContact: SMTP not configured, skipping admin email');
-      return { skipped: true };
+    if (transport) {
+      await transport.sendMail({ from, to, subject, html, replyTo: payload.email || undefined });
+      return { ok: true, provider: 'smtp' };
     }
 
-    await transport.sendMail({ from, to, subject, html, replyTo: payload.email || undefined });
-    return { ok: true };
+    // SMTP not configured - try Brevo API as a fallback
+    try {
+      const apiKey = process.env.BREVO_API_KEY;
+      if (!apiKey) {
+        console.warn('notifyAdminAboutContact: no SMTP and no Brevo API key configured');
+        return { skipped: true };
+      }
+
+      const senderEmail = process.env.BREVO_SENDER_EMAIL || process.env.FROM_EMAIL || 'no-reply@garciabuilder.fitness';
+      const senderName = process.env.BREVO_SENDER_NAME || 'Garcia Builder';
+
+      const resp = await fetch(BREVO_API_URL, {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+          'api-key': apiKey,
+        },
+        body: JSON.stringify({
+          sender: { email: senderEmail, name: senderName },
+          to: [{ email: to }],
+          subject,
+          htmlContent: html,
+          tags: ['contact', 'admin']
+        }),
+      });
+
+      if (!resp.ok) {
+        const details = await resp.text().catch(() => 'Brevo request failed');
+        console.warn('notifyAdminAboutContact: Brevo response not ok', resp.status, details);
+        return { error: `brevo:${resp.status}` };
+      }
+
+      return { ok: true, provider: 'brevo' };
+    } catch (brevoErr) {
+      console.error('notifyAdminAboutContact Brevo error', brevoErr);
+      return { error: String(brevoErr) };
+    }
   } catch (err) {
     console.error('notifyAdminAboutContact error', err);
     return { error: err.message || String(err) };

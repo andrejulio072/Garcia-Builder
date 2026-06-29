@@ -96,10 +96,29 @@
 
     try{
       // Load some extra details
-      const [{ data: metrics }, { data: prefs }] = await Promise.all([
-        window.supabaseClient.from('body_metrics').select('*').eq('user_id', c.user_id).single(),
-        window.supabaseClient.from('user_preferences').select('*').eq('user_id', c.user_id).single()
+      const [
+        { data: metricsRows },
+        { data: prefs },
+        { data: macros },
+        { data: habitsRows },
+        { data: photos },
+        { data: workouts }
+      ] = await Promise.all([
+        window.supabaseClient.from('body_metrics').select('*').eq('user_id', c.user_id).order('date', { ascending: false }).limit(1),
+        window.supabaseClient.from('user_preferences').select('*').eq('user_id', c.user_id).maybeSingle(),
+        window.supabaseClient.from('user_macros').select('*').eq('user_id', c.user_id).maybeSingle(),
+        window.supabaseClient.from('user_habits').select('*').eq('user_id', c.user_id).order('date', { ascending: false }).limit(7),
+        window.supabaseClient.from('progress_photos').select('*').eq('user_id', c.user_id).order('taken_at', { ascending: false }).limit(6),
+        window.supabaseClient.from('workout_logs').select('*').eq('user_id', c.user_id).order('workout_date', { ascending: false }).limit(5)
       ]);
+      const metrics = Array.isArray(metricsRows) ? metricsRows[0] : null;
+      const latestHabit = Array.isArray(habitsRows) ? habitsRows[0] : null;
+      const photoGrid = Array.isArray(photos) && photos.length
+        ? photos.map((photo) => `<img src="${photo.photo_url}" alt="Progress photo" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,.15)"/>`).join('')
+        : '<span class="text-muted small">No progress photos yet</span>';
+      const workoutList = Array.isArray(workouts) && workouts.length
+        ? workouts.map((workout) => `<li class="small">${workout.workout_date || ''} - ${workout.title || workout.workout_name || 'Workout'}</li>`).join('')
+        : '<li class="small text-muted">No workout logs yet</li>';
 
       box.innerHTML = `
         <div class="d-flex align-items-center gap-3 mb-3">
@@ -110,9 +129,20 @@
           </div>
         </div>
         <div class="row g-2">
-          <div class="col-md-4"><div class="p-2 card">Weight: <b>${metrics?.current_weight ?? '--'}</b></div></div>
+          <div class="col-md-4"><div class="p-2 card">Weight: <b>${metrics?.weight ?? '--'}</b></div></div>
           <div class="col-md-4"><div class="p-2 card">Height: <b>${metrics?.height ?? '--'}</b></div></div>
           <div class="col-md-4"><div class="p-2 card">Units: <b>${prefs?.units ?? 'metric'}</b></div></div>
+          <div class="col-md-4"><div class="p-2 card">Body fat: <b>${metrics?.body_fat ?? '--'}%</b></div></div>
+          <div class="col-md-4"><div class="p-2 card">Calories: <b>${macros?.calories ?? '--'}</b></div></div>
+          <div class="col-md-4"><div class="p-2 card">Steps: <b>${latestHabit?.steps ?? '--'}</b></div></div>
+        </div>
+        <div class="mt-3">
+          <h6 class="text-warning">Recent Progress Photos</h6>
+          <div class="d-flex flex-wrap gap-2">${photoGrid}</div>
+        </div>
+        <div class="mt-3">
+          <h6 class="text-warning">Recent Workout Logs</h6>
+          <ul class="mb-0 ps-3">${workoutList}</ul>
         </div>
       `;
     }catch(e){

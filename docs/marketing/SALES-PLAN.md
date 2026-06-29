@@ -3,6 +3,10 @@
 **Última Atualização:** 8 de Outubro de 2025
 **Status:** ⚡ Em Desenvolvimento Ativo
 
+## Backlog Centralizado
+
+- Documento unico de visibilidade e ordem de execucao: `docs/marketing/MASTER-IMPLEMENTATION-BACKLOG.md`
+
 ---
 
 ## 🚀 PRÓXIMAS PRIORIDADES (EM ORDEM)

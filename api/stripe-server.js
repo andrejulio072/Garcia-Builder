@@ -59,17 +59,17 @@ const PRICE_CONFIG = {
     },
     eight_week: {
         name: '8 Week Fat Loss Kickstart',
-        amount: 37500, // €375.00 em centavos
+        amount: 35900, // €359.00 em centavos
         currency: 'eur'
     },
     twelve_week: {
         name: '12 Week Transformation',
-        amount: 54900, // €549.00 em centavos
+        amount: 51900, // €519.00 em centavos
         currency: 'eur'
     },
     eighteen_week: {
         name: '18 Week Complete Transformation',
-        amount: 74900, // €749.00 em centavos
+        amount: 69900, // €699.00 em centavos
         currency: 'eur'
     }
 };

@@ -61,9 +61,9 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
   "description": "Online coaching programs with training, nutrition, support, accountability and onboarding through the coaching app.",
   "itemListElement": [
     {"@type":"Offer","name":"Monthly Online Coaching","price":"200","priceCurrency":"EUR","availability":"https://schema.org/InStock","itemOffered":{"@type":"Service","name":"Monthly Online Coaching"}},
-    {"@type":"Offer","name":"8 Week Fat Loss Kickstart","price":"375","priceCurrency":"EUR","availability":"https://schema.org/InStock","itemOffered":{"@type":"Service","name":"8 Week Fat Loss Kickstart"}},
-    {"@type":"Offer","name":"12 Week Transformation","price":"549","priceCurrency":"EUR","availability":"https://schema.org/InStock","itemOffered":{"@type":"Service","name":"12 Week Transformation"}},
-    {"@type":"Offer","name":"18 Week Complete Transformation","price":"749","priceCurrency":"EUR","availability":"https://schema.org/InStock","itemOffered":{"@type":"Service","name":"18 Week Complete Transformation"}}
+    {"@type":"Offer","name":"8 Week Fat Loss Kickstart","price":"359","priceCurrency":"EUR","availability":"https://schema.org/InStock","itemOffered":{"@type":"Service","name":"8 Week Fat Loss Kickstart"}},
+    {"@type":"Offer","name":"12 Week Transformation","price":"519","priceCurrency":"EUR","availability":"https://schema.org/InStock","itemOffered":{"@type":"Service","name":"12 Week Transformation"}},
+    {"@type":"Offer","name":"18 Week Complete Transformation","price":"699","priceCurrency":"EUR","availability":"https://schema.org/InStock","itemOffered":{"@type":"Service","name":"18 Week Complete Transformation"}}
   ]
 }
 </script>
@@ -172,6 +172,48 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
     margin-top: 4px;
   }
 
+  .pricing-compare-strip {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 14px 0 18px;
+  }
+
+  .compare-card {
+    background: linear-gradient(135deg, rgba(11,18,32,.9), rgba(20,30,48,.95));
+    border: 1px solid rgba(246,200,78,.18);
+    border-radius: 16px;
+    box-shadow: 0 18px 44px rgba(0,0,0,.28);
+    padding: 16px 18px;
+  }
+
+  .compare-card strong {
+    color: #f8f3df;
+    display: block;
+    font-size: 1.02rem;
+    line-height: 1.35;
+    margin-top: 7px;
+  }
+
+  .compare-card p {
+    color: rgba(214,225,255,.8);
+    margin: 10px 0 0;
+  }
+
+  .compare-kicker {
+    color: #f6c84e;
+    display: inline-block;
+    font-size: .76rem;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .compare-card--package {
+    border-color: rgba(246,200,78,.38);
+    box-shadow: 0 22px 56px rgba(246,200,78,.12), 0 18px 44px rgba(0,0,0,.28);
+  }
+
   .currency-selector-control {
     display: inline-flex;
     align-items: center;
@@ -199,6 +241,10 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
     .pricing-toolbar {
       align-items: flex-start;
       flex-direction: column;
+    }
+
+    .pricing-compare-strip {
+      grid-template-columns: 1fr;
     }
   }
 
@@ -294,8 +340,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="pricing-hero">
   <div class="container pricing-hero-inner">
     <p class="eyebrow">Choose your path</p>
-    <h1>Pricing built around clear coaching outcomes.</h1>
-    <p>Every plan is designed to give you structure, accountability, and a coaching process that fits real life.</p>
+    <h1>Your next chapter starts with the right level of commitment.</h1>
+    <p>Choose monthly support for consistency, or step into a transformation block built for faster, deeper, visible results.</p>
     <div class="pricing-hero-stats" aria-label="Pricing summary">
       <span>1:1 guidance</span>
       <span>Weekly check-ins</span>
@@ -324,6 +370,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <option value="CAD">CAD</option>
           <option value="AUD">AUD</option>
         </select>
+      </div>
+    </div>
+
+    <div class="pricing-compare-strip">
+      <div class="compare-card compare-card--monthly">
+        <span class="compare-kicker">Monthly coaching</span>
+        <strong>For accountability, guidance and consistency every month.</strong>
+        <p>Perfect when you need structure around real life, not a fixed transformation deadline.</p>
+      </div>
+      <div class="compare-card compare-card--package">
+        <span class="compare-kicker">8, 12 & 18-week programs</span>
+        <strong>For faster visible results, deeper commitment and a premium transformation path.</strong>
+        <p>More focus, more momentum and better value than monthly billing when you commit to a full transformation block.</p>
       </div>
     </div>
 
@@ -551,11 +610,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  "name":"Garcia Builder Online Coaching Programs",
  "description":"Online coaching programs with personalized training, nutrition guidance, shopping list support, weekly accountability and secure onboarding.",
  "brand":{"@type":"Brand","name":"Garcia Builder"},
- "offers":{"@type":"AggregateOffer","priceCurrency":"EUR","lowPrice":"200","highPrice":"749","offerCount":"4","offers":[
+ "offers":{"@type":"AggregateOffer","priceCurrency":"EUR","lowPrice":"200","highPrice":"699","offerCount":"4","offers":[
   {"@type":"Offer","price":"200","priceCurrency":"EUR","url":"https://garciabuilder.fitness/pricing.html#monthly","availability":"https://schema.org/InStock"},
-  {"@type":"Offer","price":"375","priceCurrency":"EUR","url":"https://garciabuilder.fitness/pricing.html#eight-week","availability":"https://schema.org/InStock"},
-  {"@type":"Offer","price":"549","priceCurrency":"EUR","url":"https://garciabuilder.fitness/pricing.html#twelve-week","availability":"https://schema.org/InStock"},
-  {"@type":"Offer","price":"749","priceCurrency":"EUR","url":"https://garciabuilder.fitness/pricing.html#eighteen-week","availability":"https://schema.org/InStock"}
+  {"@type":"Offer","price":"359","priceCurrency":"EUR","url":"https://garciabuilder.fitness/pricing.html#eight-week","availability":"https://schema.org/InStock"},
+  {"@type":"Offer","price":"519","priceCurrency":"EUR","url":"https://garciabuilder.fitness/pricing.html#twelve-week","availability":"https://schema.org/InStock"},
+  {"@type":"Offer","price":"699","priceCurrency":"EUR","url":"https://garciabuilder.fitness/pricing.html#eighteen-week","availability":"https://schema.org/InStock"}
  ]}
 }</script>
 <script defer src="js/tracking/web-vitals-rum.js"></script>

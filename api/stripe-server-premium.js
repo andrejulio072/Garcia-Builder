@@ -247,7 +247,7 @@ const SUBSCRIPTION_PLANS = {
     eight_week: {
         name: '8 Week Fat Loss Kickstart',
         description: 'A focused 8-week reset with training, nutrition, shopping list, support and realistic fat-loss targets.',
-        amount: 37500, // €375.00
+        amount: 35900, // €359.00
         currency: 'eur',
         mode: 'payment',
         features: ['8-week training block', 'Nutrition targets and shopping list', 'Weekly check-ins', 'Trainerize app access', 'Expected fat loss: 5-8kg when followed consistently']
@@ -255,7 +255,7 @@ const SUBSCRIPTION_PLANS = {
     twelve_week: {
         name: '12 Week Transformation',
         description: 'The flagship 12-week transformation plan for visible fat loss, strength progress and stronger routines.',
-        amount: 54900, // €549.00
+        amount: 51900, // €519.00
         currency: 'eur',
         mode: 'payment',
         features: ['12-week progressive training plan', 'Nutrition plan with adjustments', 'Shopping list and meal structure guidance', 'Weekly accountability', 'Expected fat loss: 9-12kg when followed consistently']
@@ -263,7 +263,7 @@ const SUBSCRIPTION_PLANS = {
     eighteen_week: {
         name: '18 Week Complete Transformation',
         description: 'The most complete transformation program, built for deeper results and long-term habit building.',
-        amount: 74900, // €749.00
+        amount: 69900, // €699.00
         currency: 'eur',
         mode: 'payment',
         features: ['18-week periodized coaching block', 'Nutrition strategy and shopping list', 'Long-term habit system', 'Priority support', 'Expected fat loss: 12-15kg when followed consistently']

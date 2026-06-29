@@ -424,11 +424,11 @@
         conrad: "Andre rebuilt my training around 60-hour workweeks. We dropped 9kg of fat, added lean muscle, and my shoulders are pain-free for the first time in years."
       },
       pricing: {
-        title: "Coaching Programs",
-        subtitle: "Choose the coaching structure that fits your goal: app access, training, nutrition guidance, shopping list support, check-ins and accountability.",
+        title: "Pick the level of change you want",
+        subtitle: "Monthly coaching is for people who want ongoing accountability and guidance. The 8, 12 and 18-week programs are for people ready to move faster, commit deeper and push for visible transformation.",
         value: {
           title: "What every plan includes",
-          text: "Clear execution, not just a PDF: your training, nutrition and follow-up are organized so you know exactly what to do next.",
+          text: "Clear execution, not just a PDF: your training, nutrition and follow-up are structured so you always know what to do next and why it matters.",
           items: [
             "Trainerize app access with structured workouts",
             "Nutrition targets, meal structure guidance and shopping list support",
@@ -438,13 +438,13 @@
         },
         plans: {
           monthly: {
-            badge: "Flexible coaching",
+            badge: "For steady accountability",
             name: "Monthly Online Coaching",
             price: "€200",
             period: "/month",
-            meta: "Ongoing support",
-            result: "Best for steady progress and maintenance",
-            description: "Standard online coaching for clients who want structure every month without a fixed transformation block.",
+            meta: "Keep the momentum going",
+            result: "Best for people who want support, structure and a monthly reset",
+            description: "This is the plan for staying consistent when life is busy, motivation dips or you need someone to keep you moving forward every month.",
             features: [
               "Personalized training plan inside the app",
               "Nutrition targets and habit guidance",
@@ -454,58 +454,60 @@
             ]
           },
           eight_week: {
-            badge: "Entry program",
+            badge: "Fast start",
             name: "8 Week Fat Loss Kickstart",
-            price: "€375",
+            price: "€359",
             period: " one-time",
             meta: "8 weeks",
-            result: "Realistic target: 5-8kg fat loss",
-            description: "A focused reset for people who need a clear plan, nutrition structure and accountability fast.",
+            result: "A sharp reset for people who want to feel change fast",
+            description: "Built for momentum: a tighter, more committed block that helps you break old patterns, get disciplined and see early wins quickly.",
             features: [
               "8-week training block for home or gym",
               "Nutrition setup with simple meal structure",
               "Shopping list guidance and swaps",
               "Weekly accountability check-ins",
-              "Best for restarting momentum"
+              "Best for a fast reset and visible traction"
             ]
           },
           twelve_week: {
-            badge: "Flagship",
+            badge: "Best value transformation",
             name: "12 Week Transformation",
-            price: "€549",
+            price: "€519",
             period: " one-time",
             meta: "12 weeks",
-            result: "Realistic target: 9-12kg fat loss",
+            result: "The sweet spot for visible body change and habit lock-in",
             featured: true,
-            description: "The main Garcia Builder transformation block: enough time to lose fat, build strength and lock in routines.",
+            description: "The main Garcia Builder transformation block: enough time to lose fat, build strength and create a physique and routine you can actually keep.",
             features: [
               "Full 12-week progressive training plan",
               "Calories, macros and nutrition guidance",
               "Shopping list support and eating-out strategy",
               "Weekly check-ins with plan adjustments",
-              "App access, support and accountability"
+              "App access, support and accountability",
+              "Built to create noticeable momentum and confidence"
             ]
           },
           eighteen_week: {
-            badge: "Most complete",
+            badge: "Deep transformation",
             name: "18 Week Complete Transformation",
-            price: "€749",
+            price: "€699",
             period: " one-time",
             meta: "18 weeks",
-            result: "Realistic target: 12-15kg fat loss + long-term habits",
-            description: "A deeper coaching block for bigger goals, more habit work and a smoother transition into maintenance.",
+            result: "The most complete block for serious change and long-term identity shift",
+            description: "For people who want the strongest outcome: enough time to drive real change, refine habits and come out with a body, mindset and system that feel different.",
             features: [
               "18-week training and nutrition roadmap",
               "Fat-loss phase plus habit-building phase",
               "Advanced accountability and progress reviews",
               "Shopping lists, travel strategy and social eating support",
-              "Maintenance plan so results are easier to keep"
+              "Maintenance plan so results are easier to keep",
+              "Ideal for clients who want the deepest result, not the shortest plan"
             ]
           }
         },
         cta: {
-          choose: "Start Secure Checkout",
-          popular: "Most Popular",
+          choose: "Start your transformation",
+          popular: "Best value",
           contact: "Contact for Details"
         },
         group_coaching: {
@@ -1064,11 +1066,11 @@
         conrad: "Andre reconstruiu meu treino em meio a semanas de 60 horas. Perdemos 9kg de gordura, ganhamos massa magra e meus ombros não doem mais."
       },
       pricing: {
-        title: "Programas de Coaching",
-        subtitle: "Escolha a estrutura certa para o seu objetivo: acesso ao app, treino, nutrição, lista de compras, check-ins e accountability.",
+        title: "Escolha o nível de mudança que você quer",
+        subtitle: "O coaching mensal é para quem quer accountability e orientação contínuas. Os programas de 8, 12 e 18 semanas são para quem quer ir mais rápido, se comprometer mais fundo e buscar transformação visível.",
         value: {
           title: "O que todos os planos incluem",
-          text: "Execução clara, não apenas um PDF: treino, nutrição e acompanhamento organizados para você saber exatamente o próximo passo.",
+          text: "Execução clara, não apenas um PDF: treino, nutrição e acompanhamento organizados para você saber exatamente o próximo passo e por que ele importa.",
           items: [
             "Acesso ao app Trainerize com treinos estruturados",
             "Metas nutricionais, orientação alimentar e suporte para lista de compras",
@@ -1078,13 +1080,13 @@
         },
         plans: {
           monthly: {
-            badge: "Coaching flexível",
+            badge: "Para accountability contínua",
             name: "Coaching Online Mensal",
             price: "€200",
             period: "/mês",
-            meta: "Suporte contínuo",
-            result: "Melhor para progresso estável e manutenção",
-            description: "Coaching online padrão para quem quer estrutura todos os meses sem um bloco fechado de transformação.",
+            meta: "Mantenha o ritmo vivo",
+            result: "Melhor para quem quer suporte, estrutura e um reset mensal",
+            description: "Esse é o plano para manter consistência quando a vida aperta, a motivação cai ou você precisa de alguém mantendo você no caminho certo todo mês.",
             features: [
               "Plano de treino personalizado dentro do app",
               "Metas de nutrição e orientação de hábitos",
@@ -1094,58 +1096,60 @@
             ]
           },
           eight_week: {
-            badge: "Programa de entrada",
+            badge: "Arranque rápido",
             name: "8 Semanas Fat Loss Kickstart",
-            price: "€375",
+            price: "€359",
             period: " pagamento único",
             meta: "8 semanas",
-            result: "Meta realista: 5-8kg de perda de gordura",
-            description: "Um reset focado para quem precisa de plano claro, estrutura alimentar e accountability rapidamente.",
+            result: "Um reset forte para quem quer sentir mudança rápido",
+            description: "Feito para ganhar impulso: um bloco mais fechado e comprometido que quebra padrões antigos, cria disciplina e mostra ganhos cedo.",
             features: [
               "Bloco de treino de 8 semanas para casa ou ginásio",
               "Configuração nutricional com estrutura simples de refeições",
               "Orientação de lista de compras e substituições",
               "Check-ins semanais de accountability",
-              "Ideal para recuperar ritmo e consistência"
+              "Ideal para um reset rápido e tração visível"
             ]
           },
           twelve_week: {
-            badge: "Principal",
+            badge: "Melhor custo-benefício",
             name: "Transformação 12 Semanas",
-            price: "€549",
+            price: "€519",
             period: " pagamento único",
             meta: "12 semanas",
-            result: "Meta realista: 9-12kg de perda de gordura",
+            result: "O ponto ideal para mudança visível e consolidação de hábitos",
             featured: true,
-            description: "O bloco principal Garcia Builder: tempo suficiente para perder gordura, ganhar força e consolidar rotina.",
+            description: "O bloco principal Garcia Builder: tempo suficiente para perder gordura, ganhar força e criar uma forma física e rotina que você realmente consegue manter.",
             features: [
               "Plano progressivo completo de 12 semanas",
               "Calorias, macros e orientação nutricional",
               "Suporte para lista de compras e estratégia para comer fora",
               "Check-ins semanais com ajustes do plano",
-              "Acesso ao app, suporte e accountability"
+              "Acesso ao app, suporte e accountability",
+              "Feito para gerar tração e confiança visíveis"
             ]
           },
           eighteen_week: {
-            badge: "Mais completo",
+            badge: "Transformação profunda",
             name: "Transformação Completa 18 Semanas",
-            price: "€749",
+            price: "€699",
             period: " pagamento único",
             meta: "18 semanas",
-            result: "Meta realista: 12-15kg de perda + hábitos de longo prazo",
-            description: "Um bloco mais profundo para metas maiores, mais trabalho de hábitos e transição mais segura para manutenção.",
+            result: "O bloco mais completo para mudança séria e mudança de identidade",
+            description: "Para quem quer o maior resultado: tempo suficiente para gerar mudança real, refinar hábitos e sair com um corpo, mentalidade e sistema muito diferentes.",
             features: [
               "Roadmap de treino e nutrição por 18 semanas",
               "Fase de perda de gordura + fase de construção de hábitos",
               "Accountability avançado e revisões de progresso",
               "Listas de compras, estratégia de viagem e suporte para eventos sociais",
-              "Plano de manutenção para facilitar manter os resultados"
+              "Plano de manutenção para facilitar manter os resultados",
+              "Ideal para quem quer o resultado mais profundo, não o plano mais curto"
             ]
           }
         },
         cta: {
-          choose: "Iniciar checkout seguro",
-          popular: "Mais Popular",
+          choose: "Começar sua transformação",
+          popular: "Melhor valor",
           contact: "Contato para Detalhes"
         },
         group_coaching: {
@@ -1705,11 +1709,11 @@
         conrad: "Andre reconstruyó mi entrenamiento alrededor de semanas laborales de 60 horas. Perdimos 9kg de grasa, ganamos masa magra y mis hombros dejaron de doler."
       },
       pricing: {
-        title: "Programas de Coaching",
-        subtitle: "Elige la estructura que encaja con tu objetivo: acceso a la app, entrenamiento, nutrición, lista de compra, check-ins y accountability.",
+        title: "Elige el nivel de cambio que quieres",
+        subtitle: "El coaching mensual es para quien quiere accountability y guía continuas. Los programas de 8, 12 y 18 semanas son para quien quiere ir más rápido, comprometerse más y buscar una transformación visible.",
         value: {
           title: "Qué incluye cada plan",
-          text: "Ejecución clara, no solo un PDF: entrenamiento, nutrición y seguimiento organizados para que sepas exactamente el siguiente paso.",
+          text: "Ejecución clara, no solo un PDF: entrenamiento, nutrición y seguimiento organizados para que sepas exactamente el siguiente paso y por qué importa.",
           items: [
             "Acceso a Trainerize con entrenamientos estructurados",
             "Objetivos de nutrición, guía de comidas y apoyo con lista de compra",
@@ -1719,13 +1723,13 @@
         },
         plans: {
           monthly: {
-            badge: "Coaching flexible",
+            badge: "Para accountability continuo",
             name: "Coaching Online Mensual",
             price: "€200",
             period: "/mes",
-            meta: "Soporte continuo",
-            result: "Ideal para progreso estable y mantenimiento",
-            description: "Coaching online estándar para clientes que quieren estructura mensual sin un bloque cerrado de transformación.",
+            meta: "Mantén el impulso vivo",
+            result: "Mejor para quien quiere soporte, estructura y un reset mensual",
+            description: "Este es el plan para mantener la consistencia cuando la vida aprieta, la motivación baja o necesitas a alguien que te mantenga encaminado cada mes.",
             features: [
               "Plan de entrenamiento personalizado en la app",
               "Objetivos de nutrición y guía de hábitos",
@@ -1737,7 +1741,7 @@
           eight_week: {
             badge: "Programa inicial",
             name: "8 Semanas Fat Loss Kickstart",
-            price: "€375",
+            price: "€359",
             period: " pago único",
             meta: "8 semanas",
             result: "Objetivo realista: 5-8kg de pérdida de grasa",
@@ -1752,57 +1756,59 @@
           },
           twelve_week: {
             badge: "Principal",
-            name: "Transformación 12 Semanas",
-            price: "€549",
+              badge: "Arranque rápido",
+            price: "€519",
             period: " pago único",
             meta: "12 semanas",
             result: "Objetivo realista: 9-12kg de pérdida de grasa",
-            featured: true,
-            description: "El bloque principal Garcia Builder: tiempo suficiente para perder grasa, ganar fuerza y consolidar rutinas.",
+              result: "Un reset fuerte para quien quiere sentir el cambio rápido",
+              description: "Pensado para ganar impulso: un bloque más cerrado y comprometido que rompe patrones antiguos, crea disciplina y muestra resultados temprano.",
             features: [
               "Plan progresivo completo de 12 semanas",
               "Calorías, macros y orientación nutricional",
               "Apoyo con lista de compra y estrategia para comer fuera",
               "Check-ins semanales con ajustes del plan",
-              "Acceso a la app, soporte y accountability"
+                "Ideal para un reset rápido y tracción visible"
             ]
           },
           eighteen_week: {
-            badge: "Más completo",
+              badge: "Mejor relación valor-resultados",
             name: "Transformación Completa 18 Semanas",
-            price: "€749",
+            price: "€699",
             period: " pago único",
             meta: "18 semanas",
-            result: "Objetivo realista: 12-15kg de pérdida + hábitos a largo plazo",
-            description: "Un bloque más profundo para metas grandes, más trabajo de hábitos y una transición más segura a mantenimiento.",
+              result: "El punto ideal para cambio visible y consolidación de hábitos",
+              description: "El bloque principal Garcia Builder: tiempo suficiente para perder grasa, ganar fuerza y construir una forma física y una rutina que realmente puedas mantener.",
             features: [
               "Roadmap de entrenamiento y nutrición por 18 semanas",
               "Fase de pérdida de grasa + fase de construcción de hábitos",
               "Accountability avanzado y revisiones de progreso",
               "Listas de compra, estrategia para viajes y apoyo social",
-              "Plan de mantenimiento para conservar mejor los resultados"
+                "Acceso a la app, soporte y accountability",
+                "Diseñado para generar tracción y confianza visibles"
             ]
           }
         },
-        cta: {
+              badge: "Transformación profunda",
           choose: "Iniciar checkout seguro",
           popular: "Más Popular",
           contact: "Contacto para Detalles"
         },
-        group_coaching: {
-          title: "Coaching grupal y corporativo - ¡Próximamente!",
+              result: "El bloque más completo para un cambio serio y un cambio de identidad",
+              description: "Para quien quiere el mayor resultado: tiempo suficiente para provocar un cambio real, afinar hábitos y salir con un cuerpo, una mentalidad y un sistema muy distintos.",
           subtitle: "Estamos preparando nuevos programas para grupos pequeños y equipos corporativos.",
           prompt: "¿Quieres acceso anticipado o unirte a la lista de espera?",
           cta: "Unirme a la lista de espera",
           footer: "¡Sé el primero en enterarte cuando lancemos estas ofertas!"
         },
-        post_purchase: {
+                "Plan de mantenimiento para conservar mejor los resultados",
+                "Ideal para quien quiere el resultado más profundo, no el plan más corto"
           title: "Después de la compra:",
           schedule: "Agendar consulta",
           preview: "Ver el primer entrenamiento"
         }
-      },
-      contact: {
+            choose: "Empezar tu transformación",
+            popular: "Mejor valor",
         title: "Contacto",
         subtitle: "Cuéntame tu objetivo. Respondo en 24–48h.",
         quick: {

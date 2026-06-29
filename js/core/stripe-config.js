@@ -9,9 +9,9 @@ const STRIPE_CONFIG = {
     apiUrl: API_BASE,
     plans: {
         monthly: { name: 'Monthly Online Coaching', price: '€200', amount: 20000, mode: 'subscription' },
-        eight_week: { name: '8 Week Fat Loss Kickstart', price: '€375', amount: 37500, mode: 'payment' },
-        twelve_week: { name: '12 Week Transformation', price: '€549', amount: 54900, mode: 'payment' },
-        eighteen_week: { name: '18 Week Complete Transformation', price: '€749', amount: 74900, mode: 'payment' }
+        eight_week: { name: '8 Week Fat Loss Kickstart', price: '€359', amount: 35900, mode: 'payment' },
+        twelve_week: { name: '12 Week Transformation', price: '€519', amount: 51900, mode: 'payment' },
+        eighteen_week: { name: '18 Week Complete Transformation', price: '€699', amount: 69900, mode: 'payment' }
     }
 };
 

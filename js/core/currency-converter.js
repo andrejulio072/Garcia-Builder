@@ -13,9 +13,9 @@
   // Base prices in EUR, aligned with Stripe checkout and pricing cards.
   const basePrices = {
     monthly: 200,
-    eight_week: 395,
-    twelve_week: 575,
-    eighteen_week: 790
+    eight_week: 359,
+    twelve_week: 519,
+    eighteen_week: 699
   };
 
   let currentCurrency = 'EUR';

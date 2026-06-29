@@ -307,7 +307,7 @@
             buttons.forEach((btn) => {
                 if (!btn) return;
                 btn.disabled = true;
-                btn.title = `${label} está desativado neste ambiente.`;
+                btn.title = `${label} is disabled in this environment.`;
                 btn.style.opacity = '0.55';
                 btn.style.cursor = 'not-allowed';
             });
@@ -500,8 +500,8 @@
         const buildRedirectUrl = () => {
             // Special handling for file:// development (OAuth cannot work with file://)
             if (window.location.protocol === 'file:') {
-                console.warn('⚠️ OAuth não funciona com file://. Use localhost ou ?dev=1');
-                // Retornar URL inválida para forçar erro visível
+                console.warn('OAuth does not work with file://. Use localhost or ?dev=1');
+                // Return an invalid URL to surface a visible error
                 return 'about:blank';
             }
 
@@ -549,7 +549,7 @@
 
             if (getSocialOAuthFlag('google') === false) {
                 disableSocialOAuthButtons('google', 'Google OAuth');
-                showErrorBanner('Google OAuth está desativado neste ambiente. Ative GOOGLE_OAUTH_ENABLED ou use e-mail/senha.');
+                showErrorBanner('Google OAuth is disabled in this environment. Enable GOOGLE_OAUTH_ENABLED or use email and password.');
                 return;
             }
 
@@ -562,13 +562,13 @@
                 
                 buttons.forEach(btn => {
                     btn.disabled = true;
-                    btn.title = 'OAuth não funciona com file://. Use http://localhost:8000 ou adicione ?dev=1 à URL';
+                    btn.title = 'OAuth does not work with file://. Use http://localhost:8000 or add ?dev=1 to the URL';
                     btn.style.opacity = '0.5';
                     btn.style.cursor = 'not-allowed';
-                    btn.innerHTML = '<i class="fab fa-google me-2"></i>OAuth indisponível (use localhost)';
+                    btn.innerHTML = '<i class="fab fa-google me-2"></i>OAuth unavailable (use localhost)';
                 });
                 
-                showErrorBanner('⚠️ OAuth não funciona com file://. Abra via http://localhost:8000 ou use ?dev=1 para modo dev.');
+                showErrorBanner('OAuth does not work with file://. Open via http://localhost:8000 or use ?dev=1 for dev mode.');
                 return;
             }
 
@@ -588,7 +588,7 @@
                 console.log('Google OAuth handler attached:', { id: btn.id, redirectTo });
                 btn.addEventListener('click', async () => {
                     btn.disabled = true;
-                    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando ao Google...';
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Connecting with Google...';
 
                     try {
                         const { data, error } = await client.auth.signInWithOAuth({
@@ -622,7 +622,7 @@
                         }
                         throw new Error('Supabase project URL unavailable para redirecionamento.');
                     } catch (error) {
-                        showErrorBanner(error?.message || 'Erro ao iniciar a autenticação com Google.');
+                        showErrorBanner(error?.message || 'This sign-in method is unavailable in the current environment.');
                         btn.disabled = false;
                         btn.innerHTML = originalHTML;
                     }
@@ -684,14 +684,14 @@
                     $loginEl.addEventListener('submit', (e) => {
                         if (window.authSystem && typeof window.authSystem.handleLogin === 'function') return; // main handler will take over
                         e.preventDefault();
-                        softShow('Preparing login… please try again in a second.', 'info');
+                        softShow('Preparing login... please try again in a second.', 'info');
                     }, { capture: true });
                 }
                 if ($registerEl) {
                     $registerEl.addEventListener('submit', (e) => {
                         if (window.authSystem && typeof window.authSystem.handleRegister === 'function') return;
                         e.preventDefault();
-                        softShow('Preparing sign up… please try again in a second.', 'info');
+                        softShow('Preparing sign up... please try again in a second.', 'info');
                     }, { capture: true });
                 }
             } catch (fhErr) {

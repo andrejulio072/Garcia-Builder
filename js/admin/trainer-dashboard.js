@@ -12,7 +12,10 @@
     me = await getCurrentUser();
     if(!me){
       const ret = encodeURIComponent(window.location.pathname + window.location.search);
-      window.location.href = `login.html?redirect=${ret}`;
+      const loginUrl = typeof window.toAbsoluteUrl === 'function'
+        ? window.toAbsoluteUrl(`pages/auth/login.html?redirect=${ret}`)
+        : `../auth/login.html?redirect=${ret}`;
+      window.location.href = loginUrl;
       return;
     }
     await loadClients();
@@ -22,8 +25,20 @@
 
   async function getCurrentUser(){
     try{
-      if (window.supabaseClient && window.supabaseClient.auth) {
-        const { data: { user } } = await window.supabaseClient.auth.getUser();
+      let client = window.supabaseClient || null;
+      if (!client?.auth && typeof window.waitForSupabaseClient === 'function') {
+        try {
+          client = await window.waitForSupabaseClient(6000);
+        } catch (readyError) {
+          console.warn('Supabase client was not ready for trainer dashboard:', readyError?.message || readyError);
+        }
+      }
+
+      if (client?.auth) {
+        const { data: sessionData } = await client.auth.getSession();
+        if (sessionData?.session?.user) return sessionData.session.user;
+
+        const { data: { user } } = await client.auth.getUser();
         if (user) return user;
       }
       const stored = localStorage.getItem('gb_current_user');
@@ -104,12 +119,12 @@
         { data: photos },
         { data: workouts }
       ] = await Promise.all([
-        window.supabaseClient.from('body_metrics').select('*').eq('user_id', c.user_id).order('date', { ascending: false }).limit(1),
+        window.supabaseClient.from('body_metrics').select('*').eq('user_id', c.user_id).order('date', { ascending: false }).order('updated_at', { ascending: false }).limit(1),
         window.supabaseClient.from('user_preferences').select('*').eq('user_id', c.user_id).maybeSingle(),
         window.supabaseClient.from('user_macros').select('*').eq('user_id', c.user_id).maybeSingle(),
         window.supabaseClient.from('user_habits').select('*').eq('user_id', c.user_id).order('date', { ascending: false }).limit(7),
         window.supabaseClient.from('progress_photos').select('*').eq('user_id', c.user_id).order('taken_at', { ascending: false }).limit(6),
-        window.supabaseClient.from('workout_logs').select('*').eq('user_id', c.user_id).order('workout_date', { ascending: false }).limit(5)
+        window.supabaseClient.from('workout_logs').select('*').eq('user_id', c.user_id).order('workout_date', { ascending: false }).order('created_at', { ascending: false }).limit(5)
       ]);
       const metrics = Array.isArray(metricsRows) ? metricsRows[0] : null;
       const latestHabit = Array.isArray(habitsRows) ? habitsRows[0] : null;

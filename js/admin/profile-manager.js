@@ -387,7 +387,10 @@
         if (!currentUser) {
           console.warn('❌ No authenticated user, redirecting to login...');
           const ret = encodeURIComponent(window.location.pathname + window.location.search);
-          window.location.href = `login.html?redirect=${ret}`;
+          const loginUrl = typeof window.toAbsoluteUrl === 'function'
+            ? window.toAbsoluteUrl(`pages/auth/login.html?redirect=${ret}`)
+            : `../auth/login.html?redirect=${ret}`;
+          window.location.href = loginUrl;
           throw new Error('No authenticated user');
         }
 
@@ -432,6 +435,42 @@
       console.log('👤 [GET_USER] Iniciando getCurrentUser...');
       console.log('👤 [GET_USER] window.supabaseClient existe?', !!window.supabaseClient);
       console.log('👤 [GET_USER] window.supabaseClient.auth existe?', !!window.supabaseClient?.auth);
+
+      const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      let readyClient = window.supabaseClient || null;
+
+      if (!readyClient?.auth && typeof window.waitForSupabaseClient === 'function') {
+        try {
+          readyClient = await window.waitForSupabaseClient(6000);
+        } catch (readyError) {
+          console.warn('[GET_USER] Supabase client was not ready in time:', readyError?.message || readyError);
+        }
+      }
+
+      if (!readyClient?.auth) {
+        const startedAt = Date.now();
+        while (!readyClient?.auth && Date.now() - startedAt < 4000) {
+          await wait(200);
+          readyClient = window.supabaseClient || null;
+        }
+      }
+
+      if (readyClient?.auth) {
+        window.supabaseClient = readyClient;
+        try {
+          const sessionPromise = readyClient.auth.getSession();
+          const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Supabase session timeout')), 4000)
+          );
+          const { data } = await Promise.race([sessionPromise, timeoutPromise]);
+          if (data?.session?.user) {
+            console.log('[GET_USER] User found in Supabase session');
+            return data.session.user;
+          }
+        } catch (sessionError) {
+          console.warn('[GET_USER] Supabase getSession failed or timed out:', sessionError?.message || sessionError);
+        }
+      }
 
       // Prefer Supabase client if available
       if (window.supabaseClient && window.supabaseClient.auth) {
@@ -1353,26 +1392,6 @@
 
           if (tableMacrosError && macrosError) {
             throw new Error(tableMacrosError.message || macrosError.message || 'Failed to save macros');
-          }
-
-          // Best-effort: also write calories to today's body_metrics row
-          try {
-            const entryDate = profileData.body_metrics.last_entry_date || new Date().toISOString().slice(0,10);
-            const { data: existing } = await window.supabaseClient
-              .from('body_metrics')
-              .select('measurements')
-              .eq('user_id', currentUser.id)
-              .eq('date', entryDate)
-              .maybeSingle();
-            const measurements = existing?.measurements || {};
-            measurements.calories = macrosData.calories;
-            const payload = { user_id: currentUser.id, date: entryDate, measurements, client_id: `bm-${entryDate}` };
-            const { error: upErr } = await window.supabaseClient
-              .from('body_metrics')
-              .upsert(payload, { onConflict: 'user_id,client_id' });
-            if (upErr) console.warn('Failed to upsert calories into body_metrics:', upErr);
-          } catch (e) {
-            console.warn('Could not mirror macros calories to body_metrics:', e?.message || e);
           }
 
         } catch (error) {

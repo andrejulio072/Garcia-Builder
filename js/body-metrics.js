@@ -842,50 +842,57 @@
 
     const latest = bodyMetrics[0];
     const previous = bodyMetrics[1];
+    const setText = (id, value) => {
+      const element = document.getElementById(id);
+      if (element) element.textContent = value;
+      return element;
+    };
 
     // Weight
     if (latest.weight) {
-      document.getElementById('current-weight').textContent = `${latest.weight} kg`;
+      setText('current-weight', `${latest.weight} kg`);
 
       if (previous?.weight) {
         const change = latest.weight - previous.weight;
         const changeEl = document.getElementById('weight-change');
-        changeEl.textContent = `${change > 0 ? '+' : ''}${change.toFixed(1)} kg`;
-        changeEl.className = change > 0 ? 'stat-change text-warning' : 'stat-change text-success';
+        if (changeEl) {
+          changeEl.textContent = `${change > 0 ? '+' : ''}${change.toFixed(1)} kg`;
+          changeEl.className = change > 0 ? 'stat-change text-warning' : 'stat-change text-success';
+        }
       }
     }
 
     // Height
     if (latest.height) {
-      document.getElementById('current-height').textContent = `${latest.height} cm`;
+      setText('current-height', `${latest.height} cm`);
     }
 
     // BMI
     if (latest.weight && latest.height) {
       const bmi = latest.weight / Math.pow(latest.height / 100, 2);
-      document.getElementById('current-bmi').textContent = bmi.toFixed(1);
+      setText('current-bmi', bmi.toFixed(1));
 
       let status = 'Normal';
       if (bmi < 18.5) status = 'Underweight';
       else if (bmi >= 25 && bmi < 30) status = 'Overweight';
       else if (bmi >= 30) status = 'Obese';
 
-      document.getElementById('bmi-status').textContent = status;
+      setText('bmi-status', status);
     }
 
     // Body Fat
     if (latest.body_fat) {
-      document.getElementById('current-bodyfat').textContent = `${latest.body_fat}%`;
+      setText('current-bodyfat', `${latest.body_fat}%`);
     }
 
     // Measurements
     if (latest.measurements) {
       const measurements = latest.measurements;
-      document.getElementById('chest-measurement').textContent = measurements.chest ? `${measurements.chest} cm` : '-- cm';
-      document.getElementById('waist-measurement').textContent = measurements.waist ? `${measurements.waist} cm` : '-- cm';
-      document.getElementById('hips-measurement').textContent = measurements.hips ? `${measurements.hips} cm` : '-- cm';
-      document.getElementById('arms-measurement').textContent = measurements.arms ? `${measurements.arms} cm` : '-- cm';
-      document.getElementById('thighs-measurement').textContent = measurements.thighs ? `${measurements.thighs} cm` : '-- cm';
+      setText('chest-measurement', measurements.chest ? `${measurements.chest} cm` : '-- cm');
+      setText('waist-measurement', measurements.waist ? `${measurements.waist} cm` : '-- cm');
+      setText('hips-measurement', measurements.hips ? `${measurements.hips} cm` : '-- cm');
+      setText('arms-measurement', measurements.arms ? `${measurements.arms} cm` : '-- cm');
+      setText('thighs-measurement', measurements.thighs ? `${measurements.thighs} cm` : '-- cm');
     }
   };
 

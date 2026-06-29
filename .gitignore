@@ -23,6 +23,7 @@ logs
 
 # Coverage
 coverage/
+test-results/
 
 # Temporary files
 *.tmp

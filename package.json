@@ -9,6 +9,7 @@
     "legacy": "node api/stripe-server.js",
     "test": "node scripts/contact-form.check.js && node scripts/lead-form-contract.check.js && node scripts/auth-contract.check.js && node scripts/navbar-contract.check.js && node scripts/auth-login-register.check.js && node scripts/user-area-persistence.check.js",
     "test:auth": "node scripts/auth-login-register.check.js",
+    "test:e2e:user-area:live": "node scripts/live-user-area.e2e.mjs",
     "serve": "node tools/static-server.js",
     "sitemap": "node tools/generate-sitemap.js",
     "lint": "powershell -ExecutionPolicy Bypass -File validate-components.ps1",
@@ -48,6 +49,7 @@
     "stripe": "^14.25.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "cross-env": "^7.0.3",
     "jsdom": "^26.1.0",
     "nodemon": "^3.1.14"

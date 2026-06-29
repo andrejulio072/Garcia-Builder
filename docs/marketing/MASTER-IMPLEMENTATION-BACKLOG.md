@@ -50,7 +50,7 @@ Create one single source of truth with:
 | GB-024 | CI/CD | Full pipeline (lint/test/build/deploy checks) | M | M | P2 | GB-023 | Green pipeline before deploy |
 | GB-025 | Security | Rate-limit and abuse hardening for public APIs | H | M | P1 | API endpoints | Reduced spam and abuse events |
 | GB-026 | Security | Secrets/env audit and rotation checklist | H | L | P1 | Env config docs | No leaked or stale secrets |
-| GB-027 | Integrations | Trainerize onboarding automation | H | H | P2 | API credentials and workflow | Zero manual onboarding steps |
+| GB-027 | Integrations | My PT Hub onboarding automation | H | H | P2 | API credentials and workflow | Zero manual onboarding steps |
 | GB-028 | Integrations | Optional app chat automation (Twilio) | M | M | P3 | Messaging policy | Response SLA improvement |
 | GB-029 | Product | Group coaching waitlist launch | M | L | P2 | Pricing page block | Qualified waitlist growth |
 | GB-030 | Product | Corporate/group package lead flow | M | M | P3 | Contact + CRM tags | New B2B lead channel active |
@@ -93,7 +93,7 @@ Create one single source of truth with:
 5. GB-022 script loading performance pass
 
 ### Phase 5 - Strategic extensions (After core gains)
-1. GB-027 Trainerize automation
+1. GB-027 My PT Hub automation
 2. GB-029 group coaching waitlist launch
 3. GB-030 corporate flow
 4. GB-034 deploy hardening (if not yet complete)

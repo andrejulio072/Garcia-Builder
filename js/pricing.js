@@ -150,7 +150,7 @@ async function handlePlanSelection(planKey, planName, planPrice, buttonElement) 
       customerName: getStoredUserName(),
       successUrl: `${window.location.origin}/success.html`,
       cancelUrl: `${window.location.origin}/pricing.html`,
-      trainerizeInvite: document.querySelector('meta[name="trainerize:invite"]')?.getAttribute('content') || window.GB_TRAINERIZE_INVITE || undefined,
+      myPtHubInvite: document.querySelector('meta[name="mypthub:invite"]')?.getAttribute('content') || window.GB_MYPTHUB_INVITE || undefined,
       utm: getAttributionPayload()
     };
 

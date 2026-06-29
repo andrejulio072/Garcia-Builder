@@ -122,7 +122,7 @@
           eyebrow: "Online coaching for busy professionals",
           headline: "Stronger, leaner, coached every week",
           trust1: "Home or gym",
-          trust2: "Trainerize app",
+          trust2: "My PT Hub app",
           trust3: "EN/PT/ES"
         },
         why: {
@@ -196,7 +196,7 @@
         title: "How It Works",
         subtitle: "Clarity from day one—here’s how we build momentum together",
         step1: { title: "Assessment Call", desc: "Book a free consult to map goals, lifestyle, injuries, and the exact support you need." },
-        step2: { title: "Plan Built for You", desc: "Receive personalised training, nutrition, and habit systems inside the Trainerize app." },
+        step2: { title: "Plan Built for You", desc: "Receive personalised training, nutrition, and habit systems inside the My PT Hub app." },
         step3: { title: "Guided Execution", desc: "Weekly check-ins plus daily WhatsApp accountability keep you consistent and confident." },
         step4: { title: "Results That Last", desc: "Feel stronger, leaner, and in control with systems you can maintain long-term." },
         cta: "Start Your Journey Today →"
@@ -249,7 +249,7 @@
         card1: { title: "ActiveIQ Level 3 PT", desc: "Certified personal trainer recognised in the UK and EU." },
         card2: { title: "12+ Years Coaching", desc: "Hundreds of clients guided through fat loss, recomposition, and performance goals." },
         card3: { title: "Coaching in EN • PT • ES", desc: "Communicate in the language that keeps you motivated and accountable." },
-        card4: { title: "Trainerize Ecosystem", desc: "Clear app experience for workouts, nutrition targets, habits, and progress tracking." }
+        card4: { title: "My PT Hub Ecosystem", desc: "Clear app experience for workouts, nutrition targets, habits, and progress tracking." }
       },
       stats: {
         clients: "Clients Transformed",
@@ -336,14 +336,14 @@
       faq: {
         title: "FAQ",
         search: "Search questions…",
-        q1: { q: "How does online coaching work?", a: "We start with an intake form and a brief call. Your plan is delivered in Trainerize (training + habits, optional nutrition guidance). Weekly check-ins, in-app chat support, and adjustments based on your data." },
+        q1: { q: "How does online coaching work?", a: "We start with an intake form and a brief call. Your plan is delivered in My PT Hub (training + habits, optional nutrition guidance). Weekly check-ins, in-app chat support, and adjustments based on your data." },
         q2: { q: "Do I need a gym membership?", a: "No. I can program full home training. If you have only bands or a couple of dumbbells, we still progress effectively." },
         q3: { q: "Is nutrition included?", a: "Yes. You get calories/macros and flexible meal frameworks. We align with your culture, budget, and schedule—no rigid templates." },
         q4: { q: "I'm a beginner—is this for me?", a: "Absolutely. We focus on safe form, progressions, and habit building. Every exercise has demo videos and cues." },
         q5: { q: "What if I have injuries or pain?", a: "We adapt exercises, tempo, and range of motion. I can coordinate with physio/GP guidance when needed." },
         q6: { q: "How fast will I see results?", a: "Most feel better in 2–3 weeks, notice visible changes by 6–8 weeks, and strong transformations from 12+ weeks with consistency." },
         q7: { q: "How do weekly check-ins work?", a: "Short form in the app + optional photos/measurements. I review adherence and trends, then update your plan." },
-        q8: { q: "Which app do you use?", a: "Trainerize—plans, videos, habits, messages, and progress tracking in one place (iOS/Android)." },
+        q8: { q: "Which app do you use?", a: "My PT Hub—plans, videos, habits, messages, and progress tracking in one place (iOS/Android)." },
         q9: { q: "What equipment do I need?", a: "None to start. For home, adjustable dumbbells + bands cover almost everything. We scale up as you progress." },
         q10: { q: "I travel or work shifts. Can this fit?", a: "Yes. Flexible splits (3–4 days/week), travel swaps, and short sessions keep momentum during busy weeks." },
         q11: { q: "Will I lose muscle while cutting fat?", a: "The plan prioritizes muscle retention: resistance training, adequate protein, progressive overload, and a sensible deficit." },
@@ -430,7 +430,7 @@
           title: "What every plan includes",
           text: "Clear execution, not just a PDF: your training, nutrition and follow-up are structured so you always know what to do next and why it matters.",
           items: [
-            "Trainerize app access with structured workouts",
+            "My PT Hub app access with structured workouts",
             "Nutrition targets, meal structure guidance and shopping list support",
             "Weekly check-ins, adjustments and accountability",
             "Secure checkout, onboarding email and consultation scheduling after purchase"
@@ -810,7 +810,7 @@
           eyebrow: "Coaching online para profissionais ocupados",
           headline: "Mais forte, mais definido, acompanhado toda semana",
           trust1: "Casa ou academia",
-          trust2: "App Trainerize",
+          trust2: "App My PT Hub",
           trust3: "EN/PT/ES"
         },
         why: {
@@ -838,7 +838,7 @@
         title: "Como Funciona",
         subtitle: "Clareza desde o primeiro dia — é assim que criamos impulso juntos",
         step1: { title: "Chamada de Avaliação", desc: "Agende uma consultoria gratuita para mapear objetivos, rotina, lesões e o suporte exato que você precisa." },
-        step2: { title: "Plano Feito para Você", desc: "Receba treino, nutrição e sistemas de hábitos personalizados dentro do app Trainerize." },
+        step2: { title: "Plano Feito para Você", desc: "Receba treino, nutrição e sistemas de hábitos personalizados dentro do app My PT Hub." },
         step3: { title: "Execução Guiada", desc: "Check-ins semanais mais responsabilidade diária no WhatsApp mantêm você consistente e confiante." },
         step4: { title: "Resultados que Permanecem", desc: "Sinta-se mais forte, mais definido e no controle com sistemas que você consegue manter a longo prazo." },
         cta: "Comece Sua Jornada Hoje →"
@@ -891,7 +891,7 @@
         card1: { title: "ActiveIQ Level 3 PT", desc: "Personal trainer certificado reconhecido no Reino Unido e na UE." },
         card2: { title: "12+ Anos de Coaching", desc: "Centenas de clientes guiados em perda de gordura, recomposição e performance." },
         card3: { title: "Coaching em EN • PT • ES", desc: "Fale no idioma que mantém você motivado e responsável." },
-        card4: { title: "Ecossistema Trainerize", desc: "App claro para treinos, metas de nutrição, hábitos e acompanhamento de progresso." }
+        card4: { title: "Ecossistema My PT Hub", desc: "App claro para treinos, metas de nutrição, hábitos e acompanhamento de progresso." }
       },
       stats: {
         clients: "Clientes Transformados",
@@ -978,14 +978,14 @@
       faq: {
         title: "FAQ",
         search: "Buscar perguntas…",
-        q1: { q: "Como funciona o coaching online?", a: "Começamos com um formulário de entrada e uma breve chamada. Seu plano é entregue no Trainerize (treino + hábitos, orientação nutricional opcional). Check-ins semanais, suporte via chat no app e ajustes baseados nos seus dados." },
+        q1: { q: "Como funciona o coaching online?", a: "Começamos com um formulário de entrada e uma breve chamada. Seu plano é entregue no My PT Hub (treino + hábitos, orientação nutricional opcional). Check-ins semanais, suporte via chat no app e ajustes baseados nos seus dados." },
         q2: { q: "Preciso de academia?", a: "Não. Posso programar treino completo em casa. Se você tem apenas elásticos ou alguns halteres, ainda progredimos efetivamente." },
         q3: { q: "Nutrição está incluída?", a: "Sim. Você recebe calorias/macros e estruturas flexíveis de refeições. Alinhamos com sua cultura, orçamento e rotina—sem modelos rígidos." },
         q4: { q: "Sou iniciante—isso é para mim?", a: "Absolutamente. Focamos em forma segura, progressões e construção de hábitos. Todo exercício tem vídeos demonstrativos e dicas." },
         q5: { q: "E se eu tiver lesões ou dor?", a: "Adaptamos exercícios, tempo e amplitude de movimento. Posso coordenar com orientação de fisioterapeuta/médico quando necessário." },
         q6: { q: "Quão rápido verei resultados?", a: "A maioria se sente melhor em 2–3 semanas, nota mudanças visíveis em 6–8 semanas, e transformações fortes a partir de 12+ semanas com consistência." },
         q7: { q: "Como funcionam os check-ins semanais?", a: "Formulário curto no app + fotos/medidas opcionais. Reviso aderência e tendências, depois atualizo seu plano." },
-        q8: { q: "Qual app você usa?", a: "Trainerize—planos, vídeos, hábitos, mensagens e acompanhamento de progresso em um lugar (iOS/Android)." },
+        q8: { q: "Qual app você usa?", a: "My PT Hub—planos, vídeos, hábitos, mensagens e acompanhamento de progresso em um lugar (iOS/Android)." },
         q9: { q: "Que equipamentos preciso?", a: "Nenhum para começar. Para casa, halteres ajustáveis + elásticos cobrem quase tudo. Escalamos conforme você progride." },
         q10: { q: "Viajo ou trabalho em turnos. Isso se encaixa?", a: "Sim. Divisões flexíveis (3–4 dias/semana), trocas para viagem e sessões curtas mantêm o ritmo durante semanas ocupadas." },
         q11: { q: "Perderei músculo enquanto corto gordura?", a: "O plano prioriza retenção muscular: treino resistido, proteína adequada, sobrecarga progressiva e déficit sensato." },
@@ -1072,7 +1072,7 @@
           title: "O que todos os planos incluem",
           text: "Execução clara, não apenas um PDF: treino, nutrição e acompanhamento organizados para você saber exatamente o próximo passo e por que ele importa.",
           items: [
-            "Acesso ao app Trainerize com treinos estruturados",
+            "Acesso ao app My PT Hub com treinos estruturados",
             "Metas nutricionais, orientação alimentar e suporte para lista de compras",
             "Check-ins semanais, ajustes e accountability",
             "Checkout seguro, email de onboarding e agendamento de consulta após a compra"
@@ -1453,7 +1453,7 @@
           eyebrow: "Coaching online para profesionales ocupados",
           headline: "Mas fuerte, mas definido, acompanado cada semana",
           trust1: "Casa o gym",
-          trust2: "App Trainerize",
+          trust2: "App My PT Hub",
           trust3: "EN/PT/ES"
         },
         why: {
@@ -1481,7 +1481,7 @@
         title: "Cómo Funciona",
         subtitle: "Claridad desde el día uno — así construimos impulso juntos",
         step1: { title: "Llamada de Evaluación", desc: "Reserva una consulta gratuita para mapear objetivos, estilo de vida, lesiones y el soporte exacto que necesitas." },
-        step2: { title: "Plan Hecho para Ti", desc: "Recibe entrenamiento, nutrición y sistemas de hábitos personalizados dentro de la app Trainerize." },
+        step2: { title: "Plan Hecho para Ti", desc: "Recibe entrenamiento, nutrición y sistemas de hábitos personalizados dentro de la app My PT Hub." },
         step3: { title: "Ejecución Guiada", desc: "Check-ins semanales más responsabilidad diaria por WhatsApp te mantienen consistente y seguro." },
         step4: { title: "Resultados que Permanecen", desc: "Siéntete más fuerte, más definido y en control con sistemas que puedes mantener a largo plazo." },
         cta: "Empieza Tu Viaje Hoy →"
@@ -1534,7 +1534,7 @@
         card1: { title: "ActiveIQ Level 3 PT", desc: "Entrenador personal certificado reconocido en Reino Unido y la UE." },
         card2: { title: "12+ Años Entrenando", desc: "Cientos de clientes guiados en pérdida de grasa, recomposición y rendimiento." },
         card3: { title: "Coaching en EN • PT • ES", desc: "Comunícate en el idioma que te mantiene motivado y responsable." },
-        card4: { title: "Ecosistema Trainerize", desc: "App claro para entrenos, objetivos de nutrición, hábitos y seguimiento del progreso." }
+        card4: { title: "Ecosistema My PT Hub", desc: "App claro para entrenos, objetivos de nutrición, hábitos y seguimiento del progreso." }
       },
       stats: {
         clients: "Clientes Transformados",
@@ -1621,14 +1621,14 @@
       faq: {
         title: "FAQ",
         search: "Buscar preguntas…",
-        q1: { q: "¿Cómo funciona el coaching online?", a: "Empezamos con un formulario de ingreso y una breve llamada. Tu plan se entrega en Trainerize (entrenamiento + hábitos, orientación nutricional opcional). Check-ins semanales, soporte de chat en la app y ajustes basados en tus datos." },
+        q1: { q: "¿Cómo funciona el coaching online?", a: "Empezamos con un formulario de ingreso y una breve llamada. Tu plan se entrega en My PT Hub (entrenamiento + hábitos, orientación nutricional opcional). Check-ins semanales, soporte de chat en la app y ajustes basados en tus datos." },
         q2: { q: "¿Necesito membresía de gimnasio?", a: "No. Puedo programar entrenamiento completo en casa. Si solo tienes bandas o un par de mancuernas, aún progresamos efectivamente." },
         q3: { q: "¿Está incluida la nutrición?", a: "Sí. Obtienes calorías/macros y marcos flexibles de comidas. Nos alineamos con tu cultura, presupuesto y horario—sin plantillas rígidas." },
         q4: { q: "Soy principiante—¿esto es para mí?", a: "Absolutamente. Nos enfocamos en forma segura, progresiones y construcción de hábitos. Cada ejercicio tiene videos demostrativos y consejos." },
         q5: { q: "¿Qué pasa si tengo lesiones o dolor?", a: "Adaptamos ejercicios, tempo y rango de movimiento. Puedo coordinar con orientación de fisioterapeuta/médico cuando sea necesario." },
         q6: { q: "¿Qué tan rápido veré resultados?", a: "La mayoría se siente mejor en 2–3 semanas, nota cambios visibles en 6–8 semanas, y transformaciones fuertes desde 12+ semanas con consistencia." },
         q7: { q: "¿Cómo funcionan los check-ins semanales?", a: "Formulario corto en la app + fotos/medidas opcionales. Reviso adherencia y tendencias, luego actualizo tu plan." },
-        q8: { q: "¿Qué app usas?", a: "Trainerize—planes, videos, hábitos, mensajes y seguimiento de progreso en un lugar (iOS/Android)." },
+        q8: { q: "¿Qué app usas?", a: "My PT Hub—planes, videos, hábitos, mensajes y seguimiento de progreso en un lugar (iOS/Android)." },
         q9: { q: "¿Qué equipamiento necesito?", a: "Ninguno para empezar. Para casa, mancuernas ajustables + bandas cubren casi todo. Escalamos mientras progresas." },
         q10: { q: "Viajo o trabajo por turnos. ¿Esto puede funcionar?", a: "Sí. Divisiones flexibles (3–4 días/semana), intercambios para viajes y sesiones cortas mantienen el impulso durante semanas ocupadas." },
         q11: { q: "¿Perderé músculo mientras corto grasa?", a: "El plan prioriza retención muscular: entrenamiento de resistencia, proteína adecuada, sobrecarga progresiva y déficit sensato." },
@@ -1715,7 +1715,7 @@
           title: "Qué incluye cada plan",
           text: "Ejecución clara, no solo un PDF: entrenamiento, nutrición y seguimiento organizados para que sepas exactamente el siguiente paso y por qué importa.",
           items: [
-            "Acceso a Trainerize con entrenamientos estructurados",
+            "Acceso a My PT Hub con entrenamientos estructurados",
             "Objetivos de nutrición, guía de comidas y apoyo con lista de compra",
             "Check-ins semanales, ajustes y accountability",
             "Checkout seguro, email de onboarding y agenda de consulta después de comprar"
@@ -2703,7 +2703,7 @@
     "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.": "Coaching online para transformação real. Treino baseado em evidência, nutrição personalizada e acompanhamento 1:1. Resultados em 8-12 semanas.",
     "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8â€“12 weeks.": "Coaching online para transformação real. Treino baseado em evidência, nutrição personalizada e acompanhamento 1:1. Resultados em 8-12 semanas.",
     "Get tips, recipes, and exclusive offers. No spam.": "Receba dicas, receitas e ofertas exclusivas. Sem spam.",
-    "View All Articles on Trainerize": "Ver todos os artigos no Trainerize",
+    "View All Articles on My PT Hub": "Ver todos os artigos no My PT Hub",
     "Join Newsletter": "Entrar na Newsletter",
     "Weekly Training Tips": "Dicas Semanais de Treino",
     "Nutrition Insights": "Insights de Nutrição",
@@ -2985,7 +2985,7 @@
     "Spine neutral, heels grounded on squats.": "Coluna neutra e calcanhares firmes nos agachamentos.",
     "Exhale on effort. Keep shoulders away from ears.": "Expire no esforço. Mantenha os ombros longe das orelhas.",
     "Next Up": "Próximo Passo",
-    "Book your onboarding consult to personalize your plan and unlock the full Trainerize experience.": "Agende sua consulta inicial para personalizar o plano e liberar a experiência completa no Trainerize.",
+    "Book your onboarding consult to personalize your plan and unlock the full My PT Hub experience.": "Agende sua consulta inicial para personalizar o plano e liberar a experiência completa no My PT Hub.",
     "Schedule Consult": "Agendar Consulta",
     "Back": "Voltar",
     "Log it in the dashboard": "Registrar no dashboard"
@@ -3029,7 +3029,7 @@
     "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.": "Coaching online para una transformación real. Entrenamiento basado en evidencia, nutrición personalizada y seguimiento 1:1. Resultados en 8-12 semanas.",
     "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8â€“12 weeks.": "Coaching online para una transformación real. Entrenamiento basado en evidencia, nutrición personalizada y seguimiento 1:1. Resultados en 8-12 semanas.",
     "Get tips, recipes, and exclusive offers. No spam.": "Recibe consejos, recetas y ofertas exclusivas. Sin spam.",
-    "View All Articles on Trainerize": "Ver todos los artículos en Trainerize",
+    "View All Articles on My PT Hub": "Ver todos los artículos en My PT Hub",
     "Join Newsletter": "Unirse al Newsletter",
     "Weekly Training Tips": "Consejos Semanales de Entrenamiento",
     "Nutrition Insights": "Ideas de Nutrición",
@@ -3311,7 +3311,7 @@
     "Spine neutral, heels grounded on squats.": "Columna neutra y talones firmes en las sentadillas.",
     "Exhale on effort. Keep shoulders away from ears.": "Exhala en el esfuerzo. Mantén los hombros lejos de las orejas.",
     "Next Up": "Siguiente Paso",
-    "Book your onboarding consult to personalize your plan and unlock the full Trainerize experience.": "Agenda tu consulta inicial para personalizar el plan y desbloquear la experiencia completa en Trainerize.",
+    "Book your onboarding consult to personalize your plan and unlock the full My PT Hub experience.": "Agenda tu consulta inicial para personalizar el plan y desbloquear la experiencia completa en My PT Hub.",
     "Schedule Consult": "Agendar Consulta",
     "Back": "Volver",
     "Log it in the dashboard": "Registrarlo en el dashboard"

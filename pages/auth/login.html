@@ -298,6 +298,61 @@
 
         const isSocialOAuthEnabled = (provider) => getSocialOAuthFlag(provider) === true;
 
+        const getAuthInlineLanguage = () => {
+            try {
+                return (window.GB_I18N && window.GB_I18N.getLang && window.GB_I18N.getLang())
+                    || localStorage.getItem('gb_lang')
+                    || document.documentElement.lang
+                    || 'en';
+            } catch {
+                return 'en';
+            }
+        };
+
+        const getAuthInlineText = (key, fallback = '') => {
+            const fallbacks = {
+                en: {
+                    'auth.oauth_disabled': 'This sign-in method is unavailable in the current environment.',
+                    'auth.oauth_file_protocol_warning': 'OAuth sign-in is not available from file://. Please use localhost or a hosted site.',
+                    'auth.oauth_google_connecting': 'Connecting with Google...',
+                    'auth.oauth_google_disabled': 'Google OAuth is disabled in this environment. Enable Google OAuth or use email and password.',
+                    'auth.oauth_unavailable_localhost': 'OAuth unavailable (use localhost)',
+                    'auth.oauth_prepare_login': 'Preparing login... please try again in a second.',
+                    'auth.oauth_prepare_signup': 'Preparing sign up... please try again in a second.',
+                    'auth.supabase_config_missing': 'Supabase project keys are missing.',
+                    'auth.supabase_init_failed': 'Supabase initialization failed.'
+                },
+                pt: {
+                    'auth.oauth_disabled': 'Este método de login está indisponível no ambiente atual.',
+                    'auth.oauth_file_protocol_warning': 'O login OAuth não está disponível em file://. Use localhost ou um site hospedado.',
+                    'auth.oauth_google_connecting': 'Conectando com Google...',
+                    'auth.oauth_google_disabled': 'O OAuth do Google está desativado neste ambiente. Ative o OAuth do Google ou use e-mail e senha.',
+                    'auth.oauth_unavailable_localhost': 'OAuth indisponível (use localhost)',
+                    'auth.oauth_prepare_login': 'Preparando login... tente novamente em um segundo.',
+                    'auth.oauth_prepare_signup': 'Preparando cadastro... tente novamente em um segundo.',
+                    'auth.supabase_config_missing': 'As chaves do projeto Supabase estão ausentes.',
+                    'auth.supabase_init_failed': 'Falha ao inicializar o Supabase.'
+                },
+                es: {
+                    'auth.oauth_disabled': 'Este método de acceso no está disponible en el entorno actual.',
+                    'auth.oauth_file_protocol_warning': 'El inicio de sesión OAuth no está disponible en file://. Usa localhost o un sitio alojado.',
+                    'auth.oauth_google_connecting': 'Conectando con Google...',
+                    'auth.oauth_google_disabled': 'Google OAuth está desactivado en este entorno. Activa Google OAuth o usa correo y contraseña.',
+                    'auth.oauth_unavailable_localhost': 'OAuth no disponible (usa localhost)',
+                    'auth.oauth_prepare_login': 'Preparando acceso... inténtalo de nuevo en un segundo.',
+                    'auth.oauth_prepare_signup': 'Preparando registro... inténtalo de nuevo en un segundo.',
+                    'auth.supabase_config_missing': 'Faltan las claves del proyecto Supabase.',
+                    'auth.supabase_init_failed': 'No se pudo inicializar Supabase.'
+                }
+            };
+
+            const readPath = (source, path) => path.split('.').reduce((acc, part) => acc && acc[part], source);
+            const lang = String(getAuthInlineLanguage()).slice(0, 2).toLowerCase();
+            const dictValue = readPath((window.DICTS && (window.DICTS[lang] || window.DICTS.en)) || {}, key);
+            if (dictValue !== undefined && dictValue !== null) return dictValue;
+            return (fallbacks[lang] && fallbacks[lang][key]) || fallbacks.en[key] || fallback;
+        };
+
         const disableSocialOAuthButtons = (provider, label) => {
             const selectors = provider === 'google'
                 ? '#login-with-google, #google-btn-register'
@@ -307,7 +362,7 @@
             buttons.forEach((btn) => {
                 if (!btn) return;
                 btn.disabled = true;
-                btn.title = `${label} is disabled in this environment.`;
+                btn.title = `${label}: ${getAuthInlineText('auth.oauth_disabled')}`;
                 btn.style.opacity = '0.55';
                 btn.style.cursor = 'not-allowed';
             });
@@ -325,9 +380,9 @@
             oauthButtons.forEach(btn => {
                 if (!btn) return;
 
-                btn.title = 'OAuth may require a local server in some browsers when running via file://';
+                btn.title = getAuthInlineText('auth.oauth_file_protocol_warning');
                 const reminder = () => {
-                    const message = 'If the social provider blocks file:// redirects, start a local server and try again.';
+                    const message = getAuthInlineText('auth.oauth_file_protocol_warning');
                     if (window.APP_NOTIFIER?.info) {
                         window.APP_NOTIFIER.info(message, { icon: 'fa-circle-info' });
                     } else {
@@ -500,7 +555,7 @@
         const buildRedirectUrl = () => {
             // Special handling for file:// development (OAuth cannot work with file://)
             if (window.location.protocol === 'file:') {
-                console.warn('OAuth does not work with file://. Use localhost or ?dev=1');
+                console.warn(getAuthInlineText('auth.oauth_file_protocol_warning'));
                 // Return an invalid URL to surface a visible error
                 return 'about:blank';
             }
@@ -549,7 +604,7 @@
 
             if (getSocialOAuthFlag('google') === false) {
                 disableSocialOAuthButtons('google', 'Google OAuth');
-                showErrorBanner('Google OAuth is disabled in this environment. Enable GOOGLE_OAUTH_ENABLED or use email and password.');
+                showErrorBanner(getAuthInlineText('auth.oauth_google_disabled'));
                 return;
             }
 
@@ -562,13 +617,13 @@
                 
                 buttons.forEach(btn => {
                     btn.disabled = true;
-                    btn.title = 'OAuth does not work with file://. Use http://localhost:8000 or add ?dev=1 to the URL';
+                    btn.title = getAuthInlineText('auth.oauth_file_protocol_warning');
                     btn.style.opacity = '0.5';
                     btn.style.cursor = 'not-allowed';
-                    btn.innerHTML = '<i class="fab fa-google me-2"></i>OAuth unavailable (use localhost)';
+                    btn.innerHTML = `<i class="fab fa-google me-2"></i>${getAuthInlineText('auth.oauth_unavailable_localhost')}`;
                 });
                 
-                showErrorBanner('OAuth does not work with file://. Open via http://localhost:8000 or use ?dev=1 for dev mode.');
+                showErrorBanner(getAuthInlineText('auth.oauth_file_protocol_warning'));
                 return;
             }
 
@@ -588,7 +643,7 @@
                 console.log('Google OAuth handler attached:', { id: btn.id, redirectTo });
                 btn.addEventListener('click', async () => {
                     btn.disabled = true;
-                    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Connecting with Google...';
+                    btn.innerHTML = `<i class="fas fa-spinner fa-spin me-2"></i>${getAuthInlineText('auth.oauth_google_connecting')}`;
 
                     try {
                         const { data, error } = await client.auth.signInWithOAuth({
@@ -620,9 +675,9 @@
                             window.location.href = fallbackUrl;
                             return;
                         }
-                        throw new Error('Supabase project URL unavailable para redirecionamento.');
+                        throw new Error(getAuthInlineText('auth.oauth_disabled'));
                     } catch (error) {
-                        showErrorBanner(error?.message || 'This sign-in method is unavailable in the current environment.');
+                        showErrorBanner(error?.message || getAuthInlineText('auth.oauth_disabled'));
                         btn.disabled = false;
                         btn.innerHTML = originalHTML;
                     }
@@ -684,14 +739,14 @@
                     $loginEl.addEventListener('submit', (e) => {
                         if (window.authSystem && typeof window.authSystem.handleLogin === 'function') return; // main handler will take over
                         e.preventDefault();
-                        softShow('Preparing login... please try again in a second.', 'info');
+                        softShow(getAuthInlineText('auth.oauth_prepare_login'), 'info');
                     }, { capture: true });
                 }
                 if ($registerEl) {
                     $registerEl.addEventListener('submit', (e) => {
                         if (window.authSystem && typeof window.authSystem.handleRegister === 'function') return;
                         e.preventDefault();
-                        softShow('Preparing sign up... please try again in a second.', 'info');
+                        softShow(getAuthInlineText('auth.oauth_prepare_signup'), 'info');
                     }, { capture: true });
                 }
             } catch (fhErr) {
@@ -700,7 +755,7 @@
             try {
                 const { url, key } = await resolveSupabaseKeys();
                 if (!url || !key) {
-                    throw new Error('Supabase project keys are missing.');
+                    throw new Error(getAuthInlineText('auth.supabase_config_missing'));
                 }
 
                 // Quick diagnostic for common misconfiguration (placeholder keys)
@@ -724,7 +779,7 @@
                 attachGoogleLogin(supabaseModuleClient, url);
             } catch (error) {
                 console.error('Failed to initialize Google login:', error);
-                showSupabaseConfigWarning(error && error.message ? String(error.message) : 'Supabase initialization failed.');
+                showSupabaseConfigWarning(error && error.message ? String(error.message) : getAuthInlineText('auth.supabase_init_failed'));
             }
         });
     </script>

@@ -15,6 +15,13 @@ create table if not exists public.user_preferences (
 
 alter table public.user_preferences enable row level security;
 
+revoke all on public.profiles from public, anon, authenticated;
+grant select on public.profiles to anon;
+grant select, insert, update on public.profiles to authenticated;
+
+revoke all on public.user_profiles from public, anon, authenticated;
+grant select, insert, update on public.user_profiles to authenticated;
+
 revoke all on public.user_preferences from public, anon, authenticated;
 grant select, insert, update on public.user_preferences to authenticated;
 
@@ -72,29 +79,35 @@ set search_path = public, auth
 as $$
 declare
   meta jsonb := coalesce(NEW.raw_user_meta_data, '{}'::jsonb);
-  birthday_value date := nullif(coalesce(meta->>'birthday', meta->>'date_of_birth'), '')::date;
+  birthday_text text := nullif(coalesce(meta->>'birthday', meta->>'date_of_birth'), '');
+  birthday_value date := case when birthday_text ~ '^\d{4}-\d{2}-\d{2}$' then birthday_text::date else null end;
   preferred_language text := coalesce(nullif(meta->>'language', ''), 'en');
+  preferred_name text := coalesce(nullif(meta->>'full_name', ''), nullif(meta->>'name', ''), split_part(NEW.email, '@', 1));
+  preferred_avatar text := coalesce(nullif(meta->>'avatar_url', ''), nullif(meta->>'picture', ''));
 begin
   insert into public.profiles (
     id,
     full_name,
     phone,
     birthday,
+    date_of_birth,
     avatar_url,
     role
   )
   values (
     NEW.id,
-    coalesce(meta->>'full_name', meta->>'name', NEW.email),
-    meta->>'phone',
+    preferred_name,
+    nullif(meta->>'phone', ''),
     birthday_value,
-    coalesce(meta->>'avatar_url', meta->>'picture'),
+    birthday_value,
+    preferred_avatar,
     coalesce(nullif(meta->>'role', ''), 'client')
   )
   on conflict (id) do update
     set full_name = coalesce(excluded.full_name, public.profiles.full_name),
         phone = coalesce(excluded.phone, public.profiles.phone),
         birthday = coalesce(excluded.birthday, public.profiles.birthday),
+        date_of_birth = coalesce(excluded.date_of_birth, public.profiles.date_of_birth),
         avatar_url = coalesce(excluded.avatar_url, public.profiles.avatar_url),
         role = coalesce(excluded.role, public.profiles.role),
         updated_at = timezone('utc', now());
@@ -111,11 +124,11 @@ begin
   )
   values (
     NEW.id,
-    NEW.email,
-    coalesce(meta->>'full_name', meta->>'name', NEW.email),
-    meta->>'phone',
+    lower(NEW.email),
+    preferred_name,
+    nullif(meta->>'phone', ''),
     birthday_value,
-    coalesce(meta->>'avatar_url', meta->>'picture'),
+    preferred_avatar,
     coalesce(NEW.created_at, now()),
     coalesce(NEW.updated_at, NEW.created_at, now())
   )
@@ -165,7 +178,6 @@ $$;
 
 alter function public.handle_new_user() set search_path = public, auth;
 revoke all on function public.handle_new_user() from public, anon, authenticated;
-grant execute on function public.handle_new_user() to authenticated, anon;
 
 drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
@@ -184,7 +196,7 @@ select
   u.id,
   'metric',
   'dark',
-  'en',
+  coalesce(nullif(u.raw_user_meta_data->>'language', ''), 'en'),
   '{"email":true,"push":true,"reminders":true}'::jsonb,
   '{"profile_visible":true,"progress_visible":true}'::jsonb
 from auth.users u

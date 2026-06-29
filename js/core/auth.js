@@ -1941,9 +1941,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             };
                             localStorage.setItem('gb_current_user', JSON.stringify(norm));
 
-                            // Ensure user profile is upserted in Supabase after OAuth/social login
+                            // Ensure OAuth/social users get the same profile, preferences, and legacy compatibility sync as password users.
                             try {
-                                await syncUserProfile(supabaseClient, su);
+                                await syncAuthProfileState(supabaseClient, su, {
+                                    full_name: su.user_metadata?.full_name || su.user_metadata?.name || '',
+                                    avatar_url: su.user_metadata?.avatar_url || su.user_metadata?.picture || null,
+                                    language: getCurrentAuthLanguage()
+                                });
                             } catch (e) {
                                 console.error('Profile synchronization after OAuth failed:', e?.message || e);
                             }

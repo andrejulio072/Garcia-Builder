@@ -4,17 +4,18 @@
 
   const btn = document.getElementById('sendBtn');
   const alertBox = document.getElementById('form-alert');
-  const nameEl = document.getElementById('name');
+  const firstNameEl = document.getElementById('firstName');
+  const lastNameEl = document.getElementById('lastName');
   const emailEl = document.getElementById('email');
   const phoneEl = document.getElementById('phone');
   const goalEl = document.getElementById('goal');
-  const timelineEl = document.getElementById('timeline');
-  const experienceEl = document.getElementById('experience');
-  const preferredContactEl = document.getElementById('preferredContact');
-  const budgetEl = document.getElementById('budget');
-  const messageEl = document.getElementById('message');
+  const currentWeightEl = document.getElementById('currentWeight');
+  const mainStruggleEl = document.getElementById('mainStruggle');
   const consentEl = document.getElementById('consent');
-  const charCount = document.getElementById('charCount');
+  const sourceEl = document.getElementById('source');
+  const pageEl = document.getElementById('page');
+  const utmSourceEl = document.getElementById('utm_source');
+  const utmCampaignEl = document.getElementById('utm_campaign');
   const btnLabel = btn ? btn.querySelector('[data-i18n="contact.form.submit"]') : null;
   const getCurrentLang = () => {
     try {
@@ -30,20 +31,11 @@
   };
 
   // Check if required elements exist
-  if (!btn || !alertBox || !nameEl || !emailEl || !goalEl ||
-      !timelineEl || !experienceEl || !messageEl || !consentEl) {
+  if (!btn || !alertBox || !firstNameEl || !lastNameEl || !emailEl || !phoneEl || !goalEl ||
+      !currentWeightEl || !mainStruggleEl || !consentEl) {
     console.warn('Contact form: Some required elements are missing');
     return;
   }
-
-  // Character counter
-  const updateCount = () => {
-    if (charCount) {
-      charCount.textContent = `${messageEl.value.length}/1200`;
-    }
-  };
-  messageEl.addEventListener('input', updateCount);
-  updateCount();
 
   // Helpers
   const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
@@ -60,13 +52,13 @@
   // Generate specific error message
   const getErrorMessage = () => {
     const errors = [];
-    if (nameEl.classList.contains('input-error')) errors.push('name');
+    if (firstNameEl.classList.contains('input-error')) errors.push('first name');
+    if (lastNameEl.classList.contains('input-error')) errors.push('last name');
     if (emailEl.classList.contains('input-error')) errors.push('email');
-    if (phoneEl && phoneEl.classList.contains('input-error')) errors.push('phone number');
+    if (phoneEl.classList.contains('input-error')) errors.push('phone number');
     if (goalEl.classList.contains('input-error')) errors.push('primary goal');
-    if (timelineEl.classList.contains('input-error')) errors.push('timeline');
-    if (experienceEl.classList.contains('input-error')) errors.push('training experience');
-    if (messageEl.classList.contains('input-error')) errors.push('message');
+    if (currentWeightEl.classList.contains('input-error')) errors.push('current weight');
+    if (mainStruggleEl.classList.contains('input-error')) errors.push('main struggle');
     if (consentEl.classList.contains('input-error')) errors.push('consent agreement');
 
     return errors.length ? `Please check: ${errors.join(', ')}` : 'Please check the highlighted fields.';
@@ -97,7 +89,7 @@
               <p class="mb-3">${getI18nText('contact.form.success_greeting', 'Thank you')} <strong>${safeName}</strong>!</p>
               <p class="text-muted mb-3">${getI18nText('contact.form.success_email_note', 'Your message was received. Please check your inbox for the confirmation email sent by Garcia Builder Fitness:')}</p>
               <p class="text-primary fw-bold">${safeEmail}</p>
-              <p class="text-muted small">${getI18nText('contact.form.success_next_step', 'Andre will review your enquiry and reply within 24-48 hours.')}</p>
+              <p class="text-muted small">Thanks — your details have been received. I’ll review your goal and get back to you.</p>
               <a class="btn btn-warning" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">${getI18nText('contact.form.book_consultation', 'Book Free Consultation')}</a>
             </div>
             <div class="modal-footer border-0 justify-content-center">
@@ -135,18 +127,23 @@
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    const qp = new URLSearchParams(window.location.search || '');
+    if (sourceEl) sourceEl.value = sourceEl.value || 'Contact Consultation Form';
+    if (pageEl) pageEl.value = window.location.href;
+    if (utmSourceEl) utmSourceEl.value = qp.get('utm_source') || localStorage.getItem('gb_utm_source') || '';
+    if (utmCampaignEl) utmCampaignEl.value = qp.get('utm_campaign') || localStorage.getItem('gb_utm_campaign') || '';
+
     // Validate required fields
     let bad = false;
-    setErr(nameEl, nameEl.value.trim().length < 2);       bad ||= nameEl.classList.contains('input-error');
+    setErr(firstNameEl, firstNameEl.value.trim().length < 2); bad ||= firstNameEl.classList.contains('input-error');
+    setErr(lastNameEl, lastNameEl.value.trim().length < 2); bad ||= lastNameEl.classList.contains('input-error');
     setErr(emailEl, !emailOk(emailEl.value));              bad ||= emailEl.classList.contains('input-error');
+    setErr(phoneEl, !phoneOk(phoneEl.value) || !phoneEl.value.trim()); bad ||= phoneEl.classList.contains('input-error');
     setErr(goalEl, !goalEl.value);                         bad ||= goalEl.classList.contains('input-error');
-    setErr(timelineEl, !timelineEl.value);                 bad ||= timelineEl.classList.contains('input-error');
-    setErr(experienceEl, !experienceEl.value);             bad ||= experienceEl.classList.contains('input-error');
-    setErr(messageEl, messageEl.value.trim().length < 10); bad ||= messageEl.classList.contains('input-error');
-    setErr(consentEl, !consentEl.checked);                 // visual hint via CSS not needed here
-
-    // Optional field validation
-    setErr(phoneEl, !phoneOk(phoneEl.value));              bad ||= phoneEl.classList.contains('input-error');
+    setErr(currentWeightEl, !(Number(currentWeightEl.value) > 0)); bad ||= currentWeightEl.classList.contains('input-error');
+    setErr(mainStruggleEl, mainStruggleEl.value.trim().length < 3); bad ||= mainStruggleEl.classList.contains('input-error');
+    setErr(consentEl, !consentEl.checked);
+    bad ||= consentEl.classList.contains('input-error');
 
     if (bad) {
       alertBox.classList.remove('visually-hidden');
@@ -169,22 +166,21 @@
 
     try {
       const payload = {
-        name: nameEl.value.trim(),
+        firstName: firstNameEl.value.trim(),
+        lastName: lastNameEl.value.trim(),
         email: emailEl.value.trim(),
-        phone: phoneEl.value.trim() || null,
-        goal: goalEl.value || null,
-        experience: experienceEl.value || null,
-        availability: timelineEl.value || null,
-        message: [
-          messageEl.value.trim(),
-          preferredContactEl?.value ? `Preferred contact: ${preferredContactEl.value}` : '',
-          budgetEl?.value ? `Monthly budget: ${budgetEl.value}` : ''
-        ].filter(Boolean).join('\n\n'),
-        source: 'Contact Page',
-        page: window.location.href,
+        phone: phoneEl.value.trim(),
+        goal: goalEl.value || '',
+        currentWeight: Number(currentWeightEl.value),
+        mainStruggle: mainStruggleEl.value.trim(),
+        consent: !!consentEl.checked,
+        source: sourceEl?.value || 'Contact Consultation Form',
+        page: pageEl?.value || window.location.href,
+        utm_source: utmSourceEl?.value || '',
+        utm_campaign: utmCampaignEl?.value || ''
       };
 
-      const res = await fetch('/api/inquiry', {
+      const res = await fetch('/api/lead', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -199,11 +195,11 @@
 
         // Store user data for confirmation
         const userEmail = emailEl.value.trim();
-        const userName = nameEl.value.trim();
+        const userName = `${firstNameEl.value.trim()} ${lastNameEl.value.trim()}`.trim();
 
-        form.reset(); updateCount();
+        form.reset();
         alertBox.classList.remove('visually-hidden');
-        alertBox.textContent = getI18nText('contact.form.success_inline', 'Thank you. Your enquiry has been sent. Please check your inbox for confirmation.');
+        alertBox.textContent = 'Thanks — your details have been received. I\'ll review your goal and get back to you.';
 
         // Show success popup. Confirmation and admin emails are sent by /api/inquiry.
         showSuccessPopup(userName, userEmail);
@@ -217,8 +213,8 @@
             form_name: 'Contact Coaching Inquiry',
             lead_email_domain: userEmail.split('@')[1] || '',
             goal: goalEl.value || '',
-            timeline: timelineEl.value || '',
-            experience: experienceEl.value || ''
+            current_weight: payload.currentWeight || '',
+            main_struggle: payload.mainStruggle || ''
           });
         } catch(e){ console.warn('dataLayer push failed', e); }
 
@@ -241,7 +237,7 @@
             fbq('track', 'Lead', {
               content_name: 'contact_form_main',
               goal: goalEl.value || '',
-              timeline: timelineEl.value || ''
+              main_struggle: payload.mainStruggle || ''
             });
           }
         } catch(e){ console.warn('fbq lead track failed', e); }
@@ -252,7 +248,7 @@
       }
     } catch {
       alertBox.classList.remove('visually-hidden');
-      alertBox.textContent = getI18nText('contact.form.network_error', 'Network issue. If it persists, email inquiries@garciabuilder.fitness.');
+      alertBox.textContent = 'Something went wrong while sending your details. Please try again in a moment.';
     } finally {
       btn.disabled = false;
       btn.classList.remove('is-loading');
@@ -262,10 +258,6 @@
     }
   });
 
-  // Ctrl/Cmd + Enter to submit from textarea
-  messageEl.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') form.requestSubmit();
-  });
 })();
 
 

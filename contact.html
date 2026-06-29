@@ -13,8 +13,6 @@
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://garciabuilder.fitness/contact.html"/>
   <meta name="google-site-verification" content="google47d3c69666bce37e">
-  <meta name="theme-color" content="#0f172a">
-
   <!-- Open Graph -->
   <meta property="og:type" content="website"/>
   <meta property="og:title" content="Contact | Garcia Builder Coaching">
@@ -158,6 +156,23 @@
       margin: -14px 0 22px;
       text-align: center;
     }
+    .contact-hero-bg {
+      --bg: url('assets/images/hero/bg-contact.jpg');
+      --bg-pos: center center;
+      --bg-overlay: rgba(6,10,18,.72);
+      background: linear-gradient(180deg, rgba(0,0,0,.35), transparent 22%), url('assets/images/hero/bg-contact.jpg') !important;
+      background-size: cover !important;
+      background-position: center center !important;
+      background-repeat: no-repeat !important;
+      min-height: 100vh;
+    }
+    .hp-offscreen {
+      position: absolute;
+      left: -9999px;
+    }
+    .trainer-lead-muted {
+      color: #cfd2d6;
+    }
     @media (max-width: 575.98px){
       .container, .container.inner { padding-left: 16px; padding-right: 16px; }
       .contact-quick-actions { grid-template-columns: 1fr; }
@@ -197,8 +212,7 @@ window.addEventListener('load', function() {
 <div data-component="navbar"></div>
 
   <!-- CONTACT -->
-  <section id="contact" class="section has-bg contact-bg"
-         style="--bg: url('assets/images/hero/bg-contact.jpg'); --bg-pos: center center; --bg-overlay: rgba(6,10,18,.72); background: linear-gradient(180deg, rgba(0,0,0,.35), transparent 22%), url('assets/images/hero/bg-contact.jpg') !important; background-size: cover !important; background-position: center center !important; background-repeat: no-repeat !important; min-height: 100vh;">
+  <section id="contact" class="section has-bg contact-bg contact-hero-bg">
     <div class="container">
       <h1 class="title-gradient text-glow" data-i18n="contact.title">Contact</h1>
   <p class="page-subtitle text-readable" data-i18n="contact.subtitle">Tell me about your goal. I'll get back within 24-48h.</p>
@@ -232,37 +246,33 @@ window.addEventListener('load', function() {
         <div id="form-alert" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
 
         <!-- Honeypot -->
-        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" style="position:absolute;left:-9999px;">
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hp hp-offscreen" aria-hidden="true">
 
         <!-- Row 1 -->
         <div class="row g-3">
           <div class="col-12 col-md-6">
-            <label for="name" class="form-label" data-i18n="contact.form.name">Your name</label>
-            <input id="name" name="name" type="text" class="form-control"
-                   data-i18n-ph="contact.form.placeholders.name" placeholder="Your name" required minlength="2" maxlength="80" autocomplete="name">
+            <label for="firstName" class="form-label">First name</label>
+            <input id="firstName" name="firstName" type="text" class="form-control"
+                   placeholder="Your first name" required minlength="2" maxlength="50" autocomplete="given-name">
           </div>
           <div class="col-12 col-md-6">
-            <label for="email" class="form-label" data-i18n="contact.form.email">Your email</label>
-            <input id="email" name="email" type="email" class="form-control"
-                   data-i18n-ph="contact.form.placeholders.email" placeholder="you@example.com" required maxlength="120" autocomplete="email">
+            <label for="lastName" class="form-label">Last name</label>
+            <input id="lastName" name="lastName" type="text" class="form-control"
+                   placeholder="Your last name" required minlength="2" maxlength="50" autocomplete="family-name">
           </div>
         </div>
 
         <!-- Row 2 -->
         <div class="row g-3 mt-1">
           <div class="col-12 col-md-6">
-            <label for="phone" class="form-label" data-i18n="contact.form.phone">Phone (optional)</label>
-            <input id="phone" name="phone" type="tel" class="form-control"
-                   data-i18n-ph="contact.form.placeholders.phone" placeholder="+353 87 123 4567" inputmode="tel" maxlength="24">
+            <label for="email" class="form-label" data-i18n="contact.form.email">Your email</label>
+            <input id="email" name="email" type="email" class="form-control"
+                   data-i18n-ph="contact.form.placeholders.email" placeholder="you@example.com" required maxlength="120" autocomplete="email">
           </div>
           <div class="col-12 col-md-6">
-            <label for="preferredContact" class="form-label" data-i18n="contact.form.preferredContact">Preferred contact</label>
-            <select id="preferredContact" name="preferredContact" class="form-select">
-              <option value="Email" selected data-i18n="contact.form.options.contact.email">Email</option>
-              <option value="WhatsApp" data-i18n="contact.form.options.contact.whatsapp">WhatsApp</option>
-              <option value="Instagram DM" data-i18n="contact.form.options.contact.instagram">Instagram DM</option>
-              <option value="Phone call" data-i18n="contact.form.options.contact.phone">Phone call</option>
-            </select>
+            <label for="phone" class="form-label">Phone</label>
+            <input id="phone" name="phone" type="tel" class="form-control"
+                   data-i18n-ph="contact.form.placeholders.phone" placeholder="+353 87 123 4567" inputmode="tel" maxlength="24" required>
           </div>
         </div>
 
@@ -281,48 +291,20 @@ window.addEventListener('load', function() {
             </select>
           </div>
           <div class="col-12 col-md-6">
-            <label for="timeline" class="form-label" data-i18n="contact.form.timeline">Target timeline</label>
-            <select id="timeline" name="timeline" class="form-select" required>
-              <option value="" disabled selected data-i18n="contact.form.placeholders.selectTimeline">Select</option>
-              <option data-i18n="contact.form.options.timeline.short">4-8 weeks</option>
-              <option data-i18n="contact.form.options.timeline.medium">8-12 weeks</option>
-              <option data-i18n="contact.form.options.timeline.long">3-6 months</option>
-              <option data-i18n="contact.form.options.timeline.extended">6+ months</option>
-            </select>
+            <label for="currentWeight" class="form-label">Current weight (kg)</label>
+            <input id="currentWeight" name="currentWeight" type="number" class="form-control"
+                   min="30" max="300" step="0.1" placeholder="e.g. 82.5" required>
           </div>
         </div>
 
         <!-- Row 4 -->
         <div class="row g-3 mt-1">
-          <div class="col-12 col-md-6">
-            <label for="experience" class="form-label" data-i18n="contact.form.experience">Training experience</label>
-            <select id="experience" name="experience" class="form-select" required>
-              <option value="" disabled selected data-i18n="contact.form.placeholders.selectExperience">Select</option>
-              <option data-i18n="contact.form.options.experience.beginner">Beginner</option>
-              <option data-i18n="contact.form.options.experience.intermediate">Intermediate</option>
-              <option data-i18n="contact.form.options.experience.advanced">Advanced</option>
-            </select>
-          </div>
-          <div class="col-12 col-md-6">
-            <label for="budget" class="form-label" data-i18n="contact.form.budget">Monthly budget (optional)</label>
-            <select id="budget" name="budget" class="form-select">
-              <option value="" selected data-i18n="contact.form.options.budget.notSay">Prefer not to say</option>
-              <option data-i18n="contact.form.options.budget.low">EUR 100-199</option>
-              <option data-i18n="contact.form.options.budget.medium">EUR 200-299</option>
-              <option data-i18n="contact.form.options.budget.high">EUR 300-499</option>
-              <option data-i18n="contact.form.options.budget.premium">EUR 500+</option>
-            </select>
+          <div class="col-12">
+            <label for="mainStruggle" class="form-label">Main struggle right now</label>
+            <input id="mainStruggle" name="mainStruggle" type="text" class="form-control"
+                   placeholder="e.g. Consistency, cravings, no clear plan" required minlength="3" maxlength="120">
           </div>
         </div>
-
-        <!-- Message -->
-        <label class="form-label mt-3 d-flex justify-content-between" for="message">
-          <span data-i18n="contact.form.message">Your message</span>
-          <span id="charCount" class="text-muted" aria-live="polite">0/1200</span>
-        </label>
-        <textarea id="message" name="message" class="form-control" rows="6"
-                  data-i18n-ph="contact.form.placeholders.message" placeholder="Tell me about your current routine, injuries/limitations, availability, and what success looks like for you."
-                  required minlength="10" maxlength="1200"></textarea>
 
         <!-- Consent -->
         <div class="form-check mt-3">
@@ -334,7 +316,10 @@ window.addEventListener('load', function() {
 
         <!-- Hidden metadata -->
         <input type="hidden" name="_subject" value="New inquiry via Garcia Builder">
-        <input type="hidden" name="source" value="garciabuilder.fitness">
+        <input type="hidden" id="source" name="source" value="garciabuilder.fitness">
+        <input type="hidden" id="page" name="page" value="">
+        <input type="hidden" id="utm_source" name="utm_source" value="">
+        <input type="hidden" id="utm_campaign" name="utm_campaign" value="">
 
   <button id="sendBtn" type="submit" class="btn btn-gradient w-100 mt-4"
     data-default="Send" data-loading="Sending...">
@@ -419,7 +404,7 @@ window.addEventListener('load', function() {
       <div class="row justify-content-center text-center">
         <div class="col-lg-8">
           <h2 class="title-gradient mb-3" data-i18n="dashboard.trainer_recruitment_title">Are You a Personal Trainer?</h2>
-          <p class="lead mb-4" style="color: #cfd2d6;" data-i18n="contact.trainer.lead">Join our growing network of certified trainers and help transform lives with evidence-based coaching.</p>
+          <p class="lead mb-4 trainer-lead-muted" data-i18n="contact.trainer.lead">Join our growing network of certified trainers and help transform lives with evidence-based coaching.</p>
           <div class="row g-3 mb-4">
             <div class="col-md-6">
               <div class="d-flex align-items-center justify-content-center justify-content-md-start">

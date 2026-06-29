@@ -507,6 +507,99 @@ app.post('/api/contact', async (req, res) => {
 
 app.post('/api/lead', async (req, res) => {
     try {
+        const body = req.body || {};
+        const hasConsultationPayload = ['firstName', 'lastName', 'currentWeight', 'mainStruggle', 'goal']
+            .some((key) => body[key] !== undefined);
+
+        if (hasConsultationPayload) {
+            const normalizeText = (value) => String(value || '').trim();
+            const consultationPayload = {
+                firstName: normalizeText(body.firstName),
+                lastName: normalizeText(body.lastName),
+                email: normalizeText(body.email).toLowerCase(),
+                phone: normalizeText(body.phone),
+                goal: normalizeText(body.goal),
+                currentWeight: normalizeText(body.currentWeight),
+                mainStruggle: normalizeText(body.mainStruggle),
+                consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
+                source: normalizeText(body.source) || 'Contact Consultation Form',
+                page: normalizeText(body.page) || req.headers.referer || '',
+                utm_source: normalizeText(body.utm_source),
+                utm_campaign: normalizeText(body.utm_campaign),
+            };
+
+            if (!consultationPayload.firstName || !consultationPayload.lastName || !consultationPayload.email || !consultationPayload.phone || !consultationPayload.goal || !consultationPayload.currentWeight || !consultationPayload.mainStruggle) {
+                return res.status(400).json({ error: 'Missing required consultation fields' });
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(consultationPayload.email)) {
+                return res.status(400).json({ error: 'A valid email is required' });
+            }
+
+            if (!consultationPayload.consent) {
+                return res.status(400).json({ error: 'Consent is required' });
+            }
+
+            const webhookUrl = process.env.ZAPIER_LEAD_WEBHOOK_URL;
+            if (!webhookUrl) {
+                return res.status(500).json({ error: 'ZAPIER_LEAD_WEBHOOK_URL is not configured' });
+            }
+
+            const zapierResponse = await fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(consultationPayload)
+            });
+
+            if (!zapierResponse.ok) {
+                const details = await zapierResponse.text().catch(() => 'Zapier webhook request failed');
+                throw new Error(`Zapier webhook error: ${zapierResponse.status} ${details}`);
+            }
+
+            try {
+                const supa = getOptionalSupabaseClient();
+                if (supa) {
+                    const leadName = `${consultationPayload.firstName} ${consultationPayload.lastName}`.trim();
+                    const insertCandidates = [
+                        {
+                            email: consultationPayload.email,
+                            name: leadName,
+                            source: consultationPayload.source,
+                            notes: JSON.stringify(consultationPayload),
+                            type: 'consultation',
+                            status: 'new'
+                        },
+                        {
+                            email: consultationPayload.email,
+                            name: leadName,
+                            source: consultationPayload.source,
+                            notes: JSON.stringify(consultationPayload)
+                        },
+                        {
+                            email: consultationPayload.email,
+                            name: leadName,
+                            source: consultationPayload.source
+                        }
+                    ];
+
+                    for (const candidate of insertCandidates) {
+                        const { error } = await supa.from('leads').insert([candidate]);
+                        if (!error) break;
+                        const message = String(error.message || '').toLowerCase();
+                        const isMissingColumn = error.code === 'PGRST204' || message.includes('schema cache') || message.includes('could not find');
+                        if (!isMissingColumn) break;
+                    }
+                }
+            } catch (saveError) {
+                console.warn('consultation lead save warning:', saveError.message || saveError);
+            }
+
+            return res.status(200).json({
+                ok: true,
+                message: 'Thanks — your details have been received. I\'ll review your goal and get back to you.'
+            });
+        }
+
         const { email, name, source, notes, ...rest } = req.body || {};
         const cleanEmail = String(email || '').trim().toLowerCase();
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {

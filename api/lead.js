@@ -26,6 +26,33 @@ function parseBody(req) {
   return {};
 }
 
+function normalizeText(value) {
+  if (value === null || value === undefined) return '';
+  return String(value).trim();
+}
+
+function normalizeEmail(value) {
+  return normalizeText(value).toLowerCase();
+}
+
+async function forwardLeadToZapier(payload) {
+  const webhookUrl = process.env.ZAPIER_LEAD_WEBHOOK_URL;
+  if (!webhookUrl) {
+    throw new Error('ZAPIER_LEAD_WEBHOOK_URL is not configured');
+  }
+
+  const response = await fetch(webhookUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    const details = await response.text().catch(() => 'Zapier webhook request failed');
+    throw new Error(`Zapier webhook error: ${response.status} ${details}`);
+  }
+}
+
 function getSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
   const key =
@@ -240,6 +267,79 @@ export default async function handler(req, res) {
   }
 
   try {
+    const body = parseBody(req);
+    const hasConsultationPayload = ['firstName', 'lastName', 'currentWeight', 'mainStruggle', 'goal']
+      .some((key) => body[key] !== undefined);
+
+    if (hasConsultationPayload) {
+      const consultationPayload = {
+        firstName: normalizeText(body.firstName),
+        lastName: normalizeText(body.lastName),
+        email: normalizeEmail(body.email),
+        phone: normalizeText(body.phone),
+        goal: normalizeText(body.goal),
+        currentWeight: normalizeText(body.currentWeight),
+        mainStruggle: normalizeText(body.mainStruggle),
+        consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
+        source: normalizeText(body.source) || 'Contact Consultation Form',
+        page: normalizeText(body.page) || req.headers.referer || '',
+        utm_source: normalizeText(body.utm_source),
+        utm_campaign: normalizeText(body.utm_campaign),
+      };
+
+      if (!consultationPayload.firstName || !consultationPayload.lastName || !consultationPayload.email || !consultationPayload.phone || !consultationPayload.goal || !consultationPayload.currentWeight || !consultationPayload.mainStruggle) {
+        return res.status(400).json({ error: 'Missing required consultation fields' });
+      }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(consultationPayload.email)) {
+        return res.status(400).json({ error: 'A valid email is required' });
+      }
+
+      if (!consultationPayload.consent) {
+        return res.status(400).json({ error: 'Consent is required' });
+      }
+
+      await forwardLeadToZapier(consultationPayload);
+
+      try {
+        const supa = getSupabase();
+        const leadName = `${consultationPayload.firstName} ${consultationPayload.lastName}`.trim();
+        const insertCandidates = [
+          {
+            email: consultationPayload.email,
+            name: leadName,
+            source: consultationPayload.source,
+            notes: JSON.stringify(consultationPayload),
+            type: 'consultation',
+            status: 'new'
+          },
+          {
+            email: consultationPayload.email,
+            name: leadName,
+            source: consultationPayload.source,
+            notes: JSON.stringify(consultationPayload)
+          },
+          {
+            email: consultationPayload.email,
+            name: leadName,
+            source: consultationPayload.source
+          }
+        ];
+
+        const saveResult = await insertLeadWithSchemaFallback(supa, insertCandidates);
+        if (!saveResult.ok) {
+          console.warn('lead.js consultation save warning', saveResult.error);
+        }
+      } catch (saveError) {
+        console.warn('lead.js consultation Supabase skipped/failed', saveError);
+      }
+
+      return res.status(200).json({
+        ok: true,
+        message: 'Thanks — your details have been received. I\'ll review your goal and get back to you.'
+      });
+    }
+
     const {
       email,
       name,
@@ -247,7 +347,7 @@ export default async function handler(req, res) {
       notes,
       resendOnly,
       ...rest
-    } = parseBody(req);
+    } = body;
 
     const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
     if (!normalizedEmail) {

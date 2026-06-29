@@ -1901,8 +1901,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                 console.warn('devReturn bounce falhou (seguindo fluxo normal):', bounceErr?.message || bounceErr);
                             }
                         } catch (exchangeErr) {
-                            console.error('Falha ao trocar código OAuth:', exchangeErr);
-                            showAuthMessage(`Erro ao validar login social: ${exchangeErr.message || exchangeErr}`, 'danger');
+                            console.error('Failed to exchange OAuth code:', exchangeErr);
+                            showAuthMessage(
+                                exchangeErr?.message || authT('register_error_service_unavailable', 'Unable to validate the social login right now.'),
+                                'danger'
+                            );
                         }
                     }
                 }

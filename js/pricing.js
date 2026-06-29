@@ -49,6 +49,10 @@
       });
     }
 
+    if (window.CurrencyConverter && typeof window.CurrencyConverter.refresh === 'function') {
+      window.CurrencyConverter.refresh();
+    }
+
     container.querySelectorAll('.btn.btn-gold').forEach(button => {
       button.addEventListener('click', event => {
         event.preventDefault();

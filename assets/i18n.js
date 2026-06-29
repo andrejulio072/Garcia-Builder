@@ -440,7 +440,7 @@
           monthly: {
             badge: "Flexible coaching",
             name: "Monthly Online Coaching",
-            price: "€150",
+            price: "€200",
             period: "/month",
             meta: "Ongoing support",
             result: "Best for steady progress and maintenance",
@@ -456,7 +456,7 @@
           eight_week: {
             badge: "Entry program",
             name: "8 Week Fat Loss Kickstart",
-            price: "€350",
+            price: "€375",
             period: " one-time",
             meta: "8 weeks",
             result: "Realistic target: 5-8kg fat loss",
@@ -472,7 +472,7 @@
           twelve_week: {
             badge: "Flagship",
             name: "12 Week Transformation",
-            price: "€600",
+            price: "€549",
             period: " one-time",
             meta: "12 weeks",
             result: "Realistic target: 9-12kg fat loss",
@@ -489,7 +489,7 @@
           eighteen_week: {
             badge: "Most complete",
             name: "18 Week Complete Transformation",
-            price: "€750",
+            price: "€749",
             period: " one-time",
             meta: "18 weeks",
             result: "Realistic target: 12-15kg fat loss + long-term habits",
@@ -1080,7 +1080,7 @@
           monthly: {
             badge: "Coaching flexível",
             name: "Coaching Online Mensal",
-            price: "€150",
+            price: "€200",
             period: "/mês",
             meta: "Suporte contínuo",
             result: "Melhor para progresso estável e manutenção",
@@ -1096,7 +1096,7 @@
           eight_week: {
             badge: "Programa de entrada",
             name: "8 Semanas Fat Loss Kickstart",
-            price: "€350",
+            price: "€375",
             period: " pagamento único",
             meta: "8 semanas",
             result: "Meta realista: 5-8kg de perda de gordura",
@@ -1112,7 +1112,7 @@
           twelve_week: {
             badge: "Principal",
             name: "Transformação 12 Semanas",
-            price: "€600",
+            price: "€549",
             period: " pagamento único",
             meta: "12 semanas",
             result: "Meta realista: 9-12kg de perda de gordura",
@@ -1129,7 +1129,7 @@
           eighteen_week: {
             badge: "Mais completo",
             name: "Transformação Completa 18 Semanas",
-            price: "€750",
+            price: "€749",
             period: " pagamento único",
             meta: "18 semanas",
             result: "Meta realista: 12-15kg de perda + hábitos de longo prazo",
@@ -1721,7 +1721,7 @@
           monthly: {
             badge: "Coaching flexible",
             name: "Coaching Online Mensual",
-            price: "€150",
+            price: "€200",
             period: "/mes",
             meta: "Soporte continuo",
             result: "Ideal para progreso estable y mantenimiento",
@@ -1737,7 +1737,7 @@
           eight_week: {
             badge: "Programa inicial",
             name: "8 Semanas Fat Loss Kickstart",
-            price: "€350",
+            price: "€375",
             period: " pago único",
             meta: "8 semanas",
             result: "Objetivo realista: 5-8kg de pérdida de grasa",
@@ -1753,7 +1753,7 @@
           twelve_week: {
             badge: "Principal",
             name: "Transformación 12 Semanas",
-            price: "€600",
+            price: "€549",
             period: " pago único",
             meta: "12 semanas",
             result: "Objetivo realista: 9-12kg de pérdida de grasa",
@@ -1770,7 +1770,7 @@
           eighteen_week: {
             badge: "Más completo",
             name: "Transformación Completa 18 Semanas",
-            price: "€750",
+            price: "€749",
             period: " pago único",
             meta: "18 semanas",
             result: "Objetivo realista: 12-15kg de pérdida + hábitos a largo plazo",

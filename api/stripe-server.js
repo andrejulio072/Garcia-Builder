@@ -52,30 +52,25 @@ app.use(express.static(path.join(__dirname, '..')));
 
 // Configuração dos produtos/preços para teste
 const PRICE_CONFIG = {
-    starter: {
-        name: 'Starter Coaching',
-        amount: 7900, // £79 em centavos
-        currency: 'gbp'
+    monthly: {
+        name: 'Monthly Online Coaching',
+        amount: 20000, // €200.00 em centavos
+        currency: 'eur'
     },
-    consistency: {
-        name: 'Consistency Plan',
-        amount: 9900, // £99 em centavos
-        currency: 'gbp'
+    eight_week: {
+        name: '8 Week Fat Loss Kickstart',
+        amount: 37500, // €375.00 em centavos
+        currency: 'eur'
     },
-    performance: {
-        name: 'Performance Base',
-        amount: 12500, // £125 em centavos
-        currency: 'gbp'
+    twelve_week: {
+        name: '12 Week Transformation',
+        amount: 54900, // €549.00 em centavos
+        currency: 'eur'
     },
-    premium: {
-        name: 'Coaching Premium',
-        amount: 16500, // £165 em centavos
-        currency: 'gbp'
-    },
-    elite: {
-        name: 'Elite Mastery',
-        amount: 23500, // £235 em centavos
-        currency: 'gbp'
+    eighteen_week: {
+        name: '18 Week Complete Transformation',
+        amount: 74900, // €749.00 em centavos
+        currency: 'eur'
     }
 };
 
@@ -91,7 +86,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
 
         const planConfig = PRICE_CONFIG[planKey];
 
-        console.log(`📝 Criando Checkout Session: ${planConfig.name} - £${planConfig.amount/100}`);
+        console.log(`📝 Criando Checkout Session: ${planConfig.name} - €${planConfig.amount/100}`);
         console.log(`👤 Cliente: ${customerEmail}`);
 
         // Criar Checkout Session seguindo documentação oficial do Stripe

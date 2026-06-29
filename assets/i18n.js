@@ -1739,76 +1739,76 @@
             ]
           },
           eight_week: {
-            badge: "Programa inicial",
+            badge: "Arranque rápido",
             name: "8 Semanas Fat Loss Kickstart",
             price: "€359",
             period: " pago único",
             meta: "8 semanas",
-            result: "Objetivo realista: 5-8kg de pérdida de grasa",
-            description: "Un reset enfocado para quien necesita un plan claro, estructura nutricional y accountability rápido.",
+            result: "Un reset fuerte para quien quiere sentir el cambio rápido",
+            description: "Pensado para ganar impulso: un bloque más cerrado y comprometido que rompe patrones antiguos, crea disciplina y muestra resultados temprano.",
             features: [
               "Bloque de entrenamiento de 8 semanas para casa o gimnasio",
               "Configuración nutricional con estructura simple de comidas",
               "Guía de lista de compra y sustituciones",
               "Check-ins semanales de accountability",
-              "Ideal para recuperar ritmo y consistencia"
+              "Ideal para un reset rápido y tracción visible"
             ]
           },
           twelve_week: {
-            badge: "Principal",
-              badge: "Arranque rápido",
+            badge: "Mejor relación valor-resultados",
+            name: "Transformación 12 Semanas",
             price: "€519",
             period: " pago único",
             meta: "12 semanas",
-            result: "Objetivo realista: 9-12kg de pérdida de grasa",
-              result: "Un reset fuerte para quien quiere sentir el cambio rápido",
-              description: "Pensado para ganar impulso: un bloque más cerrado y comprometido que rompe patrones antiguos, crea disciplina y muestra resultados temprano.",
+            result: "El punto ideal para cambio visible y consolidación de hábitos",
+            featured: true,
+            description: "El bloque principal Garcia Builder: tiempo suficiente para perder grasa, ganar fuerza y construir una forma física y una rutina que realmente puedas mantener.",
             features: [
               "Plan progresivo completo de 12 semanas",
               "Calorías, macros y orientación nutricional",
               "Apoyo con lista de compra y estrategia para comer fuera",
               "Check-ins semanales con ajustes del plan",
-                "Ideal para un reset rápido y tracción visible"
+              "Acceso a la app, soporte y accountability",
+              "Diseñado para generar tracción y confianza visibles"
             ]
           },
           eighteen_week: {
-              badge: "Mejor relación valor-resultados",
+            badge: "Transformación profunda",
             name: "Transformación Completa 18 Semanas",
             price: "€699",
             period: " pago único",
             meta: "18 semanas",
-              result: "El punto ideal para cambio visible y consolidación de hábitos",
-              description: "El bloque principal Garcia Builder: tiempo suficiente para perder grasa, ganar fuerza y construir una forma física y una rutina que realmente puedas mantener.",
+            result: "El bloque más completo para un cambio serio y un cambio de identidad",
+            description: "Para quien quiere el mayor resultado: tiempo suficiente para provocar un cambio real, afinar hábitos y salir con un cuerpo, una mentalidad y un sistema muy distintos.",
             features: [
               "Roadmap de entrenamiento y nutrición por 18 semanas",
               "Fase de pérdida de grasa + fase de construcción de hábitos",
               "Accountability avanzado y revisiones de progreso",
               "Listas de compra, estrategia para viajes y apoyo social",
-                "Acceso a la app, soporte y accountability",
-                "Diseñado para generar tracción y confianza visibles"
+              "Plan de mantenimiento para conservar mejor los resultados",
+              "Ideal para quien quiere el resultado más profundo, no el plan más corto"
             ]
           }
         },
-              badge: "Transformación profunda",
-          choose: "Iniciar checkout seguro",
-          popular: "Más Popular",
+        cta: {
+          choose: "Empezar tu transformación",
+          popular: "Mejor valor",
           contact: "Contacto para Detalles"
         },
-              result: "El bloque más completo para un cambio serio y un cambio de identidad",
-              description: "Para quien quiere el mayor resultado: tiempo suficiente para provocar un cambio real, afinar hábitos y salir con un cuerpo, una mentalidad y un sistema muy distintos.",
+        group_coaching: {
+          title: "Coaching grupal y corporativo - ¡Próximamente!",
           subtitle: "Estamos preparando nuevos programas para grupos pequeños y equipos corporativos.",
           prompt: "¿Quieres acceso anticipado o unirte a la lista de espera?",
           cta: "Unirme a la lista de espera",
           footer: "¡Sé el primero en enterarte cuando lancemos estas ofertas!"
         },
-                "Plan de mantenimiento para conservar mejor los resultados",
-                "Ideal para quien quiere el resultado más profundo, no el plan más corto"
+        post_purchase: {
           title: "Después de la compra:",
           schedule: "Agendar consulta",
           preview: "Ver el primer entrenamiento"
         }
-            choose: "Empezar tu transformación",
-            popular: "Mejor valor",
+      },
+      contact: {
         title: "Contacto",
         subtitle: "Cuéntame tu objetivo. Respondo en 24–48h.",
         quick: {

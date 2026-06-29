@@ -40,6 +40,25 @@
   // Helpers
   const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
   const phoneOk = v => !v || /^[\+]?[0-9\s\-\(\)]{6,24}$/.test(v.trim());
+  const weightOk = value => {
+    const weight = Number(value);
+    return Number.isFinite(weight) && weight >= 30 && weight <= 300;
+  };
+  const createLeadId = () => {
+    try {
+      if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+        return window.crypto.randomUUID();
+      }
+      const template = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+      return template.replace(/[xy]/g, c => {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    } catch {
+      return `lead-${Date.now()}`;
+    }
+  };
   const setErr = (el, on) => el.classList.toggle('input-error', !!on);
   const escapeHtml = value => String(value || '').replace(/[&<>"']/g, char => ({
     '&': '&amp;',
@@ -155,7 +174,7 @@
     setErr(emailEl, !emailOk(emailEl.value));              bad ||= emailEl.classList.contains('input-error');
     setErr(phoneEl, !phoneOk(phoneEl.value) || !phoneEl.value.trim()); bad ||= phoneEl.classList.contains('input-error');
     setErr(goalEl, !goalEl.value);                         bad ||= goalEl.classList.contains('input-error');
-    setErr(currentWeightEl, !(Number(currentWeightEl.value) > 0)); bad ||= currentWeightEl.classList.contains('input-error');
+    setErr(currentWeightEl, !weightOk(currentWeightEl.value)); bad ||= currentWeightEl.classList.contains('input-error');
     setErr(mainStruggleEl, mainStruggleEl.value.trim().length < 3); bad ||= mainStruggleEl.classList.contains('input-error');
     setErr(consentEl, !consentEl.checked);
     bad ||= consentEl.classList.contains('input-error');
@@ -180,7 +199,11 @@
     }
 
     try {
+      const leadId = createLeadId();
+      const submittedAt = new Date().toISOString();
       const payload = {
+        lead_id: leadId,
+        submitted_at: submittedAt,
         firstName: firstNameEl.value.trim(),
         lastName: lastNameEl.value.trim(),
         email: emailEl.value.trim(),

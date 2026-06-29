@@ -14,6 +14,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const nodemailer = require('nodemailer');
 const { createClient } = require('@supabase/supabase-js');
+const { randomUUID } = require('crypto');
 
 // ConfiguraÃ§Ã£o de ambiente segura
 require('dotenv').config({
@@ -25,6 +26,29 @@ const app = express();
 
 // In-memory attribution enrichment store (fbp/fbc) â€“ ephemeral (cleared on restart)
 const metaAttributionStore = new Map();
+
+function normalizeWeight(value) {
+    const parsed = Number(String(value ?? '').trim());
+    if (!Number.isFinite(parsed)) return null;
+    if (parsed < 30 || parsed > 300) return null;
+    return parsed;
+}
+
+async function postJsonWithTimeout(url, payload, timeoutMs = 8000) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+        return await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            signal: controller.signal
+        });
+    } finally {
+        clearTimeout(timeout);
+    }
+}
 
 // ðŸ”’ SEGURANÃ‡A - ConfiguraÃ§Ãµes de nÃ­vel enterprise
 app.use(helmet({
@@ -513,13 +537,17 @@ app.post('/api/lead', async (req, res) => {
 
         if (hasConsultationPayload) {
             const normalizeText = (value) => String(value || '').trim();
+            const leadId = normalizeText(body.lead_id) || randomUUID();
+            const submittedAt = new Date().toISOString();
             const consultationPayload = {
+                lead_id: leadId,
+                submitted_at: submittedAt,
                 firstName: normalizeText(body.firstName),
                 lastName: normalizeText(body.lastName),
                 email: normalizeText(body.email).toLowerCase(),
                 phone: normalizeText(body.phone),
                 goal: normalizeText(body.goal),
-                currentWeight: normalizeText(body.currentWeight),
+                currentWeight: normalizeWeight(body.currentWeight),
                 mainStruggle: normalizeText(body.mainStruggle),
                 consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
                 source: normalizeText(body.source) || 'Contact Consultation Form',
@@ -545,11 +573,8 @@ app.post('/api/lead', async (req, res) => {
                 return res.status(500).json({ error: 'ZAPIER_LEAD_WEBHOOK_URL is not configured' });
             }
 
-            const zapierResponse = await fetch(webhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(consultationPayload)
-            });
+            console.log('lead relay attempt', { leadId, source: consultationPayload.source });
+            const zapierResponse = await postJsonWithTimeout(webhookUrl, consultationPayload, 8000);
 
             if (!zapierResponse.ok) {
                 const details = await zapierResponse.text().catch(() => 'Zapier webhook request failed');
@@ -596,6 +621,7 @@ app.post('/api/lead', async (req, res) => {
 
             return res.status(200).json({
                 ok: true,
+                leadId,
                 message: 'Thanks — your details have been received. I\'ll review your goal and get back to you.'
             });
         }

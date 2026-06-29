@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import nodemailer from 'nodemailer';
+import { randomUUID } from 'crypto';
 
 const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
 
@@ -35,17 +36,36 @@ function normalizeEmail(value) {
   return normalizeText(value).toLowerCase();
 }
 
+function normalizeWeight(value) {
+  const parsed = Number(normalizeText(value));
+  if (!Number.isFinite(parsed)) return null;
+  if (parsed < 30 || parsed > 300) return null;
+  return parsed;
+}
+
+async function postJsonWithTimeout(url, payload, timeoutMs = 8000) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    return await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 async function forwardLeadToZapier(payload) {
   const webhookUrl = process.env.ZAPIER_LEAD_WEBHOOK_URL;
   if (!webhookUrl) {
     throw new Error('ZAPIER_LEAD_WEBHOOK_URL is not configured');
   }
 
-  const response = await fetch(webhookUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
+  const response = await postJsonWithTimeout(webhookUrl, payload, 8000);
 
   if (!response.ok) {
     const details = await response.text().catch(() => 'Zapier webhook request failed');
@@ -272,13 +292,18 @@ export default async function handler(req, res) {
       .some((key) => body[key] !== undefined);
 
     if (hasConsultationPayload) {
+      const submittedAt = new Date().toISOString();
+      const leadId = normalizeText(body.lead_id) || randomUUID();
+      const normalizedWeight = normalizeWeight(body.currentWeight);
       const consultationPayload = {
+        lead_id: leadId,
+        submitted_at: submittedAt,
         firstName: normalizeText(body.firstName),
         lastName: normalizeText(body.lastName),
         email: normalizeEmail(body.email),
         phone: normalizeText(body.phone),
         goal: normalizeText(body.goal),
-        currentWeight: normalizeText(body.currentWeight),
+        currentWeight: normalizedWeight,
         mainStruggle: normalizeText(body.mainStruggle),
         consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
         source: normalizeText(body.source) || 'Contact Consultation Form',
@@ -336,6 +361,7 @@ export default async function handler(req, res) {
 
       return res.status(200).json({
         ok: true,
+        leadId,
         message: 'Thanks — your details have been received. I\'ll review your goal and get back to you.'
       });
     }

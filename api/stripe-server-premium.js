@@ -629,11 +629,25 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
             planKey,
             customerEmail,
             customerName,
-            myPtHubInvite, // optional My PT Hub access URL
+            myPtHubInvite,
+            mypthubInvite,
+            mypthub_invite,
+            trainerizeInvite,
+            trainerize_invite,
             successUrl = `${req.protocol}://${req.get('host')}/success.html`,
             cancelUrl = `${req.protocol}://${req.get('host')}/pricing.html`,
             utm: rawUtm
         } = req.body;
+
+        const normalizedInvite =
+            myPtHubInvite ||
+            mypthubInvite ||
+            mypthub_invite ||
+            trainerizeInvite ||
+            trainerize_invite ||
+            process.env.MYPTHUB_INVITE_URL ||
+            process.env.TRAINERIZE_INVITE_URL ||
+            '';
 
         // --- UTM / Attribution Sanitization ---
         const allowedUtmKeys = ['source','medium','campaign','term','content'];
@@ -732,7 +746,7 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
                 created_at: new Date().toISOString(),
                 client_ip: (req.ip || req.headers['x-forwarded-for'] || '').toString().split(',')[0].trim().slice(0,45),
                 client_ua: (req.headers['user-agent'] || '').slice(0,200),
-                mypthub_invite: myPtHubInvite || process.env.MYPTHUB_INVITE_URL || '',
+                mypthub_invite: normalizedInvite,
                 ...utmMeta
             },
             // ConfiguraÃ§Ãµes de experiÃªncia
@@ -751,7 +765,7 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
                     service: 'garcia-builder',
                     client_ip: (req.ip || req.headers['x-forwarded-for'] || '').toString().split(',')[0].trim().slice(0,45),
                     client_ua: (req.headers['user-agent'] || '').slice(0,200),
-                    mypthub_invite: myPtHubInvite || process.env.MYPTHUB_INVITE_URL || '',
+                    mypthub_invite: normalizedInvite,
                     ...utmMeta
                 }
             };

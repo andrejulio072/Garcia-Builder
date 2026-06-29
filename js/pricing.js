@@ -218,19 +218,28 @@ async function collectCheckoutEmail() {
 }
 
 function getAttributionPayload() {
+  const query = new URLSearchParams(window.location.search || '');
   try {
     const saved = window.GB_ATTRIBUTION || JSON.parse(localStorage.getItem('gb_attrib_v1') || '{}');
     return {
-      source: saved.utm_source,
-      medium: saved.utm_medium,
-      campaign: saved.utm_campaign,
-      term: saved.utm_term,
-      content: saved.utm_content,
-      gclid: saved.gclid,
-      fbclid: saved.fbclid
+      source: saved.utm_source || query.get('utm_source') || 'website',
+      medium: saved.utm_medium || query.get('utm_medium') || 'pricing_page',
+      campaign: saved.utm_campaign || query.get('utm_campaign') || 'mypthub_package_checkout',
+      term: saved.utm_term || query.get('utm_term') || '',
+      content: saved.utm_content || query.get('utm_content') || '',
+      gclid: saved.gclid || query.get('gclid') || '',
+      fbclid: saved.fbclid || query.get('fbclid') || ''
     };
   } catch {
-    return {};
+    return {
+      source: query.get('utm_source') || 'website',
+      medium: query.get('utm_medium') || 'pricing_page',
+      campaign: query.get('utm_campaign') || 'mypthub_package_checkout',
+      term: query.get('utm_term') || '',
+      content: query.get('utm_content') || '',
+      gclid: query.get('gclid') || '',
+      fbclid: query.get('fbclid') || ''
+    };
   }
 }
 
@@ -275,6 +284,7 @@ function buildMyPtHubCheckoutUrl(planKey, planName) {
   if (attrib.term) params.set('utm_term', attrib.term);
   if (attrib.gclid) params.set('gclid', attrib.gclid);
   if (attrib.fbclid) params.set('fbclid', attrib.fbclid);
+  if (document.referrer) params.set('referrer', document.referrer);
 
   params.set('plan_key', planKey);
   params.set('plan_name', planName || planKey);

@@ -55,7 +55,8 @@
                     successUrl: STRIPE_CONFIG.successUrl + '?session_id={CHECKOUT_SESSION_ID}',
                     cancelUrl: STRIPE_CONFIG.cancelUrl,
                     // Optional My PT Hub access passthrough
-                    myPtHubInvite: (document.querySelector('meta[name="mypthub:invite"]')?.getAttribute('content')) || (window.GB_MYPTHUB_INVITE) || undefined
+                    myPtHubInvite: (document.querySelector('meta[name="mypthub:invite"]')?.getAttribute('content')) || (window.GB_MYPTHUB_INVITE) || undefined,
+                    mypthub_invite: (document.querySelector('meta[name="mypthub:invite"]')?.getAttribute('content')) || (window.GB_MYPTHUB_INVITE) || undefined
                 })
             });
 

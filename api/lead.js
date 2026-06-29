@@ -3,6 +3,8 @@ import nodemailer from 'nodemailer';
 import { randomUUID } from 'crypto';
 
 const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
+const LEAD_DEDUP_WINDOW_MS = 10 * 60 * 1000;
+const recentConsultationLeadIds = new Map();
 
 function escapeHtml(value) {
   return String(value || '')
@@ -34,6 +36,24 @@ function normalizeText(value) {
 
 function normalizeEmail(value) {
   return normalizeText(value).toLowerCase();
+}
+
+function isDuplicateConsultationLead(leadId) {
+  if (!leadId) return false;
+  const now = Date.now();
+
+  for (const [id, ts] of recentConsultationLeadIds.entries()) {
+    if (now - ts > LEAD_DEDUP_WINDOW_MS) {
+      recentConsultationLeadIds.delete(id);
+    }
+  }
+
+  if (recentConsultationLeadIds.has(leadId)) {
+    return true;
+  }
+
+  recentConsultationLeadIds.set(leadId, now);
+  return false;
 }
 
 function normalizeWeight(value) {
@@ -294,6 +314,14 @@ export default async function handler(req, res) {
     if (hasConsultationPayload) {
       const submittedAt = new Date().toISOString();
       const leadId = normalizeText(body.lead_id) || randomUUID();
+      if (isDuplicateConsultationLead(leadId)) {
+        return res.status(200).json({
+          ok: true,
+          duplicate: true,
+          leadId,
+          message: 'This consultation request was already received.'
+        });
+      }
       const normalizedWeight = normalizeWeight(body.currentWeight);
       const consultationPayload = {
         lead_id: leadId,

@@ -15,6 +15,8 @@ const helmet = require('helmet');
 const nodemailer = require('nodemailer');
 const { createClient } = require('@supabase/supabase-js');
 const { randomUUID } = require('crypto');
+const LEAD_DEDUP_WINDOW_MS = 10 * 60 * 1000;
+const recentConsultationLeadIds = new Map();
 
 // ConfiguraÃ§Ã£o de ambiente segura
 require('dotenv').config({
@@ -32,6 +34,24 @@ function normalizeWeight(value) {
     if (!Number.isFinite(parsed)) return null;
     if (parsed < 30 || parsed > 300) return null;
     return parsed;
+}
+
+function isDuplicateConsultationLead(leadId) {
+    if (!leadId) return false;
+    const now = Date.now();
+
+    for (const [id, ts] of recentConsultationLeadIds.entries()) {
+        if (now - ts > LEAD_DEDUP_WINDOW_MS) {
+            recentConsultationLeadIds.delete(id);
+        }
+    }
+
+    if (recentConsultationLeadIds.has(leadId)) {
+        return true;
+    }
+
+    recentConsultationLeadIds.set(leadId, now);
+    return false;
 }
 
 async function postJsonWithTimeout(url, payload, timeoutMs = 8000) {
@@ -538,6 +558,14 @@ app.post('/api/lead', async (req, res) => {
         if (hasConsultationPayload) {
             const normalizeText = (value) => String(value || '').trim();
             const leadId = normalizeText(body.lead_id) || randomUUID();
+            if (isDuplicateConsultationLead(leadId)) {
+                return res.status(200).json({
+                    ok: true,
+                    duplicate: true,
+                    leadId,
+                    message: 'This consultation request was already received.'
+                });
+            }
             const submittedAt = new Date().toISOString();
             const consultationPayload = {
                 lead_id: leadId,

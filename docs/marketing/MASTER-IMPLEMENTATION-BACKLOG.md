@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD022 MD032 MD060 -->
+
 # Garcia Builder - Master Implementation Backlog
 
 Last update: 2026-06-29

@@ -1,4 +1,6 @@
-﻿# ðŸŽ¯ GARCIA BUILDER - MASTER PLAN
+﻿<!-- markdownlint-disable-file -->
+
+# ðŸŽ¯ GARCIA BUILDER - MASTER PLAN
 
 **Ãšltima AtualizaÃ§Ã£o:** 8 de Outubro de 2025
 **Status:** âš¡ Em Desenvolvimento Ativo

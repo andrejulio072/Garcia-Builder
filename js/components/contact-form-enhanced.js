@@ -128,10 +128,25 @@
     e.preventDefault();
 
     const qp = new URLSearchParams(window.location.search || '');
-    if (sourceEl) sourceEl.value = sourceEl.value || 'Contact Consultation Form';
+    const attrib = window.GB_ATTRIBUTION || (() => {
+      try {
+        return JSON.parse(localStorage.getItem('gb_attrib_v1') || '{}');
+      } catch {
+        return {};
+      }
+    })();
+
+    if (sourceEl) {
+      sourceEl.value =
+        sourceEl.value ||
+        attrib.utm_source ||
+        qp.get('utm_source') ||
+        document.referrer ||
+        'Contact Consultation Form';
+    }
     if (pageEl) pageEl.value = window.location.href;
-    if (utmSourceEl) utmSourceEl.value = qp.get('utm_source') || localStorage.getItem('gb_utm_source') || '';
-    if (utmCampaignEl) utmCampaignEl.value = qp.get('utm_campaign') || localStorage.getItem('gb_utm_campaign') || '';
+    if (utmSourceEl) utmSourceEl.value = qp.get('utm_source') || attrib.utm_source || localStorage.getItem('gb_utm_source') || '';
+    if (utmCampaignEl) utmCampaignEl.value = qp.get('utm_campaign') || attrib.utm_campaign || localStorage.getItem('gb_utm_campaign') || '';
 
     // Validate required fields
     let bad = false;

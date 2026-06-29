@@ -225,3 +225,27 @@ After saving and deploying, pricing buttons redirect directly to My PT Hub packa
 2. Confirm destination URL is the correct My PT Hub package.
 3. Confirm URL contains UTM parameters.
 4. Complete one test purchase and verify package assignment and onboarding flow.
+
+## Implementation status (current)
+
+- Done: Path A pricing redirect to My PT Hub package links with UTM append.
+- Done: Checkout payload compatibility for My PT Hub invite keys in backend.
+- Done: Consultation form upgraded with required fields for automation:
+
+  - firstName, lastName, email, phone
+  - goal, currentWeight, mainStruggle
+  - consent, source, page, utm_source, utm_campaign
+
+- Done: Secure backend relay to Zapier Catch Hook via `/api/lead`.
+- Done: Zapier URL kept server-side only through environment variable:
+
+  - `ZAPIER_LEAD_WEBHOOK_URL`
+
+- Done: Contact form success message and error message behavior implemented.
+
+Next recommended checks in production:
+
+1. Submit one real test lead from `contact.html` with UTM query string.
+2. Confirm Zapier receives full payload fields exactly once.
+3. Confirm lead persistence in Supabase (when configured).
+4. Confirm no frontend code contains the Zapier webhook URL.

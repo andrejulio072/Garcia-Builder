@@ -164,3 +164,29 @@ For your current objective (integrate with website, automate journey, reduce fri
 4. Add Zapier only after you identify repetitive manual operations.
 
 This gives fast execution, low complexity, and controlled cost while you continue building your own app foundation.
+
+## How to find the My PT Hub links (exact steps)
+
+Based on My PT Hub support docs, package links are generated per package using the package menu.
+
+1. Open My PT Hub trainer dashboard.
+2. Go to Packages.
+3. For each package (monthly, 8, 12, 18 weeks), click the 3 dots menu.
+4. Click Get Share Link (or Share my package).
+5. Copy the package URL.
+
+Then paste each URL into pricing metadata in [pricing.html](pricing.html):
+
+1. monthly -> meta name="mypthub:package:monthly"
+2. 8 weeks -> meta name="mypthub:package:eight_week"
+3. 12 weeks -> meta name="mypthub:package:twelve_week"
+4. 18 weeks -> meta name="mypthub:package:eighteen_week"
+
+After saving and deploying, pricing buttons redirect directly to My PT Hub package checkout with UTM parameters automatically appended.
+
+## Quick validation checklist
+
+1. Open pricing page and click each plan button.
+2. Confirm destination URL is the correct My PT Hub package.
+3. Confirm URL contains UTM parameters.
+4. Complete one test purchase and verify package assignment and onboarding flow.

@@ -83,13 +83,28 @@ const PAYMENT_LINKS = {
         ]
     }
 };// Função para processar seleção de plano (substitui a lógica complexa anterior)
+function getPaymentText(key, fallback) {
+    try {
+        const lang = (
+            window.GB_I18N?.getLang?.() ||
+            localStorage.getItem('gb_lang') ||
+            localStorage.getItem('gb_language') ||
+            document.documentElement.lang ||
+            'en'
+        ).toLowerCase().replace('pt-br', 'pt');
+        return window.DICTS?.[lang]?.pricing?.[key] || window.DICTS?.en?.pricing?.[key] || fallback;
+    } catch {
+        return fallback;
+    }
+}
+
 function handlePlanSelection(planKey, planName, planPrice, buttonElement = null) {
     console.log('🔗 Selecionando plano:', planKey);
 
     // Verificar se o plano existe
     if (!PAYMENT_LINKS[planKey]) {
         console.error('Plano não encontrado:', planKey);
-        alert('Plano não encontrado. Tente novamente.');
+        alert(getPaymentText('plan_not_found', 'Plan not found. Please try again.'));
         return;
     }
 
@@ -98,7 +113,7 @@ function handlePlanSelection(planKey, planName, planPrice, buttonElement = null)
     // Mostrar loading no botão
     if (buttonElement) {
         const originalText = buttonElement.textContent;
-        buttonElement.textContent = 'Redirecionando...';
+        buttonElement.textContent = getPaymentText('redirecting', 'Redirecting...');
         buttonElement.disabled = true;
 
         // Restaurar botão após 3 segundos (caso o usuário volte)

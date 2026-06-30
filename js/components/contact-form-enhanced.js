@@ -69,19 +69,7 @@
   }[char]));
 
   // Generate specific error message
-  const getErrorMessage = () => {
-    const errors = [];
-    if (firstNameEl.classList.contains('input-error')) errors.push('first name');
-    if (lastNameEl.classList.contains('input-error')) errors.push('last name');
-    if (emailEl.classList.contains('input-error')) errors.push('email');
-    if (phoneEl.classList.contains('input-error')) errors.push('phone number');
-    if (goalEl.classList.contains('input-error')) errors.push('primary goal');
-    if (currentWeightEl.classList.contains('input-error')) errors.push('current weight');
-    if (mainStruggleEl.classList.contains('input-error')) errors.push('main struggle');
-    if (consentEl.classList.contains('input-error')) errors.push('consent agreement');
-
-    return errors.length ? `Please check: ${errors.join(', ')}` : 'Please check the highlighted fields.';
-  };
+  const getErrorMessage = () => getI18nText('contact.form.validation_error', 'Please check the highlighted fields.');
 
   // Simple submit rate-limit: 1 per 60s
   const canSubmit = () => {
@@ -108,7 +96,7 @@
               <p class="mb-3">${getI18nText('contact.form.success_greeting', 'Thank you')} <strong>${safeName}</strong>!</p>
               <p class="text-muted mb-3">${getI18nText('contact.form.success_email_note', 'Your message was received. Please check your inbox for the confirmation email sent by Garcia Builder Fitness:')}</p>
               <p class="text-primary fw-bold">${safeEmail}</p>
-              <p class="text-muted small">Thanks — your details have been received. I’ll review your goal and get back to you.</p>
+              <p class="text-muted small">${getI18nText('contact.form.success_next_step', 'Andre will review your enquiry and reply within 24-48 hours.')}</p>
               <a class="btn btn-warning" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">${getI18nText('contact.form.book_consultation', 'Book Free Consultation')}</a>
             </div>
             <div class="modal-footer border-0 justify-content-center">
@@ -237,7 +225,7 @@
 
         form.reset();
         alertBox.classList.remove('visually-hidden');
-        alertBox.textContent = 'Thanks — your details have been received. I\'ll review your goal and get back to you.';
+        alertBox.textContent = getI18nText('contact.form.success_inline', 'Thank you. Your enquiry has been sent. Please check your inbox for confirmation.');
 
         // Show success popup. Confirmation and admin emails are sent by /api/inquiry.
         showSuccessPopup(userName, userEmail);
@@ -286,7 +274,7 @@
       }
     } catch {
       alertBox.classList.remove('visually-hidden');
-      alertBox.textContent = 'Something went wrong while sending your details. Please try again in a moment.';
+      alertBox.textContent = getI18nText('contact.form.network_error', 'Network issue. If it persists, email inquiries@garciabuilder.fitness.');
     } finally {
       btn.disabled = false;
       btn.classList.remove('is-loading');

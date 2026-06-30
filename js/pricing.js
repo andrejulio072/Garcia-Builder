@@ -298,3 +298,68 @@ function buildMyPtHubCheckoutUrl(planKey, planName) {
 
   return parsed.toString();
 }
+
+// Lead capture form handler
+(function initLeadCapture() {
+  const form = document.getElementById('pricingLeadCaptureForm');
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const emailInput = document.getElementById('pricingLeadEmail');
+    const email = emailInput?.value?.trim();
+    const messageDiv = document.getElementById('leadCaptureMessage');
+
+    if (!email) {
+      showLeadMessage(messageDiv, 'Please enter a valid email.', 'error');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          source: 'pricing_page',
+          notes: JSON.stringify({
+            type: 'pricing_page_lead',
+            utm: getAttributionPayload(),
+            timestamp: new Date().toISOString()
+          })
+        })
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        showLeadMessage(messageDiv, '✓ Email saved! We\'ll send you the link shortly.', 'success');
+        localStorage.setItem('pricingLeadEmail', email);
+        emailInput.value = '';
+        setTimeout(() => {
+          messageDiv.style.display = 'none';
+        }, 3000);
+      } else {
+        showLeadMessage(messageDiv, data.error || 'Error saving email. Please try again.', 'error');
+      }
+    } catch (error) {
+      console.error('Lead capture error:', error);
+      showLeadMessage(messageDiv, 'Error saving email. Please try again.', 'error');
+    }
+  });
+
+  function showLeadMessage(div, message, type) {
+    if (!div) return;
+    div.textContent = message;
+    div.style.display = 'block';
+    div.style.color = type === 'success' ? '#6bc7ff' : '#ff6b6b';
+  }
+
+  // Auto-fill email if saved
+  window.addEventListener('load', () => {
+    const saved = localStorage.getItem('pricingLeadEmail');
+    const input = document.getElementById('pricingLeadEmail');
+    if (saved && input) input.value = saved;
+  });
+})();

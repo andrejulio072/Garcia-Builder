@@ -151,7 +151,7 @@ const { JSDOM } = require('jsdom');
 
   await new Promise(resolve => setTimeout(resolve, 50));
 
-  if (!alertBox.textContent.includes('Thanks!')) {
+  if (!alertBox.textContent.includes('Thank you. Your enquiry has been sent.')) {
     throw new Error(`Unexpected alert message: ${alertBox.textContent}`);
   }
 

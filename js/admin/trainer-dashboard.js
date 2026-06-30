@@ -5,6 +5,27 @@
   let clients = [];
   let selectedClient = null;
   let sessions = [];
+  const getTrainerDashboardLang = () => {
+    try {
+      const raw = window.GB_I18N?.getLang?.() ||
+        localStorage.getItem('gb_lang') ||
+        localStorage.getItem('gb_language') ||
+        document.documentElement.lang ||
+        'en';
+      const lang = String(raw).toLowerCase();
+      if (lang.startsWith('pt')) return 'pt';
+      if (lang.startsWith('es')) return 'es';
+      return 'en';
+    } catch {
+      return 'en';
+    }
+  };
+  const getTrainerDashboardText = (key, fallback, replacements = {}) => {
+    const readPath = (obj, path) => String(path || '').split('.').reduce((acc, part) => acc?.[part], obj);
+    const lang = getTrainerDashboardLang();
+    const template = readPath(window.DICTS?.[lang], key) || readPath(window.DICTS?.en, key) || fallback;
+    return String(template).replace(/\{(\w+)\}/g, (_, token) => replacements[token] ?? '');
+  };
 
   document.addEventListener('DOMContentLoaded', init);
 
@@ -262,10 +283,10 @@
         renderSessions();
       }
 
-      showNotification(`Session marked as ${status}`, 'success');
+      showNotification(getTrainerDashboardText('trainer_dashboard.session_status_updated', 'Session marked as {status}.', { status }), 'success');
     } catch (error) {
       console.error('Error updating session status:', error);
-      showNotification('Failed to update session status', 'error');
+      showNotification(getTrainerDashboardText('trainer_dashboard.session_status_failed', 'Failed to update session status.'), 'error');
     }
   }
 
@@ -288,7 +309,7 @@
   async function createSession(e){
     e.preventDefault();
     if (!selectedClient){
-      showNotification('Please select a client first', 'error');
+      showNotification(getTrainerDashboardText('trainer_dashboard.client_required', 'Please select a client first.'), 'error');
       return;
     }
     try{
@@ -307,12 +328,12 @@
       const { error } = await window.supabaseClient.from('sessions').insert(payload);
       if (error) throw error;
 
-      showNotification('Session created successfully', 'success');
+      showNotification(getTrainerDashboardText('trainer_dashboard.session_created', 'Session created successfully.'), 'success');
       e.target.reset();
       await loadSessions(); // Refresh sessions list
     }catch(err){
       console.error('createSession failed', err);
-      showNotification('Failed to create session: ' + (err.message||err), 'error');
+      showNotification(getTrainerDashboardText('trainer_dashboard.session_create_failed', 'Failed to create session: {message}', { message: err.message || err }), 'error');
     }
   }
 })();

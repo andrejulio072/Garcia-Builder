@@ -7,6 +7,26 @@
   let bodyMetrics = [];
   let progressPhotos = [];
 
+  const getCurrentLang = () => {
+    try {
+      return (
+        window.GB_I18N?.getLang?.() ||
+        localStorage.getItem('gb_lang') ||
+        localStorage.getItem('gb_language') ||
+        document.documentElement.lang ||
+        'en'
+      ).toLowerCase().replace('pt-br', 'pt');
+    } catch {
+      return 'en';
+    }
+  };
+
+  const getI18nText = (key, fallback) => {
+    const readPath = (obj, path) => String(path || '').split('.').reduce((acc, part) => acc?.[part], obj);
+    const lang = getCurrentLang();
+    return readPath(window.DICTS?.[lang], key) || readPath(window.DICTS?.en, key) || fallback;
+  };
+
   const parseJsonSafe = (value, fallback = null) => {
     if (!value || typeof value !== 'string') return fallback;
     try {
@@ -608,7 +628,7 @@
       const originalText = saveBtn.innerHTML;
 
       saveBtn.disabled = true;
-      saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Saving...';
+      saveBtn.innerHTML = `<i class="fas fa-spinner fa-spin me-1"></i>${getI18nText('body_metrics.saving', 'Saving...')}`;
 
       // Coletar dados
       const { id: activeUserId } = resolveActiveUserContext();
@@ -633,7 +653,7 @@
       // Validar pelo menos um campo preenchido
       if (!entryData.weight && !entryData.height && !entryData.body_fat &&
           !Object.values(entryData.measurements).some(v => v !== null)) {
-        throw new Error('Please fill at least one measurement field');
+        throw new Error(getI18nText('body_metrics.measurement_required', 'Please fill at least one measurement field.'));
       }
 
       // Salvar dados
@@ -641,10 +661,10 @@
 
       // Sucesso (diferenciar entre cloud e local-only)
       if (saveResult && saveResult.savedViaSupabase) {
-        showNotification('✅ Body metrics saved successfully!', 'success');
+        showNotification(getI18nText('body_metrics.saved', 'Body metrics saved successfully.'), 'success');
       } else {
         // Saved locally only (offline/file://). Keep it non-blocking and informative.
-        showNotification('💾 Saved locally. Will sync when online.', 'warning');
+        showNotification(getI18nText('body_metrics.saved_local', 'Saved locally. It will sync when online.'), 'warning');
       }
 
       // Notify other parts of the app (e.g., Dashboard) that body metrics were saved
@@ -673,7 +693,7 @@
     } finally {
       const saveBtn = document.getElementById('saveMetrics');
       saveBtn.disabled = false;
-      saveBtn.innerHTML = '<i class="fas fa-save me-1"></i>Save Entry';
+      saveBtn.innerHTML = `<i class="fas fa-save me-1"></i>${getI18nText('body_metrics.save_entry', 'Save Entry')}`;
     }
   };
 
@@ -1003,12 +1023,12 @@
         }
       });
 
-      showNotification('📸 Progress photo uploaded!', 'success');
+      showNotification(getI18nText('body_metrics.photo_uploaded', 'Progress photo uploaded.'), 'success');
       loadProgressPhotos();
 
     } catch (error) {
       console.error('Error saving photo:', error);
-      showNotification('❌ Failed to upload photo', 'error');
+      showNotification(getI18nText('body_metrics.photo_upload_failed', 'Failed to upload photo.'), 'error');
     }
   };
 

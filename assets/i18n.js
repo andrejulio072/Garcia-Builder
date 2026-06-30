@@ -428,6 +428,7 @@
         subtitle: "Monthly coaching is for people who want ongoing accountability and guidance. The 8, 12 and 18-week programs are for people ready to move faster, commit deeper and push for visible transformation.",
         plan_not_found: "Plan not found. Please try again.",
         redirecting: "Redirecting...",
+        currency_update_failed: "Failed to update currency. Please try again.",
         value: {
           title: "What every plan includes",
           text: "Clear execution, not just a PDF: your training, nutrition and follow-up are structured so you always know what to do next and why it matters.",
@@ -622,6 +623,58 @@
         error: "Unable to send your request right now. Please try again in a moment.",
         email_confirmation_title: "We received your consultation request",
         next_steps: "Please check your inbox for confirmation."
+      },
+      body_metrics: {
+        saving: "Saving...",
+        save_entry: "Save Entry",
+        measurement_required: "Please fill at least one measurement field.",
+        saved: "Body metrics saved successfully.",
+        saved_local: "Saved locally. It will sync when online.",
+        photo_uploaded: "Progress photo uploaded.",
+        photo_upload_failed: "Failed to upload photo."
+      },
+      profile: {
+        load_failed: "Failed to load profile data.",
+        image_file_required: "Please select an image file.",
+        image_drop_required: "Please drop an image file.",
+        file_size_limit: "File size must be less than 5MB.",
+        avatar_element_unavailable: "Avatar element not available.",
+        avatar_updated: "Avatar updated successfully.",
+        avatar_generated: "New avatar generated.",
+        avatar_preview_loaded: "Avatar preview loaded. It has not been saved to the server yet.",
+        avatar_upload_failed: "Failed to upload avatar.",
+        reset_confirm: "Are you sure you want to reset all changes?",
+        form_reset: "Form reset to original values.",
+        saved: "Profile saved successfully.",
+        save_failed: "Failed to save profile.",
+        export_success: "Profile data exported successfully."
+      },
+      trainer_application: {
+        load_error: "We could not load the trainer application form. Please refresh and try again.",
+        login_required_title: "Login required",
+        login_required_message: "Create a free account or login to submit your trainer application and track the status.",
+        create_account: "Create account",
+        login: "Login",
+        login_required_submit: "Please login or create an account before submitting your application.",
+        database_unavailable: "Database connection not available. Please refresh the page and try again.",
+        submitting: "Submitting...",
+        required_fields: "Please complete all required fields before submitting.",
+        submit_failed: "Failed to submit application.",
+        submit_failed_retry: "Failed to submit application. Please try again.",
+        submit_success: "Application submitted successfully. We will review it within 24-48 hours."
+      },
+      enhanced_dashboard: {
+        personal_updated: "Personal information updated successfully.",
+        personal_update_failed: "Failed to update personal information: {message}",
+        fitness_updated: "Fitness profile updated successfully.",
+        fitness_update_failed: "Failed to update fitness profile: {message}"
+      },
+      trainer_dashboard: {
+        client_required: "Please select a client first.",
+        session_status_updated: "Session marked as {status}.",
+        session_status_failed: "Failed to update session status.",
+        session_created: "Session created successfully.",
+        session_create_failed: "Failed to create session: {message}"
       },
       auth: {
         login_title: "Login",
@@ -1079,6 +1132,7 @@
         subtitle: "O coaching mensal é para quem quer accountability e orientação contínuas. Os programas de 8, 12 e 18 semanas são para quem quer ir mais rápido, se comprometer mais fundo e buscar transformação visível.",
         plan_not_found: "Plano nao encontrado. Tente novamente.",
         redirecting: "Redirecionando...",
+        currency_update_failed: "Falha ao atualizar a moeda. Tente novamente.",
         value: {
           title: "O que todos os planos incluem",
           text: "Execução clara, não apenas um PDF: treino, nutrição e acompanhamento organizados para você saber exatamente o próximo passo e por que ele importa.",
@@ -1274,6 +1328,58 @@
         error: "Não foi possível enviar sua solicitação agora. Tente novamente em instantes.",
         email_confirmation_title: "Recebemos sua solicitação de consulta",
         next_steps: "Verifique seu email para a confirmação."
+      },
+      body_metrics: {
+        saving: "Salvando...",
+        save_entry: "Salvar registro",
+        measurement_required: "Preencha pelo menos um campo de medida.",
+        saved: "Metricas corporais salvas com sucesso.",
+        saved_local: "Salvo localmente. Sera sincronizado quando estiver online.",
+        photo_uploaded: "Foto de progresso enviada.",
+        photo_upload_failed: "Falha ao enviar a foto."
+      },
+      profile: {
+        load_failed: "Falha ao carregar os dados do perfil.",
+        image_file_required: "Selecione um arquivo de imagem.",
+        image_drop_required: "Solte um arquivo de imagem.",
+        file_size_limit: "O arquivo deve ter menos de 5MB.",
+        avatar_element_unavailable: "Elemento de avatar indisponivel.",
+        avatar_updated: "Avatar atualizado com sucesso.",
+        avatar_generated: "Novo avatar gerado.",
+        avatar_preview_loaded: "Previa do avatar carregada. Ainda nao foi salva no servidor.",
+        avatar_upload_failed: "Falha ao enviar o avatar.",
+        reset_confirm: "Tem certeza que deseja redefinir todas as alteracoes?",
+        form_reset: "Formulario restaurado para os valores originais.",
+        saved: "Perfil salvo com sucesso.",
+        save_failed: "Falha ao salvar o perfil.",
+        export_success: "Dados do perfil exportados com sucesso."
+      },
+      trainer_application: {
+        load_error: "Nao foi possivel carregar o formulario de candidatura. Atualize a pagina e tente novamente.",
+        login_required_title: "Login necessario",
+        login_required_message: "Crie uma conta gratuita ou faca login para enviar sua candidatura e acompanhar o status.",
+        create_account: "Criar conta",
+        login: "Login",
+        login_required_submit: "Faca login ou crie uma conta antes de enviar sua candidatura.",
+        database_unavailable: "Conexao com o banco indisponivel. Atualize a pagina e tente novamente.",
+        submitting: "Enviando...",
+        required_fields: "Preencha todos os campos obrigatorios antes de enviar.",
+        submit_failed: "Falha ao enviar candidatura.",
+        submit_failed_retry: "Falha ao enviar candidatura. Tente novamente.",
+        submit_success: "Candidatura enviada com sucesso. Vamos analisar em 24-48 horas."
+      },
+      enhanced_dashboard: {
+        personal_updated: "Informacoes pessoais atualizadas com sucesso.",
+        personal_update_failed: "Falha ao atualizar informacoes pessoais: {message}",
+        fitness_updated: "Perfil fitness atualizado com sucesso.",
+        fitness_update_failed: "Falha ao atualizar perfil fitness: {message}"
+      },
+      trainer_dashboard: {
+        client_required: "Selecione um cliente primeiro.",
+        session_status_updated: "Sessao marcada como {status}.",
+        session_status_failed: "Falha ao atualizar status da sessao.",
+        session_created: "Sessao criada com sucesso.",
+        session_create_failed: "Falha ao criar sessao: {message}"
       },
       auth: {
         login_title: "Login",
@@ -1731,6 +1837,7 @@
         subtitle: "El coaching mensual es para quien quiere accountability y guía continuas. Los programas de 8, 12 y 18 semanas son para quien quiere ir más rápido, comprometerse más y buscar una transformación visible.",
         plan_not_found: "Plan no encontrado. Intentalo de nuevo.",
         redirecting: "Redirigiendo...",
+        currency_update_failed: "No se pudo actualizar la moneda. Intentalo de nuevo.",
         value: {
           title: "Qué incluye cada plan",
           text: "Ejecución clara, no solo un PDF: entrenamiento, nutrición y seguimiento organizados para que sepas exactamente el siguiente paso y por qué importa.",
@@ -1926,6 +2033,58 @@
         error: "No se pudo enviar tu solicitud ahora. Inténtalo de nuevo en unos momentos.",
         email_confirmation_title: "Recibimos tu solicitud de consulta",
         next_steps: "Revisa tu email para la confirmación."
+      },
+      body_metrics: {
+        saving: "Guardando...",
+        save_entry: "Guardar registro",
+        measurement_required: "Completa al menos un campo de medicion.",
+        saved: "Metricas corporales guardadas correctamente.",
+        saved_local: "Guardado localmente. Se sincronizara cuando estes online.",
+        photo_uploaded: "Foto de progreso subida.",
+        photo_upload_failed: "No se pudo subir la foto."
+      },
+      profile: {
+        load_failed: "No se pudieron cargar los datos del perfil.",
+        image_file_required: "Selecciona un archivo de imagen.",
+        image_drop_required: "Suelta un archivo de imagen.",
+        file_size_limit: "El archivo debe tener menos de 5MB.",
+        avatar_element_unavailable: "Elemento de avatar no disponible.",
+        avatar_updated: "Avatar actualizado correctamente.",
+        avatar_generated: "Nuevo avatar generado.",
+        avatar_preview_loaded: "Vista previa del avatar cargada. Aun no se guardo en el servidor.",
+        avatar_upload_failed: "No se pudo subir el avatar.",
+        reset_confirm: "Seguro que quieres restablecer todos los cambios?",
+        form_reset: "Formulario restaurado a los valores originales.",
+        saved: "Perfil guardado correctamente.",
+        save_failed: "No se pudo guardar el perfil.",
+        export_success: "Datos del perfil exportados correctamente."
+      },
+      trainer_application: {
+        load_error: "No pudimos cargar el formulario de postulacion. Actualiza la pagina e intentalo de nuevo.",
+        login_required_title: "Login requerido",
+        login_required_message: "Crea una cuenta gratis o inicia sesion para enviar tu postulacion y seguir el estado.",
+        create_account: "Crear cuenta",
+        login: "Login",
+        login_required_submit: "Inicia sesion o crea una cuenta antes de enviar tu postulacion.",
+        database_unavailable: "Conexion con la base de datos no disponible. Actualiza la pagina e intentalo de nuevo.",
+        submitting: "Enviando...",
+        required_fields: "Completa todos los campos obligatorios antes de enviar.",
+        submit_failed: "No se pudo enviar la postulacion.",
+        submit_failed_retry: "No se pudo enviar la postulacion. Intentalo de nuevo.",
+        submit_success: "Postulacion enviada correctamente. La revisaremos en 24-48 horas."
+      },
+      enhanced_dashboard: {
+        personal_updated: "Informacion personal actualizada correctamente.",
+        personal_update_failed: "No se pudo actualizar la informacion personal: {message}",
+        fitness_updated: "Perfil fitness actualizado correctamente.",
+        fitness_update_failed: "No se pudo actualizar el perfil fitness: {message}"
+      },
+      trainer_dashboard: {
+        client_required: "Selecciona un cliente primero.",
+        session_status_updated: "Sesion marcada como {status}.",
+        session_status_failed: "No se pudo actualizar el estado de la sesion.",
+        session_created: "Sesion creada correctamente.",
+        session_create_failed: "No se pudo crear la sesion: {message}"
       },
       auth: {
         login_title: "Iniciar sesión",

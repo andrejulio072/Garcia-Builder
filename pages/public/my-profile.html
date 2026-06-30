@@ -2206,6 +2206,22 @@
             }
         }
 
+        function getProfileText(key, fallback) {
+            try {
+                const lang = (
+                    window.GB_I18N?.getLang?.() ||
+                    localStorage.getItem('gb_lang') ||
+                    localStorage.getItem('gb_language') ||
+                    document.documentElement.lang ||
+                    'en'
+                ).toLowerCase().replace('pt-br', 'pt');
+                const readPath = (obj, path) => String(path || '').split('.').reduce((acc, part) => acc?.[part], obj);
+                return readPath(window.DICTS?.[lang], key) || readPath(window.DICTS?.en, key) || fallback;
+            } catch {
+                return fallback;
+            }
+        }
+
         function setupEventListeners() {
             const logoutButton = document.getElementById('logout-btn');
             if (logoutButton) {
@@ -2336,20 +2352,20 @@
 
             // Validate file type
             if (!file.type.startsWith('image/')) {
-                alert('Please select an image file');
+                alert(getProfileText('profile.image_file_required', 'Please select an image file.'));
                 return;
             }
 
             // Validate file size (max 5MB)
             if (file.size > 5 * 1024 * 1024) {
-                alert('File size must be less than 5MB');
+                alert(getProfileText('profile.file_size_limit', 'File size must be less than 5MB.'));
                 return;
             }
 
             const avatarElement = document.getElementById('main-avatar');
             if (!avatarElement) {
                 console.warn('Avatar element not found during upload.');
-                showNotification('Avatar element not available.', 'error');
+                showNotification(getProfileText('profile.avatar_element_unavailable', 'Avatar element not available.'), 'error');
                 return;
             }
 
@@ -2365,7 +2381,7 @@
                         avatarElement.src = avatarUrl;
                         avatarElement.style.opacity = '1';
                         // Show success message
-                        showNotification('Avatar updated successfully!', 'success');
+                        showNotification(getProfileText('profile.avatar_updated', 'Avatar updated successfully.'), 'success');
                     }
                 } else {
                     // Fallback: just show preview
@@ -2373,13 +2389,13 @@
                     reader.onload = (e) => {
                         avatarElement.src = e.target.result;
                         avatarElement.style.opacity = '1';
-                        showNotification('Avatar preview loaded (not saved to server)', 'info');
+                        showNotification(getProfileText('profile.avatar_preview_loaded', 'Avatar preview loaded. It has not been saved to the server yet.'), 'info');
                     };
                     reader.readAsDataURL(file);
                 }
             } catch (error) {
                 console.error('Error uploading avatar:', error);
-                showNotification('Failed to upload avatar', 'error');
+                showNotification(getProfileText('profile.avatar_upload_failed', 'Failed to upload avatar.'), 'error');
                 if (avatarElement) {
                     avatarElement.style.opacity = '1';
                     if (originalSrc) {

@@ -1,5 +1,27 @@
 // Enhanced Dashboard JavaScript
 // Garcia Builder - Professional Dashboard Management
+const getEnhancedDashboardLang = () => {
+    try {
+        const raw = window.GB_I18N?.getLang?.() ||
+            localStorage.getItem('gb_lang') ||
+            localStorage.getItem('gb_language') ||
+            document.documentElement.lang ||
+            'en';
+        const lang = String(raw).toLowerCase();
+        if (lang.startsWith('pt')) return 'pt';
+        if (lang.startsWith('es')) return 'es';
+        return 'en';
+    } catch {
+        return 'en';
+    }
+};
+
+const getEnhancedDashboardText = (key, fallback, replacements = {}) => {
+    const readPath = (obj, path) => String(path || '').split('.').reduce((acc, part) => acc?.[part], obj);
+    const lang = getEnhancedDashboardLang();
+    const template = readPath(window.DICTS?.[lang], key) || readPath(window.DICTS?.en, key) || fallback;
+    return String(template).replace(/\{(\w+)\}/g, (_, token) => replacements[token] ?? '');
+};
 
 class EnhancedDashboard {
     constructor() {
@@ -235,10 +257,10 @@ class EnhancedDashboard {
 
         try {
             window.enhancedAuth.updateProfile(userData);
-            this.showNotification('Personal information updated successfully!', 'success');
+            this.showNotification(getEnhancedDashboardText('enhanced_dashboard.personal_updated', 'Personal information updated successfully.'), 'success');
             this.updateUserInterface(window.enhancedAuth.getUserProfile());
         } catch (error) {
-            this.showNotification('Failed to update personal information: ' + error.message, 'error');
+            this.showNotification(getEnhancedDashboardText('enhanced_dashboard.personal_update_failed', 'Failed to update personal information: {message}', { message: error.message }), 'error');
         }
     }
 
@@ -258,9 +280,9 @@ class EnhancedDashboard {
 
         try {
             window.enhancedAuth.updateProfile(profileData);
-            this.showNotification('Fitness profile updated successfully!', 'success');
+            this.showNotification(getEnhancedDashboardText('enhanced_dashboard.fitness_updated', 'Fitness profile updated successfully.'), 'success');
         } catch (error) {
-            this.showNotification('Failed to update fitness profile: ' + error.message, 'error');
+            this.showNotification(getEnhancedDashboardText('enhanced_dashboard.fitness_update_failed', 'Failed to update fitness profile: {message}', { message: error.message }), 'error');
         }
     }
 

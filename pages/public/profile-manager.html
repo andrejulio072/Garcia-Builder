@@ -431,11 +431,28 @@
     <script src="../../js/core/supabase.js"></script>
         <script src="../../js/core/auth.js"></script>
         <script src="../../js/admin/profile-manager.js"></script>
+    <script src="../../assets/i18n.js"></script>
 
     <script>
         let currentUser = null;
         let currentProfile = null;
         let uploadedImage = null;
+
+        function getProfileManagerText(key, fallback) {
+            try {
+                const lang = (
+                    window.GB_I18N?.getLang?.() ||
+                    localStorage.getItem('gb_lang') ||
+                    localStorage.getItem('gb_language') ||
+                    document.documentElement.lang ||
+                    'en'
+                ).toLowerCase().replace('pt-br', 'pt');
+                const readPath = (obj, path) => String(path || '').split('.').reduce((acc, part) => acc?.[part], obj);
+                return readPath(window.DICTS?.[lang], key) || readPath(window.DICTS?.en, key) || fallback;
+            } catch {
+                return fallback;
+            }
+        }
 
         document.addEventListener('DOMContentLoaded', async function() {
             await initializeProfile();
@@ -480,7 +497,7 @@
 
             } catch (error) {
                 console.error('Profile initialization error:', error);
-                showToast('Failed to load profile data', 'error');
+                showToast(getProfileManagerText('profile.load_failed', 'Failed to load profile data.'), 'error');
             }
         }
 
@@ -549,7 +566,7 @@
             const file = e.target.files[0];
             if (file) {
                 if (file.size > 5 * 1024 * 1024) {
-                    showToast('File size must be less than 5MB', 'error');
+                    showToast(getProfileManagerText('profile.file_size_limit', 'File size must be less than 5MB.'), 'error');
                     return;
                 }
 
@@ -567,7 +584,7 @@
             if (uploadedImage) {
                 document.getElementById('current-avatar').src = uploadedImage;
                 document.getElementById('upload-preview').style.display = 'none';
-                showToast('Avatar updated successfully!', 'success');
+                showToast(getProfileManagerText('profile.avatar_updated', 'Avatar updated successfully.'), 'success');
                 uploadedImage = null;
             }
         }
@@ -589,13 +606,13 @@
             const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${randomColor}&color=fff&size=150&bold=true`;
             document.getElementById('current-avatar').src = avatarUrl;
 
-            showToast('New avatar generated!', 'success');
+            showToast(getProfileManagerText('profile.avatar_generated', 'New avatar generated.'), 'success');
         }
 
         function resetForm() {
-            if (confirm('Are you sure you want to reset all changes?')) {
+            if (confirm(getProfileManagerText('profile.reset_confirm', 'Are you sure you want to reset all changes?'))) {
                 loadProfileData();
-                showToast('Form reset to original values', 'info');
+                showToast(getProfileManagerText('profile.form_reset', 'Form reset to original values.'), 'info');
             }
         }
 
@@ -626,7 +643,7 @@
                 // Save to database (here you would actually save to Supabase)
                 console.log('Saving profile data:', profileData);
 
-                showToast('Profile saved successfully!', 'success');
+                showToast(getProfileManagerText('profile.saved', 'Profile saved successfully.'), 'success');
 
                 // Redirect to dashboard after save
                 setTimeout(() => {
@@ -635,7 +652,7 @@
 
             } catch (error) {
                 console.error('Save profile error:', error);
-                showToast('Failed to save profile', 'error');
+                showToast(getProfileManagerText('profile.save_failed', 'Failed to save profile.'), 'error');
             }
         }
 
@@ -665,7 +682,7 @@
             link.download = 'garcia_builder_profile_complete.json';
             link.click();
 
-            showToast('Profile data exported successfully!', 'success');
+            showToast(getProfileManagerText('profile.export_success', 'Profile data exported successfully.'), 'success');
         }
 
         async function handleLogout() {
@@ -740,7 +757,7 @@
                     document.getElementById('avatar-upload').files = files;
                     document.getElementById('avatar-upload').dispatchEvent(new Event('change'));
                 } else {
-                    showToast('Please drop an image file', 'error');
+                    showToast(getProfileManagerText('profile.image_drop_required', 'Please drop an image file.'), 'error');
                 }
             }
         }

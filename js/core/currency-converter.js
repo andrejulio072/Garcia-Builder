@@ -21,6 +21,26 @@
   let currentCurrency = 'EUR';
   let isLoading = false;
 
+  const getCurrentLang = () => {
+    try {
+      return (
+        window.GB_I18N?.getLang?.() ||
+        localStorage.getItem('gb_lang') ||
+        localStorage.getItem('gb_language') ||
+        document.documentElement.lang ||
+        'en'
+      ).toLowerCase().replace('pt-br', 'pt');
+    } catch {
+      return 'en';
+    }
+  };
+
+  const getI18nText = (key, fallback) => {
+    const readPath = (obj, path) => String(path || '').split('.').reduce((acc, part) => acc?.[part], obj);
+    const lang = getCurrentLang();
+    return readPath(window.DICTS?.[lang], key) || readPath(window.DICTS?.en, key) || fallback;
+  };
+
   // Currency symbols
   const currencySymbols = {
     'EUR': '€',
@@ -91,7 +111,7 @@
 
       // Show error and revert
       e.target.value = currentCurrency;
-      showNotification('Failed to update currency. Please try again.', 'error');
+      showNotification(getI18nText('pricing.currency_update_failed', 'Failed to update currency. Please try again.'), 'error');
     }
   };
 

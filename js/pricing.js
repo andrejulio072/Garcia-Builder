@@ -2,6 +2,11 @@
 (function() {
   const PLAN_ORDER = ['monthly', 'eight_week', 'twelve_week', 'eighteen_week'];
 
+  const getCanonicalPlanPrice = (planKey, fallbackPrice) => {
+    const configPrice = window.STRIPE_ENV_CONFIG?.plans?.[planKey]?.price;
+    return configPrice || fallbackPrice || '';
+  };
+
   const getPricingDict = () => {
     const lang = (window.GB_I18N && window.GB_I18N.getLang && window.GB_I18N.getLang()) || 'en';
     return (window.DICTS && window.DICTS[lang] && window.DICTS[lang].pricing)
@@ -23,6 +28,8 @@
       const plan = dict.plans?.[key];
       if (!plan) return '';
 
+      const planPrice = getCanonicalPlanPrice(key, plan.price);
+
       const features = (plan.features || []).map(feature => `<li>${feature}</li>`).join('');
       const result = plan.result ? `<div class="result-band">${plan.result}</div>` : '';
       const meta = plan.meta ? `<div class="program-meta">${plan.meta}</div>` : '';
@@ -33,11 +40,11 @@
           ${plan.badge ? `<span class="save">${plan.badge}</span>` : ''}
           <h3>${plan.name}</h3>
           ${meta}
-          <div class="tag">${plan.price}<span style="font-size:16px">${plan.period || ''}</span></div>
+          <div class="tag">${planPrice}<span style="font-size:16px">${plan.period || ''}</span></div>
           ${result}
           <p class="muted">${plan.description || ''}</p>
           <ul>${features}</ul>
-          <button class="btn btn-gold" data-plan-key="${key}" data-plan-name="${plan.name}" data-plan-price="${plan.price}">
+          <button class="btn btn-gold" data-plan-key="${key}" data-plan-name="${plan.name}" data-plan-price="${planPrice}">
             ${dict.cta?.choose || 'Start Now'}
           </button>
         </div>`;

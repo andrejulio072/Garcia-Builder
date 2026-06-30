@@ -59,6 +59,7 @@
         const planKey = button.getAttribute('data-plan-key');
         const planName = button.getAttribute('data-plan-name');
         const planPrice = button.getAttribute('data-plan-price');
+        const planCurrency = getCurrentPricingCurrency();
 
         if (typeof window.dataLayer !== 'undefined') {
           window.dataLayer.push({
@@ -66,7 +67,7 @@
             plan_type: planKey,
             plan_name: planName,
             value: parseFloat((planPrice || '').replace(/[^0-9.]/g, '')) || 0,
-            currency: 'EUR'
+            currency: planCurrency
           });
         }
 
@@ -75,7 +76,7 @@
             content_type: 'coaching_plan',
             content_name: planName,
             value: parseFloat((planPrice || '').replace(/[^0-9.]/g, '')) || 0,
-            currency: 'EUR'
+            currency: planCurrency
           });
         }
 
@@ -118,6 +119,7 @@ async function handlePlanSelection(planKey, planName, planPrice, buttonElement) 
       key: planKey,
       name: planName,
       price: planPrice,
+      currency: getCurrentPricingCurrency(),
       destination: 'mypthub',
       timestamp: Date.now()
     }));
@@ -158,6 +160,7 @@ async function handlePlanSelection(planKey, planName, planPrice, buttonElement) 
       key: planKey,
       name: planName,
       price: planPrice,
+      currency: getCurrentPricingCurrency(),
       customerEmail,
       timestamp: Date.now()
     }));
@@ -243,6 +246,12 @@ function getAttributionPayload() {
   }
 }
 
+function getCurrentPricingCurrency() {
+  return (window.CurrencyConverter && typeof window.CurrencyConverter.getCurrentCurrency === 'function')
+    ? window.CurrencyConverter.getCurrentCurrency()
+    : 'GBP';
+}
+
 function getMyPtHubPackageBaseUrl(planKey) {
   const metaByPlan = {
     monthly: 'mypthub:package:monthly',
@@ -288,6 +297,8 @@ function buildMyPtHubCheckoutUrl(planKey, planName) {
 
   params.set('plan_key', planKey);
   params.set('plan_name', planName || planKey);
+  params.set('package_currency', 'GBP');
+  params.set('package_type', 'discounted_mypthub');
 
   return parsed.toString();
 }

@@ -204,13 +204,14 @@
         const selectedPackage = pushSelectPackageEvent(planKey, planName, planPrice);
         pushPackageEvent('begin_checkout', planKey, planName, planPrice);
         const packagePrice = selectedPackage.price;
+        const planCurrency = getCurrentPricingCurrency();
 
         if (typeof window.fbq !== 'undefined') {
           window.fbq('track', 'InitiateCheckout', {
             content_type: 'coaching_plan',
             content_name: selectedPackage.package_name,
             value: packagePrice,
-            currency: 'EUR'
+            currency: planCurrency
           });
         }
 
@@ -271,6 +272,7 @@ async function handlePlanSelection(planKey, planName, planPrice, buttonElement) 
       key: planKey,
       name: planName,
       price: planPrice,
+      currency: getCurrentPricingCurrency(),
       destination: 'mypthub',
       timestamp: Date.now()
     }));
@@ -311,6 +313,7 @@ async function handlePlanSelection(planKey, planName, planPrice, buttonElement) 
       key: planKey,
       name: planName,
       price: planPrice,
+      currency: getCurrentPricingCurrency(),
       customerEmail,
       timestamp: Date.now()
     }));
@@ -396,6 +399,12 @@ function getAttributionPayload() {
   }
 }
 
+function getCurrentPricingCurrency() {
+  return (window.CurrencyConverter && typeof window.CurrencyConverter.getCurrentCurrency === 'function')
+    ? window.CurrencyConverter.getCurrentCurrency()
+    : 'GBP';
+}
+
 function getMyPtHubPackageBaseUrl(planKey) {
   const metaByPlan = {
     monthly: 'mypthub:package:monthly',
@@ -441,6 +450,8 @@ function buildMyPtHubCheckoutUrl(planKey, planName) {
 
   params.set('plan_key', planKey);
   params.set('plan_name', planName || planKey);
+  params.set('package_currency', 'GBP');
+  params.set('package_type', 'discounted_mypthub');
 
   return parsed.toString();
 }

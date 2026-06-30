@@ -1,16 +1,16 @@
 // Currency Conversion System
 (() => {
-  // Exchange rates are relative to EUR for the pricing page selector.
+  // Exchange rates are relative to GBP because My PT Hub packages are priced in GBP.
   let exchangeRates = {
-    'EUR': 1.0,
-    'GBP': 0.86,
-    'USD': 1.09,
-    'BRL': 6.05,
-    'CAD': 1.47,
-    'AUD': 1.62
+    'GBP': 1.0,
+    'EUR': 1.16,
+    'USD': 1.27,
+    'BRL': 7.03,
+    'CAD': 1.71,
+    'AUD': 1.88
   };
 
-  // Base prices in EUR, aligned with Stripe checkout and pricing cards.
+  // Base prices in GBP, aligned with discounted My PT Hub package checkout.
   const basePrices = {
     monthly: 200,
     eight_week: 359,
@@ -18,7 +18,7 @@
     eighteen_week: 699
   };
 
-  let currentCurrency = 'EUR';
+  let currentCurrency = 'GBP';
   let isLoading = false;
 
   const getCurrentLang = () => {
@@ -63,8 +63,9 @@
     const savedCurrency = localStorage.getItem('preferred-currency');
     if (savedCurrency && exchangeRates[savedCurrency]) {
       currentCurrency = savedCurrency;
-      currencySelect.value = savedCurrency;
     }
+
+    currencySelect.value = currentCurrency;
 
     // Add change listener
     const onChange = (e) => handleCurrencyChange(e);

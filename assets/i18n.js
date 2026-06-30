@@ -441,9 +441,9 @@
         },
         plans: {
           monthly: {
-            badge: "For steady accountability",
-            name: "Monthly Online Coaching",
-            price: "€200",
+            badge: "Discounted GBP package",
+            name: "Monthly Online Client",
+            price: "£200",
             period: "/month",
             meta: "Keep the momentum going",
             result: "Best for people who want support, structure and a monthly reset",
@@ -457,9 +457,9 @@
             ]
           },
           eight_week: {
-            badge: "Fast start",
-            name: "8 Week Fat Loss Kickstart",
-            price: "€359",
+            badge: "Discounted GBP package",
+            name: "8-Week Rebuild Programme",
+            price: "£359",
             period: " one-time",
             meta: "8 weeks",
             result: "A sharp reset for people who want to feel change fast",
@@ -473,9 +473,9 @@
             ]
           },
           twelve_week: {
-            badge: "Best value transformation",
-            name: "12 Week Transformation",
-            price: "€519",
+            badge: "Best value GBP package",
+            name: "12-Week Transformation Programme",
+            price: "£519",
             period: " one-time",
             meta: "12 weeks",
             result: "The sweet spot for visible body change and habit lock-in",
@@ -491,9 +491,9 @@
             ]
           },
           eighteen_week: {
-            badge: "Deep transformation",
-            name: "18 Week Complete Transformation",
-            price: "€699",
+            badge: "Premium GBP package",
+            name: "18-Week Premium Transformation",
+            price: "£699",
             period: " one-time",
             meta: "18 weeks",
             result: "The most complete block for serious change and long-term identity shift",
@@ -1192,9 +1192,9 @@
         },
         plans: {
           monthly: {
-            badge: "Para accountability contínua",
-            name: "Coaching Online Mensal",
-            price: "€200",
+            badge: "Pacote GBP com desconto",
+            name: "Monthly Online Client",
+            price: "£200",
             period: "/mês",
             meta: "Mantenha o ritmo vivo",
             result: "Melhor para quem quer suporte, estrutura e um reset mensal",
@@ -1208,9 +1208,9 @@
             ]
           },
           eight_week: {
-            badge: "Arranque rápido",
-            name: "8 Semanas Fat Loss Kickstart",
-            price: "€359",
+            badge: "Pacote GBP com desconto",
+            name: "8-Week Rebuild Programme",
+            price: "£359",
             period: " pagamento único",
             meta: "8 semanas",
             result: "Um reset forte para quem quer sentir mudança rápido",
@@ -1224,9 +1224,9 @@
             ]
           },
           twelve_week: {
-            badge: "Melhor custo-benefício",
-            name: "Transformação 12 Semanas",
-            price: "€519",
+            badge: "Melhor pacote GBP",
+            name: "12-Week Transformation Programme",
+            price: "£519",
             period: " pagamento único",
             meta: "12 semanas",
             result: "O ponto ideal para mudança visível e consolidação de hábitos",
@@ -1242,9 +1242,9 @@
             ]
           },
           eighteen_week: {
-            badge: "Transformação profunda",
-            name: "Transformação Completa 18 Semanas",
-            price: "€699",
+            badge: "Pacote GBP premium",
+            name: "18-Week Premium Transformation",
+            price: "£699",
             period: " pagamento único",
             meta: "18 semanas",
             result: "O bloco mais completo para mudança séria e mudança de identidade",
@@ -1943,9 +1943,9 @@
         },
         plans: {
           monthly: {
-            badge: "Para accountability continuo",
-            name: "Coaching Online Mensual",
-            price: "€200",
+            badge: "Paquete GBP con descuento",
+            name: "Monthly Online Client",
+            price: "£200",
             period: "/mes",
             meta: "Mantén el impulso vivo",
             result: "Mejor para quien quiere soporte, estructura y un reset mensual",
@@ -1959,9 +1959,9 @@
             ]
           },
           eight_week: {
-            badge: "Arranque rápido",
-            name: "8 Semanas Fat Loss Kickstart",
-            price: "€359",
+            badge: "Paquete GBP con descuento",
+            name: "8-Week Rebuild Programme",
+            price: "£359",
             period: " pago único",
             meta: "8 semanas",
             result: "Un reset fuerte para quien quiere sentir el cambio rápido",
@@ -1975,9 +1975,9 @@
             ]
           },
           twelve_week: {
-            badge: "Mejor relación valor-resultados",
-            name: "Transformación 12 Semanas",
-            price: "€519",
+            badge: "Mejor paquete GBP",
+            name: "12-Week Transformation Programme",
+            price: "£519",
             period: " pago único",
             meta: "12 semanas",
             result: "El punto ideal para cambio visible y consolidación de hábitos",
@@ -1993,9 +1993,9 @@
             ]
           },
           eighteen_week: {
-            badge: "Transformación profunda",
-            name: "Transformación Completa 18 Semanas",
-            price: "€699",
+            badge: "Paquete GBP premium",
+            name: "18-Week Premium Transformation",
+            price: "£699",
             period: " pago único",
             meta: "18 semanas",
             result: "El bloque más completo para un cambio serio y un cambio de identidad",

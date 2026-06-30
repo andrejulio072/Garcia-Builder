@@ -1,12 +1,12 @@
-# ⚡ TRAINERIZE INTEGRATION - QUICK START
+﻿# âš¡ MYPTHUB INTEGRATION - QUICK START
 
-**🎯 Objetivo:** Configurar integração básica Trainerize em 1 dia
+**ðŸŽ¯ Objetivo:** Configurar integraÃ§Ã£o bÃ¡sica My PT Hub em 1 dia
 
 ---
 
-## 🔥 OPÇÃO 1: SETUP MANUAL (Funciona hoje mesmo)
+## ðŸ”¥ OPÃ‡ÃƒO 1: SETUP MANUAL (Funciona hoje mesmo)
 
-Se você ainda não tem acesso à API do Trainerize, pode começar com processo semi-automático:
+Se vocÃª ainda nÃ£o tem acesso Ã  API do My PT Hub, pode comeÃ§ar com processo semi-automÃ¡tico:
 
 ### **Passo 1: Configurar Webhook do Stripe**
 
@@ -15,13 +15,13 @@ Crie um webhook simples que salva dados no Supabase:
 ```sql
 -- Atualizar tabela user_profiles
 ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS
-  trainerize_email_sent BOOLEAN DEFAULT FALSE,
-  trainerize_pending BOOLEAN DEFAULT TRUE,
+  mypthub_email_sent BOOLEAN DEFAULT FALSE,
+  mypthub_pending BOOLEAN DEFAULT TRUE,
   plan_name TEXT,
   payment_date TIMESTAMP;
 ```
 
-### **Passo 2: Criar Edge Function básica**
+### **Passo 2: Criar Edge Function bÃ¡sica**
 
 ```typescript
 // supabase/functions/stripe-webhook-simple/index.ts
@@ -49,7 +49,7 @@ serve(async (req) => {
         phone: session.customer_details.phone,
         plan_name: session.metadata.plan_name,
         payment_date: new Date().toISOString(),
-        trainerize_pending: true,
+        mypthub_pending: true,
         subscription_status: 'active'
       })
 
@@ -61,7 +61,7 @@ serve(async (req) => {
       })
     }
 
-    // Enviar email para você com os dados
+    // Enviar email para vocÃª com os dados
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -71,16 +71,16 @@ serve(async (req) => {
       body: JSON.stringify({
         from: 'Garcia Builder <noreply@garciabuilder.fitness>',
         to: 'andrenjulio072@gmail.com',
-        subject: '🎉 Novo Cliente - Adicionar no Trainerize',
+        subject: 'ðŸŽ‰ Novo Cliente - Adicionar no My PT Hub',
         html: `
           <h2>Novo Cliente Registrado!</h2>
           <p><strong>Nome:</strong> ${session.customer_details.name}</p>
           <p><strong>Email:</strong> ${session.customer_email}</p>
           <p><strong>Phone:</strong> ${session.customer_details.phone}</p>
           <p><strong>Plano:</strong> ${session.metadata.plan_name}</p>
-          <p><strong>Ação:</strong> Adicionar este cliente manualmente no Trainerize</p>
+          <p><strong>AÃ§Ã£o:</strong> Adicionar este cliente manualmente no My PT Hub</p>
           <hr>
-          <a href="https://app.trainerize.me/clients">Ir para Trainerize →</a>
+          <a href="https://app.mypthub.me/clients">Ir para My PT Hub â†’</a>
         `
       })
     })
@@ -110,26 +110,26 @@ supabase functions deploy stripe-webhook-simple --no-verify-jwt
 4. Salvar webhook secret
 
 ### **Resultado:**
-✅ Você recebe email automático quando alguém pagar
-✅ Dados salvos no Supabase
-✅ Você adiciona manualmente no Trainerize (5 minutos)
-✅ Cliente recebe email de boas-vindas manual
+âœ… VocÃª recebe email automÃ¡tico quando alguÃ©m pagar
+âœ… Dados salvos no Supabase
+âœ… VocÃª adiciona manualmente no My PT Hub (5 minutos)
+âœ… Cliente recebe email de boas-vindas manual
 
-**Tempo de implementação:** 2-3 horas
+**Tempo de implementaÃ§Ã£o:** 2-3 horas
 
 ---
 
-## 🚀 OPÇÃO 2: SETUP AUTOMÁTICO COM API
+## ðŸš€ OPÃ‡ÃƒO 2: SETUP AUTOMÃTICO COM API
 
-Se você já tem API Key do Trainerize:
+Se vocÃª jÃ¡ tem API Key do My PT Hub:
 
 ### **Requisitos:**
-- [ ] Trainerize Business Plan
+- [ ] My PT Hub Business Plan
 - [ ] API Key obtida
-- [ ] Resend API Key (grátis)
-- [ ] 4-6 horas disponíveis
+- [ ] Resend API Key (grÃ¡tis)
+- [ ] 4-6 horas disponÃ­veis
 
-### **Script de Deploy Rápido:**
+### **Script de Deploy RÃ¡pido:**
 
 ```bash
 # 1. Instalar Supabase CLI
@@ -141,17 +141,17 @@ supabase login
 # 3. Link ao projeto
 supabase link --project-ref [SEU_PROJECT_ID]
 
-# 4. Criar função
-mkdir -p supabase/functions/stripe-to-trainerize
-cd supabase/functions/stripe-to-trainerize
+# 4. Criar funÃ§Ã£o
+mkdir -p supabase/functions/stripe-to-mypthub
+cd supabase/functions/stripe-to-mypthub
 
-# 5. Copiar código da TRAINERIZE-INTEGRATION-PLAN.md (Fase 2.1)
+# 5. Copiar cÃ³digo da MYPTHUB-INTEGRATION-PLAN.md (Fase 2.1)
 
 # 6. Deploy
-supabase functions deploy stripe-to-trainerize
+supabase functions deploy stripe-to-mypthub
 
 # 7. Configurar secrets
-supabase secrets set TRAINERIZE_API_KEY=xxx
+supabase secrets set MYPTHUB_API_KEY=xxx
 supabase secrets set STRIPE_SECRET_KEY=xxx
 supabase secrets set STRIPE_WEBHOOK_SECRET=xxx
 supabase secrets set RESEND_API_KEY=xxx
@@ -159,18 +159,18 @@ supabase secrets set RESEND_API_KEY=xxx
 
 ---
 
-## 📋 CHECKLIST MÍNIMO (1 DIA)
+## ðŸ“‹ CHECKLIST MÃNIMO (1 DIA)
 
-### **Manhã (3 horas):**
+### **ManhÃ£ (3 horas):**
 - [ ] Criar tabela no Supabase para armazenar clientes
-- [ ] Criar Edge Function básica
-- [ ] Deploy da função
+- [ ] Criar Edge Function bÃ¡sica
+- [ ] Deploy da funÃ§Ã£o
 - [ ] Configurar webhook no Stripe
 
 ### **Tarde (2 horas):**
 - [ ] Testar com pagamento teste
 - [ ] Verificar se email chega
-- [ ] Adicionar cliente teste no Trainerize
+- [ ] Adicionar cliente teste no My PT Hub
 - [ ] Marcar como "processado" no Supabase
 
 ### **Noite (1 hora):**
@@ -180,28 +180,28 @@ supabase secrets set RESEND_API_KEY=xxx
 
 ---
 
-## 🎯 PRIORIDADES
+## ðŸŽ¯ PRIORIDADES
 
 ### **AGORA (Essencial):**
-1. ✅ Webhook Stripe → Supabase (salvar dados)
-2. ✅ Email para você quando houver novo cliente
-3. ✅ Processo manual de adicionar no Trainerize
+1. âœ… Webhook Stripe â†’ Supabase (salvar dados)
+2. âœ… Email para vocÃª quando houver novo cliente
+3. âœ… Processo manual de adicionar no My PT Hub
 
 ### **ESTA SEMANA (Importante):**
-1. 🔄 Email automático para cliente com instruções
-2. 🔄 Dashboard mostrando clientes pendentes
-3. 🔄 Botão "Marcar como adicionado no Trainerize"
+1. ðŸ”„ Email automÃ¡tico para cliente com instruÃ§Ãµes
+2. ðŸ”„ Dashboard mostrando clientes pendentes
+3. ðŸ”„ BotÃ£o "Marcar como adicionado no My PT Hub"
 
-### **ESTE MÊS (Desejável):**
-1. ⏳ Integração completa com API Trainerize
-2. ⏳ Sincronização de dados
-3. ⏳ App chat automation
+### **ESTE MÃŠS (DesejÃ¡vel):**
+1. â³ IntegraÃ§Ã£o completa com API My PT Hub
+2. â³ SincronizaÃ§Ã£o de dados
+3. â³ App chat automation
 
 ---
 
-## 🆘 TROUBLESHOOTING
+## ðŸ†˜ TROUBLESHOOTING
 
-### **Webhook não está funcionando:**
+### **Webhook nÃ£o estÃ¡ funcionando:**
 ```bash
 # Testar localmente
 curl -X POST https://[SEU_PROJETO].supabase.co/functions/v1/stripe-webhook-simple \
@@ -209,9 +209,9 @@ curl -X POST https://[SEU_PROJETO].supabase.co/functions/v1/stripe-webhook-simpl
   -d '{"type":"checkout.session.completed","data":{"object":{"customer_email":"test@test.com"}}}'
 ```
 
-### **Email não está chegando:**
+### **Email nÃ£o estÃ¡ chegando:**
 - Verificar API Key do Resend
-- Verificar se domínio está verificado
+- Verificar se domÃ­nio estÃ¡ verificado
 - Checar spam folder
 
 ### **Erro no Supabase:**
@@ -225,39 +225,41 @@ LIMIT 10;
 
 ---
 
-## 📞 PRÓXIMO PASSO
+## ðŸ“ž PRÃ“XIMO PASSO
 
 **Escolha seu caminho:**
 
-### **Caminho 1: Rápido e Manual**
-→ Siga a **OPÇÃO 1** acima
-→ Leva 2-3 horas
-→ Funciona hoje mesmo
-→ Upgrade depois para automático
+### **Caminho 1: RÃ¡pido e Manual**
+â†’ Siga a **OPÃ‡ÃƒO 1** acima
+â†’ Leva 2-3 horas
+â†’ Funciona hoje mesmo
+â†’ Upgrade depois para automÃ¡tico
 
-### **Caminho 2: Completo e Automático**
-→ Siga o **TRAINERIZE-INTEGRATION-PLAN.md** completo
-→ Leva 7-10 dias
-→ 100% automatizado
-→ Zero trabalho manual
+### **Caminho 2: Completo e AutomÃ¡tico**
+â†’ Siga o **MYPTHUB-INTEGRATION-PLAN.md** completo
+â†’ Leva 7-10 dias
+â†’ 100% automatizado
+â†’ Zero trabalho manual
 
-**Recomendação:** Comece com Caminho 1 hoje, upgrade para Caminho 2 esta semana.
-
----
-
-## ✅ SUCCESS METRICS
-
-Depois de implementar, você deve ver:
-
-- ✅ Novo cliente paga → Você recebe email em <5 minutos
-- ✅ Dados do cliente aparecem no Supabase
-- ✅ Você adiciona no Trainerize em <10 minutos
-- ✅ Cliente recebe email de boas-vindas
-- ✅ Zero clientes perdidos no processo
+**RecomendaÃ§Ã£o:** Comece com Caminho 1 hoje, upgrade para Caminho 2 esta semana.
 
 ---
 
-**🚀 VAMOS COMEÇAR!**
+## âœ… SUCCESS METRICS
 
-Primeiro passo: Criar a Edge Function básica acima. Você quer que eu ajude a criar os arquivos necessários?
+Depois de implementar, vocÃª deve ver:
+
+- âœ… Novo cliente paga â†’ VocÃª recebe email em <5 minutos
+- âœ… Dados do cliente aparecem no Supabase
+- âœ… VocÃª adiciona no My PT Hub em <10 minutos
+- âœ… Cliente recebe email de boas-vindas
+- âœ… Zero clientes perdidos no processo
+
+---
+
+**ðŸš€ VAMOS COMEÃ‡AR!**
+
+Primeiro passo: Criar a Edge Function bÃ¡sica acima. VocÃª quer que eu ajude a criar os arquivos necessÃ¡rios?
+
+
 

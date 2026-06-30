@@ -1,9 +1,9 @@
-/**
- * 🚀 GARCIA BUILDER - BACKEND STRIPE PREMIUM
- * Implementação seguindo as melhores práticas oficiais da Stripe
- * Documentação: https://docs.stripe.com/payments/checkout
- * Segurança: Nível enterprise com validação completa
- * Versão: 2.0 Premium
+﻿/**
+ * ðŸš€ GARCIA BUILDER - BACKEND STRIPE PREMIUM
+ * ImplementaÃ§Ã£o seguindo as melhores prÃ¡ticas oficiais da Stripe
+ * DocumentaÃ§Ã£o: https://docs.stripe.com/payments/checkout
+ * SeguranÃ§a: NÃ­vel enterprise com validaÃ§Ã£o completa
+ * VersÃ£o: 2.0 Premium
  */
 
 const path = require('path');
@@ -14,8 +14,11 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const nodemailer = require('nodemailer');
 const { createClient } = require('@supabase/supabase-js');
+const { randomUUID } = require('crypto');
+const LEAD_DEDUP_WINDOW_MS = 10 * 60 * 1000;
+const recentConsultationLeadIds = new Map();
 
-// Configuração de ambiente segura
+// ConfiguraÃ§Ã£o de ambiente segura
 require('dotenv').config({
     path: path.join(__dirname, '..', '.env'),
     silent: false
@@ -23,10 +26,51 @@ require('dotenv').config({
 
 const app = express();
 
-// In-memory attribution enrichment store (fbp/fbc) – ephemeral (cleared on restart)
+// In-memory attribution enrichment store (fbp/fbc) â€“ ephemeral (cleared on restart)
 const metaAttributionStore = new Map();
 
-// 🔒 SEGURANÇA - Configurações de nível enterprise
+function normalizeWeight(value) {
+    const parsed = Number(String(value ?? '').trim());
+    if (!Number.isFinite(parsed)) return null;
+    if (parsed < 30 || parsed > 300) return null;
+    return parsed;
+}
+
+function isDuplicateConsultationLead(leadId) {
+    if (!leadId) return false;
+    const now = Date.now();
+
+    for (const [id, ts] of recentConsultationLeadIds.entries()) {
+        if (now - ts > LEAD_DEDUP_WINDOW_MS) {
+            recentConsultationLeadIds.delete(id);
+        }
+    }
+
+    if (recentConsultationLeadIds.has(leadId)) {
+        return true;
+    }
+
+    recentConsultationLeadIds.set(leadId, now);
+    return false;
+}
+
+async function postJsonWithTimeout(url, payload, timeoutMs = 8000) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+        return await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            signal: controller.signal
+        });
+    } finally {
+        clearTimeout(timeout);
+    }
+}
+
+// ðŸ”’ SEGURANÃ‡A - ConfiguraÃ§Ãµes de nÃ­vel enterprise
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
@@ -94,7 +138,7 @@ app.use(helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
-// Rate limiting - proteção contra ataques
+// Rate limiting - proteÃ§Ã£o contra ataques
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos
     max: 100, // limite de 100 requests por IP
@@ -108,7 +152,7 @@ const limiter = rateLimit({
 
 app.use('/api/', limiter);
 
-// CORS configurado para produção (dinâmico via env)
+// CORS configurado para produÃ§Ã£o (dinÃ¢mico via env)
 const defaultCorsOrigins = [
     'http://localhost:3000',
     'http://localhost:3001',
@@ -167,36 +211,36 @@ app.get(Object.keys(publicPageAliases), (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'pages', 'public', publicPageAliases[req.path]));
 });
 
-// Servir arquivos estáticos
+// Servir arquivos estÃ¡ticos
 app.use(express.static(path.join(__dirname, '..'), {
     dotfiles: 'deny',
     index: ['index.html'],
     maxAge: '1h'
 }));
 
-// 🔑 INICIALIZAÇÃO STRIPE - Validação robusta
+// ðŸ”‘ INICIALIZAÃ‡ÃƒO STRIPE - ValidaÃ§Ã£o robusta
 let stripe;
 let isStripeReady = false;
 
 function initializeStripe() {
     try {
-        // Validação das chaves de ambiente
+        // ValidaÃ§Ã£o das chaves de ambiente
         const secretKey = process.env.STRIPE_SECRET_KEY;
         const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY; // opcional no servidor
 
         if (!secretKey) {
-            console.warn('⚠️ STRIPE_SECRET_KEY não configurada. O servidor iniciará sem Stripe (modo "not ready").');
+            console.warn('âš ï¸ STRIPE_SECRET_KEY nÃ£o configurada. O servidor iniciarÃ¡ sem Stripe (modo "not ready").');
             isStripeReady = false;
             return false;
         }
 
-        // Validação do formato das chaves
+        // ValidaÃ§Ã£o do formato das chaves
         if (!secretKey.startsWith('sk_')) {
-            throw new Error('❌ STRIPE_SECRET_KEY inválida - deve começar com sk_');
+            throw new Error('âŒ STRIPE_SECRET_KEY invÃ¡lida - deve comeÃ§ar com sk_');
         }
 
         if (publishableKey && !publishableKey.startsWith('pk_')) {
-            console.warn('⚠️ STRIPE_PUBLISHABLE_KEY inválida - deve começar com pk_. Ignorando no servidor.');
+            console.warn('âš ï¸ STRIPE_PUBLISHABLE_KEY invÃ¡lida - deve comeÃ§ar com pk_. Ignorando no servidor.');
         }
 
         // Verificar se estamos em modo live ou test
@@ -204,58 +248,58 @@ function initializeStripe() {
         const isTestMode = secretKey.includes('test');
 
         if (!isLiveMode && !isTestMode) {
-            throw new Error('❌ Chave Stripe em formato inválido');
+            throw new Error('âŒ Chave Stripe em formato invÃ¡lido');
         }
 
         // Inicializar Stripe
         stripe = require('stripe')(secretKey, {
-            apiVersion: '2023-10-16', // Versão mais recente
+            apiVersion: '2023-10-16', // VersÃ£o mais recente
             timeout: 20000, // 20 segundos timeout
             maxNetworkRetries: 3
         });
 
         isStripeReady = true;
 
-        console.log('🚀 GARCIA BUILDER - STRIPE INICIALIZADO');
+        console.log('ðŸš€ GARCIA BUILDER - STRIPE INICIALIZADO');
         console.log('=' .repeat(50));
-        console.log(`✅ Modo: ${isLiveMode ? '🔴 LIVE (Produção)' : '🟡 TEST (Desenvolvimento)'}`);
-        console.log(`✅ API Version: 2023-10-16`);
-        console.log(`✅ Timeout: 20s`);
-        console.log(`✅ Retry: 3x`);
-        console.log(`✅ Chave: ${secretKey.substring(0, 12)}...`);
+        console.log(`âœ… Modo: ${isLiveMode ? 'ðŸ”´ LIVE (ProduÃ§Ã£o)' : 'ðŸŸ¡ TEST (Desenvolvimento)'}`);
+        console.log(`âœ… API Version: 2023-10-16`);
+        console.log(`âœ… Timeout: 20s`);
+        console.log(`âœ… Retry: 3x`);
+        console.log(`âœ… Chave: ${secretKey.substring(0, 12)}...`);
         console.log('=' .repeat(50));
 
         return true;
     } catch (error) {
-        console.error('❌ ERRO NA INICIALIZAÇÃO DO STRIPE:', error.message);
+        console.error('âŒ ERRO NA INICIALIZAÃ‡ÃƒO DO STRIPE:', error.message);
         isStripeReady = false;
         return false;
     }
 }
 
-// 📋 CONFIGURAÇÃO DE PLANOS - Preços dinâmicos
+// ðŸ“‹ CONFIGURAÃ‡ÃƒO DE PLANOS - PreÃ§os dinÃ¢micos
 const SUBSCRIPTION_PLANS = {
     monthly: {
         name: 'Monthly Online Coaching',
         description: 'Standard online coaching with training, nutrition guidance, weekly check-ins, app access, support and accountability.',
-        amount: 20000, // €200.00
+        amount: 20000, // â‚¬200.00
         currency: 'eur',
         mode: 'subscription',
         interval: 'month',
-        features: ['Personalized training plan', 'Nutrition guidance', 'Weekly check-ins', 'Trainerize app access', 'Direct support and accountability']
+        features: ['Personalized training plan', 'Nutrition guidance', 'Weekly check-ins', 'My PT Hub app access', 'Direct support and accountability']
     },
     eight_week: {
         name: '8 Week Fat Loss Kickstart',
         description: 'A focused 8-week reset with training, nutrition, shopping list, support and realistic fat-loss targets.',
-        amount: 35900, // €359.00
+        amount: 35900, // â‚¬359.00
         currency: 'eur',
         mode: 'payment',
-        features: ['8-week training block', 'Nutrition targets and shopping list', 'Weekly check-ins', 'Trainerize app access', 'Expected fat loss: 5-8kg when followed consistently']
+        features: ['8-week training block', 'Nutrition targets and shopping list', 'Weekly check-ins', 'My PT Hub app access', 'Expected fat loss: 5-8kg when followed consistently']
     },
     twelve_week: {
         name: '12 Week Transformation',
         description: 'The flagship 12-week transformation plan for visible fat loss, strength progress and stronger routines.',
-        amount: 51900, // €519.00
+        amount: 51900, // â‚¬519.00
         currency: 'eur',
         mode: 'payment',
         features: ['12-week progressive training plan', 'Nutrition plan with adjustments', 'Shopping list and meal structure guidance', 'Weekly accountability', 'Expected fat loss: 9-12kg when followed consistently']
@@ -263,14 +307,14 @@ const SUBSCRIPTION_PLANS = {
     eighteen_week: {
         name: '18 Week Complete Transformation',
         description: 'The most complete transformation program, built for deeper results and long-term habit building.',
-        amount: 69900, // €699.00
+        amount: 69900, // â‚¬699.00
         currency: 'eur',
         mode: 'payment',
         features: ['18-week periodized coaching block', 'Nutrition strategy and shopping list', 'Long-term habit system', 'Priority support', 'Expected fat loss: 12-15kg when followed consistently']
     }
 };
 
-// 🛡️ MIDDLEWARE DE VALIDAÇÃO
+// ðŸ›¡ï¸ MIDDLEWARE DE VALIDAÃ‡ÃƒO
 function validateStripeReady(req, res, next) {
     if (!isStripeReady) {
         return res.status(503).json({
@@ -285,7 +329,7 @@ function validateStripeReady(req, res, next) {
 function validateRequestData(req, res, next) {
     const { planKey, customerEmail } = req.body;
 
-    // Validações obrigatórias
+    // ValidaÃ§Ãµes obrigatÃ³rias
     if (!planKey || !customerEmail) {
         return res.status(400).json({
             error: 'Validation Error',
@@ -320,7 +364,7 @@ function validateRequestData(req, res, next) {
 // Flag para exigir consentimento de Termos no Checkout (requer ToS URL no Stripe Settings)
 const REQUIRE_TOS_CONSENT = (process.env.STRIPE_REQUIRE_TOS_CONSENT || 'false').toLowerCase() === 'true';
 
-// 📊 HEALTH CHECK ENDPOINT
+// ðŸ“Š HEALTH CHECK ENDPOINT
 app.get('/health', (req, res) => {
     const healthStatus = {
         status: 'ok',
@@ -339,7 +383,7 @@ app.get('/health', (req, res) => {
         memory: process.memoryUsage()
     };
 
-    // Sempre retornar 200 para manter o serviço saudável no Render; refletir readiness em payload
+    // Sempre retornar 200 para manter o serviÃ§o saudÃ¡vel no Render; refletir readiness em payload
     res.status(200).json(healthStatus);
 });
 
@@ -507,6 +551,109 @@ app.post('/api/contact', async (req, res) => {
 
 app.post('/api/lead', async (req, res) => {
     try {
+        const body = req.body || {};
+        const hasConsultationPayload = ['firstName', 'lastName', 'currentWeight', 'mainStruggle', 'goal']
+            .some((key) => body[key] !== undefined);
+
+        if (hasConsultationPayload) {
+            const normalizeText = (value) => String(value || '').trim();
+            const leadId = normalizeText(body.lead_id) || randomUUID();
+            if (isDuplicateConsultationLead(leadId)) {
+                return res.status(200).json({
+                    ok: true,
+                    duplicate: true,
+                    leadId,
+                    message: 'This consultation request was already received.'
+                });
+            }
+            const submittedAt = new Date().toISOString();
+            const consultationPayload = {
+                lead_id: leadId,
+                submitted_at: submittedAt,
+                firstName: normalizeText(body.firstName),
+                lastName: normalizeText(body.lastName),
+                email: normalizeText(body.email).toLowerCase(),
+                phone: normalizeText(body.phone),
+                goal: normalizeText(body.goal),
+                currentWeight: normalizeWeight(body.currentWeight),
+                mainStruggle: normalizeText(body.mainStruggle),
+                consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
+                source: normalizeText(body.source) || 'Contact Consultation Form',
+                page: normalizeText(body.page) || req.headers.referer || '',
+                utm_source: normalizeText(body.utm_source),
+                utm_campaign: normalizeText(body.utm_campaign),
+            };
+
+            if (!consultationPayload.firstName || !consultationPayload.lastName || !consultationPayload.email || !consultationPayload.phone || !consultationPayload.goal || !consultationPayload.currentWeight || !consultationPayload.mainStruggle) {
+                return res.status(400).json({ error: 'Missing required consultation fields' });
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(consultationPayload.email)) {
+                return res.status(400).json({ error: 'A valid email is required' });
+            }
+
+            if (!consultationPayload.consent) {
+                return res.status(400).json({ error: 'Consent is required' });
+            }
+
+            const webhookUrl = process.env.ZAPIER_LEAD_WEBHOOK_URL;
+            if (!webhookUrl) {
+                return res.status(500).json({ error: 'ZAPIER_LEAD_WEBHOOK_URL is not configured' });
+            }
+
+            console.log('lead relay attempt', { leadId, source: consultationPayload.source });
+            const zapierResponse = await postJsonWithTimeout(webhookUrl, consultationPayload, 8000);
+
+            if (!zapierResponse.ok) {
+                const details = await zapierResponse.text().catch(() => 'Zapier webhook request failed');
+                throw new Error(`Zapier webhook error: ${zapierResponse.status} ${details}`);
+            }
+
+            try {
+                const supa = getOptionalSupabaseClient();
+                if (supa) {
+                    const leadName = `${consultationPayload.firstName} ${consultationPayload.lastName}`.trim();
+                    const insertCandidates = [
+                        {
+                            email: consultationPayload.email,
+                            name: leadName,
+                            source: consultationPayload.source,
+                            notes: JSON.stringify(consultationPayload),
+                            type: 'consultation',
+                            status: 'new'
+                        },
+                        {
+                            email: consultationPayload.email,
+                            name: leadName,
+                            source: consultationPayload.source,
+                            notes: JSON.stringify(consultationPayload)
+                        },
+                        {
+                            email: consultationPayload.email,
+                            name: leadName,
+                            source: consultationPayload.source
+                        }
+                    ];
+
+                    for (const candidate of insertCandidates) {
+                        const { error } = await supa.from('leads').insert([candidate]);
+                        if (!error) break;
+                        const message = String(error.message || '').toLowerCase();
+                        const isMissingColumn = error.code === 'PGRST204' || message.includes('schema cache') || message.includes('could not find');
+                        if (!isMissingColumn) break;
+                    }
+                }
+            } catch (saveError) {
+                console.warn('consultation lead save warning:', saveError.message || saveError);
+            }
+
+            return res.status(200).json({
+                ok: true,
+                leadId,
+                message: 'Thanks — your details have been received. I\'ll review your goal and get back to you.'
+            });
+        }
+
         const { email, name, source, notes, ...rest } = req.body || {};
         const cleanEmail = String(email || '').trim().toLowerCase();
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
@@ -620,7 +767,7 @@ app.post('/api/lead', async (req, res) => {
     }
 });
 
-// 💳 ENDPOINT PRINCIPAL - Criar Checkout Session
+// ðŸ’³ ENDPOINT PRINCIPAL - Criar Checkout Session
 app.post('/api/create-checkout-session', validateStripeReady, validateRequestData, async (req, res) => {
     const startTime = Date.now();
 
@@ -629,11 +776,25 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
             planKey,
             customerEmail,
             customerName,
-            trainerizeInvite, // optional Trainerize invite URL
+            myPtHubInvite,
+            mypthubInvite,
+            mypthub_invite,
+            trainerizeInvite,
+            trainerize_invite,
             successUrl = `${req.protocol}://${req.get('host')}/success.html`,
             cancelUrl = `${req.protocol}://${req.get('host')}/pricing.html`,
             utm: rawUtm
         } = req.body;
+
+        const normalizedInvite =
+            myPtHubInvite ||
+            mypthubInvite ||
+            mypthub_invite ||
+            trainerizeInvite ||
+            trainerize_invite ||
+            process.env.MYPTHUB_INVITE_URL ||
+            process.env.TRAINERIZE_INVITE_URL ||
+            '';
 
         // --- UTM / Attribution Sanitization ---
         const allowedUtmKeys = ['source','medium','campaign','term','content'];
@@ -652,14 +813,14 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
 
         const plan = SUBSCRIPTION_PLANS[planKey];
 
-        console.log('💳 CRIANDO CHECKOUT SESSION');
+        console.log('ðŸ’³ CRIANDO CHECKOUT SESSION');
         console.log('-'.repeat(40));
-        console.log(`📋 Plano: ${plan.name} - ${plan.currency.toUpperCase()} ${(plan.amount / 100).toFixed(2)}`);
-        console.log(`👤 Cliente: ${customerEmail}`);
-        console.log(`🌐 Success URL: ${successUrl}`);
-        console.log(`🌐 Cancel URL: ${cancelUrl}`);
+        console.log(`ðŸ“‹ Plano: ${plan.name} - ${plan.currency.toUpperCase()} ${(plan.amount / 100).toFixed(2)}`);
+        console.log(`ðŸ‘¤ Cliente: ${customerEmail}`);
+        console.log(`ðŸŒ Success URL: ${successUrl}`);
+        console.log(`ðŸŒ Cancel URL: ${cancelUrl}`);
 
-        // Criar Customer primeiro (melhor prática)
+        // Criar Customer primeiro (melhor prÃ¡tica)
         let customer;
         try {
             const existingCustomers = await stripe.customers.list({
@@ -669,7 +830,7 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
 
             if (existingCustomers.data.length > 0) {
                 customer = existingCustomers.data[0];
-                console.log(`✅ Cliente existente encontrado: ${customer.id}`);
+                console.log(`âœ… Cliente existente encontrado: ${customer.id}`);
             } else {
                 customer = await stripe.customers.create({
                     email: customerEmail,
@@ -680,10 +841,10 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
                         created_at: new Date().toISOString()
                     }
                 });
-                console.log(`✅ Novo cliente criado: ${customer.id}`);
+                console.log(`âœ… Novo cliente criado: ${customer.id}`);
             }
         } catch (customerError) {
-            console.warn('⚠️ Erro ao criar/buscar customer, continuando sem:', customerError.message);
+            console.warn('âš ï¸ Erro ao criar/buscar customer, continuando sem:', customerError.message);
             customer = null;
         }
 
@@ -707,7 +868,7 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
             };
         }
 
-        // Configuração da sessão seguindo padrões oficiais
+        // ConfiguraÃ§Ã£o da sessÃ£o seguindo padrÃµes oficiais
         const sessionConfig = {
             customer: customer?.id,
             customer_email: !customer ? customerEmail : undefined,
@@ -732,14 +893,14 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
                 created_at: new Date().toISOString(),
                 client_ip: (req.ip || req.headers['x-forwarded-for'] || '').toString().split(',')[0].trim().slice(0,45),
                 client_ua: (req.headers['user-agent'] || '').slice(0,200),
-                trainerize_invite: trainerizeInvite || process.env.TRAINERIZE_INVITE_URL || '',
+                mypthub_invite: normalizedInvite,
                 ...utmMeta
             },
-            // Configurações de experiência
+            // ConfiguraÃ§Ãµes de experiÃªncia
             locale: 'en',
             allow_promotion_codes: false,
-            // Coleta de consentimento dos Termos (exige ToS URL no Stripe Dashboard → Settings → Public details)
-            // Habilite via env STRIPE_REQUIRE_TOS_CONSENT=true após configurar os links no Stripe.
+            // Coleta de consentimento dos Termos (exige ToS URL no Stripe Dashboard â†’ Settings â†’ Public details)
+            // Habilite via env STRIPE_REQUIRE_TOS_CONSENT=true apÃ³s configurar os links no Stripe.
         };
 
         if (plan.mode === 'subscription') {
@@ -751,7 +912,7 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
                     service: 'garcia-builder',
                     client_ip: (req.ip || req.headers['x-forwarded-for'] || '').toString().split(',')[0].trim().slice(0,45),
                     client_ua: (req.headers['user-agent'] || '').slice(0,200),
-                    trainerize_invite: trainerizeInvite || process.env.TRAINERIZE_INVITE_URL || '',
+                    mypthub_invite: normalizedInvite,
                     ...utmMeta
                 }
             };
@@ -763,14 +924,14 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
             };
         }
 
-        // Criar a sessão
+        // Criar a sessÃ£o
         const session = await stripe.checkout.sessions.create(sessionConfig);
 
         const responseTime = Date.now() - startTime;
 
-        console.log(`✅ Sessão criada com sucesso: ${session.id}`);
-        console.log(`⏱️ Tempo de resposta: ${responseTime}ms`);
-        console.log(`🔗 URL: ${session.url.substring(0, 50)}...`);
+        console.log(`âœ… SessÃ£o criada com sucesso: ${session.id}`);
+        console.log(`â±ï¸ Tempo de resposta: ${responseTime}ms`);
+        console.log(`ðŸ”— URL: ${session.url.substring(0, 50)}...`);
         console.log('-'.repeat(40));
 
         // Resposta otimizada
@@ -799,11 +960,11 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
     } catch (error) {
         const responseTime = Date.now() - startTime;
 
-        console.error('❌ ERRO AO CRIAR CHECKOUT SESSION:');
+        console.error('âŒ ERRO AO CRIAR CHECKOUT SESSION:');
         console.error('Tipo:', error.type);
-        console.error('Código:', error.code);
+        console.error('CÃ³digo:', error.code);
         console.error('Mensagem:', error.message);
-        console.error('Tempo até erro:', `${responseTime}ms`);
+        console.error('Tempo atÃ© erro:', `${responseTime}ms`);
 
         // Resposta de erro estruturada
         const statusCode = error.statusCode || 500;
@@ -822,17 +983,17 @@ app.post('/api/create-checkout-session', validateStripeReady, validateRequestDat
 
         // Log para diferentes tipos de erro
         if (error.type === 'StripeCardError') {
-            console.error('🚫 Card Error - problema com o cartão');
+            console.error('ðŸš« Card Error - problema com o cartÃ£o');
         } else if (error.type === 'StripeRateLimitError') {
-            console.error('⏰ Rate Limit - muitas requests');
+            console.error('â° Rate Limit - muitas requests');
         } else if (error.type === 'StripeInvalidRequestError') {
-            console.error('❌ Invalid Request - dados inválidos');
+            console.error('âŒ Invalid Request - dados invÃ¡lidos');
         } else if (error.type === 'StripeAPIError') {
-            console.error('🔥 API Error - problema no Stripe');
+            console.error('ðŸ”¥ API Error - problema no Stripe');
         } else if (error.type === 'StripeConnectionError') {
-            console.error('🌐 Connection Error - problema de rede');
+            console.error('ðŸŒ Connection Error - problema de rede');
         } else if (error.type === 'StripeAuthenticationError') {
-            console.error('🔑 Authentication Error - problema com as chaves');
+            console.error('ðŸ”‘ Authentication Error - problema com as chaves');
         }
 
         res.status(statusCode).json(errorResponse);
@@ -873,14 +1034,14 @@ app.get('/api/payment-status/:sessionId', validateStripeReady, async (req, res) 
                 subscription_id: session.subscription?.id || session.subscription,
                 plan_key: session.metadata?.plan_key,
                 plan_name: session.metadata?.plan_name || session.metadata?.plan_key || 'Coaching Plan',
-                trainerize_invite: session.metadata?.trainerize_invite || null
+                mypthub_invite: session.metadata?.mypthub_invite || null
             });
     } catch (e) {
         res.status(404).json({ status:'error', error:'NOT_FOUND' });
     }
 });
 
-// 📋 ENDPOINT PARA LISTAR PLANOS
+// ðŸ“‹ ENDPOINT PARA LISTAR PLANOS
 app.get('/api/plans', (req, res) => {
     const plans = Object.entries(SUBSCRIPTION_PLANS).map(([key, plan]) => ({
         key,
@@ -889,7 +1050,7 @@ app.get('/api/plans', (req, res) => {
         price: {
             amount: plan.amount,
             currency: plan.currency,
-            formatted: `€${(plan.amount / 100).toFixed(2)}`,
+            formatted: `â‚¬${(plan.amount / 100).toFixed(2)}`,
             interval: plan.interval || null,
             mode: plan.mode
         },
@@ -905,7 +1066,7 @@ app.get('/api/plans', (req, res) => {
     });
 });
 
-// 🔍 ENDPOINT PARA VERIFICAR STATUS DA SESSÃO
+// ðŸ” ENDPOINT PARA VERIFICAR STATUS DA SESSÃƒO
 app.get('/api/session/:sessionId', validateStripeReady, async (req, res) => {
     try {
         const { sessionId } = req.params;
@@ -933,7 +1094,7 @@ app.get('/api/session/:sessionId', validateStripeReady, async (req, res) => {
     }
 });
 
-// STRIPE WEBHOOK (validação de assinatura)
+// STRIPE WEBHOOK (validaÃ§Ã£o de assinatura)
 // Importante: usamos req.rawBody (definido no express.json verify) para validar a assinatura
 app.post('/api/stripe-webhook', async (req, res) => {
     if (!isStripeReady) {
@@ -942,7 +1103,7 @@ app.post('/api/stripe-webhook', async (req, res) => {
 
     const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
     if (!endpointSecret) {
-        console.error('⚠️ STRIPE_WEBHOOK_SECRET não configurado');
+        console.error('âš ï¸ STRIPE_WEBHOOK_SECRET nÃ£o configurado');
         return res.status(500).json({ error: 'Webhook not configured' });
     }
 
@@ -952,7 +1113,7 @@ app.post('/api/stripe-webhook', async (req, res) => {
         const raw = req.rawBody || Buffer.from(JSON.stringify(req.body || {}));
         event = stripe.webhooks.constructEvent(raw, sig, endpointSecret);
     } catch (err) {
-        console.error('❌ Webhook signature verification failed:', err.message);
+        console.error('âŒ Webhook signature verification failed:', err.message);
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
@@ -961,7 +1122,7 @@ app.post('/api/stripe-webhook', async (req, res) => {
         switch (event.type) {
             case 'checkout.session.completed': {
                 const session = event.data.object;
-                console.log('✅ checkout.session.completed:', {
+                console.log('âœ… checkout.session.completed:', {
                     id: session.id,
                     customer_email: session.customer_details?.email,
                     subscription: session.subscription,
@@ -981,12 +1142,12 @@ app.post('/api/stripe-webhook', async (req, res) => {
                         term: session.metadata?.utm_term,
                         content: session.metadata?.utm_content
                     };
-                    console.log('📎 UTM (session.metadata):', utm);
+                    console.log('ðŸ“Ž UTM (session.metadata):', utm);
 
                     // Look up Meta attribution identifiers if provided by client
                     const metaIds = metaAttributionStore.get(transactionId) || {};
                     if (metaIds.fbp || metaIds.fbc) {
-                        console.log('🔍 Found Meta attribution IDs for session:', metaIds);
+                        console.log('ðŸ” Found Meta attribution IDs for session:', metaIds);
                     }
 
                     // GA4 Measurement Protocol
@@ -1023,10 +1184,10 @@ app.post('/api/stripe-webhook', async (req, res) => {
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(gaPayload)
                         }).then(r => r.text()).then(t => {
-                            console.log('📊 GA4 MP purchase sent:', transactionId, t.slice(0,120));
+                            console.log('ðŸ“Š GA4 MP purchase sent:', transactionId, t.slice(0,120));
                         }).catch(err => console.warn('GA4 MP error:', err.message));
                     } else {
-                        console.log('ℹ️ GA4_MEASUREMENT_ID or GA4_API_SECRET missing - skipping GA4 server event');
+                        console.log('â„¹ï¸ GA4_MEASUREMENT_ID or GA4_API_SECRET missing - skipping GA4 server event');
                     }
 
                     // Meta Conversions API (optional)
@@ -1058,20 +1219,20 @@ app.post('/api/stripe-webhook', async (req, res) => {
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(metaEvent)
                         }).then(r=>r.json()).then(j=>{
-                            console.log('📈 Meta CAPI purchase sent:', transactionId, JSON.stringify(j).slice(0,500));
+                            console.log('ðŸ“ˆ Meta CAPI purchase sent:', transactionId, JSON.stringify(j).slice(0,500));
                         }).catch(err => console.warn('Meta CAPI error:', err.message));
                     } else {
-                        console.log('ℹ️ META_PIXEL_ID or META_CAPI_TOKEN missing - skipping Meta CAPI');
+                        console.log('â„¹ï¸ META_PIXEL_ID or META_CAPI_TOKEN missing - skipping Meta CAPI');
                     }
                 } catch (attribErr) {
-                    console.warn('⚠️ Attribution dispatch failed:', attribErr.message);
+                    console.warn('âš ï¸ Attribution dispatch failed:', attribErr.message);
                 }
                 // Onboarding email (optional; depends on SMTP env)
                 try {
                     const { sendOnboardingEmail, sendAdminPurchaseNotification } = require('./onboarding-email');
                     const email = session.customer_details?.email;
                     const planName = session.metadata?.plan_name || session.metadata?.plan_key || 'Coaching Plan';
-                    const trainerizeLink = session.metadata?.trainerize_invite || process.env.TRAINERIZE_INVITE_URL;
+                    const myPtHubLink = session.metadata?.mypthub_invite || process.env.MYPTHUB_INVITE_URL;
                     const locale = session.locale === 'pt' || session.customer_details?.address?.country === 'BR' ? 'pt' : 'en';
                     await sendAdminPurchaseNotification({
                         customerEmail: email,
@@ -1081,14 +1242,14 @@ app.post('/api/stripe-webhook', async (req, res) => {
                         currency: session.currency,
                         sessionId: session.id
                     });
-                    if (email && trainerizeLink) {
-                        await sendOnboardingEmail({ to: email, name: session.customer_details?.name, planName, trainerizeLink, locale });
-                        console.log('✉️ Onboarding email queued/sent to', email);
+                    if (email && myPtHubLink) {
+                        await sendOnboardingEmail({ to: email, name: session.customer_details?.name, planName, myPtHubLink, locale });
+                        console.log('âœ‰ï¸ Onboarding email queued/sent to', email);
                     } else {
-                        console.log('ℹ️ Skipping onboarding email (missing email or trainerize link)');
+                        console.log('â„¹ï¸ Skipping onboarding email (missing email or mypthub link)');
                     }
                 } catch (mailErr) {
-                    console.warn('⚠️ Onboarding email failed/skipped:', mailErr.message);
+                    console.warn('âš ï¸ Onboarding email failed/skipped:', mailErr.message);
                 }
                 break;
             }
@@ -1096,7 +1257,7 @@ app.post('/api/stripe-webhook', async (req, res) => {
             case 'customer.subscription.updated':
             case 'customer.subscription.deleted': {
                 const sub = event.data.object;
-                console.log(`📦 ${event.type}:`, {
+                console.log(`ðŸ“¦ ${event.type}:`, {
                     id: sub.id,
                     status: sub.status,
                     current_period_end: sub.current_period_end
@@ -1105,27 +1266,27 @@ app.post('/api/stripe-webhook', async (req, res) => {
             }
             case 'invoice.paid': {
                 const invoice = event.data.object;
-                console.log('💸 invoice.paid:', { id: invoice.id, total: invoice.total });
+                console.log('ðŸ’¸ invoice.paid:', { id: invoice.id, total: invoice.total });
                 break;
             }
             case 'invoice.payment_failed': {
                 const invoice = event.data.object;
-                console.log('⚠️ invoice.payment_failed:', { id: invoice.id, total: invoice.total });
+                console.log('âš ï¸ invoice.payment_failed:', { id: invoice.id, total: invoice.total });
                 break;
             }
             default:
-                console.log(`ℹ️ Unhandled event type: ${event.type}`);
+                console.log(`â„¹ï¸ Unhandled event type: ${event.type}`);
         }
 
         // Responda 200 rapidamente para evitar reenvios
         res.json({ received: true });
     } catch (handlerErr) {
-        console.error('💥 Erro ao processar webhook:', handlerErr);
+        console.error('ðŸ’¥ Erro ao processar webhook:', handlerErr);
         res.status(500).json({ error: 'Webhook handler error' });
     }
 });
 
-// 🚫 404 Handler
+// ðŸš« 404 Handler
 app.use('*', (req, res) => {
     res.status(404).json({
         error: 'Not Found',
@@ -1139,9 +1300,9 @@ app.use('*', (req, res) => {
     });
 });
 
-// 💥 Error Handler Global
+// ðŸ’¥ Error Handler Global
 app.use((error, req, res, next) => {
-    console.error('💥 ERRO GLOBAL:', error);
+    console.error('ðŸ’¥ ERRO GLOBAL:', error);
 
     res.status(500).json({
         error: 'Internal Server Error',
@@ -1151,7 +1312,7 @@ app.use((error, req, res, next) => {
     });
 });
 
-// 🚀 INICIALIZAÇÃO DO SERVIDOR
+// ðŸš€ INICIALIZAÃ‡ÃƒO DO SERVIDOR
 const PORT = process.env.PORT || 3001;
 
 async function startServer() {
@@ -1159,52 +1320,53 @@ async function startServer() {
         // Inicializar Stripe
         const stripeInitialized = initializeStripe();
         if (!stripeInitialized) {
-            console.warn('⚠️ Stripe não inicializado. Continuando com o servidor para servir site e API públicas.');
+            console.warn('âš ï¸ Stripe nÃ£o inicializado. Continuando com o servidor para servir site e API pÃºblicas.');
         }
 
-        // Testar conexão com Stripe
+        // Testar conexÃ£o com Stripe
         try {
             if (stripeInitialized) {
-                console.log('🔄 Testando conexão com Stripe...');
+                console.log('ðŸ”„ Testando conexÃ£o com Stripe...');
                 await stripe.accounts.retrieve();
-                console.log('✅ Conexão com Stripe verificada!');
+                console.log('âœ… ConexÃ£o com Stripe verificada!');
             }
         } catch (connErr) {
-            console.warn('⚠️ Não foi possível verificar conexão com Stripe agora:', connErr.message);
+            console.warn('âš ï¸ NÃ£o foi possÃ­vel verificar conexÃ£o com Stripe agora:', connErr.message);
             isStripeReady = false;
         }
 
         // Iniciar servidor
         const server = app.listen(PORT, () => {
-            console.log('🚀 SERVIDOR GARCIA BUILDER INICIADO');
+            console.log('ðŸš€ SERVIDOR GARCIA BUILDER INICIADO');
             console.log('='.repeat(50));
-            console.log(`✅ Porta: ${PORT}`);
-            console.log(`✅ Ambiente: ${process.env.NODE_ENV || 'development'}`);
-            console.log(`✅ URL Local: http://localhost:${PORT}`);
-            console.log(`✅ Health Check: http://localhost:${PORT}/health`);
-            console.log(`✅ API Docs: http://localhost:${PORT}/api/plans`);
+            console.log(`âœ… Porta: ${PORT}`);
+            console.log(`âœ… Ambiente: ${process.env.NODE_ENV || 'development'}`);
+            console.log(`âœ… URL Local: http://localhost:${PORT}`);
+            console.log(`âœ… Health Check: http://localhost:${PORT}/health`);
+            console.log(`âœ… API Docs: http://localhost:${PORT}/api/plans`);
             console.log('='.repeat(50));
-            console.log('🎯 Sistema pronto para receber pagamentos!');
+            console.log('ðŸŽ¯ Sistema pronto para receber pagamentos!');
         });
 
         // Graceful shutdown
         process.on('SIGTERM', () => {
-            console.log('🔄 Recebido SIGTERM, fechando servidor...');
+            console.log('ðŸ”„ Recebido SIGTERM, fechando servidor...');
             server.close(() => {
-                console.log('✅ Servidor fechado com sucesso');
+                console.log('âœ… Servidor fechado com sucesso');
                 process.exit(0);
             });
         });
 
     } catch (error) {
-        console.error('💥 ERRO AO INICIAR SERVIDOR:', error.message);
+        console.error('ðŸ’¥ ERRO AO INICIAR SERVIDOR:', error.message);
         process.exit(1);
     }
 }
 
-// Executar apenas se não estiver sendo importado
+// Executar apenas se nÃ£o estiver sendo importado
 if (require.main === module) {
     startServer();
 }
 
 module.exports = app;
+

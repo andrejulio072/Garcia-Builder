@@ -19,19 +19,19 @@ function createTransport() {
   });
 }
 
-function renderEmailHtml({ name, planName, trainerizeLink, locale = 'en' }) {
+function renderEmailHtml({ name, planName, myPtHubLink, locale = 'en' }) {
   const titles = {
     en: 'Welcome to Garcia Builder — Your Next Steps',
     pt: 'Bem-vindo ao Garcia Builder — Próximos Passos'
   };
   const nextSteps = {
     en: [
-      'Download the Trainerize app and create your account using this invite link.',
+      'Download the My PT Hub app and create your account using this invite link.',
       'Fill your profile and availability inside the app.',
       'Expect your personalized plan within 24–48h or reply to this email for any questions.'
     ],
     pt: [
-      'Baixe o aplicativo Trainerize e crie sua conta usando este link de convite.',
+      'Baixe o aplicativo My PT Hub e crie sua conta usando este link de convite.',
       'Preencha seu perfil e disponibilidade no app.',
       'Seu plano personalizado chega em 24–48h. Responda este email em caso de dúvidas.'
     ]
@@ -46,8 +46,8 @@ function renderEmailHtml({ name, planName, trainerizeLink, locale = 'en' }) {
     <p>Hi${name ? ' ' + name : ''},</p>
     <p>Plan: <strong>${planName || 'Coaching Plan'}</strong></p>
     <p>
-      <a href="${trainerizeLink}" style="display:inline-block;background:#f6c84e;color:#0b1220;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700">
-        Open Trainerize Invite
+      <a href="${myPtHubLink}" style="display:inline-block;background:#f6c84e;color:#0b1220;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700">
+        Open My PT Hub Access
       </a>
     </p>
     ${bookingUrl ? `<p><a href="${bookingUrl}">Schedule your onboarding consult</a></p>` : ''}
@@ -58,21 +58,21 @@ function renderEmailHtml({ name, planName, trainerizeLink, locale = 'en' }) {
   </div>`;
 }
 
-async function sendOnboardingEmail({ to, name, planName, trainerizeLink, locale }) {
+async function sendOnboardingEmail({ to, name, planName, myPtHubLink, locale }) {
   const transport = createTransport();
   if (!transport) {
     return { skipped: true };
   }
   const from = process.env.FROM_EMAIL || 'no-reply@garciabuilder.fitness';
   const subject = locale === 'pt' ? 'Bem-vindo ao Garcia Builder' : 'Welcome to Garcia Builder';
-  const html = renderEmailHtml({ name, planName, trainerizeLink, locale });
+  const html = renderEmailHtml({ name, planName, myPtHubLink, locale });
   await transport.sendMail({ from, to, subject, html });
   return { ok: true };
 }
 
 function renderAdminNotificationHtml({ customerEmail, customerName, planName, amount, currency, sessionId }) {
   const bookingUrl = process.env.BOOKING_URL || 'https://calendly.com/andrenjulio072/consultation';
-  const trainerizeLink = process.env.TRAINERIZE_INVITE_URL || '';
+  const myPtHubLink = process.env.MYPTHUB_INVITE_URL || '';
 
   return `
   <div style="font-family:Inter,Arial,sans-serif;color:#0b1220">
@@ -86,10 +86,10 @@ function renderAdminNotificationHtml({ customerEmail, customerName, planName, am
     <ol>
       <li>Confirm the customer received the onboarding email.</li>
       <li>Check Calendly for the onboarding consultation.</li>
-      <li>Create or approve the client in Trainerize.</li>
+      <li>Create or approve the client in My PT Hub.</li>
       <li>Prepare assessment questions, nutrition targets, and first training block.</li>
     </ol>
-    <p><a href="${bookingUrl}">Booking page</a>${trainerizeLink ? ` | <a href="${trainerizeLink}">Trainerize invite</a>` : ''}</p>
+    <p><a href="${bookingUrl}">Booking page</a>${myPtHubLink ? ` | <a href="${myPtHubLink}">My PT Hub access</a>` : ''}</p>
   </div>`;
 }
 

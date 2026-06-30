@@ -191,13 +191,13 @@
 ### 🔧 **Nível: COMPLEXO** ⭐⭐⭐
 **Tempo Estimado: 3-6 semanas cada**
 
-#### 7. **Integração com Trainerize** 🏃‍♂️
+#### 7. **Integração com My PT Hub** 🏃‍♂️
 - **Status**: Pendente
 - **Complexidade**: ⭐⭐⭐ Complexo
-- **Descrição**: Conectar com Trainerize para otimizar/automatizar processo dos clientes
-- **API**: Trainerize API v1
+- **Descrição**: Conectar com My PT Hub para otimizar/automatizar processo dos clientes
+- **API**: My PT Hub API v1
 - **Tarefas**:
-  - [ ] Estudo da API do Trainerize
+  - [ ] Estudo da API do My PT Hub
   - [ ] Sistema de autenticação OAuth
   - [ ] Sincronização de dados dos clientes
   - [ ] Dashboard integrado
@@ -216,12 +216,12 @@
   - [ ] Analytics de conversão
   - [ ] Follow-up automatizado
 
-#### 9. **Trainerize Blogs Integration** 📝
+#### 9. **My PT Hub Blogs Integration** 📝
 - **Status**: Futuro
 - **Complexidade**: ⭐⭐⭐ Complexo
-- **Descrição**: Conectar com blogs do Trainerize para conteúdo automático
+- **Descrição**: Conectar com blogs do My PT Hub para conteúdo automático
 - **Tarefas**:
-  - [ ] API de blogs do Trainerize
+  - [ ] API de blogs do My PT Hub
   - [ ] Sistema de importação automática
   - [ ] Layout responsivo para blog
   - [ ] SEO optimization
@@ -244,9 +244,9 @@
 4. 🔄 Newsletter system
 
 ### **Fase 3: Integrações Complexas** (2-4 meses)
-1. 🔄 Integração com Trainerize
+1. 🔄 Integração com My PT Hub
 2. 🔄 E-book gratuito sistema
-3. 🔄 Trainerize blogs integration
+3. 🔄 My PT Hub blogs integration
 
 ---
 
@@ -261,7 +261,7 @@
 2. **Conversão de Moedas** - Expansão internacional
 
 ### **Próximos 3 Meses:**
-1. **Integração Trainerize** - Diferencial competitivo
+1. **Integração My PT Hub** - Diferencial competitivo
 2. **E-book Sistema** - Lead generation
 
 ---
@@ -287,7 +287,7 @@
 
 ### **Ferramentas/APIs:**
 - [ ] Stripe API (✅ Já configurado)
-- [ ] Trainerize API (Pendente)
+- [ ] My PT Hub API (Pendente)
 - [ ] Currency Exchange API
 - [ ] Email Service (MailChimp/SendGrid)
 - [ ] Analytics (Google Analytics)

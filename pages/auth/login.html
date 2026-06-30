@@ -36,6 +36,24 @@
         @media (prefers-reduced-motion: reduce) {
             * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
         }
+
+        .file-protocol-warning {
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            max-width: 92%;
+            width: 620px;
+        }
+
+        .file-protocol-alert {
+            border-left: 4px solid #0d6efd;
+        }
+
+        .file-protocol-icon {
+            font-size: 1.5rem;
+        }
     </style>
 </head>
 <body class="auth-page">
@@ -266,10 +284,10 @@
     </div>
 
     <!-- File Protocol Hint (only shows on file://) -->
-    <div id="file-protocol-warning" class="d-none" style="position: fixed; top: 70px; left: 50%; transform: translateX(-50%); z-index: 9999; max-width: 92%; width: 620px;">
-        <div class="alert alert-info alert-dismissible fade show shadow" role="alert" style="border-left: 4px solid #0d6efd;">
+    <div id="file-protocol-warning" class="d-none file-protocol-warning">
+        <div class="alert alert-info alert-dismissible fade show shadow file-protocol-alert" role="alert">
             <div class="d-flex align-items-start">
-                <i class="fas fa-lightbulb me-3 mt-1" style="font-size: 1.5rem;"></i>
+                <i class="fas fa-lightbulb me-3 mt-1 file-protocol-icon"></i>
                 <div>
                     <h5 class="alert-heading mb-2">
                         <i class="fas fa-folder-open me-2"></i>Running directly from your computer

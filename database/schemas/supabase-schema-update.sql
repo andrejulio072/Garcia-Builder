@@ -56,7 +56,7 @@ WHERE table_name = 'profiles'
 ORDER BY ordinal_position;
 
 -- ============================================================
--- Garcia Builder - Extended Trainerize-like Schema
+-- Garcia Builder - Extended My PT Hub-like Schema
 -- The frontend expects the following tables. Run this section
 -- to create them if they do not already exist.
 -- ============================================================

@@ -2,7 +2,7 @@
 
 ## 🎯 Sistema Implementado
 
-Criamos um sistema de dashboard completo e profissional com funcionalidades similares ao Trainerize, incluindo:
+Criamos um sistema de dashboard completo e profissional com funcionalidades similares ao My PT Hub, incluindo:
 
 ### ✅ **Autenticação com Roles**
 - **Admin**: Acesso total ao sistema
@@ -157,7 +157,7 @@ enhanced-admin-dashboard.html
 ## 🌟 **Resultado Final**
 
 O sistema agora possui:
-- **Interface profissional** similar ao Trainerize
+- **Interface profissional** similar ao My PT Hub
 - **Gestão completa de usuários** com diferentes roles
 - **Dashboard administrativo** funcional
 - **Sistema de autenticação** robusto

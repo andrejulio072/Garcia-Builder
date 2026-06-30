@@ -214,7 +214,7 @@ async function handleSuccessfulPayment(session) {
         // 1. Salvar no banco de dados
         // 2. Enviar email de boas-vindas
         // 3. Criar conta no seu sistema
-        // 4. Integrar com outras ferramentas (ex: Trainerize)
+        // 4. Integrar com outras ferramentas (ex: My PT Hub)
 
     } catch (error) {
         console.error('Erro ao processar pagamento bem-sucedido:', error);

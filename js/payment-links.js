@@ -25,7 +25,7 @@ const PAYMENT_LINKS = {
             'Goal-based training blocks',
             'Habit-focused nutrition targets',
             'Weekly accountability check-in',
-            'Trainerize app access'
+            'My PT Hub app access'
         ]
     },
     consistency: {
@@ -38,7 +38,7 @@ const PAYMENT_LINKS = {
             'Lifestyle habit coaching system',
             'Monthly nutrition refinement call',
             'Progress dashboards and wins tracking',
-            'Trainerize app access'
+            'My PT Hub app access'
         ]
     },
     performance: {

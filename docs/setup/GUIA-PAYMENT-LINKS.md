@@ -18,7 +18,7 @@ Para cada plano, clique em **"+ Add product"**:
 
 #### **📦 Produto 1: Starter Plan**
 - **Name**: `Starter Plan - Garcia Builder Coaching`
-- **Description**: `Perfect for beginners starting their fitness journey. Includes basic workout plans, nutrition guidelines, email support, and Trainerize app access.`
+- **Description**: `Perfect for beginners starting their fitness journey. Includes basic workout plans, nutrition guidelines, email support, and My PT Hub app access.`
 - **Pricing model**: `Recurring`
 - **Price**: `75.00 GBP`
 - **Billing period**: `Monthly`
@@ -26,7 +26,7 @@ Para cada plano, clique em **"+ Add product"**:
 
 #### **📦 Produto 2: Beginner Plan**
 - **Name**: `Beginner Plan - Garcia Builder Coaching`
-- **Description**: `Enhanced plan with more features and support. Includes enhanced workout plans, meal prep guides, priority support, progress tracking, and Trainerize app access.`
+- **Description**: `Enhanced plan with more features and support. Includes enhanced workout plans, meal prep guides, priority support, progress tracking, and My PT Hub app access.`
 - **Pricing model**: `Recurring`
 - **Price**: `95.00 GBP`
 - **Billing period**: `Monthly`
@@ -34,7 +34,7 @@ Para cada plano, clique em **"+ Add product"**:
 
 #### **📦 Produto 3: Essentials Plan**
 - **Name**: `Essentials Plan - Garcia Builder Coaching`
-- **Description**: `Comprehensive fitness and nutrition coaching. Includes custom workout plans, personalized nutrition, 1-on-1 coaching calls, progress analytics, and Trainerize app access.`
+- **Description**: `Comprehensive fitness and nutrition coaching. Includes custom workout plans, personalized nutrition, 1-on-1 coaching calls, progress analytics, and My PT Hub app access.`
 - **Pricing model**: `Recurring`
 - **Price**: `115.00 GBP`
 - **Billing period**: `Monthly`
@@ -42,7 +42,7 @@ Para cada plano, clique em **"+ Add product"**:
 
 #### **📦 Produto 4: Full Plan**
 - **Name**: `Full Plan - Garcia Builder Coaching`
-- **Description**: `Complete transformation package with premium support. Includes premium coaching, weekly check-ins, 24/7 support, supplement guidance, lifestyle coaching, and Trainerize app access.`
+- **Description**: `Complete transformation package with premium support. Includes premium coaching, weekly check-ins, 24/7 support, supplement guidance, lifestyle coaching, and My PT Hub app access.`
 - **Pricing model**: `Recurring`
 - **Price**: `155.00 GBP`
 - **Billing period**: `Monthly`
@@ -50,7 +50,7 @@ Para cada plano, clique em **"+ Add product"**:
 
 #### **📦 Produto 5: Elite Plan**
 - **Name**: `Elite Plan - Garcia Builder Coaching`
-- **Description**: `Ultimate coaching experience with exclusive access. Includes VIP coaching, daily support, custom meal delivery, exclusive content, personal trainer access, and Trainerize app access.`
+- **Description**: `Ultimate coaching experience with exclusive access. Includes VIP coaching, daily support, custom meal delivery, exclusive content, personal trainer access, and My PT Hub app access.`
 - **Pricing model**: `Recurring`
 - **Price**: `230.00 GBP`
 - **Billing period**: `Monthly`
@@ -132,7 +132,7 @@ Crie uma página `success.html` profissional:
     <p>Em breve você receberá:</p>
     <ul>
         <li>✅ Email de confirmação</li>
-        <li>✅ Acesso ao Trainerize</li>
+        <li>✅ Acesso ao My PT Hub</li>
         <li>✅ Convite para o chat do app / onboarding</li>
         <li>✅ Seu plano personalizado</li>
     </ul>
@@ -144,7 +144,7 @@ Crie uma página `success.html` profissional:
 ### **Webhooks (Opcional)**
 Configure webhooks em `https://dashboard.stripe.com/webhooks` para:
 - Enviar emails de boas-vindas
-- Criar usuário no Trainerize
+- Criar usuário no My PT Hub
 - Adicionar ao chat do app (grupo/DM)
 - Integrar com Zapier
 

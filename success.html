@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -9,13 +9,13 @@
     <meta name="author" content="Garcia Builder Coaching">
     <meta name="robots" content="noindex, nofollow, max-snippet:-1, max-image-preview:large">
     <meta name="google-site-verification" content="google47d3c69666bce37e">
-    <meta name="trainerize:invite" content="">
+    <meta name="mypthub:invite" content="">
     <meta name="booking:url" content="https://calendly.com/andrenjulio072/consultation">
 
     <link rel="canonical" href="https://garciabuilder.fitness/success.html">
     <meta property="og:type" content="article">
     <meta property="og:title" content="Pagamento confirmado - Garcia Builder Coaching">
-    <meta property="og:description" content="Confirmação de pagamento concluída. Receba o acesso ao app e veja os próximos passos do programa.">
+    <meta property="og:description" content="ConfirmaÃ§Ã£o de pagamento concluÃ­da. Receba o acesso ao app e veja os prÃ³ximos passos do programa.">
     <meta property="og:url" content="https://garciabuilder.fitness/success.html">
     <meta property="og:image" content="https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png">
     <meta property="og:image:alt" content="Logotipo Garcia Builder">
@@ -29,8 +29,6 @@
     <meta name="twitter:image" content="https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png">
     <meta name="twitter:site" content="@garciabuilder.fitness">
     <meta name="twitter:creator" content="@garciabuilder.fitness">
-    <meta name="theme-color" content="#0f172a">
-
     <link rel="icon" href="Logo Files/For Web/logo-nobackground-500.png" type="image/png">
     <link rel="apple-touch-icon" href="Logo Files/For Web/logo-nobackground-500.png">
 
@@ -122,7 +120,7 @@
         "@context": "https://schema.org",
         "@type": "WebPage",
         "name": "Pagamento confirmado - Garcia Builder",
-        "description": "Confirmação de pagamento e instruções de onboarding do programa Garcia Builder.",
+        "description": "ConfirmaÃ§Ã£o de pagamento e instruÃ§Ãµes de onboarding do programa Garcia Builder.",
         "url": "https://garciabuilder.fitness/success.html",
         "publisher": {
             "@type": "Organization",
@@ -160,6 +158,7 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 22px;
+                    -webkit-backdrop-filter: blur(20px);
             backdrop-filter: blur(20px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             padding: 3rem;
@@ -167,6 +166,33 @@
             max-width: 600px;
             margin: 0 auto;
         }
+
+                .state-hidden {
+                    display: none;
+                }
+
+                .mypthub-cta {
+                    color: #0b1220;
+                }
+
+                .success-footer {
+                    background: rgba(15, 15, 15, 0.8);
+                    -webkit-backdrop-filter: blur(10px);
+                    backdrop-filter: blur(10px);
+                }
+
+                .success-footer-logo {
+                    height: 50px;
+                    margin-bottom: 1rem;
+                }
+
+                .success-footer-link {
+                    color: #F6C84E;
+                }
+
+                .success-footer-text {
+                    color: rgba(255, 255, 255, 0.7);
+                }
 
         .success-icon {
             font-size: 4rem;
@@ -224,22 +250,22 @@
                     <p class="lead">Aguarde enquanto confirmamos seu pagamento...</p>
                 </div>
 
-                <div id="success-state" style="display: none;">
+                <div id="success-state" class="state-hidden">
                     <i class="fas fa-check-circle success-icon"></i>
                     <h1 class="success-title" data-i18n="success.title">Pagamento Confirmado!</h1>
-                    <p class="lead mb-4" data-i18n="success.subtitle">Obrigado por escolher o Garcia Builder. Sua jornada de transformação começou!</p>
+                    <p class="lead mb-4" data-i18n="success.subtitle">Obrigado por escolher o Garcia Builder. Sua jornada de transformaÃ§Ã£o comeÃ§ou!</p>
 
                     <div class="payment-details mb-4" id="payment-details">
-                        <!-- Detalhes do pagamento serão inseridos aqui -->
+                        <!-- Detalhes do pagamento serÃ£o inseridos aqui -->
                     </div>
 
                     <div class="next-steps">
-                        <h4 class="mb-3" data-i18n="success.next_steps.title">Próximos Passos:</h4>
+                        <h4 class="mb-3" data-i18n="success.next_steps.title">PrÃ³ximos Passos:</h4>
                         <div class="row text-start">
                             <div class="col-12 mb-3">
-                                <a id="trainerize-cta" href="#" target="_blank" class="btn btn-warning w-100 fw-bold" style="color:#0b1220">
+                                <a id="mypthub-cta" href="#" target="_blank" class="btn btn-warning w-100 fw-bold mypthub-cta">
                                     <i class="fas fa-bolt me-2"></i>
-                                    <span data-i18n="success.next_steps.trainerize_invite">Acessar convite do Trainerize</span>
+                                    <span data-i18n="success.next_steps.mypthub_invite">Acessar convite do My PT Hub</span>
                                 </a>
                             </div>
                             <div class="col-12 mb-3">
@@ -253,7 +279,7 @@
                                     <i class="fas fa-envelope text-primary me-3 mt-1"></i>
                                     <div>
                                         <h6 data-i18n="success.next_steps.email.title">Verifique seu Email</h6>
-                                        <small class="text-muted" data-i18n="success.next_steps.email.desc">Enviamos instruções detalhadas para começar</small>
+                                        <small class="text-muted" data-i18n="success.next_steps.email.desc">Enviamos instruÃ§Ãµes detalhadas para comeÃ§ar</small>
                                     </div>
                                 </div>
                             </div>
@@ -262,7 +288,7 @@
                                     <i class="fas fa-mobile-alt text-success me-3 mt-1"></i>
                                     <div>
                                         <h6 data-i18n="success.next_steps.app.title">Download do App</h6>
-                                        <small class="text-muted" data-i18n="success.next_steps.app.desc">Baixe o Trainerize para acompanhar seus treinos</small>
+                                        <small class="text-muted" data-i18n="success.next_steps.app.desc">Baixe o My PT Hub para acompanhar seus treinos</small>
                                     </div>
                                 </div>
                             </div>
@@ -271,7 +297,7 @@
                                     <i class="fas fa-comments text-success me-3 mt-1"></i>
                                     <div>
                                         <h6 data-i18n="success.next_steps.chat.title">App Chat</h6>
-                                        <small class="text-muted" data-i18n="success.next_steps.chat.desc">Você será adicionado ao chat privado no app</small>
+                                        <small class="text-muted" data-i18n="success.next_steps.chat.desc">VocÃª serÃ¡ adicionado ao chat privado no app</small>
                                     </div>
                                 </div>
                             </div>
@@ -300,7 +326,7 @@
                     </div>
                 </div>
 
-                <div id="error-state" style="display: none;">
+                <div id="error-state" class="state-hidden">
                     <i class="fas fa-exclamation-triangle text-warning success-icon"></i>
                     <h1 class="success-title">Verification Error</h1>
                     <p class="lead mb-4">There was a problem verifying your payment. Please contact us.</p>
@@ -330,7 +356,7 @@
             const sessionId = urlParams.get('session_id');
 
             if (!sessionId) {
-                showError('Session ID não encontrado');
+                showError('Session ID nÃ£o encontrado');
                 return;
             }
 
@@ -342,7 +368,7 @@
                 if (response.ok && data.status === 'paid') {
                     showSuccess(data);
                 } else {
-                    showError('Pagamento não confirmado');
+                    showError('Pagamento nÃ£o confirmado');
                 }
             } catch (error) {
                 console.error('Erro ao verificar pagamento:', error);
@@ -443,17 +469,17 @@
                             }
                         } catch(e){ console.warn('Pixel purchase failed', e); }
 
-            // Configure Trainerize invite CTA
+            // Configure My PT Hub access CTA
             try {
-                const invite = paymentData.trainerize_invite || (document.querySelector('meta[name="trainerize:invite"]')?.getAttribute('content')) || '';
-                const cta = document.getElementById('trainerize-cta');
+                const invite = paymentData.mypthub_invite || (document.querySelector('meta[name="mypthub:invite"]')?.getAttribute('content')) || '';
+                const cta = document.getElementById('mypthub-cta');
                 if (cta && invite) {
                     cta.href = invite;
                     cta.onclick = null;
                 } else if (cta) {
                     cta.style.display = 'none';
                 }
-            } catch(e){ console.warn('Trainerize CTA config failed', e); }
+            } catch(e){ console.warn('My PT Hub CTA config failed', e); }
 
             // Configure Booking CTA if provided via meta
             try {
@@ -479,17 +505,17 @@
 
 <!-- Footer Section -->
 <hr class="hr-shine"/>
-<footer class="text-center py-4" style="background: rgba(15, 15, 15, 0.8); backdrop-filter: blur(10px);" role="contentinfo" aria-label="Site footer">
+<footer class="text-center py-4 success-footer" role="contentinfo" aria-label="Site footer">
     <div class="container">
-        <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" style="height: 50px; margin-bottom: 1rem;" loading="lazy">
+        <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" class="success-footer-logo" loading="lazy">
         <div class="mb-3">
-            <a href="privacy.html" class="text-decoration-none mx-2" style="color: #F6C84E;" rel="noopener" aria-label="Privacy Policy">Privacy</a>
-            <a href="terms.html" class="text-decoration-none mx-2" style="color: #F6C84E;" rel="noopener" aria-label="Terms of Service">Terms</a>
-            <a href="contact.html" class="text-decoration-none mx-2" style="color: #F6C84E;" rel="noopener" aria-label="Contact Us">Contact</a>
+            <a href="privacy.html" class="text-decoration-none mx-2 success-footer-link" rel="noopener" aria-label="Privacy Policy">Privacy</a>
+            <a href="terms.html" class="text-decoration-none mx-2 success-footer-link" rel="noopener" aria-label="Terms of Service">Terms</a>
+            <a href="contact.html" class="text-decoration-none mx-2 success-footer-link" rel="noopener" aria-label="Contact Us">Contact</a>
         </div>
-        <p class="mb-0" style="color: rgba(255, 255, 255, 0.7);">
-            © 2025 Garcia Builder — Online Coaching •
-            <a href="https://instagram.com/garciabuilder.fitness" target="_blank" rel="noopener" style="color: #F6C84E;" aria-label="Follow us on Instagram">@garciabuilder.fitness</a>
+        <p class="mb-0 success-footer-text">
+            Â© 2025 Garcia Builder â€” Online Coaching â€¢
+            <a href="https://instagram.com/garciabuilder.fitness" target="_blank" rel="noopener" class="success-footer-link" aria-label="Follow us on Instagram">@garciabuilder.fitness</a>
         </p>
     </div>
 </footer>
@@ -501,3 +527,4 @@
 </a>
 </body>
 </html>
+

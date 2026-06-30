@@ -2,7 +2,7 @@
   "SUPABASE_URL": "https://fqivhobabbxxbtkjlnmq.supabase.co",
   "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxaXZob2JhYmJ4eGJ0a2psbm1xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMzU3NDUsImV4cCI6MjA5NzgxMTc0NX0.1xhfHZwghNXYOj9znIazzuzHl8mvzzOakmHurkh3WN8",
   "STRIPE_PUBLISHABLE_KEY": "pk_live_51S8QxZCEdPbAOAaf5v5Y3yskMYdY3p9sRAIXs2clIAtBiJtLQQwVA3IBcZe02znzJYC8e6BTpdpKRmvkiOZLM5ee00QKktfaZT",
-  "PUBLIC_SITE_URL": null,
+  "PUBLIC_SITE_URL": "http://localhost:3000",
   "GA4_MEASUREMENT_ID": null,
   "GOOGLE_OAUTH_ENABLED": true,
   "FACEBOOK_OAUTH_ENABLED": false

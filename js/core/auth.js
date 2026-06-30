@@ -175,6 +175,68 @@ function isLocalAuthFallbackEnabled() {
     return true;
 }
 
+function getCurrentAuthLanguage() {
+    try {
+        return localStorage.getItem('gb_language')
+            || (window.GB_I18N && typeof window.GB_I18N.getLang === 'function' && window.GB_I18N.getLang())
+            || 'en';
+    } catch {
+        return 'en';
+    }
+}
+
+function getAuthDict() {
+    const lang = getCurrentAuthLanguage();
+    const dicts = window.DICTS || {};
+    return dicts[lang] || dicts.en || {};
+}
+
+function getNestedValue(source, path) {
+    if (!source || !path) return undefined;
+    return path.split('.').reduce((cursor, part) => (
+        cursor && Object.prototype.hasOwnProperty.call(cursor, part) ? cursor[part] : undefined
+    ), source);
+}
+
+function authT(path, fallback = '', params = {}) {
+    const dict = getAuthDict();
+    let value = getNestedValue(dict, path);
+    if (value === undefined || value === null || value === '') {
+        value = fallback;
+    }
+    const text = String(value ?? '');
+    return text.replace(/\{(\w+)\}/g, (_, key) => (
+        Object.prototype.hasOwnProperty.call(params, key) ? String(params[key]) : ''
+    ));
+}
+
+function normalizeAuthEmail(email) {
+    return String(email || '').trim().toLowerCase();
+}
+
+function buildDefaultPreferences(extra = {}) {
+    const metadata = extra.metadata || {};
+    const language = extra.language
+        || metadata.language
+        || getCurrentAuthLanguage()
+        || 'en';
+
+    return {
+        units: extra.units || 'metric',
+        theme: extra.theme || 'dark',
+        language,
+        notifications: extra.notifications || {
+            email: true,
+            push: true,
+            reminders: true
+        },
+        privacy: extra.privacy || {
+            profile_visible: true,
+            progress_visible: true
+        }
+    };
+}
+
 async function syncUserProfile(supabaseClient, user, extra = {}) {
     if (!supabaseClient || !user?.id) {
         throw new Error('Cannot synchronize profile without an authenticated Supabase user.');
@@ -223,6 +285,113 @@ async function syncUserProfile(supabaseClient, user, extra = {}) {
     }
 
     return data;
+}
+
+async function syncUserPreferences(supabaseClient, user, extra = {}) {
+    if (!supabaseClient || !user?.id) {
+        throw new Error('Cannot synchronize preferences without an authenticated Supabase user.');
+    }
+
+    const defaults = buildDefaultPreferences(extra);
+    const payload = {
+        user_id: user.id,
+        units: defaults.units,
+        theme: defaults.theme,
+        language: defaults.language,
+        notifications: defaults.notifications,
+        privacy: defaults.privacy
+    };
+
+    const { data, error } = await supabaseClient
+        .from('user_preferences')
+        .upsert(payload, { onConflict: 'user_id' })
+        .select()
+        .single();
+
+    if (error) {
+        throw new Error(`Preference synchronization failed: ${error.message}`);
+    }
+
+    return data;
+}
+
+async function syncLegacyProfileCompatibility(supabaseClient, user, extra = {}) {
+    if (!supabaseClient || !user?.id) {
+        return null;
+    }
+
+    const metadata = user.user_metadata || {};
+    const payload = {
+        id: user.id,
+        full_name: extra.full_name || metadata.full_name || metadata.name || '',
+        phone: extra.phone || metadata.phone || '',
+        birthday: extra.birthday || extra.date_of_birth || metadata.birthday || metadata.date_of_birth || null,
+        avatar_url: extra.avatar_url || metadata.avatar_url || metadata.picture || null,
+        role: extra.role || metadata.role || 'client',
+        updated_at: new Date().toISOString()
+    };
+
+    const { data, error } = await supabaseClient
+        .from('profiles')
+        .upsert(payload, { onConflict: 'id' })
+        .select()
+        .single();
+
+    if (error) {
+        throw new Error(`Legacy profile synchronization failed: ${error.message}`);
+    }
+
+    return data;
+}
+
+async function syncAuthProfileState(supabaseClient, user, extra = {}) {
+    const profile = await syncUserProfile(supabaseClient, user, extra);
+    const preferences = await syncUserPreferences(supabaseClient, user, extra);
+    await syncLegacyProfileCompatibility(supabaseClient, user, extra);
+    return { profile, preferences };
+}
+
+async function resendConfirmationEmail(supabaseClient, email) {
+    const normalizedEmail = normalizeAuthEmail(email);
+    if (!supabaseClient?.auth?.resend || !normalizedEmail) {
+        return false;
+    }
+
+    const { error } = await supabaseClient.auth.resend({
+        type: 'signup',
+        email: normalizedEmail
+    });
+
+    if (error) {
+        throw new Error(error.message || 'Unable to resend confirmation email.');
+    }
+
+    return true;
+}
+
+function getAuthSubmitButton(form) {
+    return form?.querySelector('button[type="submit"]') || null;
+}
+
+function setAuthButtonLoading(button, isLoading, labelKey, fallbackLabel) {
+    if (!button) return;
+    if (!button.dataset.originalHtml) {
+        button.dataset.originalHtml = button.innerHTML;
+    }
+
+    if (isLoading) {
+        button.classList.add('loading');
+        button.disabled = true;
+        const label = authT(labelKey, fallbackLabel || button.textContent || '');
+        button.innerHTML = `<i class="fas fa-spinner fa-spin me-2"></i><span>${label}</span>`;
+        return;
+    }
+
+    button.classList.remove('loading');
+    button.disabled = false;
+    if (button.dataset.originalHtml) {
+        button.innerHTML = button.dataset.originalHtml;
+    }
 }
 
 const LOCAL_DEMO_ACCOUNTS = [
@@ -683,32 +852,32 @@ class AuthSystem {
     async handleLogin(e) {
         e.preventDefault();
 
-        const email = document.getElementById('loginEmail').value.trim();
+        const email = normalizeAuthEmail(document.getElementById('loginEmail').value);
         const password = document.getElementById('loginPassword').value;
         const rememberMe = document.getElementById('rememberMe').checked;
+        const submitBtn = getAuthSubmitButton(e.target);
 
         // Basic validation
         if (!email || !password) {
-            this.showError('Please fill in all fields');
+            this.showError(authT('required_fields_missing', 'Please fill in all required fields.'));
             return;
         }
 
         // Show loading state
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        this.setLoadingState(submitBtn, true);
+        setAuthButtonLoading(submitBtn, true, 'signing_in', 'Signing in...');
 
         try {
             // PRIMEIRO: validar contas locais quando modo local/dev estiver ativo.
             // Isso permite usar credenciais de teste sem depender do Supabase.
             if (isLocalAuthFallbackEnabled()) {
                 const users = seedLocalDemoAccounts();
-                const normalizedEmail = email.toLowerCase();
+                const normalizedEmail = email;
                 let localUser = users.find((u) => {
-                    const emailMatch = (u.email || '').toLowerCase() === email.toLowerCase();
+                    const emailMatch = normalizeAuthEmail(u.email) === normalizedEmail;
                     const adminAliasMatch = (u.role === 'admin') && (
                         normalizedEmail === 'admin' ||
                         normalizedEmail === 'admin@local' ||
-                        (u.username || '').toLowerCase() === normalizedEmail
+                        normalizeAuthEmail(u.username) === normalizedEmail
                     );
                     return emailMatch || adminAliasMatch;
                 });
@@ -717,8 +886,8 @@ class AuthSystem {
                 // reconstruct it from LOCAL_DEMO_ACCOUNTS and continue login.
                 if (!localUser) {
                     const template = LOCAL_DEMO_ACCOUNTS.find((account) => {
-                        const accountEmail = (account.email || '').toLowerCase();
-                        const accountUsername = (account.username || '').toLowerCase();
+                        const accountEmail = normalizeAuthEmail(account.email);
+                        const accountUsername = normalizeAuthEmail(account.username);
                         const emailMatch = accountEmail === normalizedEmail;
                         const adminAliasMatch = account.role === 'admin' && (
                             normalizedEmail === 'admin' ||
@@ -770,7 +939,7 @@ class AuthSystem {
                     localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
 
                     if (this.currentUser.role === 'admin') {
-                        this.setLoadingState(submitBtn, false);
+                        setAuthButtonLoading(submitBtn, false);
                         this.redirectAdminAfterLogin();
                         return;
                     }
@@ -781,50 +950,61 @@ class AuthSystem {
             if (!this.currentUser) {
                 const supabaseClient = await getSupabaseAuthClient();
                 if (supabaseClient && supabaseClient.auth) {
-                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (error) throw new Error(error.message || 'Login failed');
+                    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                    if (error) throw new Error(error.message || 'Login failed');
 
-                const supaUser = data.user;
-                // Normalize and persist user locally for cross-script UI
-                this.currentUser = {
-                    id: supaUser?.id,
-                    name: supaUser?.user_metadata?.full_name || supaUser?.email,
-                    full_name: supaUser?.user_metadata?.full_name || '',
-                    email: supaUser?.email,
-                    registeredAt: supaUser?.created_at || new Date().toISOString(),
-                    lastLogin: new Date().toISOString()
-                };
-                localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
+                    const supaUser = data.user;
+                    this.currentUser = {
+                        id: supaUser?.id,
+                        name: supaUser?.user_metadata?.full_name || supaUser?.email,
+                        full_name: supaUser?.user_metadata?.full_name || '',
+                        email: supaUser?.email,
+                        registeredAt: supaUser?.created_at || new Date().toISOString(),
+                        lastLogin: new Date().toISOString()
+                    };
 
-                // Best-effort: upsert user profile record in Supabase
-                try {
-                    await syncUserProfile(supabaseClient, supaUser);
-                } catch (e) {
-                    console.error('Profile synchronization after login failed:', e?.message || e);
-                }
+                    let syncFailed = false;
+                    try {
+                        await syncAuthProfileState(supabaseClient, supaUser, {
+                            full_name: this.currentUser.full_name || this.currentUser.name,
+                            email,
+                            phone: document.getElementById('registerPhone')?.value || '',
+                            birthday: document.getElementById('registerDob')?.value || '',
+                            date_of_birth: document.getElementById('registerDob')?.value || '',
+                            language: getCurrentAuthLanguage()
+                        });
+                    } catch (syncErr) {
+                        syncFailed = true;
+                        console.warn('Profile synchronization after login failed:', syncErr?.message || syncErr);
+                    }
+
+                    localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
+                    if (syncFailed) {
+                        showAuthMessage(authT('profile_sync_warning', 'Your profile is still syncing. Please refresh after a moment.'), 'warning');
+                    }
                 } else if (isLocalAuthFallbackEnabled()) {
-                // Explicit localhost-only fallback for development demos.
-                // Simulate API delay
-                await this.delay(500);
-                const user = this.users.find(u => u.email.toLowerCase() === email.toLowerCase());
-                if (!user) {
-                    throw new Error('Email not found');
-                }
-                if (user.password !== password) {
-                    throw new Error('Incorrect password');
-                }
-                user.lastLogin = new Date().toISOString();
-                this.saveUsers();
-                this.currentUser = {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    registeredAt: user.registeredAt,
-                    lastLogin: user.lastLogin
-                };
-                localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
+                    await this.delay(500);
+                    const user = this.users.find(u => normalizeAuthEmail(u.email) === email);
+                    if (!user) {
+                        throw new Error('Email not found');
+                    }
+                    if (user.password !== password) {
+                        throw new Error('Incorrect password');
+                    }
+                    user.lastLogin = new Date().toISOString();
+                    this.saveUsers();
+                    this.currentUser = {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                        registeredAt: user.registeredAt,
+                        lastLogin: user.lastLogin,
+                        is_local_user: true,
+                        is_local_admin: user.role === 'admin'
+                    };
+                    localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
                 } else {
-                throw new Error('Online account service is unavailable. No local account was created. Please try again later.');
+                    throw new Error('Online account service is unavailable. No local account was created. Please try again later.');
                 }
             }
 
@@ -833,7 +1013,10 @@ class AuthSystem {
             }
 
             // Show success
-            this.showSuccess('Login successful!', 'Redirecting...');
+            this.showSuccess(
+                authT('login_success_title', 'Welcome back'),
+                authT('login_success_message', 'You are signed in. Taking you to your dashboard.')
+            );
             // Tracking login (email/password or local)
             try {
                 window.dataLayer = window.dataLayer || [];
@@ -867,10 +1050,22 @@ class AuthSystem {
 
         } catch (error) {
             const rawMessage = (error && error.message) ? String(error.message) : String(error || '');
-            const friendly = this.getFriendlyErrorMessage(rawMessage, 'login');
-            this.showError(friendly || rawMessage || 'Login failed. Please try again.');
+            const friendly = this.getFriendlyErrorMessage(rawMessage, 'login', { email });
+            if (/email not confirmed|user has not been confirmed|email needs to be confirmed/i.test(rawMessage)) {
+                try {
+                    const supabaseClient = await getSupabaseAuthClient();
+                    if (supabaseClient) {
+                        await resendConfirmationEmail(supabaseClient, email);
+                        showAuthMessage(authT('confirmation_email_sent', 'We sent a new confirmation email.'), 'warning');
+                    }
+                } catch (resendErr) {
+                    console.warn('Confirmation resend failed:', resendErr?.message || resendErr);
+                    showAuthMessage(authT('confirmation_email_failed', 'We could not resend the confirmation email right now.'), 'warning');
+                }
+            }
+            this.showError(friendly || rawMessage || authT('login_error_invalid_credentials', 'Incorrect email or password.'));
         } finally {
-            this.setLoadingState(submitBtn, false);
+            setAuthButtonLoading(submitBtn, false);
         }
     }
 
@@ -894,35 +1089,43 @@ class AuthSystem {
         e.preventDefault();
 
         const name = document.getElementById('registerName').value.trim();
-        const email = document.getElementById('registerEmail').value.trim();
+        const email = normalizeAuthEmail(document.getElementById('registerEmail').value);
         const password = document.getElementById('registerPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
         const agreeTerms = document.getElementById('agreeTerms').checked;
+        const phone = document.getElementById('registerPhone')?.value?.trim() || '';
+        const birthday = document.getElementById('registerDob')?.value || '';
+        const submitBtn = getAuthSubmitButton(e.target);
 
         // Validation
         if (!name || !email || !password || !confirmPassword) {
-            this.showError('Please fill out all fields');
+            this.showError(authT('required_fields_missing', 'Please fill out all required fields.'));
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            this.showError(authT('email_invalid', 'Please enter a valid email.'));
             return;
         }
 
         if (password.length < 6) {
-            this.showError('Password must be at least 6 characters');
+            this.showError(authT('password_min_placeholder', 'Minimum 6 characters'));
             return;
         }
 
         if (password !== confirmPassword) {
-            this.showError('Passwords do not match');
+            this.showError(authT('register_error_password_mismatch', 'Passwords do not match.'));
             return;
         }
 
         if (!agreeTerms) {
-            this.showError('You must agree to the terms of use');
+            this.showError(authT('register_error_terms_required', 'You must agree to the terms of use.'));
             return;
         }
 
         // Show loading state
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        this.setLoadingState(submitBtn, true);
+        setAuthButtonLoading(submitBtn, true, 'creating_account', 'Creating account...');
 
         try {
             // Prefer Supabase sign up when available (sends verification email when enabled)
@@ -937,9 +1140,10 @@ class AuthSystem {
                         emailRedirectTo,
                         data: {
                             full_name: name,
-                            phone: document.getElementById('registerPhone')?.value || '',
-                            birthday: document.getElementById('registerDob')?.value || '',
-                            date_of_birth: document.getElementById('registerDob')?.value || ''
+                            phone,
+                            birthday,
+                            date_of_birth: birthday,
+                            language: getCurrentAuthLanguage()
                         }
                     }
                 });
@@ -947,7 +1151,7 @@ class AuthSystem {
                 if (error) {
                     const message = (error.message || '').toLowerCase();
                     if (message.includes('already been registered') || message.includes('already registered')) {
-                        this.showError('An account with this email already exists. Try signing in or use Google login.');
+                        this.showError(authT('register_error_existing_email', 'This email is already registered. Please sign in instead.'));
                         // Pré-preencher o email no formulário de login para facilitar o acesso
                         try {
                             document.getElementById('loginEmail').value = email;
@@ -974,16 +1178,21 @@ class AuthSystem {
                         registeredAt: supaUser.created_at || new Date().toISOString(),
                         lastLogin: new Date().toISOString()
                     };
-                    localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
-
+                    let syncWarning = false;
                     try {
-                        await syncUserProfile(supabaseClient, supaUser, {
-                            phone: document.getElementById('registerPhone')?.value || '',
-                            birthday: document.getElementById('registerDob')?.value || null
+                        await syncAuthProfileState(supabaseClient, supaUser, {
+                            email,
+                            full_name: name,
+                            phone,
+                            birthday,
+                            date_of_birth: birthday,
+                            language: getCurrentAuthLanguage()
                         });
                     } catch (profileErr) {
+                        syncWarning = true;
                         console.error('Profile synchronization after registration failed:', profileErr?.message || profileErr);
                     }
+                    localStorage.setItem('gb_current_user', JSON.stringify(this.currentUser));
 
                     try {
                         window.dataLayer = window.dataLayer || [];
@@ -1000,7 +1209,12 @@ class AuthSystem {
                         console.warn('sign_up tracking (supabase immediate session) failed', trErr);
                     }
 
-                    this.showSuccess('Account created successfully!', 'Redirecting to your dashboard...');
+                    this.showSuccess(
+                        authT('register_success_title', 'Account created'),
+                        syncWarning
+                            ? `${authT('register_success_redirecting', 'Redirecting you to your dashboard.')} ${authT('profile_sync_warning', 'Your profile is still syncing. Please refresh after confirmation.')}`
+                            : authT('register_success_redirecting', 'Redirecting you to your dashboard.')
+                    );
                     setTimeout(() => {
                         const redirectUrl = resolveRedirectTarget(new URLSearchParams(window.location.search));
                         window.location.href = redirectUrl;
@@ -1008,7 +1222,10 @@ class AuthSystem {
                     return;
                 }
 
-                this.showSuccess('Account created successfully!', 'Check your email to verify your account.');
+                this.showSuccess(
+                    authT('register_success_title', 'Account created'),
+                    authT('register_success_check_email', 'Check your email to confirm your account.')
+                );
                 // Tracking new Supabase email/password registration
                 try {
                     window.dataLayer = window.dataLayer || [];
@@ -1023,6 +1240,9 @@ class AuthSystem {
                     }
                 } catch(trErr){ console.warn('sign_up tracking (supabase) failed', trErr); }
                 // Switch to login form for when user returns
+                try {
+                    document.getElementById('loginEmail').value = email;
+                } catch {}
                 setTimeout(() => this.showForm('login'), 800);
                 return;
             }
@@ -1033,21 +1253,24 @@ class AuthSystem {
 
             // Explicit localhost-only fallback for development demos.
             await this.delay(800);
-            if (this.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-                this.showError('This email is already registered');
+            if (this.users.some(u => normalizeAuthEmail(u.email) === email)) {
+                this.showError(authT('register_error_existing_email', 'This email is already registered. Please sign in instead.'));
                 return;
             }
             const newUser = {
                 id: this.generateId(),
                 name,
-                email: email.toLowerCase(),
+                email,
                 password,
                 registeredAt: new Date().toISOString(),
                 lastLogin: null
             };
             this.users.push(newUser);
             this.saveUsers();
-            this.showSuccess('Account created successfully!', 'Signing you in...');
+            this.showSuccess(
+                authT('register_success_title', 'Account created'),
+                authT('redirecting', 'Redirecting...')
+            );
             // Tracking local registration fallback
             try {
                 window.dataLayer = window.dataLayer || [];
@@ -1072,10 +1295,10 @@ class AuthSystem {
 
         } catch (error) {
             const rawMessage = (error && error.message) ? String(error.message) : String(error || '');
-            const friendly = this.getFriendlyErrorMessage(rawMessage, 'register');
-            this.showError(friendly || `Error creating account: ${rawMessage || 'Unknown error'}`);
+            const friendly = this.getFriendlyErrorMessage(rawMessage, 'register', { email });
+            this.showError(friendly || authT('register_error_service_unavailable', 'The account service is temporarily unavailable.'));
         } finally {
-            this.setLoadingState(submitBtn, false);
+            setAuthButtonLoading(submitBtn, false);
         }
     }
 
@@ -1204,22 +1427,22 @@ class AuthSystem {
         }
     }
 
-    getFriendlyErrorMessage(message, context = 'generic') {
+    getFriendlyErrorMessage(message, context = 'generic', details = {}) {
         if (!message) return null;
         const normalized = message.toLowerCase();
 
         const templates = [
             {
                 match: ['invalid login credentials', 'invalid email or password', 'wrong email or password', 'credenciais inválidas'],
-                text: 'Incorrect email or password. Please double-check your credentials and try again.'
+                text: authT('login_error_invalid_credentials', 'Incorrect email or password. Please double-check your credentials and try again.')
             },
             {
                 match: ['email not confirmed', 'email needs to be confirmed', 'user has not been confirmed'],
-                text: "Email not confirmed yet. Check your inbox (and spam folder) for the confirmation email or request a new link via 'Forgot password'."
+                text: authT('login_error_email_not_confirmed', 'Email not confirmed yet. Check your inbox and request a new confirmation email.')
             },
             {
                 match: ['user not found', 'email not found', 'no user found', 'invalid email'],
-                text: 'Account not found. Create a new account or verify that the email address is correct.'
+                text: authT('login_error_account_not_found', 'Account not found. Create a new account or verify that the email address is correct.')
             },
             {
                 match: ['too many requests', 'rate limit', '429'],
@@ -1242,7 +1465,7 @@ class AuthSystem {
         }
 
         if (context === 'register' && normalized.includes('already')) {
-            return 'This email is already registered. Use the login form or reset your password.';
+            return authT('register_error_existing_email', 'This email is already registered. Please sign in instead.');
         }
 
         return null;
@@ -1293,8 +1516,22 @@ class AuthSystem {
 
     // Public methods for external use
     static getCurrentUser() {
-        // Prefer local cached user for sync speed
         const cached = JSON.parse(localStorage.getItem('gb_current_user') || 'null');
+        if (!cached) {
+            return null;
+        }
+
+        if (cached.is_local_user || cached.is_local_admin) {
+            return cached;
+        }
+
+        const hasSupabaseSessionCache = Array.from({ length: localStorage.length }, (_, index) => localStorage.key(index))
+            .some((key) => key && (key === 'sb-auth-token' || key.startsWith('sb-') || key.includes('supabase')));
+
+        if (!hasSupabaseSessionCache) {
+            return null;
+        }
+
         return cached;
     }
 
@@ -1417,7 +1654,7 @@ function setupSocialLogin() {
             }
             if (attempts >= maxAttempts) {
                 console.error('❌ Supabase não inicializou. Verifique env-config.json e a conexão.');
-                showAuthMessage('Falha ao iniciar autenticação. Verifique sua conexão ou tente recarregar a página.', 'danger');
+                showAuthMessage(authT('register_error_service_unavailable', 'Authentication could not be started. Check your connection or reload the page.'), 'danger');
                 return;
             }
             setTimeout(waitForSupabase, 500);
@@ -1470,7 +1707,7 @@ function setupOAuthButtons() {
         }
 
         if (!isOAuthEnabled('google')) {
-            disableOAuthButton(btn, '<i class="fab fa-google me-2"></i>Continuar com Google', 'Google OAuth está desativado neste projeto.');
+            disableOAuthButton(btn, '<i class="fab fa-google me-2"></i>Continue with Google', authT('oauth_disabled', 'This sign-in method is unavailable in the current environment.'));
             return;
         }
 
@@ -1488,7 +1725,7 @@ function setupOAuthButtons() {
 
             try {
                 newBtn.disabled = true;
-                newBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando ao Google...';
+                newBtn.innerHTML = `<i class="fas fa-spinner fa-spin me-2"></i>${authT('oauth_google_connecting', 'Connecting with Google...')}`;
                 const supabaseClient = await getSupabaseAuthClient();
                 if (!supabaseClient || !supabaseClient.auth) {
                     throw new Error('Authentication service is unavailable. Please reload the page.');
@@ -1517,9 +1754,9 @@ function setupOAuthButtons() {
 
             } catch (error) {
                 console.error('❌ Falha no Google OAuth:', error);
-                showAuthMessage(`Erro ao conectar com Google: ${error.message}`, 'danger');
+                showAuthMessage(error?.message || authT('oauth_disabled', 'This sign-in method is unavailable in the current environment.'), 'danger');
                 newBtn.disabled = false;
-                newBtn.innerHTML = '<i class="fab fa-google me-2"></i>Continuar com Google';
+                newBtn.innerHTML = '<i class="fab fa-google me-2"></i>Continue with Google';
             }
         });
     };
@@ -1530,7 +1767,7 @@ function setupOAuthButtons() {
         if (!btn) return;
 
         if (!isOAuthEnabled('facebook')) {
-            disableOAuthButton(btn, '<i class="fab fa-facebook-f me-2"></i>Continuar com Facebook', 'Facebook OAuth está desativado neste projeto.');
+            disableOAuthButton(btn, '<i class="fab fa-facebook-f me-2"></i>Continue with Facebook', authT('oauth_disabled', 'This sign-in method is unavailable in the current environment.'));
             return;
         }
 
@@ -1548,7 +1785,7 @@ function setupOAuthButtons() {
 
             try {
                 newBtn.disabled = true;
-                newBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Conectando ao Facebook...';
+                newBtn.innerHTML = `<i class="fas fa-spinner fa-spin me-2"></i>${authT('oauth_connecting', 'Connecting...')}`;
                 const supabaseClient = await getSupabaseAuthClient();
                 if (!supabaseClient || !supabaseClient.auth) {
                     throw new Error('Authentication service is unavailable. Please reload the page.');
@@ -1574,9 +1811,9 @@ function setupOAuthButtons() {
 
             } catch (error) {
                 console.error('❌ Falha no Facebook OAuth:', error);
-                showAuthMessage(`Erro ao conectar com Facebook: ${error.message}`, 'danger');
+                showAuthMessage(error?.message || authT('oauth_disabled', 'This sign-in method is unavailable in the current environment.'), 'danger');
                 newBtn.disabled = false;
-                newBtn.innerHTML = '<i class="fab fa-facebook-f me-2"></i>Continuar com Facebook';
+                newBtn.innerHTML = '<i class="fab fa-facebook-f me-2"></i>Continue with Facebook';
             }
         });
     };
@@ -1632,7 +1869,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (hasOAuthTokens) {
                     console.log('🔐 Processando retorno OAuth...');
-                    showAuthMessage('Processando login...', 'info');
+                    showAuthMessage(authT('signing_in', 'Signing in...'), 'info');
                     if (codeParam) {
                         try {
                             console.log('🔄 Trocando código OAuth por sessão (auth.js)...');
@@ -1664,8 +1901,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                 console.warn('devReturn bounce falhou (seguindo fluxo normal):', bounceErr?.message || bounceErr);
                             }
                         } catch (exchangeErr) {
-                            console.error('Falha ao trocar código OAuth:', exchangeErr);
-                            showAuthMessage(`Erro ao validar login social: ${exchangeErr.message || exchangeErr}`, 'danger');
+                            console.error('Failed to exchange OAuth code:', exchangeErr);
+                            showAuthMessage(
+                                exchangeErr?.message || authT('register_error_service_unavailable', 'Unable to validate the social login right now.'),
+                                'danger'
+                            );
                         }
                     }
                 }
@@ -1701,9 +1941,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             };
                             localStorage.setItem('gb_current_user', JSON.stringify(norm));
 
-                            // Ensure user profile is upserted in Supabase after OAuth/social login
+                            // Ensure OAuth/social users get the same profile, preferences, and legacy compatibility sync as password users.
                             try {
-                                await syncUserProfile(supabaseClient, su);
+                                await syncAuthProfileState(supabaseClient, su, {
+                                    full_name: su.user_metadata?.full_name || su.user_metadata?.name || '',
+                                    avatar_url: su.user_metadata?.avatar_url || su.user_metadata?.picture || null,
+                                    language: getCurrentAuthLanguage()
+                                });
                             } catch (e) {
                                 console.error('Profile synchronization after OAuth failed:', e?.message || e);
                             }

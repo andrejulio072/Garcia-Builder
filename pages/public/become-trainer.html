@@ -420,6 +420,26 @@
 <script>
     let currentUser = null;
     let uploadedFiles = [];
+    const getTrainerLang = () => {
+        try {
+            const raw = window.GB_I18N?.getLang?.() ||
+                localStorage.getItem('gb_lang') ||
+                localStorage.getItem('gb_language') ||
+                document.documentElement.lang ||
+                'en';
+            const lang = String(raw).toLowerCase();
+            if (lang.startsWith('pt')) return 'pt';
+            if (lang.startsWith('es')) return 'es';
+            return 'en';
+        } catch {
+            return 'en';
+        }
+    };
+    const getTrainerText = (key, fallback) => {
+        const readPath = (obj, path) => String(path || '').split('.').reduce((acc, part) => acc?.[part], obj);
+        const lang = getTrainerLang();
+        return readPath(window.DICTS?.[lang], key) || readPath(window.DICTS?.en, key) || fallback;
+    };
 
     document.addEventListener('DOMContentLoaded', initialiseTrainerApplication);
 
@@ -445,7 +465,7 @@
             setupFormHandlers();
         } catch (error) {
             console.error('Trainer application init error:', error);
-            showNotification('We could not load the trainer application form. Please refresh and try again.', 'error');
+            showNotification(getTrainerText('trainer_application.load_error', 'We could not load the trainer application form. Please refresh and try again.'), 'error');
         }
     }
 
@@ -456,14 +476,14 @@
         const loginPrompt = document.createElement('div');
         loginPrompt.className = 'alert alert-info border-0 rounded-4 p-4 mb-4';
         loginPrompt.innerHTML = `
-            <h5 class="fw-semibold mb-2"><i class="fas fa-info-circle me-2" aria-hidden="true"></i>Login required</h5>
-            <p class="mb-3 text-muted">Create a free account or login to submit your trainer application and track the status.</p>
+            <h5 class="fw-semibold mb-2"><i class="fas fa-info-circle me-2" aria-hidden="true"></i>${getTrainerText('trainer_application.login_required_title', 'Login required')}</h5>
+            <p class="mb-3 text-muted">${getTrainerText('trainer_application.login_required_message', 'Create a free account or login to submit your trainer application and track the status.')}</p>
             <div class="d-flex flex-column flex-sm-row gap-2">
                 <a class="btn btn-warning fw-semibold" href="../../pages/public/login.html?action=register&redirect=${encodeURIComponent(window.location.pathname)}">
-                    <i class="fas fa-user-plus me-2" aria-hidden="true"></i>Create account
+                    <i class="fas fa-user-plus me-2" aria-hidden="true"></i>${getTrainerText('trainer_application.create_account', 'Create account')}
                 </a>
                 <a class="btn btn-outline-light fw-semibold" href="../../pages/public/login.html?action=login&redirect=${encodeURIComponent(window.location.pathname)}">
-                    <i class="fas fa-right-to-bracket me-2" aria-hidden="true"></i>Login
+                    <i class="fas fa-right-to-bracket me-2" aria-hidden="true"></i>${getTrainerText('trainer_application.login', 'Login')}
                 </a>
             </div>
         `;
@@ -589,19 +609,19 @@
         event.preventDefault();
 
         if (!currentUser?.id) {
-            showNotification('Please login or create an account before submitting your application.', 'error');
+            showNotification(getTrainerText('trainer_application.login_required_submit', 'Please login or create an account before submitting your application.'), 'error');
             window.location.href = '../../pages/public/login.html?action=register&redirect=' + encodeURIComponent(window.location.pathname);
             return;
         }
 
         if (!window.supabaseClient) {
-            showNotification('Database connection not available. Please refresh the page and try again.', 'error');
+            showNotification(getTrainerText('trainer_application.database_unavailable', 'Database connection not available. Please refresh the page and try again.'), 'error');
             return;
         }
 
         const submitBtn = event.target.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2" aria-hidden="true"></i>Submitting...';
+        submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin me-2" aria-hidden="true"></i>${getTrainerText('trainer_application.submitting', 'Submitting...')}`;
         submitBtn.disabled = true;
 
         try {
@@ -617,7 +637,7 @@
             const bio = document.getElementById('bio').value.trim();
 
             if (!fullName || !email || !phone || !experienceYears || !certifications || !bio) {
-                throw new Error('Please complete all required fields before submitting.');
+                throw new Error(getTrainerText('trainer_application.required_fields', 'Please complete all required fields before submitting.'));
             }
 
             const applicationData = {
@@ -638,18 +658,18 @@
                 .upsert(applicationData, { onConflict: 'user_id', returning: 'minimal' });
 
             if (error) {
-                throw new Error(error.message || 'Failed to submit application.');
+                throw new Error(error.message || getTrainerText('trainer_application.submit_failed', 'Failed to submit application.'));
             }
 
             if (uploadedFiles.length) {
                 await uploadCertificationPreviews();
             }
 
-            showNotification('Application submitted successfully! We will review it within 2448 hours.', 'success');
+            showNotification(getTrainerText('trainer_application.submit_success', 'Application submitted successfully. We will review it within 24-48 hours.'), 'success');
             setTimeout(() => window.location.reload(), 2500);
         } catch (error) {
             console.error('Error submitting application:', error);
-            showNotification(error.message || 'Failed to submit application. Please try again.', 'error');
+            showNotification(error.message || getTrainerText('trainer_application.submit_failed_retry', 'Failed to submit application. Please try again.'), 'error');
         } finally {
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;

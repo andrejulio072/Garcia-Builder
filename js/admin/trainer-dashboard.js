@@ -5,6 +5,27 @@
   let clients = [];
   let selectedClient = null;
   let sessions = [];
+  const getTrainerDashboardLang = () => {
+    try {
+      const raw = window.GB_I18N?.getLang?.() ||
+        localStorage.getItem('gb_lang') ||
+        localStorage.getItem('gb_language') ||
+        document.documentElement.lang ||
+        'en';
+      const lang = String(raw).toLowerCase();
+      if (lang.startsWith('pt')) return 'pt';
+      if (lang.startsWith('es')) return 'es';
+      return 'en';
+    } catch {
+      return 'en';
+    }
+  };
+  const getTrainerDashboardText = (key, fallback, replacements = {}) => {
+    const readPath = (obj, path) => String(path || '').split('.').reduce((acc, part) => acc?.[part], obj);
+    const lang = getTrainerDashboardLang();
+    const template = readPath(window.DICTS?.[lang], key) || readPath(window.DICTS?.en, key) || fallback;
+    return String(template).replace(/\{(\w+)\}/g, (_, token) => replacements[token] ?? '');
+  };
 
   document.addEventListener('DOMContentLoaded', init);
 
@@ -12,7 +33,10 @@
     me = await getCurrentUser();
     if(!me){
       const ret = encodeURIComponent(window.location.pathname + window.location.search);
-      window.location.href = `login.html?redirect=${ret}`;
+      const loginUrl = typeof window.toAbsoluteUrl === 'function'
+        ? window.toAbsoluteUrl(`pages/auth/login.html?redirect=${ret}`)
+        : `../auth/login.html?redirect=${ret}`;
+      window.location.href = loginUrl;
       return;
     }
     await loadClients();
@@ -22,8 +46,20 @@
 
   async function getCurrentUser(){
     try{
-      if (window.supabaseClient && window.supabaseClient.auth) {
-        const { data: { user } } = await window.supabaseClient.auth.getUser();
+      let client = window.supabaseClient || null;
+      if (!client?.auth && typeof window.waitForSupabaseClient === 'function') {
+        try {
+          client = await window.waitForSupabaseClient(6000);
+        } catch (readyError) {
+          console.warn('Supabase client was not ready for trainer dashboard:', readyError?.message || readyError);
+        }
+      }
+
+      if (client?.auth) {
+        const { data: sessionData } = await client.auth.getSession();
+        if (sessionData?.session?.user) return sessionData.session.user;
+
+        const { data: { user } } = await client.auth.getUser();
         if (user) return user;
       }
       const stored = localStorage.getItem('gb_current_user');
@@ -96,10 +132,29 @@
 
     try{
       // Load some extra details
-      const [{ data: metrics }, { data: prefs }] = await Promise.all([
-        window.supabaseClient.from('body_metrics').select('*').eq('user_id', c.user_id).single(),
-        window.supabaseClient.from('user_preferences').select('*').eq('user_id', c.user_id).single()
+      const [
+        { data: metricsRows },
+        { data: prefs },
+        { data: macros },
+        { data: habitsRows },
+        { data: photos },
+        { data: workouts }
+      ] = await Promise.all([
+        window.supabaseClient.from('body_metrics').select('*').eq('user_id', c.user_id).order('date', { ascending: false }).order('updated_at', { ascending: false }).limit(1),
+        window.supabaseClient.from('user_preferences').select('*').eq('user_id', c.user_id).maybeSingle(),
+        window.supabaseClient.from('user_macros').select('*').eq('user_id', c.user_id).maybeSingle(),
+        window.supabaseClient.from('user_habits').select('*').eq('user_id', c.user_id).order('date', { ascending: false }).limit(7),
+        window.supabaseClient.from('progress_photos').select('*').eq('user_id', c.user_id).order('taken_at', { ascending: false }).limit(6),
+        window.supabaseClient.from('workout_logs').select('*').eq('user_id', c.user_id).order('workout_date', { ascending: false }).order('created_at', { ascending: false }).limit(5)
       ]);
+      const metrics = Array.isArray(metricsRows) ? metricsRows[0] : null;
+      const latestHabit = Array.isArray(habitsRows) ? habitsRows[0] : null;
+      const photoGrid = Array.isArray(photos) && photos.length
+        ? photos.map((photo) => `<img src="${photo.photo_url}" alt="Progress photo" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,.15)"/>`).join('')
+        : '<span class="text-muted small">No progress photos yet</span>';
+      const workoutList = Array.isArray(workouts) && workouts.length
+        ? workouts.map((workout) => `<li class="small">${workout.workout_date || ''} - ${workout.title || workout.workout_name || 'Workout'}</li>`).join('')
+        : '<li class="small text-muted">No workout logs yet</li>';
 
       box.innerHTML = `
         <div class="d-flex align-items-center gap-3 mb-3">
@@ -110,9 +165,20 @@
           </div>
         </div>
         <div class="row g-2">
-          <div class="col-md-4"><div class="p-2 card">Weight: <b>${metrics?.current_weight ?? '--'}</b></div></div>
+          <div class="col-md-4"><div class="p-2 card">Weight: <b>${metrics?.weight ?? '--'}</b></div></div>
           <div class="col-md-4"><div class="p-2 card">Height: <b>${metrics?.height ?? '--'}</b></div></div>
           <div class="col-md-4"><div class="p-2 card">Units: <b>${prefs?.units ?? 'metric'}</b></div></div>
+          <div class="col-md-4"><div class="p-2 card">Body fat: <b>${metrics?.body_fat ?? '--'}%</b></div></div>
+          <div class="col-md-4"><div class="p-2 card">Calories: <b>${macros?.calories ?? '--'}</b></div></div>
+          <div class="col-md-4"><div class="p-2 card">Steps: <b>${latestHabit?.steps ?? '--'}</b></div></div>
+        </div>
+        <div class="mt-3">
+          <h6 class="text-warning">Recent Progress Photos</h6>
+          <div class="d-flex flex-wrap gap-2">${photoGrid}</div>
+        </div>
+        <div class="mt-3">
+          <h6 class="text-warning">Recent Workout Logs</h6>
+          <ul class="mb-0 ps-3">${workoutList}</ul>
         </div>
       `;
     }catch(e){
@@ -217,10 +283,10 @@
         renderSessions();
       }
 
-      showNotification(`Session marked as ${status}`, 'success');
+      showNotification(getTrainerDashboardText('trainer_dashboard.session_status_updated', 'Session marked as {status}.', { status }), 'success');
     } catch (error) {
       console.error('Error updating session status:', error);
-      showNotification('Failed to update session status', 'error');
+      showNotification(getTrainerDashboardText('trainer_dashboard.session_status_failed', 'Failed to update session status.'), 'error');
     }
   }
 
@@ -243,7 +309,7 @@
   async function createSession(e){
     e.preventDefault();
     if (!selectedClient){
-      showNotification('Please select a client first', 'error');
+      showNotification(getTrainerDashboardText('trainer_dashboard.client_required', 'Please select a client first.'), 'error');
       return;
     }
     try{
@@ -262,12 +328,12 @@
       const { error } = await window.supabaseClient.from('sessions').insert(payload);
       if (error) throw error;
 
-      showNotification('Session created successfully', 'success');
+      showNotification(getTrainerDashboardText('trainer_dashboard.session_created', 'Session created successfully.'), 'success');
       e.target.reset();
       await loadSessions(); // Refresh sessions list
     }catch(err){
       console.error('createSession failed', err);
-      showNotification('Failed to create session: ' + (err.message||err), 'error');
+      showNotification(getTrainerDashboardText('trainer_dashboard.session_create_failed', 'Failed to create session: {message}', { message: err.message || err }), 'error');
     }
   }
 })();

@@ -76,11 +76,11 @@
     <div class="loading-container">
         <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder" class="logo">
         <div class="spinner"></div>
-        <h1 id="status-title">Processando autenticação...</h1>
-        <p id="status-message">Por favor, aguarde enquanto verificamos suas credenciais.</p>
+        <h1 id="status-title">Processing authentication...</h1>
+        <p id="status-message">Please wait while we verify your credentials.</p>
         <div id="error-container" class="hidden">
             <p class="error-message" id="error-message"></p>
-            <a href="pages/auth/login.html" class="action-btn">Voltar para Login</a>
+            <a href="pages/auth/login.html" class="action-btn" id="login-link">Back to Login</a>
         </div>
     </div>
 
@@ -110,6 +110,59 @@
             const statusMessage = document.getElementById('status-message');
             const errorContainer = document.getElementById('error-container');
             const errorMessage = document.getElementById('error-message');
+            const loginLink = document.getElementById('login-link');
+            const messages = {
+                en: {
+                    processingTitle: 'Processing authentication...',
+                    processingMessage: 'Please wait while we verify your credentials.',
+                    verifiedTitle: 'Login verified!',
+                    redirecting: 'Redirecting to your dashboard...',
+                    validatingSocial: 'Validating social login...',
+                    authError: 'Authentication error',
+                    unknownError: 'Unknown error',
+                    backToLogin: 'Back to Login',
+                    supabaseUnavailable: 'Supabase client did not initialize. Check env-config.json.',
+                    oauthCodeFailed: 'Failed to validate OAuth code',
+                    unauthenticated: 'User is not authenticated'
+                },
+                pt: {
+                    processingTitle: 'Processando autenticacao...',
+                    processingMessage: 'Aguarde enquanto verificamos suas credenciais.',
+                    verifiedTitle: 'Login verificado!',
+                    redirecting: 'Redirecionando para seu painel...',
+                    validatingSocial: 'Validando login social...',
+                    authError: 'Erro na autenticacao',
+                    unknownError: 'Erro desconhecido',
+                    backToLogin: 'Voltar para Login',
+                    supabaseUnavailable: 'O cliente Supabase nao inicializou. Verifique env-config.json.',
+                    oauthCodeFailed: 'Falha ao validar o codigo OAuth',
+                    unauthenticated: 'Usuario nao autenticado'
+                },
+                es: {
+                    processingTitle: 'Procesando autenticacion...',
+                    processingMessage: 'Espera mientras verificamos tus credenciales.',
+                    verifiedTitle: 'Login verificado!',
+                    redirecting: 'Redirigiendo a tu panel...',
+                    validatingSocial: 'Validando login social...',
+                    authError: 'Error de autenticacion',
+                    unknownError: 'Error desconocido',
+                    backToLogin: 'Volver al Login',
+                    supabaseUnavailable: 'El cliente Supabase no se inicializo. Revisa env-config.json.',
+                    oauthCodeFailed: 'No se pudo validar el codigo OAuth',
+                    unauthenticated: 'Usuario no autenticado'
+                }
+            };
+            const currentLang = (() => {
+                const raw = localStorage.getItem('gb_lang') || localStorage.getItem('gb_language') || navigator.language || 'en';
+                const lang = String(raw).toLowerCase();
+                if (lang.startsWith('pt')) return 'pt';
+                if (lang.startsWith('es')) return 'es';
+                return 'en';
+            })();
+            const t = (key) => messages[currentLang]?.[key] || messages.en[key] || key;
+            statusTitle.textContent = t('processingTitle');
+            statusMessage.textContent = t('processingMessage');
+            if (loginLink) loginLink.textContent = t('backToLogin');
 
             const getLocalUser = () => {
                 try {
@@ -141,8 +194,8 @@
                     localStorage.setItem('gb_current_user', JSON.stringify(user));
                 }
                 trackLogin(user, provider);
-                statusTitle.textContent = 'Login verificado!';
-                statusMessage.textContent = 'Redirecionando para seu dashboard...';
+                statusTitle.textContent = t('verifiedTitle');
+                statusMessage.textContent = t('redirecting');
                 await new Promise(resolve => setTimeout(resolve, 800));
                 window.location.href = 'pages/public/dashboard.html';
             };
@@ -164,7 +217,7 @@
                         await redirectToApp(localUser, localUser.is_local_admin ? 'local_admin' : 'local');
                         return;
                     }
-                    throw new Error('Cliente Supabase não inicializou. Verifique env-config.json');
+                    throw new Error(t('supabaseUnavailable'));
                 }
 
                 console.log('✅ Supabase client disponível');
@@ -192,7 +245,7 @@
 
                 if (hasOAuthTokens) {
                     console.log('🔑 Tokens OAuth detectados na URL');
-                    statusMessage.textContent = 'Validando login social...';
+                    statusMessage.textContent = t('validatingSocial');
                 }
 
                 const code = queryParams.get('code');
@@ -206,7 +259,7 @@
                     console.log('🔄 Trocando código OAuth por sessão...');
                     const { error: exchangeError } = await window.supabaseClient.auth.exchangeCodeForSession({ code });
                     if (exchangeError) {
-                        throw new Error(exchangeError.message || 'Falha ao validar código OAuth');
+                        throw new Error(exchangeError.message || t('oauthCodeFailed'));
                     }
 
                     console.log('✅ Código OAuth trocado com sucesso');
@@ -268,7 +321,7 @@
                         await redirectToApp(localUser, localUser.is_local_admin ? 'local_admin' : 'local');
                         return;
                     }
-                    throw new Error(error?.message || 'Usuário não autenticado');
+                    throw new Error(error?.message || t('unauthenticated'));
                 }
 
                 console.log('✅ Usuário autenticado:', user.email);
@@ -312,9 +365,9 @@
                     await redirectToApp(localUser, localUser.is_local_admin ? 'local_admin' : 'local');
                     return;
                 }
-                statusTitle.textContent = 'Erro na autenticação';
+                statusTitle.textContent = t('authError');
                 statusMessage.classList.add('hidden');
-                errorMessage.textContent = error.message || 'Erro desconhecido';
+                errorMessage.textContent = error.message || t('unknownError');
                 errorContainer.classList.remove('hidden');
 
                 // Se não conseguiu autenticar, limpar localStorage

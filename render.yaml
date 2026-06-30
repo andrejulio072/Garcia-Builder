@@ -18,7 +18,7 @@ services:
       - key: NODE_ENV
         value: production
       # Optional onboarding configuration
-      - key: TRAINERIZE_INVITE_URL
+      - key: MYPTHUB_INVITE_URL
         sync: false
       - key: SMTP_HOST
         sync: false

@@ -122,7 +122,7 @@
           eyebrow: "Online coaching for busy professionals",
           headline: "Stronger, leaner, coached every week",
           trust1: "Home or gym",
-          trust2: "Trainerize app",
+          trust2: "My PT Hub app",
           trust3: "EN/PT/ES"
         },
         why: {
@@ -196,7 +196,7 @@
         title: "How It Works",
         subtitle: "Clarity from day one—here’s how we build momentum together",
         step1: { title: "Assessment Call", desc: "Book a free consult to map goals, lifestyle, injuries, and the exact support you need." },
-        step2: { title: "Plan Built for You", desc: "Receive personalised training, nutrition, and habit systems inside the Trainerize app." },
+        step2: { title: "Plan Built for You", desc: "Receive personalised training, nutrition, and habit systems inside the My PT Hub app." },
         step3: { title: "Guided Execution", desc: "Weekly check-ins plus daily WhatsApp accountability keep you consistent and confident." },
         step4: { title: "Results That Last", desc: "Feel stronger, leaner, and in control with systems you can maintain long-term." },
         cta: "Start Your Journey Today →"
@@ -249,7 +249,7 @@
         card1: { title: "ActiveIQ Level 3 PT", desc: "Certified personal trainer recognised in the UK and EU." },
         card2: { title: "12+ Years Coaching", desc: "Hundreds of clients guided through fat loss, recomposition, and performance goals." },
         card3: { title: "Coaching in EN • PT • ES", desc: "Communicate in the language that keeps you motivated and accountable." },
-        card4: { title: "Trainerize Ecosystem", desc: "Clear app experience for workouts, nutrition targets, habits, and progress tracking." }
+        card4: { title: "My PT Hub Ecosystem", desc: "Clear app experience for workouts, nutrition targets, habits, and progress tracking." }
       },
       stats: {
         clients: "Clients Transformed",
@@ -336,14 +336,14 @@
       faq: {
         title: "FAQ",
         search: "Search questions…",
-        q1: { q: "How does online coaching work?", a: "We start with an intake form and a brief call. Your plan is delivered in Trainerize (training + habits, optional nutrition guidance). Weekly check-ins, in-app chat support, and adjustments based on your data." },
+        q1: { q: "How does online coaching work?", a: "We start with an intake form and a brief call. Your plan is delivered in My PT Hub (training + habits, optional nutrition guidance). Weekly check-ins, in-app chat support, and adjustments based on your data." },
         q2: { q: "Do I need a gym membership?", a: "No. I can program full home training. If you have only bands or a couple of dumbbells, we still progress effectively." },
         q3: { q: "Is nutrition included?", a: "Yes. You get calories/macros and flexible meal frameworks. We align with your culture, budget, and schedule—no rigid templates." },
         q4: { q: "I'm a beginner—is this for me?", a: "Absolutely. We focus on safe form, progressions, and habit building. Every exercise has demo videos and cues." },
         q5: { q: "What if I have injuries or pain?", a: "We adapt exercises, tempo, and range of motion. I can coordinate with physio/GP guidance when needed." },
         q6: { q: "How fast will I see results?", a: "Most feel better in 2–3 weeks, notice visible changes by 6–8 weeks, and strong transformations from 12+ weeks with consistency." },
         q7: { q: "How do weekly check-ins work?", a: "Short form in the app + optional photos/measurements. I review adherence and trends, then update your plan." },
-        q8: { q: "Which app do you use?", a: "Trainerize—plans, videos, habits, messages, and progress tracking in one place (iOS/Android)." },
+        q8: { q: "Which app do you use?", a: "My PT Hub—plans, videos, habits, messages, and progress tracking in one place (iOS/Android)." },
         q9: { q: "What equipment do I need?", a: "None to start. For home, adjustable dumbbells + bands cover almost everything. We scale up as you progress." },
         q10: { q: "I travel or work shifts. Can this fit?", a: "Yes. Flexible splits (3–4 days/week), travel swaps, and short sessions keep momentum during busy weeks." },
         q11: { q: "Will I lose muscle while cutting fat?", a: "The plan prioritizes muscle retention: resistance training, adequate protein, progressive overload, and a sensible deficit." },
@@ -424,13 +424,16 @@
         conrad: "Andre rebuilt my training around 60-hour workweeks. We dropped 9kg of fat, added lean muscle, and my shoulders are pain-free for the first time in years."
       },
       pricing: {
-        title: "Coaching Programs",
-        subtitle: "Choose the coaching structure that fits your goal: app access, training, nutrition guidance, shopping list support, check-ins and accountability.",
+        title: "Pick the level of change you want",
+        subtitle: "Monthly coaching is for people who want ongoing accountability and guidance. The 8, 12 and 18-week programs are for people ready to move faster, commit deeper and push for visible transformation.",
+        plan_not_found: "Plan not found. Please try again.",
+        redirecting: "Redirecting...",
+        currency_update_failed: "Failed to update currency. Please try again.",
         value: {
           title: "What every plan includes",
-          text: "Clear execution, not just a PDF: your training, nutrition and follow-up are organized so you know exactly what to do next.",
+          text: "Clear execution, not just a PDF: your training, nutrition and follow-up are structured so you always know what to do next and why it matters.",
           items: [
-            "Trainerize app access with structured workouts",
+            "My PT Hub app access with structured workouts",
             "Nutrition targets, meal structure guidance and shopping list support",
             "Weekly check-ins, adjustments and accountability",
             "Secure checkout, onboarding email and consultation scheduling after purchase"
@@ -438,13 +441,13 @@
         },
         plans: {
           monthly: {
-            badge: "Flexible coaching",
+            badge: "For steady accountability",
             name: "Monthly Online Coaching",
-            price: "€150",
+            price: "€200",
             period: "/month",
-            meta: "Ongoing support",
-            result: "Best for steady progress and maintenance",
-            description: "Standard online coaching for clients who want structure every month without a fixed transformation block.",
+            meta: "Keep the momentum going",
+            result: "Best for people who want support, structure and a monthly reset",
+            description: "This is the plan for staying consistent when life is busy, motivation dips or you need someone to keep you moving forward every month.",
             features: [
               "Personalized training plan inside the app",
               "Nutrition targets and habit guidance",
@@ -454,58 +457,60 @@
             ]
           },
           eight_week: {
-            badge: "Entry program",
+            badge: "Fast start",
             name: "8 Week Fat Loss Kickstart",
-            price: "€350",
+            price: "€359",
             period: " one-time",
             meta: "8 weeks",
-            result: "Realistic target: 5-8kg fat loss",
-            description: "A focused reset for people who need a clear plan, nutrition structure and accountability fast.",
+            result: "A sharp reset for people who want to feel change fast",
+            description: "Built for momentum: a tighter, more committed block that helps you break old patterns, get disciplined and see early wins quickly.",
             features: [
               "8-week training block for home or gym",
               "Nutrition setup with simple meal structure",
               "Shopping list guidance and swaps",
               "Weekly accountability check-ins",
-              "Best for restarting momentum"
+              "Best for a fast reset and visible traction"
             ]
           },
           twelve_week: {
-            badge: "Flagship",
+            badge: "Best value transformation",
             name: "12 Week Transformation",
-            price: "€600",
+            price: "€519",
             period: " one-time",
             meta: "12 weeks",
-            result: "Realistic target: 9-12kg fat loss",
+            result: "The sweet spot for visible body change and habit lock-in",
             featured: true,
-            description: "The main Garcia Builder transformation block: enough time to lose fat, build strength and lock in routines.",
+            description: "The main Garcia Builder transformation block: enough time to lose fat, build strength and create a physique and routine you can actually keep.",
             features: [
               "Full 12-week progressive training plan",
               "Calories, macros and nutrition guidance",
               "Shopping list support and eating-out strategy",
               "Weekly check-ins with plan adjustments",
-              "App access, support and accountability"
+              "App access, support and accountability",
+              "Built to create noticeable momentum and confidence"
             ]
           },
           eighteen_week: {
-            badge: "Most complete",
+            badge: "Deep transformation",
             name: "18 Week Complete Transformation",
-            price: "€750",
+            price: "€699",
             period: " one-time",
             meta: "18 weeks",
-            result: "Realistic target: 12-15kg fat loss + long-term habits",
-            description: "A deeper coaching block for bigger goals, more habit work and a smoother transition into maintenance.",
+            result: "The most complete block for serious change and long-term identity shift",
+            description: "For people who want the strongest outcome: enough time to drive real change, refine habits and come out with a body, mindset and system that feel different.",
             features: [
               "18-week training and nutrition roadmap",
               "Fat-loss phase plus habit-building phase",
               "Advanced accountability and progress reviews",
               "Shopping lists, travel strategy and social eating support",
-              "Maintenance plan so results are easier to keep"
+              "Maintenance plan so results are easier to keep",
+              "Ideal for clients who want the deepest result, not the shortest plan"
             ]
           }
         },
         cta: {
-          choose: "Start Secure Checkout",
-          popular: "Most Popular",
+          choose: "Start your transformation",
+          popular: "Best value",
           contact: "Contact for Details"
         },
         group_coaching: {
@@ -594,6 +599,7 @@
           success_inline: "Thank you. Your enquiry has been sent. Please check your inbox for confirmation.",
           success_dismiss: "Got it",
           book_consultation: "Book Free Consultation",
+          validation_error: "Please check the highlighted fields.",
           rate_limit: "Message already sent. Please wait a minute before trying again.",
           error: "Unable to send your request right now. Please try again in a moment.",
           network_error: "Network issue. If it persists, email inquiries@garciabuilder.fitness."
@@ -617,6 +623,58 @@
         error: "Unable to send your request right now. Please try again in a moment.",
         email_confirmation_title: "We received your consultation request",
         next_steps: "Please check your inbox for confirmation."
+      },
+      body_metrics: {
+        saving: "Saving...",
+        save_entry: "Save Entry",
+        measurement_required: "Please fill at least one measurement field.",
+        saved: "Body metrics saved successfully.",
+        saved_local: "Saved locally. It will sync when online.",
+        photo_uploaded: "Progress photo uploaded.",
+        photo_upload_failed: "Failed to upload photo."
+      },
+      profile: {
+        load_failed: "Failed to load profile data.",
+        image_file_required: "Please select an image file.",
+        image_drop_required: "Please drop an image file.",
+        file_size_limit: "File size must be less than 5MB.",
+        avatar_element_unavailable: "Avatar element not available.",
+        avatar_updated: "Avatar updated successfully.",
+        avatar_generated: "New avatar generated.",
+        avatar_preview_loaded: "Avatar preview loaded. It has not been saved to the server yet.",
+        avatar_upload_failed: "Failed to upload avatar.",
+        reset_confirm: "Are you sure you want to reset all changes?",
+        form_reset: "Form reset to original values.",
+        saved: "Profile saved successfully.",
+        save_failed: "Failed to save profile.",
+        export_success: "Profile data exported successfully."
+      },
+      trainer_application: {
+        load_error: "We could not load the trainer application form. Please refresh and try again.",
+        login_required_title: "Login required",
+        login_required_message: "Create a free account or login to submit your trainer application and track the status.",
+        create_account: "Create account",
+        login: "Login",
+        login_required_submit: "Please login or create an account before submitting your application.",
+        database_unavailable: "Database connection not available. Please refresh the page and try again.",
+        submitting: "Submitting...",
+        required_fields: "Please complete all required fields before submitting.",
+        submit_failed: "Failed to submit application.",
+        submit_failed_retry: "Failed to submit application. Please try again.",
+        submit_success: "Application submitted successfully. We will review it within 24-48 hours."
+      },
+      enhanced_dashboard: {
+        personal_updated: "Personal information updated successfully.",
+        personal_update_failed: "Failed to update personal information: {message}",
+        fitness_updated: "Fitness profile updated successfully.",
+        fitness_update_failed: "Failed to update fitness profile: {message}"
+      },
+      trainer_dashboard: {
+        client_required: "Please select a client first.",
+        session_status_updated: "Session marked as {status}.",
+        session_status_failed: "Failed to update session status.",
+        session_created: "Session created successfully.",
+        session_create_failed: "Failed to create session: {message}"
       },
       auth: {
         login_title: "Login",
@@ -648,6 +706,36 @@
         or_continue_with: "or continue with",
         continue_google: "Continue with Google",
         continue_facebook: "Continue with Facebook",
+        creating_account: "Creating account...",
+        signing_in: "Signing in...",
+        redirecting: "Redirecting...",
+        required_fields_missing: "Please fill in all required fields.",
+        login_success_title: "Welcome back",
+        login_success_message: "You are signed in. Taking you to your dashboard.",
+        login_error_invalid_credentials: "Incorrect email or password. Please try again.",
+        login_error_email_not_confirmed: "Your email is not confirmed yet. Check your inbox or request a new confirmation email.",
+        login_error_account_not_found: "We could not find an account with that email.",
+        register_success_title: "Account created",
+        register_success_check_email: "Check your email to confirm your account.",
+        register_success_redirecting: "Redirecting you to your dashboard.",
+        register_error_existing_email: "This email is already registered. Please sign in instead.",
+        register_error_password_mismatch: "Passwords do not match.",
+        register_error_terms_required: "You must agree to the terms before creating your account.",
+        register_error_service_unavailable: "The account service is temporarily unavailable. Please try again later.",
+        profile_sync_warning: "Your account was created, but profile sync is still catching up. Please refresh after confirmation.",
+        oauth_google_connecting: "Connecting with Google...",
+        oauth_connecting: "Connecting...",
+        oauth_disabled: "This sign-in method is unavailable in the current environment.",
+        oauth_file_protocol_warning: "OAuth sign-in is not available from file://. Please use localhost or a hosted site.",
+        oauth_google_disabled: "Google OAuth is disabled in this environment. Enable Google OAuth or use email and password.",
+        oauth_unavailable_localhost: "OAuth unavailable (use localhost)",
+        oauth_prepare_login: "Preparing login... please try again in a second.",
+        oauth_prepare_signup: "Preparing sign up... please try again in a second.",
+        supabase_config_missing: "Supabase project keys are missing.",
+        supabase_init_failed: "Supabase initialization failed.",
+        resend_confirmation: "Resend confirmation email",
+        confirmation_email_sent: "We sent a new confirmation email.",
+        confirmation_email_failed: "We could not resend the confirmation email right now.",
         forgot_password: "Forgot your password?",
         forgot_password_title: "Forgot Password",
         forgot_password_subtitle: "Enter your email and we'll send a password reset link.",
@@ -784,7 +872,7 @@
           eyebrow: "Coaching online para profissionais ocupados",
           headline: "Mais forte, mais definido, acompanhado toda semana",
           trust1: "Casa ou academia",
-          trust2: "App Trainerize",
+          trust2: "App My PT Hub",
           trust3: "EN/PT/ES"
         },
         why: {
@@ -812,7 +900,7 @@
         title: "Como Funciona",
         subtitle: "Clareza desde o primeiro dia — é assim que criamos impulso juntos",
         step1: { title: "Chamada de Avaliação", desc: "Agende uma consultoria gratuita para mapear objetivos, rotina, lesões e o suporte exato que você precisa." },
-        step2: { title: "Plano Feito para Você", desc: "Receba treino, nutrição e sistemas de hábitos personalizados dentro do app Trainerize." },
+        step2: { title: "Plano Feito para Você", desc: "Receba treino, nutrição e sistemas de hábitos personalizados dentro do app My PT Hub." },
         step3: { title: "Execução Guiada", desc: "Check-ins semanais mais responsabilidade diária no WhatsApp mantêm você consistente e confiante." },
         step4: { title: "Resultados que Permanecem", desc: "Sinta-se mais forte, mais definido e no controle com sistemas que você consegue manter a longo prazo." },
         cta: "Comece Sua Jornada Hoje →"
@@ -865,7 +953,7 @@
         card1: { title: "ActiveIQ Level 3 PT", desc: "Personal trainer certificado reconhecido no Reino Unido e na UE." },
         card2: { title: "12+ Anos de Coaching", desc: "Centenas de clientes guiados em perda de gordura, recomposição e performance." },
         card3: { title: "Coaching em EN • PT • ES", desc: "Fale no idioma que mantém você motivado e responsável." },
-        card4: { title: "Ecossistema Trainerize", desc: "App claro para treinos, metas de nutrição, hábitos e acompanhamento de progresso." }
+        card4: { title: "Ecossistema My PT Hub", desc: "App claro para treinos, metas de nutrição, hábitos e acompanhamento de progresso." }
       },
       stats: {
         clients: "Clientes Transformados",
@@ -952,14 +1040,14 @@
       faq: {
         title: "FAQ",
         search: "Buscar perguntas…",
-        q1: { q: "Como funciona o coaching online?", a: "Começamos com um formulário de entrada e uma breve chamada. Seu plano é entregue no Trainerize (treino + hábitos, orientação nutricional opcional). Check-ins semanais, suporte via chat no app e ajustes baseados nos seus dados." },
+        q1: { q: "Como funciona o coaching online?", a: "Começamos com um formulário de entrada e uma breve chamada. Seu plano é entregue no My PT Hub (treino + hábitos, orientação nutricional opcional). Check-ins semanais, suporte via chat no app e ajustes baseados nos seus dados." },
         q2: { q: "Preciso de academia?", a: "Não. Posso programar treino completo em casa. Se você tem apenas elásticos ou alguns halteres, ainda progredimos efetivamente." },
         q3: { q: "Nutrição está incluída?", a: "Sim. Você recebe calorias/macros e estruturas flexíveis de refeições. Alinhamos com sua cultura, orçamento e rotina—sem modelos rígidos." },
         q4: { q: "Sou iniciante—isso é para mim?", a: "Absolutamente. Focamos em forma segura, progressões e construção de hábitos. Todo exercício tem vídeos demonstrativos e dicas." },
         q5: { q: "E se eu tiver lesões ou dor?", a: "Adaptamos exercícios, tempo e amplitude de movimento. Posso coordenar com orientação de fisioterapeuta/médico quando necessário." },
         q6: { q: "Quão rápido verei resultados?", a: "A maioria se sente melhor em 2–3 semanas, nota mudanças visíveis em 6–8 semanas, e transformações fortes a partir de 12+ semanas com consistência." },
         q7: { q: "Como funcionam os check-ins semanais?", a: "Formulário curto no app + fotos/medidas opcionais. Reviso aderência e tendências, depois atualizo seu plano." },
-        q8: { q: "Qual app você usa?", a: "Trainerize—planos, vídeos, hábitos, mensagens e acompanhamento de progresso em um lugar (iOS/Android)." },
+        q8: { q: "Qual app você usa?", a: "My PT Hub—planos, vídeos, hábitos, mensagens e acompanhamento de progresso em um lugar (iOS/Android)." },
         q9: { q: "Que equipamentos preciso?", a: "Nenhum para começar. Para casa, halteres ajustáveis + elásticos cobrem quase tudo. Escalamos conforme você progride." },
         q10: { q: "Viajo ou trabalho em turnos. Isso se encaixa?", a: "Sim. Divisões flexíveis (3–4 dias/semana), trocas para viagem e sessões curtas mantêm o ritmo durante semanas ocupadas." },
         q11: { q: "Perderei músculo enquanto corto gordura?", a: "O plano prioriza retenção muscular: treino resistido, proteína adequada, sobrecarga progressiva e déficit sensato." },
@@ -1040,13 +1128,16 @@
         conrad: "Andre reconstruiu meu treino em meio a semanas de 60 horas. Perdemos 9kg de gordura, ganhamos massa magra e meus ombros não doem mais."
       },
       pricing: {
-        title: "Programas de Coaching",
-        subtitle: "Escolha a estrutura certa para o seu objetivo: acesso ao app, treino, nutrição, lista de compras, check-ins e accountability.",
+        title: "Escolha o nível de mudança que você quer",
+        subtitle: "O coaching mensal é para quem quer accountability e orientação contínuas. Os programas de 8, 12 e 18 semanas são para quem quer ir mais rápido, se comprometer mais fundo e buscar transformação visível.",
+        plan_not_found: "Plano nao encontrado. Tente novamente.",
+        redirecting: "Redirecionando...",
+        currency_update_failed: "Falha ao atualizar a moeda. Tente novamente.",
         value: {
           title: "O que todos os planos incluem",
-          text: "Execução clara, não apenas um PDF: treino, nutrição e acompanhamento organizados para você saber exatamente o próximo passo.",
+          text: "Execução clara, não apenas um PDF: treino, nutrição e acompanhamento organizados para você saber exatamente o próximo passo e por que ele importa.",
           items: [
-            "Acesso ao app Trainerize com treinos estruturados",
+            "Acesso ao app My PT Hub com treinos estruturados",
             "Metas nutricionais, orientação alimentar e suporte para lista de compras",
             "Check-ins semanais, ajustes e accountability",
             "Checkout seguro, email de onboarding e agendamento de consulta após a compra"
@@ -1054,13 +1145,13 @@
         },
         plans: {
           monthly: {
-            badge: "Coaching flexível",
+            badge: "Para accountability contínua",
             name: "Coaching Online Mensal",
-            price: "€150",
+            price: "€200",
             period: "/mês",
-            meta: "Suporte contínuo",
-            result: "Melhor para progresso estável e manutenção",
-            description: "Coaching online padrão para quem quer estrutura todos os meses sem um bloco fechado de transformação.",
+            meta: "Mantenha o ritmo vivo",
+            result: "Melhor para quem quer suporte, estrutura e um reset mensal",
+            description: "Esse é o plano para manter consistência quando a vida aperta, a motivação cai ou você precisa de alguém mantendo você no caminho certo todo mês.",
             features: [
               "Plano de treino personalizado dentro do app",
               "Metas de nutrição e orientação de hábitos",
@@ -1070,58 +1161,60 @@
             ]
           },
           eight_week: {
-            badge: "Programa de entrada",
+            badge: "Arranque rápido",
             name: "8 Semanas Fat Loss Kickstart",
-            price: "€350",
+            price: "€359",
             period: " pagamento único",
             meta: "8 semanas",
-            result: "Meta realista: 5-8kg de perda de gordura",
-            description: "Um reset focado para quem precisa de plano claro, estrutura alimentar e accountability rapidamente.",
+            result: "Um reset forte para quem quer sentir mudança rápido",
+            description: "Feito para ganhar impulso: um bloco mais fechado e comprometido que quebra padrões antigos, cria disciplina e mostra ganhos cedo.",
             features: [
               "Bloco de treino de 8 semanas para casa ou ginásio",
               "Configuração nutricional com estrutura simples de refeições",
               "Orientação de lista de compras e substituições",
               "Check-ins semanais de accountability",
-              "Ideal para recuperar ritmo e consistência"
+              "Ideal para um reset rápido e tração visível"
             ]
           },
           twelve_week: {
-            badge: "Principal",
+            badge: "Melhor custo-benefício",
             name: "Transformação 12 Semanas",
-            price: "€600",
+            price: "€519",
             period: " pagamento único",
             meta: "12 semanas",
-            result: "Meta realista: 9-12kg de perda de gordura",
+            result: "O ponto ideal para mudança visível e consolidação de hábitos",
             featured: true,
-            description: "O bloco principal Garcia Builder: tempo suficiente para perder gordura, ganhar força e consolidar rotina.",
+            description: "O bloco principal Garcia Builder: tempo suficiente para perder gordura, ganhar força e criar uma forma física e rotina que você realmente consegue manter.",
             features: [
               "Plano progressivo completo de 12 semanas",
               "Calorias, macros e orientação nutricional",
               "Suporte para lista de compras e estratégia para comer fora",
               "Check-ins semanais com ajustes do plano",
-              "Acesso ao app, suporte e accountability"
+              "Acesso ao app, suporte e accountability",
+              "Feito para gerar tração e confiança visíveis"
             ]
           },
           eighteen_week: {
-            badge: "Mais completo",
+            badge: "Transformação profunda",
             name: "Transformação Completa 18 Semanas",
-            price: "€750",
+            price: "€699",
             period: " pagamento único",
             meta: "18 semanas",
-            result: "Meta realista: 12-15kg de perda + hábitos de longo prazo",
-            description: "Um bloco mais profundo para metas maiores, mais trabalho de hábitos e transição mais segura para manutenção.",
+            result: "O bloco mais completo para mudança séria e mudança de identidade",
+            description: "Para quem quer o maior resultado: tempo suficiente para gerar mudança real, refinar hábitos e sair com um corpo, mentalidade e sistema muito diferentes.",
             features: [
               "Roadmap de treino e nutrição por 18 semanas",
               "Fase de perda de gordura + fase de construção de hábitos",
               "Accountability avançado e revisões de progresso",
               "Listas de compras, estratégia de viagem e suporte para eventos sociais",
-              "Plano de manutenção para facilitar manter os resultados"
+              "Plano de manutenção para facilitar manter os resultados",
+              "Ideal para quem quer o resultado mais profundo, não o plano mais curto"
             ]
           }
         },
         cta: {
-          choose: "Iniciar checkout seguro",
-          popular: "Mais Popular",
+          choose: "Começar sua transformação",
+          popular: "Melhor valor",
           contact: "Contato para Detalhes"
         },
         group_coaching: {
@@ -1211,6 +1304,7 @@
           success_inline: "Obrigado! Sua solicitação foi enviada. Verifique seu email para a confirmação.",
           success_dismiss: "Entendi",
           book_consultation: "Agendar Consulta Gratuita",
+          validation_error: "Verifique os campos destacados.",
           rate_limit: "Mensagem já enviada. Aguarde um minuto antes de tentar novamente.",
           error: "Não foi possível enviar sua solicitação agora. Tente novamente em instantes.",
           network_error: "Problema de conexão. Se persistir, envie email para inquiries@garciabuilder.fitness."
@@ -1234,6 +1328,58 @@
         error: "Não foi possível enviar sua solicitação agora. Tente novamente em instantes.",
         email_confirmation_title: "Recebemos sua solicitação de consulta",
         next_steps: "Verifique seu email para a confirmação."
+      },
+      body_metrics: {
+        saving: "Salvando...",
+        save_entry: "Salvar registro",
+        measurement_required: "Preencha pelo menos um campo de medida.",
+        saved: "Metricas corporais salvas com sucesso.",
+        saved_local: "Salvo localmente. Sera sincronizado quando estiver online.",
+        photo_uploaded: "Foto de progresso enviada.",
+        photo_upload_failed: "Falha ao enviar a foto."
+      },
+      profile: {
+        load_failed: "Falha ao carregar os dados do perfil.",
+        image_file_required: "Selecione um arquivo de imagem.",
+        image_drop_required: "Solte um arquivo de imagem.",
+        file_size_limit: "O arquivo deve ter menos de 5MB.",
+        avatar_element_unavailable: "Elemento de avatar indisponivel.",
+        avatar_updated: "Avatar atualizado com sucesso.",
+        avatar_generated: "Novo avatar gerado.",
+        avatar_preview_loaded: "Previa do avatar carregada. Ainda nao foi salva no servidor.",
+        avatar_upload_failed: "Falha ao enviar o avatar.",
+        reset_confirm: "Tem certeza que deseja redefinir todas as alteracoes?",
+        form_reset: "Formulario restaurado para os valores originais.",
+        saved: "Perfil salvo com sucesso.",
+        save_failed: "Falha ao salvar o perfil.",
+        export_success: "Dados do perfil exportados com sucesso."
+      },
+      trainer_application: {
+        load_error: "Nao foi possivel carregar o formulario de candidatura. Atualize a pagina e tente novamente.",
+        login_required_title: "Login necessario",
+        login_required_message: "Crie uma conta gratuita ou faca login para enviar sua candidatura e acompanhar o status.",
+        create_account: "Criar conta",
+        login: "Login",
+        login_required_submit: "Faca login ou crie uma conta antes de enviar sua candidatura.",
+        database_unavailable: "Conexao com o banco indisponivel. Atualize a pagina e tente novamente.",
+        submitting: "Enviando...",
+        required_fields: "Preencha todos os campos obrigatorios antes de enviar.",
+        submit_failed: "Falha ao enviar candidatura.",
+        submit_failed_retry: "Falha ao enviar candidatura. Tente novamente.",
+        submit_success: "Candidatura enviada com sucesso. Vamos analisar em 24-48 horas."
+      },
+      enhanced_dashboard: {
+        personal_updated: "Informacoes pessoais atualizadas com sucesso.",
+        personal_update_failed: "Falha ao atualizar informacoes pessoais: {message}",
+        fitness_updated: "Perfil fitness atualizado com sucesso.",
+        fitness_update_failed: "Falha ao atualizar perfil fitness: {message}"
+      },
+      trainer_dashboard: {
+        client_required: "Selecione um cliente primeiro.",
+        session_status_updated: "Sessao marcada como {status}.",
+        session_status_failed: "Falha ao atualizar status da sessao.",
+        session_created: "Sessao criada com sucesso.",
+        session_create_failed: "Falha ao criar sessao: {message}"
       },
       auth: {
         login_title: "Login",
@@ -1265,6 +1411,36 @@
         or_continue_with: "ou continue com",
         continue_google: "Continuar com Google",
         continue_facebook: "Continuar com Facebook",
+        creating_account: "Criando conta...",
+        signing_in: "Entrando...",
+        redirecting: "Redirecionando...",
+        required_fields_missing: "Preencha todos os campos obrigatórios.",
+        login_success_title: "Bem-vindo de volta",
+        login_success_message: "Você entrou com sucesso. Estamos levando você para o painel.",
+        login_error_invalid_credentials: "Email ou senha incorretos. Verifique e tente novamente.",
+        login_error_email_not_confirmed: "Seu email ainda não foi confirmado. Verifique a caixa de entrada ou solicite um novo email de confirmação.",
+        login_error_account_not_found: "Não encontramos uma conta com esse email.",
+        register_success_title: "Conta criada",
+        register_success_check_email: "Verifique seu email para confirmar sua conta.",
+        register_success_redirecting: "Redirecionando você para o painel.",
+        register_error_existing_email: "Este email já está cadastrado. Entre na conta em vez de criar outra.",
+        register_error_password_mismatch: "As senhas não coincidem.",
+        register_error_terms_required: "Você precisa concordar com os termos antes de criar a conta.",
+        register_error_service_unavailable: "O serviço de conta está temporariamente indisponível. Tente novamente mais tarde.",
+        profile_sync_warning: "Sua conta foi criada, mas a sincronização do perfil ainda está concluindo. Atualize após a confirmação do email.",
+        oauth_google_connecting: "Conectando com Google...",
+        oauth_connecting: "Conectando...",
+        oauth_disabled: "Este método de login está indisponível no ambiente atual.",
+        oauth_file_protocol_warning: "O login OAuth não está disponível em file://. Use localhost ou um site hospedado.",
+        oauth_google_disabled: "O OAuth do Google está desativado neste ambiente. Ative o OAuth do Google ou use e-mail e senha.",
+        oauth_unavailable_localhost: "OAuth indisponível (use localhost)",
+        oauth_prepare_login: "Preparando login... tente novamente em um segundo.",
+        oauth_prepare_signup: "Preparando cadastro... tente novamente em um segundo.",
+        supabase_config_missing: "As chaves do projeto Supabase estão ausentes.",
+        supabase_init_failed: "Falha ao inicializar o Supabase.",
+        resend_confirmation: "Reenviar email de confirmação",
+        confirmation_email_sent: "Enviamos um novo email de confirmação.",
+        confirmation_email_failed: "Não foi possível reenviar o email de confirmação agora.",
         forgot_password: "Esqueceu sua senha?",
         forgot_password_title: "Esqueci a Senha",
         forgot_password_subtitle: "Digite seu endereço de email e enviaremos um link para redefinir sua senha.",
@@ -1401,7 +1577,7 @@
           eyebrow: "Coaching online para profesionales ocupados",
           headline: "Mas fuerte, mas definido, acompanado cada semana",
           trust1: "Casa o gym",
-          trust2: "App Trainerize",
+          trust2: "App My PT Hub",
           trust3: "EN/PT/ES"
         },
         why: {
@@ -1429,7 +1605,7 @@
         title: "Cómo Funciona",
         subtitle: "Claridad desde el día uno — así construimos impulso juntos",
         step1: { title: "Llamada de Evaluación", desc: "Reserva una consulta gratuita para mapear objetivos, estilo de vida, lesiones y el soporte exacto que necesitas." },
-        step2: { title: "Plan Hecho para Ti", desc: "Recibe entrenamiento, nutrición y sistemas de hábitos personalizados dentro de la app Trainerize." },
+        step2: { title: "Plan Hecho para Ti", desc: "Recibe entrenamiento, nutrición y sistemas de hábitos personalizados dentro de la app My PT Hub." },
         step3: { title: "Ejecución Guiada", desc: "Check-ins semanales más responsabilidad diaria por WhatsApp te mantienen consistente y seguro." },
         step4: { title: "Resultados que Permanecen", desc: "Siéntete más fuerte, más definido y en control con sistemas que puedes mantener a largo plazo." },
         cta: "Empieza Tu Viaje Hoy →"
@@ -1482,7 +1658,7 @@
         card1: { title: "ActiveIQ Level 3 PT", desc: "Entrenador personal certificado reconocido en Reino Unido y la UE." },
         card2: { title: "12+ Años Entrenando", desc: "Cientos de clientes guiados en pérdida de grasa, recomposición y rendimiento." },
         card3: { title: "Coaching en EN • PT • ES", desc: "Comunícate en el idioma que te mantiene motivado y responsable." },
-        card4: { title: "Ecosistema Trainerize", desc: "App claro para entrenos, objetivos de nutrición, hábitos y seguimiento del progreso." }
+        card4: { title: "Ecosistema My PT Hub", desc: "App claro para entrenos, objetivos de nutrición, hábitos y seguimiento del progreso." }
       },
       stats: {
         clients: "Clientes Transformados",
@@ -1569,14 +1745,14 @@
       faq: {
         title: "FAQ",
         search: "Buscar preguntas…",
-        q1: { q: "¿Cómo funciona el coaching online?", a: "Empezamos con un formulario de ingreso y una breve llamada. Tu plan se entrega en Trainerize (entrenamiento + hábitos, orientación nutricional opcional). Check-ins semanales, soporte de chat en la app y ajustes basados en tus datos." },
+        q1: { q: "¿Cómo funciona el coaching online?", a: "Empezamos con un formulario de ingreso y una breve llamada. Tu plan se entrega en My PT Hub (entrenamiento + hábitos, orientación nutricional opcional). Check-ins semanales, soporte de chat en la app y ajustes basados en tus datos." },
         q2: { q: "¿Necesito membresía de gimnasio?", a: "No. Puedo programar entrenamiento completo en casa. Si solo tienes bandas o un par de mancuernas, aún progresamos efectivamente." },
         q3: { q: "¿Está incluida la nutrición?", a: "Sí. Obtienes calorías/macros y marcos flexibles de comidas. Nos alineamos con tu cultura, presupuesto y horario—sin plantillas rígidas." },
         q4: { q: "Soy principiante—¿esto es para mí?", a: "Absolutamente. Nos enfocamos en forma segura, progresiones y construcción de hábitos. Cada ejercicio tiene videos demostrativos y consejos." },
         q5: { q: "¿Qué pasa si tengo lesiones o dolor?", a: "Adaptamos ejercicios, tempo y rango de movimiento. Puedo coordinar con orientación de fisioterapeuta/médico cuando sea necesario." },
         q6: { q: "¿Qué tan rápido veré resultados?", a: "La mayoría se siente mejor en 2–3 semanas, nota cambios visibles en 6–8 semanas, y transformaciones fuertes desde 12+ semanas con consistencia." },
         q7: { q: "¿Cómo funcionan los check-ins semanales?", a: "Formulario corto en la app + fotos/medidas opcionales. Reviso adherencia y tendencias, luego actualizo tu plan." },
-        q8: { q: "¿Qué app usas?", a: "Trainerize—planes, videos, hábitos, mensajes y seguimiento de progreso en un lugar (iOS/Android)." },
+        q8: { q: "¿Qué app usas?", a: "My PT Hub—planes, videos, hábitos, mensajes y seguimiento de progreso en un lugar (iOS/Android)." },
         q9: { q: "¿Qué equipamiento necesito?", a: "Ninguno para empezar. Para casa, mancuernas ajustables + bandas cubren casi todo. Escalamos mientras progresas." },
         q10: { q: "Viajo o trabajo por turnos. ¿Esto puede funcionar?", a: "Sí. Divisiones flexibles (3–4 días/semana), intercambios para viajes y sesiones cortas mantienen el impulso durante semanas ocupadas." },
         q11: { q: "¿Perderé músculo mientras corto grasa?", a: "El plan prioriza retención muscular: entrenamiento de resistencia, proteína adecuada, sobrecarga progresiva y déficit sensato." },
@@ -1657,13 +1833,16 @@
         conrad: "Andre reconstruyó mi entrenamiento alrededor de semanas laborales de 60 horas. Perdimos 9kg de grasa, ganamos masa magra y mis hombros dejaron de doler."
       },
       pricing: {
-        title: "Programas de Coaching",
-        subtitle: "Elige la estructura que encaja con tu objetivo: acceso a la app, entrenamiento, nutrición, lista de compra, check-ins y accountability.",
+        title: "Elige el nivel de cambio que quieres",
+        subtitle: "El coaching mensual es para quien quiere accountability y guía continuas. Los programas de 8, 12 y 18 semanas son para quien quiere ir más rápido, comprometerse más y buscar una transformación visible.",
+        plan_not_found: "Plan no encontrado. Intentalo de nuevo.",
+        redirecting: "Redirigiendo...",
+        currency_update_failed: "No se pudo actualizar la moneda. Intentalo de nuevo.",
         value: {
           title: "Qué incluye cada plan",
-          text: "Ejecución clara, no solo un PDF: entrenamiento, nutrición y seguimiento organizados para que sepas exactamente el siguiente paso.",
+          text: "Ejecución clara, no solo un PDF: entrenamiento, nutrición y seguimiento organizados para que sepas exactamente el siguiente paso y por qué importa.",
           items: [
-            "Acceso a Trainerize con entrenamientos estructurados",
+            "Acceso a My PT Hub con entrenamientos estructurados",
             "Objetivos de nutrición, guía de comidas y apoyo con lista de compra",
             "Check-ins semanales, ajustes y accountability",
             "Checkout seguro, email de onboarding y agenda de consulta después de comprar"
@@ -1671,13 +1850,13 @@
         },
         plans: {
           monthly: {
-            badge: "Coaching flexible",
+            badge: "Para accountability continuo",
             name: "Coaching Online Mensual",
-            price: "€150",
+            price: "€200",
             period: "/mes",
-            meta: "Soporte continuo",
-            result: "Ideal para progreso estable y mantenimiento",
-            description: "Coaching online estándar para clientes que quieren estructura mensual sin un bloque cerrado de transformación.",
+            meta: "Mantén el impulso vivo",
+            result: "Mejor para quien quiere soporte, estructura y un reset mensual",
+            description: "Este es el plan para mantener la consistencia cuando la vida aprieta, la motivación baja o necesitas a alguien que te mantenga encaminado cada mes.",
             features: [
               "Plan de entrenamiento personalizado en la app",
               "Objetivos de nutrición y guía de hábitos",
@@ -1687,58 +1866,60 @@
             ]
           },
           eight_week: {
-            badge: "Programa inicial",
+            badge: "Arranque rápido",
             name: "8 Semanas Fat Loss Kickstart",
-            price: "€350",
+            price: "€359",
             period: " pago único",
             meta: "8 semanas",
-            result: "Objetivo realista: 5-8kg de pérdida de grasa",
-            description: "Un reset enfocado para quien necesita un plan claro, estructura nutricional y accountability rápido.",
+            result: "Un reset fuerte para quien quiere sentir el cambio rápido",
+            description: "Pensado para ganar impulso: un bloque más cerrado y comprometido que rompe patrones antiguos, crea disciplina y muestra resultados temprano.",
             features: [
               "Bloque de entrenamiento de 8 semanas para casa o gimnasio",
               "Configuración nutricional con estructura simple de comidas",
               "Guía de lista de compra y sustituciones",
               "Check-ins semanales de accountability",
-              "Ideal para recuperar ritmo y consistencia"
+              "Ideal para un reset rápido y tracción visible"
             ]
           },
           twelve_week: {
-            badge: "Principal",
+            badge: "Mejor relación valor-resultados",
             name: "Transformación 12 Semanas",
-            price: "€600",
+            price: "€519",
             period: " pago único",
             meta: "12 semanas",
-            result: "Objetivo realista: 9-12kg de pérdida de grasa",
+            result: "El punto ideal para cambio visible y consolidación de hábitos",
             featured: true,
-            description: "El bloque principal Garcia Builder: tiempo suficiente para perder grasa, ganar fuerza y consolidar rutinas.",
+            description: "El bloque principal Garcia Builder: tiempo suficiente para perder grasa, ganar fuerza y construir una forma física y una rutina que realmente puedas mantener.",
             features: [
               "Plan progresivo completo de 12 semanas",
               "Calorías, macros y orientación nutricional",
               "Apoyo con lista de compra y estrategia para comer fuera",
               "Check-ins semanales con ajustes del plan",
-              "Acceso a la app, soporte y accountability"
+              "Acceso a la app, soporte y accountability",
+              "Diseñado para generar tracción y confianza visibles"
             ]
           },
           eighteen_week: {
-            badge: "Más completo",
+            badge: "Transformación profunda",
             name: "Transformación Completa 18 Semanas",
-            price: "€750",
+            price: "€699",
             period: " pago único",
             meta: "18 semanas",
-            result: "Objetivo realista: 12-15kg de pérdida + hábitos a largo plazo",
-            description: "Un bloque más profundo para metas grandes, más trabajo de hábitos y una transición más segura a mantenimiento.",
+            result: "El bloque más completo para un cambio serio y un cambio de identidad",
+            description: "Para quien quiere el mayor resultado: tiempo suficiente para provocar un cambio real, afinar hábitos y salir con un cuerpo, una mentalidad y un sistema muy distintos.",
             features: [
               "Roadmap de entrenamiento y nutrición por 18 semanas",
               "Fase de pérdida de grasa + fase de construcción de hábitos",
               "Accountability avanzado y revisiones de progreso",
               "Listas de compra, estrategia para viajes y apoyo social",
-              "Plan de mantenimiento para conservar mejor los resultados"
+              "Plan de mantenimiento para conservar mejor los resultados",
+              "Ideal para quien quiere el resultado más profundo, no el plan más corto"
             ]
           }
         },
         cta: {
-          choose: "Iniciar checkout seguro",
-          popular: "Más Popular",
+          choose: "Empezar tu transformación",
+          popular: "Mejor valor",
           contact: "Contacto para Detalles"
         },
         group_coaching: {
@@ -1828,6 +2009,7 @@
           success_inline: "Gracias. Tu solicitud ha sido enviada. Revisa tu email para la confirmación.",
           success_dismiss: "Entendido",
           book_consultation: "Reservar Consulta Gratis",
+          validation_error: "Revisa los campos destacados.",
           rate_limit: "Mensaje ya enviado. Espera un minuto antes de intentarlo de nuevo.",
           error: "No se pudo enviar tu solicitud ahora. Inténtalo de nuevo en unos momentos.",
           network_error: "Problema de conexión. Si persiste, escribe a inquiries@garciabuilder.fitness."
@@ -1851,6 +2033,58 @@
         error: "No se pudo enviar tu solicitud ahora. Inténtalo de nuevo en unos momentos.",
         email_confirmation_title: "Recibimos tu solicitud de consulta",
         next_steps: "Revisa tu email para la confirmación."
+      },
+      body_metrics: {
+        saving: "Guardando...",
+        save_entry: "Guardar registro",
+        measurement_required: "Completa al menos un campo de medicion.",
+        saved: "Metricas corporales guardadas correctamente.",
+        saved_local: "Guardado localmente. Se sincronizara cuando estes online.",
+        photo_uploaded: "Foto de progreso subida.",
+        photo_upload_failed: "No se pudo subir la foto."
+      },
+      profile: {
+        load_failed: "No se pudieron cargar los datos del perfil.",
+        image_file_required: "Selecciona un archivo de imagen.",
+        image_drop_required: "Suelta un archivo de imagen.",
+        file_size_limit: "El archivo debe tener menos de 5MB.",
+        avatar_element_unavailable: "Elemento de avatar no disponible.",
+        avatar_updated: "Avatar actualizado correctamente.",
+        avatar_generated: "Nuevo avatar generado.",
+        avatar_preview_loaded: "Vista previa del avatar cargada. Aun no se guardo en el servidor.",
+        avatar_upload_failed: "No se pudo subir el avatar.",
+        reset_confirm: "Seguro que quieres restablecer todos los cambios?",
+        form_reset: "Formulario restaurado a los valores originales.",
+        saved: "Perfil guardado correctamente.",
+        save_failed: "No se pudo guardar el perfil.",
+        export_success: "Datos del perfil exportados correctamente."
+      },
+      trainer_application: {
+        load_error: "No pudimos cargar el formulario de postulacion. Actualiza la pagina e intentalo de nuevo.",
+        login_required_title: "Login requerido",
+        login_required_message: "Crea una cuenta gratis o inicia sesion para enviar tu postulacion y seguir el estado.",
+        create_account: "Crear cuenta",
+        login: "Login",
+        login_required_submit: "Inicia sesion o crea una cuenta antes de enviar tu postulacion.",
+        database_unavailable: "Conexion con la base de datos no disponible. Actualiza la pagina e intentalo de nuevo.",
+        submitting: "Enviando...",
+        required_fields: "Completa todos los campos obligatorios antes de enviar.",
+        submit_failed: "No se pudo enviar la postulacion.",
+        submit_failed_retry: "No se pudo enviar la postulacion. Intentalo de nuevo.",
+        submit_success: "Postulacion enviada correctamente. La revisaremos en 24-48 horas."
+      },
+      enhanced_dashboard: {
+        personal_updated: "Informacion personal actualizada correctamente.",
+        personal_update_failed: "No se pudo actualizar la informacion personal: {message}",
+        fitness_updated: "Perfil fitness actualizado correctamente.",
+        fitness_update_failed: "No se pudo actualizar el perfil fitness: {message}"
+      },
+      trainer_dashboard: {
+        client_required: "Selecciona un cliente primero.",
+        session_status_updated: "Sesion marcada como {status}.",
+        session_status_failed: "No se pudo actualizar el estado de la sesion.",
+        session_created: "Sesion creada correctamente.",
+        session_create_failed: "No se pudo crear la sesion: {message}"
       },
       auth: {
         login_title: "Iniciar sesión",
@@ -1882,6 +2116,35 @@
         or_continue_with: "o continúa con",
         continue_google: "Continuar con Google",
         continue_facebook: "Continuar con Facebook",
+        creating_account: "Creando cuenta...",
+        signing_in: "Iniciando sesión...",
+        redirecting: "Redirigiendo...",
+        login_success_title: "Bienvenido de nuevo",
+        login_success_message: "Has iniciado sesión. Te llevamos a tu panel.",
+        login_error_invalid_credentials: "Email o contraseña incorrectos. Inténtalo de nuevo.",
+        login_error_email_not_confirmed: "Tu email aún no está confirmado. Revisa tu bandeja de entrada o solicita un nuevo correo de confirmación.",
+        login_error_account_not_found: "No encontramos una cuenta con ese email.",
+        register_success_title: "Cuenta creada",
+        register_success_check_email: "Revisa tu email para confirmar tu cuenta.",
+        register_success_redirecting: "Te estamos redirigiendo al panel.",
+        register_error_existing_email: "Este email ya está registrado. Inicia sesión en su lugar.",
+        register_error_password_mismatch: "Las contraseñas no coinciden.",
+        register_error_terms_required: "Debes aceptar los términos antes de crear tu cuenta.",
+        register_error_service_unavailable: "El servicio de cuentas está temporalmente no disponible. Inténtalo más tarde.",
+        profile_sync_warning: "Tu cuenta se creó, pero la sincronización del perfil aún se está completando. Actualiza después de confirmar tu email.",
+        oauth_google_connecting: "Conectando con Google...",
+        oauth_connecting: "Conectando...",
+        oauth_disabled: "Este método de acceso no está disponible en el entorno actual.",
+        oauth_file_protocol_warning: "El inicio de sesión OAuth no está disponible en file://. Usa localhost o un sitio alojado.",
+        oauth_google_disabled: "Google OAuth está desactivado en este entorno. Activa Google OAuth o usa correo y contraseña.",
+        oauth_unavailable_localhost: "OAuth no disponible (usa localhost)",
+        oauth_prepare_login: "Preparando acceso... inténtalo de nuevo en un segundo.",
+        oauth_prepare_signup: "Preparando registro... inténtalo de nuevo en un segundo.",
+        supabase_config_missing: "Faltan las claves del proyecto Supabase.",
+        supabase_init_failed: "No se pudo inicializar Supabase.",
+        resend_confirmation: "Reenviar email de confirmación",
+        confirmation_email_sent: "Enviamos un nuevo email de confirmación.",
+        confirmation_email_failed: "No pudimos reenviar el email de confirmación ahora mismo.",
         forgot_password: "¿Olvidaste tu contraseña?",
         forgot_password_title: "Olvidé mi contraseña",
         forgot_password_subtitle: "Introduce tu email y te enviaremos un enlace para restablecerla.",
@@ -1962,6 +2225,30 @@
       consent_small: "No spam, unsubscribe anytime.",
       submit: "Send Me the 28-Day Guide",
       processing: "PROCESSING...",
+      sending: "Sending...",
+      required_fields: "Please fill in all required fields.",
+      name_required: "Please enter your name.",
+      email_required: "Please enter a valid email.",
+      goal_required: "Please select your goal.",
+      terms_required: "Please accept the terms.",
+      popup_badge: "WAIT!",
+      popup_title: "Do not leave empty-handed!",
+      popup_subtitle: "Get the free 28 Days Fat Loss Quickstart by email.",
+      popup_button: "Send Me the Ebook",
+      popup_benefit1: "28-day fat-loss structure",
+      popup_benefit2: "Nutrition and shopping guidance",
+      popup_benefit3: "Simple habits and accountability",
+      popup_close: "Close popup",
+      download_success_title: "Ebook on the way!",
+      email_sent_message: "Check your email. The ebook was sent to your inbox.",
+      email_pending_message: "The email could not be sent in this environment. Use the button below to download the ebook.",
+      download_ready_message: "Saved. Use the download link shown on the page.",
+      download_now: "Download ebook now",
+      error_process: "Unable to process your request. Please try again.",
+      resend_sending: "Resending...",
+      resend_success: "Done. We resent the link. Check your inbox and spam folder.",
+      resend_pending: "Resend requested. If it does not arrive, use the direct download button above.",
+      resend_error: "Could not resend now. Please try again shortly.",
       privacy: "No spam. The guide arrives instantly and you can unsubscribe anytime.",
       downloads: "Downloads",
       rating: "Rating",
@@ -1997,6 +2284,10 @@
       email_sent_help: "Check your inbox (and spam folder) in a few minutes.",
       email_pending_title: "Email not yet sent to:",
       email_pending_help: "SMTP is not configured in this environment. Download the ebook using the button above.",
+      resend_sending: "Resending...",
+      resend_success: "Done. We resent the link. Check your inbox and spam folder.",
+      resend_pending: "Resend requested. If it does not arrive, use the direct download button above.",
+      resend_error: "Could not resend now. Please try again shortly.",
       share_prompt: "Share with friends who also want results:",
       testimonial_quote: "\"This guide made the first week simple: training, steps, food and consistency.\"",
       testimonial_author: "- Paulo R. | Lost 7kg in 8 weeks",
@@ -2068,7 +2359,12 @@
       title: "Get Weekly Expert Tips",
       desc: "Training advice, nutrition tips, and exclusive content delivered to your inbox.",
       cta: "Subscribe",
-      privacy: "We respect your privacy. Unsubscribe anytime."
+      privacy: "We respect your privacy. Unsubscribe anytime.",
+      invalid_email: "Please enter a valid email.",
+      success_email_sent: "Subscription successful. We sent a welcome email.",
+      success_email_pending: "Subscription successful. Your welcome email will be sent shortly.",
+      success: "Subscription successful.",
+      error: "Subscription error. Please try again."
     }
   });
   Object.assign(DICTS.en.faq, {
@@ -2119,6 +2415,30 @@
       consent_small: "Sem spam, cancele quando quiser.",
       submit: "Enviar o Guia de 28 Dias",
       processing: "PROCESSANDO...",
+      sending: "Enviando...",
+      required_fields: "Preencha todos os campos obrigatorios.",
+      name_required: "Digite seu nome.",
+      email_required: "Digite um email valido.",
+      goal_required: "Selecione seu objetivo.",
+      terms_required: "Aceite os termos.",
+      popup_badge: "ESPERE!",
+      popup_title: "Nao saia de maos vazias!",
+      popup_subtitle: "Receba por email o 28 Days Fat Loss Quickstart gratis.",
+      popup_button: "Enviar o Ebook",
+      popup_benefit1: "Estrutura de perda de gordura em 28 dias",
+      popup_benefit2: "Orientacao de nutricao e compras",
+      popup_benefit3: "Habitos simples e acompanhamento",
+      popup_close: "Fechar popup",
+      download_success_title: "Ebook a caminho!",
+      email_sent_message: "Verifique seu email. O ebook foi enviado para sua caixa de entrada.",
+      email_pending_message: "Nao foi possivel enviar o email neste ambiente. Use o botao abaixo para baixar o ebook.",
+      download_ready_message: "Salvo. Use o link de download exibido na pagina.",
+      download_now: "Baixar ebook agora",
+      error_process: "Nao foi possivel processar sua solicitacao. Tente novamente.",
+      resend_sending: "Reenviando...",
+      resend_success: "Pronto. Reenviamos o link. Confira sua caixa de entrada e spam.",
+      resend_pending: "Reenvio solicitado. Se nao receber, use o botao de download direto acima.",
+      resend_error: "Nao foi possivel reenviar agora. Tente novamente em instantes.",
       privacy: "Sem spam. O guia chega na hora e voce pode cancelar quando quiser.",
       downloads: "Downloads",
       rating: "Avaliação",
@@ -2154,6 +2474,10 @@
       email_sent_help: "Verifique sua caixa de entrada (e spam) em alguns minutos.",
       email_pending_title: "Email ainda não enviado para:",
       email_pending_help: "O SMTP não está configurado neste ambiente. Baixe o ebook pelo botão acima.",
+      resend_sending: "Reenviando...",
+      resend_success: "Pronto. Reenviamos o link. Confira sua caixa de entrada e spam.",
+      resend_pending: "Reenvio solicitado. Se nao receber, use o botao de download direto acima.",
+      resend_error: "Nao foi possivel reenviar agora. Tente novamente em instantes.",
       share_prompt: "Compartilhe com amigos que também querem resultados:",
       testimonial_quote: "\"O guia deixou simples o que eu precisava fazer na primeira semana: treino, passos, comida e consistência.\"",
       testimonial_author: "- Paulo R. | Perda de 7kg em 8 semanas",
@@ -2225,7 +2549,12 @@
       title: "Receba Dicas Semanais",
       desc: "Conselhos de treino, nutricao e conteudo exclusivo direto no seu email.",
       cta: "Assinar",
-      privacy: "Respeitamos sua privacidade. Cancele quando quiser."
+      privacy: "Respeitamos sua privacidade. Cancele quando quiser.",
+      invalid_email: "Digite um email valido.",
+      success_email_sent: "Inscricao realizada. Enviamos um email de boas-vindas.",
+      success_email_pending: "Inscricao realizada. Seu email de boas-vindas sera enviado em instantes.",
+      success: "Inscricao realizada.",
+      error: "Erro na inscricao. Tente novamente."
     }
   });
   Object.assign(DICTS.pt.faq, {
@@ -2276,6 +2605,30 @@
       consent_small: "Sin spam, cancela cuando quieras.",
       submit: "Enviame la Guia de 28 Dias",
       processing: "PROCESANDO...",
+      sending: "Enviando...",
+      required_fields: "Completa todos los campos obligatorios.",
+      name_required: "Escribe tu nombre.",
+      email_required: "Escribe un email valido.",
+      goal_required: "Selecciona tu objetivo.",
+      terms_required: "Acepta los terminos.",
+      popup_badge: "ESPERA!",
+      popup_title: "No te vayas con las manos vacias!",
+      popup_subtitle: "Recibe por email el 28 Days Fat Loss Quickstart gratis.",
+      popup_button: "Enviarme el Ebook",
+      popup_benefit1: "Estructura de perdida de grasa en 28 dias",
+      popup_benefit2: "Guia de nutricion y compras",
+      popup_benefit3: "Habitos simples y seguimiento",
+      popup_close: "Cerrar popup",
+      download_success_title: "Ebook en camino!",
+      email_sent_message: "Revisa tu email. El ebook fue enviado a tu bandeja de entrada.",
+      email_pending_message: "No se pudo enviar el email en este entorno. Usa el boton de abajo para descargar el ebook.",
+      download_ready_message: "Guardado. Usa el enlace de descarga que aparece en la pagina.",
+      download_now: "Descargar ebook ahora",
+      error_process: "No se pudo procesar tu solicitud. Intentalo de nuevo.",
+      resend_sending: "Reenviando...",
+      resend_success: "Listo. Reenviamos el enlace. Revisa tu bandeja de entrada y spam.",
+      resend_pending: "Reenvio solicitado. Si no llega, usa el boton de descarga directa de arriba.",
+      resend_error: "No se pudo reenviar ahora. Intentalo de nuevo en unos momentos.",
       privacy: "Sin spam. La guia llega al instante y puedes cancelar cuando quieras.",
       downloads: "Descargas",
       rating: "Valoración",
@@ -2311,6 +2664,10 @@
       email_sent_help: "Revisa tu bandeja de entrada (y spam) en unos minutos.",
       email_pending_title: "El email aún no se ha enviado a:",
       email_pending_help: "SMTP no está configurado en este entorno. Descarga el ebook con el botón de arriba.",
+      resend_sending: "Reenviando...",
+      resend_success: "Listo. Reenviamos el enlace. Revisa tu bandeja de entrada y spam.",
+      resend_pending: "Reenvio solicitado. Si no llega, usa el boton de descarga directa de arriba.",
+      resend_error: "No se pudo reenviar ahora. Intentalo de nuevo en unos momentos.",
       share_prompt: "Comparte con amigos que también quieren resultados:",
       testimonial_quote: "\"Esta guía hizo simple lo que necesitaba hacer en la primera semana: entrenamiento, pasos, comida y constancia.\"",
       testimonial_author: "- Paulo R. | Pérdida de 7 kg en 8 semanas",
@@ -2382,7 +2739,12 @@
       title: "Recibe Consejos Semanales",
       desc: "Consejos de entrenamiento, nutricion y contenido exclusivo en tu email.",
       cta: "Suscribirse",
-      privacy: "Respetamos tu privacidad. Puedes cancelar cuando quieras."
+      privacy: "Respetamos tu privacidad. Puedes cancelar cuando quieras.",
+      invalid_email: "Escribe un email valido.",
+      success_email_sent: "Suscripcion realizada. Enviamos un email de bienvenida.",
+      success_email_pending: "Suscripcion realizada. Tu email de bienvenida se enviara en breve.",
+      success: "Suscripcion realizada.",
+      error: "Error en la suscripcion. Intentalo de nuevo."
     }
   });
   Object.assign(DICTS.es.faq, {
@@ -2626,7 +2988,7 @@
     "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.": "Coaching online para transformação real. Treino baseado em evidência, nutrição personalizada e acompanhamento 1:1. Resultados em 8-12 semanas.",
     "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8â€“12 weeks.": "Coaching online para transformação real. Treino baseado em evidência, nutrição personalizada e acompanhamento 1:1. Resultados em 8-12 semanas.",
     "Get tips, recipes, and exclusive offers. No spam.": "Receba dicas, receitas e ofertas exclusivas. Sem spam.",
-    "View All Articles on Trainerize": "Ver todos os artigos no Trainerize",
+    "View All Articles on My PT Hub": "Ver todos os artigos no My PT Hub",
     "Join Newsletter": "Entrar na Newsletter",
     "Weekly Training Tips": "Dicas Semanais de Treino",
     "Nutrition Insights": "Insights de Nutrição",
@@ -2908,7 +3270,7 @@
     "Spine neutral, heels grounded on squats.": "Coluna neutra e calcanhares firmes nos agachamentos.",
     "Exhale on effort. Keep shoulders away from ears.": "Expire no esforço. Mantenha os ombros longe das orelhas.",
     "Next Up": "Próximo Passo",
-    "Book your onboarding consult to personalize your plan and unlock the full Trainerize experience.": "Agende sua consulta inicial para personalizar o plano e liberar a experiência completa no Trainerize.",
+    "Book your onboarding consult to personalize your plan and unlock the full My PT Hub experience.": "Agende sua consulta inicial para personalizar o plano e liberar a experiência completa no My PT Hub.",
     "Schedule Consult": "Agendar Consulta",
     "Back": "Voltar",
     "Log it in the dashboard": "Registrar no dashboard"
@@ -2952,7 +3314,7 @@
     "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.": "Coaching online para una transformación real. Entrenamiento basado en evidencia, nutrición personalizada y seguimiento 1:1. Resultados en 8-12 semanas.",
     "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8â€“12 weeks.": "Coaching online para una transformación real. Entrenamiento basado en evidencia, nutrición personalizada y seguimiento 1:1. Resultados en 8-12 semanas.",
     "Get tips, recipes, and exclusive offers. No spam.": "Recibe consejos, recetas y ofertas exclusivas. Sin spam.",
-    "View All Articles on Trainerize": "Ver todos los artículos en Trainerize",
+    "View All Articles on My PT Hub": "Ver todos los artículos en My PT Hub",
     "Join Newsletter": "Unirse al Newsletter",
     "Weekly Training Tips": "Consejos Semanales de Entrenamiento",
     "Nutrition Insights": "Ideas de Nutrición",
@@ -3234,7 +3596,7 @@
     "Spine neutral, heels grounded on squats.": "Columna neutra y talones firmes en las sentadillas.",
     "Exhale on effort. Keep shoulders away from ears.": "Exhala en el esfuerzo. Mantén los hombros lejos de las orejas.",
     "Next Up": "Siguiente Paso",
-    "Book your onboarding consult to personalize your plan and unlock the full Trainerize experience.": "Agenda tu consulta inicial para personalizar el plan y desbloquear la experiencia completa en Trainerize.",
+    "Book your onboarding consult to personalize your plan and unlock the full My PT Hub experience.": "Agenda tu consulta inicial para personalizar el plan y desbloquear la experiencia completa en My PT Hub.",
     "Schedule Consult": "Agendar Consulta",
     "Back": "Volver",
     "Log it in the dashboard": "Registrarlo en el dashboard"

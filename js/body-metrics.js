@@ -7,6 +7,26 @@
   let bodyMetrics = [];
   let progressPhotos = [];
 
+  const getCurrentLang = () => {
+    try {
+      return (
+        window.GB_I18N?.getLang?.() ||
+        localStorage.getItem('gb_lang') ||
+        localStorage.getItem('gb_language') ||
+        document.documentElement.lang ||
+        'en'
+      ).toLowerCase().replace('pt-br', 'pt');
+    } catch {
+      return 'en';
+    }
+  };
+
+  const getI18nText = (key, fallback) => {
+    const readPath = (obj, path) => String(path || '').split('.').reduce((acc, part) => acc?.[part], obj);
+    const lang = getCurrentLang();
+    return readPath(window.DICTS?.[lang], key) || readPath(window.DICTS?.en, key) || fallback;
+  };
+
   const parseJsonSafe = (value, fallback = null) => {
     if (!value || typeof value !== 'string') return fallback;
     try {
@@ -608,7 +628,7 @@
       const originalText = saveBtn.innerHTML;
 
       saveBtn.disabled = true;
-      saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Saving...';
+      saveBtn.innerHTML = `<i class="fas fa-spinner fa-spin me-1"></i>${getI18nText('body_metrics.saving', 'Saving...')}`;
 
       // Coletar dados
       const { id: activeUserId } = resolveActiveUserContext();
@@ -633,7 +653,7 @@
       // Validar pelo menos um campo preenchido
       if (!entryData.weight && !entryData.height && !entryData.body_fat &&
           !Object.values(entryData.measurements).some(v => v !== null)) {
-        throw new Error('Please fill at least one measurement field');
+        throw new Error(getI18nText('body_metrics.measurement_required', 'Please fill at least one measurement field.'));
       }
 
       // Salvar dados
@@ -641,10 +661,10 @@
 
       // Sucesso (diferenciar entre cloud e local-only)
       if (saveResult && saveResult.savedViaSupabase) {
-        showNotification('✅ Body metrics saved successfully!', 'success');
+        showNotification(getI18nText('body_metrics.saved', 'Body metrics saved successfully.'), 'success');
       } else {
         // Saved locally only (offline/file://). Keep it non-blocking and informative.
-        showNotification('💾 Saved locally. Will sync when online.', 'warning');
+        showNotification(getI18nText('body_metrics.saved_local', 'Saved locally. It will sync when online.'), 'warning');
       }
 
       // Notify other parts of the app (e.g., Dashboard) that body metrics were saved
@@ -673,7 +693,7 @@
     } finally {
       const saveBtn = document.getElementById('saveMetrics');
       saveBtn.disabled = false;
-      saveBtn.innerHTML = '<i class="fas fa-save me-1"></i>Save Entry';
+      saveBtn.innerHTML = `<i class="fas fa-save me-1"></i>${getI18nText('body_metrics.save_entry', 'Save Entry')}`;
     }
   };
 
@@ -842,50 +862,57 @@
 
     const latest = bodyMetrics[0];
     const previous = bodyMetrics[1];
+    const setText = (id, value) => {
+      const element = document.getElementById(id);
+      if (element) element.textContent = value;
+      return element;
+    };
 
     // Weight
     if (latest.weight) {
-      document.getElementById('current-weight').textContent = `${latest.weight} kg`;
+      setText('current-weight', `${latest.weight} kg`);
 
       if (previous?.weight) {
         const change = latest.weight - previous.weight;
         const changeEl = document.getElementById('weight-change');
-        changeEl.textContent = `${change > 0 ? '+' : ''}${change.toFixed(1)} kg`;
-        changeEl.className = change > 0 ? 'stat-change text-warning' : 'stat-change text-success';
+        if (changeEl) {
+          changeEl.textContent = `${change > 0 ? '+' : ''}${change.toFixed(1)} kg`;
+          changeEl.className = change > 0 ? 'stat-change text-warning' : 'stat-change text-success';
+        }
       }
     }
 
     // Height
     if (latest.height) {
-      document.getElementById('current-height').textContent = `${latest.height} cm`;
+      setText('current-height', `${latest.height} cm`);
     }
 
     // BMI
     if (latest.weight && latest.height) {
       const bmi = latest.weight / Math.pow(latest.height / 100, 2);
-      document.getElementById('current-bmi').textContent = bmi.toFixed(1);
+      setText('current-bmi', bmi.toFixed(1));
 
       let status = 'Normal';
       if (bmi < 18.5) status = 'Underweight';
       else if (bmi >= 25 && bmi < 30) status = 'Overweight';
       else if (bmi >= 30) status = 'Obese';
 
-      document.getElementById('bmi-status').textContent = status;
+      setText('bmi-status', status);
     }
 
     // Body Fat
     if (latest.body_fat) {
-      document.getElementById('current-bodyfat').textContent = `${latest.body_fat}%`;
+      setText('current-bodyfat', `${latest.body_fat}%`);
     }
 
     // Measurements
     if (latest.measurements) {
       const measurements = latest.measurements;
-      document.getElementById('chest-measurement').textContent = measurements.chest ? `${measurements.chest} cm` : '-- cm';
-      document.getElementById('waist-measurement').textContent = measurements.waist ? `${measurements.waist} cm` : '-- cm';
-      document.getElementById('hips-measurement').textContent = measurements.hips ? `${measurements.hips} cm` : '-- cm';
-      document.getElementById('arms-measurement').textContent = measurements.arms ? `${measurements.arms} cm` : '-- cm';
-      document.getElementById('thighs-measurement').textContent = measurements.thighs ? `${measurements.thighs} cm` : '-- cm';
+      setText('chest-measurement', measurements.chest ? `${measurements.chest} cm` : '-- cm');
+      setText('waist-measurement', measurements.waist ? `${measurements.waist} cm` : '-- cm');
+      setText('hips-measurement', measurements.hips ? `${measurements.hips} cm` : '-- cm');
+      setText('arms-measurement', measurements.arms ? `${measurements.arms} cm` : '-- cm');
+      setText('thighs-measurement', measurements.thighs ? `${measurements.thighs} cm` : '-- cm');
     }
   };
 
@@ -996,12 +1023,12 @@
         }
       });
 
-      showNotification('📸 Progress photo uploaded!', 'success');
+      showNotification(getI18nText('body_metrics.photo_uploaded', 'Progress photo uploaded.'), 'success');
       loadProgressPhotos();
 
     } catch (error) {
       console.error('Error saving photo:', error);
-      showNotification('❌ Failed to upload photo', 'error');
+      showNotification(getI18nText('body_metrics.photo_upload_failed', 'Failed to upload photo.'), 'error');
     }
   };
 

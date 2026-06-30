@@ -16,6 +16,24 @@
   const budgetEl = document.getElementById('budget');
   const charCount = document.getElementById('charCount');
   const btnLabel = btn ? btn.querySelector('[data-i18n="contact.form.submit"]') : null;
+  const getCurrentLang = () => {
+    try {
+      return (
+        window.GB_I18N?.getLang?.() ||
+        localStorage.getItem('gb_lang') ||
+        localStorage.getItem('gb_language') ||
+        document.documentElement.lang ||
+        'en'
+      ).toLowerCase().replace('pt-br', 'pt');
+    } catch {
+      return 'en';
+    }
+  };
+  const getI18nText = (key, fallback) => {
+    const readPath = (obj, path) => String(path || '').split('.').reduce((acc, part) => acc?.[part], obj);
+    const lang = getCurrentLang();
+    return readPath(window.DICTS?.[lang], key) || readPath(window.DICTS?.en, key) || fallback;
+  };
 
   if (!btn || !alertBox || !nameEl || !emailEl || !goalEl ||
       !timelineEl || !experienceEl || !messageEl || !consentEl) {
@@ -35,18 +53,7 @@
   const phoneOk = value => !value || /^[+0-9\s\-()]{6,24}$/.test(value.trim());
   const setErr = (el, on) => el.classList.toggle('input-error', !!on);
 
-  const getErrorMessage = () => {
-    const errors = [];
-    if (nameEl.classList.contains('input-error')) errors.push('name');
-    if (emailEl.classList.contains('input-error')) errors.push('email');
-    if (phoneEl && phoneEl.classList.contains('input-error')) errors.push('phone number');
-    if (goalEl.classList.contains('input-error')) errors.push('primary goal');
-    if (timelineEl.classList.contains('input-error')) errors.push('timeline');
-    if (experienceEl.classList.contains('input-error')) errors.push('training experience');
-    if (messageEl.classList.contains('input-error')) errors.push('message');
-    if (consentEl.classList.contains('input-error')) errors.push('consent agreement');
-    return errors.length ? `Please check: ${errors.join(', ')}` : 'Please check the highlighted fields.';
-  };
+  const getErrorMessage = () => getI18nText('contact.form.validation_error', 'Please check the highlighted fields.');
 
   const canSubmit = () => {
     const last = Number(localStorage.getItem('gb_last_submit') || 0);
@@ -140,7 +147,7 @@
     }
 
     if (!canSubmit()) {
-      showMessage('Message already sent. Please wait a minute before trying again.');
+      showMessage(getI18nText('contact.form.rate_limit', 'Message already sent. Please wait a minute before trying again.'));
       return;
     }
 
@@ -191,16 +198,16 @@
 
         form.reset();
         updateCount();
-        showMessage('Thanks! Your message was sent. I will reply within 24-48h.');
+        showMessage(getI18nText('contact.form.success_inline', 'Thank you. Your enquiry has been sent. Please check your inbox for confirmation.'));
 
         await sendConfirmationEmail(userName, userEmail);
       } else {
         const apiError = responseData.error || res.statusText || 'Unknown error';
-        showMessage(`Hmm, something went wrong (${apiError}). You can also email me at: andre@garciabuilder.fitness`);
+        showMessage(`${getI18nText('contact.form.error', 'Unable to send your request right now. Please try again in a moment.')} (${apiError})`);
       }
     } catch (error) {
       console.warn('Contact form submission failed', error);
-      showMessage('Network issue. If it persists, email me at: andre@garciabuilder.fitness');
+      showMessage(getI18nText('contact.form.network_error', 'Network issue. If it persists, email inquiries@garciabuilder.fitness.'));
     } finally {
       setButtonState(false);
     }

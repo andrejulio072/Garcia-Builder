@@ -1,7 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 import nodemailer from 'nodemailer';
+import { randomUUID } from 'crypto';
 
 const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
+const LEAD_DEDUP_WINDOW_MS = 10 * 60 * 1000;
+const recentConsultationLeadIds = new Map();
 
 function escapeHtml(value) {
   return String(value || '')
@@ -24,6 +27,70 @@ function parseBody(req) {
     }
   }
   return {};
+}
+
+function normalizeText(value) {
+  if (value === null || value === undefined) return '';
+  return String(value).trim();
+}
+
+function normalizeEmail(value) {
+  return normalizeText(value).toLowerCase();
+}
+
+function isDuplicateConsultationLead(leadId) {
+  if (!leadId) return false;
+  const now = Date.now();
+
+  for (const [id, ts] of recentConsultationLeadIds.entries()) {
+    if (now - ts > LEAD_DEDUP_WINDOW_MS) {
+      recentConsultationLeadIds.delete(id);
+    }
+  }
+
+  if (recentConsultationLeadIds.has(leadId)) {
+    return true;
+  }
+
+  recentConsultationLeadIds.set(leadId, now);
+  return false;
+}
+
+function normalizeWeight(value) {
+  const parsed = Number(normalizeText(value));
+  if (!Number.isFinite(parsed)) return null;
+  if (parsed < 30 || parsed > 300) return null;
+  return parsed;
+}
+
+async function postJsonWithTimeout(url, payload, timeoutMs = 8000) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    return await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function forwardLeadToZapier(payload) {
+  const webhookUrl = process.env.ZAPIER_LEAD_WEBHOOK_URL;
+  if (!webhookUrl) {
+    throw new Error('ZAPIER_LEAD_WEBHOOK_URL is not configured');
+  }
+
+  const response = await postJsonWithTimeout(webhookUrl, payload, 8000);
+
+  if (!response.ok) {
+    const details = await response.text().catch(() => 'Zapier webhook request failed');
+    throw new Error(`Zapier webhook error: ${response.status} ${details}`);
+  }
 }
 
 function getSupabase() {
@@ -240,6 +307,93 @@ export default async function handler(req, res) {
   }
 
   try {
+    const body = parseBody(req);
+    const hasConsultationPayload = ['firstName', 'lastName', 'currentWeight', 'mainStruggle', 'goal']
+      .some((key) => body[key] !== undefined);
+
+    if (hasConsultationPayload) {
+      const submittedAt = new Date().toISOString();
+      const leadId = normalizeText(body.lead_id) || randomUUID();
+      if (isDuplicateConsultationLead(leadId)) {
+        return res.status(200).json({
+          ok: true,
+          duplicate: true,
+          leadId,
+          message: 'This consultation request was already received.'
+        });
+      }
+      const normalizedWeight = normalizeWeight(body.currentWeight);
+      const consultationPayload = {
+        lead_id: leadId,
+        submitted_at: submittedAt,
+        firstName: normalizeText(body.firstName),
+        lastName: normalizeText(body.lastName),
+        email: normalizeEmail(body.email),
+        phone: normalizeText(body.phone),
+        goal: normalizeText(body.goal),
+        currentWeight: normalizedWeight,
+        mainStruggle: normalizeText(body.mainStruggle),
+        consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
+        source: normalizeText(body.source) || 'Contact Consultation Form',
+        page: normalizeText(body.page) || req.headers.referer || '',
+        utm_source: normalizeText(body.utm_source),
+        utm_campaign: normalizeText(body.utm_campaign),
+      };
+
+      if (!consultationPayload.firstName || !consultationPayload.lastName || !consultationPayload.email || !consultationPayload.phone || !consultationPayload.goal || !consultationPayload.currentWeight || !consultationPayload.mainStruggle) {
+        return res.status(400).json({ error: 'Missing required consultation fields' });
+      }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(consultationPayload.email)) {
+        return res.status(400).json({ error: 'A valid email is required' });
+      }
+
+      if (!consultationPayload.consent) {
+        return res.status(400).json({ error: 'Consent is required' });
+      }
+
+      await forwardLeadToZapier(consultationPayload);
+
+      try {
+        const supa = getSupabase();
+        const leadName = `${consultationPayload.firstName} ${consultationPayload.lastName}`.trim();
+        const insertCandidates = [
+          {
+            email: consultationPayload.email,
+            name: leadName,
+            source: consultationPayload.source,
+            notes: JSON.stringify(consultationPayload),
+            type: 'consultation',
+            status: 'new'
+          },
+          {
+            email: consultationPayload.email,
+            name: leadName,
+            source: consultationPayload.source,
+            notes: JSON.stringify(consultationPayload)
+          },
+          {
+            email: consultationPayload.email,
+            name: leadName,
+            source: consultationPayload.source
+          }
+        ];
+
+        const saveResult = await insertLeadWithSchemaFallback(supa, insertCandidates);
+        if (!saveResult.ok) {
+          console.warn('lead.js consultation save warning', saveResult.error);
+        }
+      } catch (saveError) {
+        console.warn('lead.js consultation Supabase skipped/failed', saveError);
+      }
+
+      return res.status(200).json({
+        ok: true,
+        leadId,
+        message: 'Thanks — your details have been received. I\'ll review your goal and get back to you.'
+      });
+    }
+
     const {
       email,
       name,
@@ -247,7 +401,7 @@ export default async function handler(req, res) {
       notes,
       resendOnly,
       ...rest
-    } = parseBody(req);
+    } = body;
 
     const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
     if (!normalizedEmail) {

@@ -1,26 +1,45 @@
 // Currency Conversion System
 (() => {
-  // Exchange rates (updated periodically - in production, use real API)
+  // Exchange rates are relative to EUR for the pricing page selector.
   let exchangeRates = {
-    'GBP': 1.0,     // Base currency - British Pounds
-    'EUR': 1.18,
-    'USD': 1.27,
-    'BRL': 7.50,
-    'CAD': 1.77,
-    'AUD': 1.95
+    'EUR': 1.0,
+    'GBP': 0.86,
+    'USD': 1.09,
+    'BRL': 6.05,
+    'CAD': 1.47,
+    'AUD': 1.62
   };
 
-  // Base prices in GBP (British Pounds) - Original Stripe prices
+  // Base prices in EUR, aligned with Stripe checkout and pricing cards.
   const basePrices = {
-    starter: 79,        // £79
-    consistency: 99,    // £99
-    performance: 125,   // £125
-    premium: 165,       // £165
-    elite: 235          // £235
+    monthly: 200,
+    eight_week: 359,
+    twelve_week: 519,
+    eighteen_week: 699
   };
 
-  let currentCurrency = 'GBP';
+  let currentCurrency = 'EUR';
   let isLoading = false;
+
+  const getCurrentLang = () => {
+    try {
+      return (
+        window.GB_I18N?.getLang?.() ||
+        localStorage.getItem('gb_lang') ||
+        localStorage.getItem('gb_language') ||
+        document.documentElement.lang ||
+        'en'
+      ).toLowerCase().replace('pt-br', 'pt');
+    } catch {
+      return 'en';
+    }
+  };
+
+  const getI18nText = (key, fallback) => {
+    const readPath = (obj, path) => String(path || '').split('.').reduce((acc, part) => acc?.[part], obj);
+    const lang = getCurrentLang();
+    return readPath(window.DICTS?.[lang], key) || readPath(window.DICTS?.en, key) || fallback;
+  };
 
   // Currency symbols
   const currencySymbols = {
@@ -34,7 +53,7 @@
 
   // Initialize currency system
   const init = () => {
-    // Support multiple selectors (navbar + legacy)
+    // Support multiple selectors (pricing page + legacy sites)
     const navSelect = document.getElementById('currency-select-nav');
     const legacySelect = document.getElementById('currency-select');
     const currencySelect = navSelect || legacySelect;
@@ -92,7 +111,7 @@
 
       // Show error and revert
       e.target.value = currentCurrency;
-      showNotification('Failed to update currency. Please try again.', 'error');
+      showNotification(getI18nText('pricing.currency_update_failed', 'Failed to update currency. Please try again.'), 'error');
     }
   };
 
@@ -188,22 +207,7 @@
 
   // Update exchange rates (mock API call)
   const updateExchangeRates = async () => {
-    return new Promise((resolve) => {
-      // Simulate API delay
-      setTimeout(() => {
-        // In production, fetch real rates from API
-        // For now, use static rates with small random variation
-        const variation = 0.98 + Math.random() * 0.04; // ±2% variation
-
-        Object.keys(exchangeRates).forEach(currency => {
-          if (currency !== 'EUR') {
-            exchangeRates[currency] *= variation;
-          }
-        });
-
-        resolve();
-      }, 300);
-    });
+    return Promise.resolve();
   };
 
   // Show notification
@@ -228,7 +232,8 @@
     init,
     getCurrentCurrency: () => currentCurrency,
     convertPrice: (eurAmount) => Math.round(eurAmount * exchangeRates[currentCurrency]),
-    getSymbol: () => currencySymbols[currentCurrency]
+    getSymbol: () => currencySymbols[currentCurrency],
+    refresh: updatePrices
   };
 
   // Auto-initialize when DOM is ready

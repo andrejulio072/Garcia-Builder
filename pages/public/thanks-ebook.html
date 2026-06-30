@@ -128,7 +128,7 @@
     {
         "@context": "https://schema.org",
         "@type": "WebPage",
-        "name": "Obrigado! 28 Days Fat Loss Quickstart liberado",
+        "name": "28 Days Fat Loss Quickstart unlocked",
         "description": "Seu guia gratuito foi entregue. Use os próximos passos para aplicar o plano e conversar com o coach.",
         "url": "https://garciabuilder.fitness/thanks-ebook.html",
         "isPartOf": {
@@ -836,7 +836,7 @@
                 resendBtn.addEventListener('click', async () => {
                     const originalLabel = resendBtn.textContent;
                     resendBtn.disabled = true;
-                    resendBtn.textContent = 'Reenviando...';
+                    resendBtn.textContent = getThanksEbookText('resend_sending') || 'Resending...';
 
                     try {
                         const response = await fetch(`${resolveApiBaseUrl()}/lead`, {
@@ -857,15 +857,15 @@
 
                         const sent = payload.customerEmailSent === true;
                         document.getElementById('emailStatusHelp').textContent = sent
-                            ? 'Pronto! Reenviamos o link. Confira sua caixa de entrada e spam.'
-                            : 'Reenvio solicitado. Se nao receber, use o botao de download direto acima.';
+                            ? (getThanksEbookText('resend_success') || 'Done. We resent the link. Check your inbox and spam folder.')
+                            : (getThanksEbookText('resend_pending') || 'Resend requested. If it does not arrive, use the direct download button above.');
                         if (sent) {
                             const emailStatusAlert = document.getElementById('emailStatusAlert');
                             emailStatusAlert.classList.remove('alert-warning');
                             emailStatusAlert.classList.add('alert-info');
                         }
                     } catch (error) {
-                        document.getElementById('emailStatusHelp').textContent = 'Could not resend now. Please try again shortly.';
+                        document.getElementById('emailStatusHelp').textContent = getThanksEbookText('resend_error') || 'Could not resend now. Please try again shortly.';
                     } finally {
                         resendBtn.disabled = false;
                         resendBtn.textContent = originalLabel;

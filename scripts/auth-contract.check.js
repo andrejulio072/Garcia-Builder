@@ -25,6 +25,8 @@ for (const id of [
 assert.match(authSource, /function isLocalAuthFallbackEnabled\(\)/);
 assert.match(authSource, /Online account service is unavailable\. No local account was created\./);
 assert.match(authSource, /async function syncUserProfile\(/);
+assert.match(authSource, /async function syncUserPreferences\(/);
+assert.match(authSource, /async function syncAuthProfileState\(/);
 assert.match(authSource, /if \(error\) \{\s*throw new Error\(`Profile synchronization failed:/);
 assert.match(authSource, /localStorage\.removeItem\('gb_users'\)/);
 assert.match(authSource, /birthday: profileBirthday \|\| null/);
@@ -38,6 +40,12 @@ assert.match(
   loginHtml,
   /createClient\(url,\s*key,\s*\{[\s\S]{0,500}storageKey:\s*'sb-auth-token'/,
   'Google OAuth helper must share the main Supabase auth storage key'
+);
+
+assert.match(
+  authSource,
+  /event === 'SIGNED_IN'[\s\S]{0,900}syncAuthProfileState\(supabaseClient,\s*su,/,
+  'OAuth/social sign-in must run the complete profile and preferences sync'
 );
 
 assert.doesNotMatch(

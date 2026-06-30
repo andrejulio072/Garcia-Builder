@@ -1,77 +1,77 @@
-# PLANO DE INTEGRAÇÃO TRAINERIZE - GARCIA BUILDER (ARQUIVADO)
+﻿# PLANO DE INTEGRAÃ‡ÃƒO MYPTHUB - GARCIA BUILDER (ARQUIVADO)
 
-> **Decisão de 23 de junho de 2026:** esta integração não faz mais parte do roadmap ativo. O produto deve priorizar uma API própria para o futuro Garcia Builder Fitness App. My PT Hub pode ser avaliado separadamente como solução temporária, sem acoplamento do banco de dados principal.
+> **DecisÃ£o de 23 de junho de 2026:** esta integraÃ§Ã£o nÃ£o faz mais parte do roadmap ativo. O produto deve priorizar uma API prÃ³pria para o futuro Garcia Builder Fitness App. My PT Hub pode ser avaliado separadamente como soluÃ§Ã£o temporÃ¡ria, sem acoplamento do banco de dados principal.
 
 **Data:** 8 de Outubro de 2025
-**Prioridade:** 🔥 ALTA
-**Status:** 📋 PLANEJAMENTO
+**Prioridade:** ðŸ”¥ ALTA
+**Status:** ðŸ“‹ PLANEJAMENTO
 
 ---
 
-## 🎯 OBJETIVO
+## ðŸŽ¯ OBJETIVO
 
-Integrar o Trainerize com o site Garcia Builder para **automatizar 100% do fluxo de clientes**, desde o pagamento até o acesso ao app, eliminando trabalho manual e melhorando a experiência.
+Integrar o My PT Hub com o site Garcia Builder para **automatizar 100% do fluxo de clientes**, desde o pagamento atÃ© o acesso ao app, eliminando trabalho manual e melhorando a experiÃªncia.
 
 ---
 
-## 📊 SITUAÇÃO ATUAL
+## ðŸ“Š SITUAÃ‡ÃƒO ATUAL
 
-### ✅ **O que já temos:**
-- Menções ao Trainerize em 7 páginas (index, pricing, about, faq, success, blog)
-- Link para perfil: `https://www.trainerize.me/profile/garciabuilder/AndreJulio.Garcia`
+### âœ… **O que jÃ¡ temos:**
+- MenÃ§Ãµes ao My PT Hub em 7 pÃ¡ginas (index, pricing, about, faq, success, blog)
+- Link para perfil: `https://www.mypthub.me/profile/garciabuilder/AndreJulio.Garcia`
 - Supabase configurado (auth, user_profiles, body_metrics)
 - Sistema de pagamento Stripe funcionando
 - App chat integrado
-- Dashboard de trainer básico
-- Sistema de autenticação completo
+- Dashboard de trainer bÃ¡sico
+- Sistema de autenticaÃ§Ã£o completo
 
-### ❌ **O que falta:**
-- **API do Trainerize** não está integrada
-- Processo manual: pagar → Andre adiciona manualmente no Trainerize
-- Nenhuma sincronização automática de dados
+### âŒ **O que falta:**
+- **API do My PT Hub** nÃ£o estÃ¡ integrada
+- Processo manual: pagar â†’ Andre adiciona manualmente no My PT Hub
+- Nenhuma sincronizaÃ§Ã£o automÃ¡tica de dados
 - Sem webhooks configurados
-- Cliente precisa baixar app separadamente (sem onboarding automático)
+- Cliente precisa baixar app separadamente (sem onboarding automÃ¡tico)
 
 ---
 
-## 🔧 ARQUITETURA DA INTEGRAÇÃO
+## ðŸ”§ ARQUITETURA DA INTEGRAÃ‡ÃƒO
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    FLUXO AUTOMATIZADO                        │
-└─────────────────────────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                    FLUXO AUTOMATIZADO                        â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 
 1. Cliente paga no Stripe
-   ↓
-2. Stripe Webhook → Supabase Edge Function
-   ↓
+   â†“
+2. Stripe Webhook â†’ Supabase Edge Function
+   â†“
 3. Supabase cria user_profile
-   ↓
-4. Edge Function chama Trainerize API
-   ↓
-5. Trainerize cria conta do cliente
-   ↓
+   â†“
+4. Edge Function chama My PT Hub API
+   â†“
+5. My PT Hub cria conta do cliente
+   â†“
 6. Envia email com:
    - Link de download do app
    - Credenciais de acesso
-   - Instruções de onboarding
-   ↓
+   - InstruÃ§Ãµes de onboarding
+   â†“
 7. Cliente recebe App chat de boas-vindas
-   ↓
+   â†“
 8. Dashboard mostra status "Active"
 ```
 
 ---
 
-## 🛠️ ETAPAS DE IMPLEMENTAÇÃO
+## ðŸ› ï¸ ETAPAS DE IMPLEMENTAÃ‡ÃƒO
 
 ### **FASE 1: SETUP INICIAL** (1-2 dias)
-**Prioridade:** Crítica
+**Prioridade:** CrÃ­tica
 
-#### 1.1 Configurar API do Trainerize
-- [ ] Criar conta Business no Trainerize (se necessário upgrade)
-- [ ] Obter API Key no painel do Trainerize
-- [ ] Estudar documentação: https://trainerize.me/api
+#### 1.1 Configurar API do My PT Hub
+- [ ] Criar conta Business no My PT Hub (se necessÃ¡rio upgrade)
+- [ ] Obter API Key no painel do My PT Hub
+- [ ] Estudar documentaÃ§Ã£o: https://mypthub.me/api
 - [ ] Testar endpoints principais:
   - `POST /clients` - Criar cliente
   - `GET /clients/{id}` - Buscar cliente
@@ -81,11 +81,11 @@ Integrar o Trainerize com o site Garcia Builder para **automatizar 100% do fluxo
 #### 1.2 Armazenar credenciais
 ```sql
 -- Criar tabela para armazenar tokens
-CREATE TABLE trainerize_config (
+CREATE TABLE mypthub_config (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   api_key TEXT NOT NULL,
   trainer_id TEXT NOT NULL,
-  base_url TEXT DEFAULT 'https://api.trainerize.com/v1',
+  base_url TEXT DEFAULT 'https://api.mypthub.com/v1',
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -93,12 +93,12 @@ CREATE TABLE trainerize_config (
 
 ---
 
-### **FASE 2: WEBHOOK STRIPE → TRAINERIZE** (2-3 dias)
-**Prioridade:** Crítica
+### **FASE 2: WEBHOOK STRIPE â†’ MYPTHUB** (2-3 dias)
+**Prioridade:** CrÃ­tica
 
 #### 2.1 Criar Edge Function no Supabase
 ```typescript
-// supabase/functions/stripe-to-trainerize/index.ts
+// supabase/functions/stripe-to-mypthub/index.ts
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import Stripe from 'https://esm.sh/stripe@12.0.0'
@@ -118,7 +118,7 @@ serve(async (req) => {
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object
 
-    // 1. Criar usuário no Supabase
+    // 1. Criar usuÃ¡rio no Supabase
     const { data: user } = await supabaseAdmin
       .from('user_profiles')
       .insert({
@@ -130,11 +130,11 @@ serve(async (req) => {
       .select()
       .single()
 
-    // 2. Criar cliente no Trainerize
-    const trainerizeResponse = await fetch('https://api.trainerize.com/v1/clients', {
+    // 2. Criar cliente no My PT Hub
+    const mypthubResponse = await fetch('https://api.mypthub.com/v1/clients', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${Deno.env.get('TRAINERIZE_API_KEY')}`,
+        'Authorization': `Bearer ${Deno.env.get('MYPTHUB_API_KEY')}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -142,20 +142,20 @@ serve(async (req) => {
         last_name: session.customer_details.name.split(' ').slice(1).join(' '),
         email: session.customer_email,
         phone: session.customer_details.phone,
-        plan_id: getTrainerizePlanId(session.metadata.plan_type)
+        plan_id: getMy PT HubPlanId(session.metadata.plan_type)
       })
     })
 
-    const trainerizeClient = await trainerizeResponse.json()
+    const mypthubClient = await mypthubResponse.json()
 
-    // 3. Atualizar Supabase com ID do Trainerize
+    // 3. Atualizar Supabase com ID do My PT Hub
     await supabaseAdmin
       .from('user_profiles')
-      .update({ trainerize_id: trainerizeClient.id })
+      .update({ mypthub_id: mypthubClient.id })
       .eq('id', user.id)
 
     // 4. Enviar email de boas-vindas
-    await sendWelcomeEmail(user, trainerizeClient)
+    await sendWelcomeEmail(user, mypthubClient)
 
     // 5. Notificar App chat
     await sendApp chatNotification(user)
@@ -169,7 +169,7 @@ serve(async (req) => {
 
 #### 2.2 Configurar Webhook no Stripe
 1. Ir para: https://dashboard.stripe.com/webhooks
-2. Adicionar endpoint: `https://[SEU_PROJETO].supabase.co/functions/v1/stripe-to-trainerize`
+2. Adicionar endpoint: `https://[SEU_PROJETO].supabase.co/functions/v1/stripe-to-mypthub`
 3. Selecionar eventos:
    - `checkout.session.completed`
    - `customer.subscription.created`
@@ -179,34 +179,34 @@ serve(async (req) => {
 
 ---
 
-### **FASE 3: SINCRONIZAÇÃO DE DADOS** (2-3 dias)
+### **FASE 3: SINCRONIZAÃ‡ÃƒO DE DADOS** (2-3 dias)
 **Prioridade:** Alta
 
 #### 3.1 Atualizar schema do Supabase
 ```sql
--- Adicionar coluna trainerize_id
+-- Adicionar coluna mypthub_id
 ALTER TABLE user_profiles
-ADD COLUMN trainerize_id TEXT UNIQUE;
+ADD COLUMN mypthub_id TEXT UNIQUE;
 
--- Criar tabela de sincronização
-CREATE TABLE trainerize_sync (
+-- Criar tabela de sincronizaÃ§Ã£o
+CREATE TABLE mypthub_sync (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES user_profiles(id),
-  trainerize_id TEXT NOT NULL,
+  mypthub_id TEXT NOT NULL,
   last_sync TIMESTAMP DEFAULT NOW(),
   sync_status TEXT DEFAULT 'pending',
   sync_data JSONB,
   created_at TIMESTAMP DEFAULT NOW()
 );
 
--- Índices para performance
-CREATE INDEX idx_trainerize_sync_user_id ON trainerize_sync(user_id);
-CREATE INDEX idx_trainerize_sync_status ON trainerize_sync(sync_status);
+-- Ãndices para performance
+CREATE INDEX idx_mypthub_sync_user_id ON mypthub_sync(user_id);
+CREATE INDEX idx_mypthub_sync_status ON mypthub_sync(sync_status);
 ```
 
-#### 3.2 Criar Edge Function para sincronização periódica
+#### 3.2 Criar Edge Function para sincronizaÃ§Ã£o periÃ³dica
 ```typescript
-// supabase/functions/sync-trainerize/index.ts
+// supabase/functions/sync-mypthub/index.ts
 
 // Roda a cada 1 hora via Supabase Cron
 serve(async (req) => {
@@ -215,39 +215,39 @@ serve(async (req) => {
     .from('user_profiles')
     .select('*')
     .eq('subscription_status', 'active')
-    .not('trainerize_id', 'is', null)
+    .not('mypthub_id', 'is', null)
 
   for (const client of clients) {
-    // Buscar dados atualizados no Trainerize
+    // Buscar dados atualizados no My PT Hub
     const response = await fetch(
-      `https://api.trainerize.com/v1/clients/${client.trainerize_id}`,
+      `https://api.mypthub.com/v1/clients/${client.mypthub_id}`,
       {
         headers: {
-          'Authorization': `Bearer ${Deno.env.get('TRAINERIZE_API_KEY')}`
+          'Authorization': `Bearer ${Deno.env.get('MYPTHUB_API_KEY')}`
         }
       }
     )
 
-    const trainerizeData = await response.json()
+    const mypthubData = await response.json()
 
-    // Atualizar Supabase com dados do Trainerize
+    // Atualizar Supabase com dados do My PT Hub
     await supabaseAdmin
       .from('user_profiles')
       .update({
-        last_workout: trainerizeData.last_workout_date,
-        total_workouts: trainerizeData.total_workouts,
-        current_weight: trainerizeData.current_weight
+        last_workout: mypthubData.last_workout_date,
+        total_workouts: mypthubData.total_workouts,
+        current_weight: mypthubData.current_weight
       })
       .eq('id', client.id)
 
-    // Registrar sincronização
+    // Registrar sincronizaÃ§Ã£o
     await supabaseAdmin
-      .from('trainerize_sync')
+      .from('mypthub_sync')
       .insert({
         user_id: client.id,
-        trainerize_id: client.trainerize_id,
+        mypthub_id: client.mypthub_id,
         sync_status: 'completed',
-        sync_data: trainerizeData
+        sync_data: mypthubData
       })
   }
 
@@ -259,11 +259,11 @@ serve(async (req) => {
 ```sql
 -- No Supabase SQL Editor
 SELECT cron.schedule(
-  'sync-trainerize-hourly',
+  'sync-mypthub-hourly',
   '0 * * * *', -- A cada hora
   $$
   SELECT net.http_post(
-    url:='https://[SEU_PROJETO].supabase.co/functions/v1/sync-trainerize',
+    url:='https://[SEU_PROJETO].supabase.co/functions/v1/sync-mypthub',
     headers:='{"Authorization": "Bearer [SERVICE_ROLE_KEY]"}'::jsonb
   ) as request_id;
   $$
@@ -273,15 +273,15 @@ SELECT cron.schedule(
 ---
 
 ### **FASE 4: DASHBOARD INTEGRADO** (3-4 dias)
-**Prioridade:** Média
+**Prioridade:** MÃ©dia
 
-#### 4.1 Atualizar `dashboard.html` com dados do Trainerize
+#### 4.1 Atualizar `dashboard.html` com dados do My PT Hub
 ```html
-<!-- Adicionar seção de progresso Trainerize -->
+<!-- Adicionar seÃ§Ã£o de progresso My PT Hub -->
 <div class="card bg-panel">
   <div class="card-body">
-    <h5 class="card-title">📱 Trainerize Progress</h5>
-    <div id="trainerize-stats">
+    <h5 class="card-title">ðŸ“± My PT Hub Progress</h5>
+    <div id="mypthub-stats">
       <div class="stat-item">
         <span class="stat-label">Workouts Completed</span>
         <span class="stat-value" id="total-workouts">--</span>
@@ -295,53 +295,53 @@ SELECT cron.schedule(
         <span class="stat-value" id="workout-streak">--</span>
       </div>
     </div>
-    <a href="#" id="open-trainerize-app" class="btn btn-outline-warning mt-3">
-      Open Trainerize App
+    <a href="#" id="open-mypthub-app" class="btn btn-outline-warning mt-3">
+      Open My PT Hub App
     </a>
   </div>
 </div>
 ```
 
-#### 4.2 Criar `js/trainerize-integration.js`
+#### 4.2 Criar `js/mypthub-integration.js`
 ```javascript
-// Garcia Builder - Trainerize Integration
+// Garcia Builder - My PT Hub Integration
 (async function() {
   'use strict';
 
   const API_URL = 'https://[SEU_PROJETO].supabase.co/functions/v1';
 
-  // Fetch Trainerize data for current user
-  async function loadTrainerizeData() {
+  // Fetch My PT Hub data for current user
+  async function loadMy PT HubData() {
     try {
       const { data: { user } } = await window.supabaseClient.auth.getUser();
       if (!user) return;
 
-      // Get user profile with trainerize_id
+      // Get user profile with mypthub_id
       const { data: profile } = await window.supabaseClient
         .from('user_profiles')
-        .select('trainerize_id')
+        .select('mypthub_id')
         .eq('user_id', user.id)
         .single();
 
-      if (!profile?.trainerize_id) {
-        showTrainerizeSetup();
+      if (!profile?.mypthub_id) {
+        showMy PT HubSetup();
         return;
       }
 
-      // Fetch Trainerize stats
-      const response = await fetch(`${API_URL}/get-trainerize-stats`, {
+      // Fetch My PT Hub stats
+      const response = await fetch(`${API_URL}/get-mypthub-stats`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${(await window.supabaseClient.auth.getSession()).data.session.access_token}`
         },
-        body: JSON.stringify({ trainerize_id: profile.trainerize_id })
+        body: JSON.stringify({ mypthub_id: profile.mypthub_id })
       });
 
       const stats = await response.json();
       updateDashboard(stats);
     } catch (error) {
-      console.error('Error loading Trainerize data:', error);
+      console.error('Error loading My PT Hub data:', error);
     }
   }
 
@@ -361,11 +361,11 @@ SELECT cron.schedule(
     return `${diff} days ago`;
   }
 
-  function showTrainerizeSetup() {
-    document.getElementById('trainerize-stats').innerHTML = `
+  function showMy PT HubSetup() {
+    document.getElementById('mypthub-stats').innerHTML = `
       <div class="alert alert-info">
         <strong>Setup Required</strong>
-        <p>Your Trainerize account will be created after your first payment.</p>
+        <p>Your My PT Hub account will be created after your first payment.</p>
         <a href="pricing.html" class="btn btn-primary btn-sm">View Plans</a>
       </div>
     `;
@@ -373,13 +373,13 @@ SELECT cron.schedule(
 
   // Auto-load on page load
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadTrainerizeData);
+    document.addEventListener('DOMContentLoaded', loadMy PT HubData);
   } else {
-    loadTrainerizeData();
+    loadMy PT HubData();
   }
 
   // Expose for manual refresh
-  window.GarciaTrainerize = { loadTrainerizeData };
+  window.GarciaMy PT Hub = { loadMy PT HubData };
 })();
 ```
 
@@ -411,36 +411,36 @@ SELECT cron.schedule(
     <div class="header">
       <img src="https://garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png"
            alt="Garcia Builder" class="logo">
-      <h1 class="title">Welcome to Garcia Builder! 🎉</h1>
+      <h1 class="title">Welcome to Garcia Builder! ðŸŽ‰</h1>
     </div>
 
     <div class="section">
       <h2>Your Account is Ready</h2>
       <p>Hi {{first_name}},</p>
       <p>I'm excited to start this transformation journey with you!</p>
-      <p>Your Trainerize account has been created. Here's what to do next:</p>
+      <p>Your My PT Hub account has been created. Here's what to do next:</p>
     </div>
 
     <div class="section">
-      <h3>📱 Step 1: Download the App</h3>
-      <p>Download Trainerize on your phone:</p>
-      <a href="https://apps.apple.com/app/trainerize/id500311007" class="button">
+      <h3>ðŸ“± Step 1: Download the App</h3>
+      <p>Download My PT Hub on your phone:</p>
+      <a href="https://apps.apple.com/app/mypthub/id500311007" class="button">
         iOS App Store
       </a>
-      <a href="https://play.google.com/store/apps/details?id=com.trainerize.trainerize" class="button">
+      <a href="https://play.google.com/store/apps/details?id=com.mypthub.mypthub" class="button">
         Google Play
       </a>
     </div>
 
     <div class="section">
-      <h3>🔑 Step 2: Login Credentials</h3>
+      <h3>ðŸ”‘ Step 2: Login Credentials</h3>
       <p><strong>Email:</strong> {{email}}</p>
       <p><strong>Temporary Password:</strong> {{temp_password}}</p>
       <p><em>(Change it after first login)</em></p>
     </div>
 
     <div class="section">
-      <h3>📋 Step 3: Complete Your Profile</h3>
+      <h3>ðŸ“‹ Step 3: Complete Your Profile</h3>
       <ul>
         <li>Add your current stats (weight, measurements)</li>
         <li>Upload a progress photo</li>
@@ -449,7 +449,7 @@ SELECT cron.schedule(
     </div>
 
     <div class="section">
-      <h3>💬 Step 4: Connect on App chat</h3>
+      <h3>ðŸ’¬ Step 4: Connect on App chat</h3>
       <p>I'll add you to the client support group within 24h.</p>
       <a href="https://wa.me/447508497586?text=Hi%20Andre!%20Just%20signed%20up!" class="button">
         Message Me
@@ -457,17 +457,17 @@ SELECT cron.schedule(
     </div>
 
     <div class="section">
-      <h3>🎯 What Happens Next?</h3>
+      <h3>ðŸŽ¯ What Happens Next?</h3>
       <p>Within 48 hours, you'll receive:</p>
       <ul>
-        <li>✅ Your personalized training program</li>
-        <li>✅ Nutrition guidelines</li>
-        <li>✅ Weekly check-in schedule</li>
+        <li>âœ… Your personalized training program</li>
+        <li>âœ… Nutrition guidelines</li>
+        <li>âœ… Weekly check-in schedule</li>
       </ul>
     </div>
 
     <p style="text-align: center; margin-top: 40px;">
-      Let's build something great together! 💪<br>
+      Let's build something great together! ðŸ’ª<br>
       <strong>Andre Garcia</strong>
     </p>
   </div>
@@ -483,15 +483,15 @@ import { Resend } from 'https://esm.sh/resend@1.0.0'
 
 const resend = new Resend(Deno.env.get('RESEND_API_KEY'))
 
-async function sendWelcomeEmail(user: any, trainerizeClient: any) {
+async function sendWelcomeEmail(user: any, mypthubClient: any) {
   await resend.emails.send({
     from: 'Garcia Builder <noreply@garciabuilder.fitness>',
     to: user.email,
-    subject: '🎉 Welcome to Garcia Builder - Your Account is Ready!',
+    subject: 'ðŸŽ‰ Welcome to Garcia Builder - Your Account is Ready!',
     html: welcomeEmailTemplate({
       first_name: user.full_name.split(' ')[0],
       email: user.email,
-      temp_password: trainerizeClient.temporary_password
+      temp_password: mypthubClient.temporary_password
     })
   })
 }
@@ -500,7 +500,7 @@ async function sendWelcomeEmail(user: any, trainerizeClient: any) {
 ---
 
 ### **FASE 6: WHATSAPP AUTOMATION** (1 dia)
-**Prioridade:** Média
+**Prioridade:** MÃ©dia
 
 #### 6.1 Integrar Twilio para App chat
 ```typescript
@@ -518,19 +518,19 @@ async function sendApp chatWelcome(user: any) {
     from: 'whatsapp:+14155238886', // Twilio Sandbox
     to: `whatsapp:${user.phone}`,
     body: `
-Hi ${user.full_name.split(' ')[0]}! 👋
+Hi ${user.full_name.split(' ')[0]}! ðŸ‘‹
 
-Welcome to Garcia Builder! 🎉
+Welcome to Garcia Builder! ðŸŽ‰
 
-Your Trainerize account is ready. Check your email for login details.
+Your My PT Hub account is ready. Check your email for login details.
 
 Download the app:
-📱 iOS: https://apps.apple.com/app/trainerize/id500311007
-📱 Android: https://play.google.com/store/apps/details?id=com.trainerize.trainerize
+ðŸ“± iOS: https://apps.apple.com/app/mypthub/id500311007
+ðŸ“± Android: https://play.google.com/store/apps/details?id=com.mypthub.mypthub
 
 I'll be in touch within 24h to start your program.
 
-Let's do this! 💪
+Let's do this! ðŸ’ª
 Andre
     `
   })
@@ -539,38 +539,38 @@ Andre
 
 ---
 
-## 📋 CHECKLIST DE IMPLEMENTAÇÃO
+## ðŸ“‹ CHECKLIST DE IMPLEMENTAÃ‡ÃƒO
 
-### **Preparação (Antes de começar):**
-- [ ] Verificar se tem plano Business no Trainerize
-- [ ] Obter API Key do Trainerize
+### **PreparaÃ§Ã£o (Antes de comeÃ§ar):**
+- [ ] Verificar se tem plano Business no My PT Hub
+- [ ] Obter API Key do My PT Hub
 - [ ] Criar conta Resend (envio de emails)
 - [ ] Criar conta Twilio (App chat opcional)
 - [ ] Backup completo do Supabase
 
 ### **Fase 1 - Setup:**
-- [ ] Configurar API Key do Trainerize
-- [ ] Criar tabela `trainerize_config`
+- [ ] Configurar API Key do My PT Hub
+- [ ] Criar tabela `mypthub_config`
 - [ ] Testar endpoints da API manualmente
 
 ### **Fase 2 - Webhook:**
-- [ ] Criar Edge Function `stripe-to-trainerize`
+- [ ] Criar Edge Function `stripe-to-mypthub`
 - [ ] Deploy no Supabase
 - [ ] Configurar webhook no Stripe
 - [ ] Testar com pagamento real em modo test
 
-### **Fase 3 - Sincronização:**
-- [ ] Adicionar coluna `trainerize_id` em `user_profiles`
-- [ ] Criar tabela `trainerize_sync`
-- [ ] Criar Edge Function `sync-trainerize`
+### **Fase 3 - SincronizaÃ§Ã£o:**
+- [ ] Adicionar coluna `mypthub_id` em `user_profiles`
+- [ ] Criar tabela `mypthub_sync`
+- [ ] Criar Edge Function `sync-mypthub`
 - [ ] Configurar Cron Job
-- [ ] Testar sincronização manual
+- [ ] Testar sincronizaÃ§Ã£o manual
 
 ### **Fase 4 - Dashboard:**
-- [ ] Atualizar `dashboard.html` com seção Trainerize
-- [ ] Criar `js/trainerize-integration.js`
-- [ ] Adicionar botão "Open in Trainerize"
-- [ ] Testar visualização de stats
+- [ ] Atualizar `dashboard.html` com seÃ§Ã£o My PT Hub
+- [ ] Criar `js/mypthub-integration.js`
+- [ ] Adicionar botÃ£o "Open in My PT Hub"
+- [ ] Testar visualizaÃ§Ã£o de stats
 
 ### **Fase 5 - Emails:**
 - [ ] Criar template de email de boas-vindas
@@ -586,13 +586,13 @@ Andre
 
 ---
 
-## 🔐 VARIÁVEIS DE AMBIENTE
+## ðŸ” VARIÃVEIS DE AMBIENTE
 
-Adicionar no Supabase Settings → Edge Functions → Secrets:
+Adicionar no Supabase Settings â†’ Edge Functions â†’ Secrets:
 
 ```bash
-TRAINERIZE_API_KEY=trainerize_xxx...
-TRAINERIZE_TRAINER_ID=xxx...
+MYPTHUB_API_KEY=mypthub_xxx...
+MYPTHUB_TRAINER_ID=xxx...
 STRIPE_SECRET_KEY=sk_live_xxx...
 STRIPE_WEBHOOK_SECRET=whsec_xxx...
 RESEND_API_KEY=re_xxx...
@@ -602,70 +602,70 @@ TWILIO_AUTH_TOKEN=xxx...
 
 ---
 
-## 🧪 TESTES
+## ðŸ§ª TESTES
 
 ### **Teste End-to-End:**
 1. Fazer pagamento teste no Stripe
 2. Verificar se webhook foi recebido
-3. Confirmar criação de usuário no Supabase
-4. Confirmar criação de cliente no Trainerize
+3. Confirmar criaÃ§Ã£o de usuÃ¡rio no Supabase
+4. Confirmar criaÃ§Ã£o de cliente no My PT Hub
 5. Verificar recebimento de email
 6. Verificar recebimento de App chat (se configurado)
 7. Login no dashboard
-8. Verificar stats do Trainerize aparecendo
+8. Verificar stats do My PT Hub aparecendo
 
 ### **Teste de Erro:**
-1. Simular falha na API do Trainerize
-2. Verificar se erro é logado
-3. Confirmar retry automático
-4. Testar recuperação manual
+1. Simular falha na API do My PT Hub
+2. Verificar se erro Ã© logado
+3. Confirmar retry automÃ¡tico
+4. Testar recuperaÃ§Ã£o manual
 
 ---
 
-## 📈 MÉTRICAS DE SUCESSO
+## ðŸ“ˆ MÃ‰TRICAS DE SUCESSO
 
-- ✅ **Tempo de onboarding:** De manual (2-4 horas) → Automático (<5 minutos)
-- ✅ **Taxa de ativação:** >85% dos clientes logam no Trainerize em 24h
-- ✅ **Redução de suporte:** 70% menos perguntas sobre "como acessar o app"
-- ✅ **Satisfação:** NPS >80 no primeiro check-in
+- âœ… **Tempo de onboarding:** De manual (2-4 horas) â†’ AutomÃ¡tico (<5 minutos)
+- âœ… **Taxa de ativaÃ§Ã£o:** >85% dos clientes logam no My PT Hub em 24h
+- âœ… **ReduÃ§Ã£o de suporte:** 70% menos perguntas sobre "como acessar o app"
+- âœ… **SatisfaÃ§Ã£o:** NPS >80 no primeiro check-in
 
 ---
 
-## 💰 CUSTOS ESTIMADOS
+## ðŸ’° CUSTOS ESTIMADOS
 
-| Serviço | Custo Mensal | Notas |
+| ServiÃ§o | Custo Mensal | Notas |
 |---------|--------------|-------|
-| Trainerize Business | $50-100 | Depende do plano |
-| Resend (Emails) | $10-20 | 3.000 emails/mês grátis |
+| My PT Hub Business | $50-100 | Depende do plano |
+| Resend (Emails) | $10-20 | 3.000 emails/mÃªs grÃ¡tis |
 | Twilio (App chat) | $20-50 | Opcional, $0.005/msg |
-| Supabase Edge Functions | Incluído | Free tier: 500k req/mês |
-| **TOTAL** | **$80-170/mês** | Paga-se com 2-3 clientes novos |
+| Supabase Edge Functions | IncluÃ­do | Free tier: 500k req/mÃªs |
+| **TOTAL** | **$80-170/mÃªs** | Paga-se com 2-3 clientes novos |
 
 ---
 
-## 🚀 PRÓXIMOS PASSOS
+## ðŸš€ PRÃ“XIMOS PASSOS
 
 1. **Imediato (Esta semana):**
-   - Obter API Key do Trainerize
+   - Obter API Key do My PT Hub
    - Criar Edge Function do webhook
    - Testar com 1 cliente real
 
-2. **Curto prazo (Este mês):**
-   - Implementar sincronização
+2. **Curto prazo (Este mÃªs):**
+   - Implementar sincronizaÃ§Ã£o
    - Adicionar dashboard integrado
    - Setup de emails
 
-3. **Médio prazo (Próximo mês):**
+3. **MÃ©dio prazo (PrÃ³ximo mÃªs):**
    - App chat automation
-   - Relatórios avançados
+   - RelatÃ³rios avanÃ§ados
    - Mobile app notifications
 
 ---
 
-## 📞 SUPORTE
+## ðŸ“ž SUPORTE
 
-**Documentação:**
-- Trainerize API: https://trainerize.me/api
+**DocumentaÃ§Ã£o:**
+- My PT Hub API: https://mypthub.me/api
 - Supabase Edge Functions: https://supabase.com/docs/guides/functions
 - Stripe Webhooks: https://stripe.com/docs/webhooks
 
@@ -675,10 +675,12 @@ TWILIO_AUTH_TOKEN=xxx...
 
 ---
 
-**✅ PRONTO PARA COMEÇAR!**
+**âœ… PRONTO PARA COMEÃ‡AR!**
 
-Comece pela **Fase 1** e avance passo a passo. Documente tudo e faça backups regulares.
+Comece pela **Fase 1** e avance passo a passo. Documente tudo e faÃ§a backups regulares.
 
-🎯 **Meta:** Ter a integração básica funcionando em 7-10 dias.
+ðŸŽ¯ **Meta:** Ter a integraÃ§Ã£o bÃ¡sica funcionando em 7-10 dias.
+
+
 
 

@@ -17,7 +17,13 @@
   const getApiUrl = (path) => `${resolveApiBaseUrl()}${path}`;
   const getCurrentLang = () => {
     try {
-      return (window.GB_I18N?.getLang?.() || localStorage.getItem('gb_lang') || 'en').toLowerCase();
+      return (
+        window.GB_I18N?.getLang?.() ||
+        localStorage.getItem('gb_lang') ||
+        localStorage.getItem('gb_language') ||
+        document.documentElement.lang ||
+        'en'
+      ).toLowerCase().replace('pt-br', 'pt');
     } catch {
       return 'en';
     }
@@ -86,7 +92,7 @@
 
         // Show loading state
           if (submitBtn) {
-          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+          submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${getI18nText('leadmagnet.processing', 'Processing...')}`;
           submitBtn.disabled = true;
         }
 
@@ -107,7 +113,7 @@
 
           // Validate required fields
           if (!leadData.name || !leadData.email || !leadData.goal) {
-            throw new Error('Please fill in all required fields');
+            throw new Error(getI18nText('leadmagnet.required_fields', 'Please fill in all required fields.'));
           }
 
           // Save to database
@@ -137,7 +143,7 @@
           errorDiv.className = 'alert alert-danger mt-3';
           errorDiv.innerHTML = `
             <i class="fas fa-exclamation-triangle"></i>
-            ${error.message || 'Something went wrong. Please try again or contact us directly.'}
+            ${error.message || getI18nText('leadmagnet.error_submit', 'Oops! Something went wrong. Try again or book a free consultation on Calendly.')}
           `;
           form.appendChild(errorDiv);
 
@@ -232,7 +238,7 @@
 
     } catch (error) {
     console.error('Error capturing lead:', error);
-    showNotification('Error sending. Please try again.', 'error');
+    showNotification(getI18nText('consultation.error', 'Unable to send your request right now. Please try again in a moment.'), 'error');
     }
   };
 
@@ -246,7 +252,7 @@
     const name = formData.get('name') || '';
 
     if (!email || !isValidEmail(email)) {
-      showNotification('Please enter a valid email.', 'error');
+      showNotification(getI18nText('newsletter.invalid_email', 'Please enter a valid email.'), 'error');
       return;
     }
 
@@ -278,13 +284,12 @@
         window.gbMarkUserConverted();
       }
 
-      // Show success message (PT-BR)
       if (saveResult?.welcomeEmailSent) {
-        showNotification('Subscription successful! We sent a welcome email.', 'success');
+        showNotification(getI18nText('newsletter.success_email_sent', 'Subscription successful. We sent a welcome email.'), 'success');
       } else if (saveResult?.welcomeEmailSkipped) {
-        showNotification('Subscription successful! Your welcome email will be sent shortly.', 'success');
+        showNotification(getI18nText('newsletter.success_email_pending', 'Subscription successful. Your welcome email will be sent shortly.'), 'success');
       } else {
-        showNotification('Subscription successful!', 'success');
+        showNotification(getI18nText('newsletter.success', 'Subscription successful.'), 'success');
       }
 
       // Reset form
@@ -292,7 +297,7 @@
 
     } catch (error) {
   console.error('Error subscribing to newsletter:', error);
-  showNotification('Subscription error. Please try again.', 'error');
+  showNotification(getI18nText('newsletter.error', 'Subscription error. Please try again.'), 'error');
     }
   };
 
@@ -540,43 +545,17 @@
       document.body.style.overflow = 'hidden';
     }
 
-    const lang = (localStorage.getItem('gb_lang') || 'en').toLowerCase();
-    const popupI18n = {
-      en: {
-        badge: '🔥 WAIT!',
-        title: 'Don’t leave empty-handed!',
-        subtitle: 'Get the FREE 28 Days Fat Loss Quickstart by email',
-        email: 'Enter your email',
-        button: 'Send Me the Ebook',
-        benefit1: '28-day fat-loss structure',
-        benefit2: 'Nutrition and shopping guidance',
-        benefit3: 'Simple habits and accountability',
-        close: 'Close popup'
-      },
-      pt: {
-        badge: '🔥 ESPERA!',
-        title: 'Não saia de mãos vazias!',
-        subtitle: 'Receba por email o 28 Days Fat Loss Quickstart grátis',
-        email: 'Digite seu email',
-        button: 'Enviar Ebook',
-        benefit1: 'Estrutura de perda de gordura em 28 dias',
-        benefit2: 'Nutrição e lista de compras',
-        benefit3: 'Hábitos simples e accountability',
-        close: 'Fechar popup'
-      },
-      es: {
-        badge: '🔥 ¡ESPERA!',
-        title: '¡No te vayas con las manos vacías!',
-        subtitle: 'Recibe por email el 28 Days Fat Loss Quickstart gratis',
-        email: 'Introduce tu correo',
-        button: 'Enviar Ebook',
-        benefit1: 'Estructura de perdida de grasa en 28 dias',
-        benefit2: 'Nutricion y lista de compras',
-        benefit3: 'Habitos simples y accountability',
-        close: 'Cerrar popup'
-      }
+    const t = {
+      badge: getI18nText('leadmagnet.popup_badge', 'WAIT!'),
+      title: getI18nText('leadmagnet.popup_title', 'Do not leave empty-handed!'),
+      subtitle: getI18nText('leadmagnet.popup_subtitle', 'Get the free 28 Days Fat Loss Quickstart by email.'),
+      email: getI18nText('leadmagnet.email_placeholder', 'you@email.com'),
+      button: getI18nText('leadmagnet.popup_button', 'Send Me the Ebook'),
+      benefit1: getI18nText('leadmagnet.popup_benefit1', '28-day fat-loss structure'),
+      benefit2: getI18nText('leadmagnet.popup_benefit2', 'Nutrition and shopping guidance'),
+      benefit3: getI18nText('leadmagnet.popup_benefit3', 'Simple habits and accountability'),
+      close: getI18nText('leadmagnet.popup_close', 'Close popup')
     };
-    const t = popupI18n[lang] || popupI18n.en;
     popup.innerHTML = `
       <div class="exit-intent-popup">
         <button class="exit-intent-close" aria-label="${t.close}">&times;</button>
@@ -634,7 +613,7 @@
       const originalText = submitBtn.innerHTML;
 
       // Show loading state
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+      submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${getI18nText('leadmagnet.sending', 'Sending...')}`;
       submitBtn.disabled = true;
 
       try {
@@ -654,17 +633,17 @@
         triggerFileDownload();
 
         const emailMessage = leadResponse?.customerEmailSent
-          ? 'Verifique seu email. O ebook foi enviado para sua caixa de entrada.'
-          : 'SMTP local não está configurado, então o email não foi enviado neste teste. Use o botão abaixo para baixar o ebook.';
+          ? getI18nText('leadmagnet.email_sent_message', 'Check your email. The ebook was sent to your inbox.')
+          : getI18nText('leadmagnet.email_pending_message', 'The email could not be sent in this environment. Use the button below to download the ebook.');
 
         // Show success and close
         popup.querySelector('.exit-intent-content').innerHTML = `
           <div class="text-center" style="padding: 2rem; color: #fff;">
             <i class="fas fa-check-circle" style="font-size: 3rem; color: #28a745; margin-bottom: 1rem;"></i>
-            <h3>Sucesso!</h3>
+            <h3>${getI18nText('leadmagnet.download_success_title', 'Success!')}</h3>
             <p>${emailMessage}</p>
             <a href="${GUIDE_ASSET_PATH}" download="${GUIDE_DOWNLOAD_NAME}" class="btn btn-primary mt-2">
-              Download ebook now
+              ${getI18nText('leadmagnet.download_now', 'Download ebook now')}
             </a>
           </div>
         `;
@@ -686,7 +665,7 @@
         console.error('Error saving lead:', error);
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
-        showNotification('Erro ao processar. Tente novamente.', 'error');
+        showNotification(getI18nText('leadmagnet.error_process', 'Unable to process your request. Please try again.'), 'error');
       }
     });
 
@@ -728,7 +707,7 @@
 
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+      submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin me-2"></i>${getI18nText('leadmagnet.sending', 'Sending...')}`;
     }
 
     const downloadInfo = {
@@ -745,7 +724,7 @@
 
     try {
       if (!downloadInfo.email) {
-        throw new Error('Please enter a valid email address.');
+        throw new Error(getI18nText('newsletter.invalid_email', 'Please enter a valid email address.'));
       }
 
       // Save lead and send the ebook email through the backend.
@@ -760,10 +739,10 @@
       const emailWasSent = leadResponse?.customerEmailSent;
       const emailSkipped = leadResponse?.customerEmailSkipped || leadResponse?.fallback;
       const notificationMessage = emailWasSent
-        ? 'Sent! Check your email for the ebook.'
+        ? getI18nText('leadmagnet.email_sent_message', 'Sent! Check your email for the ebook.')
         : emailSkipped
-          ? 'Saved. SMTP is not configured locally; use the download link shown on the page.'
-          : 'Saved. Use the download link shown on the page.';
+          ? getI18nText('leadmagnet.email_pending_message', 'Saved. Use the download link shown on the page.')
+          : getI18nText('leadmagnet.download_ready_message', 'Saved. Use the download link shown on the page.');
       showNotification(notificationMessage, emailWasSent ? 'success' : 'info');
 
       // Immediate download if asset available
@@ -781,10 +760,10 @@
         form.innerHTML = `
           <div class="lead-form-success text-center">
             <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
-            <h3>Ebook on the way!</h3>
-            <p class="mb-3">${emailWasSent ? 'Check your inbox and spam folder for the ebook.' : 'SMTP is not configured locally, so the test email was skipped.'}</p>
+            <h3>${getI18nText('leadmagnet.download_success_title', 'Ebook on the way!')}</h3>
+            <p class="mb-3">${emailWasSent ? getI18nText('leadmagnet.email_sent_message', 'Check your inbox and spam folder for the ebook.') : getI18nText('leadmagnet.email_pending_message', 'The email could not be sent in this environment. Use the button below to download the ebook.')}</p>
             <a href="${GUIDE_ASSET_PATH}" download="${GUIDE_DOWNLOAD_NAME}" class="btn btn-primary">
-              Download ebook now
+              ${getI18nText('leadmagnet.download_now', 'Download ebook now')}
             </a>
           </div>
         `;
@@ -796,11 +775,11 @@
       console.error('Error processing download:', error);
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnHtml || 'Send';
+        submitBtn.innerHTML = originalBtnHtml || getI18nText('leadmagnet.submit', 'Send');
       }
       const message = error?.message && error.message !== 'Request failed'
         ? error.message
-        : 'Erro ao processar download. Tente novamente.';
+        : getI18nText('leadmagnet.error_process', 'Unable to process your download. Please try again.');
       showNotification(message, 'error');
     }
 

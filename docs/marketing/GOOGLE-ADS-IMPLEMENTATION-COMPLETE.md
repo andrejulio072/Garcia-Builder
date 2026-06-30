@@ -65,7 +65,7 @@
 ### Páginas de Blog ✅
 8. ✅ **blog.html** - Blog Principal
    - Google Ads tag completo
-   - onclick: 14+ links de artigos externos (Trainerize)
+   - onclick: 14+ links de artigos externos (My PT Hub)
    - onclick: Instagram, Calendly, contact form (2 instâncias)
 
 9. ✅ **blog-consistency.html** - Artigo: Consistência
@@ -125,7 +125,7 @@
   - 6-Month Commitment
 
 ### Links de Blog Externos
-- ✅ 14+ artigos externos no blog (Trainerize)
+- ✅ 14+ artigos externos no blog (My PT Hub)
 - ✅ Links para artigos de nutrição, treino, transformação
 
 ### Outros

@@ -361,7 +361,7 @@
                                 </div>
                                 <div>
                                     <i class="fas fa-trophy fa-2x text-warning"></i>
-                                    <div><strong>89%</strong><br><small data-i18n="leadmagnet.success">Sucesso</small></div>
+                                    <div><strong>89%</strong><br><small data-i18n="leadmagnet.success">Success</small></div>
                                 </div>
                             </div>
                             <p class="mb-0"><small><em data-i18n="leadmagnet.quote">"Transformei completamente meu corpo seguindo exatamente esses passos"</em> <span data-i18n="leadmagnet.quote_author">- Sarah M.</span></small></p>
@@ -404,7 +404,7 @@
                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                                         <input type="text" class="form-control" id="leadName" name="name" required
                                                placeholder="e.g., Maria Silva" data-i18n-ph="leadmagnet.name_placeholder">
-                                        <div class="invalid-feedback">
+                                        <div class="invalid-feedback" data-i18n="leadmagnet.name_required">
                                             Please enter your name.
                                         </div>
                                     </div>
@@ -416,7 +416,7 @@
                                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                         <input type="email" class="form-control" id="leadEmail" name="email" required
                                                placeholder="you@example.com" data-i18n-ph="leadmagnet.email_placeholder">
-                                        <div class="invalid-feedback">
+                                        <div class="invalid-feedback" data-i18n="leadmagnet.email_required">
                                             Please enter a valid email.
                                         </div>
                                     </div>
@@ -432,7 +432,7 @@
                                         <option value="performance" data-i18n="leadmagnet.goal_performance">Improve performance</option>
                                         <option value="health" data-i18n="leadmagnet.goal_health">General health</option>
                                     </select>
-                                    <div class="invalid-feedback">
+                                    <div class="invalid-feedback" data-i18n="leadmagnet.goal_required">
                                         Please select your goal.
                                     </div>
                                 </div>
@@ -460,8 +460,8 @@
                                         <span data-i18n="leadmagnet.consent">I agree to receive the guide and emails with fitness tips.</span>
                                         <small class="text-muted" data-i18n="leadmagnet.consent_small">No spam, unsubscribe anytime.</small>
                                     </label>
-                                    <div class="invalid-feedback">
-                                        Por favor, aceite os termos.
+                                    <div class="invalid-feedback" data-i18n="leadmagnet.terms_required">
+                                        Please accept the terms.
                                     </div>
                                 </div>
 
@@ -677,7 +677,7 @@
                 // Reset button
                 submitBtn.disabled = false;
                 spinner.classList.add('d-none');
-                submitBtn.querySelector('span').textContent = 'DOWNLOAD FREE GUIDE';
+                submitBtn.querySelector('span').textContent = getLeadMagnetText('submit') || 'DOWNLOAD FREE GUIDE';
 
                 // Show error
                 alert(getLeadMagnetText('error_submit') || 'Oops! Something went wrong. Try again or schedule a free consult via Calendly.');

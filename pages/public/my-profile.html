@@ -1512,10 +1512,41 @@
                         <i class="fas fa-dumbbell"></i>
                         Workouts
                     </h3>
-                    <div class="alert-custom">
-                        <i class="fas fa-info-circle me-2"></i>
-                        Your assigned workouts and training blocks will appear here. (Coming soon)
-                    </div>
+                    <form id="workouts-form" data-profile-section="workouts" novalidate onsubmit="return false;">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="workout_title" class="form-label">Workout Title</label>
+                                <input type="text" class="form-control" id="workout_title" name="title" placeholder="Upper Body Strength">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="workout_date" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="workout_date" name="workout_date">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="workout_duration" class="form-label">Duration</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="workout_duration" name="duration_minutes" min="0" step="5" placeholder="45">
+                                    <span class="input-group-text">min</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="workout_completed" name="completed" checked>
+                                    <label class="form-check-label" for="workout_completed">Done</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label for="workout_notes" class="form-label">Notes</label>
+                                <textarea class="form-control" id="workout_notes" name="notes" rows="3" placeholder="Exercises, weights, reps, or how the session felt"></textarea>
+                            </div>
+                        </div>
+                        <div class="text-end mt-4">
+                            <button type="button" class="btn btn-save" onclick="document.getElementById('workouts-form').dispatchEvent(new Event('submit', {bubbles: true, cancelable: true}));">
+                                <i class="fas fa-save"></i> Save Workout
+                            </button>
+                        </div>
+                    </form>
+                    <div id="workout-logs-container" class="mt-4"></div>
                 </div>
             </div>
 
@@ -1591,6 +1622,7 @@
                             <i class="fas fa-info-circle me-2"></i>
                             Your upcoming meetings and check-ins will appear here once scheduled.
                         </div>
+                        <div id="meetings-list-container" class="mt-3"></div>
                     </div>
                 </div>
             </div>
@@ -2174,6 +2206,22 @@
             }
         }
 
+        function getProfileText(key, fallback) {
+            try {
+                const lang = (
+                    window.GB_I18N?.getLang?.() ||
+                    localStorage.getItem('gb_lang') ||
+                    localStorage.getItem('gb_language') ||
+                    document.documentElement.lang ||
+                    'en'
+                ).toLowerCase().replace('pt-br', 'pt');
+                const readPath = (obj, path) => String(path || '').split('.').reduce((acc, part) => acc?.[part], obj);
+                return readPath(window.DICTS?.[lang], key) || readPath(window.DICTS?.en, key) || fallback;
+            } catch {
+                return fallback;
+            }
+        }
+
         function setupEventListeners() {
             const logoutButton = document.getElementById('logout-btn');
             if (logoutButton) {
@@ -2304,20 +2352,20 @@
 
             // Validate file type
             if (!file.type.startsWith('image/')) {
-                alert('Please select an image file');
+                alert(getProfileText('profile.image_file_required', 'Please select an image file.'));
                 return;
             }
 
             // Validate file size (max 5MB)
             if (file.size > 5 * 1024 * 1024) {
-                alert('File size must be less than 5MB');
+                alert(getProfileText('profile.file_size_limit', 'File size must be less than 5MB.'));
                 return;
             }
 
             const avatarElement = document.getElementById('main-avatar');
             if (!avatarElement) {
                 console.warn('Avatar element not found during upload.');
-                showNotification('Avatar element not available.', 'error');
+                showNotification(getProfileText('profile.avatar_element_unavailable', 'Avatar element not available.'), 'error');
                 return;
             }
 
@@ -2333,7 +2381,7 @@
                         avatarElement.src = avatarUrl;
                         avatarElement.style.opacity = '1';
                         // Show success message
-                        showNotification('Avatar updated successfully!', 'success');
+                        showNotification(getProfileText('profile.avatar_updated', 'Avatar updated successfully.'), 'success');
                     }
                 } else {
                     // Fallback: just show preview
@@ -2341,13 +2389,13 @@
                     reader.onload = (e) => {
                         avatarElement.src = e.target.result;
                         avatarElement.style.opacity = '1';
-                        showNotification('Avatar preview loaded (not saved to server)', 'info');
+                        showNotification(getProfileText('profile.avatar_preview_loaded', 'Avatar preview loaded. It has not been saved to the server yet.'), 'info');
                     };
                     reader.readAsDataURL(file);
                 }
             } catch (error) {
                 console.error('Error uploading avatar:', error);
-                showNotification('Failed to upload avatar', 'error');
+                showNotification(getProfileText('profile.avatar_upload_failed', 'Failed to upload avatar.'), 'error');
                 if (avatarElement) {
                     avatarElement.style.opacity = '1';
                     if (originalSrc) {

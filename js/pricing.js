@@ -56,6 +56,10 @@
       });
     }
 
+    if (window.CurrencyConverter && typeof window.CurrencyConverter.refresh === 'function') {
+      window.CurrencyConverter.refresh();
+    }
+
     container.querySelectorAll('.btn.btn-gold').forEach(button => {
       button.addEventListener('click', event => {
         event.preventDefault();
@@ -104,6 +108,30 @@
 
 async function handlePlanSelection(planKey, planName, planPrice, buttonElement) {
   const originalText = buttonElement ? buttonElement.textContent : '';
+  const myPtHubUrl = buildMyPtHubCheckoutUrl(planKey, planName);
+
+  if (myPtHubUrl) {
+    if (typeof window.dataLayer !== 'undefined') {
+      window.dataLayer.push({
+        event: 'mypthub_checkout_redirect',
+        plan_type: planKey,
+        plan_name: planName,
+        destination: 'mypthub',
+        checkout_url: myPtHubUrl
+      });
+    }
+
+    localStorage.setItem('selectedPlan', JSON.stringify({
+      key: planKey,
+      name: planName,
+      price: planPrice,
+      destination: 'mypthub',
+      timestamp: Date.now()
+    }));
+
+    window.location.href = myPtHubUrl;
+    return;
+  }
 
   try {
     const customerEmail = await collectCheckoutEmail();
@@ -129,7 +157,7 @@ async function handlePlanSelection(planKey, planName, planPrice, buttonElement) 
       customerName: getStoredUserName(),
       successUrl: `${window.location.origin}/success.html`,
       cancelUrl: `${window.location.origin}/pricing.html`,
-      trainerizeInvite: document.querySelector('meta[name="trainerize:invite"]')?.getAttribute('content') || window.GB_TRAINERIZE_INVITE || undefined,
+      myPtHubInvite: document.querySelector('meta[name="mypthub:invite"]')?.getAttribute('content') || window.GB_MYPTHUB_INVITE || undefined,
       utm: getAttributionPayload()
     };
 
@@ -197,16 +225,76 @@ async function collectCheckoutEmail() {
 }
 
 function getAttributionPayload() {
+  const query = new URLSearchParams(window.location.search || '');
   try {
     const saved = window.GB_ATTRIBUTION || JSON.parse(localStorage.getItem('gb_attrib_v1') || '{}');
     return {
-      source: saved.utm_source,
-      medium: saved.utm_medium,
-      campaign: saved.utm_campaign,
-      term: saved.utm_term,
-      content: saved.utm_content
+      source: saved.utm_source || query.get('utm_source') || 'website',
+      medium: saved.utm_medium || query.get('utm_medium') || 'pricing_page',
+      campaign: saved.utm_campaign || query.get('utm_campaign') || 'mypthub_package_checkout',
+      term: saved.utm_term || query.get('utm_term') || '',
+      content: saved.utm_content || query.get('utm_content') || '',
+      gclid: saved.gclid || query.get('gclid') || '',
+      fbclid: saved.fbclid || query.get('fbclid') || ''
     };
   } catch {
-    return {};
+    return {
+      source: query.get('utm_source') || 'website',
+      medium: query.get('utm_medium') || 'pricing_page',
+      campaign: query.get('utm_campaign') || 'mypthub_package_checkout',
+      term: query.get('utm_term') || '',
+      content: query.get('utm_content') || '',
+      gclid: query.get('gclid') || '',
+      fbclid: query.get('fbclid') || ''
+    };
   }
+}
+
+function getMyPtHubPackageBaseUrl(planKey) {
+  const metaByPlan = {
+    monthly: 'mypthub:package:monthly',
+    eight_week: 'mypthub:package:eight_week',
+    twelve_week: 'mypthub:package:twelve_week',
+    eighteen_week: 'mypthub:package:eighteen_week'
+  };
+
+  const cfg = window.GB_MYPTHUB_PACKAGES;
+  if (cfg && typeof cfg === 'object' && typeof cfg[planKey] === 'string' && cfg[planKey].trim()) {
+    return cfg[planKey].trim();
+  }
+
+  const metaName = metaByPlan[planKey];
+  if (!metaName) return '';
+
+  const fromMeta = document.querySelector(`meta[name="${metaName}"]`)?.getAttribute('content');
+  return (fromMeta || '').trim();
+}
+
+function buildMyPtHubCheckoutUrl(planKey, planName) {
+  const baseUrl = getMyPtHubPackageBaseUrl(planKey);
+  if (!baseUrl) return '';
+
+  let parsed;
+  try {
+    parsed = new URL(baseUrl, window.location.origin);
+  } catch {
+    return '';
+  }
+
+  const attrib = getAttributionPayload();
+  const params = parsed.searchParams;
+
+  params.set('utm_source', attrib.source || 'website');
+  params.set('utm_medium', attrib.medium || 'pricing_page');
+  params.set('utm_campaign', attrib.campaign || 'mypthub_package_checkout');
+  params.set('utm_content', attrib.content || planKey);
+  if (attrib.term) params.set('utm_term', attrib.term);
+  if (attrib.gclid) params.set('gclid', attrib.gclid);
+  if (attrib.fbclid) params.set('fbclid', attrib.fbclid);
+  if (document.referrer) params.set('referrer', document.referrer);
+
+  params.set('plan_key', planKey);
+  params.set('plan_name', planName || planKey);
+
+  return parsed.toString();
 }

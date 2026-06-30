@@ -307,6 +307,8 @@
         daily: {},
         updated_at: new Date().toISOString()
       },
+      workouts: [],
+      meetings: [],
       activity: {
         workouts_completed: 0,
         total_sessions: 0,
@@ -385,7 +387,10 @@
         if (!currentUser) {
           console.warn('❌ No authenticated user, redirecting to login...');
           const ret = encodeURIComponent(window.location.pathname + window.location.search);
-          window.location.href = `login.html?redirect=${ret}`;
+          const loginUrl = typeof window.toAbsoluteUrl === 'function'
+            ? window.toAbsoluteUrl(`pages/auth/login.html?redirect=${ret}`)
+            : `../auth/login.html?redirect=${ret}`;
+          window.location.href = loginUrl;
           throw new Error('No authenticated user');
         }
 
@@ -430,6 +435,42 @@
       console.log('👤 [GET_USER] Iniciando getCurrentUser...');
       console.log('👤 [GET_USER] window.supabaseClient existe?', !!window.supabaseClient);
       console.log('👤 [GET_USER] window.supabaseClient.auth existe?', !!window.supabaseClient?.auth);
+
+      const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      let readyClient = window.supabaseClient || null;
+
+      if (!readyClient?.auth && typeof window.waitForSupabaseClient === 'function') {
+        try {
+          readyClient = await window.waitForSupabaseClient(6000);
+        } catch (readyError) {
+          console.warn('[GET_USER] Supabase client was not ready in time:', readyError?.message || readyError);
+        }
+      }
+
+      if (!readyClient?.auth) {
+        const startedAt = Date.now();
+        while (!readyClient?.auth && Date.now() - startedAt < 4000) {
+          await wait(200);
+          readyClient = window.supabaseClient || null;
+        }
+      }
+
+      if (readyClient?.auth) {
+        window.supabaseClient = readyClient;
+        try {
+          const sessionPromise = readyClient.auth.getSession();
+          const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Supabase session timeout')), 4000)
+          );
+          const { data } = await Promise.race([sessionPromise, timeoutPromise]);
+          if (data?.session?.user) {
+            console.log('[GET_USER] User found in Supabase session');
+            return data.session.user;
+          }
+        } catch (sessionError) {
+          console.warn('[GET_USER] Supabase getSession failed or timed out:', sessionError?.message || sessionError);
+        }
+      }
 
       // Prefer Supabase client if available
       if (window.supabaseClient && window.supabaseClient.auth) {
@@ -496,12 +537,16 @@
         console.warn('⚠️ [LOAD_PROFILE] Erro ao carregar do Supabase, continuando com localStorage...', supabaseError);
       }
 
-      // 2. SEGUNDO: Tentar carregar do localStorage (fallback)
-      console.log('💾 [LOAD_PROFILE] Tentando carregar do localStorage...');
-      const localData = loadFromLocalStorage();
-      if (localData && Object.keys(localData).length > 0) {
-        hasLoadedData = true;
-        console.log('✅ [LOAD_PROFILE] Dados carregados do localStorage');
+      // 2. SEGUNDO: Tentar carregar do localStorage apenas como fallback.
+      if (!hasLoadedData) {
+        console.log('💾 [LOAD_PROFILE] Tentando carregar do localStorage como fallback...');
+        const localData = loadFromLocalStorage();
+        if (localData && Object.keys(localData).length > 0) {
+          hasLoadedData = true;
+          console.log('✅ [LOAD_PROFILE] Dados carregados do localStorage');
+        }
+      } else {
+        console.log('✅ [LOAD_PROFILE] Supabase loaded; localStorage will remain a backup only');
       }
 
       // 3. TERCEIRO: SE e SOMENTE SE não tiver dados, inicializar estrutura padrão
@@ -576,6 +621,8 @@
             daily: {},
             updated_at: new Date().toISOString()
           },
+          workouts: [],
+          meetings: [],
           activity: {
             workouts_completed: 0,
             total_sessions: 0,
@@ -626,75 +673,141 @@
     }
   };
 
-  // Load data from Supabase
+  // Load data from Supabase. user_profiles is canonical; profiles/user_metadata are compatibility fallbacks.
   const loadFromSupabase = async () => {
     try {
-      // Load from main profiles table
-      const { data: profile, error: profileError } = await window.supabaseClient
-        .from('profiles')
-        .select('*')
-        .eq('id', currentUser.id)
-        .single();
+      const userId = currentUser?.id;
+      if (!window.supabaseClient || !userId) return;
 
-      if (profile && !profileError) {
-        // Map Supabase profile to our structure
-        profileData.basic = {
-          ...profileData.basic,
-          full_name: profile.full_name || currentUser.user_metadata?.full_name || '',
-          email: currentUser.email || '',
-          phone: profile.phone || currentUser.user_metadata?.phone || '',
-          avatar_url: profile.avatar_url || currentUser.user_metadata?.avatar_url || '',
-          birthday: profile.date_of_birth || currentUser.user_metadata?.birthday || '',
-          location: currentUser.user_metadata?.location || '',
-          bio: currentUser.user_metadata?.bio || '',
-          experience_level: currentUser.user_metadata?.experience_level || 'beginner'
-        };
-      } else {
-        // Fallback to user metadata
-        const userData = currentUser.user_metadata || {};
-        profileData.basic = {
-          ...profileData.basic,
-          full_name: userData.full_name || '',
-          email: currentUser.email || '',
-          phone: userData.phone || '',
-          avatar_url: userData.avatar_url || '',
-          birthday: userData.birthday || '',
-          location: userData.location || '',
-          bio: userData.bio || '',
-          experience_level: userData.experience_level || 'beginner'
-        };
+      const metadata = currentUser.user_metadata || {};
+      const [
+        profileResult,
+        preferencesResult,
+        macrosResult,
+        habitsResult,
+        photosResult,
+        workoutsResult,
+        sessionsResult
+      ] = await Promise.all([
+        window.supabaseClient.from('user_profiles').select('*').eq('user_id', userId).maybeSingle(),
+        window.supabaseClient.from('user_preferences').select('*').eq('user_id', userId).maybeSingle(),
+        window.supabaseClient.from('user_macros').select('*').eq('user_id', userId).maybeSingle(),
+        window.supabaseClient.from('user_habits').select('*').eq('user_id', userId).order('date', { ascending: false }).limit(60),
+        window.supabaseClient.from('progress_photos').select('*').eq('user_id', userId).order('taken_at', { ascending: false }).limit(60),
+        window.supabaseClient.from('workout_logs').select('*').eq('user_id', userId).order('workout_date', { ascending: false }).limit(100),
+        window.supabaseClient.from('sessions').select('*').eq('user_id', userId).order('scheduled_at', { ascending: true }).limit(50)
+      ]);
+
+      if (profileResult.error) console.warn('Could not load user_profiles:', profileResult.error.message || profileResult.error);
+      if (preferencesResult.error) console.warn('Could not load user_preferences:', preferencesResult.error.message || preferencesResult.error);
+      if (macrosResult.error) console.warn('Could not load user_macros:', macrosResult.error.message || macrosResult.error);
+      if (habitsResult.error) console.warn('Could not load user_habits:', habitsResult.error.message || habitsResult.error);
+      if (photosResult.error) console.warn('Could not load progress_photos:', photosResult.error.message || photosResult.error);
+      if (workoutsResult.error) console.warn('Could not load workout_logs:', workoutsResult.error.message || workoutsResult.error);
+      if (sessionsResult.error) console.warn('Could not load sessions:', sessionsResult.error.message || sessionsResult.error);
+
+      const profile = profileResult.data || null;
+      profileData.basic = {
+        ...profileData.basic,
+        id: userId,
+        full_name: profile?.full_name || metadata.full_name || metadata.name || '',
+        first_name: profile?.first_name || metadata.first_name || '',
+        last_name: profile?.last_name || metadata.last_name || '',
+        email: profile?.email || currentUser.email || metadata.email || '',
+        phone: profile?.phone || metadata.phone || '',
+        avatar_url: profile?.avatar_url || metadata.avatar_url || metadata.picture || '',
+        birthday: profile?.birthday || metadata.birthday || metadata.date_of_birth || '',
+        location: profile?.location || metadata.location || '',
+        bio: profile?.bio || metadata.bio || '',
+        goals: Array.isArray(profile?.goals) ? profile.goals : (Array.isArray(metadata.goals) ? metadata.goals : profileData.basic?.goals || []),
+        experience_level: profile?.experience_level || metadata.experience_level || 'beginner',
+        trainer_id: profile?.trainer_id || metadata.trainer_id || null,
+        trainer_name: profile?.trainer_name || metadata.trainer_name || '',
+        joined_date: profile?.joined_date || profile?.created_at || profileData.basic?.joined_date,
+        last_login: profile?.last_login || profileData.basic?.last_login
+      };
+
+      if (preferencesResult.data) {
+        profileData.preferences = mergeObjects(profileData.preferences, {
+          units: preferencesResult.data.units,
+          theme: preferencesResult.data.theme,
+          language: preferencesResult.data.language,
+          notifications: preferencesResult.data.notifications || {},
+          privacy: preferencesResult.data.privacy || {}
+        });
+      } else if (metadata.preferences) {
+        profileData.preferences = mergeObjects(profileData.preferences, metadata.preferences);
       }
 
-      // Load body metrics from user metadata
-      if (currentUser.user_metadata?.body_metrics) {
-        Object.assign(profileData.body_metrics, currentUser.user_metadata.body_metrics);
+      if (macrosResult.data) {
+        profileData.macros = mergeObjects(profileData.macros, {
+          goal: macrosResult.data.goal,
+          activity_level: macrosResult.data.activity_level,
+          calories: macrosResult.data.calories,
+          protein_pct: macrosResult.data.protein_pct,
+          carbs_pct: macrosResult.data.carbs_pct,
+          fats_pct: macrosResult.data.fats_pct,
+          protein_g: macrosResult.data.protein_g,
+          carbs_g: macrosResult.data.carbs_g,
+          fats_g: macrosResult.data.fats_g,
+          updated_at: macrosResult.data.updated_at
+        });
+      } else if (metadata.macros) {
+        profileData.macros = mergeObjects(profileData.macros, metadata.macros);
       }
 
-      // Load preferences from user metadata
-      if (currentUser.user_metadata?.preferences) {
-        Object.assign(profileData.preferences, currentUser.user_metadata.preferences);
-      }
-      // Load habits from user metadata
-      if (currentUser.user_metadata?.habits) {
-        Object.assign(profileData.habits, currentUser.user_metadata.habits);
+      if (Array.isArray(habitsResult.data)) {
+        profileData.habits.daily = profileData.habits.daily || {};
+        habitsResult.data.forEach((row) => {
+          if (!row?.date) return;
+          profileData.habits.daily[row.date] = {
+            water_ml: row.water_ml || 0,
+            steps: row.steps || 0,
+            sleep_hours: row.sleep_hours || 0,
+            workout: !!row.workout,
+            meditation: !!row.meditation,
+            stretch: !!row.stretch,
+            notes: row.notes || ''
+          };
+        });
+      } else if (metadata.habits) {
+        profileData.habits = mergeObjects(profileData.habits, metadata.habits);
       }
 
-      // Load macros from user metadata
-      if (currentUser.user_metadata?.macros) {
-        Object.assign(profileData.macros, currentUser.user_metadata.macros);
+      if (Array.isArray(photosResult.data)) {
+        profileData.body_metrics.progress_photos = photosResult.data.map((photo) => ({
+          photo_id: photo.id,
+          url: photo.photo_url,
+          storage_path: photo.storage_path || '',
+          date: photo.taken_at || photo.created_at,
+          notes: photo.note || '',
+          visibility: photo.visibility || 'coach'
+        }));
+      } else if (metadata.body_metrics?.progress_photos) {
+        profileData.body_metrics.progress_photos = metadata.body_metrics.progress_photos;
       }
 
-      // Preferred: fetch weight history from body_metrics table
+      if (Array.isArray(workoutsResult.data)) {
+        profileData.workouts = workoutsResult.data;
+      }
+
+      if (Array.isArray(sessionsResult.data)) {
+        profileData.meetings = sessionsResult.data;
+      }
+
+      if (metadata.body_metrics) {
+        const metadataMetrics = { ...metadata.body_metrics };
+        if (Array.isArray(photosResult.data)) {
+          delete metadataMetrics.progress_photos;
+        }
+        profileData.body_metrics = mergeObjects(profileData.body_metrics, metadataMetrics);
+      }
+
       await fetchWeightHistoryFromTable();
-
-      // Fallback: if still empty, use metadata
-      if ((!profileData.body_metrics.weight_history || profileData.body_metrics.weight_history.length === 0) && currentUser.user_metadata?.body_metrics?.weight_history?.length) {
-        profileData.body_metrics.weight_history = currentUser.user_metadata.body_metrics.weight_history;
+      if ((!profileData.body_metrics.weight_history || profileData.body_metrics.weight_history.length === 0) && metadata.body_metrics?.weight_history?.length) {
+        profileData.body_metrics.weight_history = metadata.body_metrics.weight_history;
       }
-
-      // Fetch latest body metrics record to populate current fields (weight, height, body fat, measurements)
       await fetchLatestBodyMetricsFromTable();
-
     } catch (error) {
       console.error('Error loading from Supabase:', error);
     }
@@ -1019,6 +1132,28 @@
             payload.date_of_birth = normalizeDate(profileData.basic.birthday);
           }
 
+          const canonicalPayload = {
+            user_id: currentUser.id,
+            email: currentUser.email || profileData.basic.email || null,
+            full_name: sanitize(profileData.basic.full_name) || currentUser.user_metadata?.full_name || '',
+            first_name: sanitize(profileData.basic.first_name),
+            last_name: sanitize(profileData.basic.last_name),
+            phone: sanitize(profileData.basic.phone) || currentUser.user_metadata?.phone || null,
+            avatar_url: sanitize(profileData.basic.avatar_url) || currentUser.user_metadata?.avatar_url || null,
+            birthday: normalizeDate(profileData.basic.birthday),
+            location: sanitize(profileData.basic.location),
+            bio: sanitize(profileData.basic.bio),
+            goals: Array.isArray(profileData.basic.goals) ? profileData.basic.goals : [],
+            experience_level: sanitize(profileData.basic.experience_level),
+            trainer_id: sanitize(profileData.basic.trainer_id),
+            trainer_name: sanitize(profileData.basic.trainer_name),
+            updated_at: new Date().toISOString()
+          };
+
+          const { error: userProfileError } = await window.supabaseClient
+            .from('user_profiles')
+            .upsert(canonicalPayload, { onConflict: 'user_id' });
+
           const { error: profileError } = await window.supabaseClient
             .from('profiles')
             .upsert(payload, { onConflict: 'id' });
@@ -1057,8 +1192,12 @@
             console.warn('Profiles table upsert failed:', profileError);
           }
 
-          if (profileError && metadataError) {
-            throw new Error(metadataError.message || profileError.message || 'Failed to save profile');
+          if (userProfileError) {
+            console.warn('Canonical user_profiles upsert failed:', userProfileError);
+          }
+
+          if (userProfileError || (profileError && metadataError)) {
+            throw new Error(userProfileError?.message || metadataError?.message || profileError?.message || 'Failed to save profile');
           }
 
         } catch (error) {
@@ -1174,23 +1313,45 @@
         try {
           const preferencesData = {
             units: profileData.preferences.units || 'metric',
+            theme: profileData.preferences.theme || 'dark',
             language: profileData.preferences.language || 'en',
             notifications: profileData.preferences.notifications || {},
+            privacy: profileData.preferences.privacy || {},
             updated_at: new Date().toISOString()
           };
+
+          const { error: tablePrefsError } = await window.supabaseClient
+            .from('user_preferences')
+            .upsert({
+              user_id: currentUser.id,
+              units: preferencesData.units,
+              theme: preferencesData.theme,
+              language: preferencesData.language,
+              notifications: preferencesData.notifications,
+              privacy: preferencesData.privacy,
+              updated_at: preferencesData.updated_at
+            }, { onConflict: 'user_id' });
 
           // Store in user metadata
           const { error: prefsError } = await window.supabaseClient.auth.updateUser({
             data: { preferences: preferencesData }
           });
 
+          if (tablePrefsError) {
+            console.warn('Failed to save preferences to user_preferences:', tablePrefsError);
+          }
+
           if (prefsError) {
             console.warn('Failed to save preferences to user metadata:', prefsError);
           }
 
+          if (tablePrefsError && prefsError) {
+            throw new Error(tablePrefsError.message || prefsError.message || 'Failed to save preferences');
+          }
+
         } catch (error) {
           console.error('Error saving preferences:', error);
-          // Don't throw error for preferences, just log it
+          throw error;
         }
       }
 
@@ -1210,50 +1371,96 @@
             updated_at: new Date().toISOString()
           };
 
+          const { error: tableMacrosError } = await window.supabaseClient
+            .from('user_macros')
+            .upsert({
+              user_id: currentUser.id,
+              ...macrosData
+            }, { onConflict: 'user_id' });
+
           const { error: macrosError } = await window.supabaseClient.auth.updateUser({
             data: { macros: macrosData }
           });
+
+          if (tableMacrosError) {
+            console.warn('Failed to save macros to user_macros:', tableMacrosError);
+          }
 
           if (macrosError) {
             console.warn('Failed to save macros to user metadata:', macrosError);
           }
 
-          // Best-effort: also write calories to today's body_metrics row
-          try {
-            const entryDate = profileData.body_metrics.last_entry_date || new Date().toISOString().slice(0,10);
-            const { data: existing } = await window.supabaseClient
-              .from('body_metrics')
-              .select('measurements')
-              .eq('user_id', currentUser.id)
-              .eq('date', entryDate)
-              .maybeSingle();
-            const measurements = existing?.measurements || {};
-            measurements.calories = macrosData.calories;
-            const payload = { user_id: currentUser.id, date: entryDate, measurements, client_id: `bm-${entryDate}` };
-            const { error: upErr } = await window.supabaseClient
-              .from('body_metrics')
-              .upsert(payload, { onConflict: 'user_id,client_id' });
-            if (upErr) console.warn('Failed to upsert calories into body_metrics:', upErr);
-          } catch (e) {
-            console.warn('Could not mirror macros calories to body_metrics:', e?.message || e);
+          if (tableMacrosError && macrosError) {
+            throw new Error(tableMacrosError.message || macrosError.message || 'Failed to save macros');
           }
 
         } catch (error) {
           console.error('Error saving macros:', error);
+          throw error;
         }
       }
 
       // Save habits to user metadata
       if (section === 'habits' || !section) {
         try {
+          const today = todayKey();
+          const todayHabits = profileData.habits.daily?.[today] || {};
           const habitsData = {
             daily: profileData.habits.daily || {},
             updated_at: new Date().toISOString()
           };
+          const { error: tableHabitsError } = await window.supabaseClient
+            .from('user_habits')
+            .upsert({
+              user_id: currentUser.id,
+              date: today,
+              water_ml: Number(todayHabits.water_ml) || 0,
+              steps: Number(todayHabits.steps) || 0,
+              sleep_hours: Number(todayHabits.sleep_hours) || 0,
+              workout: !!todayHabits.workout,
+              meditation: !!todayHabits.meditation,
+              stretch: !!todayHabits.stretch,
+              notes: todayHabits.notes || null,
+              updated_at: habitsData.updated_at
+            }, { onConflict: 'user_id,date' });
           const { error: habitsError } = await window.supabaseClient.auth.updateUser({ data: { habits: habitsData } });
+          if (tableHabitsError) console.warn('Failed to save habits to user_habits:', tableHabitsError);
           if (habitsError) console.warn('Failed to save habits to user metadata:', habitsError);
+          if (tableHabitsError && habitsError) {
+            throw new Error(tableHabitsError.message || habitsError.message || 'Failed to save habits');
+          }
         } catch (e) {
           console.error('Error saving habits:', e);
+          throw e;
+        }
+      }
+
+      if (section === 'workouts') {
+        try {
+          const pendingWorkout = profileData.pending_workout;
+          if (!pendingWorkout) return;
+
+          const { data: workoutRow, error: workoutError } = await window.supabaseClient
+            .from('workout_logs')
+            .insert({
+              user_id: currentUser.id,
+              workout_date: pendingWorkout.workout_date || new Date().toISOString().slice(0, 10),
+              title: pendingWorkout.title || 'Workout',
+              workout_name: pendingWorkout.title || 'Workout',
+              duration_minutes: pendingWorkout.duration_minutes || null,
+              completed: pendingWorkout.completed !== false,
+              exercises: pendingWorkout.exercises || [],
+              notes: pendingWorkout.notes || null
+            })
+            .select('*')
+            .single();
+
+          if (workoutError) throw workoutError;
+          profileData.workouts = [workoutRow, ...(Array.isArray(profileData.workouts) ? profileData.workouts : [])];
+          delete profileData.pending_workout;
+        } catch (error) {
+          console.error('Error saving workout log:', error);
+          throw error;
         }
       }
 
@@ -1374,6 +1581,8 @@
   setupHabitsForm();
   renderHabitsStreaks();
   renderHabitsStepsChart();
+  renderWorkoutLogs();
+  renderMeetings();
 
     // Setup Macros form
     setupMacrosForm();
@@ -1614,6 +1823,15 @@
       ensureFormSubmitBinding(habitsForm);
     }
 
+    const workoutsForm = document.getElementById('workouts-form');
+    if (workoutsForm) {
+      const dateInput = workoutsForm.querySelector('[name="workout_date"]');
+      if (dateInput && !dateInput.value) {
+        dateInput.value = new Date().toISOString().slice(0, 10);
+      }
+      ensureFormSubmitBinding(workoutsForm);
+    }
+
     console.log('✅ Forms setup complete');
   };
 
@@ -1631,6 +1849,14 @@
     }
   };
 
+  const getStoragePathFromPublicUrl = (url) => {
+    if (!url || typeof url !== 'string') return '';
+    const marker = '/storage/v1/object/public/user-assets/';
+    const index = url.indexOf(marker);
+    if (index === -1) return '';
+    return decodeURIComponent(url.slice(index + marker.length).split('?')[0]);
+  };
+
   // Handle photo upload
   const handlePhotoUpload = async (event) => {
     const file = event.target.files[0];
@@ -1638,11 +1864,36 @@
 
     try {
       const imageUrl = await uploadImage(file, 'progress');
-      profileData.body_metrics.progress_photos.push({
+      const photoEntry = {
         url: imageUrl,
         date: new Date().toISOString(),
-        notes: ''
-      });
+        notes: '',
+        storage_path: getStoragePathFromPublicUrl(imageUrl),
+        visibility: 'coach'
+      };
+
+      if (window.supabaseClient && currentUser?.id) {
+        const { data: insertedPhoto, error: photoError } = await window.supabaseClient
+          .from('progress_photos')
+          .insert({
+            user_id: currentUser.id,
+            photo_url: photoEntry.url,
+            storage_path: photoEntry.storage_path || null,
+            taken_at: photoEntry.date.slice(0, 10),
+            note: photoEntry.notes || null,
+            visibility: photoEntry.visibility
+          })
+          .select('id')
+          .single();
+
+        if (photoError) {
+          throw photoError;
+        }
+
+        photoEntry.photo_id = insertedPhoto?.id || null;
+      }
+
+      profileData.body_metrics.progress_photos.push(photoEntry);
 
       await saveProfileData('body_metrics');
       updateProgressPhotos();
@@ -2511,6 +2762,16 @@
           stretch: !!obj.stretch
         };
         profileData.habits.updated_at = new Date().toISOString();
+      } else if (section === 'workouts') {
+        const obj = Object.fromEntries(formData);
+        profileData.pending_workout = {
+          title: (obj.title || '').trim() || 'Workout',
+          workout_date: obj.workout_date || new Date().toISOString().slice(0, 10),
+          duration_minutes: obj.duration_minutes ? Number(obj.duration_minutes) : null,
+          completed: !!obj.completed,
+          notes: (obj.notes || '').trim(),
+          exercises: []
+        };
       }
 
       console.log(`💾 Calling saveProfileData for section: ${section}`);
@@ -2545,6 +2806,13 @@
         } else if (section === 'habits') {
           renderHabitsStreaks();
           renderHabitsStepsChart();
+        } else if (section === 'workouts') {
+          renderWorkoutLogs();
+          if (form && typeof form.reset === 'function') {
+            form.reset();
+            const dateInput = form.querySelector('[name="workout_date"]');
+            if (dateInput) dateInput.value = new Date().toISOString().slice(0, 10);
+          }
         }
       } else {
         console.error('❌ saveProfileData returned false');
@@ -2721,6 +2989,67 @@
       `;
       container.appendChild(photoElement);
     });
+  };
+
+  const escapeHtml = (value) => String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
+  const renderWorkoutLogs = () => {
+    const container = document.getElementById('workout-logs-container');
+    if (!container) return;
+
+    const workouts = Array.isArray(profileData.workouts) ? profileData.workouts : [];
+    if (!workouts.length) {
+      container.innerHTML = '<div class="alert-custom"><i class="fas fa-info-circle me-2"></i>No workouts logged yet.</div>';
+      return;
+    }
+
+    container.innerHTML = workouts.slice(0, 10).map((workout) => {
+      const date = workout.workout_date ? formatDate(workout.workout_date) : 'N/A';
+      const duration = workout.duration_minutes ? `${workout.duration_minutes} min` : 'No duration';
+      const status = workout.completed === false ? 'Planned' : 'Completed';
+      return `
+        <div class="info-display mb-2">
+          <div class="d-flex justify-content-between gap-3 flex-wrap">
+            <strong>${escapeHtml(workout.title || workout.workout_name || 'Workout')}</strong>
+            <span class="text-muted">${date} · ${duration} · ${status}</span>
+          </div>
+          ${workout.notes ? `<div class="text-muted mt-1">${escapeHtml(workout.notes)}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+  };
+
+  const renderMeetings = () => {
+    const container = document.getElementById('meetings-list-container');
+    if (!container) return;
+
+    const meetings = Array.isArray(profileData.meetings) ? profileData.meetings : [];
+    if (!meetings.length) {
+      container.innerHTML = '';
+      return;
+    }
+
+    const now = Date.now();
+    container.innerHTML = meetings.slice(0, 10).map((meeting) => {
+      const ts = meeting.scheduled_at ? new Date(meeting.scheduled_at).getTime() : 0;
+      const status = meeting.status || (ts > now ? 'scheduled' : 'completed');
+      const date = meeting.scheduled_at ? new Date(meeting.scheduled_at).toLocaleString() : 'Date not set';
+      return `
+        <div class="info-display mb-2">
+          <div class="d-flex justify-content-between gap-3 flex-wrap">
+            <strong>${escapeHtml(meeting.title || 'Coaching session')}</strong>
+            <span class="text-muted">${escapeHtml(status)}</span>
+          </div>
+          <div class="text-muted">${escapeHtml(date)}</div>
+          ${meeting.notes ? `<div class="text-muted mt-1">${escapeHtml(meeting.notes)}</div>` : ''}
+        </div>
+      `;
+    }).join('');
   };
 
   // Render weight history chart using Chart.js
@@ -2985,24 +3314,7 @@
       // Try Supabase Storage if available
       if (window.supabaseClient && currentUser) {
         try {
-          const fileExt = file.name.split('.').pop();
-          const fileName = `${currentUser.id}-${Date.now()}.${fileExt}`;
-          const filePath = `avatars/${fileName}`;
-
-          // Upload to Supabase Storage
-          const { data, error } = await window.supabaseClient.storage
-            .from('profiles')
-            .upload(filePath, file, {
-              cacheControl: '3600',
-              upsert: false
-            });
-
-          if (error) throw error;
-
-          // Get public URL
-          const { data: { publicUrl } } = window.supabaseClient.storage
-            .from('profiles')
-            .getPublicUrl(filePath);
+          const publicUrl = await uploadImage(file, 'avatars');
 
           console.log('✅ Avatar uploaded to Supabase:', publicUrl);
 

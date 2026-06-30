@@ -7,7 +7,7 @@
     "start": "node api/stripe-server-premium.js",
     "dev": "nodemon api/stripe-server-premium.js",
     "legacy": "node api/stripe-server.js",
-    "test": "node scripts/contact-form.check.js && node scripts/lead-form-contract.check.js && node scripts/i18n-user-messages.check.js && node scripts/ebook-popup.check.js && node scripts/auth-contract.check.js && node scripts/navbar-contract.check.js && node scripts/auth-login-register.check.js && node scripts/user-area-persistence.check.js",
+    "test": "node scripts/contact-form.check.js && node scripts/lead-form-contract.check.js && node scripts/i18n-parity.check.js && node scripts/i18n-user-messages.check.js && node scripts/ebook-popup.check.js && node scripts/auth-contract.check.js && node scripts/navbar-contract.check.js && node scripts/auth-login-register.check.js && node scripts/user-area-persistence.check.js",
     "test:auth": "node scripts/auth-login-register.check.js",
     "test:e2e:user-area:live": "node scripts/live-user-area.e2e.mjs",
     "serve": "node tools/static-server.js",

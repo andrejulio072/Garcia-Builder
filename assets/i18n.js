@@ -522,7 +522,8 @@
         },
         post_purchase: {
           title: "After purchase:",
-          schedule: "Schedule consult"
+          schedule: "Schedule consult",
+          preview: "View first workout"
         }
       },
       contact: {
@@ -882,6 +883,52 @@
         finalcta: {
           title: "Pronto para transformar seu corpo, saúde e rotina?",
           subtitle: "Garanta sua consulta gratuita agora e receba um plano personalizado em até 24 horas."
+        }
+      },
+      workouts: {
+        hero: {
+          eyebrow: "Biblioteca de treinos",
+          title: "Templates de treino organizados em projetos reais de transformação.",
+          copy: "Escolha um template focado ou siga um projeto mais longo de 12, 16 ou 20 semanas para perda de gordura, glúteos, força, confiança e consistência.",
+          browse: "Ver templates",
+          customize: "Personalizar meu plano",
+          stat_templates: "Templates",
+          stat_projects: "Projetos",
+          stat_weeks: "Opções de semanas"
+        },
+        intro: {
+          eyebrow: "Feito para ação",
+          title: "Comece com um template. Evolua com estrutura.",
+          copy: "Cada template inclui divisão semanal, foco do treino, equipamento, estrutura da sessão e orientação de progressão. Os projetos agrupam templates em jornadas mais longas para você evoluir por fases de 12, 16 ou 20 semanas."
+        },
+        projects: {
+          eyebrow: "Projetos de templates assinatura",
+          heading: "Escolha o objetivo primeiro. Depois selecione o nível do template.",
+          view_templates: "Ver templates",
+          summer: {
+            title: "Summer Shred",
+            duration: "12 semanas",
+            desc: "Perda de gordura, condicionamento, forma e rotina para quem quer um plano claro de verão sem adivinhar toda semana."
+          },
+          glutes: {
+            title: "Glute Launch",
+            duration: "16 semanas",
+            desc: "Progressão de glúteos, pernas, postura e parte inferior com fases de força e acessórios focados em forma."
+          },
+          dad: {
+            title: "Fit Dad Blueprint",
+            duration: "20 semanas",
+            desc: "Estrutura de força, massa muscular e perda de gordura para pais ocupados que precisam de treino eficiente, confiança e progresso visível."
+          }
+        },
+        filters: {
+          search_label: "Buscar treinos",
+          search_placeholder: "Busque projeto, objetivo, nível, equipamento ou foco",
+          project: "Projeto",
+          all: "Todos",
+          summer: "Summer",
+          glutes: "Glúteos",
+          fit_dad: "Fit Dad"
         }
       },
       featured: {
@@ -1589,6 +1636,52 @@
           subtitle: "Asegura tu consulta gratuita ahora y recibe un plan personalizado en menos de 24 horas."
         }
       },
+      workouts: {
+        hero: {
+          eyebrow: "Biblioteca de entrenamientos",
+          title: "Plantillas de entrenamiento organizadas en proyectos reales de transformación.",
+          copy: "Elige una plantilla enfocada o sigue un proyecto más largo de 12, 16 o 20 semanas para pérdida de grasa, glúteos, fuerza, confianza y consistencia.",
+          browse: "Ver plantillas",
+          customize: "Personalizar mi plan",
+          stat_templates: "Plantillas",
+          stat_projects: "Proyectos",
+          stat_weeks: "Opciones de semanas"
+        },
+        intro: {
+          eyebrow: "Creado para actuar",
+          title: "Empieza con una plantilla. Progresa con estructura.",
+          copy: "Cada plantilla incluye división semanal, foco del entrenamiento, equipo, estructura de sesión y pauta de progresión. Los proyectos agrupan plantillas en rutas más largas para avanzar por fases de 12, 16 o 20 semanas."
+        },
+        projects: {
+          eyebrow: "Proyectos de plantillas principales",
+          heading: "Elige primero el objetivo. Después selecciona el nivel de plantilla.",
+          view_templates: "Ver plantillas",
+          summer: {
+            title: "Summer Shred",
+            duration: "12 semanas",
+            desc: "Pérdida de grasa, acondicionamiento, forma y rutina para quienes quieren un plan claro de verano sin adivinar cada semana."
+          },
+          glutes: {
+            title: "Glute Launch",
+            duration: "16 semanas",
+            desc: "Progresión de glúteos, piernas, postura y tren inferior con fases de fuerza y accesorios enfocados en forma."
+          },
+          dad: {
+            title: "Fit Dad Blueprint",
+            duration: "20 semanas",
+            desc: "Estructura de fuerza, músculo y pérdida de grasa para padres ocupados que necesitan entrenamiento eficiente, confianza y progreso visible."
+          }
+        },
+        filters: {
+          search_label: "Buscar entrenamientos",
+          search_placeholder: "Busca proyecto, objetivo, nivel, equipo o foco",
+          project: "Proyecto",
+          all: "Todos",
+          summer: "Summer",
+          glutes: "Glúteos",
+          fit_dad: "Fit Dad"
+        }
+      },
       featured: {
         title: "Personas Reales. Resultados Reales.",
         subtitle: "Únete a 127+ clientes que transformaron sus cuerpos y vidas",
@@ -2119,6 +2212,7 @@
         creating_account: "Creando cuenta...",
         signing_in: "Iniciando sesión...",
         redirecting: "Redirigiendo...",
+        required_fields_missing: "Completa todos los campos obligatorios.",
         login_success_title: "Bienvenido de nuevo",
         login_success_message: "Has iniciado sesión. Te llevamos a tu panel.",
         login_error_invalid_credentials: "Email o contraseña incorrectos. Inténtalo de nuevo.",

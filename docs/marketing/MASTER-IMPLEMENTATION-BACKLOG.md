@@ -2,7 +2,7 @@
 
 # Garcia Builder - Master Implementation Backlog
 
-Last update: 2026-06-29
+Last update: 2026-06-30
 Status: Active backlog for roadmap visibility and execution order
 Source: Consolidated from current site state + existing docs in docs/marketing and docs/development
 
@@ -108,6 +108,9 @@ Create one single source of truth with:
   - No public-page UX break when Supabase is down
   - Abandoned checkout flow active in production
 
+## Delivery log
+- 2026-06-30: GB-007 delivered. Added EN/PT/ES i18n parity validator to `npm test` and filled current workout/auth/pricing dictionary gaps.
+
 ## Operating cadence
 - Weekly backlog review: every Monday
 - Priority review rule:
@@ -118,7 +121,7 @@ Create one single source of truth with:
   - Mark completed items with date and PR/commit reference
 
 ## Status tracker
-- [ ] Phase 1 started
+- [x] Phase 1 started
 - [ ] Phase 1 completed
 - [ ] Phase 2 completed
 - [ ] Phase 3 completed

@@ -52,10 +52,10 @@ window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(argumen
 <!-- Optional: booking URL for scheduling consult on pricing/success -->
 <meta name="booking:url" content="https://calendly.com/andrenjulio072/consultation">
 <!-- Plan A (My PT Hub): set package checkout URLs per plan. Leave blank to keep Stripe fallback. -->
-<meta name="mypthub:package:monthly" content="">
-<meta name="mypthub:package:eight_week" content="">
-<meta name="mypthub:package:twelve_week" content="">
-<meta name="mypthub:package:eighteen_week" content="">
+<meta name="mypthub:package:monthly" content="https://garciabuilder.mypthub.net/p/233832">
+<meta name="mypthub:package:eight_week" content="https://garciabuilder.mypthub.net/p/233834">
+<meta name="mypthub:package:twelve_week" content="https://garciabuilder.mypthub.net/p/233835">
+<meta name="mypthub:package:eighteen_week" content="https://garciabuilder.mypthub.net/p/233837">
 <!-- Structured Data: current coaching offers -->
 <script type="application/ld+json">
 {
@@ -404,6 +404,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <li data-i18n="pricing.value.items.2">Weekly check-ins, adjustments and accountability</li>
             <li data-i18n="pricing.value.items.3">Secure checkout, onboarding email and consultation scheduling after purchase</li>
           </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lead Capture Section -->
+    <div class="lead-capture-section mt-4 p-4" style="background: linear-gradient(135deg, rgba(246, 200, 78, .08), rgba(107, 199, 255, .06)); border: 1px solid rgba(246, 200, 78, .22); border-radius: 12px;">
+      <div class="row align-items-center">
+        <div class="col-lg-7">
+          <h3 class="h5 mb-2" style="color: #f2f7ff;">Secure your spot</h3>
+          <p class="mb-0 text-white-50" style="font-size: 0.95rem;">Save your email to get the link and start immediately when you're ready.</p>
+        </div>
+        <div class="col-lg-5">
+          <form id="pricingLeadCaptureForm" class="d-flex gap-2">
+            <input 
+              type="email" 
+              id="pricingLeadEmail" 
+              class="form-control" 
+              placeholder="your.email@example.com" 
+              required 
+              style="background: rgba(11,18,32,.6); border: 1px solid rgba(242,247,255,.2); color: #f2f7ff;"
+            >
+            <button type="submit" class="btn btn-gold" style="white-space: nowrap;">Save Email</button>
+          </form>
+          <div id="leadCaptureMessage" style="font-size: 0.85rem; margin-top: 8px; display: none;"></div>
         </div>
       </div>
     </div>

@@ -8,10 +8,10 @@ const STRIPE_CONFIG = {
     publishableKey: 'pk_live_51S8QxZCEdPbAOAaf5v5Y3yskMYdY3p9sRAIXs2clIAtBiJtLQQwVA3IBcZe02znzJYC8e6BTpdpKRmvkiOZLM5ee00QKktfaZT',
     apiUrl: API_BASE,
     plans: {
-        monthly: { name: 'Monthly Online Coaching', price: '€200', amount: 20000, mode: 'subscription' },
-        eight_week: { name: '8 Week Fat Loss Kickstart', price: '€359', amount: 35900, mode: 'payment' },
-        twelve_week: { name: '12 Week Transformation', price: '€519', amount: 51900, mode: 'payment' },
-        eighteen_week: { name: '18 Week Complete Transformation', price: '€699', amount: 69900, mode: 'payment' }
+        monthly: { name: 'Monthly Online Coaching', price: '€175', amount: 17500, mode: 'subscription' },
+        eight_week: { name: '8 Week Fat Loss Kickstart', price: '€320', amount: 32000, mode: 'payment' },
+        twelve_week: { name: '12 Week Transformation', price: '€465', amount: 46500, mode: 'payment' },
+        eighteen_week: { name: '18 Week Complete Transformation', price: '€695', amount: 69500, mode: 'payment' }
     }
 };
 

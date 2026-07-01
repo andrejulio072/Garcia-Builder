@@ -146,6 +146,30 @@
     const pricingGrid = document.getElementById('pricingGrid');
     if (!pricingGrid) return;
 
+    const fixedPlans = window.STRIPE_ENV_CONFIG?.plans;
+    if (fixedPlans) {
+      Object.keys(basePrices).forEach(planKey => {
+        const planConfig = fixedPlans[planKey];
+        if (!planConfig) return;
+
+        const planButton = pricingGrid.querySelector(`[data-plan-key="${planKey}"]`);
+        if (!planButton) return;
+
+        const fixedPrice = planConfig.price || '';
+        planButton.setAttribute('data-plan-price', fixedPrice);
+
+        const priceTag = planButton.closest('.price')?.querySelector('.tag');
+        if (priceTag) {
+          const periodText = priceTag.querySelector('span');
+          const period = periodText ? periodText.textContent : '/month';
+          priceTag.innerHTML = `${fixedPrice}<span style="font-size:16px">${period}</span>`;
+        }
+      });
+
+      currentCurrency = 'EUR';
+      return;
+    }
+
   const symbol = currencySymbols[currentCurrency] || '';
     const rate = exchangeRates[currentCurrency];
 

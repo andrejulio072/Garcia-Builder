@@ -2,6 +2,11 @@
 (function() {
   const PLAN_ORDER = ['monthly', 'eight_week', 'twelve_week', 'eighteen_week'];
 
+  const getCanonicalPlanPrice = (planKey, fallbackPrice) => {
+    const configPrice = window.STRIPE_ENV_CONFIG?.plans?.[planKey]?.price;
+    return configPrice || fallbackPrice || '';
+  };
+
   const getPricingDict = () => {
     const lang = (window.GB_I18N && window.GB_I18N.getLang && window.GB_I18N.getLang()) || 'en';
     return (window.DICTS && window.DICTS[lang] && window.DICTS[lang].pricing)
@@ -23,6 +28,8 @@
       const plan = dict.plans?.[key];
       if (!plan) return '';
 
+      const planPrice = getCanonicalPlanPrice(key, plan.price);
+
       const features = (plan.features || []).map(feature => `<li>${feature}</li>`).join('');
       const result = plan.result ? `<div class="result-band">${plan.result}</div>` : '';
       const meta = plan.meta ? `<div class="program-meta">${plan.meta}</div>` : '';
@@ -33,11 +40,11 @@
           ${plan.badge ? `<span class="save">${plan.badge}</span>` : ''}
           <h3>${plan.name}</h3>
           ${meta}
-          <div class="tag">${plan.price}<span style="font-size:16px">${plan.period || ''}</span></div>
+          <div class="tag">${planPrice}<span style="font-size:16px">${plan.period || ''}</span></div>
           ${result}
           <p class="muted">${plan.description || ''}</p>
           <ul>${features}</ul>
-          <button class="btn btn-gold" data-plan-key="${key}" data-plan-name="${plan.name}" data-plan-price="${plan.price}">
+          <button class="btn btn-gold" data-plan-key="${key}" data-plan-name="${plan.name}" data-plan-price="${planPrice}">
             ${dict.cta?.choose || 'Start Now'}
           </button>
         </div>`;
@@ -291,3 +298,68 @@ function buildMyPtHubCheckoutUrl(planKey, planName) {
 
   return parsed.toString();
 }
+
+// Lead capture form handler
+(function initLeadCapture() {
+  const form = document.getElementById('pricingLeadCaptureForm');
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const emailInput = document.getElementById('pricingLeadEmail');
+    const email = emailInput?.value?.trim();
+    const messageDiv = document.getElementById('leadCaptureMessage');
+
+    if (!email) {
+      showLeadMessage(messageDiv, 'Please enter a valid email.', 'error');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          source: 'pricing_page',
+          notes: JSON.stringify({
+            type: 'pricing_page_lead',
+            utm: getAttributionPayload(),
+            timestamp: new Date().toISOString()
+          })
+        })
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        showLeadMessage(messageDiv, '✓ Email saved! We\'ll send you the link shortly.', 'success');
+        localStorage.setItem('pricingLeadEmail', email);
+        emailInput.value = '';
+        setTimeout(() => {
+          messageDiv.style.display = 'none';
+        }, 3000);
+      } else {
+        showLeadMessage(messageDiv, data.error || 'Error saving email. Please try again.', 'error');
+      }
+    } catch (error) {
+      console.error('Lead capture error:', error);
+      showLeadMessage(messageDiv, 'Error saving email. Please try again.', 'error');
+    }
+  });
+
+  function showLeadMessage(div, message, type) {
+    if (!div) return;
+    div.textContent = message;
+    div.style.display = 'block';
+    div.style.color = type === 'success' ? '#6bc7ff' : '#ff6b6b';
+  }
+
+  // Auto-fill email if saved
+  window.addEventListener('load', () => {
+    const saved = localStorage.getItem('pricingLeadEmail');
+    const input = document.getElementById('pricingLeadEmail');
+    if (saved && input) input.value = saved;
+  });
+})();

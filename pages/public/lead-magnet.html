@@ -622,19 +622,37 @@
                     consent: form.querySelector('#consent').checked
                 };
 
-                // Step 1: Send to Zapier webhook first
+                // Step 1: Send to Zapier webhook using form submission (no CORS issues)
                 console.log('📤 Sending to Zapier:', zapierPayload);
-                const zapierResponse = await fetch('https://hooks.zapier.com/hooks/catch/11662107/42xuqxx/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(zapierPayload)
+                
+                // Create hidden form for Zapier webhook
+                const zapierForm = document.createElement('form');
+                zapierForm.method = 'POST';
+                zapierForm.action = 'https://hooks.zapier.com/hooks/catch/11662107/42xuqxx/';
+                zapierForm.style.display = 'none';
+                
+                // Add payload fields to form
+                Object.keys(zapierPayload).forEach(key => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = zapierPayload[key];
+                    zapierForm.appendChild(input);
                 });
-
-                if (!zapierResponse.ok) {
-                    throw new Error(`Zapier webhook failed: ${zapierResponse.status} ${zapierResponse.statusText}`);
-                }
-
-                console.log('✅ Zapier webhook success');
+                
+                document.body.appendChild(zapierForm);
+                
+                // Create an iframe to submit the form without leaving the page
+                const iframe = document.createElement('iframe');
+                iframe.name = 'zapier-target-' + Date.now();
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+                zapierForm.target = iframe.name;
+                
+                // Submit the form
+                zapierForm.submit();
+                
+                console.log('✅ Zapier webhook submitted');
 
                 // Step 2: Track conversion event
                 if (typeof gtag !== 'undefined') {
@@ -706,6 +724,12 @@
                     existingLeads.push(leadData);
                     localStorage.setItem('garcia_leads', JSON.stringify(existingLeads));
                 }
+                
+                // Clean up
+                setTimeout(() => {
+                    document.body.removeChild(zapierForm);
+                    document.body.removeChild(iframe);
+                }, 2000);
 
             } catch (error) {
                 console.error('❌ Error submitting ebook form:', error);

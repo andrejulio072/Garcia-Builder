@@ -663,7 +663,7 @@
                     <i class="fas fa-check-circle me-2"></i>
                     <strong>Success!</strong> Your 28-Day Fat Loss Kickstart is on the way. Check your email.
                 `;
-                form.parentElement.insertBefore(successMessage, submitBtn);
+                form.appendChild(successMessage);
 
                 // Step 5: Prepare lead data for backend (optional backup)
                 const leadData = {
@@ -722,7 +722,7 @@
                     <i class="fas fa-exclamation-circle me-2"></i>
                     <strong>Something went wrong.</strong> Please try again or message André directly at <a href="mailto:andre@garciabuilder.fitness">andre@garciabuilder.fitness</a>.
                 `;
-                form.parentElement.insertBefore(errorMessage, submitBtn);
+                form.appendChild(errorMessage);
             }
         });
 

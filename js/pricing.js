@@ -7,6 +7,11 @@
     return configPrice || fallbackPrice || '';
   };
 
+  const getCanonicalPlanName = (planKey, fallbackName) => {
+    const configName = window.STRIPE_ENV_CONFIG?.plans?.[planKey]?.name;
+    return configName || fallbackName || '';
+  };
+
   const getPricingDict = () => {
     const lang = (window.GB_I18N && window.GB_I18N.getLang && window.GB_I18N.getLang()) || 'en';
     return (window.DICTS && window.DICTS[lang] && window.DICTS[lang].pricing)
@@ -29,6 +34,7 @@
       if (!plan) return '';
 
       const planPrice = getCanonicalPlanPrice(key, plan.price);
+      const planName = getCanonicalPlanName(key, plan.name);
 
       const features = (plan.features || []).map(feature => `<li>${feature}</li>`).join('');
       const result = plan.result ? `<div class="result-band">${plan.result}</div>` : '';
@@ -38,13 +44,13 @@
       return `
         <div id="${cardId}" class="price reveal ${plan.featured ? 'featured-plan' : ''}" data-tilt data-tilt-max="6" data-tilt-speed="500">
           ${plan.badge ? `<span class="save">${plan.badge}</span>` : ''}
-          <h3>${plan.name}</h3>
+          <h3>${planName}</h3>
           ${meta}
           <div class="tag">${planPrice}<span style="font-size:16px">${plan.period || ''}</span></div>
           ${result}
           <p class="muted">${plan.description || ''}</p>
           <ul>${features}</ul>
-          <button class="btn btn-gold" data-plan-key="${key}" data-plan-name="${plan.name}" data-plan-price="${planPrice}">
+          <button class="btn btn-gold" data-plan-key="${key}" data-plan-name="${planName}" data-plan-price="${planPrice}">>
             ${dict.cta?.choose || 'Start Now'}
           </button>
         </div>`;

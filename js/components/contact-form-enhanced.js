@@ -11,6 +11,9 @@
   const goalEl = document.getElementById('goal');
   const currentWeightEl = document.getElementById('currentWeight');
   const mainStruggleEl = document.getElementById('mainStruggle');
+  const trainingLocationEl = document.getElementById('trainingLocation');
+  const startTimelineEl = document.getElementById('startTimeline');
+  const investmentReadinessEl = document.getElementById('investmentReadiness');
   const consentEl = document.getElementById('consent');
   const sourceEl = document.getElementById('source');
   const pageEl = document.getElementById('page');
@@ -32,7 +35,7 @@
 
   // Check if required elements exist
   if (!btn || !alertBox || !firstNameEl || !lastNameEl || !emailEl || !phoneEl || !goalEl ||
-      !currentWeightEl || !mainStruggleEl || !consentEl) {
+      !currentWeightEl || !mainStruggleEl || !trainingLocationEl || !startTimelineEl || !investmentReadinessEl || !consentEl) {
     console.warn('Contact form: Some required elements are missing');
     return;
   }
@@ -70,6 +73,8 @@
 
   // Generate specific error message
   const getErrorMessage = () => getI18nText('contact.form.validation_error', 'Please check the highlighted fields.');
+  const successMessage = 'Thanks — your application has been received. I\'ll review your goal and get back to you.';
+  const failureMessage = 'Something went wrong. Please try again or message me directly on WhatsApp.';
 
   // Simple submit rate-limit: 1 per 60s
   const canSubmit = () => {
@@ -78,9 +83,8 @@
   };
 
   // Success popup function
-  const showSuccessPopup = (userName, userEmail) => {
+  const showSuccessPopup = (userName) => {
     const safeName = escapeHtml(userName);
-    const safeEmail = escapeHtml(userEmail);
 
     // Create modal HTML
     const modalHTML = `
@@ -93,11 +97,9 @@
               </h1>
             </div>
             <div class="modal-body text-center">
-              <p class="mb-3">${getI18nText('contact.form.success_greeting', 'Thank you')} <strong>${safeName}</strong>!</p>
-              <p class="text-muted mb-3">${getI18nText('contact.form.success_email_note', 'Your message was received. Please check your inbox for the confirmation email sent by Garcia Builder Fitness:')}</p>
-              <p class="text-primary fw-bold">${safeEmail}</p>
-              <p class="text-muted small">${getI18nText('contact.form.success_next_step', 'Andre will review your enquiry and reply within 24-48 hours.')}</p>
-              <a class="btn btn-warning" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">${getI18nText('contact.form.book_consultation', 'Book Free Consultation')}</a>
+              <p class="mb-3">${getI18nText('contact.form.success_greeting', 'Thank you')} <strong>${safeName}</strong>.</p>
+              <p class="text-muted mb-3">${successMessage}</p>
+              <a class="btn btn-warning" href="https://wa.me/447508497586?text=Hi%20Andre%2C%20I%20want%20to%20start%20coaching." target="_blank" rel="noopener">Message on WhatsApp</a>
             </div>
             <div class="modal-footer border-0 justify-content-center">
                 <button type="button" class="btn btn-gradient px-4" data-bs-dismiss="modal">${getI18nText('contact.form.success_dismiss', 'Got it')}</button>
@@ -144,12 +146,7 @@
     })();
 
     if (sourceEl) {
-      sourceEl.value =
-        sourceEl.value ||
-        attrib.utm_source ||
-        qp.get('utm_source') ||
-        document.referrer ||
-        'Contact Consultation Form';
+      sourceEl.value = 'website';
     }
     if (pageEl) pageEl.value = window.location.href;
     if (utmSourceEl) utmSourceEl.value = qp.get('utm_source') || attrib.utm_source || localStorage.getItem('gb_utm_source') || '';
@@ -197,10 +194,13 @@
         email: emailEl.value.trim(),
         phone: phoneEl.value.trim(),
         goal: goalEl.value || '',
-        currentWeight: Number(currentWeightEl.value),
+        currentWeight: currentWeightEl.value.trim(),
         mainStruggle: mainStruggleEl.value.trim(),
+        trainingLocation: trainingLocationEl.value || '',
+        startTimeline: startTimelineEl.value || '',
+        investmentReadiness: investmentReadinessEl.value || '',
         consent: !!consentEl.checked,
-        source: sourceEl?.value || 'Contact Consultation Form',
+        source: 'website',
         page: pageEl?.value || window.location.href,
         utm_source: utmSourceEl?.value || '',
         utm_campaign: utmCampaignEl?.value || ''
@@ -220,15 +220,13 @@
         localStorage.setItem('gb_last_submit', Date.now().toString());
 
         // Store user data for confirmation
-        const userEmail = emailEl.value.trim();
         const userName = `${firstNameEl.value.trim()} ${lastNameEl.value.trim()}`.trim();
 
         form.reset();
         alertBox.classList.remove('visually-hidden');
-        alertBox.textContent = getI18nText('contact.form.success_inline', 'Thank you. Your enquiry has been sent. Please check your inbox for confirmation.');
+        alertBox.textContent = responseData?.message || successMessage;
 
-        // Show success popup. Confirmation and admin emails are sent by /api/inquiry.
-        showSuccessPopup(userName, userEmail);
+        showSuccessPopup(userName);
 
         // ---- Analytics / Tracking ----
         try {
@@ -237,10 +235,13 @@
             event: 'generate_lead',
             form_id: 'contact_form_main',
             form_name: 'Contact Coaching Inquiry',
-            lead_email_domain: userEmail.split('@')[1] || '',
+            lead_email_domain: emailEl.value.trim().split('@')[1] || '',
             goal: goalEl.value || '',
             current_weight: payload.currentWeight || '',
-            main_struggle: payload.mainStruggle || ''
+            main_struggle: payload.mainStruggle || '',
+            training_location: payload.trainingLocation || '',
+            start_timeline: payload.startTimeline || '',
+            investment_readiness: payload.investmentReadiness || ''
           });
         } catch(e){ console.warn('dataLayer push failed', e); }
 
@@ -269,12 +270,11 @@
         } catch(e){ console.warn('fbq lead track failed', e); }
       } else {
         alertBox.classList.remove('visually-hidden');
-        const apiError = responseData?.error || res.statusText || 'Unknown error';
-        alertBox.textContent = `${getI18nText('contact.form.error', 'Unable to send your request right now. Please try again in a moment.')} (${apiError})`;
+        alertBox.textContent = failureMessage;
       }
     } catch {
       alertBox.classList.remove('visually-hidden');
-      alertBox.textContent = getI18nText('contact.form.network_error', 'Network issue. If it persists, email inquiries@garciabuilder.fitness.');
+      alertBox.textContent = failureMessage;
     } finally {
       btn.disabled = false;
       btn.classList.remove('is-loading');

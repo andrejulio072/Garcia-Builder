@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Basic automated check to ensure the contact form script
- * shows a success message and sends the confirmation email.
+ * posts the CRM/Zapier consultation payload through /api/lead.
  */
 
 const { JSDOM } = require('jsdom');
@@ -23,22 +23,37 @@ const { JSDOM } = require('jsdom');
       removeItem: key => store.delete(key),
     };
   })();
+  global.bootstrap = {
+    Modal: class {
+      constructor(element) {
+        this.element = element;
+      }
+      show() {}
+      hide() {
+        this.element.dispatchEvent(new dom.window.Event('hidden.bs.modal'));
+      }
+    }
+  };
 
   const requiredIds = {
     form: 'contact-form',
     sendBtn: 'sendBtn',
     alert: 'form-alert',
-    name: 'name',
+    firstName: 'firstName',
+    lastName: 'lastName',
     email: 'email',
     phone: 'phone',
     goal: 'goal',
-    timeline: 'timeline',
-    experience: 'experience',
-    message: 'message',
+    currentWeight: 'currentWeight',
+    mainStruggle: 'mainStruggle',
+    trainingLocation: 'trainingLocation',
+    startTimeline: 'startTimeline',
+    investmentReadiness: 'investmentReadiness',
     consent: 'consent',
-    preferredContact: 'preferredContact',
-    budget: 'budget',
-    charCount: 'charCount',
+    source: 'source',
+    page: 'page',
+    utmSource: 'utm_source',
+    utmCampaign: 'utm_campaign',
   };
 
   const el = (tag, id) => {
@@ -48,7 +63,7 @@ const { JSDOM } = require('jsdom');
   };
 
   const form = el('form', requiredIds.form);
-  form.setAttribute('action', '/api/contact');
+  form.setAttribute('action', '/api/lead');
   form.setAttribute('method', 'POST');
 
   const sendBtn = el('button', requiredIds.sendBtn);
@@ -63,20 +78,21 @@ const { JSDOM } = require('jsdom');
   alertBox.className = 'visually-hidden';
 
   const goalSelect = el('select', requiredIds.goal);
-  const timelineSelect = el('select', requiredIds.timeline);
-  const experienceSelect = el('select', requiredIds.experience);
+  const trainingLocationSelect = el('select', requiredIds.trainingLocation);
+  const startTimelineSelect = el('select', requiredIds.startTimeline);
+  const investmentReadinessSelect = el('select', requiredIds.investmentReadiness);
 
   const phoneInput = el('input', requiredIds.phone);
-  const preferredSelect = el('select', requiredIds.preferredContact);
-  const budgetSelect = el('select', requiredIds.budget);
-
-  const charCount = el('span', requiredIds.charCount);
-  charCount.textContent = '0/1200';
-
-  const nameInput = el('input', requiredIds.name);
+  const currentWeightInput = el('input', requiredIds.currentWeight);
+  const mainStruggleInput = el('input', requiredIds.mainStruggle);
+  const firstNameInput = el('input', requiredIds.firstName);
+  const lastNameInput = el('input', requiredIds.lastName);
   const emailInput = el('input', requiredIds.email);
-  const messageTextarea = el('textarea', requiredIds.message);
   const consentCheckbox = el('input', requiredIds.consent);
+  const sourceInput = el('input', requiredIds.source);
+  const pageInput = el('input', requiredIds.page);
+  const utmSourceInput = el('input', requiredIds.utmSource);
+  const utmCampaignInput = el('input', requiredIds.utmCampaign);
   consentCheckbox.type = 'checkbox';
 
   const setOptions = (select, values) => {
@@ -89,37 +105,44 @@ const { JSDOM } = require('jsdom');
   };
 
   setOptions(goalSelect, ['Fat loss']);
-  setOptions(timelineSelect, ['4-8 weeks']);
-  setOptions(experienceSelect, ['Beginner']);
-  setOptions(preferredSelect, ['Email']);
-  setOptions(budgetSelect, ['GBP 200-299']);
+  setOptions(trainingLocationSelect, ['Gym']);
+  setOptions(startTimelineSelect, ['Within 2 weeks']);
+  setOptions(investmentReadinessSelect, ['Ready now']);
+
+  currentWeightInput.type = 'number';
+  sourceInput.value = 'website';
 
   form.append(
     sendBtn,
     alertBox,
-    nameInput,
+    firstNameInput,
+    lastNameInput,
     emailInput,
     phoneInput,
     goalSelect,
-    timelineSelect,
-    experienceSelect,
-    messageTextarea,
+    currentWeightInput,
+    mainStruggleInput,
+    trainingLocationSelect,
+    startTimelineSelect,
+    investmentReadinessSelect,
     consentCheckbox,
-    preferredSelect,
-    budgetSelect
+    sourceInput,
+    pageInput,
+    utmSourceInput,
+    utmCampaignInput
   );
 
-  document.body.append(form, charCount);
+  document.body.append(form);
 
   const fetchCalls = [];
   global.fetch = async (url, options = {}) => {
     fetchCalls.push({ url, options });
 
-    if (url.includes('/api/contact')) {
+    if (url.includes('/api/lead')) {
       return {
         ok: true,
         status: 200,
-        json: async () => ({ ok: true })
+        json: async () => ({ ok: true, message: 'Thanks — your application has been received. I\'ll review your goal and get back to you.' })
       };
     }
 
@@ -130,53 +153,74 @@ const { JSDOM } = require('jsdom');
     };
   };
 
-  require('../js/components/contact-form.js');
+  require('../js/components/contact-form-enhanced.js');
 
-  nameInput.value = 'Test User';
+  firstNameInput.value = 'Test';
+  lastNameInput.value = 'User';
   emailInput.value = 'test@example.com';
   phoneInput.value = '+353871234567';
   goalSelect.value = 'Fat loss';
-  timelineSelect.value = '4-8 weeks';
-  experienceSelect.value = 'Beginner';
-  messageTextarea.value = 'Looking forward to coaching!';
+  currentWeightInput.value = '82.5';
+  mainStruggleInput.value = 'Consistency';
+  trainingLocationSelect.value = 'Gym';
+  startTimelineSelect.value = 'Within 2 weeks';
+  investmentReadinessSelect.value = 'Ready now';
   consentCheckbox.checked = true;
-  preferredSelect.value = 'Email';
-  budgetSelect.value = 'GBP 200-299';
-
-  const expectedEmail = emailInput.value;
-  const expectedName = nameInput.value;
+  window.history.replaceState({}, '', 'https://garciabuilder.fitness/contact.html?utm_source=google&utm_campaign=summer-cut');
 
   const submitEvent = new dom.window.Event('submit', { bubbles: true, cancelable: true });
   form.dispatchEvent(submitEvent);
 
   await new Promise(resolve => setTimeout(resolve, 50));
 
-  if (!alertBox.textContent.includes('Thank you. Your enquiry has been sent.')) {
+  if (!alertBox.textContent.includes('Thanks — your application has been received.')) {
     throw new Error(`Unexpected alert message: ${alertBox.textContent}`);
   }
 
-  if (fetchCalls.length < 2) {
-    throw new Error('Expected both API and confirmation email fetch calls to occur.');
+  if (fetchCalls.length !== 1) {
+    throw new Error(`Expected one API call, got ${fetchCalls.length}.`);
   }
 
-  const [apiCall, confirmationCall] = fetchCalls;
-  if (!apiCall.url.includes('/api/contact')) {
+  const [apiCall] = fetchCalls;
+  if (!apiCall.url.includes('/api/lead')) {
     throw new Error('First fetch was not the API call.');
   }
 
-  const confirmationFormData = confirmationCall.options?.body;
-  if (!(confirmationFormData instanceof dom.window.FormData)) {
-    throw new Error('Confirmation call did not send FormData.');
+  const payload = JSON.parse(apiCall.options?.body || '{}');
+  const expectedFields = [
+    'firstName',
+    'lastName',
+    'email',
+    'phone',
+    'goal',
+    'currentWeight',
+    'mainStruggle',
+    'trainingLocation',
+    'startTimeline',
+    'investmentReadiness',
+    'source',
+    'page',
+    'utm_source',
+    'utm_campaign',
+    'consent'
+  ];
+
+  for (const field of expectedFields) {
+    if (!(field in payload)) {
+      throw new Error(`Missing payload field: ${field}`);
+    }
   }
 
-  const receivedEmail = confirmationFormData.get('_to');
-  if (receivedEmail !== expectedEmail) {
-    throw new Error(`Confirmation email target mismatch: ${receivedEmail}`);
+  if (payload.source !== 'website') {
+    throw new Error(`Unexpected source value: ${payload.source}`);
   }
 
-  const receivedName = confirmationFormData.get('name');
-  if (receivedName !== expectedName) {
-    throw new Error(`Confirmation email name mismatch: ${receivedName}`);
+  if (payload.utm_source !== 'google' || payload.utm_campaign !== 'summer-cut') {
+    throw new Error(`Unexpected attribution payload: ${JSON.stringify({ utm_source: payload.utm_source, utm_campaign: payload.utm_campaign })}`);
+  }
+
+  if (payload.page !== 'https://garciabuilder.fitness/contact.html?utm_source=google&utm_campaign=summer-cut') {
+    throw new Error(`Unexpected page value: ${payload.page}`);
   }
 
   console.log('Contact form automated check passed.');

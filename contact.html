@@ -234,7 +234,7 @@ window.addEventListener('load', function() {
   <p class="contact-quick-note" data-i18n="contact.quick.note">Prefer the form? It goes directly to inquiries@garciabuilder.fitness.</p>
 
   <form id="contact-form"
-            action="/api/inquiry"
+            action="/api/lead"
             method="POST"
     novalidate
     class="contact-card"
@@ -299,6 +299,41 @@ window.addEventListener('load', function() {
 
         <!-- Row 4 -->
         <div class="row g-3 mt-1">
+          <div class="col-12 col-md-6">
+            <label for="trainingLocation" class="form-label">Training location</label>
+            <select id="trainingLocation" name="trainingLocation" class="form-select">
+              <option value="" selected>Choose your training location</option>
+              <option value="Gym">Gym</option>
+              <option value="Home">Home</option>
+              <option value="Hybrid">Hybrid</option>
+              <option value="Not sure yet">Not sure yet</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="startTimeline" class="form-label">Start timeline</label>
+            <select id="startTimeline" name="startTimeline" class="form-select">
+              <option value="" selected>When do you want to start?</option>
+              <option value="ASAP">ASAP</option>
+              <option value="Within 2 weeks">Within 2 weeks</option>
+              <option value="This month">This month</option>
+              <option value="Next month">Next month</option>
+              <option value="Just researching">Just researching</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 5 -->
+        <div class="row g-3 mt-1">
+          <div class="col-12 col-md-6">
+            <label for="investmentReadiness" class="form-label">Investment readiness</label>
+            <select id="investmentReadiness" name="investmentReadiness" class="form-select">
+              <option value="" selected>Select your readiness</option>
+              <option value="Ready now">Ready now</option>
+              <option value="Need details first">Need details first</option>
+              <option value="Comparing options">Comparing options</option>
+              <option value="Not ready yet">Not ready yet</option>
+            </select>
+          </div>
           <div class="col-12">
             <label for="mainStruggle" class="form-label">Main struggle right now</label>
             <input id="mainStruggle" name="mainStruggle" type="text" class="form-control"
@@ -316,7 +351,7 @@ window.addEventListener('load', function() {
 
         <!-- Hidden metadata -->
         <input type="hidden" name="_subject" value="New inquiry via Garcia Builder">
-        <input type="hidden" id="source" name="source" value="garciabuilder.fitness">
+        <input type="hidden" id="source" name="source" value="website">
         <input type="hidden" id="page" name="page" value="">
         <input type="hidden" id="utm_source" name="utm_source" value="">
         <input type="hidden" id="utm_campaign" name="utm_campaign" value="">

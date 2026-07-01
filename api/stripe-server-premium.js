@@ -552,7 +552,7 @@ app.post('/api/contact', async (req, res) => {
 app.post('/api/lead', async (req, res) => {
     try {
         const body = req.body || {};
-        const hasConsultationPayload = ['firstName', 'lastName', 'currentWeight', 'mainStruggle', 'goal']
+        const hasConsultationPayload = ['firstName', 'lastName', 'email', 'phone', 'goal', 'currentWeight', 'mainStruggle', 'trainingLocation', 'startTimeline', 'investmentReadiness', 'consent']
             .some((key) => body[key] !== undefined);
 
         if (hasConsultationPayload) {
@@ -575,16 +575,19 @@ app.post('/api/lead', async (req, res) => {
                 email: normalizeText(body.email).toLowerCase(),
                 phone: normalizeText(body.phone),
                 goal: normalizeText(body.goal),
-                currentWeight: normalizeWeight(body.currentWeight),
+                currentWeight: normalizeText(body.currentWeight),
                 mainStruggle: normalizeText(body.mainStruggle),
+                trainingLocation: normalizeText(body.trainingLocation),
+                startTimeline: normalizeText(body.startTimeline),
+                investmentReadiness: normalizeText(body.investmentReadiness),
                 consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
-                source: normalizeText(body.source) || 'Contact Consultation Form',
+                source: 'website',
                 page: normalizeText(body.page) || req.headers.referer || '',
                 utm_source: normalizeText(body.utm_source),
                 utm_campaign: normalizeText(body.utm_campaign),
             };
 
-            if (!consultationPayload.firstName || !consultationPayload.lastName || !consultationPayload.email || !consultationPayload.phone || !consultationPayload.goal || !consultationPayload.currentWeight || !consultationPayload.mainStruggle) {
+            if (!consultationPayload.firstName || !consultationPayload.lastName || !consultationPayload.email || !consultationPayload.phone || !consultationPayload.goal) {
                 return res.status(400).json({ error: 'Missing required consultation fields' });
             }
 
@@ -650,7 +653,7 @@ app.post('/api/lead', async (req, res) => {
             return res.status(200).json({
                 ok: true,
                 leadId,
-                message: 'Thanks — your details have been received. I\'ll review your goal and get back to you.'
+                message: 'Thanks — your application has been received. I\'ll review your goal and get back to you.'
             });
         }
 

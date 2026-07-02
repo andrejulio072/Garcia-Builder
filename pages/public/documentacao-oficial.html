@@ -1,9 +1,38 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+<head>`r`n<!-- Google Tag Manager -->
+<script id="gb-gtm-bootstrap">
+(function(w,d,s,l){
+  w[l]=w[l]||[];
+  w.gtag=w.gtag||function(){w[l].push(arguments);};
+  try{
+    var stored=JSON.parse(w.localStorage.getItem('gb_consent_v1')||'null');
+    var granted=stored&&stored.status==='granted';
+    w.gtag('consent','default',{
+      ad_storage:granted?'granted':'denied',
+      analytics_storage:granted?'granted':'denied',
+      ad_user_data:granted?'granted':'denied',
+      ad_personalization:granted?'granted':'denied',
+      functionality_storage:'granted',
+      security_storage:'granted'
+    });
+  }catch(e){
+    w.gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});
+  }
+  var env=w.__ENV||{};
+  var i=env.NEXT_PUBLIC_GTM_ID||w.NEXT_PUBLIC_GTM_ID||'GTM-TG5TFZ2C';
+  if(!i||d.getElementById('gb-gtm-script')) return;
+  w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+  var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!=='dataLayer'?'&l='+l:'';
+  j.async=true;j.id='gb-gtm-script';j.src='https://www.googletagmanager.com/gtm.js?id='+encodeURIComponent(i)+dl;
+  f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer');
+</script>
+<script defer src="/js/tracking/tracking.js?v=20260702"></script>
+<!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Implementação Stripe - Documentação Oficial</title>
+    <title>ðŸ“š ImplementaÃ§Ã£o Stripe - DocumentaÃ§Ã£o Oficial</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -87,55 +116,57 @@
             padding-left: 30px;
         }
         .checklist li::before {
-            content: '✅';
+            content: 'âœ…';
             position: absolute;
             left: 0;
             font-size: 18px;
         }
     </style>
 </head>
-<body>
+<body>`r`n<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" title="Google Tag Manager" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
     <div class="container">
         <div class="docs-badge">
-            📚 Seguindo docs.stripe.com
+            ðŸ“š Seguindo docs.stripe.com
         </div>
 
         <div class="official-header">
-            <h1>✅ Implementação Stripe Oficial</h1>
-            <p>Sistema implementado seguindo a documentação oficial do Stripe</p>
+            <h1>âœ… ImplementaÃ§Ã£o Stripe Oficial</h1>
+            <p>Sistema implementado seguindo a documentaÃ§Ã£o oficial do Stripe</p>
         </div>
 
         <div class="section correct">
-            <h3>🎯 Implementação Correta Aplicada:</h3>
+            <h3>ðŸŽ¯ ImplementaÃ§Ã£o Correta Aplicada:</h3>
             <ul class="checklist">
                 <li><strong>Test Keys para Desenvolvimento:</strong> Usando pk_test_ e sk_test_</li>
-                <li><strong>Separação Cliente/Servidor:</strong> Chave publicável no cliente, secreta no servidor</li>
+                <li><strong>SeparaÃ§Ã£o Cliente/Servidor:</strong> Chave publicÃ¡vel no cliente, secreta no servidor</li>
                 <li><strong>Checkout Sessions:</strong> Criadas server-side como recomendado</li>
-                <li><strong>Redirect Pattern:</strong> Redirecionamento para página Stripe-hosted</li>
+                <li><strong>Redirect Pattern:</strong> Redirecionamento para pÃ¡gina Stripe-hosted</li>
                 <li><strong>Error Handling:</strong> Tratamento adequado de erros</li>
-                <li><strong>Security Best Practices:</strong> Chaves sensíveis protegidas</li>
+                <li><strong>Security Best Practices:</strong> Chaves sensÃ­veis protegidas</li>
             </ul>
         </div>
 
         <div class="section">
-            <h3>🔑 Configuração de Chaves:</h3>
+            <h3>ðŸ”‘ ConfiguraÃ§Ã£o de Chaves:</h3>
             <div class="code-block">
-# Modo Desenvolvimento (Recomendado pela Documentação)
+# Modo Desenvolvimento (Recomendado pela DocumentaÃ§Ã£o)
 STRIPE_PUBLISHABLE_KEY=pk_test_...
 STRIPE_SECRET_KEY=sk_test_...
 
-# Modo Produção (Quando pronto)
+# Modo ProduÃ§Ã£o (Quando pronto)
 # STRIPE_PUBLISHABLE_KEY=pk_live_...
 # STRIPE_SECRET_KEY=sk_live_...
             </div>
         </div>
 
         <div class="section">
-            <h3>🏗️ Arquitetura Implementada:</h3>
+            <h3>ðŸ—ï¸ Arquitetura Implementada:</h3>
             <p><strong>Cliente (Frontend):</strong></p>
             <ul>
-                <li>Usa apenas <code>pk_test_</code> (seguro para exposição)</li>
-                <li>Cria requisição para servidor</li>
+                <li>Usa apenas <code>pk_test_</code> (seguro para exposiÃ§Ã£o)</li>
+                <li>Cria requisiÃ§Ã£o para servidor</li>
                 <li>Redireciona para Stripe Checkout</li>
             </ul>
 
@@ -148,39 +179,39 @@ STRIPE_SECRET_KEY=sk_test_...
         </div>
 
         <div class="section improvement">
-            <h3>📈 Melhorias da Documentação Oficial:</h3>
+            <h3>ðŸ“ˆ Melhorias da DocumentaÃ§Ã£o Oficial:</h3>
             <ul>
-                <li>✅ <strong>Eliminados erros "Failed to fetch"</strong></li>
-                <li>✅ <strong>Uso correto de Test Keys</strong></li>
-                <li>✅ <strong>Padrão server-side session creation</strong></li>
-                <li>✅ <strong>Segurança aprimorada</strong></li>
-                <li>✅ <strong>Fluxo simplificado e confiável</strong></li>
+                <li>âœ… <strong>Eliminados erros "Failed to fetch"</strong></li>
+                <li>âœ… <strong>Uso correto de Test Keys</strong></li>
+                <li>âœ… <strong>PadrÃ£o server-side session creation</strong></li>
+                <li>âœ… <strong>SeguranÃ§a aprimorada</strong></li>
+                <li>âœ… <strong>Fluxo simplificado e confiÃ¡vel</strong></li>
             </ul>
         </div>
 
         <div class="section">
-            <h3>🧪 Cartões de Teste Oficiais:</h3>
+            <h3>ðŸ§ª CartÃµes de Teste Oficiais:</h3>
             <div class="code-block">
 Sucesso: 4242 4242 4242 4242
-Requer autenticação: 4000 0025 0000 3155
+Requer autenticaÃ§Ã£o: 4000 0025 0000 3155
 Falha: 4000 0000 0000 9995
 Data: Qualquer data futura
-CVC: Qualquer 3 dígitos
+CVC: Qualquer 3 dÃ­gitos
             </div>
         </div>
 
         <div style="text-align: center; margin: 30px 0;">
-            <h3>🚀 Testar Sistema:</h3>
+            <h3>ðŸš€ Testar Sistema:</h3>
             <a href="stripe-oficial.html" class="test-link">
-                📚 Página Oficial de Testes
+                ðŸ“š PÃ¡gina Oficial de Testes
             </a>
             <a href="../../pricing.html" class="test-link">
-                💰 Página de Preços
+                ðŸ’° PÃ¡gina de PreÃ§os
             </a>
         </div>
 
         <div class="section">
-            <h3>📖 Referências da Documentação:</h3>
+            <h3>ðŸ“– ReferÃªncias da DocumentaÃ§Ã£o:</h3>
             <ul>
                 <li><strong>API Keys:</strong> <a href="https://docs.stripe.com/keys" target="_blank">docs.stripe.com/keys</a></li>
                 <li><strong>Checkout Quickstart:</strong> <a href="https://docs.stripe.com/checkout/quickstart" target="_blank">docs.stripe.com/checkout/quickstart</a></li>
@@ -189,9 +220,9 @@ CVC: Qualquer 3 dígitos
         </div>
 
         <div style="background-color: #d4edda; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
-            <h3>🎉 Sistema 100% Funcional!</h3>
-            <p>Implementação seguindo rigorosamente a documentação oficial do Stripe</p>
-            <p><strong>✅ Zero erros ✅ Padrão oficial ✅ Totalmente seguro</strong></p>
+            <h3>ðŸŽ‰ Sistema 100% Funcional!</h3>
+            <p>ImplementaÃ§Ã£o seguindo rigorosamente a documentaÃ§Ã£o oficial do Stripe</p>
+            <p><strong>âœ… Zero erros âœ… PadrÃ£o oficial âœ… Totalmente seguro</strong></p>
         </div>
     </div>
 
@@ -202,7 +233,7 @@ CVC: Qualquer 3 dígitos
             <a href="../../index.html" class="gb-footer-logo-link" aria-label="Garcia Builder Home">
                 <img src="../../Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" class="gb-footer-logo" loading="lazy" decoding="async"/>
             </a>
-            <p class="gb-footer-bio">Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.</p>
+            <p class="gb-footer-bio">Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8â€“12 weeks.</p>
         </div>
         <div class="gb-footer-col gb-footer-nav">
             <h4 class="gb-footer-title">Navigation</h4>
@@ -249,7 +280,7 @@ CVC: Qualquer 3 dígitos
         </div>
     </div>
             <div class="gb-footer-legal container">
-                    <span>© 2025 Garcia Builder. All rights reserved.</span>
+                    <span>Â© 2025 Garcia Builder. All rights reserved.</span>
                     <span class="gb-footer-legal-links">
                             <a href="../../privacy.html">Privacy</a> |
                             <a href="../../terms.html">Terms</a>
@@ -268,7 +299,7 @@ CVC: Qualquer 3 dígitos
                 <a href="../../index.html" class="gb-footer-logo-link" aria-label="Garcia Builder Home">
                     <img src="../../Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" class="gb-footer-logo" loading="lazy" decoding="async"/>
                 </a>
-                <p class="gb-footer-bio">Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.</p>
+                <p class="gb-footer-bio">Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8â€“12 weeks.</p>
             </div>
             <div class="gb-footer-col gb-footer-nav">
                 <h4 class="gb-footer-title">Navigation</h4>
@@ -315,7 +346,7 @@ CVC: Qualquer 3 dígitos
             </div>
         </div>
         <div class="gb-footer-legal container">
-            <span>© 2025 Garcia Builder. All rights reserved.</span>
+            <span>Â© 2025 Garcia Builder. All rights reserved.</span>
             <span class="gb-footer-legal-links">
                 <a href="../../privacy.html">Privacy</a> |
                 <a href="../../terms.html">Terms</a>
@@ -323,5 +354,6 @@ CVC: Qualquer 3 dígitos
         </div>
     </footer>
 </html>
+
 
 

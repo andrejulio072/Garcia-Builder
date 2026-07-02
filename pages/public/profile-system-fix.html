@@ -1,19 +1,50 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-<head>
+<head>`r`n<!-- Google Tag Manager -->
+<script id="gb-gtm-bootstrap">
+(function(w,d,s,l){
+  w[l]=w[l]||[];
+  w.gtag=w.gtag||function(){w[l].push(arguments);};
+  try{
+    var stored=JSON.parse(w.localStorage.getItem('gb_consent_v1')||'null');
+    var granted=stored&&stored.status==='granted';
+    w.gtag('consent','default',{
+      ad_storage:granted?'granted':'denied',
+      analytics_storage:granted?'granted':'denied',
+      ad_user_data:granted?'granted':'denied',
+      ad_personalization:granted?'granted':'denied',
+      functionality_storage:'granted',
+      security_storage:'granted'
+    });
+  }catch(e){
+    w.gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});
+  }
+  var env=w.__ENV||{};
+  var i=env.NEXT_PUBLIC_GTM_ID||w.NEXT_PUBLIC_GTM_ID||'GTM-TG5TFZ2C';
+  if(!i||d.getElementById('gb-gtm-script')) return;
+  w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+  var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!=='dataLayer'?'&l='+l:'';
+  j.async=true;j.id='gb-gtm-script';j.src='https://www.googletagmanager.com/gtm.js?id='+encodeURIComponent(i)+dl;
+  f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer');
+</script>
+<script defer src="/js/tracking/tracking.js?v=20260702"></script>
+<!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile System Fix</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
-<body>
+<body>`r`n<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" title="Google Tag Manager" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
                     <div class="card-header bg-warning text-dark">
-                        <h3>🔧 Profile System Diagnostic & Fix</h3>
+                        <h3>ðŸ”§ Profile System Diagnostic & Fix</h3>
                     </div>
                     <div class="card-body">
                         <div id="status" class="mb-4"></div>
@@ -21,7 +52,7 @@
                         <!-- Diagnostic Tests -->
                         <div class="card mb-4">
                             <div class="card-header">
-                                <h5>🔍 System Diagnostics</h5>
+                                <h5>ðŸ” System Diagnostics</h5>
                             </div>
                             <div class="card-body">
                                 <button id="runDiagnostics" class="btn btn-primary">Run Full Diagnostics</button>
@@ -32,7 +63,7 @@
                         <!-- Profile Manager Test -->
                         <div class="card mb-4">
                             <div class="card-header">
-                                <h5>📝 Test Profile Save</h5>
+                                <h5>ðŸ“ Test Profile Save</h5>
                             </div>
                             <div class="card-body">
                                 <form id="testProfileForm">
@@ -69,7 +100,7 @@
                         <!-- SQL Generator -->
                         <div class="card">
                             <div class="card-header">
-                                <h5>🗄️ Database Schema</h5>
+                                <h5>ðŸ—„ï¸ Database Schema</h5>
                             </div>
                             <div class="card-body">
                                 <button id="generateSQL" class="btn btn-info">Generate Profiles Table SQL</button>
@@ -113,13 +144,13 @@
             try {
                 // Test 1: Supabase connection
                 const { data: user, error: userError } = await supabaseClient.auth.getUser();
-                diagnostics += `<h6>✅ Supabase Connection</h6>`;
-                diagnostics += `<p>Status: ${userError ? '❌ Error' : '✅ Connected'}</p>`;
+                diagnostics += `<h6>âœ… Supabase Connection</h6>`;
+                diagnostics += `<p>Status: ${userError ? 'âŒ Error' : 'âœ… Connected'}</p>`;
                 if (userError) diagnostics += `<p>Error: ${userError.message}</p>`;
                 if (user) diagnostics += `<p>User: ${user.email || 'Not logged in'}</p>`;
 
                 // Test 2: Profiles table
-                diagnostics += `<hr><h6>🗄️ Profiles Table</h6>`;
+                diagnostics += `<hr><h6>ðŸ—„ï¸ Profiles Table</h6>`;
                 try {
                     const { data: profiles, error: profilesError } = await supabaseClient
                         .from('profiles')
@@ -127,53 +158,53 @@
                         .limit(1);
 
                     if (profilesError) {
-                        diagnostics += `<p>❌ Profiles table error: ${profilesError.message}</p>`;
+                        diagnostics += `<p>âŒ Profiles table error: ${profilesError.message}</p>`;
                         diagnostics += `<p><strong>Solution:</strong> Use "Generate Profiles Table SQL" below</p>`;
                     } else {
-                        diagnostics += `<p>✅ Profiles table exists</p>`;
+                        diagnostics += `<p>âœ… Profiles table exists</p>`;
                         diagnostics += `<p>Records found: ${profiles.length}</p>`;
                     }
                 } catch (e) {
-                    diagnostics += `<p>❌ Profiles table access error: ${e.message}</p>`;
+                    diagnostics += `<p>âŒ Profiles table access error: ${e.message}</p>`;
                 }
 
                 // Test 3: Profile Manager availability
-                diagnostics += `<hr><h6>📝 Profile Manager</h6>`;
+                diagnostics += `<hr><h6>ðŸ“ Profile Manager</h6>`;
                 if (window.GarciaProfileManager) {
-                    diagnostics += `<p>✅ Profile Manager loaded</p>`;
+                    diagnostics += `<p>âœ… Profile Manager loaded</p>`;
                 } else {
-                    diagnostics += `<p>❌ Profile Manager not found</p>`;
+                    diagnostics += `<p>âŒ Profile Manager not found</p>`;
                     diagnostics += `<p><strong>Solution:</strong> Load profile-manager.js</p>`;
                 }
 
                 // Test 4: LocalStorage functionality
-                diagnostics += `<hr><h6>💾 LocalStorage</h6>`;
+                diagnostics += `<hr><h6>ðŸ’¾ LocalStorage</h6>`;
                 try {
                     localStorage.setItem('garcia_test', 'working');
                     const test = localStorage.getItem('garcia_test');
                     if (test === 'working') {
-                        diagnostics += `<p>✅ LocalStorage working</p>`;
+                        diagnostics += `<p>âœ… LocalStorage working</p>`;
                         localStorage.removeItem('garcia_test');
                     } else {
-                        diagnostics += `<p>❌ LocalStorage not working</p>`;
+                        diagnostics += `<p>âŒ LocalStorage not working</p>`;
                     }
                 } catch (e) {
-                    diagnostics += `<p>❌ LocalStorage error: ${e.message}</p>`;
+                    diagnostics += `<p>âŒ LocalStorage error: ${e.message}</p>`;
                 }
 
                 // Test 5: Current user data
-                diagnostics += `<hr><h6>👤 User Data</h6>`;
+                diagnostics += `<hr><h6>ðŸ‘¤ User Data</h6>`;
                 const localUser = JSON.parse(localStorage.getItem('garcia_current_user') || '{}');
                 if (localUser.email) {
-                    diagnostics += `<p>✅ Local user found: ${localUser.email}</p>`;
+                    diagnostics += `<p>âœ… Local user found: ${localUser.email}</p>`;
                     diagnostics += `<p>Role: ${localUser.role || 'Not set'}</p>`;
                 } else {
-                    diagnostics += `<p>❌ No local user data found</p>`;
+                    diagnostics += `<p>âŒ No local user data found</p>`;
                     diagnostics += `<p><strong>Solution:</strong> Login first</p>`;
                 }
 
             } catch (error) {
-                diagnostics += `<p>❌ Diagnostic error: ${error.message}</p>`;
+                diagnostics += `<p>âŒ Diagnostic error: ${error.message}</p>`;
             }
 
             diagnostics += '</div></div>';
@@ -195,7 +226,7 @@
                 const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
 
                 if (userError || !user) {
-                    showProfileTestResult('❌ No authenticated user. Please login first.', 'danger');
+                    showProfileTestResult('âŒ No authenticated user. Please login first.', 'danger');
                     return;
                 }
 
@@ -215,7 +246,7 @@
                     .upsert(profilePayload, { onConflict: 'id' });
 
                 if (error) {
-                    showProfileTestResult(`❌ Profiles table error: ${error.message}`, 'danger');
+                    showProfileTestResult(`âŒ Profiles table error: ${error.message}`, 'danger');
 
                     // Test 2: Fallback to user metadata
                     showProfileTestResult('Trying user metadata fallback...', 'warning');
@@ -233,12 +264,12 @@
                     });
 
                     if (metaError) {
-                        showProfileTestResult(`❌ User metadata error: ${metaError.message}`, 'danger');
+                        showProfileTestResult(`âŒ User metadata error: ${metaError.message}`, 'danger');
                     } else {
-                        showProfileTestResult('✅ Profile saved to user metadata!', 'success');
+                        showProfileTestResult('âœ… Profile saved to user metadata!', 'success');
                     }
                 } else {
-                    showProfileTestResult('✅ Profile saved to profiles table!', 'success');
+                    showProfileTestResult('âœ… Profile saved to profiles table!', 'success');
                 }
 
                 // Test 3: Save to localStorage
@@ -249,10 +280,10 @@
                 };
 
                 localStorage.setItem(`garcia_profile_${user.id}`, JSON.stringify(localProfileData));
-                showProfileTestResult('✅ Profile also saved to localStorage!', 'info');
+                showProfileTestResult('âœ… Profile also saved to localStorage!', 'info');
 
             } catch (error) {
-                showProfileTestResult(`❌ Test error: ${error.message}`, 'danger');
+                showProfileTestResult(`âŒ Test error: ${error.message}`, 'danger');
             }
         });
 
@@ -395,7 +426,7 @@ CREATE TRIGGER on_auth_user_created
             </div>
         </div>
         <div class="gb-footer-row legal-row">
-            <div class="footer-legal">&copy; 2025 Garcia Builder — Online Coaching</div>
+            <div class="footer-legal">&copy; 2025 Garcia Builder â€” Online Coaching</div>
             <div class="footer-links-legal">
                 <a href="../../privacy.html" data-i18n="footer.privacy">Privacy Policy</a>
                 <span class="divider">|</span>
@@ -408,3 +439,4 @@ CREATE TRIGGER on_auth_user_created
 
 </body>
 </html>
+

@@ -200,19 +200,17 @@
 
     function trackVideoPlay(videoId, label, location) {
         try {
-            if (window.gtag) {
-                gtag('event', 'play_video', {
-                    event_category: 'engagement',
-                    event_label: label,
-                    video_id: videoId
-                });
-            }
-
-            if (window.dataLayer) {
+            const payload = {
+                video_id: videoId,
+                video_label: label,
+                video_location: location
+            };
+            if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+                window.GB_TRACKING.trackEvent('video_play', payload);
+            } else if (window.dataLayer) {
                 window.dataLayer.push({
                     event: 'video_play',
-                    video_id: videoId,
-                    video_location: location
+                    ...payload
                 });
             }
         } catch (e) {

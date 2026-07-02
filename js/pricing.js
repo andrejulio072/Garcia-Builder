@@ -12,6 +12,14 @@
     return configName || fallbackName || '';
   };
 
+  const escapeAttr = value => String(value || '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  }[char]));
+
   const getPricingDict = () => {
     const lang = (window.GB_I18N && window.GB_I18N.getLang && window.GB_I18N.getLang()) || 'en';
     return (window.DICTS && window.DICTS[lang] && window.DICTS[lang].pricing)
@@ -35,11 +43,16 @@
 
       const planPrice = getCanonicalPlanPrice(key, plan.price);
       const planName = getCanonicalPlanName(key, plan.name);
+      const checkoutUrl = buildMyPtHubCheckoutUrl(key, planName);
 
       const features = (plan.features || []).map(feature => `<li>${feature}</li>`).join('');
       const result = plan.result ? `<div class="result-band">${plan.result}</div>` : '';
       const meta = plan.meta ? `<div class="program-meta">${plan.meta}</div>` : '';
       const cardId = key.replace(/_/g, '-');
+      const ctaText = dict.cta?.choose || 'Start Now';
+      const action = checkoutUrl
+        ? `<a class="btn btn-gold" href="${escapeAttr(checkoutUrl)}" data-plan-key="${escapeAttr(key)}" data-plan-name="${escapeAttr(planName)}" data-plan-price="${escapeAttr(planPrice)}">${ctaText}</a>`
+        : `<button type="button" class="btn btn-gold" data-plan-key="${escapeAttr(key)}" data-plan-name="${escapeAttr(planName)}" data-plan-price="${escapeAttr(planPrice)}">${ctaText}</button>`;
 
       return `
         <div id="${cardId}" class="price reveal ${plan.featured ? 'featured-plan' : ''}" data-tilt data-tilt-max="6" data-tilt-speed="500">
@@ -50,9 +63,7 @@
           ${result}
           <p class="muted">${plan.description || ''}</p>
           <ul>${features}</ul>
-          <button class="btn btn-gold" data-plan-key="${key}" data-plan-name="${planName}" data-plan-price="${planPrice}">
-            ${dict.cta?.choose || 'Start Now'}
-          </button>
+          ${action}
         </div>`;
     }).join('');
 
@@ -66,21 +77,25 @@
       window.CurrencyConverter.refresh();
     }
 
-    container.querySelectorAll('.btn.btn-gold').forEach(button => {
+    container.querySelectorAll('.btn.btn-gold[data-plan-key]').forEach(button => {
       button.addEventListener('click', event => {
-        event.preventDefault();
         const planKey = button.getAttribute('data-plan-key');
         const planName = button.getAttribute('data-plan-name');
         const planPrice = button.getAttribute('data-plan-price');
+        const myPtHubUrl = button.getAttribute('href') || buildMyPtHubCheckoutUrl(planKey, planName);
 
-        if (typeof window.dataLayer !== 'undefined') {
-          window.dataLayer.push({
-            event: 'begin_checkout',
-            plan_type: planKey,
-            plan_name: planName,
-            value: parseFloat((planPrice || '').replace(/[^0-9.]/g, '')) || 0,
-            currency: 'EUR'
-          });
+        const trackingPayload = {
+          plan_type: planKey,
+          plan_name: planName,
+          value: parseFloat((planPrice || '').replace(/[^0-9.]/g, '')) || 0,
+          currency: 'EUR'
+        };
+        if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+          window.GB_TRACKING.trackEvent('select_package', trackingPayload);
+          window.GB_TRACKING.trackEvent('begin_checkout', trackingPayload);
+        } else if (typeof window.dataLayer !== 'undefined') {
+          window.dataLayer.push({ event: 'select_package', ...trackingPayload });
+          window.dataLayer.push({ event: 'begin_checkout', ...trackingPayload });
         }
 
         if (typeof window.fbq !== 'undefined') {
@@ -92,6 +107,22 @@
           });
         }
 
+        if (myPtHubUrl) {
+          try {
+            localStorage.setItem('selectedPlan', JSON.stringify({
+              key: planKey,
+              name: planName,
+              price: planPrice,
+              destination: 'mypthub',
+              timestamp: Date.now()
+            }));
+          } catch (storageError) {
+            console.warn('Could not store selected plan', storageError);
+          }
+          return true;
+        }
+
+        event.preventDefault();
         handlePlanSelection(planKey, planName, planPrice, button);
       });
     });
@@ -117,14 +148,16 @@ async function handlePlanSelection(planKey, planName, planPrice, buttonElement) 
   const myPtHubUrl = buildMyPtHubCheckoutUrl(planKey, planName);
 
   if (myPtHubUrl) {
-    if (typeof window.dataLayer !== 'undefined') {
-      window.dataLayer.push({
-        event: 'mypthub_checkout_redirect',
-        plan_type: planKey,
-        plan_name: planName,
-        destination: 'mypthub',
-        checkout_url: myPtHubUrl
-      });
+    const redirectPayload = {
+      plan_type: planKey,
+      plan_name: planName,
+      destination: 'mypthub',
+      checkout_url: myPtHubUrl
+    };
+    if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+      window.GB_TRACKING.trackEvent('mypthub_checkout_redirect', redirectPayload);
+    } else if (typeof window.dataLayer !== 'undefined') {
+      window.dataLayer.push({ event: 'mypthub_checkout_redirect', ...redirectPayload });
     }
 
     localStorage.setItem('selectedPlan', JSON.stringify({

@@ -37,22 +37,13 @@
         }, extras);
 
         try {
-            window.dataLayer.push(payload);
+            if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+                window.GB_TRACKING.trackEvent(eventName, payload);
+            } else {
+                window.dataLayer.push(payload);
+            }
         } catch (err) {
             console.warn('[EventTracking] Failed to push event to dataLayer', err);
-        }
-
-        if (typeof window.gtag === 'function') {
-            const gtagPayload = Object.assign({}, extras);
-            if (!gtagPayload.page_location) {
-                gtagPayload.page_location = window.location.href;
-            }
-
-            try {
-                window.gtag('event', eventName, gtagPayload);
-            } catch (err) {
-                console.warn('[EventTracking] gtag push failed', eventName, err);
-            }
         }
     }
 
@@ -105,8 +96,7 @@
      * Track page view event
      */
     function trackPageView() {
-        dataLayer.push({
-            event: 'page_view',
+        triggerAnalyticsEvent('page_view', {
             page_title: document.title,
             page_location: window.location.href,
             page_referrer: document.referrer,
@@ -149,14 +139,6 @@
             });
         }
 
-        // Google Ads conversion
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'conversion', {
-                send_to: 'AW-17627402053/inquiry',
-                value: eventValue,
-                currency: eventCurrency
-            });
-        }
     };
 
     /**
@@ -165,8 +147,7 @@
      * @param {string} articleUrl - URL of the article
      */
     function trackBlogClick(articleTitle, articleUrl) {
-        dataLayer.push({
-            event: 'blog_click',
+        triggerAnalyticsEvent('blog_click', {
             article_title: articleTitle,
             article_url: articleUrl,
             timestamp: new Date().toISOString()
@@ -183,6 +164,11 @@
             const pageContext = getPageContext();
 
             if (actionable) {
+                const handledByCtaHelper = (actionable.getAttribute('onclick') || '').indexOf('trackCTAEvent') > -1;
+                if (handledByCtaHelper) {
+                    return;
+                }
+
                 if (isWhatsAppLink(actionable)) {
                     const ctaText = getNormalizedText(actionable);
                     triggerAnalyticsEvent('whatsapp_click', {
@@ -230,8 +216,7 @@
             const pricingButton = actionable && actionable.classList.contains('pricing-cta') ? actionable : target.closest('.pricing-cta');
             if (pricingButton) {
                 const planName = pricingButton.getAttribute('data-plan') || pricingButton.dataset?.plan || 'unknown';
-                dataLayer.push({
-                    event: 'pricing_plan_click',
+                triggerAnalyticsEvent('pricing_plan_click', {
                     plan_name: planName,
                     timestamp: new Date().toISOString()
                 });
@@ -351,8 +336,7 @@
             scrollDepths.forEach(depth => {
                 if (scrollPercent >= depth && !triggeredDepths.has(depth)) {
                     triggeredDepths.add(depth);
-                    dataLayer.push({
-                        event: 'scroll_depth',
+                    triggerAnalyticsEvent('scroll_depth', {
                         scroll_depth: depth,
                         page_location: window.location.href
                     });

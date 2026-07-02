@@ -28,67 +28,9 @@
     } catch(_){}
   }
 
-  function isValidGa4Id(id){
-    return typeof id === 'string' && /^G-[A-Z0-9]+$/i.test(id.trim());
-  }
-
-  function resolveGa4Id(){
-    const candidates = [];
-
-    try {
-      const cfgId = window.ADS_CONFIG && window.ADS_CONFIG.google && window.ADS_CONFIG.google.ga4MeasurementId;
-      if (cfgId) candidates.push(cfgId);
-    } catch(_){/* noop */}
-
-    try {
-      const envId = window.__ENV && window.__ENV.GA4_MEASUREMENT_ID;
-      if (envId) candidates.push(envId);
-    } catch(_){/* noop */}
-
-    if (window.GA4_MEASUREMENT_ID) {
-      candidates.push(window.GA4_MEASUREMENT_ID);
-    }
-    if (window.GA_MEASUREMENT_ID) {
-      candidates.push(window.GA_MEASUREMENT_ID);
-    }
-
-    try {
-      const htmlId = document && document.documentElement ? document.documentElement.getAttribute('data-ga4-id') : null;
-      if (htmlId) candidates.push(htmlId);
-    } catch(_){/* noop */}
-
-    try {
-      const meta = document && document.querySelector ? document.querySelector('meta[name="ga4:measurement_id"], meta[name="ga4-measurement-id"], meta[name="ga:measurement_id"]') : null;
-      if (meta && meta.getAttribute('content')) {
-        candidates.push(meta.getAttribute('content'));
-      }
-    } catch(_){/* noop */}
-
-    for (let i = 0; i < candidates.length; i++) {
-      const candidate = typeof candidates[i] === 'string' ? candidates[i].trim() : '';
-      if (isValidGa4Id(candidate)) {
-        return candidate.toUpperCase();
-      }
-    }
-    return null;
-  }
-
-  const GA4_ID = resolveGa4Id();
-  if (GA4_ID) {
-    window.GA4_MEASUREMENT_ID = window.GA4_MEASUREMENT_ID || GA4_ID;
-    window.__GA4_MEASUREMENT_ID__ = GA4_ID;
-    if (window.ADS_CONFIG && window.ADS_CONFIG.google && !window.ADS_CONFIG.google.ga4MeasurementId) {
-      window.ADS_CONFIG.google.ga4MeasurementId = GA4_ID;
-    }
-  }
-
-  const baseIds = [];
-  if (GA4_ID) {
-    baseIds.push(GA4_ID);
-  }
-  baseIds.push('AW-17627402053');
-  const IDS = Array.from(new Set(baseIds.filter(Boolean)));
-  const PRIMARY_ID = IDS[0] || 'AW-17627402053';
+  // GA4 is managed by GTM. This legacy loader is retained only for Google Ads.
+  const IDS = ['AW-17627402053'];
+  const PRIMARY_ID = 'AW-17627402053';
 
   function granted(){
     try {
@@ -112,11 +54,7 @@
     gtag('js', new Date());
     IDS.forEach(id => {
       if (!id) return;
-      if (id.startsWith('AW-')) {
-        gtag('config', id, { allow_enhanced_conversions:true, send_page_view:false });
-      } else {
-        gtag('config', id);
-      }
+      gtag('config', id, { allow_enhanced_conversions:true, send_page_view:false });
     });
     window.__ADS_BASE_READY__=true;
     if(window.DEBUG_ADS) console.log('[ADS] gtag initialized (consent-aware)', IDS);

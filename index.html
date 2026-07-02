@@ -1,6 +1,37 @@
 <!DOCTYPE html>
 
 <html lang="en"><head>
+<!-- Google Tag Manager -->
+<script id="gb-gtm-bootstrap">
+(function(w,d,s,l){
+  w[l]=w[l]||[];
+  w.gtag=w.gtag||function(){w[l].push(arguments);};
+  try{
+    var stored=JSON.parse(w.localStorage.getItem('gb_consent_v1')||'null');
+    var granted=stored&&stored.status==='granted';
+    w.gtag('consent','default',{
+      ad_storage:granted?'granted':'denied',
+      analytics_storage:granted?'granted':'denied',
+      ad_user_data:granted?'granted':'denied',
+      ad_personalization:granted?'granted':'denied',
+      functionality_storage:'granted',
+      security_storage:'granted'
+    });
+  }catch(e){
+    w.gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});
+  }
+  var env=w.__ENV||{};
+  var i=env.NEXT_PUBLIC_GTM_ID||w.NEXT_PUBLIC_GTM_ID||'GTM-TG5TFZ2C';
+  if(!i||d.getElementById('gb-gtm-script')) return;
+  w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+  var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!=='dataLayer'?'&l='+l:'';
+  j.async=true;j.id='gb-gtm-script';j.src='https://www.googletagmanager.com/gtm.js?id='+encodeURIComponent(i)+dl;
+  f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer');
+</script>
+<script defer src="/js/tracking/tracking.js?v=20260702"></script>
+<!-- End Google Tag Manager -->
+
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <!-- Primary Meta Description (single – avoid duplicates) -->
@@ -70,12 +101,6 @@ try {
   gtag('consent','default', { ad_storage:'denied', analytics_storage:'denied', ad_user_data:'denied', ad_personalization:'denied', functionality_storage:'granted', security_storage:'granted' });
 }
 </script>
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
-
 <!-- Google Ads Global Site Tag (standardized) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
 <script>
@@ -146,6 +171,9 @@ window.addEventListener('load', function() {
 });
 </script>
 </head><body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" title="Google Tag Manager" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <script>
   // If we arrive on index with OAuth tokens in hash, redirect to dashboard to process them
   (function(){
@@ -174,18 +202,8 @@ window.addEventListener('load', function() {
     } catch(e) { console.warn('OAuth/devReturn bounce failed:', e); }
   })();
 </script>
-
-<!-- Google Tag Manager (noscript) -->
 <noscript>
-  <iframe
-    src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C"
-    height="0"
-    width="0"
-    style="display:none;visibility:hidden"
-    title="Google Tag Manager tracking frame"
-  ></iframe>
-
-  <!-- Meta Pixel noscript fallback -->
+<!-- Meta Pixel noscript fallback -->
   <img
     height="1"
     width="1"
@@ -219,18 +237,18 @@ window.addEventListener('load', function() {
    href="https://calendly.com/andrenjulio072/consultation"
    target="_blank"
    rel="noopener"
-   onclick="return trackCTAEvent({ctaId:'hero_book_consult',ctaLocation:'hero',href:this.href,conversion:true,target:this.target});">Book Your Free Consultation</a>
+   onclick="return window.trackCTAEvent ? window.trackCTAEvent({ctaId:'hero_book_consult',ctaLocation:'hero',href:this.href,conversion:true,target:this.target}) : true;">Book Your Free Consultation</a>
 <a class="btn btn-hero-secondary"
    data-i18n="cta.plans"
    href="pricing.html"
-   onclick="return trackCTAEvent({ctaId:'hero_view_pricing',ctaLocation:'hero',href:this.href});">View Plans &amp; Pricing</a>
+   onclick="return window.trackCTAEvent ? window.trackCTAEvent({ctaId:'hero_view_pricing',ctaLocation:'hero',href:this.href}) : true;">View Plans &amp; Pricing</a>
 <a class="btn btn-outline-warning"
    data-i18n="cta.whatsapp"
    href="https://wa.me/447508497586"
    target="_blank"
    rel="noopener"
    aria-label="Start a WhatsApp chat with Coach André"
-   onclick="return trackCTAEvent({ctaId:'hero_whatsapp',ctaLocation:'hero',href:this.href,conversion:true,target:this.target});">Chat on WhatsApp</a>
+   onclick="return window.trackCTAEvent ? window.trackCTAEvent({ctaId:'hero_whatsapp',ctaLocation:'hero',href:this.href,conversion:true,target:this.target}) : true;">Chat on WhatsApp</a>
 </div>
 <div class="kpis">
 <div class="kpi"><div class="num">127</div><div data-i18n="kpi.transforms">Transformations</div></div>
@@ -294,7 +312,7 @@ window.addEventListener('load', function() {
    href="https://calendly.com/andrenjulio072/consultation"
    target="_blank"
    rel="noopener"
-   onclick="return trackCTAEvent({ctaId:'social_proof_book',ctaLocation:'social_proof',href:this.href,conversion:true,target:this.target});">Start My Transformation →</a>
+   onclick="return window.trackCTAEvent ? window.trackCTAEvent({ctaId:'social_proof_book',ctaLocation:'social_proof',href:this.href,conversion:true,target:this.target}) : true;">Start My Transformation →</a>
 </div>
 <div class="col-lg-7">
 <div class="row g-3">
@@ -492,7 +510,7 @@ window.addEventListener('load', function() {
    data-i18n="howitworks.cta"
    target="_blank"
    rel="noopener"
-   onclick="return trackCTAEvent({ctaId:'how_it_works_book',ctaLocation:'how_it_works',href:this.href,conversion:true,target:this.target});">Start Your Journey Today →</a>
+   onclick="return window.trackCTAEvent ? window.trackCTAEvent({ctaId:'how_it_works_book',ctaLocation:'how_it_works',href:this.href,conversion:true,target:this.target}) : true;">Start Your Journey Today →</a>
 </div>
 </div>
 </section>
@@ -516,7 +534,7 @@ window.addEventListener('load', function() {
    data-i18n="video.cta"
    target="_blank"
    rel="noopener"
-   onclick="return trackCTAEvent({ctaId:'video_testimonial_book',ctaLocation:'video_section',href:this.href,conversion:true,target:this.target});">Get Started Now →</a>
+   onclick="return window.trackCTAEvent ? window.trackCTAEvent({ctaId:'video_testimonial_book',ctaLocation:'video_section',href:this.href,conversion:true,target:this.target}) : true;">Get Started Now →</a>
 </div>
 </div>
 <div class="col-lg-6">
@@ -582,6 +600,10 @@ window.addEventListener('load', function() {
 </div>
 <input type="hidden" name="goal" value="Lead Magnet Guide Request">
 <input type="hidden" name="guide_id" value="28-days-fat-loss-quickstart">
+<label class="small text-muted mt-3 d-flex gap-2 align-items-start">
+<input type="checkbox" name="consent" required class="mt-1">
+<span>I agree to receive the guide and fitness emails from Garcia Builder.</span>
+</label>
 <button type="submit" class="lead-form-submit mt-3">
 <i class="fas fa-file-download me-2"></i><span data-i18n="leadmagnet.submit">Send Me the Guide</span>
 </button>
@@ -1144,13 +1166,13 @@ My PT Hub—plans, videos, habits, messages, and progress tracking in one place 
    href="https://calendly.com/andrenjulio072/consultation"
    target="_blank"
    rel="noopener"
-   onclick="return trackCTAEvent({ctaId:'cta_section_book',ctaLocation:'final_cta',href:this.href,conversion:true,target:this.target});">Book Your Free Consultation</a>
+   onclick="return window.trackCTAEvent ? window.trackCTAEvent({ctaId:'cta_section_book',ctaLocation:'final_cta',href:this.href,conversion:true,target:this.target}) : true;">Book Your Free Consultation</a>
 <a class="btn btn-outline-warning btn-lg"
    data-i18n="cta.whatsapp_prefer"
    href="https://wa.me/447508497586"
    target="_blank"
    rel="noopener"
-   onclick="return trackCTAEvent({ctaId:'cta_section_whatsapp',ctaLocation:'final_cta',href:this.href,conversion:true,target:this.target});">Prefer WhatsApp? Chat Now</a>
+   onclick="return window.trackCTAEvent ? window.trackCTAEvent({ctaId:'cta_section_whatsapp',ctaLocation:'final_cta',href:this.href,conversion:true,target:this.target}) : true;">Prefer WhatsApp? Chat Now</a>
 </div>
 </div>
 </section>

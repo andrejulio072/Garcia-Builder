@@ -39,12 +39,26 @@
     const { ctaId, ctaLocation, href, conversion, target } = config;
 
     try {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: 'cta_click',
+      const payload = {
         cta_id: ctaId || 'cta_unknown',
-        cta_location: ctaLocation || 'global'
-      });
+        cta_location: ctaLocation || 'global',
+        cta_url: href || ''
+      };
+      if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+        window.GB_TRACKING.trackEvent('cta_click', payload);
+        if ((href || '').includes('wa.me') || (href || '').includes('api.whatsapp.com')) {
+          window.GB_TRACKING.trackEvent('whatsapp_click', payload);
+        }
+        if ((href || '').includes('calendly.com')) {
+          window.GB_TRACKING.trackEvent('book_consultation_click', payload);
+        }
+      } else {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'cta_click',
+          ...payload
+        });
+      }
     } catch (err) {
       if (window.console && console.warn) {
         console.warn('[CTA Tracking] dataLayer push failed', err);

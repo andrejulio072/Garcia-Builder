@@ -18,7 +18,10 @@
   const sourceEl = document.getElementById('source');
   const pageEl = document.getElementById('page');
   const utmSourceEl = document.getElementById('utm_source');
+  const utmMediumEl = document.getElementById('utm_medium');
   const utmCampaignEl = document.getElementById('utm_campaign');
+  const utmContentEl = document.getElementById('utm_content');
+  const utmTermEl = document.getElementById('utm_term');
   const btnLabel = btn ? btn.querySelector('[data-i18n="contact.form.submit"]') : null;
   const getCurrentLang = () => {
     try {
@@ -76,6 +79,11 @@
   const getErrorMessage = () => getI18nText('contact.form.validation_error', 'Please check the highlighted fields.');
   const successMessage = 'Thanks \u2014 your application has been received. I\'ll review your goal and get back to you.';
   const failureMessage = 'Something went wrong. Please try again or message me directly on WhatsApp.';
+  const isHotLeadPayload = payload => {
+    const readiness = String(payload.investmentReadiness || '').trim().toLowerCase();
+    const timeline = String(payload.startTimeline || '').trim().toLowerCase();
+    return readiness === 'ready now' && (timeline === 'now' || timeline === 'this week');
+  };
 
   // Simple submit rate-limit: 1 per 60s
   const canSubmit = () => {
@@ -151,7 +159,10 @@
     }
     if (pageEl) pageEl.value = window.location.href;
     if (utmSourceEl) utmSourceEl.value = qp.get('utm_source') || attrib.utm_source || localStorage.getItem('gb_utm_source') || '';
+    if (utmMediumEl) utmMediumEl.value = qp.get('utm_medium') || attrib.utm_medium || localStorage.getItem('gb_utm_medium') || '';
     if (utmCampaignEl) utmCampaignEl.value = qp.get('utm_campaign') || attrib.utm_campaign || localStorage.getItem('gb_utm_campaign') || '';
+    if (utmContentEl) utmContentEl.value = qp.get('utm_content') || attrib.utm_content || localStorage.getItem('gb_utm_content') || '';
+    if (utmTermEl) utmTermEl.value = qp.get('utm_term') || attrib.utm_term || localStorage.getItem('gb_utm_term') || '';
 
     // Validate required fields
     let bad = false;
@@ -207,7 +218,10 @@
         source: 'website',
         page: pageEl?.value || window.location.href,
         utm_source: utmSourceEl?.value || '',
-        utm_campaign: utmCampaignEl?.value || ''
+        utm_medium: utmMediumEl?.value || '',
+        utm_campaign: utmCampaignEl?.value || '',
+        utm_content: utmContentEl?.value || '',
+        utm_term: utmTermEl?.value || ''
       };
 
       const res = await fetch('/api/lead', {
@@ -233,20 +247,36 @@
         showSuccessPopup(userName);
 
         // ---- Analytics / Tracking ----
+        const trackingPayload = {
+          form_id: 'contact_form_main',
+          form_name: 'Contact Coaching Inquiry',
+          lead_id: leadId,
+          lead_email_domain: payload.email.split('@')[1] || '',
+          goal: payload.goal || '',
+          current_weight: payload.currentWeight || '',
+          main_struggle: payload.mainStruggle || '',
+          training_location: payload.trainingLocation || '',
+          start_timeline: payload.startTimeline || '',
+          investment_readiness: payload.investmentReadiness || ''
+        };
         try {
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            event: 'generate_lead',
-            form_id: 'contact_form_main',
-            form_name: 'Contact Coaching Inquiry',
-            lead_email_domain: emailEl.value.trim().split('@')[1] || '',
-            goal: goalEl.value || '',
-            current_weight: payload.currentWeight || '',
-            main_struggle: payload.mainStruggle || '',
-            training_location: payload.trainingLocation || '',
-            start_timeline: payload.startTimeline || '',
-            investment_readiness: payload.investmentReadiness || ''
-          });
+          if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+            window.GB_TRACKING.trackEvent('generate_lead', {
+              ...trackingPayload,
+              lead_type: 'coaching_application'
+            });
+            window.GB_TRACKING.trackEvent('application_submit', trackingPayload);
+            if (isHotLeadPayload(payload)) {
+              window.GB_TRACKING.trackEvent('hot_lead', trackingPayload);
+            }
+          } else {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ event: 'generate_lead', lead_type: 'coaching_application', ...trackingPayload });
+            window.dataLayer.push({ event: 'application_submit', ...trackingPayload });
+            if (isHotLeadPayload(payload)) {
+              window.dataLayer.push({ event: 'hot_lead', ...trackingPayload });
+            }
+          }
         } catch(e){ console.warn('dataLayer push failed', e); }
 
         // Google Ads conversion (contact form submission)

@@ -8,8 +8,6 @@
 
 console.log('[Component Loader v3.0] Initializing...');
 
-const COMPONENT_LOADER_DEFAULT_GA4_MEASUREMENT_ID = 'G-CMMHJP9LEY';
-
 function isValidGa4Id(id) {
     return typeof id === 'string' && /^G-[A-Z0-9]+$/i.test(id.trim());
 }
@@ -17,6 +15,10 @@ function isValidGa4Id(id) {
 function bootstrapGa4Defaults() {
     try {
         const candidates = [];
+
+        if (window.__ENV && typeof window.__ENV.NEXT_PUBLIC_GA4_MEASUREMENT_ID === 'string') {
+            candidates.push(window.__ENV.NEXT_PUBLIC_GA4_MEASUREMENT_ID);
+        }
 
         if (window.__ENV && typeof window.__ENV.GA4_MEASUREMENT_ID === 'string') {
             candidates.push(window.__ENV.GA4_MEASUREMENT_ID);
@@ -26,8 +28,8 @@ function bootstrapGa4Defaults() {
             candidates.push(window.ADS_CONFIG.google.ga4MeasurementId);
         }
 
-        if (typeof window.GA4_MEASUREMENT_ID === 'string') {
-            candidates.push(window.GA4_MEASUREMENT_ID);
+        if (typeof window.NEXT_PUBLIC_GA4_MEASUREMENT_ID === 'string') {
+            candidates.push(window.NEXT_PUBLIC_GA4_MEASUREMENT_ID);
         }
 
         if (typeof window.GA_MEASUREMENT_ID === 'string') {
@@ -60,16 +62,12 @@ function bootstrapGa4Defaults() {
             }
         }
 
-        if (!resolved && isValidGa4Id(COMPONENT_LOADER_DEFAULT_GA4_MEASUREMENT_ID)) {
-            resolved = COMPONENT_LOADER_DEFAULT_GA4_MEASUREMENT_ID;
-        }
-
         if (!resolved) {
             return;
         }
 
-        if (typeof window.GA4_MEASUREMENT_ID !== 'string' || !window.GA4_MEASUREMENT_ID) {
-            window.GA4_MEASUREMENT_ID = resolved;
+        if (typeof window.NEXT_PUBLIC_GA4_MEASUREMENT_ID !== 'string' || !window.NEXT_PUBLIC_GA4_MEASUREMENT_ID) {
+            window.NEXT_PUBLIC_GA4_MEASUREMENT_ID = resolved;
         }
 
         window.ADS_CONFIG = window.ADS_CONFIG || {};

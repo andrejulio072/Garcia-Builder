@@ -362,7 +362,10 @@ export default async function handler(req, res) {
         source: 'website',
         page: normalizeText(body.page) || req.headers.referer || '',
         utm_source: normalizeText(body.utm_source),
+        utm_medium: normalizeText(body.utm_medium),
         utm_campaign: normalizeText(body.utm_campaign),
+        utm_content: normalizeText(body.utm_content),
+        utm_term: normalizeText(body.utm_term),
       };
 
       const missingFields = ['firstName', 'lastName', 'email', 'phone', 'goal', 'currentWeight', 'mainStruggle', 'trainingLocation', 'startTimeline', 'investmentReadiness']

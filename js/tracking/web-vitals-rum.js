@@ -6,12 +6,16 @@
   window.dataLayer = window.dataLayer || [];
   function push(metric){
     try {
-      dataLayer.push({
-        event: 'web_vital',
+      const payload = {
         metric_name: metric.name,
         metric_id: metric.id || metric.name + '-' + Date.now(),
         value: Math.round(metric.value * 1000) / 1000
-      });
+      };
+      if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+        window.GB_TRACKING.trackEvent('web_vital', payload);
+      } else {
+        dataLayer.push({ event: 'web_vital', ...payload });
+      }
     } catch(e) { /* silent */ }
   }
   const W = window;

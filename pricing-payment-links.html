@@ -1,6 +1,37 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google Tag Manager -->
+<script id="gb-gtm-bootstrap">
+(function(w,d,s,l){
+  w[l]=w[l]||[];
+  w.gtag=w.gtag||function(){w[l].push(arguments);};
+  try{
+    var stored=JSON.parse(w.localStorage.getItem('gb_consent_v1')||'null');
+    var granted=stored&&stored.status==='granted';
+    w.gtag('consent','default',{
+      ad_storage:granted?'granted':'denied',
+      analytics_storage:granted?'granted':'denied',
+      ad_user_data:granted?'granted':'denied',
+      ad_personalization:granted?'granted':'denied',
+      functionality_storage:'granted',
+      security_storage:'granted'
+    });
+  }catch(e){
+    w.gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});
+  }
+  var env=w.__ENV||{};
+  var i=env.NEXT_PUBLIC_GTM_ID||w.NEXT_PUBLIC_GTM_ID||'GTM-TG5TFZ2C';
+  if(!i||d.getElementById('gb-gtm-script')) return;
+  w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+  var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!=='dataLayer'?'&l='+l:'';
+  j.async=true;j.id='gb-gtm-script';j.src='https://www.googletagmanager.com/gtm.js?id='+encodeURIComponent(i)+dl;
+  f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer');
+</script>
+<script defer src="/js/tracking/tracking.js?v=20260702"></script>
+<!-- End Google Tag Manager -->
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Pricing – Garcia Builder</title>
@@ -10,15 +41,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/global.css">
-
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
-
-  <!-- Google Ads Global Site Tag (standardized) -->
+<!-- Google Ads Global Site Tag (standardized) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -167,8 +190,8 @@
 
 <body class="pricing-bg">
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" title="Google Tag Manager" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <nav class="navbar"><div class="container">
   <a class="navbar-brand" href="index.html">
   <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder" height="32">
@@ -214,7 +237,7 @@
           <li>My PT Hub app access</li>
         </ul>
         <p class="muted">Launch your routine with guided training and simple nutrition habits.</p>
-      <a href="https://buy.stripe.com/7sY6oG8qsexmbXEfkyak000" onclick="return gtag_report_conversion(this.href)"
+      <a href="https://buy.stripe.com/7sY6oG8qsexmbXEfkyak000" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)"
         class="btn-payment"
         target="_blank"
         rel="noopener noreferrer">
@@ -234,7 +257,7 @@
           <li>My PT Hub app access</li>
         </ul>
         <p class="muted">Build unstoppable momentum with upgraded accountability.</p>
-      <a href="https://buy.stripe.com/6oU5kC7mobla2n48Waak001" onclick="return gtag_report_conversion(this.href)"
+      <a href="https://buy.stripe.com/6oU5kC7mobla2n48Waak001" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)"
         class="btn-payment"
         target="_blank"
         rel="noopener noreferrer">
@@ -254,7 +277,7 @@
           <li>Performance tracking dashboard</li>
         </ul>
         <p class="muted">Train smart and see visible progress with dialed-in feedback.</p>
-      <a href="https://buy.stripe.com/14A14m6ik74U9Pw2xMak002" onclick="return gtag_report_conversion(this.href)"
+      <a href="https://buy.stripe.com/14A14m6ik74U9Pw2xMak002" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)"
         class="btn-payment"
         target="_blank"
         rel="noopener noreferrer">
@@ -275,7 +298,7 @@
           <li>Strategic mini phases: cut, recomp, build</li>
         </ul>
         <p class="muted">Full-spectrum coaching for advanced body and performance goals.</p>
-      <a href="https://buy.stripe.com/bJe3cu5egbla7Hodcqak003" onclick="return gtag_report_conversion(this.href)"
+      <a href="https://buy.stripe.com/bJe3cu5egbla7Hodcqak003" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)"
         class="btn-payment"
         target="_blank"
         rel="noopener noreferrer">
@@ -296,7 +319,7 @@
           <li>Lifestyle optimisation for sleep and stress</li>
         </ul>
         <p class="muted">Immersive coaching with priority access and advanced monitoring.</p>
-      <a href="https://buy.stripe.com/5kQdR85eg1KA1j04FUak004" onclick="return gtag_report_conversion(this.href)"
+      <a href="https://buy.stripe.com/5kQdR85eg1KA1j04FUak004" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)"
         class="btn-payment"
         target="_blank"
         rel="noopener noreferrer">
@@ -327,12 +350,12 @@
 <div class="footer">
   <div class="container small">
     © 2025 Garcia Builder — Online Coaching •
-    <a href="https://instagram.com/garciabuilder.fitness" target="_blank" onclick="return gtag_report_conversion(this.href)">@garciabuilder.fitness</a> •
-    <a href="https://calendly.com/andrenjulio072/consultation" target="_blank" onclick="return gtag_report_conversion(this.href)">Book a call</a>
+    <a href="https://instagram.com/garciabuilder.fitness" target="_blank" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">@garciabuilder.fitness</a> •
+    <a href="https://calendly.com/andrenjulio072/consultation" target="_blank" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">Book a call</a>
   </div>
 </div>
 
-<a class="contact-float" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener" aria-label="Schedule a free consultation" onclick="return gtag_report_conversion(this.href)">
+<a class="contact-float" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener" aria-label="Schedule a free consultation" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
   <i class="fas fa-calendar-check" aria-hidden="true"></i>
   Book Free Consultation
 </a>

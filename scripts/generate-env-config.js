@@ -10,6 +10,8 @@
  *
  * Optional environment variables:
  *   - PUBLIC_SITE_URL
+ *   - NEXT_PUBLIC_GTM_ID
+ *   - NEXT_PUBLIC_GA4_MEASUREMENT_ID
  *   - GOOGLE_OAUTH_ENABLED
  *   - FACEBOOK_OAUTH_ENABLED
  */
@@ -70,7 +72,9 @@ const publicEnv = {
   STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
   PUBLIC_SITE_URL:
     process.env.PUBLIC_SITE_URL || process.env.FRONTEND_URL || null,
-  GA4_MEASUREMENT_ID: process.env.GA4_MEASUREMENT_ID || null,
+  NEXT_PUBLIC_GTM_ID: process.env.NEXT_PUBLIC_GTM_ID || null,
+  NEXT_PUBLIC_GA4_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || null,
+  GA4_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || process.env.GA4_MEASUREMENT_ID || null,
   GOOGLE_OAUTH_ENABLED: parseBooleanEnv(process.env.GOOGLE_OAUTH_ENABLED, true),
   FACEBOOK_OAUTH_ENABLED: parseBooleanEnv(process.env.FACEBOOK_OAUTH_ENABLED, false)
 };

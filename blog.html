@@ -1,6 +1,37 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google Tag Manager -->
+<script id="gb-gtm-bootstrap">
+(function(w,d,s,l){
+  w[l]=w[l]||[];
+  w.gtag=w.gtag||function(){w[l].push(arguments);};
+  try{
+    var stored=JSON.parse(w.localStorage.getItem('gb_consent_v1')||'null');
+    var granted=stored&&stored.status==='granted';
+    w.gtag('consent','default',{
+      ad_storage:granted?'granted':'denied',
+      analytics_storage:granted?'granted':'denied',
+      ad_user_data:granted?'granted':'denied',
+      ad_personalization:granted?'granted':'denied',
+      functionality_storage:'granted',
+      security_storage:'granted'
+    });
+  }catch(e){
+    w.gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});
+  }
+  var env=w.__ENV||{};
+  var i=env.NEXT_PUBLIC_GTM_ID||w.NEXT_PUBLIC_GTM_ID||'GTM-TG5TFZ2C';
+  if(!i||d.getElementById('gb-gtm-script')) return;
+  w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+  var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!=='dataLayer'?'&l='+l:'';
+  j.async=true;j.id='gb-gtm-script';j.src='https://www.googletagmanager.com/gtm.js?id='+encodeURIComponent(i)+dl;
+  f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer');
+</script>
+<script defer src="/js/tracking/tracking.js?v=20260702"></script>
+<!-- End Google Tag Manager -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Garcia Builder Fitness Blog - Expert Training & Nutrition Articles</title>
@@ -31,15 +62,7 @@
     
     <!-- Component Loader -->
     <script src="js/utils/component-loader-v3-simplified.js?v=20260628"></script>
-
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
-
-        <!-- Google tag (gtag.js) -->
+<!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -681,15 +704,13 @@ window.addEventListener('load', function() {
 </script>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" title="Google Tag Manager" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
     <!-- Animated background particles (optional, can be replaced with a library) -->
     <canvas id="particles-bg"></canvas>
-
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-
-    <!-- Dynamic Navigation (same as all pages) -->
+<!-- Dynamic Navigation (same as all pages) -->
 
 <!-- Navbar Component (loaded dynamically) -->
 <div data-component="navbar"></div>
@@ -745,7 +766,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>The Ultimate Guide to Achieving 100 Push-ups</h3>
                         <p>A realistic 20-week plan to build strength progressively and reach the milestone of 100 consecutive push-ups.</p>
-                        <a href="https://www.mypthub.me/articles/the-ultimate-guide-to-achieving-100-push-ups-a-realistic-20-week-plan/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/the-ultimate-guide-to-achieving-100-push-ups-a-realistic-20-week-plan/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -760,7 +781,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>Training and Nutrition in Diabetes Management</h3>
                         <p>Evidence-based strategies for using exercise and proper nutrition to manage diabetes effectively.</p>
-                        <a href="https://www.mypthub.me/articles/training-and-nutrition-in-diabetes-management/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/training-and-nutrition-in-diabetes-management/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -775,7 +796,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>10 Myths and Facts About Nutrition and Healthy Eating</h3>
                         <p>Debunking common nutrition misconceptions and revealing the science-backed truth about healthy eating.</p>
-                        <a href="https://www.mypthub.me/articles/10-myths-and-facts-about-nutrition-and-healthy-eating/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/10-myths-and-facts-about-nutrition-and-healthy-eating/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -790,7 +811,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>The Vital Role of Nutrition in Weight Loss</h3>
                         <p>Understanding how proper nutrition forms the foundation of sustainable weight loss and body composition changes.</p>
-                        <a href="https://www.mypthub.me/articles/the-vital-role-of-nutrition-in-weight-loss/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/the-vital-role-of-nutrition-in-weight-loss/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -805,7 +826,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>Motivation for Your Weight Loss Journey</h3>
                         <p>Practical strategies to maintain motivation and overcome challenges during your transformation process.</p>
-                        <a href="https://www.mypthub.me/articles/motivation-for-your-weight-loss-journey/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/motivation-for-your-weight-loss-journey/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -820,7 +841,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>The Link Between Exercise and Cognitive Function</h3>
                         <p>Exploring the powerful connection between physical exercise and mental performance, focus, and brain health.</p>
-                        <a href="https://www.mypthub.me/articles/the-link-between-exercise-and-cognitive-function/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/the-link-between-exercise-and-cognitive-function/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -835,7 +856,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>Achieving Body Strength and Health on a Vegan/Vegetarian Diet</h3>
                         <p>Comprehensive guide to achieving optimal body strength and health while following plant-based nutrition principles.</p>
-                        <a href="https://www.mypthub.me/articles/achieving-body-strength-and-health-on-a-vegan-vegetarian-diet/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/achieving-body-strength-and-health-on-a-vegan-vegetarian-diet/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -850,7 +871,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>Conquer Lower Back Pain</h3>
                         <p>Proven strategies and evidence-based approaches for lasting relief from lower back pain through targeted exercises.</p>
-                        <a href="https://www.mypthub.me/articles/conquer-lower-back-pain-proven-strategies-for-lasting-relief/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/conquer-lower-back-pain-proven-strategies-for-lasting-relief/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -865,7 +886,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>Atomic Habits: Small Changes, Big Results</h3>
                         <p>Transform your health and fitness through the power of tiny habits that compound into extraordinary results.</p>
-                        <a href="https://www.mypthub.me/articles/applying-the-principles-of-atomic-habits/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/applying-the-principles-of-atomic-habits/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -880,7 +901,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>Achieving Fitness Goals on a Budget</h3>
                         <p>Smart strategies for eating healthy and building strength without breaking the bank. Affordable nutrition made simple.</p>
-                        <a href="https://www.mypthub.me/articles/fitness-on-a-budget/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/fitness-on-a-budget/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -895,7 +916,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>The Power of Group Fitness</h3>
                         <p>Discover how training with others can accelerate your results through motivation, accountability, and community support.</p>
-                        <a href="https://www.mypthub.me/articles/the-benefits-of-group-fitness/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/the-benefits-of-group-fitness/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -910,7 +931,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>Leveraging AI Technology in Fitness</h3>
                         <p>Explore how artificial intelligence is revolutionizing personal training and transforming fitness experiences.</p>
-                        <a href="https://www.mypthub.me/articles/ai-and-technology-revolutionizing-workouts/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/ai-and-technology-revolutionizing-workouts/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -925,7 +946,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>Exercise Essentials for Stroke Recovery</h3>
                         <p>Evidence-based exercise protocols to support recovery and improve quality of life after stroke.</p>
-                        <a href="https://www.mypthub.me/articles/stroke-recovery-a-comprehensive-guide-to-rehabilitation-and-physical-therapy/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/stroke-recovery-a-comprehensive-guide-to-rehabilitation-and-physical-therapy/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -940,7 +961,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>Your First Bodybuilding Competition</h3>
                         <p>Complete guide to preparing for your first bodybuilding competition, from training to posing to mindset.</p>
-                        <a href="https://www.mypthub.me/articles/your-first-bodybuilding-competition-a-step-by-step-guide-to-success/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/your-first-bodybuilding-competition-a-step-by-step-guide-to-success/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -955,7 +976,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>Creatine: The Ultimate Performance Supplement</h3>
                         <p>Science-backed insights on creatine supplementation for enhanced strength, power, and recovery.</p>
-                        <a href="https://www.mypthub.me/articles/the-power-of-creatine-what-it-is-how-it-works-and-its-benefits/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/the-power-of-creatine-what-it-is-how-it-works-and-its-benefits/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -970,7 +991,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>Building Your Online Fitness Business</h3>
                         <p>Essential strategies for personal trainers to build and scale a successful online fitness business.</p>
-                        <a href="https://www.mypthub.me/articles/launching-your-online-personal-training-business/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/launching-your-online-personal-training-business/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -985,7 +1006,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>Developing a David Goggins Mindset</h3>
                         <p>Unlock your potential by adopting the mental toughness and resilience principles of David Goggins.</p>
-                        <a href="https://www.mypthub.me/articles/10-david-goggins-inspired-rules-to-overcome-your-limits/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/10-david-goggins-inspired-rules-to-overcome-your-limits/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -1000,7 +1021,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>Overcoming Shoulder Pain and Injury</h3>
                         <p>Comprehensive approach to preventing and treating shoulder pain through targeted exercises and proper form.</p>
-                        <a href="https://www.mypthub.me/articles/comprehensive-strategies-to-alleviate-and-cure-shoulder-pain/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/comprehensive-strategies-to-alleviate-and-cure-shoulder-pain/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -1015,7 +1036,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>Your First Half Marathon Training Plan</h3>
                         <p>Complete 12-week training plan to safely build endurance and successfully complete your first half marathon.</p>
-                        <a href="https://www.mypthub.me/articles/how-to-train-for-your-first-marathon-from-0km-with-gogginss-inspirational-40-rule/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/how-to-train-for-your-first-marathon-from-0km-with-gogginss-inspirational-40-rule/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -1030,7 +1051,7 @@ window.addEventListener('load', function() {
                     <div class="blog-content">
                         <h3>HIIT: Maximum Results, Minimum Time</h3>
                         <p>Efficient high-intensity interval training protocols for busy professionals who want maximum fitness results.</p>
-                        <a href="https://www.mypthub.me/articles/hiit-maximum-results-minimum-time/" target="_blank" class="blog-link" onclick="return gtag_report_conversion(this.href)">
+                        <a href="https://www.mypthub.me/articles/hiit-maximum-results-minimum-time/" target="_blank" class="blog-link" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                             Read Article <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -1039,7 +1060,7 @@ window.addEventListener('load', function() {
             </div>
 
             <div class="text-center mt-5">
-                <a href="https://www.mypthub.me/profile/garciabuilder/AndreJulio.Garcia" target="_blank" class="btn btn-outline-light btn-lg" onclick="return gtag_report_conversion(this.href)">
+                <a href="https://www.mypthub.me/profile/garciabuilder/AndreJulio.Garcia" target="_blank" class="btn btn-outline-light btn-lg" onclick="return (window.gtag_report_conversion ? window.gtag_report_conversion(this.href) : true)">
                     <i class="fas fa-book-open me-2"></i>View All Articles on My PT Hub
                 </a>
             </div>

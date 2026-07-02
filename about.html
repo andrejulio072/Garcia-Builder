@@ -1,5 +1,36 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en"><head>
+<!-- Google Tag Manager -->
+<script id="gb-gtm-bootstrap">
+(function(w,d,s,l){
+  w[l]=w[l]||[];
+  w.gtag=w.gtag||function(){w[l].push(arguments);};
+  try{
+    var stored=JSON.parse(w.localStorage.getItem('gb_consent_v1')||'null');
+    var granted=stored&&stored.status==='granted';
+    w.gtag('consent','default',{
+      ad_storage:granted?'granted':'denied',
+      analytics_storage:granted?'granted':'denied',
+      ad_user_data:granted?'granted':'denied',
+      ad_personalization:granted?'granted':'denied',
+      functionality_storage:'granted',
+      security_storage:'granted'
+    });
+  }catch(e){
+    w.gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});
+  }
+  var env=w.__ENV||{};
+  var i=env.NEXT_PUBLIC_GTM_ID||w.NEXT_PUBLIC_GTM_ID||'GTM-TG5TFZ2C';
+  if(!i||d.getElementById('gb-gtm-script')) return;
+  w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+  var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!=='dataLayer'?'&l='+l:'';
+  j.async=true;j.id='gb-gtm-script';j.src='https://www.googletagmanager.com/gtm.js?id='+encodeURIComponent(i)+dl;
+  f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer');
+</script>
+<script defer src="/js/tracking/tracking.js?v=20260702"></script>
+<!-- End Google Tag Manager -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport-fit=cover"/>
 <!-- Primary description only (remove duplicates) -->
@@ -47,11 +78,6 @@
   gtag('js', new Date());
   gtag('config', 'AW-17627402053', { 'send_page_view': false });
 </script>
-
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
-<!-- End Google Tag Manager -->
-
 <!-- Centralized Meta Pixel -->
 <script>window.FB_PIXEL_ID='1102565141856929';</script>
 <script defer src="js/tracking/pixel-init.js"></script>

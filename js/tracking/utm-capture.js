@@ -27,6 +27,11 @@
 
   // Expose globally (read-only clone)
   window.GB_ATTRIBUTION = Object.freeze(Object.assign({}, current));
+  KEYS.forEach(k => {
+    if (current[k]) {
+      try { localStorage.setItem('gb_' + k, current[k]); } catch(e) {}
+    }
+  });
 
   function injectHiddenInputs(form){
     if(!form || form.__utmInjected) return; form.__utmInjected = true;
@@ -70,9 +75,18 @@
   setTimeout(scan, 1500);
 
   // dataLayer push
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-    event: 'session_attribution_ready',
-    attribution: current
-  });
+  if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+    window.GB_TRACKING.trackEvent('session_attribution_ready', { attribution: current });
+  } else {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'session_attribution_ready',
+      attribution: current,
+      utm_source: current.utm_source || '',
+      utm_medium: current.utm_medium || '',
+      utm_campaign: current.utm_campaign || '',
+      utm_content: current.utm_content || '',
+      utm_term: current.utm_term || ''
+    });
+  }
 })();

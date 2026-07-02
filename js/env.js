@@ -45,6 +45,8 @@
             SUPABASE_ANON_KEY: typeof data.SUPABASE_ANON_KEY === 'string' ? data.SUPABASE_ANON_KEY.trim() : '',
             STRIPE_PUBLISHABLE_KEY: typeof data.STRIPE_PUBLISHABLE_KEY === 'string' ? data.STRIPE_PUBLISHABLE_KEY.trim() : '',
             PUBLIC_SITE_URL: typeof data.PUBLIC_SITE_URL === 'string' ? data.PUBLIC_SITE_URL.trim() : '',
+            NEXT_PUBLIC_GTM_ID: typeof data.NEXT_PUBLIC_GTM_ID === 'string' ? data.NEXT_PUBLIC_GTM_ID.trim() : '',
+            NEXT_PUBLIC_GA4_MEASUREMENT_ID: typeof data.NEXT_PUBLIC_GA4_MEASUREMENT_ID === 'string' ? data.NEXT_PUBLIC_GA4_MEASUREMENT_ID.trim() : '',
             GA4_MEASUREMENT_ID: typeof data.GA4_MEASUREMENT_ID === 'string' ? data.GA4_MEASUREMENT_ID.trim() : '',
             GOOGLE_OAUTH_ENABLED: data.GOOGLE_OAUTH_ENABLED === true,
             FACEBOOK_OAUTH_ENABLED: data.FACEBOOK_OAUTH_ENABLED === true
@@ -65,6 +67,8 @@
         window.SUPABASE_ANON_KEY = env.SUPABASE_ANON_KEY;
         window.NEXT_PUBLIC_SUPABASE_URL = env.SUPABASE_URL;
         window.NEXT_PUBLIC_SUPABASE_ANON_KEY = env.SUPABASE_ANON_KEY;
+        window.NEXT_PUBLIC_GTM_ID = env.NEXT_PUBLIC_GTM_ID || window.NEXT_PUBLIC_GTM_ID;
+        window.NEXT_PUBLIC_GA4_MEASUREMENT_ID = env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || env.GA4_MEASUREMENT_ID || window.NEXT_PUBLIC_GA4_MEASUREMENT_ID;
         window.GOOGLE_OAUTH_ENABLED = env.GOOGLE_OAUTH_ENABLED === true;
         window.FACEBOOK_OAUTH_ENABLED = env.FACEBOOK_OAUTH_ENABLED === true;
 

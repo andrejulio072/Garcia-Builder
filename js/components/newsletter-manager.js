@@ -26,7 +26,10 @@
 
     return {
       utm_source: query.get('utm_source') || stored.utm_source || localStorage.getItem('gb_utm_source') || '',
-      utm_campaign: query.get('utm_campaign') || stored.utm_campaign || localStorage.getItem('gb_utm_campaign') || ''
+      utm_medium: query.get('utm_medium') || stored.utm_medium || localStorage.getItem('gb_utm_medium') || '',
+      utm_campaign: query.get('utm_campaign') || stored.utm_campaign || localStorage.getItem('gb_utm_campaign') || '',
+      utm_content: query.get('utm_content') || stored.utm_content || localStorage.getItem('gb_utm_content') || '',
+      utm_term: query.get('utm_term') || stored.utm_term || localStorage.getItem('gb_utm_term') || ''
     };
   };
   const splitName = (name = '') => {
@@ -149,8 +152,9 @@
             </div>
           `;
 
-          // Track conversion
-          trackEvent('lead_captured', {
+          // Track conversion only after the backend accepts the lead.
+          trackEvent('generate_lead', {
+            lead_type: 'consultation_request',
             source: leadData.source,
             goal: leadData.goal,
             page: leadData.page
@@ -236,8 +240,17 @@
       // Send welcome email
       await sendWelcomeEmail(leadInfo);
 
-      // Track conversion
-      trackConversion('lead_capture', leadInfo.source);
+      // Track conversion only after /api/lead accepts the lead.
+      if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+        window.GB_TRACKING.trackEvent('generate_lead', {
+          lead_type: 'general',
+          source: leadInfo.source,
+          goal: leadInfo.goal,
+          page_location: window.location.href
+        });
+      } else {
+        trackConversion('lead_capture', leadInfo.source);
+      }
 
       // Mark user as converted for session
       if (typeof window.gbMarkUserConverted === 'function') {
@@ -482,7 +495,7 @@
         popup.classList.add('show');
       }, 100);
 
-      trackEvent('exit_intent_popup_shown');
+      trackEvent('ebook_popup_open', { source: 'exit_intent' });
       console.log('🎉 Popup exibido com sucesso!');
     };
 
@@ -657,7 +670,10 @@
           consent,
           page: window.location.href,
           utm_source: attribution.utm_source,
-          utm_campaign: attribution.utm_campaign
+          utm_medium: attribution.utm_medium,
+          utm_campaign: attribution.utm_campaign,
+          utm_content: attribution.utm_content,
+          utm_term: attribution.utm_term
         });
 
         await sendDownloadLink({ email }, leadResponse);
@@ -682,8 +698,15 @@
           document.body.style.overflow = ''; // Restore scrolling
         }, 3000);
 
-        // Track conversion
-        trackEvent('lead_magnet_download', { source: 'exit_intent' });
+        // Track only after /api/ebook-lead accepts the lead.
+        if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+          window.GB_TRACKING.trackEvent('ebook_download', {
+            source: 'exit_intent',
+            guide_id: '28-days-fat-loss-quickstart'
+          });
+        } else {
+          trackEvent('lead_magnet_download', { source: 'exit_intent' });
+        }
 
         // Mark user as converted
         if (typeof window.gbMarkUserConverted === 'function') {
@@ -764,8 +787,15 @@
 
       await sendDownloadLink(downloadInfo, leadResponse);
 
-      // Track conversion
-      trackConversion('guide_download', downloadInfo.source);
+      // Track only after /api/ebook-lead accepts the lead.
+      if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+        window.GB_TRACKING.trackEvent('ebook_download', {
+          source: downloadInfo.source,
+          guide_id: downloadInfo.guide_id
+        });
+      } else {
+        trackConversion('guide_download', downloadInfo.source);
+      }
 
       // Show success and provide immediate download.
       const notificationMessage = leadResponse?.message || 'Your 28-Day Fat Loss Kickstart is on the way. Check your email.';
@@ -846,7 +876,10 @@
       consent: leadInfo.consent === true || leadInfo.consent === 'true' || leadInfo.consent === 'on',
       page: leadInfo.page || window.location.href,
       utm_source: leadInfo.utm_source || attribution.utm_source,
-      utm_campaign: leadInfo.utm_campaign || attribution.utm_campaign
+      utm_medium: leadInfo.utm_medium || attribution.utm_medium,
+      utm_campaign: leadInfo.utm_campaign || attribution.utm_campaign,
+      utm_content: leadInfo.utm_content || attribution.utm_content,
+      utm_term: leadInfo.utm_term || attribution.utm_term
     };
 
     if (!payload.firstName || !payload.lastName || !payload.consent) {
@@ -872,6 +905,7 @@
       name: leadInfo.name || null,
       source: leadInfo.source || 'Website',
     };
+    Object.assign(payload, getAttribution());
 
     if (Object.keys(metadata).length) {
       payload.notes = JSON.stringify(metadata);
@@ -1005,20 +1039,22 @@
     const mapped = map[event];
     try {
       // Use dataLayer (preferred via GTM)
-      window.dataLayer = window.dataLayer || [];
       if (mapped) {
-        window.dataLayer.push({ event: mapped.gaEvent, ...mapped.params });
+        if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+          window.GB_TRACKING.trackEvent(mapped.gaEvent, mapped.params);
+        } else {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: mapped.gaEvent, ...mapped.params });
+        }
       } else {
-        window.dataLayer.push({ event: 'conversion_generic', conv_event: event, source });
+        if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+          window.GB_TRACKING.trackEvent('conversion_generic', { conv_event: event, source });
+        } else {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'conversion_generic', conv_event: event, source });
+        }
       }
     } catch(e) { console.warn('dataLayer push failed', e); }
-
-    // Legacy direct gtag fallback (in case still present anywhere)
-    if (typeof gtag !== 'undefined') {
-      const evName = mapped ? mapped.gaEvent : 'conversion';
-      const params = mapped ? mapped.params : { event_category: 'Lead Generation', event_label: source, value: 1 };
-      gtag('event', evName, params);
-    }
 
     // Meta Pixel basic mapping (optional enhancement later)
     try {
@@ -1031,11 +1067,12 @@
     console.log('Conversion tracked:', event, source, mapped);
   };
 
-  const trackEvent = (event) => {
-    if (typeof gtag !== 'undefined') {
-      gtag('event', event, {
-        event_category: 'User Interaction'
-      });
+  const trackEvent = (event, params = {}) => {
+    if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+      window.GB_TRACKING.trackEvent(event, params);
+    } else {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event, ...params });
     }
 
     console.log('Event tracked:', event);

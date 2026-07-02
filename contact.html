@@ -1,6 +1,37 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
+<!-- Google Tag Manager -->
+<script id="gb-gtm-bootstrap">
+(function(w,d,s,l){
+  w[l]=w[l]||[];
+  w.gtag=w.gtag||function(){w[l].push(arguments);};
+  try{
+    var stored=JSON.parse(w.localStorage.getItem('gb_consent_v1')||'null');
+    var granted=stored&&stored.status==='granted';
+    w.gtag('consent','default',{
+      ad_storage:granted?'granted':'denied',
+      analytics_storage:granted?'granted':'denied',
+      ad_user_data:granted?'granted':'denied',
+      ad_personalization:granted?'granted':'denied',
+      functionality_storage:'granted',
+      security_storage:'granted'
+    });
+  }catch(e){
+    w.gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});
+  }
+  var env=w.__ENV||{};
+  var i=env.NEXT_PUBLIC_GTM_ID||w.NEXT_PUBLIC_GTM_ID||'GTM-TG5TFZ2C';
+  if(!i||d.getElementById('gb-gtm-script')) return;
+  w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+  var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!=='dataLayer'?'&l='+l:'';
+  j.async=true;j.id='gb-gtm-script';j.src='https://www.googletagmanager.com/gtm.js?id='+encodeURIComponent(i)+dl;
+  f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer');
+</script>
+<script defer src="/js/tracking/tracking.js?v=20260702"></script>
+<!-- End Google Tag Manager -->
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
@@ -80,15 +111,7 @@
 
   <!-- Consent baseline -->
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}try{const s=JSON.parse(localStorage.getItem('gb_consent_v1')||'null');if(s){const st=s.status==='granted';gtag('consent','default',{ad_storage:st?'granted':'denied',analytics_storage:st?'granted':'denied',ad_user_data:st?'granted':'denied',ad_personalization:st?'granted':'denied',functionality_storage:'granted',security_storage:'granted'});}else{gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});} }catch(e){gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});} </script>
-
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-TG5TFZ2C');</script>
-
-  <script defer src="js/tracking/web-vitals-rum.js"></script>
+<script defer src="js/tracking/web-vitals-rum.js"></script>
 
   <!-- Google Ads Global Site Tag (standardized) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
@@ -203,10 +226,10 @@ window.addEventListener('load', function() {
 </script>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-
-  <!-- NAV -->
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" title="Google Tag Manager" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<!-- NAV -->
 
 <!-- Navbar Component (loaded dynamically) -->
 <div data-component="navbar"></div>
@@ -355,7 +378,10 @@ window.addEventListener('load', function() {
         <input type="hidden" id="source" name="source" value="website">
         <input type="hidden" id="page" name="page" value="">
         <input type="hidden" id="utm_source" name="utm_source" value="">
+        <input type="hidden" id="utm_medium" name="utm_medium" value="">
         <input type="hidden" id="utm_campaign" name="utm_campaign" value="">
+        <input type="hidden" id="utm_content" name="utm_content" value="">
+        <input type="hidden" id="utm_term" name="utm_term" value="">
 
   <button id="sendBtn" type="submit" class="btn btn-gradient w-100 mt-4"
     data-default="Send" data-loading="Sending...">

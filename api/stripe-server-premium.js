@@ -70,6 +70,39 @@ async function postJsonWithTimeout(url, payload, timeoutMs = 8000) {
     }
 }
 
+function normalizeText(value) {
+    return String(value || '').trim();
+}
+
+function normalizeEmail(value) {
+    return normalizeText(value).toLowerCase();
+}
+
+function normalizeConsent(value) {
+    return value === true || value === 'true' || value === 'on' || value === 1 || value === '1';
+}
+
+async function forwardJsonToZapier(webhookUrl, payload, label) {
+    if (!webhookUrl) {
+        throw new Error(`${label} Zapier webhook is not configured`);
+    }
+
+    const response = await postJsonWithTimeout(webhookUrl, payload, 8000);
+
+    if (!response.ok) {
+        const details = await response.text().catch(() => 'Zapier webhook request failed');
+        throw new Error(`${label} Zapier webhook error: ${response.status} ${details}`);
+    }
+
+    return { ok: true };
+}
+
+function isHotLead(payload) {
+    const readiness = normalizeText(payload.investmentReadiness).toLowerCase();
+    const timeline = normalizeText(payload.startTimeline).toLowerCase();
+    return readiness === 'ready now' && (timeline === 'now' || timeline === 'this week');
+}
+
 // ðŸ”’ SEGURANÃ‡A - ConfiguraÃ§Ãµes de nÃ­vel enterprise
 app.use(helmet({
     contentSecurityPolicy: {
@@ -549,6 +582,54 @@ app.post('/api/contact', async (req, res) => {
     }
 });
 
+app.post('/api/ebook-lead', async (req, res) => {
+    try {
+        const body = req.body || {};
+        const payload = {
+            submitted_at: new Date().toISOString(),
+            firstName: normalizeText(body.firstName),
+            lastName: normalizeText(body.lastName),
+            email: normalizeEmail(body.email),
+            phone: normalizeText(body.phone),
+            goal: normalizeText(body.goal),
+            consent: normalizeConsent(body.consent),
+            source: 'website',
+            page: normalizeText(body.page) || req.headers.referer || '',
+            utm_source: normalizeText(body.utm_source),
+            utm_campaign: normalizeText(body.utm_campaign),
+        };
+
+        const missingFields = ['firstName', 'lastName', 'email']
+            .filter((field) => !payload[field]);
+
+        if (missingFields.length) {
+            return res.status(400).json({ error: 'Missing required ebook fields', missingFields });
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
+            return res.status(400).json({ error: 'A valid email is required' });
+        }
+
+        if (!payload.consent) {
+            return res.status(400).json({ error: 'Consent is required' });
+        }
+
+        await forwardJsonToZapier(
+            process.env.ZAPIER_EBOOK_NURTURE_WEBHOOK_URL || process.env.ZAPIER_EBOOK_WEBHOOK_URL,
+            payload,
+            'Ebook nurture'
+        );
+
+        return res.status(200).json({
+            ok: true,
+            message: 'Your 28-Day Fat Loss Kickstart is on the way. Check your email.'
+        });
+    } catch (error) {
+        console.error('ebook lead endpoint error', error);
+        return res.status(500).json({ error: 'Something went wrong. Please try again or message Andre directly.' });
+    }
+});
+
 app.post('/api/lead', async (req, res) => {
     try {
         const body = req.body || {};
@@ -587,8 +668,11 @@ app.post('/api/lead', async (req, res) => {
                 utm_campaign: normalizeText(body.utm_campaign),
             };
 
-            if (!consultationPayload.firstName || !consultationPayload.lastName || !consultationPayload.email || !consultationPayload.phone || !consultationPayload.goal) {
-                return res.status(400).json({ error: 'Missing required consultation fields' });
+            const missingFields = ['firstName', 'lastName', 'email', 'phone', 'goal', 'currentWeight', 'mainStruggle', 'trainingLocation', 'startTimeline', 'investmentReadiness']
+                .filter((field) => !consultationPayload[field]);
+
+            if (missingFields.length) {
+                return res.status(400).json({ error: 'Missing required consultation fields', missingFields });
             }
 
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(consultationPayload.email)) {
@@ -599,17 +683,34 @@ app.post('/api/lead', async (req, res) => {
                 return res.status(400).json({ error: 'Consent is required' });
             }
 
-            const webhookUrl = process.env.ZAPIER_LEAD_WEBHOOK_URL;
+            const webhookUrl = process.env.ZAPIER_MAIN_COACHING_WEBHOOK_URL || process.env.ZAPIER_LEAD_WEBHOOK_URL;
             if (!webhookUrl) {
-                return res.status(500).json({ error: 'ZAPIER_LEAD_WEBHOOK_URL is not configured' });
+                return res.status(500).json({ error: 'Main coaching Zapier webhook is not configured' });
             }
 
             console.log('lead relay attempt', { leadId, source: consultationPayload.source });
-            const zapierResponse = await postJsonWithTimeout(webhookUrl, consultationPayload, 8000);
+            await forwardJsonToZapier(webhookUrl, consultationPayload, 'Main coaching');
 
-            if (!zapierResponse.ok) {
-                const details = await zapierResponse.text().catch(() => 'Zapier webhook request failed');
-                throw new Error(`Zapier webhook error: ${zapierResponse.status} ${details}`);
+            let hotLeadSent = false;
+            let hotLeadSkipped = true;
+            if (isHotLead(consultationPayload)) {
+                hotLeadSkipped = false;
+                try {
+                    const hotWebhookUrl = process.env.ZAPIER_HOT_LEAD_WEBHOOK_URL;
+                    if (!hotWebhookUrl) {
+                        hotLeadSkipped = true;
+                        console.warn('ZAPIER_HOT_LEAD_WEBHOOK_URL is not configured');
+                    } else {
+                        const hotResult = await forwardJsonToZapier(
+                            hotWebhookUrl,
+                            consultationPayload,
+                            'Hot lead'
+                        );
+                        hotLeadSent = hotResult?.ok === true;
+                    }
+                } catch (hotLeadError) {
+                    console.error('hot lead Zapier error:', hotLeadError.message || hotLeadError);
+                }
             }
 
             try {
@@ -653,7 +754,9 @@ app.post('/api/lead', async (req, res) => {
             return res.status(200).json({
                 ok: true,
                 leadId,
-                message: 'Thanks — your application has been received. I\'ll review your goal and get back to you.'
+                hotLead: hotLeadSent,
+                hotLeadSkipped,
+                message: 'Thanks \u2014 your application has been received. I\'ll review your goal and get back to you.'
             });
         }
 

@@ -292,8 +292,8 @@ window.addEventListener('load', function() {
           </div>
           <div class="col-12 col-md-6">
             <label for="currentWeight" class="form-label">Current weight (kg)</label>
-            <input id="currentWeight" name="currentWeight" type="number" class="form-control"
-                   min="30" max="300" step="0.1" placeholder="e.g. 82.5" required>
+            <input id="currentWeight" name="currentWeight" type="text" class="form-control"
+                   placeholder="e.g. 90kg" required>
           </div>
         </div>
 
@@ -301,7 +301,7 @@ window.addEventListener('load', function() {
         <div class="row g-3 mt-1">
           <div class="col-12 col-md-6">
             <label for="trainingLocation" class="form-label">Training location</label>
-            <select id="trainingLocation" name="trainingLocation" class="form-select">
+            <select id="trainingLocation" name="trainingLocation" class="form-select" required>
               <option value="" selected>Choose your training location</option>
               <option value="Gym">Gym</option>
               <option value="Home">Home</option>
@@ -311,9 +311,10 @@ window.addEventListener('load', function() {
           </div>
           <div class="col-12 col-md-6">
             <label for="startTimeline" class="form-label">Start timeline</label>
-            <select id="startTimeline" name="startTimeline" class="form-select">
+            <select id="startTimeline" name="startTimeline" class="form-select" required>
               <option value="" selected>When do you want to start?</option>
-              <option value="ASAP">ASAP</option>
+              <option value="Now">Now</option>
+              <option value="This Week">This Week</option>
               <option value="Within 2 weeks">Within 2 weeks</option>
               <option value="This month">This month</option>
               <option value="Next month">Next month</option>
@@ -326,9 +327,9 @@ window.addEventListener('load', function() {
         <div class="row g-3 mt-1">
           <div class="col-12 col-md-6">
             <label for="investmentReadiness" class="form-label">Investment readiness</label>
-            <select id="investmentReadiness" name="investmentReadiness" class="form-select">
+            <select id="investmentReadiness" name="investmentReadiness" class="form-select" required>
               <option value="" selected>Select your readiness</option>
-              <option value="Ready now">Ready now</option>
+              <option value="Ready Now">Ready Now</option>
               <option value="Need details first">Need details first</option>
               <option value="Comparing options">Comparing options</option>
               <option value="Not ready yet">Not ready yet</option>

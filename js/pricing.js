@@ -50,7 +50,7 @@
           ${result}
           <p class="muted">${plan.description || ''}</p>
           <ul>${features}</ul>
-          <button class="btn btn-gold" data-plan-key="${key}" data-plan-name="${planName}" data-plan-price="${planPrice}">>
+          <button class="btn btn-gold" data-plan-key="${key}" data-plan-name="${planName}" data-plan-price="${planPrice}">
             ${dict.cta?.choose || 'Start Now'}
           </button>
         </div>`;

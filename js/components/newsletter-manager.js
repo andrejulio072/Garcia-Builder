@@ -15,6 +15,27 @@
   };
 
   const getApiUrl = (path) => `${resolveApiBaseUrl()}${path}`;
+  const getAttribution = () => {
+    const query = new URLSearchParams(window.location.search || '');
+    let stored = {};
+    try {
+      stored = JSON.parse(localStorage.getItem('gb_attrib_v1') || '{}');
+    } catch {
+      stored = {};
+    }
+
+    return {
+      utm_source: query.get('utm_source') || stored.utm_source || localStorage.getItem('gb_utm_source') || '',
+      utm_campaign: query.get('utm_campaign') || stored.utm_campaign || localStorage.getItem('gb_utm_campaign') || ''
+    };
+  };
+  const splitName = (name = '') => {
+    const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+    return {
+      firstName: parts[0] || '',
+      lastName: parts.slice(1).join(' ') || ''
+    };
+  };
   const getCurrentLang = () => {
     try {
       return (
@@ -566,9 +587,15 @@
             <p>${t.subtitle}</p>
           </div>
           <form class="exit-intent-form download-form" data-source="Exit Intent">
+            <input type="text" name="firstName" placeholder="First name" required autocomplete="given-name">
+            <input type="text" name="lastName" placeholder="Last name" required autocomplete="family-name">
             <input type="email" name="email" placeholder="${t.email}" required autocomplete="email">
             <input type="hidden" name="goal" value="28 Days Fat Loss Quickstart">
             <input type="hidden" name="guide_id" value="28-days-fat-loss-quickstart">
+            <label class="exit-intent-consent">
+              <input type="checkbox" name="consent" required>
+              <span>I agree to receive the guide and fitness emails.</span>
+            </label>
             <button type="submit">
               <i class="fas fa-download"></i> ${t.button}
             </button>
@@ -608,7 +635,10 @@
     // Handle form submission with mobile optimization
     popup.querySelector('.exit-intent-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = popup.querySelector('input[name="email"]').value;
+      const firstName = popup.querySelector('input[name="firstName"]').value.trim();
+      const lastName = popup.querySelector('input[name="lastName"]').value.trim();
+      const email = popup.querySelector('input[name="email"]').value.trim();
+      const consent = popup.querySelector('input[name="consent"]').checked;
       const submitBtn = popup.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerHTML;
 
@@ -617,24 +647,23 @@
       submitBtn.disabled = true;
 
       try {
-        const leadResponse = await saveLeadToDatabase({
-          id: generateLeadId(),
-          email: email,
-          source: 'Exit Intent Popup',
-          timestamp: new Date().toISOString(),
-          page: window.location.pathname,
-          type: 'lead_magnet',
+        const attribution = getAttribution();
+        const leadResponse = await saveEbookLeadToDatabase({
+          firstName,
+          lastName,
+          email,
+          phone: '',
           goal: '28 Days Fat Loss Quickstart',
-          guide_id: '28-days-fat-loss-quickstart',
-          status: 'new'
+          consent,
+          page: window.location.href,
+          utm_source: attribution.utm_source,
+          utm_campaign: attribution.utm_campaign
         });
 
         await sendDownloadLink({ email }, leadResponse);
         triggerFileDownload();
 
-        const emailMessage = leadResponse?.customerEmailSent
-          ? getI18nText('leadmagnet.email_sent_message', 'Check your email. The ebook was sent to your inbox.')
-          : getI18nText('leadmagnet.email_pending_message', 'The email could not be sent in this environment. Use the button below to download the ebook.');
+        const emailMessage = leadResponse?.message || 'Your 28-Day Fat Loss Kickstart is on the way. Check your email.';
 
         // Show success and close
         popup.querySelector('.exit-intent-content').innerHTML = `
@@ -651,7 +680,7 @@
         setTimeout(() => {
           popup.remove();
           document.body.style.overflow = ''; // Restore scrolling
-        }, leadResponse?.customerEmailSent ? 3000 : 8000);
+        }, 3000);
 
         // Track conversion
         trackEvent('lead_magnet_download', { source: 'exit_intent' });
@@ -665,7 +694,7 @@
         console.error('Error saving lead:', error);
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
-        showNotification(getI18nText('leadmagnet.error_process', 'Unable to process your request. Please try again.'), 'error');
+        showNotification('Something went wrong. Please try again or message Andre directly.', 'error');
       }
     });
 
@@ -712,9 +741,13 @@
 
     const downloadInfo = {
       id: generateLeadId(),
+      firstName: formData.get('firstName') || '',
+      lastName: formData.get('lastName') || '',
       email: formData.get('email'),
+      phone: formData.get('phone') || '',
       name: formData.get('name') || '',
       goal: formData.get('goal') || '28 Days Fat Loss Quickstart',
+      consent: formData.get('consent') === 'on' || formData.get('consent') === 'true',
       guide_id: form.dataset.guideId || formData.get('guide_id') || '28-days-fat-loss-quickstart',
       type: 'download',
       source: form.dataset.source || 'Download Form',
@@ -727,8 +760,7 @@
         throw new Error(getI18nText('newsletter.invalid_email', 'Please enter a valid email address.'));
       }
 
-      // Save lead and send the ebook email through the backend.
-      const leadResponse = await saveLeadToDatabase(downloadInfo);
+      const leadResponse = await saveEbookLeadToDatabase(downloadInfo);
 
       await sendDownloadLink(downloadInfo, leadResponse);
 
@@ -736,14 +768,8 @@
       trackConversion('guide_download', downloadInfo.source);
 
       // Show success and provide immediate download.
-      const emailWasSent = leadResponse?.customerEmailSent;
-      const emailSkipped = leadResponse?.customerEmailSkipped || leadResponse?.fallback;
-      const notificationMessage = emailWasSent
-        ? getI18nText('leadmagnet.email_sent_message', 'Sent! Check your email for the ebook.')
-        : emailSkipped
-          ? getI18nText('leadmagnet.email_pending_message', 'Saved. Use the download link shown on the page.')
-          : getI18nText('leadmagnet.download_ready_message', 'Saved. Use the download link shown on the page.');
-      showNotification(notificationMessage, emailWasSent ? 'success' : 'info');
+      const notificationMessage = leadResponse?.message || 'Your 28-Day Fat Loss Kickstart is on the way. Check your email.';
+      showNotification(notificationMessage, 'success');
 
       // Immediate download if asset available
       triggerFileDownload();
@@ -761,7 +787,7 @@
           <div class="lead-form-success text-center">
             <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
             <h3>${getI18nText('leadmagnet.download_success_title', 'Ebook on the way!')}</h3>
-            <p class="mb-3">${emailWasSent ? getI18nText('leadmagnet.email_sent_message', 'Check your inbox and spam folder for the ebook.') : getI18nText('leadmagnet.email_pending_message', 'The email could not be sent in this environment. Use the button below to download the ebook.')}</p>
+            <p class="mb-3">${notificationMessage}</p>
             <a href="${GUIDE_ASSET_PATH}" download="${GUIDE_DOWNLOAD_NAME}" class="btn btn-primary">
               ${getI18nText('leadmagnet.download_now', 'Download ebook now')}
             </a>
@@ -779,7 +805,7 @@
       }
       const message = error?.message && error.message !== 'Request failed'
         ? error.message
-        : getI18nText('leadmagnet.error_process', 'Unable to process your download. Please try again.');
+        : 'Something went wrong. Please try again or message Andre directly.';
       showNotification(message, 'error');
     }
 
@@ -802,6 +828,32 @@
       throw error;
     }
     return data;
+  };
+
+  const saveEbookLeadToDatabase = async (leadInfo) => {
+    if (!leadInfo || !leadInfo.email) {
+      throw new Error('Lead email is required');
+    }
+
+    const nameParts = splitName(leadInfo.name || '');
+    const attribution = getAttribution();
+    const payload = {
+      firstName: leadInfo.firstName || nameParts.firstName,
+      lastName: leadInfo.lastName || nameParts.lastName,
+      email: leadInfo.email,
+      phone: leadInfo.phone || '',
+      goal: leadInfo.goal || '28 Days Fat Loss Quickstart',
+      consent: leadInfo.consent === true || leadInfo.consent === 'true' || leadInfo.consent === 'on',
+      page: leadInfo.page || window.location.href,
+      utm_source: leadInfo.utm_source || attribution.utm_source,
+      utm_campaign: leadInfo.utm_campaign || attribution.utm_campaign
+    };
+
+    if (!payload.firstName || !payload.lastName || !payload.consent) {
+      throw new Error('First name, last name, and consent are required.');
+    }
+
+    return await postJson(getApiUrl('/ebook-lead'), payload);
   };
 
   // Save lead to database
@@ -898,9 +950,11 @@
     return new Promise(resolve => setTimeout(resolve, 1000));
   };
 
-  // The backend sends the actual ebook email from /api/lead.
+  // The backend starts the ebook nurture flow from /api/ebook-lead.
   const sendDownloadLink = async (downloadInfo, leadResponse = {}) => {
-    if (leadResponse.customerEmailSent) {
+    if (leadResponse.ok) {
+      console.log('Ebook lead accepted for nurture:', downloadInfo.email);
+    } else if (leadResponse.customerEmailSent) {
       console.log('Ebook email sent to:', downloadInfo.email);
     } else if (leadResponse.customerEmailSkipped) {
       console.warn('Ebook email skipped. Configure SMTP on the server to send emails.');

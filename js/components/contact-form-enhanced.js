@@ -44,7 +44,8 @@
   const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
   const phoneOk = v => !v || /^[\+]?[0-9\s\-\(\)]{6,24}$/.test(v.trim());
   const weightOk = value => {
-    const weight = Number(value);
+    const match = String(value || '').replace(',', '.').match(/\d+(?:\.\d+)?/);
+    const weight = match ? Number(match[0]) : NaN;
     return Number.isFinite(weight) && weight >= 30 && weight <= 300;
   };
   const createLeadId = () => {
@@ -73,7 +74,7 @@
 
   // Generate specific error message
   const getErrorMessage = () => getI18nText('contact.form.validation_error', 'Please check the highlighted fields.');
-  const successMessage = 'Thanks — your application has been received. I\'ll review your goal and get back to you.';
+  const successMessage = 'Thanks \u2014 your application has been received. I\'ll review your goal and get back to you.';
   const failureMessage = 'Something went wrong. Please try again or message me directly on WhatsApp.';
 
   // Simple submit rate-limit: 1 per 60s
@@ -161,6 +162,9 @@
     setErr(goalEl, !goalEl.value);                         bad ||= goalEl.classList.contains('input-error');
     setErr(currentWeightEl, !weightOk(currentWeightEl.value)); bad ||= currentWeightEl.classList.contains('input-error');
     setErr(mainStruggleEl, mainStruggleEl.value.trim().length < 3); bad ||= mainStruggleEl.classList.contains('input-error');
+    setErr(trainingLocationEl, !trainingLocationEl.value); bad ||= trainingLocationEl.classList.contains('input-error');
+    setErr(startTimelineEl, !startTimelineEl.value);       bad ||= startTimelineEl.classList.contains('input-error');
+    setErr(investmentReadinessEl, !investmentReadinessEl.value); bad ||= investmentReadinessEl.classList.contains('input-error');
     setErr(consentEl, !consentEl.checked);
     bad ||= consentEl.classList.contains('input-error');
 

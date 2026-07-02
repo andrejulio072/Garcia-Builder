@@ -80,9 +80,9 @@ async function postJsonWithTimeout(url, payload, timeoutMs = 8000) {
 }
 
 async function forwardLeadToZapier(payload) {
-  const webhookUrl = process.env.ZAPIER_LEAD_WEBHOOK_URL;
+  const webhookUrl = process.env.ZAPIER_MAIN_COACHING_WEBHOOK_URL || process.env.ZAPIER_LEAD_WEBHOOK_URL;
   if (!webhookUrl) {
-    throw new Error('ZAPIER_LEAD_WEBHOOK_URL is not configured');
+    throw new Error('Main coaching Zapier webhook is not configured');
   }
 
   const response = await postJsonWithTimeout(webhookUrl, payload, 8000);
@@ -91,6 +91,29 @@ async function forwardLeadToZapier(payload) {
     const details = await response.text().catch(() => 'Zapier webhook request failed');
     throw new Error(`Zapier webhook error: ${response.status} ${details}`);
   }
+}
+
+async function forwardHotLeadToZapier(payload) {
+  const webhookUrl = process.env.ZAPIER_HOT_LEAD_WEBHOOK_URL;
+  if (!webhookUrl) {
+    console.warn('lead.js: ZAPIER_HOT_LEAD_WEBHOOK_URL is not configured');
+    return { skipped: true };
+  }
+
+  const response = await postJsonWithTimeout(webhookUrl, payload, 8000);
+
+  if (!response.ok) {
+    const details = await response.text().catch(() => 'Zapier webhook request failed');
+    throw new Error(`Hot lead Zapier webhook error: ${response.status} ${details}`);
+  }
+
+  return { ok: true };
+}
+
+function isHotLead(payload) {
+  const readiness = normalizeText(payload.investmentReadiness).toLowerCase();
+  const timeline = normalizeText(payload.startTimeline).toLowerCase();
+  return readiness === 'ready now' && (timeline === 'now' || timeline === 'this week');
 }
 
 function getSupabase() {
@@ -342,8 +365,11 @@ export default async function handler(req, res) {
         utm_campaign: normalizeText(body.utm_campaign),
       };
 
-      if (!consultationPayload.firstName || !consultationPayload.lastName || !consultationPayload.email || !consultationPayload.phone || !consultationPayload.goal) {
-        return res.status(400).json({ error: 'Missing required consultation fields' });
+      const missingFields = ['firstName', 'lastName', 'email', 'phone', 'goal', 'currentWeight', 'mainStruggle', 'trainingLocation', 'startTimeline', 'investmentReadiness']
+        .filter((field) => !consultationPayload[field]);
+
+      if (missingFields.length) {
+        return res.status(400).json({ error: 'Missing required consultation fields', missingFields });
       }
 
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(consultationPayload.email)) {
@@ -355,6 +381,19 @@ export default async function handler(req, res) {
       }
 
       await forwardLeadToZapier(consultationPayload);
+
+      let hotLeadSent = false;
+      let hotLeadSkipped = true;
+      if (isHotLead(consultationPayload)) {
+        hotLeadSkipped = false;
+        try {
+          const hotResult = await forwardHotLeadToZapier(consultationPayload);
+          hotLeadSent = hotResult?.ok === true;
+          hotLeadSkipped = hotResult?.skipped === true;
+        } catch (hotLeadError) {
+          console.error('lead.js hot lead Zapier error', hotLeadError);
+        }
+      }
 
       try {
         const supa = getSupabase();
@@ -392,7 +431,9 @@ export default async function handler(req, res) {
       return res.status(200).json({
         ok: true,
         leadId,
-        message: 'Thanks — your application has been received. I\'ll review your goal and get back to you.'
+        hotLead: hotLeadSent,
+        hotLeadSkipped,
+        message: 'Thanks \u2014 your application has been received. I\'ll review your goal and get back to you.'
       });
     }
 

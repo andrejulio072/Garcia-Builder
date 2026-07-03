@@ -700,6 +700,11 @@
 
         // Track only after /api/ebook-lead accepts the lead.
         if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+          window.GB_TRACKING.trackEvent('generate_lead', {
+            lead_type: 'ebook',
+            source: 'exit_intent',
+            guide_id: '28-days-fat-loss-quickstart'
+          });
           window.GB_TRACKING.trackEvent('ebook_download', {
             source: 'exit_intent',
             guide_id: '28-days-fat-loss-quickstart'
@@ -789,6 +794,11 @@
 
       // Track only after /api/ebook-lead accepts the lead.
       if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+        window.GB_TRACKING.trackEvent('generate_lead', {
+          lead_type: 'ebook',
+          source: downloadInfo.source,
+          guide_id: downloadInfo.guide_id
+        });
         window.GB_TRACKING.trackEvent('ebook_download', {
           source: downloadInfo.source,
           guide_id: downloadInfo.guide_id
@@ -873,6 +883,7 @@
       email: leadInfo.email,
       phone: leadInfo.phone || '',
       goal: leadInfo.goal || '28 Days Fat Loss Quickstart',
+      source: leadInfo.source || 'website',
       consent: leadInfo.consent === true || leadInfo.consent === 'true' || leadInfo.consent === 'on',
       page: leadInfo.page || window.location.href,
       utm_source: leadInfo.utm_source || attribution.utm_source,

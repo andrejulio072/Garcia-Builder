@@ -42,6 +42,7 @@
       const payload = {
         cta_id: ctaId || 'cta_unknown',
         cta_location: ctaLocation || 'global',
+        button_location: ctaLocation || 'global',
         cta_url: href || ''
       };
       if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {

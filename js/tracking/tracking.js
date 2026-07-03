@@ -68,13 +68,23 @@
     return clean;
   }
 
+  function getBaseEventParams() {
+    return {
+      page: window.location.href,
+      source: 'website'
+    };
+  }
+
   function trackEvent(eventName, params) {
     if (!eventName) return;
 
     var cleanParams = sanitizeParams(params || {});
-    var payload = Object.assign({
-      event: eventName
-    }, getAttribution(), cleanParams);
+    var payload = Object.assign(
+      { event: eventName },
+      getBaseEventParams(),
+      getAttribution(),
+      cleanParams
+    );
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push(payload);
@@ -112,7 +122,7 @@
 
       if (!('IntersectionObserver' in window)) {
         pricingViewed = true;
-        trackEvent('view_pricing', { page_location: window.location.href });
+        trackEvent('view_pricing');
         return;
       }
 
@@ -120,7 +130,7 @@
         entries.forEach(function (entry) {
           if (entry.isIntersecting && !pricingViewed) {
             pricingViewed = true;
-            trackEvent('view_pricing', { page_location: window.location.href });
+            trackEvent('view_pricing');
             observer.disconnect();
           }
         });
@@ -143,7 +153,7 @@
         trackEvent('whatsapp_click', {
           cta_text: text,
           cta_url: action.getAttribute('href') || '',
-          cta_location: action.getAttribute('data-attr-track') || action.getAttribute('data-cta-location') || ''
+          button_location: action.getAttribute('data-attr-track') || action.getAttribute('data-cta-location') || 'global'
         });
       }
 
@@ -151,7 +161,7 @@
         trackEvent('book_consultation_click', {
           cta_text: text,
           cta_url: action.getAttribute('href') || '',
-          cta_location: action.getAttribute('data-attr-track') || action.getAttribute('data-cta-location') || ''
+          button_location: action.getAttribute('data-attr-track') || action.getAttribute('data-cta-location') || 'global'
         });
       }
 
@@ -163,8 +173,7 @@
       if (event.target && event.target.closest && event.target.closest('#contact-form')) {
         applicationStarted = true;
         trackEvent('start_application', {
-          form_id: 'contact_form',
-          page_location: window.location.href
+          form_id: 'contact_form'
         });
       }
     });

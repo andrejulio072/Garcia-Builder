@@ -586,17 +586,19 @@ app.post('/api/ebook-lead', async (req, res) => {
     try {
         const body = req.body || {};
         const payload = {
-            submitted_at: new Date().toISOString(),
             firstName: normalizeText(body.firstName),
             lastName: normalizeText(body.lastName),
             email: normalizeEmail(body.email),
             phone: normalizeText(body.phone),
             goal: normalizeText(body.goal),
-            consent: normalizeConsent(body.consent),
-            source: 'website',
+            source: normalizeText(body.source) || 'website',
             page: normalizeText(body.page) || req.headers.referer || '',
             utm_source: normalizeText(body.utm_source),
+            utm_medium: normalizeText(body.utm_medium),
             utm_campaign: normalizeText(body.utm_campaign),
+            utm_content: normalizeText(body.utm_content),
+            utm_term: normalizeText(body.utm_term),
+            consent: normalizeConsent(body.consent),
         };
 
         const missingFields = ['firstName', 'lastName', 'email']
@@ -647,10 +649,7 @@ app.post('/api/lead', async (req, res) => {
                     message: 'This consultation request was already received.'
                 });
             }
-            const submittedAt = new Date().toISOString();
             const consultationPayload = {
-                lead_id: leadId,
-                submitted_at: submittedAt,
                 firstName: normalizeText(body.firstName),
                 lastName: normalizeText(body.lastName),
                 email: normalizeText(body.email).toLowerCase(),
@@ -661,11 +660,14 @@ app.post('/api/lead', async (req, res) => {
                 trainingLocation: normalizeText(body.trainingLocation),
                 startTimeline: normalizeText(body.startTimeline),
                 investmentReadiness: normalizeText(body.investmentReadiness),
-                consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
-                source: 'website',
+                source: normalizeText(body.source) || 'website',
                 page: normalizeText(body.page) || req.headers.referer || '',
                 utm_source: normalizeText(body.utm_source),
+                utm_medium: normalizeText(body.utm_medium),
                 utm_campaign: normalizeText(body.utm_campaign),
+                utm_content: normalizeText(body.utm_content),
+                utm_term: normalizeText(body.utm_term),
+                consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
             };
 
             const missingFields = ['firstName', 'lastName', 'email', 'phone', 'goal', 'currentWeight', 'mainStruggle', 'trainingLocation', 'startTimeline', 'investmentReadiness']

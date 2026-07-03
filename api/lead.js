@@ -335,7 +335,6 @@ export default async function handler(req, res) {
       .some((key) => body[key] !== undefined);
 
     if (hasConsultationPayload) {
-      const submittedAt = new Date().toISOString();
       const leadId = normalizeText(body.lead_id) || randomUUID();
       if (isDuplicateConsultationLead(leadId)) {
         return res.status(200).json({
@@ -346,8 +345,6 @@ export default async function handler(req, res) {
         });
       }
       const consultationPayload = {
-        lead_id: leadId,
-        submitted_at: submittedAt,
         firstName: normalizeText(body.firstName),
         lastName: normalizeText(body.lastName),
         email: normalizeEmail(body.email),
@@ -358,14 +355,14 @@ export default async function handler(req, res) {
         trainingLocation: normalizeText(body.trainingLocation),
         startTimeline: normalizeText(body.startTimeline),
         investmentReadiness: normalizeText(body.investmentReadiness),
-        consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
-        source: 'website',
+        source: normalizeText(body.source) || 'website',
         page: normalizeText(body.page) || req.headers.referer || '',
         utm_source: normalizeText(body.utm_source),
         utm_medium: normalizeText(body.utm_medium),
         utm_campaign: normalizeText(body.utm_campaign),
         utm_content: normalizeText(body.utm_content),
         utm_term: normalizeText(body.utm_term),
+        consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
       };
 
       const missingFields = ['firstName', 'lastName', 'email', 'phone', 'goal', 'currentWeight', 'mainStruggle', 'trainingLocation', 'startTimeline', 'investmentReadiness']

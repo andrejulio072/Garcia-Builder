@@ -85,6 +85,9 @@
         const myPtHubUrl = button.getAttribute('href') || buildMyPtHubCheckoutUrl(planKey, planName);
 
         const trackingPayload = {
+          package_type: planKey,
+          package_name: planName,
+          price: parseFloat((planPrice || '').replace(/[^0-9.]/g, '')) || 0,
           plan_type: planKey,
           plan_name: planName,
           value: parseFloat((planPrice || '').replace(/[^0-9.]/g, '')) || 0,

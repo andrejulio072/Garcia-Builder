@@ -199,11 +199,7 @@
     }
 
     try {
-      const leadId = createLeadId();
-      const submittedAt = new Date().toISOString();
       const payload = {
-        lead_id: leadId,
-        submitted_at: submittedAt,
         firstName: firstNameEl.value.trim(),
         lastName: lastNameEl.value.trim(),
         email: emailEl.value.trim(),
@@ -236,6 +232,7 @@
 
       if (res.ok && (responseData?.ok || !responseData?.error)) {
         localStorage.setItem('gb_last_submit', Date.now().toString());
+        const leadId = responseData?.leadId || createLeadId();
 
         // Store user data for confirmation
         const userName = `${firstNameEl.value.trim()} ${lastNameEl.value.trim()}`.trim();

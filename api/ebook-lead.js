@@ -63,20 +63,19 @@ export default async function handler(req, res) {
   try {
     const body = parseBody(req);
     const payload = {
-      submitted_at: new Date().toISOString(),
       firstName: normalizeText(body.firstName),
       lastName: normalizeText(body.lastName),
       email: normalizeEmail(body.email),
       phone: normalizeText(body.phone),
       goal: normalizeText(body.goal),
-      consent: normalizeConsent(body.consent),
-      source: 'website',
+      source: normalizeText(body.source) || 'website',
       page: normalizeText(body.page) || req.headers.referer || '',
       utm_source: normalizeText(body.utm_source),
       utm_medium: normalizeText(body.utm_medium),
       utm_campaign: normalizeText(body.utm_campaign),
       utm_content: normalizeText(body.utm_content),
       utm_term: normalizeText(body.utm_term),
+      consent: normalizeConsent(body.consent),
     };
 
     const missingFields = ['firstName', 'lastName', 'email']

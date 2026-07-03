@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script id="gb-gtm-bootstrap">
+(function(w,d,s,l,i){
+  w[l]=w[l]||[];
+  w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
+  var f=d.getElementsByTagName(s)[0];
+  var j=d.createElement(s);
+  var dl=l!='dataLayer'?'&l='+l:'';
+  j.async=true;
+  j.id='gb-gtm-script';
+  j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+  f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TG5TFZ2C');
+</script>
+<script defer src="/js/tracking/tracking.js?v=20260703cc"></script>
+<!-- End Google Tag Manager -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your application has been received | Garcia Builder</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="icon" href="/Logo Files/For Web/logo-nobackground-500.png" type="image/png">
+  <link rel="stylesheet" href="/css/global.css?v=20260627">
+  <link rel="stylesheet" href="/css/layout-fixes.css?v=20251025">
+  <style>
+    body { min-height: 100vh; display: grid; place-items: center; margin: 0; background: #080808; color: #f8f5ef; font-family: Inter, Arial, sans-serif; }
+    main { width: min(720px, calc(100% - 32px)); padding: 56px 0; }
+    h1 { font-size: clamp(2rem, 6vw, 4rem); line-height: 1; margin: 0 0 24px; }
+    p { color: #d7d0c2; font-size: 1.1rem; line-height: 1.7; margin: 0 0 18px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; margin-top: 18px; padding: 14px 22px; border-radius: 6px; background: #d4af37; color: #111; font-weight: 800; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Your application has been received.</h1>
+    <p>Thanks for applying for Garcia Builder Coaching.</p>
+    <p>I&rsquo;ll review your goal, routine and current situation before replying.</p>
+    <p>The next step is to book your free consultation so we can look properly at what structure would fit you.</p>
+    <a id="bookConsultationCta" class="btn" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Book Free Consultation</a>
+  </main>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'application_thank_you_view',
+      page: '/thank-you-application',
+      source: 'website'
+    });
+    document.getElementById('bookConsultationCta').addEventListener('click', function () {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'book_consultation_click',
+        button_location: 'application_thank_you',
+        page: '/thank-you-application',
+        source: 'website'
+      });
+    });
+  </script>
+</body>
+</html>

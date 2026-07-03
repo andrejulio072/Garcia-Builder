@@ -152,7 +152,7 @@ function ensureAnalyticsScripts() {
         });
 
         ensureDeferredScript({
-            src: '/js/modules/event-tracking.js?v=20251025',
+            src: '/js/modules/event-tracking.js?v=20260703c',
             testPartial: 'js/modules/event-tracking.js',
             id: 'gb-event-tracking',
             attributes: { crossorigin: 'anonymous' }

@@ -70,7 +70,7 @@
 
   function getBaseEventParams() {
     return {
-      page: window.location.href,
+      page: window.location.pathname,
       source: 'website'
     };
   }
@@ -151,16 +151,12 @@
 
       if (href.indexOf('wa.me') > -1 || href.indexOf('api.whatsapp.com') > -1) {
         trackEvent('whatsapp_click', {
-          cta_text: text,
-          cta_url: action.getAttribute('href') || '',
           button_location: action.getAttribute('data-attr-track') || action.getAttribute('data-cta-location') || 'global'
         });
       }
 
       if (href.indexOf('calendly.com') > -1 || text.indexOf('book') > -1 && text.indexOf('consult') > -1) {
         trackEvent('book_consultation_click', {
-          cta_text: text,
-          cta_url: action.getAttribute('href') || '',
           button_location: action.getAttribute('data-attr-track') || action.getAttribute('data-cta-location') || 'global'
         });
       }
@@ -172,9 +168,7 @@
       if (applicationStarted) return;
       if (event.target && event.target.closest && event.target.closest('#contact-form')) {
         applicationStarted = true;
-        trackEvent('start_application', {
-          form_id: 'contact_form'
-        });
+        trackEvent('start_application');
       }
     });
 

@@ -495,7 +495,7 @@
         popup.classList.add('show');
       }, 100);
 
-      trackEvent('ebook_popup_open', { source: 'exit_intent' });
+      trackEvent('ebook_popup_open');
       console.log('🎉 Popup exibido com sucesso!');
     };
 
@@ -668,7 +668,7 @@
           phone: '',
           goal: '28 Days Fat Loss Quickstart',
           consent,
-          page: window.location.href,
+          page: window.location.pathname,
           utm_source: attribution.utm_source,
           utm_medium: attribution.utm_medium,
           utm_campaign: attribution.utm_campaign,
@@ -677,46 +677,33 @@
         });
 
         await sendDownloadLink({ email }, leadResponse);
-        triggerFileDownload();
-
-        const emailMessage = leadResponse?.message || 'Your 28-Day Fat Loss Kickstart is on the way. Check your email.';
-
-        // Show success and close
-        popup.querySelector('.exit-intent-content').innerHTML = `
-          <div class="text-center" style="padding: 2rem; color: #fff;">
-            <i class="fas fa-check-circle" style="font-size: 3rem; color: #28a745; margin-bottom: 1rem;"></i>
-            <h3>${getI18nText('leadmagnet.download_success_title', 'Success!')}</h3>
-            <p>${emailMessage}</p>
-            <a href="${GUIDE_ASSET_PATH}" download="${GUIDE_DOWNLOAD_NAME}" class="btn btn-primary mt-2">
-              ${getI18nText('leadmagnet.download_now', 'Download ebook now')}
-            </a>
-          </div>
-        `;
-
-        setTimeout(() => {
-          popup.remove();
-          document.body.style.overflow = ''; // Restore scrolling
-        }, 3000);
 
         // Track only after /api/ebook-lead accepts the lead.
         if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
           window.GB_TRACKING.trackEvent('generate_lead', {
-            lead_type: 'ebook',
-            source: 'exit_intent',
-            guide_id: '28-days-fat-loss-quickstart'
+            lead_type: 'ebook'
           });
           window.GB_TRACKING.trackEvent('ebook_download', {
-            source: 'exit_intent',
-            guide_id: '28-days-fat-loss-quickstart'
+            lead_type: 'ebook'
           });
         } else {
-          trackEvent('lead_magnet_download', { source: 'exit_intent' });
+          const trackingPayload = {
+            lead_type: 'ebook',
+            page: window.location.pathname,
+            source: 'website',
+            ...getAttribution()
+          };
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'generate_lead', ...trackingPayload });
+          window.dataLayer.push({ event: 'ebook_download', ...trackingPayload });
         }
 
         // Mark user as converted
         if (typeof window.gbMarkUserConverted === 'function') {
           window.gbMarkUserConverted();
         }
+
+        window.location.href = '/thank-you-ebook';
 
       } catch (error) {
         console.error('Error saving lead:', error);
@@ -795,16 +782,21 @@
       // Track only after /api/ebook-lead accepts the lead.
       if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
         window.GB_TRACKING.trackEvent('generate_lead', {
-          lead_type: 'ebook',
-          source: downloadInfo.source,
-          guide_id: downloadInfo.guide_id
+          lead_type: 'ebook'
         });
         window.GB_TRACKING.trackEvent('ebook_download', {
-          source: downloadInfo.source,
-          guide_id: downloadInfo.guide_id
+          lead_type: 'ebook'
         });
       } else {
-        trackConversion('guide_download', downloadInfo.source);
+        const trackingPayload = {
+          lead_type: 'ebook',
+          page: window.location.pathname,
+          source: 'website',
+          ...getAttribution()
+        };
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'generate_lead', ...trackingPayload });
+        window.dataLayer.push({ event: 'ebook_download', ...trackingPayload });
       }
 
       // Show success and provide immediate download.
@@ -836,6 +828,8 @@
       } else {
         form.reset();
       }
+
+      window.location.href = '/thank-you-ebook';
 
     } catch (error) {
       console.error('Error processing download:', error);
@@ -885,7 +879,7 @@
       goal: leadInfo.goal || '28 Days Fat Loss Quickstart',
       source: leadInfo.source || 'website',
       consent: leadInfo.consent === true || leadInfo.consent === 'true' || leadInfo.consent === 'on',
-      page: leadInfo.page || window.location.href,
+      page: leadInfo.page || window.location.pathname,
       utm_source: leadInfo.utm_source || attribution.utm_source,
       utm_medium: leadInfo.utm_medium || attribution.utm_medium,
       utm_campaign: leadInfo.utm_campaign || attribution.utm_campaign,

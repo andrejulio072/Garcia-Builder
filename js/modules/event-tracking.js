@@ -30,13 +30,32 @@
         }
 
         const extras = sanitizeParams(params);
-        const payload = Object.assign({
-            event: eventName,
-            event_timestamp: new Date().toISOString(),
-            page: extras.page || window.location.href,
-            source: extras.source || 'website',
-            page_location: extras.page_location || window.location.href
-        }, extras);
+        const salesEvents = [
+            'view_pricing',
+            'select_package',
+            'begin_checkout',
+            'whatsapp_click',
+            'book_consultation_click',
+            'ebook_popup_open',
+            'start_application',
+            'generate_lead',
+            'application_submit',
+            'hot_lead',
+            'ebook_download'
+        ];
+        const payload = salesEvents.includes(eventName)
+            ? Object.assign({
+                event: eventName,
+                page: extras.page || window.location.pathname,
+                source: extras.source || 'website'
+            }, extras)
+            : Object.assign({
+                event: eventName,
+                event_timestamp: new Date().toISOString(),
+                page: extras.page || window.location.pathname,
+                source: extras.source || 'website',
+                page_location: extras.page_location || window.location.href
+            }, extras);
 
         try {
             if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
@@ -174,9 +193,6 @@
                 if (isWhatsAppLink(actionable)) {
                     const ctaText = getNormalizedText(actionable);
                     triggerAnalyticsEvent('whatsapp_click', {
-                        cta_text: ctaText,
-                        link_url: actionable.href,
-                        engagement_location: pageContext,
                         button_location: actionable.getAttribute('data-attr-track') || actionable.getAttribute('data-cta-location') || pageContext
                     });
 
@@ -188,9 +204,6 @@
                 } else if (isBookConsultationLink(actionable)) {
                     const ctaText = getNormalizedText(actionable);
                     triggerAnalyticsEvent('book_consultation_click', {
-                        cta_text: ctaText,
-                        link_url: actionable.href,
-                        engagement_location: pageContext,
                         button_location: actionable.getAttribute('data-attr-track') || actionable.getAttribute('data-cta-location') || pageContext
                     });
 

@@ -42,9 +42,9 @@ async function postJsonWithTimeout(url, payload, timeoutMs = 8000) {
 }
 
 async function forwardEbookLeadToZapier(payload) {
-  const webhookUrl = process.env.ZAPIER_EBOOK_NURTURE_WEBHOOK_URL || process.env.ZAPIER_EBOOK_WEBHOOK_URL;
+  const webhookUrl = process.env.ZAPIER_EBOOK_WEBHOOK_URL;
   if (!webhookUrl) {
-    throw new Error('Ebook nurture Zapier webhook is not configured');
+    throw new Error('Ebook Zapier webhook is not configured');
   }
 
   const response = await postJsonWithTimeout(webhookUrl, payload, 8000);

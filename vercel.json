@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/thank-you-application",
+      "destination": "/thank-you-application.html"
+    },
+    {
+      "source": "/thank-you-ebook",
+      "destination": "/thank-you-ebook.html"
+    },
+    {
       "source": "/lead-magnet.html",
       "destination": "/pages/public/lead-magnet.html"
     },

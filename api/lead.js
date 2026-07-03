@@ -80,7 +80,7 @@ async function postJsonWithTimeout(url, payload, timeoutMs = 8000) {
 }
 
 async function forwardLeadToZapier(payload) {
-  const webhookUrl = process.env.ZAPIER_MAIN_COACHING_WEBHOOK_URL || process.env.ZAPIER_LEAD_WEBHOOK_URL;
+  const webhookUrl = process.env.ZAPIER_LEAD_WEBHOOK_URL || process.env.ZAPIER_MAIN_COACHING_WEBHOOK_URL;
   if (!webhookUrl) {
     throw new Error('Main coaching Zapier webhook is not configured');
   }

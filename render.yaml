@@ -34,10 +34,12 @@ services:
         sync: false
       - key: FIRST_WORKOUT_URL
         value: https://garciabuilder.fitness/first-workout.html
+      - key: ZAPIER_LEAD_WEBHOOK_URL
+        sync: false
       - key: ZAPIER_MAIN_COACHING_WEBHOOK_URL
         sync: false
       - key: ZAPIER_HOT_LEAD_WEBHOOK_URL
         sync: false
-      - key: ZAPIER_EBOOK_NURTURE_WEBHOOK_URL
+      - key: ZAPIER_EBOOK_WEBHOOK_URL
         sync: false
     healthCheckPath: /health

@@ -21,6 +21,11 @@
       package_name: '18-Week Premium Transformation',
       package_type: 'premium_transformation',
       price: 699
+    },
+    lead_magnet: {
+      package_name: '28-Day Fat Loss Kickstart',
+      package_type: 'lead_magnet',
+      price: 0
     }
   };
   const PACKAGE_ALIASES = {
@@ -30,6 +35,29 @@
   };
 
   const parsePrice = value => parseFloat(String(value || '').replace(/[^0-9.]/g, '')) || 0;
+  const getAttribution = () => {
+    if (window.GB_TRACKING && typeof window.GB_TRACKING.getAttribution === 'function') {
+      return window.GB_TRACKING.getAttribution();
+    }
+    try {
+      const saved = window.GB_ATTRIBUTION || JSON.parse(localStorage.getItem('gb_attrib_v1') || '{}');
+      return {
+        utm_source: saved.utm_source || localStorage.getItem('gb_utm_source') || '',
+        utm_medium: saved.utm_medium || localStorage.getItem('gb_utm_medium') || '',
+        utm_campaign: saved.utm_campaign || localStorage.getItem('gb_utm_campaign') || '',
+        utm_content: saved.utm_content || localStorage.getItem('gb_utm_content') || '',
+        utm_term: saved.utm_term || localStorage.getItem('gb_utm_term') || ''
+      };
+    } catch {
+      return {
+        utm_source: '',
+        utm_medium: '',
+        utm_campaign: '',
+        utm_content: '',
+        utm_term: ''
+      };
+    }
+  };
 
   const getCanonicalPackage = (planKey, fallbackName, fallbackPrice) => {
     const normalizedKey = PACKAGE_ALIASES[planKey] || planKey;
@@ -45,11 +73,9 @@
     };
   };
 
-  const pushSelectPackageEvent = (planKey, fallbackName, fallbackPrice) => {
+  const buildPackageEventPayload = (planKey, fallbackName, fallbackPrice) => {
     const pkg = getCanonicalPackage(planKey, fallbackName, fallbackPrice);
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'select_package',
+    return {
       package_name: pkg.package_name,
       package_type: pkg.package_type,
       price: pkg.price,
@@ -63,9 +89,23 @@
           price: pkg.price,
           quantity: 1
         }
-      ]
+      ],
+      ...getAttribution()
+    };
+  };
+
+  const pushPackageEvent = (eventName, planKey, fallbackName, fallbackPrice) => {
+    const payload = buildPackageEventPayload(planKey, fallbackName, fallbackPrice);
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: eventName,
+      ...payload
     });
-    return pkg;
+    return payload;
+  };
+
+  const pushSelectPackageEvent = (planKey, fallbackName, fallbackPrice) => {
+    return pushPackageEvent('select_package', planKey, fallbackName, fallbackPrice);
   };
 
   const getCanonicalPlanPrice = (planKey, fallbackPrice) => {
@@ -162,21 +202,8 @@
         const myPtHubUrl = button.getAttribute('href') || buildMyPtHubCheckoutUrl(planKey, planName);
 
         const selectedPackage = pushSelectPackageEvent(planKey, planName, planPrice);
+        pushPackageEvent('begin_checkout', planKey, planName, planPrice);
         const packagePrice = selectedPackage.price;
-        const trackingPayload = {
-          package_type: selectedPackage.package_type,
-          package_name: selectedPackage.package_name,
-          price: packagePrice,
-          plan_type: planKey,
-          plan_name: planName,
-          value: packagePrice,
-          currency: 'EUR'
-        };
-        if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
-          window.GB_TRACKING.trackEvent('begin_checkout', trackingPayload);
-        } else if (typeof window.dataLayer !== 'undefined') {
-          window.dataLayer.push({ event: 'begin_checkout', ...trackingPayload });
-        }
 
         if (typeof window.fbq !== 'undefined') {
           window.fbq('track', 'InitiateCheckout', {

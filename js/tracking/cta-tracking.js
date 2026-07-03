@@ -39,19 +39,23 @@
     const { ctaId, ctaLocation, href, conversion, target } = config;
 
     try {
+      const buttonLocation = ctaLocation || 'global';
       const payload = {
         cta_id: ctaId || 'cta_unknown',
-        cta_location: ctaLocation || 'global',
-        button_location: ctaLocation || 'global',
+        cta_location: buttonLocation,
+        button_location: buttonLocation,
         cta_url: href || ''
+      };
+      const safeSalesPayload = {
+        button_location: buttonLocation
       };
       if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
         window.GB_TRACKING.trackEvent('cta_click', payload);
         if ((href || '').includes('wa.me') || (href || '').includes('api.whatsapp.com')) {
-          window.GB_TRACKING.trackEvent('whatsapp_click', payload);
+          window.GB_TRACKING.trackEvent('whatsapp_click', safeSalesPayload);
         }
         if ((href || '').includes('calendly.com')) {
-          window.GB_TRACKING.trackEvent('book_consultation_click', payload);
+          window.GB_TRACKING.trackEvent('book_consultation_click', safeSalesPayload);
         }
       } else {
         window.dataLayer = window.dataLayer || [];

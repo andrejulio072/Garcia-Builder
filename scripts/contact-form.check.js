@@ -14,6 +14,7 @@ const { JSDOM } = require('jsdom');
   global.window = dom.window;
   global.document = dom.window.document;
   global.navigator = dom.window.navigator;
+  window.__GB_DISABLE_FORM_REDIRECT = true;
   global.FormData = dom.window.FormData;
   global.localStorage = (() => {
     const store = new Map();
@@ -219,7 +220,7 @@ const { JSDOM } = require('jsdom');
     throw new Error(`Unexpected attribution payload: ${JSON.stringify({ utm_source: payload.utm_source, utm_campaign: payload.utm_campaign })}`);
   }
 
-  if (payload.page !== 'https://garciabuilder.fitness/contact.html?utm_source=google&utm_campaign=summer-cut') {
+  if (payload.page !== '/contact.html') {
     throw new Error(`Unexpected page value: ${payload.page}`);
   }
 

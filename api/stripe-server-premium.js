@@ -617,9 +617,9 @@ app.post('/api/ebook-lead', async (req, res) => {
         }
 
         await forwardJsonToZapier(
-            process.env.ZAPIER_EBOOK_NURTURE_WEBHOOK_URL || process.env.ZAPIER_EBOOK_WEBHOOK_URL,
+            process.env.ZAPIER_EBOOK_WEBHOOK_URL,
             payload,
-            'Ebook nurture'
+            'Ebook'
         );
 
         return res.status(200).json({
@@ -685,7 +685,7 @@ app.post('/api/lead', async (req, res) => {
                 return res.status(400).json({ error: 'Consent is required' });
             }
 
-            const webhookUrl = process.env.ZAPIER_MAIN_COACHING_WEBHOOK_URL || process.env.ZAPIER_LEAD_WEBHOOK_URL;
+            const webhookUrl = process.env.ZAPIER_LEAD_WEBHOOK_URL || process.env.ZAPIER_MAIN_COACHING_WEBHOOK_URL;
             if (!webhookUrl) {
                 return res.status(500).json({ error: 'Main coaching Zapier webhook is not configured' });
             }

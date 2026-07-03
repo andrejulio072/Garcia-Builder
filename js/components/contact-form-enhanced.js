@@ -157,7 +157,7 @@
     if (sourceEl) {
       sourceEl.value = 'website';
     }
-    if (pageEl) pageEl.value = window.location.href;
+    if (pageEl) pageEl.value = window.location.pathname;
     if (utmSourceEl) utmSourceEl.value = qp.get('utm_source') || attrib.utm_source || localStorage.getItem('gb_utm_source') || '';
     if (utmMediumEl) utmMediumEl.value = qp.get('utm_medium') || attrib.utm_medium || localStorage.getItem('gb_utm_medium') || '';
     if (utmCampaignEl) utmCampaignEl.value = qp.get('utm_campaign') || attrib.utm_campaign || localStorage.getItem('gb_utm_campaign') || '';
@@ -212,7 +212,7 @@
         investmentReadiness: investmentReadinessEl.value || '',
         consent: !!consentEl.checked,
         source: 'website',
-        page: pageEl?.value || window.location.href,
+        page: pageEl?.value || window.location.pathname,
         utm_source: utmSourceEl?.value || '',
         utm_medium: utmMediumEl?.value || '',
         utm_campaign: utmCampaignEl?.value || '',
@@ -232,46 +232,37 @@
 
       if (res.ok && (responseData?.ok || !responseData?.error)) {
         localStorage.setItem('gb_last_submit', Date.now().toString());
-        const leadId = responseData?.leadId || createLeadId();
-
-        // Store user data for confirmation
-        const userName = `${firstNameEl.value.trim()} ${lastNameEl.value.trim()}`.trim();
-
         form.reset();
         alertBox.classList.remove('visually-hidden');
         alertBox.textContent = responseData?.message || successMessage;
 
-        showSuccessPopup(userName);
-
         // ---- Analytics / Tracking ----
         const trackingPayload = {
-          form_id: 'contact_form_main',
-          form_name: 'Contact Coaching Inquiry',
-          lead_id: leadId,
-          lead_email_domain: payload.email.split('@')[1] || '',
-          goal: payload.goal || '',
-          current_weight: payload.currentWeight || '',
-          main_struggle: payload.mainStruggle || '',
-          training_location: payload.trainingLocation || '',
-          start_timeline: payload.startTimeline || '',
-          investment_readiness: payload.investmentReadiness || ''
+          lead_type: 'coaching_application',
+          page: window.location.pathname,
+          source: 'website',
+          utm_source: payload.utm_source || '',
+          utm_medium: payload.utm_medium || '',
+          utm_campaign: payload.utm_campaign || '',
+          utm_content: payload.utm_content || '',
+          utm_term: payload.utm_term || ''
         };
         try {
           if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
-            window.GB_TRACKING.trackEvent('generate_lead', {
-              ...trackingPayload,
-              lead_type: 'coaching_application'
-            });
+            window.GB_TRACKING.trackEvent('generate_lead', trackingPayload);
             window.GB_TRACKING.trackEvent('application_submit', trackingPayload);
             if (isHotLeadPayload(payload)) {
-              window.GB_TRACKING.trackEvent('hot_lead', trackingPayload);
+              window.GB_TRACKING.trackEvent('hot_lead', {
+                ...trackingPayload,
+                lead_quality: 'hot'
+              });
             }
           } else {
             window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({ event: 'generate_lead', lead_type: 'coaching_application', ...trackingPayload });
+            window.dataLayer.push({ event: 'generate_lead', ...trackingPayload });
             window.dataLayer.push({ event: 'application_submit', ...trackingPayload });
             if (isHotLeadPayload(payload)) {
-              window.dataLayer.push({ event: 'hot_lead', ...trackingPayload });
+              window.dataLayer.push({ event: 'hot_lead', ...trackingPayload, lead_quality: 'hot' });
             }
           }
         } catch(e){ console.warn('dataLayer push failed', e); }
@@ -293,12 +284,14 @@
         try {
           if (typeof fbq === 'function') {
             fbq('track', 'Lead', {
-              content_name: 'contact_form_main',
-              goal: goalEl.value || '',
-              main_struggle: payload.mainStruggle || ''
+              content_name: 'coaching_application'
             });
           }
         } catch(e){ console.warn('fbq lead track failed', e); }
+
+        if (!window.__GB_DISABLE_FORM_REDIRECT) {
+          window.location.href = '/thank-you-application';
+        }
       } else {
         alertBox.classList.remove('visually-hidden');
         alertBox.textContent = failureMessage;

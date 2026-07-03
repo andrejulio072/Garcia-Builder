@@ -1,6 +1,72 @@
 // Pricing page specific JavaScript
 (function() {
   const PLAN_ORDER = ['monthly', 'eight_week', 'twelve_week', 'eighteen_week'];
+  const PACKAGE_TRACKING = {
+    monthly: {
+      package_name: 'Monthly Online Coaching',
+      package_type: 'monthly',
+      price: 200
+    },
+    eight_week: {
+      package_name: '8-Week Rebuild Programme',
+      package_type: 'rebuild',
+      price: 359
+    },
+    twelve_week: {
+      package_name: '12-Week Transformation Programme',
+      package_type: 'transformation',
+      price: 519
+    },
+    eighteen_week: {
+      package_name: '18-Week Premium Transformation',
+      package_type: 'premium_transformation',
+      price: 699
+    }
+  };
+  const PACKAGE_ALIASES = {
+    rebuild: 'eight_week',
+    transformation: 'twelve_week',
+    premium_transformation: 'eighteen_week'
+  };
+
+  const parsePrice = value => parseFloat(String(value || '').replace(/[^0-9.]/g, '')) || 0;
+
+  const getCanonicalPackage = (planKey, fallbackName, fallbackPrice) => {
+    const normalizedKey = PACKAGE_ALIASES[planKey] || planKey;
+    const canonical = PACKAGE_TRACKING[normalizedKey];
+    if (canonical) {
+      return canonical;
+    }
+
+    return {
+      package_name: fallbackName || normalizedKey || 'Coaching Package',
+      package_type: normalizedKey || 'unknown',
+      price: parsePrice(fallbackPrice)
+    };
+  };
+
+  const pushSelectPackageEvent = (planKey, fallbackName, fallbackPrice) => {
+    const pkg = getCanonicalPackage(planKey, fallbackName, fallbackPrice);
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'select_package',
+      package_name: pkg.package_name,
+      package_type: pkg.package_type,
+      price: pkg.price,
+      currency: 'EUR',
+      page: window.location.pathname,
+      source: 'website',
+      items: [
+        {
+          item_name: pkg.package_name,
+          item_category: pkg.package_type,
+          price: pkg.price,
+          quantity: 1
+        }
+      ]
+    });
+    return pkg;
+  };
 
   const getCanonicalPlanPrice = (planKey, fallbackPrice) => {
     const configPrice = window.STRIPE_ENV_CONFIG?.plans?.[planKey]?.price;
@@ -55,7 +121,7 @@
         : `<button type="button" class="btn btn-gold" data-plan-key="${escapeAttr(key)}" data-plan-name="${escapeAttr(planName)}" data-plan-price="${escapeAttr(planPrice)}">${ctaText}</button>`;
 
       return `
-        <div id="${cardId}" class="price reveal ${plan.featured ? 'featured-plan' : ''}" data-tilt data-tilt-max="6" data-tilt-speed="500">
+        <div id="${cardId}" class="price reveal ${plan.featured ? 'featured-plan' : ''}" data-package-card data-plan-key="${escapeAttr(key)}" data-plan-name="${escapeAttr(planName)}" data-plan-price="${escapeAttr(planPrice)}" data-tilt data-tilt-max="6" data-tilt-speed="500">
           ${plan.badge ? `<span class="save">${plan.badge}</span>` : ''}
           <h3>${planName}</h3>
           ${meta}
@@ -77,6 +143,17 @@
       window.CurrencyConverter.refresh();
     }
 
+    container.querySelectorAll('[data-package-card][data-plan-key]').forEach(card => {
+      card.addEventListener('click', event => {
+        if (event.target.closest('.btn.btn-gold[data-plan-key]')) return;
+        pushSelectPackageEvent(
+          card.getAttribute('data-plan-key'),
+          card.getAttribute('data-plan-name'),
+          card.getAttribute('data-plan-price')
+        );
+      });
+    });
+
     container.querySelectorAll('.btn.btn-gold[data-plan-key]').forEach(button => {
       button.addEventListener('click', event => {
         const planKey = button.getAttribute('data-plan-key');
@@ -84,28 +161,28 @@
         const planPrice = button.getAttribute('data-plan-price');
         const myPtHubUrl = button.getAttribute('href') || buildMyPtHubCheckoutUrl(planKey, planName);
 
+        const selectedPackage = pushSelectPackageEvent(planKey, planName, planPrice);
+        const packagePrice = selectedPackage.price;
         const trackingPayload = {
-          package_type: planKey,
-          package_name: planName,
-          price: parseFloat((planPrice || '').replace(/[^0-9.]/g, '')) || 0,
+          package_type: selectedPackage.package_type,
+          package_name: selectedPackage.package_name,
+          price: packagePrice,
           plan_type: planKey,
           plan_name: planName,
-          value: parseFloat((planPrice || '').replace(/[^0-9.]/g, '')) || 0,
+          value: packagePrice,
           currency: 'EUR'
         };
         if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
-          window.GB_TRACKING.trackEvent('select_package', trackingPayload);
           window.GB_TRACKING.trackEvent('begin_checkout', trackingPayload);
         } else if (typeof window.dataLayer !== 'undefined') {
-          window.dataLayer.push({ event: 'select_package', ...trackingPayload });
           window.dataLayer.push({ event: 'begin_checkout', ...trackingPayload });
         }
 
         if (typeof window.fbq !== 'undefined') {
           window.fbq('track', 'InitiateCheckout', {
             content_type: 'coaching_plan',
-            content_name: planName,
-            value: parseFloat((planPrice || '').replace(/[^0-9.]/g, '')) || 0,
+            content_name: selectedPackage.package_name,
+            value: packagePrice,
             currency: 'EUR'
           });
         }

@@ -17,9 +17,10 @@
 }
 
 .gb-navbar .container {
-    max-width: 1400px;
+    width: min(100% - 32px, 1760px);
+    max-width: 1760px;
     margin: 0 auto;
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 0;
 }
 
 /* Navbar Content Layout */
@@ -29,22 +30,22 @@
     align-items: center;
     justify-content: flex-start;
     padding: 16px 0;
-    gap: clamp(18px, 2.4vw, 34px);
+    gap: clamp(12px, 1.4vw, 24px);
     flex-wrap: nowrap;
+    min-width: 0;
 }
 
 .gb-navbar-links {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: clamp(12px, 1.8vw, 22px);
+    gap: clamp(8px, 0.9vw, 16px);
     margin-left: 0;
     margin-right: auto;
     padding-right: 0;
-    /* Allow links to shrink so auth area won't overlap */
     flex: 1 1 auto;
     min-width: 0;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .gb-navbar-link {
@@ -52,7 +53,7 @@
     display: inline-flex;
     align-items: center;
     padding: 6px 0;
-    font-size: clamp(0.85rem, 1.05vw, 0.98rem);
+    font-size: clamp(0.78rem, 0.74vw, 0.92rem);
     font-weight: 600;
     color: rgba(255, 255, 255, 0.82);
     text-decoration: none;
@@ -104,7 +105,7 @@
 .gb-logo-section {
     display: flex;
     align-items: center;
-    gap: clamp(10px, 1.6vw, 14px);
+    gap: clamp(8px, 1vw, 12px);
     text-decoration: none;
     transition: transform 0.3s ease;
     flex-shrink: 0;
@@ -116,14 +117,14 @@
 }
 
 .gb-logo-img {
-    height: clamp(52px, 4vw, 60px);
+    height: clamp(46px, 3.2vw, 58px);
     width: auto;
     object-fit: contain;
     transition: filter 0.3s ease;
 }
 
 .gb-logo-text {
-    font-size: clamp(1.45rem, 2.4vw, 1.9rem);
+    font-size: clamp(1.25rem, 1.75vw, 1.8rem);
     font-weight: 900;
     background: linear-gradient(135deg, #F6C84E 0%, #ffd966 100%);
     -webkit-background-clip: text;
@@ -140,7 +141,7 @@
 .gb-navbar-controls {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: clamp(8px, 0.8vw, 12px);
     flex-wrap: nowrap;
     min-width: 0;
 }
@@ -185,14 +186,71 @@
 }
 
 
+@media (max-width: 1640px) {
+    .gb-navbar .container {
+        width: min(100% - 24px, 1560px);
+    }
+
+    .gb-navbar-content {
+        gap: 12px;
+    }
+
+    .gb-navbar-links {
+        gap: 9px;
+    }
+
+    .gb-navbar-link {
+        font-size: 0.78rem;
+    }
+
+    .gb-logo-text {
+        font-size: 1.35rem;
+    }
+
+    .gb-logo-img {
+        height: 48px;
+    }
+
+    .gb-btn-link {
+        padding: 6px 10px;
+        font-size: 0.84rem;
+    }
+
+    .gb-btn-primary-small {
+        padding: 8px 12px;
+        font-size: 0.86rem;
+    }
+
+    #lang-select-navbar.gb-lang-select--desktop,
+    .gb-navbar-language .gb-lang-select--desktop {
+        min-width: 72px;
+        padding: 8px 24px 8px 10px;
+    }
+}
+
+@media (max-width: 1500px) {
+    .gb-navbar-links,
+    .gb-navbar-controls {
+        display: none;
+    }
+
+    .gb-navbar-actions {
+        margin-left: auto;
+    }
+
+    .gb-hamburger {
+        display: flex;
+    }
+}
+
 @media (max-width: 1360px) {
     .gb-logo-text {
         font-size: clamp(1.3rem, 2.1vw, 1.68rem);
     }
 
     .gb-navbar-links {
-        gap: clamp(12px, 2vw, 24px);
-        margin-left: clamp(14px, 2.6vw, 36px);
+        gap: clamp(8px, 1vw, 12px);
+        margin-left: 0;
     }
 
     .gb-navbar-link {
@@ -206,8 +264,8 @@
     }
 
     .gb-navbar-links {
-        gap: clamp(12px, 2vw, 22px);
-        margin-left: clamp(14px, 2.4vw, 32px);
+        gap: clamp(8px, 1vw, 12px);
+        margin-left: 0;
     }
 
     .gb-navbar-actions {
@@ -292,7 +350,7 @@
     }
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 1501px) {
     #auth-buttons-navbar[data-auth-state="anonymous"] {
         display: flex !important;
     }
@@ -407,7 +465,7 @@
     transition: all 0.3s ease;
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 1501px) {
     .gb-hamburger {
         display: none;
     }

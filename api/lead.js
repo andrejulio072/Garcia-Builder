@@ -277,7 +277,7 @@ async function sendBrevoEmail({ to, name, subject, html }) {
 }
 
 async function sendEbookEmail({ req, to, name, guideUrl }) {
-  const subject = 'Your 28 Days Fat Loss Quickstart is ready';
+  const subject = 'Your 28-Day Fat Loss Kickstart is ready';
   const safeName = name ? String(name).trim() : '';
 
   const greeting = safeName
@@ -286,9 +286,9 @@ async function sendEbookEmail({ req, to, name, guideUrl }) {
 
   const html = buildPremiumEmailFrame({
     req,
-    preheader: 'Your 28 Days Fat Loss Quickstart is ready for download.',
+    preheader: 'Your 28-Day Fat Loss Kickstart is ready for download.',
     title: 'Your Quickstart Is Ready',
-    intro: `${greeting}<p style="margin:0 0 12px;">Thanks for requesting the <strong>28 Days Fat Loss Quickstart</strong>. You can access your guide right now using the button below.</p>`,
+    intro: `${greeting}<p style="margin:0 0 12px;">Thanks for requesting the <strong>28-Day Fat Loss Kickstart</strong>. You can access your guide right now using the button below.</p>`,
     ctaLabel: 'Download the Ebook',
     ctaUrl: guideUrl,
     bodyBlocks: [

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ðŸš€ GARCIA BUILDER - BACKEND STRIPE PREMIUM
  * ImplementaÃ§Ã£o seguindo as melhores prÃ¡ticas oficiais da Stripe
  * DocumentaÃ§Ã£o: https://docs.stripe.com/payments/checkout
@@ -819,7 +819,7 @@ app.post('/api/lead', async (req, res) => {
             replyTo: cleanEmail,
             html: `
                 <div style="font-family:Inter,Arial,sans-serif;color:#0b1220">
-                    <h2>New 28 Days Fat Loss Quickstart lead</h2>
+                    <h2>New 28-Day Fat Loss Kickstart lead</h2>
                     <p><strong>Name:</strong> ${escapeHtml(name || '')}</p>
                     <p><strong>Email:</strong> ${escapeHtml(cleanEmail)}</p>
                     <p><strong>Source:</strong> ${escapeHtml(source || 'website')}</p>
@@ -833,14 +833,14 @@ app.post('/api/lead', async (req, res) => {
         const guidePath = path.join(__dirname, '..', 'assets', '28-days-fat-loss-quickstart.pdf');
         const guideUrl = `${getPublicBaseUrl(req)}/assets/28-days-fat-loss-quickstart.pdf`;
         const attachments = fs.existsSync(guidePath)
-            ? [{ filename: '28-Days-Fat-Loss-Quickstart-Garcia-Builder.pdf', path: guidePath }]
+            ? [{ filename: '28-Day-Fat-Loss-Kickstart-Garcia-Builder.pdf', path: guidePath }]
             : undefined;
         const customerEmailResult = await sendEmail({
             to: cleanEmail,
-            subject: 'Your Free 28 Days Fat Loss Quickstart',
+            subject: 'Your Free 28-Day Fat Loss Kickstart',
             html: `
                 <div style="font-family:Inter,Arial,sans-serif;color:#0b1220;line-height:1.55">
-                    <h2>Your 28 Days Fat Loss Quickstart is ready</h2>
+                    <h2>Your 28-Day Fat Loss Kickstart is ready</h2>
                     <p>Hi ${escapeHtml(name || 'there')},</p>
                     <p>Here is your free Garcia Builder guide. Use it to set your first 28 days of training, nutrition, steps and accountability.</p>
                     <p>

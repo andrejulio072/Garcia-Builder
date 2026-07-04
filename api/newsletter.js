@@ -177,10 +177,10 @@ async function sendNewsletterWelcomeEmail({ req, to, name }) {
     preheader: 'Welcome to the Garcia Builder newsletter.',
     title: 'Welcome to Garcia Builder',
     intro: `${greeting}<p style="margin:0 0 12px;">Thanks for joining our newsletter. You will receive actionable training and nutrition strategies to help you build a stronger, leaner body.</p>`,
-    ctaLabel: 'Get the 28 Days Quickstart',
+    ctaLabel: 'Get the 28-Day Fat Loss Kickstart',
     ctaUrl: guideUrl,
     bodyBlocks: [
-      '<p style="margin:0 0 12px;">As a welcome gift, here is your free <strong>28 Days Fat Loss Quickstart</strong>.</p>',
+      '<p style="margin:0 0 12px;">As a welcome gift, here is your free <strong>28-Day Fat Loss Kickstart</strong>.</p>',
       '<p style="margin:0;">Stay tuned for weekly insights from our coaching team.</p>'
     ]
   });

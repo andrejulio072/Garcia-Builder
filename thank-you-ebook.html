@@ -15,7 +15,7 @@
   f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-TG5TFZ2C');
 </script>
-<script defer src="/js/tracking/tracking.js?v=20260703cc"></script>
+<script defer src="/js/tracking/tracking.js?v=20260704a"></script>
 <!-- End Google Tag Manager -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,7 +29,9 @@
     main { width: min(760px, calc(100% - 32px)); padding: 56px 0; }
     h1 { font-size: clamp(2rem, 6vw, 4rem); line-height: 1; margin: 0 0 24px; }
     p { color: #d7d0c2; font-size: 1.1rem; line-height: 1.7; margin: 0 0 18px; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; margin-top: 18px; padding: 14px 22px; border-radius: 6px; background: #d4af37; color: #111; font-weight: 800; text-decoration: none; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 22px; border-radius: 6px; background: #d4af37; color: #111; font-weight: 800; text-decoration: none; }
+    .btn.secondary { background: transparent; color: #f8f5ef; border: 1px solid rgba(248, 245, 239, 0.34); }
   </style>
 </head>
 <body>
@@ -38,7 +40,10 @@
     <p>Check your email for the guide.</p>
     <p>Start simple. Do not try to change everything today. The goal is not perfection. The goal is to prove to yourself that you can follow a structure.</p>
     <p>If you already know you need a plan, accountability and coaching built around your routine, apply below.</p>
-    <a id="applyForCoachingCta" class="btn" href="/contact.html#contact-form">Apply for Coaching</a>
+    <div class="actions">
+      <a id="applyForCoachingCta" class="btn" href="/contact.html#contact-form">Apply for Coaching</a>
+      <a id="bookConsultationCta" class="btn secondary" href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Book Free Consultation</a>
+    </div>
   </main>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -51,6 +56,15 @@
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: 'start_application',
+        button_location: 'ebook_thank_you',
+        page: '/thank-you-ebook',
+        source: 'website'
+      });
+    });
+    document.getElementById('bookConsultationCta').addEventListener('click', function () {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'book_consultation_click',
         button_location: 'ebook_thank_you',
         page: '/thank-you-ebook',
         source: 'website'

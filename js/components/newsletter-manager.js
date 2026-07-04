@@ -3,7 +3,7 @@
   let currentCampaign = null;
   let leadData = {};
   const GUIDE_ASSET_PATH = '/assets/28-days-fat-loss-quickstart.pdf';
-  const GUIDE_DOWNLOAD_NAME = '28-Days-Fat-Loss-Quickstart-Garcia-Builder.pdf';
+  const GUIDE_DOWNLOAD_NAME = '28-Day-Fat-Loss-Kickstart-Garcia-Builder.pdf';
   const resolveApiBaseUrl = () => {
     const configuredBase = window.STRIPE_ENV_CONFIG?.apiUrl;
     if (configuredBase) {
@@ -582,9 +582,9 @@
     const t = {
       badge: getI18nText('leadmagnet.popup_badge', 'WAIT!'),
       title: getI18nText('leadmagnet.popup_title', 'Do not leave empty-handed!'),
-      subtitle: getI18nText('leadmagnet.popup_subtitle', 'Get the free 28 Days Fat Loss Quickstart by email.'),
+      subtitle: getI18nText('leadmagnet.popup_subtitle', 'Get the practical 28-day guide to rebuild training, nutrition, steps, habits and accountability without extreme dieting.'),
       email: getI18nText('leadmagnet.email_placeholder', 'you@email.com'),
-      button: getI18nText('leadmagnet.popup_button', 'Send Me the Ebook'),
+      button: getI18nText('leadmagnet.popup_button', 'Send Me the Guide'),
       benefit1: getI18nText('leadmagnet.popup_benefit1', '28-day fat-loss structure'),
       benefit2: getI18nText('leadmagnet.popup_benefit2', 'Nutrition and shopping guidance'),
       benefit3: getI18nText('leadmagnet.popup_benefit3', 'Simple habits and accountability'),
@@ -603,11 +603,19 @@
             <input type="text" name="firstName" placeholder="First name" required autocomplete="given-name">
             <input type="text" name="lastName" placeholder="Last name" required autocomplete="family-name">
             <input type="email" name="email" placeholder="${t.email}" required autocomplete="email">
-            <input type="hidden" name="goal" value="28 Days Fat Loss Quickstart">
-            <input type="hidden" name="guide_id" value="28-days-fat-loss-quickstart">
+            <select name="goal" required>
+              <option value="" disabled selected>Main Goal</option>
+              <option value="Fat Loss">Fat Loss</option>
+              <option value="Muscle Gain">Muscle Gain</option>
+              <option value="Strength">Strength</option>
+              <option value="Body Recomposition">Body Recomposition</option>
+              <option value="Confidence / Routine">Confidence / Routine</option>
+              <option value="General Fitness">General Fitness</option>
+            </select>
+            <input type="hidden" name="guide_id" value="28-day-fat-loss-kickstart">
             <label class="exit-intent-consent">
               <input type="checkbox" name="consent" required>
-              <span>I agree to receive the guide and fitness emails.</span>
+              <span>I agree to receive the guide and follow-up emails from Garcia Builder Fitness.</span>
             </label>
             <button type="submit">
               <i class="fas fa-download"></i> ${t.button}
@@ -651,6 +659,7 @@
       const firstName = popup.querySelector('input[name="firstName"]').value.trim();
       const lastName = popup.querySelector('input[name="lastName"]').value.trim();
       const email = popup.querySelector('input[name="email"]').value.trim();
+      const goal = popup.querySelector('[name="goal"]').value.trim();
       const consent = popup.querySelector('input[name="consent"]').checked;
       const submitBtn = popup.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerHTML;
@@ -666,7 +675,7 @@
           lastName,
           email,
           phone: '',
-          goal: '28 Days Fat Loss Quickstart',
+          goal,
           consent,
           page: window.location.pathname,
           utm_source: attribution.utm_source,
@@ -761,9 +770,9 @@
       email: formData.get('email'),
       phone: formData.get('phone') || '',
       name: formData.get('name') || '',
-      goal: formData.get('goal') || '28 Days Fat Loss Quickstart',
+      goal: formData.get('goal') || '28-Day Fat Loss Kickstart',
       consent: formData.get('consent') === 'on' || formData.get('consent') === 'true',
-      guide_id: form.dataset.guideId || formData.get('guide_id') || '28-days-fat-loss-quickstart',
+      guide_id: form.dataset.guideId || formData.get('guide_id') || '28-day-fat-loss-kickstart',
       type: 'download',
       source: form.dataset.source || 'Download Form',
       timestamp: new Date().toISOString(),
@@ -876,7 +885,7 @@
       lastName: leadInfo.lastName || nameParts.lastName,
       email: leadInfo.email,
       phone: leadInfo.phone || '',
-      goal: leadInfo.goal || '28 Days Fat Loss Quickstart',
+      goal: leadInfo.goal || '28-Day Fat Loss Kickstart',
       source: leadInfo.source || 'website',
       consent: leadInfo.consent === true || leadInfo.consent === 'true' || leadInfo.consent === 'on',
       page: leadInfo.page || window.location.pathname,

@@ -536,10 +536,10 @@
         },
         form: {
           name: "Your name",
-          email: "Your email",
-          phone: "Phone (optional)",
+          email: "Email Address",
+          phone: "WhatsApp / Phone Number",
           preferredContact: "Preferred contact",
-          goal: "Primary goal",
+          goal: "Main Goal",
           timeline: "Target timeline",
           experience: "Training experience",
           budget: "Monthly budget (optional)",
@@ -564,12 +564,12 @@
               phone: "Phone call"
             },
             goals: {
-              fatLoss: "Fat loss",
-              muscleGain: "Muscle gain",
-              recomposition: "Recomposition",
-              performance: "Performance / Bleep test",
-              rehab: "Pain & Rehab (e.g., shoulder, lower back)",
-              health: "General health & confidence"
+              fatLoss: "Fat Loss",
+              muscleGain: "Muscle Gain",
+              strength: "Strength",
+              recomposition: "Body Recomposition",
+              confidence: "Confidence / Routine",
+              fitness: "General Fitness"
             },
             timeline: {
               short: "4–8 weeks",
@@ -590,7 +590,7 @@
               premium: "€500+"
             }
           },
-          consent: "I agree to be contacted about coaching and understand my data will be used only to respond to this inquiry.",
+          consent: "I agree to be contacted by Garcia Builder Fitness about my coaching application.",
           footnote: "Average reply time: 24–48h. No spam, ever.",
           success_title: "Message sent successfully",
           success_greeting: "Thank you",
@@ -2208,8 +2208,8 @@
 
   Object.assign(DICTS.en, {
     leadmagnet: {
-      title: "Download the 28 Days Fat Loss Quickstart",
-      subtitle: "Start with a practical 4-week structure for training, nutrition, steps and accountability.",
+      title: "Download the 28-Day Fat Loss Kickstart",
+      subtitle: "Get the practical 28-day guide to rebuild training, nutrition, steps, habits and accountability without extreme dieting.",
       bullet1: "Daily structure that fits work, family, and travel",
       bullet2: "Nutrition cheat-sheet with flexible meal ideas",
       bullet3: "Step-by-step habit stack that locks in results",
@@ -2219,9 +2219,13 @@
       badge: "Free Download",
       name: "Full Name",
       name_placeholder: "Enter your name",
+      first_name: "First Name",
+      first_name_placeholder: "First name",
+      last_name: "Last Name",
+      last_name_placeholder: "Last name",
       email: "Email Address",
       email_placeholder: "you@email.com",
-      consent: "I agree to receive the guide and emails with fitness tips.",
+      consent: "I agree to receive the guide and follow-up emails from Garcia Builder Fitness.",
       consent_small: "No spam, unsubscribe anytime.",
       submit: "Send Me the 28-Day Guide",
       processing: "PROCESSING...",
@@ -2233,8 +2237,8 @@
       terms_required: "Please accept the terms.",
       popup_badge: "WAIT!",
       popup_title: "Do not leave empty-handed!",
-      popup_subtitle: "Get the free 28 Days Fat Loss Quickstart by email.",
-      popup_button: "Send Me the Ebook",
+      popup_subtitle: "Get the practical 28-day guide to rebuild training, nutrition, steps, habits and accountability without extreme dieting.",
+      popup_button: "Send Me the Guide",
       popup_benefit1: "28-day fat-loss structure",
       popup_benefit2: "Nutrition and shopping guidance",
       popup_benefit3: "Simple habits and accountability",
@@ -2258,11 +2262,15 @@
       urgency: "FREE DOWNLOAD: Start today with the 28-day plan.",
       guide_title: "FREE GUIDE",
       whats_included: "What you get:",
-      goal: "Primary goal *",
+      goal: "Main Goal",
       goal_select: "Select your goal",
-      goal_weight_loss: "Lose fat (cutting)",
-      goal_muscle_gain: "Build muscle",
-      goal_recomp: "Body recomposition",
+      goal_fat_loss: "Fat Loss",
+      goal_weight_loss: "Fat Loss",
+      goal_muscle_gain: "Muscle Gain",
+      goal_strength: "Strength",
+      goal_recomp: "Body Recomposition",
+      goal_confidence: "Confidence / Routine",
+      goal_fitness: "General Fitness",
       goal_performance: "Improve performance",
       goal_health: "General health",
       experience: "Training experience",
@@ -2273,11 +2281,11 @@
       error_submit: "Oops! Something went wrong. Try again or book a free consultation on Calendly."
     },
     thanksebook: {
-      title: "28 Days Fat Loss Quickstart unlocked",
+      title: "28-Day Fat Loss Kickstart unlocked",
       description: "Your free guide is ready for download. Review the next steps and talk to coach Andre Garcia.",
       badge: "GUIDE READY",
       intro_prefix: "Congratulations, ",
-      ready_title: "Your 28 Days Fat Loss Quickstart is ready for download.",
+      ready_title: "Your 28-Day Fat Loss Kickstart is ready for download.",
       download_now: "DOWNLOAD GUIDE NOW",
       auto_download: "The download will start automatically. If not, click the button above.",
       email_sent_title: "Guide sent to:",
@@ -2308,8 +2316,8 @@
       bullet6: "A safer, more organized journey",
       coaching_cta: "VIEW COACHING PLANS",
       whatsapp_cta: "TALK TO THE COACH",
-      share_subject: "Garcia Builder 28 Days Fat Loss Quickstart",
-      share_message: "I just downloaded Garcia Builder's free 28 Days Fat Loss Quickstart.",
+      share_subject: "Garcia Builder 28-Day Fat Loss Kickstart",
+      share_message: "I just downloaded Garcia Builder's free 28-Day Fat Loss Kickstart.",
       back_home: "Back to Site",
       view_transformations: "See Transformations"
     },
@@ -2398,7 +2406,7 @@
 
   Object.assign(DICTS.pt, {
     leadmagnet: {
-      title: "Baixe o 28 Days Fat Loss Quickstart",
+      title: "Baixe o 28-Day Fat Loss Kickstart",
       subtitle: "Comece com uma estrutura pratica de 4 semanas para treino, nutricao, passos e accountability.",
       bullet1: "Estrutura diaria que cabe no trabalho, familia e viagens",
       bullet2: "Guia de nutricao com ideias de refeicoes flexiveis",
@@ -2423,7 +2431,7 @@
       terms_required: "Aceite os termos.",
       popup_badge: "ESPERE!",
       popup_title: "Nao saia de maos vazias!",
-      popup_subtitle: "Receba por email o 28 Days Fat Loss Quickstart gratis.",
+      popup_subtitle: "Receba por email o 28-Day Fat Loss Kickstart gratis.",
       popup_button: "Enviar o Ebook",
       popup_benefit1: "Estrutura de perda de gordura em 28 dias",
       popup_benefit2: "Orientacao de nutricao e compras",
@@ -2463,11 +2471,11 @@
       error_submit: "Ops! Algo deu errado. Tente novamente ou agende uma consultoria gratuita pelo Calendly."
     },
     thanksebook: {
-      title: "28 Days Fat Loss Quickstart liberado",
-      description: "Seu guia gratuito 28 Days Fat Loss Quickstart está pronto para download. Veja os próximos passos e fale com o coach André Garcia.",
+      title: "28-Day Fat Loss Kickstart liberado",
+      description: "Seu guia gratuito 28-Day Fat Loss Kickstart está pronto para download. Veja os próximos passos e fale com o coach André Garcia.",
       badge: "GUIA LIBERADO",
       intro_prefix: "Parabéns, ",
-      ready_title: "Seu 28 Days Fat Loss Quickstart está pronto para download.",
+      ready_title: "Seu 28-Day Fat Loss Kickstart está pronto para download.",
       download_now: "BAIXAR GUIA AGORA",
       auto_download: "O download começará automaticamente. Se não funcionar, clique no botão acima.",
       email_sent_title: "Guia enviado para:",
@@ -2498,8 +2506,8 @@
       bullet6: "Jornada mais segura e organizada",
       coaching_cta: "VER PLANOS DE COACHING",
       whatsapp_cta: "FALAR COM O COACH",
-      share_subject: "Garcia Builder 28 Days Fat Loss Quickstart",
-      share_message: "Acabei de baixar o 28 Days Fat Loss Quickstart gratuito do Garcia Builder.",
+      share_subject: "Garcia Builder 28-Day Fat Loss Kickstart",
+      share_message: "Acabei de baixar o 28-Day Fat Loss Kickstart gratuito do Garcia Builder.",
       back_home: "Voltar ao Site",
       view_transformations: "Ver Transformações"
     },
@@ -2588,7 +2596,7 @@
 
   Object.assign(DICTS.es, {
     leadmagnet: {
-      title: "Descarga el 28 Days Fat Loss Quickstart",
+      title: "Descarga el 28-Day Fat Loss Kickstart",
       subtitle: "Empieza con una estructura practica de 4 semanas para entrenamiento, nutricion, pasos y accountability.",
       bullet1: "Estructura diaria que encaja con trabajo, familia y viajes",
       bullet2: "Guia de nutricion con ideas flexibles de comidas",
@@ -2613,7 +2621,7 @@
       terms_required: "Acepta los terminos.",
       popup_badge: "ESPERA!",
       popup_title: "No te vayas con las manos vacias!",
-      popup_subtitle: "Recibe por email el 28 Days Fat Loss Quickstart gratis.",
+      popup_subtitle: "Recibe por email el 28-Day Fat Loss Kickstart gratis.",
       popup_button: "Enviarme el Ebook",
       popup_benefit1: "Estructura de perdida de grasa en 28 dias",
       popup_benefit2: "Guia de nutricion y compras",
@@ -2653,11 +2661,11 @@
       error_submit: "¡Ups! Algo salió mal. Inténtalo de nuevo o agenda una consultoría gratuita por Calendly."
     },
     thanksebook: {
-      title: "28 Days Fat Loss Quickstart liberado",
-      description: "Tu guía gratuita 28 Days Fat Loss Quickstart está lista para descargar. Revisa los próximos pasos y habla con el coach André Garcia.",
+      title: "28-Day Fat Loss Kickstart liberado",
+      description: "Tu guía gratuita 28-Day Fat Loss Kickstart está lista para descargar. Revisa los próximos pasos y habla con el coach André Garcia.",
       badge: "GUÍA LISTA",
       intro_prefix: "¡Felicidades, ",
-      ready_title: "Tu 28 Days Fat Loss Quickstart está listo para descargar.",
+      ready_title: "Tu 28-Day Fat Loss Kickstart está listo para descargar.",
       download_now: "DESCARGAR GUÍA AHORA",
       auto_download: "La descarga comenzará automáticamente. Si no funciona, haz clic en el botón de arriba.",
       email_sent_title: "Guía enviada a:",
@@ -2688,8 +2696,8 @@
       bullet6: "Un camino más seguro y organizado",
       coaching_cta: "VER PLANES DE COACHING",
       whatsapp_cta: "HABLAR CON EL COACH",
-      share_subject: "Garcia Builder 28 Days Fat Loss Quickstart",
-      share_message: "Acabo de descargar la guía gratuita 28 Days Fat Loss Quickstart de Garcia Builder.",
+      share_subject: "Garcia Builder 28-Day Fat Loss Kickstart",
+      share_message: "Acabo de descargar la guía gratuita 28-Day Fat Loss Kickstart de Garcia Builder.",
       back_home: "Volver al Sitio",
       view_transformations: "Ver Transformaciones"
     },

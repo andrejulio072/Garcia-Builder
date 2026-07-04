@@ -1,4 +1,39 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "garciabuilder.fitness"
+        }
+      ],
+      "destination": "https://www.garciabuilder.fitness/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.garciabuilder.uk"
+        }
+      ],
+      "destination": "https://www.garciabuilder.fitness/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "garciabuilder.uk"
+        }
+      ],
+      "destination": "https://www.garciabuilder.fitness/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/online-coaching",

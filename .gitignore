@@ -56,3 +56,4 @@ CLEANUP-ANALYSIS.md
 
 # Generated environment bundles (contém segredos locais)
 env-config.json
+.env*

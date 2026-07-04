@@ -1,13 +1,16 @@
 User-agent: *
 Allow: /
+
 Disallow: /api/
-Disallow: /admin/
+Disallow: /.vercel/
 Disallow: /private/
-Disallow: /coverage/
-Disallow: /tools/
+Disallow: /admin/
+Disallow: /pages/admin/
+Disallow: /pages/auth/
+Disallow: /pages/test/
 Disallow: /dashboard.html
 Disallow: /my-profile-production.html
 Disallow: /pricing-payment-links.html
-Disallow: /test-*
+Disallow: /test-
 
 Sitemap: https://www.garciabuilder.fitness/sitemap.xml

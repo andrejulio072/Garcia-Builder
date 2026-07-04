@@ -1,44 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://garciabuilder.fitness/about.html</loc></url>
-<url><loc>https://garciabuilder.fitness/admin-dashboard.html</loc></url>
-<url><loc>https://garciabuilder.fitness/admin-setup-complete.html</loc></url>
-<url><loc>https://garciabuilder.fitness/admin-trainers.html</loc></url>
-<url><loc>https://garciabuilder.fitness/become-trainer.html</loc></url>
-<url><loc>https://garciabuilder.fitness/certificacao-completa.html</loc></url>
-<url><loc>https://garciabuilder.fitness/check-admin-users.html</loc></url>
-<url><loc>https://garciabuilder.fitness/confirm-contact.html</loc></url>
-<url><loc>https://garciabuilder.fitness/contact.html</loc></url>
-<url><loc>https://garciabuilder.fitness/create-admin.html</loc></url>
-<url><loc>https://garciabuilder.fitness/dashboard.html</loc></url>
-<url><loc>https://garciabuilder.fitness/documentacao-oficial.html</loc></url>
-<url><loc>https://garciabuilder.fitness/enhanced-admin-dashboard.html</loc></url>
-<url><loc>https://garciabuilder.fitness/enhanced-dashboard.html</loc></url>
-<url><loc>https://garciabuilder.fitness/faq.html</loc></url>
-<url><loc>https://garciabuilder.fitness/forgot-password.html</loc></url>
-<url><loc>https://garciabuilder.fitness/index.html</loc></url>
-<url><loc>https://garciabuilder.fitness/login.html</loc></url>
-<url><loc>https://garciabuilder.fitness/my-profile.html</loc></url>
-<url><loc>https://garciabuilder.fitness/next-step-implementation.html</loc></url>
-<url><loc>https://garciabuilder.fitness/pricing-payment-links.html</loc></url>
-<url><loc>https://garciabuilder.fitness/pricing.html</loc></url>
-<url><loc>https://garciabuilder.fitness/production-test.html</loc></url>
-<url><loc>https://garciabuilder.fitness/profile-manager.html</loc></url>
-<url><loc>https://garciabuilder.fitness/profile-system-fix.html</loc></url>
-<url><loc>https://garciabuilder.fitness/programs.html</loc></url>
-<url><loc>https://garciabuilder.fitness/reset-password.html</loc></url>
-<url><loc>https://garciabuilder.fitness/setup-admin.html</loc></url>
-<url><loc>https://garciabuilder.fitness/stripe-oficial.html</loc></url>
-<url><loc>https://garciabuilder.fitness/success.html</loc></url>
-<url><loc>https://garciabuilder.fitness/terms.html</loc></url>
-<url><loc>https://garciabuilder.fitness/privacy.html</loc></url>
-<url><loc>https://garciabuilder.fitness/test-admin-login.html</loc></url>
-<url><loc>https://garciabuilder.fitness/test-email-verification.html</loc></url>
-<url><loc>https://garciabuilder.fitness/test-mobile-responsiveness.html</loc></url>
-<url><loc>https://garciabuilder.fitness/test-password-reset.html</loc></url>
-<url><loc>https://garciabuilder.fitness/test-setup.html</loc></url>
-<url><loc>https://garciabuilder.fitness/test-unverified-access.html</loc></url>
-<url><loc>https://garciabuilder.fitness/testimonials.html</loc></url>
-<url><loc>https://garciabuilder.fitness/trainer-dashboard.html</loc></url>
-<url><loc>https://garciabuilder.fitness/transformations.html</loc></url>
+  <url><loc>https://www.garciabuilder.fitness/</loc><lastmod>2026-07-03</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/online-coaching</loc><lastmod>2026-07-03</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/packages</loc><lastmod>2026-07-03</lastmod><changefreq>weekly</changefreq><priority>0.92</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/28-day-fat-loss-kickstart</loc><lastmod>2026-07-03</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/apply</loc><lastmod>2026-07-03</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/consultation</loc><lastmod>2026-07-03</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/start-fat-loss</loc><lastmod>2026-07-03</lastmod><changefreq>weekly</changefreq><priority>0.86</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/online-coaching-dublin</loc><lastmod>2026-07-03</lastmod><changefreq>weekly</changefreq><priority>0.84</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/12-week-transformation</loc><lastmod>2026-07-03</lastmod><changefreq>weekly</changefreq><priority>0.84</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/free-fat-loss-guide</loc><lastmod>2026-07-03</lastmod><changefreq>weekly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/blog</loc><lastmod>2026-07-03</lastmod><changefreq>weekly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/blog/why-you-are-not-losing-fat</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/blog/fat-loss-for-busy-professionals</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/blog/online-coaching-vs-personal-training</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/blog/how-to-start-fat-loss-after-failing-diets</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/blog/best-fat-loss-programme-for-beginners</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/blog/how-weekly-check-ins-help-fat-loss</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/blog/training-and-nutrition-structure</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/about.html</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.55</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/programs.html</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.55</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/transformations.html</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.55</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/testimonials.html</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.55</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/faq.html</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/contact.html</loc><lastmod>2026-07-03</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/privacy-policy</loc><lastmod>2026-07-03</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.garciabuilder.fitness/terms</loc><lastmod>2026-07-03</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>

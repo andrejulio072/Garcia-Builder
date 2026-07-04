@@ -1,0 +1,50 @@
+
+:root { --gb-bg: #06070a; --gb-panel: rgba(14, 16, 22, .88); --gb-panel-2: rgba(22, 25, 34, .92); --gb-gold: #f6c84e; --gb-gold-2: #f8e08e; --gb-text: #f8fafc; --gb-muted: rgba(248, 250, 252, .74); --gb-border: rgba(246, 200, 78, .26); }
+body.seo-page { background: radial-gradient(circle at 18% 0%, rgba(246,200,78,.14), transparent 26%), linear-gradient(180deg, #050608 0%, #0c0f16 52%, #050608 100%); color: var(--gb-text); font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif; }
+.gb-seo-container { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+.gb-seo-hero { padding: 138px 0 76px; min-height: 76vh; display: flex; align-items: center; background: linear-gradient(135deg, rgba(5,6,8,.78), rgba(10,13,20,.95)), url('/assets/images/hero/40689-fitness-wallpaperdownload-free-full-hd-background.jpg') center/cover no-repeat; }
+.gb-seo-hero--compact { min-height: 58vh; }
+.gb-seo-hero--article { min-height: auto; padding-bottom: 42px; }
+.gb-seo-hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, .8fr); gap: 36px; align-items: center; }
+.gb-seo-kicker { color: var(--gb-gold); text-transform: uppercase; letter-spacing: .12em; font-weight: 900; font-size: .82rem; margin-bottom: 10px; }
+.gb-seo-hero h1, .gb-seo-section h2, .gb-seo-panel h2 { color: #fff; font-weight: 900; letter-spacing: 0; line-height: 1.02; }
+.gb-seo-hero h1 { font-size: clamp(2.55rem, 6vw, 5.4rem); max-width: 980px; }
+.gb-seo-lead { color: var(--gb-muted); font-size: clamp(1.05rem, 2vw, 1.28rem); line-height: 1.65; max-width: 760px; }
+.gb-seo-actions, .gb-package-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 24px; }
+.gb-seo-btn { display: inline-flex; justify-content: center; align-items: center; min-height: 48px; padding: 12px 18px; border-radius: 8px; background: linear-gradient(135deg, var(--gb-gold), var(--gb-gold-2)); color: #101010; font-weight: 900; text-decoration: none; border: 0; cursor: pointer; }
+.gb-seo-btn--secondary { background: transparent; color: var(--gb-gold-2); border: 1px solid var(--gb-border); }
+.gb-seo-panel, .gb-seo-form, .gb-package-card, .gb-card-grid article, .gb-blog-card, .gb-article-cta, .gb-faq-grid details { background: var(--gb-panel); border: 1px solid var(--gb-border); border-radius: 8px; box-shadow: 0 24px 70px rgba(0,0,0,.32); }
+.gb-seo-panel, .gb-seo-form { padding: 26px; }
+.gb-seo-panel ul { margin: 18px 0 0; padding-left: 18px; color: var(--gb-muted); }
+.gb-seo-section { padding: 72px 0; }
+.gb-seo-band { background: rgba(255,255,255,.035); border-block: 1px solid rgba(255,255,255,.06); }
+.gb-seo-split { display: grid; grid-template-columns: .8fr 1.2fr; gap: 36px; }
+.gb-card-grid, .gb-package-grid, .gb-blog-grid, .gb-faq-grid { display: grid; gap: 18px; }
+.gb-card-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.gb-card-grid article, .gb-package-card, .gb-blog-card, .gb-faq-grid details { padding: 22px; }
+.gb-card-grid h3, .gb-package-card h2, .gb-blog-card h2 { color: #fff; font-weight: 850; }
+.gb-card-grid p, .gb-package-card p, .gb-blog-card p, .gb-faq-grid p, .gb-article-body p { color: var(--gb-muted); line-height: 1.7; }
+.gb-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 22px; }
+.gb-steps div { background: rgba(255,255,255,.05); border: 1px solid rgba(246,200,78,.2); border-radius: 8px; padding: 18px; }
+.gb-steps span { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--gb-gold); color: #111; font-weight: 900; margin-bottom: 12px; }
+.gb-seo-final { text-align: center; background: linear-gradient(135deg, rgba(246,200,78,.1), rgba(255,255,255,.03)); }
+.gb-package-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.gb-small-note { color: var(--gb-muted); margin-top: 18px; }
+.gb-seo-form { display: grid; gap: 14px; }
+.gb-seo-form label { color: #fff; font-weight: 800; display: grid; gap: 6px; }
+.gb-seo-form input, .gb-seo-form select, .gb-seo-form textarea { width: 100%; border: 1px solid rgba(255,255,255,.16); border-radius: 8px; background: rgba(255,255,255,.08); color: #fff; padding: 12px 13px; }
+.gb-seo-form option { color: #111; }
+.gb-checkbox { grid-template-columns: auto 1fr !important; align-items: start; color: var(--gb-muted) !important; font-weight: 650 !important; }
+.gb-form-status { min-height: 22px; margin: 0; color: var(--gb-gold-2); }
+.gb-blog-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.gb-blog-card { overflow: hidden; padding: 0; }
+.gb-blog-card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+.gb-blog-card div { padding: 20px; }
+.gb-seo-article img { width: 100%; max-height: 460px; object-fit: cover; border-radius: 8px; border: 1px solid var(--gb-border); margin-top: 24px; }
+.gb-article-body { max-width: 860px; padding: 56px 0 80px; }
+.gb-article-body h2 { color: #fff; font-weight: 900; margin-top: 32px; }
+.gb-article-cta { padding: 24px; margin-top: 40px; }
+.gb-faq-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 20px; }
+.gb-faq-grid summary { cursor: pointer; color: #fff; font-weight: 850; }
+a { color: var(--gb-gold-2); }
+@media (max-width: 820px) { .gb-seo-hero { padding-top: 118px; } .gb-seo-hero-grid, .gb-seo-split { grid-template-columns: 1fr; } .gb-seo-hero h1 { font-size: 2.55rem; } .gb-seo-btn { width: 100%; } }

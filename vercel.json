@@ -1,6 +1,66 @@
 {
   "rewrites": [
     {
+      "source": "/online-coaching",
+      "destination": "/online-coaching.html"
+    },
+    {
+      "source": "/packages",
+      "destination": "/packages.html"
+    },
+    {
+      "source": "/28-day-fat-loss-kickstart",
+      "destination": "/28-day-fat-loss-kickstart.html"
+    },
+    {
+      "source": "/apply",
+      "destination": "/apply.html"
+    },
+    {
+      "source": "/consultation",
+      "destination": "/consultation.html"
+    },
+    {
+      "source": "/thank-you-application",
+      "destination": "/thank-you-application.html"
+    },
+    {
+      "source": "/thank-you-ebook",
+      "destination": "/thank-you-ebook.html"
+    },
+    {
+      "source": "/start-fat-loss",
+      "destination": "/start-fat-loss.html"
+    },
+    {
+      "source": "/online-coaching-dublin",
+      "destination": "/online-coaching-dublin.html"
+    },
+    {
+      "source": "/12-week-transformation",
+      "destination": "/12-week-transformation.html"
+    },
+    {
+      "source": "/free-fat-loss-guide",
+      "destination": "/free-fat-loss-guide.html"
+    },
+    {
+      "source": "/blog",
+      "destination": "/blog.html"
+    },
+    {
+      "source": "/blog/:slug",
+      "destination": "/blog/:slug.html"
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
       "source": "/lead-magnet.html",
       "destination": "/pages/public/lead-magnet.html"
     },

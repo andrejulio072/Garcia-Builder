@@ -111,7 +111,7 @@ function getBaseUrl(req) {
   if (envBase) return String(envBase).replace(/\/$/, '');
 
   const host = req?.headers?.host;
-  if (!host) return 'https://garciabuilder.fitness';
+  if (!host) return 'https://www.garciabuilder.fitness';
 
   const proto = req?.headers?.['x-forwarded-proto'] || (host.includes('localhost') ? 'http' : 'https');
   return `${proto}://${host}`;
@@ -333,11 +333,19 @@ export default async function handler(req, res) {
         goal: normalizeText(body.goal),
         currentWeight: normalizedWeight,
         mainStruggle: normalizeText(body.mainStruggle),
+        trainingLocation: normalizeText(body.trainingLocation),
+        startTimeline: normalizeText(body.startTimeline),
+        investmentReadiness: normalizeText(body.investmentReadiness),
         consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
         source: normalizeText(body.source) || 'Contact Consultation Form',
         page: normalizeText(body.page) || req.headers.referer || '',
         utm_source: normalizeText(body.utm_source),
+        utm_medium: normalizeText(body.utm_medium),
         utm_campaign: normalizeText(body.utm_campaign),
+        utm_content: normalizeText(body.utm_content),
+        utm_term: normalizeText(body.utm_term),
+        gclid: normalizeText(body.gclid),
+        fbclid: normalizeText(body.fbclid),
       };
 
       if (!consultationPayload.firstName || !consultationPayload.lastName || !consultationPayload.email || !consultationPayload.phone || !consultationPayload.goal || !consultationPayload.currentWeight || !consultationPayload.mainStruggle) {

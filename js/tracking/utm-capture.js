@@ -66,7 +66,7 @@
   }
 
   function scan(){
-    const forms = document.querySelectorAll('form.hero-lead-form, form#contact-form, form.newsletter-form, form[data-attr-track]');
+    const forms = document.querySelectorAll('form.hero-lead-form, form#contact-form, form.newsletter-form, form[data-attr-track], form[data-gb-application-form], form[data-gb-ebook-form]');
     forms.forEach(injectHiddenInputs);
   }
 

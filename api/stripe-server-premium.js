@@ -660,14 +660,16 @@ app.post('/api/lead', async (req, res) => {
                 trainingLocation: normalizeText(body.trainingLocation),
                 startTimeline: normalizeText(body.startTimeline),
                 investmentReadiness: normalizeText(body.investmentReadiness),
-                source: normalizeText(body.source) || 'website',
+                consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
+                source: normalizeText(body.source) || 'Contact Consultation Form',
                 page: normalizeText(body.page) || req.headers.referer || '',
                 utm_source: normalizeText(body.utm_source),
                 utm_medium: normalizeText(body.utm_medium),
                 utm_campaign: normalizeText(body.utm_campaign),
                 utm_content: normalizeText(body.utm_content),
                 utm_term: normalizeText(body.utm_term),
-                consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
+                gclid: normalizeText(body.gclid),
+                fbclid: normalizeText(body.fbclid),
             };
 
             const missingFields = ['firstName', 'lastName', 'email', 'phone', 'goal', 'currentWeight', 'mainStruggle', 'trainingLocation', 'startTimeline', 'investmentReadiness']

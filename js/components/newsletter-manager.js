@@ -568,10 +568,429 @@
     // Manual trigger will work through lead magnet links and proper exit detection
   };
 
+  const ensureExitIntentStyles = () => {
+    if (document.getElementById('gb-exit-intent-styles')) return;
+
+    const style = document.createElement('style');
+    style.id = 'gb-exit-intent-styles';
+    style.textContent = `
+      .exit-intent-overlay {
+        align-items: center;
+        background: rgba(3, 7, 18, .78);
+        backdrop-filter: blur(10px);
+        display: none;
+        inset: 0;
+        justify-content: center;
+        opacity: 0;
+        overflow-y: auto;
+        padding: 22px;
+        position: fixed;
+        transition: opacity .22s ease;
+        z-index: 10000;
+      }
+
+      .exit-intent-overlay.show {
+        opacity: 1;
+      }
+
+      .exit-intent-popup {
+        background: #0b1220;
+        border: 1px solid rgba(246, 200, 78, .28);
+        border-radius: 8px;
+        box-shadow: 0 34px 90px rgba(0, 0, 0, .48);
+        color: #f8fafc;
+        display: grid;
+        grid-template-columns: minmax(230px, .82fr) minmax(320px, 1.18fr);
+        max-width: 860px;
+        overflow: hidden;
+        position: relative;
+        width: min(100%, 860px);
+      }
+
+      .exit-intent-close {
+        align-items: center;
+        background: rgba(15, 23, 42, .82);
+        border: 1px solid rgba(255, 255, 255, .16);
+        border-radius: 999px;
+        color: #f8fafc;
+        display: inline-flex;
+        font-size: 24px;
+        height: 38px;
+        justify-content: center;
+        line-height: 1;
+        position: absolute;
+        right: 14px;
+        top: 14px;
+        transition: background .18s ease, border-color .18s ease, transform .18s ease;
+        width: 38px;
+        z-index: 2;
+      }
+
+      .exit-intent-close:hover,
+      .exit-intent-close:focus-visible {
+        background: rgba(246, 200, 78, .18);
+        border-color: rgba(246, 200, 78, .62);
+        outline: none;
+        transform: translateY(-1px);
+      }
+
+      .exit-intent-visual {
+        background:
+          linear-gradient(180deg, rgba(15, 23, 42, .94), rgba(3, 7, 18, .98)),
+          url("assets/images/blog/preview-fat-loss-nutrition-photo.jpg") center / cover;
+        border-right: 1px solid rgba(246, 200, 78, .18);
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        justify-content: space-between;
+        min-height: 430px;
+        padding: 32px 28px;
+      }
+
+      .exit-intent-brand {
+        align-items: center;
+        display: flex;
+        gap: 12px;
+      }
+
+      .exit-intent-brand img {
+        height: 42px;
+        object-fit: contain;
+        width: 42px;
+      }
+
+      .exit-intent-brand strong {
+        color: #fff7d6;
+        display: block;
+        font-size: 1rem;
+        line-height: 1.2;
+      }
+
+      .exit-intent-brand span {
+        color: rgba(226, 232, 240, .72);
+        display: block;
+        font-size: .78rem;
+        margin-top: 2px;
+      }
+
+      .exit-intent-guide-card {
+        background: rgba(15, 23, 42, .78);
+        border: 1px solid rgba(246, 200, 78, .22);
+        border-radius: 8px;
+        padding: 18px;
+      }
+
+      .exit-intent-guide-card span {
+        color: #f6c84e;
+        display: block;
+        font-size: .76rem;
+        font-weight: 900;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+
+      .exit-intent-guide-card strong {
+        color: #fff;
+        display: block;
+        font-size: 1.45rem;
+        line-height: 1.12;
+        margin-top: 8px;
+      }
+
+      .exit-intent-guide-card p {
+        color: rgba(226, 232, 240, .75);
+        font-size: .92rem;
+        line-height: 1.5;
+        margin: 12px 0 0;
+      }
+
+      .exit-intent-proof {
+        display: grid;
+        gap: 10px;
+      }
+
+      .exit-intent-proof div {
+        align-items: center;
+        background: rgba(255, 255, 255, .06);
+        border: 1px solid rgba(255, 255, 255, .1);
+        border-radius: 8px;
+        color: rgba(248, 250, 252, .86);
+        display: flex;
+        font-size: .9rem;
+        gap: 10px;
+        padding: 10px 12px;
+      }
+
+      .exit-intent-proof i {
+        color: #f6c84e;
+        width: 18px;
+      }
+
+      .exit-intent-content {
+        padding: 42px 38px 34px;
+      }
+
+      .exit-intent-header {
+        margin-bottom: 22px;
+        padding-right: 30px;
+      }
+
+      .exit-intent-badge {
+        color: #f6c84e;
+        display: block;
+        font-size: .74rem;
+        font-weight: 900;
+        letter-spacing: .12em;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+      }
+
+      .exit-intent-header h3 {
+        color: #fff;
+        font-size: clamp(1.75rem, 4vw, 2.45rem);
+        font-weight: 900;
+        letter-spacing: 0;
+        line-height: 1.04;
+        margin: 0;
+      }
+
+      .exit-intent-header p {
+        color: rgba(226, 232, 240, .78);
+        font-size: 1rem;
+        line-height: 1.55;
+        margin: 14px 0 0;
+      }
+
+      .exit-intent-form {
+        display: grid;
+        gap: 12px;
+      }
+
+      .exit-intent-field {
+        display: grid;
+        gap: 7px;
+      }
+
+      .exit-intent-field label {
+        color: rgba(248, 250, 252, .86);
+        font-size: .82rem;
+        font-weight: 800;
+      }
+
+      .exit-intent-form input[type="text"],
+      .exit-intent-form input[type="email"],
+      .exit-intent-form select {
+        background: rgba(15, 23, 42, .92);
+        border: 1px solid rgba(148, 163, 184, .3);
+        border-radius: 8px;
+        color: #fff;
+        font-size: 1rem;
+        height: 50px;
+        padding: 0 14px;
+        transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+        width: 100%;
+      }
+
+      .exit-intent-form select {
+        appearance: none;
+        background-image:
+          linear-gradient(45deg, transparent 50%, #f6c84e 50%),
+          linear-gradient(135deg, #f6c84e 50%, transparent 50%);
+        background-position:
+          calc(100% - 18px) 22px,
+          calc(100% - 12px) 22px;
+        background-repeat: no-repeat;
+        background-size: 6px 6px, 6px 6px;
+        padding-right: 38px;
+      }
+
+      .exit-intent-form input::placeholder {
+        color: rgba(203, 213, 225, .58);
+      }
+
+      .exit-intent-form input:focus,
+      .exit-intent-form select:focus {
+        background: rgba(15, 23, 42, 1);
+        border-color: rgba(246, 200, 78, .82);
+        box-shadow: 0 0 0 3px rgba(246, 200, 78, .16);
+        outline: none;
+      }
+
+      .exit-intent-consent {
+        align-items: flex-start;
+        color: rgba(203, 213, 225, .72);
+        display: flex;
+        font-size: .78rem;
+        gap: 10px;
+        line-height: 1.45;
+      }
+
+      .exit-intent-consent input {
+        accent-color: #f6c84e;
+        flex: 0 0 auto;
+        margin-top: 3px;
+      }
+
+      .exit-intent-form button[type="submit"] {
+        align-items: center;
+        background: linear-gradient(135deg, #f6c84e, #d8a927);
+        border: 0;
+        border-radius: 8px;
+        color: #111827;
+        display: inline-flex;
+        font-size: .98rem;
+        font-weight: 900;
+        gap: 10px;
+        height: 52px;
+        justify-content: center;
+        margin-top: 4px;
+        padding: 0 18px;
+        transition: filter .18s ease, transform .18s ease;
+        width: 100%;
+      }
+
+      .exit-intent-form button[type="submit"]:hover,
+      .exit-intent-form button[type="submit"]:focus-visible {
+        filter: brightness(1.04);
+        outline: none;
+        transform: translateY(-1px);
+      }
+
+      .exit-intent-form button[type="submit"]:disabled {
+        cursor: wait;
+        filter: grayscale(.3);
+        transform: none;
+      }
+
+      .exit-intent-benefits {
+        border-top: 1px solid rgba(148, 163, 184, .18);
+        margin-top: 20px;
+        padding-top: 18px;
+      }
+
+      .exit-intent-benefits ul {
+        display: grid;
+        gap: 10px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .exit-intent-benefits li {
+        align-items: flex-start;
+        color: rgba(226, 232, 240, .84);
+        display: flex;
+        font-size: .92rem;
+        gap: 10px;
+        line-height: 1.35;
+      }
+
+      .exit-intent-benefits i {
+        color: #f6c84e;
+        margin-top: 2px;
+      }
+
+      .exit-intent-privacy {
+        color: rgba(203, 213, 225, .66);
+        font-size: .78rem;
+        line-height: 1.45;
+        margin: 14px 0 0;
+      }
+
+      .exit-intent-success {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        min-height: 430px;
+        justify-content: center;
+        padding: 42px 34px;
+        text-align: center;
+      }
+
+      .exit-intent-success i {
+        color: #34d399;
+        font-size: 3rem;
+        margin-bottom: 16px;
+      }
+
+      .exit-intent-success h3 {
+        color: #fff;
+        font-size: 2rem;
+        font-weight: 900;
+        margin: 0;
+      }
+
+      .exit-intent-success p {
+        color: rgba(226, 232, 240, .78);
+        line-height: 1.55;
+        margin: 12px auto 0;
+        max-width: 440px;
+      }
+
+      .exit-intent-success a {
+        background: #f6c84e;
+        border-radius: 8px;
+        color: #111827;
+        display: inline-flex;
+        font-weight: 900;
+        margin-top: 20px;
+        padding: 13px 18px;
+        text-decoration: none;
+      }
+
+      @media (max-width: 760px) {
+        .exit-intent-overlay {
+          align-items: flex-start;
+          padding: 14px;
+        }
+
+        .exit-intent-popup {
+          grid-template-columns: 1fr;
+          margin: auto 0;
+          max-width: 440px;
+        }
+
+        .exit-intent-visual {
+          border-right: 0;
+          border-bottom: 1px solid rgba(246, 200, 78, .18);
+          min-height: auto;
+          padding: 22px;
+        }
+
+        .exit-intent-guide-card {
+          display: none;
+        }
+
+        .exit-intent-proof {
+          grid-template-columns: 1fr;
+        }
+
+        .exit-intent-content {
+          padding: 28px 20px 22px;
+        }
+
+        .exit-intent-header {
+          padding-right: 36px;
+        }
+
+        .exit-intent-close {
+          right: 10px;
+          top: 10px;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  };
+
   // Create exit intent popup with mobile optimization
   const createExitIntentPopup = () => {
+    ensureExitIntentStyles();
+
     const popup = document.createElement('div');
     popup.className = 'exit-intent-overlay';
+    popup.setAttribute('role', 'dialog');
+    popup.setAttribute('aria-modal', 'true');
+    popup.setAttribute('aria-labelledby', 'exit-intent-title');
 
     // Prevent body scroll on mobile when popup is open
     const isMobile = window.innerWidth <= 768;
@@ -583,27 +1002,63 @@
       badge: getI18nText('leadmagnet.popup_badge', 'WAIT!'),
       title: getI18nText('leadmagnet.popup_title', 'Do not leave empty-handed!'),
       subtitle: getI18nText('leadmagnet.popup_subtitle', 'Get the practical 28-day guide to rebuild training, nutrition, steps, habits and accountability without extreme dieting.'),
+      firstNameLabel: getI18nText('leadmagnet.first_name', 'First Name'),
+      lastNameLabel: getI18nText('leadmagnet.last_name', 'Last Name'),
+      emailLabel: getI18nText('leadmagnet.email', 'Email Address'),
+      goalLabel: getI18nText('leadmagnet.goal', 'Main Goal'),
+      consent: getI18nText('leadmagnet.consent', 'I agree to receive the guide and follow-up emails from Garcia Builder Fitness.'),
       email: getI18nText('leadmagnet.email_placeholder', 'you@email.com'),
       button: getI18nText('leadmagnet.popup_button', 'Send Me the Guide'),
       benefit1: getI18nText('leadmagnet.popup_benefit1', '28-day fat-loss structure'),
       benefit2: getI18nText('leadmagnet.popup_benefit2', 'Nutrition and shopping guidance'),
       benefit3: getI18nText('leadmagnet.popup_benefit3', 'Simple habits and accountability'),
-      close: getI18nText('leadmagnet.popup_close', 'Close popup')
+      close: getI18nText('leadmagnet.popup_close', 'Close popup'),
+      privacy: getI18nText('leadmagnet.privacy', 'No spam. The guide arrives instantly and you can unsubscribe anytime.')
     };
     popup.innerHTML = `
       <div class="exit-intent-popup">
         <button class="exit-intent-close" aria-label="${t.close}">&times;</button>
+        <aside class="exit-intent-visual" aria-hidden="true">
+          <div class="exit-intent-brand">
+            <img src="assets/images/logo-nobackground-500.png" alt="">
+            <div>
+              <strong>Garcia Builder</strong>
+              <span>Evidence-based online coaching</span>
+            </div>
+          </div>
+          <div class="exit-intent-guide-card">
+            <span>${t.badge}</span>
+            <strong>28 Days Fat Loss Quickstart</strong>
+            <p>${t.subtitle}</p>
+          </div>
+          <div class="exit-intent-proof">
+            <div><i class="fas fa-dumbbell"></i><span>${t.benefit1}</span></div>
+            <div><i class="fas fa-utensils"></i><span>${t.benefit2}</span></div>
+            <div><i class="fas fa-calendar-check"></i><span>${t.benefit3}</span></div>
+          </div>
+        </aside>
         <div class="exit-intent-content">
           <div class="exit-intent-header">
             <span class="exit-intent-badge">${t.badge}</span>
-            <h3>${t.title}</h3>
+            <h3 id="exit-intent-title">${t.title}</h3>
             <p>${t.subtitle}</p>
           </div>
           <form class="exit-intent-form download-form" data-source="Exit Intent">
-            <input type="text" name="firstName" placeholder="First name" required autocomplete="given-name">
-            <input type="text" name="lastName" placeholder="Last name" required autocomplete="family-name">
-            <input type="email" name="email" placeholder="${t.email}" required autocomplete="email">
-            <select name="goal" required>
+            <div class="exit-intent-field">
+              <label for="exit-intent-first-name">${t.firstNameLabel}</label>
+              <input id="exit-intent-first-name" type="text" name="firstName" placeholder="First name" required autocomplete="given-name">
+            </div>
+            <div class="exit-intent-field">
+              <label for="exit-intent-last-name">${t.lastNameLabel}</label>
+              <input id="exit-intent-last-name" type="text" name="lastName" placeholder="Last name" required autocomplete="family-name">
+            </div>
+            <div class="exit-intent-field">
+              <label for="exit-intent-email">${t.emailLabel}</label>
+              <input id="exit-intent-email" type="email" name="email" placeholder="${t.email}" required autocomplete="email">
+            </div>
+            <div class="exit-intent-field">
+              <label for="exit-intent-goal">${t.goalLabel}</label>
+              <select id="exit-intent-goal" name="goal" required>
               <option value="" disabled selected>Main Goal</option>
               <option value="Fat Loss">Fat Loss</option>
               <option value="Muscle Gain">Muscle Gain</option>
@@ -611,16 +1066,18 @@
               <option value="Body Recomposition">Body Recomposition</option>
               <option value="Confidence / Routine">Confidence / Routine</option>
               <option value="General Fitness">General Fitness</option>
-            </select>
+              </select>
+            </div>
             <input type="hidden" name="guide_id" value="28-day-fat-loss-kickstart">
             <label class="exit-intent-consent">
               <input type="checkbox" name="consent" required>
-              <span>I agree to receive the guide and follow-up emails from Garcia Builder Fitness.</span>
+              <span>${t.consent}</span>
             </label>
             <button type="submit">
               <i class="fas fa-download"></i> ${t.button}
             </button>
           </form>
+          <p class="exit-intent-privacy">${t.privacy}</p>
           <div class="exit-intent-benefits">
             <ul>
               <li><i class="fas fa-check"></i> ${t.benefit1}</li>
@@ -661,6 +1118,7 @@
       const email = popup.querySelector('input[name="email"]').value.trim();
       const goal = popup.querySelector('[name="goal"]').value.trim();
       const consent = popup.querySelector('input[name="consent"]').checked;
+      const name = `${firstName} ${lastName}`.trim();
       const submitBtn = popup.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerHTML;
 
@@ -673,6 +1131,7 @@
         const leadResponse = await saveEbookLeadToDatabase({
           firstName,
           lastName,
+          name,
           email,
           phone: '',
           goal,
@@ -685,7 +1144,8 @@
           utm_term: attribution.utm_term
         });
 
-        await sendDownloadLink({ email }, leadResponse);
+        await sendDownloadLink({ firstName, lastName, name, email, goal, consent }, leadResponse);
+        triggerFileDownload();
 
         // Track only after /api/ebook-lead accepts the lead.
         if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
@@ -707,12 +1167,34 @@
           window.dataLayer.push({ event: 'ebook_download', ...trackingPayload });
         }
 
+        const emailMessage = leadResponse?.customerEmailSent
+          ? getI18nText('leadmagnet.email_sent_message', 'Check your email. The ebook was sent to your inbox.')
+          : leadResponse?.message || getI18nText('leadmagnet.email_pending_message', 'The email could not be sent in this environment. Use the button below to download the ebook.');
+
+        // Show success briefly before the thank-you redirect.
+        popup.querySelector('.exit-intent-popup').innerHTML = `
+          <div class="exit-intent-success">
+            <i class="fas fa-check-circle"></i>
+            <h3>${getI18nText('leadmagnet.download_success_title', 'Success!')}</h3>
+            <p>${emailMessage}</p>
+            <a href="${GUIDE_ASSET_PATH}" download="${GUIDE_DOWNLOAD_NAME}">
+              ${getI18nText('leadmagnet.download_now', 'Download ebook now')}
+            </a>
+          </div>
+        `;
+
+        // Track conversion
+        trackEvent('lead_magnet_download', { source: 'exit_intent' });
+
         // Mark user as converted
         if (typeof window.gbMarkUserConverted === 'function') {
           window.gbMarkUserConverted();
         }
 
-        window.location.href = '/thank-you-ebook';
+        setTimeout(() => {
+          document.body.style.overflow = '';
+          window.location.href = '/thank-you-ebook';
+        }, 700);
 
       } catch (error) {
         console.error('Error saving lead:', error);

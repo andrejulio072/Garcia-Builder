@@ -5,7 +5,7 @@
     if(!document.querySelector('link[href*="kpi6.css"]')){
       const link = document.createElement('link');
       link.rel = 'stylesheet';
-      link.href = 'css/pages/kpi6.css';
+      link.href = '/css/pages/kpi6.css';
       document.head.appendChild(link);
     }
   }

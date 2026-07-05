@@ -582,8 +582,8 @@
         inset: 0;
         justify-content: center;
         opacity: 0;
-        overflow-y: auto;
-        padding: 22px;
+        overflow: hidden;
+        padding: 16px;
         position: fixed;
         transition: opacity .22s ease;
         z-index: 10000;
@@ -600,11 +600,13 @@
         box-shadow: 0 34px 90px rgba(0, 0, 0, .48);
         color: #f8fafc;
         display: grid;
-        grid-template-columns: minmax(230px, .82fr) minmax(320px, 1.18fr);
-        max-width: 860px;
-        overflow: hidden;
+        grid-template-columns: minmax(240px, .72fr) minmax(360px, 1fr);
+        max-height: calc(100dvh - 32px);
+        max-width: 980px;
+        overflow: hidden auto;
         position: relative;
-        width: min(100%, 860px);
+        overscroll-behavior: contain;
+        width: min(100%, 980px);
       }
 
       .exit-intent-close {
@@ -641,10 +643,10 @@
         border-right: 1px solid rgba(246, 200, 78, .18);
         display: flex;
         flex-direction: column;
-        gap: 18px;
+        gap: 14px;
         justify-content: space-between;
-        min-height: 430px;
-        padding: 32px 28px;
+        min-height: 0;
+        padding: 24px 22px;
       }
 
       .exit-intent-brand {
@@ -677,7 +679,7 @@
         background: rgba(15, 23, 42, .78);
         border: 1px solid rgba(246, 200, 78, .22);
         border-radius: 8px;
-        padding: 18px;
+        padding: 14px;
       }
 
       .exit-intent-guide-card span {
@@ -692,21 +694,21 @@
       .exit-intent-guide-card strong {
         color: #fff;
         display: block;
-        font-size: 1.45rem;
+        font-size: 1.18rem;
         line-height: 1.12;
         margin-top: 8px;
       }
 
       .exit-intent-guide-card p {
         color: rgba(226, 232, 240, .75);
-        font-size: .92rem;
-        line-height: 1.5;
-        margin: 12px 0 0;
+        font-size: .84rem;
+        line-height: 1.42;
+        margin: 8px 0 0;
       }
 
       .exit-intent-proof {
         display: grid;
-        gap: 10px;
+        gap: 8px;
       }
 
       .exit-intent-proof div {
@@ -716,9 +718,9 @@
         border-radius: 8px;
         color: rgba(248, 250, 252, .86);
         display: flex;
-        font-size: .9rem;
+        font-size: .82rem;
         gap: 10px;
-        padding: 10px 12px;
+        padding: 8px 10px;
       }
 
       .exit-intent-proof i {
@@ -727,11 +729,11 @@
       }
 
       .exit-intent-content {
-        padding: 42px 38px 34px;
+        padding: 28px 34px 24px;
       }
 
       .exit-intent-header {
-        margin-bottom: 22px;
+        margin-bottom: 16px;
         padding-right: 30px;
       }
 
@@ -747,7 +749,7 @@
 
       .exit-intent-header h3 {
         color: #fff;
-        font-size: clamp(1.75rem, 4vw, 2.45rem);
+        font-size: clamp(1.45rem, 3vw, 2rem);
         font-weight: 900;
         letter-spacing: 0;
         line-height: 1.04;
@@ -756,19 +758,19 @@
 
       .exit-intent-header p {
         color: rgba(226, 232, 240, .78);
-        font-size: 1rem;
-        line-height: 1.55;
-        margin: 14px 0 0;
+        font-size: .92rem;
+        line-height: 1.45;
+        margin: 10px 0 0;
       }
 
       .exit-intent-form {
         display: grid;
-        gap: 12px;
+        gap: 10px;
       }
 
       .exit-intent-field {
         display: grid;
-        gap: 7px;
+        gap: 5px;
       }
 
       .exit-intent-field label {
@@ -785,7 +787,7 @@
         border-radius: 8px;
         color: #fff;
         font-size: 1rem;
-        height: 50px;
+        height: 44px;
         padding: 0 14px;
         transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
         width: 100%;
@@ -797,8 +799,8 @@
           linear-gradient(45deg, transparent 50%, #f6c84e 50%),
           linear-gradient(135deg, #f6c84e 50%, transparent 50%);
         background-position:
-          calc(100% - 18px) 22px,
-          calc(100% - 12px) 22px;
+          calc(100% - 18px) 19px,
+          calc(100% - 12px) 19px;
         background-repeat: no-repeat;
         background-size: 6px 6px, 6px 6px;
         padding-right: 38px;
@@ -841,7 +843,7 @@
         font-size: .98rem;
         font-weight: 900;
         gap: 10px;
-        height: 52px;
+        height: 48px;
         justify-content: center;
         margin-top: 4px;
         padding: 0 18px;
@@ -864,13 +866,13 @@
 
       .exit-intent-benefits {
         border-top: 1px solid rgba(148, 163, 184, .18);
-        margin-top: 20px;
-        padding-top: 18px;
+        margin-top: 14px;
+        padding-top: 12px;
       }
 
       .exit-intent-benefits ul {
         display: grid;
-        gap: 10px;
+        gap: 8px;
         list-style: none;
         margin: 0;
         padding: 0;
@@ -880,7 +882,7 @@
         align-items: flex-start;
         color: rgba(226, 232, 240, .84);
         display: flex;
-        font-size: .92rem;
+        font-size: .84rem;
         gap: 10px;
         line-height: 1.35;
       }
@@ -894,7 +896,7 @@
         color: rgba(203, 213, 225, .66);
         font-size: .78rem;
         line-height: 1.45;
-        margin: 14px 0 0;
+        margin: 10px 0 0;
       }
 
       .exit-intent-success {
@@ -941,20 +943,23 @@
       @media (max-width: 760px) {
         .exit-intent-overlay {
           align-items: flex-start;
-          padding: 14px;
+          overflow-y: auto;
+          padding: 10px;
         }
 
         .exit-intent-popup {
           grid-template-columns: 1fr;
           margin: auto 0;
+          max-height: none;
           max-width: 440px;
+          overflow: visible;
         }
 
         .exit-intent-visual {
           border-right: 0;
           border-bottom: 1px solid rgba(246, 200, 78, .18);
           min-height: auto;
-          padding: 22px;
+          display: none;
         }
 
         .exit-intent-guide-card {
@@ -966,7 +971,7 @@
         }
 
         .exit-intent-content {
-          padding: 28px 20px 22px;
+          padding: 56px 16px 18px;
         }
 
         .exit-intent-header {
@@ -1028,7 +1033,7 @@
           </div>
           <div class="exit-intent-guide-card">
             <span>${t.badge}</span>
-            <strong>28 Days Fat Loss Quickstart</strong>
+            <strong>28-Day Fat Loss Kickstart</strong>
             <p>${t.subtitle}</p>
           </div>
           <div class="exit-intent-proof">

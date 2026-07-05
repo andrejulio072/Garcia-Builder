@@ -228,7 +228,7 @@
     }
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 1700px) {
     .gb-navbar-links,
     .gb-navbar-controls {
         display: none;
@@ -350,7 +350,7 @@
     }
 }
 
-@media (min-width: 1501px) {
+@media (min-width: 1701px) {
     #auth-buttons-navbar[data-auth-state="anonymous"] {
         display: flex !important;
     }
@@ -465,7 +465,7 @@
     transition: all 0.3s ease;
 }
 
-@media (min-width: 1501px) {
+@media (min-width: 1701px) {
     .gb-hamburger {
         display: none;
     }

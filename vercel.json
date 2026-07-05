@@ -1,6 +1,17 @@
 {
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "garciabuilder.fitness"
+        }
+      ],
+      "destination": "https://www.garciabuilder.fitness/",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         {
@@ -12,6 +23,17 @@
       "permanent": true
     },
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.garciabuilder.uk"
+        }
+      ],
+      "destination": "https://www.garciabuilder.fitness/",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         {
@@ -20,6 +42,17 @@
         }
       ],
       "destination": "https://www.garciabuilder.fitness/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "garciabuilder.uk"
+        }
+      ],
+      "destination": "https://www.garciabuilder.fitness/",
       "permanent": true
     },
     {
@@ -35,6 +68,34 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/workouts",
+      "destination": "/workouts.html"
+    },
+    {
+      "source": "/transformations",
+      "destination": "/transformations.html"
+    },
+    {
+      "source": "/testimonials",
+      "destination": "/testimonials.html"
+    },
+    {
+      "source": "/pricing",
+      "destination": "/pricing.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/faq.html"
+    },
     {
       "source": "/online-coaching",
       "destination": "/online-coaching.html"

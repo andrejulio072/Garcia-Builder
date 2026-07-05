@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
-    <loc>https://garciabuilder.fitness/sitemap-optimized.xml</loc>
-    <lastmod>2025-10-05</lastmod>
+    <loc>https://www.garciabuilder.fitness/sitemap.xml</loc>
   </sitemap>
-  <!-- Legacy sitemap excluded intentionally to avoid duplicate URLs -->
 </sitemapindex>

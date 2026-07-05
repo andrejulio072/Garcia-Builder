@@ -29,3 +29,24 @@
 
 /api/*
   Cache-Control: no-cache, no-store, must-revalidate
+
+/my-profile.html
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
+
+/my-profile-production.html
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
+
+/profile*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
+
+/account*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
+
+/pages/auth/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
+
+/pages/public/login.html
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
+
+/success.html
+  X-Robots-Tag: noindex, follow, noarchive

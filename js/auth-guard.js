@@ -360,13 +360,7 @@ class AuthGuard {
                 return `${AuthGuard.computeRelativePrefix()}${sanitized}`;
             }
 
-            const basePath = AuthGuard.computeSiteBasePath();
-            if (!basePath || basePath === '/') {
-                return `/${sanitized}`;
-            }
-
-            const trimmedBase = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
-            return `${trimmedBase}/${sanitized}`;
+            return `/${sanitized}`;
         } catch (error) {
             console.warn('AuthGuard: failed to resolve nav href for', target, error);
             return target || '#';

@@ -932,13 +932,7 @@ function resolveNavHref(target) {
     }
 
     const sanitized = normalized.replace(/^\/+/, '');
-    const basePath = computeSiteBasePath();
-    if (!basePath || basePath === '/') {
-        return `/${sanitized}`;
-    }
-
-    const trimmedBase = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
-    return `${trimmedBase}/${sanitized}`;
+    return `/${sanitized}`;
 }
 
 function computeRelativePrefix() {

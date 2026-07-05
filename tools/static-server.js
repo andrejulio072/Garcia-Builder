@@ -7,7 +7,10 @@ app.disable('x-powered-by');
 const DEFAULT_PORT = 5183;
 const PORT_MAX = 5200;
 let port = Number(process.env.PORT || DEFAULT_PORT);
-const root = path.resolve(__dirname, '..');
+const projectRoot = path.resolve(__dirname, '..');
+const publicRoot = path.join(projectRoot, 'public');
+const root = require('fs').existsSync(publicRoot) ? publicRoot : projectRoot;
+const fs = require('fs');
 
 // Global basic headers for local dev (not production security hardening)
 app.use((req, res, next) => {
@@ -40,20 +43,56 @@ const publicPageAliases = {
 };
 
 app.get(Object.keys(publicPageAliases), (req, res) => {
-  res.sendFile(path.join(root, 'pages', 'public', publicPageAliases[req.path]));
+  res.sendFile(path.join(projectRoot, 'pages', 'public', publicPageAliases[req.path]));
 });
 
 app.get('*', (req, res) => {
+  const requestPath = decodeURIComponent(req.path).replace(/\\/g, '/');
+  const basename = path.basename(requestPath);
+
+  if (path.extname(requestPath)) {
+    const rootLevelCandidate = path.join(root, basename);
+    if (basename !== requestPath.replace(/^\/+/, '') && fs.existsSync(rootLevelCandidate)) {
+      res.redirect(302, `/${basename}`);
+      return;
+    }
+
+    res.status(404).type('text/plain').send('Not found');
+    return;
+  }
+
+  const cleanPath = requestPath.replace(/^\/+|\/+$/g, '');
+  if (cleanPath) {
+    const htmlCandidate = path.join(root, `${cleanPath}.html`);
+    if (fs.existsSync(htmlCandidate)) {
+      res.sendFile(htmlCandidate);
+      return;
+    }
+
+    const indexCandidate = path.join(root, cleanPath, 'index.html');
+    if (fs.existsSync(indexCandidate)) {
+      res.sendFile(indexCandidate);
+      return;
+    }
+  }
+
+  const home = path.join(root, 'index.html');
+  if (fs.existsSync(home)) {
+    res.sendFile(home);
+    return;
+  }
+
   if (path.extname(req.path)) {
     res.status(404).type('text/plain').send('Not found');
     return;
   }
-  res.sendFile(path.join(root, 'index.html'));
+  res.status(404).type('text/plain').send('Not found');
 });
 
 const start = () => {
   const server = app.listen(port, () => {
     console.log(`Static site available at http://localhost:${port}`);
+    console.log(`Serving ${root}`);
   });
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {

@@ -26,15 +26,15 @@
 <meta name="keywords" content="online coaching, personal trainer, fitness transformation, cutting, muscle gain, nutrition coaching, garcia builder, ireland"/>
 
 <!-- Canonical & Social Meta -->
-<link rel="canonical" href="https://garciabuilder.fitness/"/>
+<link rel="canonical" href="https://www.garciabuilder.fitness/"/>
 <meta property="og:locale" content="en_IE"/>
 <meta property="og:locale:alternate" content="pt_BR"/>
 <meta property="og:locale:alternate" content="es_ES"/>
 <meta property="og:type" content="website"/>
 <meta property="og:title" content="Garcia Builder — Online Coaching que Transforma Vidas"/>
 <meta property="og:description" content="Personalized training + custom nutrition + 1:1 support. Science-based method for lasting results in 8-12 weeks."/>
-<meta property="og:url" content="https://garciabuilder.fitness/"/>
-<meta property="og:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg"/>
+<meta property="og:url" content="https://www.garciabuilder.fitness/"/>
+<meta property="og:image" content="https://www.garciabuilder.fitness/assets/og-cover-garcia-builder.jpg"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
 <meta property="og:site_name" content="Garcia Builder"/>
@@ -42,7 +42,7 @@
 <meta name="twitter:site" content="@garciabuilder.fitness"/>
 <meta name="twitter:title" content="Garcia Builder — Online Coaching que Transforma"/>
 <meta name="twitter:description" content="Training + nutrition + weekly check-ins. Science-based method for lasting results."/>
-<meta name="twitter:image" content="https://garciabuilder.fitness/assets/og-cover-garcia-builder.jpg"/>
+<meta name="twitter:image" content="https://www.garciabuilder.fitness/assets/og-cover-garcia-builder.jpg"/>
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
 
 <!-- Google Site Verification -->
@@ -164,6 +164,13 @@ window.addEventListener('load', function() {
   // If we arrive on index with OAuth tokens in hash, redirect to dashboard to process them
   (function(){
     try {
+      const sp = new URLSearchParams(window.location.search);
+      if (sp.has('s')) {
+        const cleanUrl = new URL('/', window.location.origin);
+        window.location.replace(cleanUrl.toString());
+        return;
+      }
+
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
       const hasOAuthTokens = hashParams.has('access_token') || hashParams.has('refresh_token');
 
@@ -176,7 +183,6 @@ window.addEventListener('load', function() {
       }
 
       // Original devReturn logic
-      const sp = new URLSearchParams(window.location.search);
       const devReturn = sp.get('devReturn');
       if (devReturn) {
         const targetBase = devReturn.replace(/\/?$/, '/');
@@ -1225,8 +1231,8 @@ My PT Hub—plans, videos, habits, messages, and progress tracking in one place 
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Garcia Builder",
-  "url": "https://garciabuilder.fitness",
-  "logo": "https://garciabuilder.fitness/assets/logo.png",
+  "url": "https://www.garciabuilder.fitness",
+  "logo": "https://www.garciabuilder.fitness/assets/logo.png",
   "description": "Online fitness coaching with a science-based method. Personalized training, custom nutrition, and 1:1 support for body transformation.",
   "foundingDate": "2024",
   "founder": {
@@ -1263,7 +1269,7 @@ My PT Hub—plans, videos, habits, messages, and progress tracking in one place 
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "Garcia Builder",
-  "url": "https://garciabuilder.fitness/",
+  "url": "https://www.garciabuilder.fitness/",
   "inLanguage": ["en","pt","es"],
   "publisher": {"@type": "Organization", "name": "Garcia Builder"}
 }
@@ -1274,7 +1280,7 @@ My PT Hub—plans, videos, habits, messages, and progress tracking in one place 
   "@context": "https://schema.org",
   "@type": "Person",
   "name": "Andre Garcia",
-  "url": "https://garciabuilder.fitness",
+  "url": "https://www.garciabuilder.fitness",
   "jobTitle": "Online Fitness Coach & Personal Trainer",
   "description": "Certified personal trainer specializing in body recomposition, fat loss and muscle gain through evidence-based coaching methods.",
   "affiliation": {
@@ -1324,7 +1330,7 @@ My PT Hub—plans, videos, habits, messages, and progress tracking in one place 
     "price": "99.00",
     "priceValidUntil": "2026-12-31",
     "availability": "https://schema.org/InStock",
-    "url": "https://garciabuilder.fitness/pricing.html",
+    "url": "https://www.garciabuilder.fitness/pricing.html",
     "description": "Monthly coaching subscription with personalized plans and weekly support"
   }
 }
@@ -1352,7 +1358,8 @@ My PT Hub—plans, videos, habits, messages, and progress tracking in one place 
   "@context":"https://schema.org",
   "@type":"BreadcrumbList",
   "itemListElement":[
-    {"@type":"ListItem","position":1,"name":"Home","item":"https://garciabuilder.fitness/"}
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://www.garciabuilder.fitness/"}
   ]
 }</script>
 </body></html>
+

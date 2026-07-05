@@ -1028,7 +1028,7 @@
           </div>
           <div class="exit-intent-guide-card">
             <span>${t.badge}</span>
-            <strong>28 Days Fat Loss Quickstart</strong>
+            <strong>28-Day Fat Loss Kickstart</strong>
             <p>${t.subtitle}</p>
           </div>
           <div class="exit-intent-proof">
@@ -1718,3 +1718,4 @@
     }
   };
 })();
+

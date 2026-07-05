@@ -34,13 +34,13 @@ app.use(express.static(root, {
 }));
 
 const publicPageAliases = {
-  '/lead-magnet.html': 'lead-magnet.html',
-  '/thanks-ebook.html': 'thanks-ebook.html',
-  '/first-workout.html': 'first-workout.html'
+  '/lead-magnet.html': '28-day-fat-loss-kickstart.html',
+  '/thanks-ebook.html': 'thank-you-ebook.html',
+  '/first-workout.html': 'workouts.html'
 };
 
 app.get(Object.keys(publicPageAliases), (req, res) => {
-  res.sendFile(path.join(root, 'pages', 'public', publicPageAliases[req.path]));
+  res.sendFile(path.join(root, publicPageAliases[req.path]));
 });
 
 app.get('*', (req, res) => {
@@ -73,3 +73,4 @@ const start = () => {
 };
 
 start();
+

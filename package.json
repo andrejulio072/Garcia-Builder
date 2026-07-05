@@ -14,6 +14,7 @@
     "sitemap": "node tools/generate-sitemap.js",
     "lint": "powershell -ExecutionPolicy Bypass -File validate-components.ps1",
     "build": "npm run build:env && npm run build:public",
+    "seo:audit": "node scripts/seo-audit.js",
     "build:env": "node scripts/generate-env-config.js",
     "build:public": "node scripts/build-public-output.js",
     "filter:backup": "node scripts/filter-supabase-backup.js",

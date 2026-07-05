@@ -1,4 +1,79 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "garciabuilder.fitness"
+        }
+      ],
+      "destination": "https://www.garciabuilder.fitness/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.garciabuilder.fitness"
+        },
+        {
+          "type": "header",
+          "key": "x-forwarded-proto",
+          "value": "http"
+        }
+      ],
+      "destination": "https://www.garciabuilder.fitness/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/programs.html",
+      "destination": "/packages.html",
+      "permanent": true
+    },
+    {
+      "source": "/programs",
+      "destination": "/packages.html",
+      "permanent": true
+    },
+    {
+      "source": "/lead-magnet.html",
+      "destination": "/28-day-fat-loss-kickstart.html",
+      "permanent": true
+    },
+    {
+      "source": "/pages/public/lead-magnet.html",
+      "destination": "/28-day-fat-loss-kickstart.html",
+      "permanent": true
+    },
+    {
+      "source": "/pages/public/lead-magnet",
+      "destination": "/28-day-fat-loss-kickstart.html",
+      "permanent": true
+    },
+    {
+      "source": "/pages/public/login.html",
+      "destination": "/pages/auth/login.html",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "s"
+        }
+      ],
+      "destination": "/",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/thank-you-application",
@@ -7,10 +82,6 @@
     {
       "source": "/thank-you-ebook",
       "destination": "/thank-you-ebook.html"
-    },
-    {
-      "source": "/lead-magnet.html",
-      "destination": "/pages/public/lead-magnet.html"
     },
     {
       "source": "/thanks-ebook.html",
@@ -133,6 +204,42 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/pages/auth/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet, noimageindex"
+        }
+      ]
+    },
+    {
+      "source": "/pages/public/login.html",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet, noimageindex"
+        }
+      ]
+    },
+    {
+      "source": "/my-profile.html",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet, noimageindex"
+        }
+      ]
+    },
+    {
+      "source": "/success.html",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow, noarchive"
         }
       ]
     }

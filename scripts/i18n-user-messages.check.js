@@ -15,7 +15,7 @@ const root = path.join(__dirname, '..');
 const checkedFiles = [
   'js/components/newsletter-manager.js',
   'js/components/contact-form-enhanced.js',
-  'pages/public/lead-magnet.html',
+  '28-day-fat-loss-kickstart.html',
   'pages/public/thanks-ebook.html',
   'dashboard.html',
   'js/payment-links.js',
@@ -87,3 +87,4 @@ if (violations.length) {
 }
 
 console.log('User-facing i18n message check passed.');
+

@@ -14,6 +14,7 @@ const CANDIDATE_PUBLIC_PATHS = [
   '/faq.html',
   '/pricing.html',
   '/packages.html',
+  '/nutrition-calculator.html',
   '/28-day-fat-loss-kickstart.html',
   '/transformations.html',
   '/testimonials.html',

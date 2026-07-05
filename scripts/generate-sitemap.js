@@ -16,6 +16,7 @@ const pagePriorities = new Map([
   ['transformations.html', ['monthly', '0.8']],
   ['testimonials.html', ['monthly', '0.8']],
   ['blog.html', ['weekly', '0.8']],
+  ['nutrition-calculator.html', ['weekly', '0.8']],
   ['about.html', ['monthly', '0.7']],
   ['contact.html', ['monthly', '0.7']],
   ['faq.html', ['monthly', '0.7']],

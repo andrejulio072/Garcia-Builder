@@ -265,7 +265,6 @@ const INLINE_FALLBACKS = {
                 <a href="#" class="gb-navbar-link" data-i18n="nav.packages" role="menuitem" data-gb-nav="packages.html">Packages</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.blog" role="menuitem" data-gb-nav="blog.html">Blog</a>
                 <a href="#" class="gb-navbar-link" role="menuitem" data-gb-nav="online-coaching.html">Online Coaching</a>
-                <a href="#" class="gb-navbar-link" role="menuitem" data-gb-nav="apply.html">Apply</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.faq" role="menuitem" data-gb-nav="faq.html">FAQ</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.contact" role="menuitem" data-gb-nav="contact.html">Contact</a>
             </nav>
@@ -312,7 +311,6 @@ const INLINE_FALLBACKS = {
                 <a href="#" class="gb-menu-link" data-i18n="nav.packages" role="menuitem" data-gb-nav="packages.html">Packages</a>
                 <a href="#" class="gb-menu-link" data-i18n="nav.blog" role="menuitem" data-gb-nav="blog.html">Blog</a>
                 <a href="#" class="gb-menu-link" role="menuitem" data-gb-nav="online-coaching.html">Online Coaching</a>
-                <a href="#" class="gb-menu-link" role="menuitem" data-gb-nav="apply.html">Apply</a>
                 <a href="#" class="gb-menu-link" data-i18n="nav.faq" role="menuitem" data-gb-nav="faq.html">FAQ</a>
                 <a href="#" class="gb-menu-link" data-i18n="nav.contact" role="menuitem" data-gb-nav="contact.html">Contact</a>
             </nav>

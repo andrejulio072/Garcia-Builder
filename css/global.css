@@ -358,12 +358,14 @@
   padding: 40px 0 0 0;
   margin-top: 0;
   font-size: 1rem;
-  width: 100vw;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
   position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+  left: auto;
+  right: auto;
+  margin-left: 0;
+  margin-right: 0;
 }
 .gb-footer-main {
   display: grid;

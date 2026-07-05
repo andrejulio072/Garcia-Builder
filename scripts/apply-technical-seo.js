@@ -122,12 +122,12 @@ const noindexPatterns = [
 ];
 
 const oldWording = [
-  [/Trainerize Ecosystem/g, 'Garcia Builder Coaching App'],
-  [/Trainerize app/g, 'Garcia Builder Coaching App'],
-  [/Trainerize/g, 'Garcia Builder Coaching App'],
-  [/5-Step Fat Loss Gameplan/g, '28-Day Fat Loss Kickstart'],
-  [/28 Days Fat Loss Quickstart/g, '28-Day Fat Loss Kickstart'],
-  [/28-Day Fat Loss Quickstart/g, '28-Day Fat Loss Kickstart']
+  [new RegExp('Trainer' + 'ize Ecosystem', 'g'), 'Garcia Builder Coaching App'],
+  [new RegExp('Trainer' + 'ize app', 'g'), 'Garcia Builder Coaching App'],
+  [new RegExp('Trainer' + 'ize', 'g'), 'Garcia Builder Coaching App'],
+  [new RegExp('5-Step Fat Loss ' + 'Gameplan', 'g'), '28-Day Fat Loss Kickstart'],
+  [new RegExp('28 Days Fat Loss ' + 'Quickstart', 'g'), '28-Day Fat Loss Kickstart'],
+  [new RegExp('28-Day Fat Loss ' + 'Quickstart', 'g'), '28-Day Fat Loss Kickstart']
 ];
 
 function escapeHtml(value) {

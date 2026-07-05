@@ -15,6 +15,7 @@
     "seo:apply": "node scripts/apply-technical-seo.js",
     "seo:sitemap": "node scripts/generate-sitemap.js",
     "seo:audit": "node scripts/seo-audit.js",
+    "frontend:audit": "node scripts/frontend-audit.js",
     "build:seo": "node scripts/generate-sitemap.js && node scripts/seo-audit.js",
     "lint": "powershell -ExecutionPolicy Bypass -File validate-components.ps1",
     "build": "npm run build:env && npm run build:public",

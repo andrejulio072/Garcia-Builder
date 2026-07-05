@@ -52,6 +52,7 @@ supabase/*.public-only.sql
 
 # Analysis files
 CLEANUP-ANALYSIS.md
+audit-screenshots/
 .vercel
 
 # Generated environment bundles (contém segredos locais)

@@ -317,7 +317,7 @@ Zapier processes multi-step automation:
 3. Zapier will give you a unique webhook URL
 4. Add this URL to the webhook endpoint in `.env`:
    ```env
-   ZAPIER_PURCHASE_WEBHOOK_URL=https://hooks.zapier.com/hooks/catch/YOUR_UNIQUE_ID/
+   ZAPIER_PURCHASE_WEBHOOK_URL=<set this in local .env only; do not commit webhook URLs>
    ```
 5. Test the trigger by running a test purchase
 
@@ -433,7 +433,7 @@ MYPTHUB_WEBHOOK_SECRET=your_pt_hub_webhook_secret
 SCHEDULER_SECRET=your_scheduler_secret
 
 # Step 4: Zapier Integration
-ZAPIER_PURCHASE_WEBHOOK_URL=https://hooks.zapier.com/hooks/catch/YOUR_ID/
+ZAPIER_PURCHASE_WEBHOOK_URL=<set this in local .env only; do not commit webhook URLs>
 
 # Email Configuration (both steps 3 & 4)
 BREVO_API_KEY=your_brevo_api_key

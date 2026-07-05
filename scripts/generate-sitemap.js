@@ -48,7 +48,7 @@ function isIndexableRootHtml(file) {
   if (!file.endsWith('.html')) return false;
   if (excluded.has(file)) return false;
   if (file.startsWith('test-')) return false;
-  return pagePriorities.has(file) || file.startsWith('blog-') || file === 'programs.html' || file === 'workouts.html' || file === 'start-fat-loss.html' || file === 'online-coaching-dublin.html' || file === '12-week-transformation.html' || file === 'free-fat-loss-guide.html';
+  return pagePriorities.has(file) || file.startsWith('blog-') || file === 'workouts.html' || file === 'start-fat-loss.html' || file === 'online-coaching-dublin.html' || file === '12-week-transformation.html' || file === 'free-fat-loss-guide.html';
 }
 
 const urls = [];

@@ -65,6 +65,46 @@
       ],
       "destination": "https://www.garciabuilder.fitness/:path*",
       "permanent": true
+    },
+    {
+      "source": "/programs.html",
+      "destination": "/packages.html",
+      "permanent": true
+    },
+    {
+      "source": "/programs",
+      "destination": "/packages.html",
+      "permanent": true
+    },
+    {
+      "source": "/lead-magnet.html",
+      "destination": "/28-day-fat-loss-kickstart.html",
+      "permanent": true
+    },
+    {
+      "source": "/pages/public/lead-magnet.html",
+      "destination": "/28-day-fat-loss-kickstart.html",
+      "permanent": true
+    },
+    {
+      "source": "/pages/public/become-trainer.html",
+      "destination": "/about.html",
+      "permanent": true
+    },
+    {
+      "source": "/pages/public/login.html",
+      "destination": "/pages/auth/login.html",
+      "permanent": true
+    },
+    {
+      "source": "/my-profile.html",
+      "destination": "/pages/auth/login.html?action=login",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-policy.html",
+      "destination": "/privacy-policy",
+      "permanent": true
     }
   ],
   "rewrites": [
@@ -155,10 +195,6 @@
     {
       "source": "/terms",
       "destination": "/terms.html"
-    },
-    {
-      "source": "/lead-magnet.html",
-      "destination": "/pages/public/lead-magnet.html"
     },
     {
       "source": "/thanks-ebook.html",

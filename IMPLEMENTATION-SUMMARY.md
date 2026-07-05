@@ -201,7 +201,7 @@ MYPTHUB_WEBHOOK_SECRET=your_pt_hub_secret_key
 SCHEDULER_SECRET=your_scheduler_secret_key
 
 # === Step 4: Zapier ===
-ZAPIER_PURCHASE_WEBHOOK_URL=https://hooks.zapier.com/hooks/catch/YOUR_ID/
+ZAPIER_PURCHASE_WEBHOOK_URL=<set this in local .env only; do not commit webhook URLs>
 
 # === Email Configuration ===
 # Option A: Brevo (recommended)

@@ -246,8 +246,8 @@ const INLINE_FALLBACKS = {
     <div class="container">
         <div class="gb-navbar-content">
             <a href="#" class="gb-logo-section" aria-label="Garcia Builder Home" data-gb-nav="index.html">
-             <img src="Logo Files/For Web/logo-nobackground-500.png"
-                 data-gb-logo-src="Logo Files/For Web/logo-nobackground-500.png"
+             <img src="/assets/images/logo-nobackground-500.png"
+                 data-gb-logo-src="/assets/images/logo-nobackground-500.png"
                      alt="Garcia Builder Logo"
                      class="gb-logo-img"
                      loading="eager"
@@ -346,7 +346,7 @@ const INLINE_FALLBACKS = {
     </div>
     <div class="gb-footer-main gb-footer-ref">
         <div class="gb-footer-col gb-footer-brand-col">
-            <img src="Logo%20Files/For%20Web/logo-nobackground-500.png" alt="Garcia Builder Logo" data-gb-logo-src="Logo%20Files/For%20Web/logo-nobackground-500.png" width="56" height="56" loading="lazy" style="margin-bottom:10px;"/>
+            <img src="/assets/images/logo-nobackground-500.png" alt="Garcia Builder Logo" data-gb-logo-src="/assets/images/logo-nobackground-500.png" width="56" height="56" loading="lazy" style="margin-bottom:10px;"/>
             <div class="footer-title footer-title-ref">Garcia Builder</div>
             <div class="footer-bio-ref" style="margin-bottom:8px;">Online Coaching — Evidence-based fitness, nutrition & accountability.<br/>Transform your body, sustainably.</div>
             <div class="footer-contact-ref" style="margin-top:14px;">
@@ -369,9 +369,9 @@ const INLINE_FALLBACKS = {
         <div class="gb-footer-col">
             <span class="footer-title footer-title-ref">Resources</span>
             <ul style="margin-top:2px;">
-                <li><a href="#" data-gb-nav="pages/public/lead-magnet.html">Free 28-Day Fat Loss Kickstart</a></li>
+                <li><a href="#" data-gb-nav="28-day-fat-loss-kickstart.html">Free 28-Day Fat Loss Kickstart</a></li>
                 <li><a href="#" data-gb-nav="contact.html">Contact</a></li>
-                <li><a href="#" data-gb-nav="pages/public/become-trainer.html">Apply as Trainer</a></li>
+                <li><a href="#" data-gb-nav="apply.html">Apply for Coaching</a></li>
                 <li><a href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener">Book a Call</a></li>
             </ul>
             <div class="footer-follow">

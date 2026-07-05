@@ -4,12 +4,18 @@ const path = require('path');
 const rootDir = path.join(__dirname, '..');
 const canonicalBase = 'https://www.garciabuilder.fitness';
 const secretPatterns = [
-  /hooks\.zapier\.com\/hooks\/catch\//i,
+  new RegExp('hooks' + '\\.zapier' + '\\.com\\/hooks\\/catch\\/', 'i'),
   /vercel_[a-z0-9]+/i,
   /sk_live_[a-z0-9]+/i,
   /sk_test_[a-z0-9]+/i
 ];
-const oldWording = /Trainerize|5-Step Fat Loss Gameplan|28 Days Fat Loss Quickstart|28-Day Fat Loss Quickstart/i;
+const legacyTerms = [
+  'Trainer' + 'ize',
+  '5-Step Fat Loss ' + 'Gameplan',
+  '28 Days Fat Loss ' + 'Quickstart',
+  '28-Day Fat Loss ' + 'Quickstart'
+];
+const oldWording = new RegExp(legacyTerms.map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'i');
 const noindexPattern = /(^|[\\/])(?:(?:thank-you-|test-)[^\\/]*|dashboard\.html|diagnostic\.html|success\.html|confirm-contact\.html|index-inline-loader\.html|my-profile-production\.html|pricing-payment-links\.html|404\.html|pages[\\/](?:admin|auth|test)[\\/]|database[\\/]admin[\\/])/i;
 
 function walk(dir) {

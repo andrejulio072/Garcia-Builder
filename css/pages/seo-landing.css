@@ -1,14 +1,14 @@
 
 :root { --gb-bg: #06070a; --gb-panel: rgba(14, 16, 22, .88); --gb-panel-2: rgba(22, 25, 34, .92); --gb-gold: #f6c84e; --gb-gold-2: #f8e08e; --gb-text: #f8fafc; --gb-muted: rgba(248, 250, 252, .74); --gb-border: rgba(246, 200, 78, .26); }
 body.seo-page { background: radial-gradient(circle at 18% 0%, rgba(246,200,78,.14), transparent 26%), linear-gradient(180deg, #050608 0%, #0c0f16 52%, #050608 100%); color: var(--gb-text); font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif; }
-.gb-seo-container { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
-.gb-seo-hero { padding: 138px 0 76px; min-height: 76vh; display: flex; align-items: center; background: linear-gradient(135deg, rgba(5,6,8,.78), rgba(10,13,20,.95)), url('/assets/images/hero/40689-fitness-wallpaperdownload-free-full-hd-background.jpg') center/cover no-repeat; }
+.gb-seo-container { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+.gb-seo-hero { padding: 148px 0 88px; min-height: 82vh; display: flex; align-items: center; background: linear-gradient(135deg, rgba(5,6,8,.78), rgba(10,13,20,.95)), url('/assets/images/hero/40689-fitness-wallpaperdownload-free-full-hd-background.jpg') center/cover no-repeat; }
 .gb-seo-hero--compact { min-height: 58vh; }
 .gb-seo-hero--article { min-height: auto; padding-bottom: 42px; }
-.gb-seo-hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, .8fr); gap: 36px; align-items: center; }
+.gb-seo-hero-grid { display: grid; grid-template-columns: minmax(0, .98fr) minmax(360px, .72fr); gap: clamp(44px, 5vw, 88px); align-items: center; }
 .gb-seo-kicker { color: var(--gb-gold); text-transform: uppercase; letter-spacing: .12em; font-weight: 900; font-size: .82rem; margin-bottom: 10px; }
 .gb-seo-hero h1, .gb-seo-section h2, .gb-seo-panel h2 { color: #fff; font-weight: 900; letter-spacing: 0; line-height: 1.02; }
-.gb-seo-hero h1 { font-size: clamp(2.55rem, 6vw, 5.4rem); max-width: 980px; }
+.gb-seo-hero h1 { font-size: clamp(2.55rem, 5.2vw, 4.9rem); max-width: 860px; }
 .gb-seo-lead { color: var(--gb-muted); font-size: clamp(1.05rem, 2vw, 1.28rem); line-height: 1.65; max-width: 760px; }
 .gb-seo-actions, .gb-package-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 24px; }
 .gb-seo-btn { display: inline-flex; justify-content: center; align-items: center; min-height: 48px; padding: 12px 18px; border-radius: 8px; background: linear-gradient(135deg, var(--gb-gold), var(--gb-gold-2)); color: #101010; font-weight: 900; text-decoration: none; border: 0; cursor: pointer; }

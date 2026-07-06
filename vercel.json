@@ -185,6 +185,10 @@
       "destination": "/blog.html"
     },
     {
+      "source": "/nutrition-calculator",
+      "destination": "/nutrition-calculator.html"
+    },
+    {
       "source": "/blog/:slug",
       "destination": "/blog/:slug.html"
     },

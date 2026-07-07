@@ -133,9 +133,7 @@
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
-        name,
-        source: '28-Day Fat Loss Kickstart',
-        guide: '28-day-fat-loss-kickstart',
+        source: 'website',
         goal: data.goal,
         consent: Boolean(data.consent),
         page: location.pathname

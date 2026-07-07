@@ -7,7 +7,6 @@ const today = new Date().toISOString().slice(0, 10);
 
 const pagePriorities = new Map([
   ['index.html', ['weekly', '1.0']],
-  ['pricing.html', ['weekly', '0.9']],
   ['online-coaching.html', ['weekly', '0.9']],
   ['packages.html', ['weekly', '0.9']],
   ['apply.html', ['weekly', '0.9']],

@@ -66,16 +66,17 @@ async function forwardEbookLeadToZapier(payload) {
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).end('Method not allowed');
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
     const body = parseBody(req);
     const payload = {
+      leadType: 'ebook',
+      offer: '28-Day Fat Loss Kickstart',
       firstName: normalizeText(body.firstName),
       lastName: normalizeText(body.lastName),
       email: normalizeEmail(body.email),
-      phone: normalizeText(body.phone),
       goal: normalizeText(body.goal),
       source: normalizeText(body.source) || 'website',
       page: normalizeText(body.page) || req.headers.referer || '',
@@ -85,20 +86,14 @@ export default async function handler(req, res) {
       utm_content: normalizeText(body.utm_content),
       utm_term: normalizeText(body.utm_term),
       consent: normalizeConsent(body.consent),
+      createdAt: new Date().toISOString(),
     };
 
     const missingFields = ['firstName', 'lastName', 'email']
       .filter((field) => !payload[field]);
 
-    const missingContext = ['source', 'page']
-      .filter((field) => !payload[field]);
-
     if (missingFields.length) {
       return res.status(400).json({ error: 'Missing required ebook fields', missingFields });
-    }
-
-    if (missingContext.length) {
-      return res.status(400).json({ error: 'Missing required ebook context fields', missingFields: missingContext });
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {

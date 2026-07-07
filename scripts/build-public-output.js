@@ -119,6 +119,8 @@ if (fs.existsSync(privacySource)) {
 }
 
 writeRedirectFile('programs.html', '/packages.html', 'https://www.garciabuilder.fitness/packages.html');
+writeRedirectFile('pricing.html', '/packages.html', 'https://www.garciabuilder.fitness/packages.html');
+writeRedirectFile('pricing/index.html', '/packages.html', 'https://www.garciabuilder.fitness/packages.html');
 writeRedirectFile('my-profile.html', '/pages/auth/login.html?action=login', 'https://www.garciabuilder.fitness/pages/auth/login.html');
 
 console.log(`[public-build] Generated ${path.relative(rootDir, outputDir)}`);

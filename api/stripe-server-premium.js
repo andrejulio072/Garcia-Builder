@@ -586,10 +586,11 @@ app.post('/api/ebook-lead', async (req, res) => {
     try {
         const body = req.body || {};
         const payload = {
+            leadType: 'ebook',
+            offer: '28-Day Fat Loss Kickstart',
             firstName: normalizeText(body.firstName),
             lastName: normalizeText(body.lastName),
             email: normalizeEmail(body.email),
-            phone: normalizeText(body.phone),
             goal: normalizeText(body.goal),
             source: normalizeText(body.source) || 'website',
             page: normalizeText(body.page) || req.headers.referer || '',
@@ -599,6 +600,7 @@ app.post('/api/ebook-lead', async (req, res) => {
             utm_content: normalizeText(body.utm_content),
             utm_term: normalizeText(body.utm_term),
             consent: normalizeConsent(body.consent),
+            createdAt: new Date().toISOString(),
         };
 
         const missingFields = ['firstName', 'lastName', 'email']

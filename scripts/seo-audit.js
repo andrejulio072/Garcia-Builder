@@ -17,6 +17,7 @@ const legacyTerms = [
 ];
 const oldWording = new RegExp(legacyTerms.map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'i');
 const noindexPattern = /(^|[\\/])(?:(?:thank-you-|test-)[^\\/]*|dashboard\.html|diagnostic\.html|success\.html|confirm-contact\.html|index-inline-loader\.html|my-profile-production\.html|pricing-payment-links\.html|404\.html|pages[\\/](?:admin|auth|test)[\\/]|database[\\/]admin[\\/])/i;
+const legacyRedirectPattern = /(^|[\\/])pricing\.html$/i;
 
 function walk(dir) {
   const files = [];
@@ -72,18 +73,21 @@ for (const file of htmlFiles) {
   const relative = path.relative(rootDir, file);
   if (relative.startsWith(`components${path.sep}`)) continue;
   if (/^google[a-z0-9]+\.html$/i.test(path.basename(relative))) continue;
+  const isLegacyRedirect = legacyRedirectPattern.test(relative);
   const html = fs.readFileSync(file, 'utf8');
   const head = (html.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i) || [])[1] || '';
 
   if (count(/<title\b[^>]*>[\s\S]*?<\/title>/gi, head) !== 1) failures.push(`${relative}: expected exactly one <title>`);
-  if (count(/<meta\s+name=["']description["'][^>]*>/gi, head) !== 1) failures.push(`${relative}: expected exactly one meta description`);
+  if (!isLegacyRedirect && count(/<meta\s+name=["']description["'][^>]*>/gi, head) !== 1) failures.push(`${relative}: expected exactly one meta description`);
   if (count(/<link\s+rel=["']canonical["'][^>]*>/gi, head) !== 1) failures.push(`${relative}: expected exactly one canonical`);
   if (count(/<meta\s+name=["']robots["'][^>]*>/gi, head) !== 1) failures.push(`${relative}: expected exactly one robots meta`);
-  for (const tag of ['og:title', 'og:description', 'og:url', 'og:image']) {
-    if (!new RegExp(`<meta\\s+property=["']${tag}["']`, 'i').test(head)) failures.push(`${relative}: missing ${tag}`);
-  }
-  for (const tag of ['twitter:card', 'twitter:title', 'twitter:description', 'twitter:image']) {
-    if (!new RegExp(`<meta\\s+name=["']${tag}["']`, 'i').test(head)) failures.push(`${relative}: missing ${tag}`);
+  if (!isLegacyRedirect) {
+    for (const tag of ['og:title', 'og:description', 'og:url', 'og:image']) {
+      if (!new RegExp(`<meta\\s+property=["']${tag}["']`, 'i').test(head)) failures.push(`${relative}: missing ${tag}`);
+    }
+    for (const tag of ['twitter:card', 'twitter:title', 'twitter:description', 'twitter:image']) {
+      if (!new RegExp(`<meta\\s+name=["']${tag}["']`, 'i').test(head)) failures.push(`${relative}: missing ${tag}`);
+    }
   }
   if (!/rel=["']canonical["'][^>]+https:\/\/www\.garciabuilder\.fitness/i.test(head)) failures.push(`${relative}: canonical is not on www.garciabuilder.fitness`);
   if (/https?:\/\/garciabuilder\.fitness/i.test(head)) failures.push(`${relative}: found non-www canonical/social URL`);
@@ -104,13 +108,19 @@ for (const file of htmlFiles) {
   }
 
   const robots = (head.match(/<meta\s+name=["']robots["']\s+content=["']([^"']+)["']/i) || [])[1] || '';
+  if (legacyRedirectPattern.test(relative)) {
+    if (!/noindex/i.test(robots)) failures.push(`${relative}: legacy pricing page must be noindex`);
+    if (!/rel=["']canonical["'][^>]+https:\/\/www\.garciabuilder\.fitness\/packages\.html/i.test(head)) {
+      failures.push(`${relative}: legacy pricing page must canonicalize to /packages.html`);
+    }
+  }
   if (noindexPattern.test(relative) && !/noindex/i.test(robots)) failures.push(`${relative}: expected noindex`);
-  if (!noindexPattern.test(relative) && /^(index|about|pricing|blog|faq|contact|transformations|testimonials|online-coaching|packages|apply|consultation|28-day)/i.test(path.basename(relative)) && /noindex/i.test(robots)) {
+  if (!noindexPattern.test(relative) && !legacyRedirectPattern.test(relative) && /^(index|about|blog|faq|contact|transformations|testimonials|online-coaching|packages|apply|consultation|28-day)/i.test(path.basename(relative)) && /noindex/i.test(robots)) {
     failures.push(`${relative}: public page should be indexable`);
   }
 
   const h1Count = count(/<h1\b/gi, html);
-  if (!noindexPattern.test(relative) && h1Count !== 1) failures.push(`${relative}: expected one H1, found ${h1Count}`);
+  if (!noindexPattern.test(relative) && !isLegacyRedirect && h1Count !== 1) failures.push(`${relative}: expected one H1, found ${h1Count}`);
 
   for (const schema of extractJsonLd(head)) {
     try {

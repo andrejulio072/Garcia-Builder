@@ -77,6 +77,16 @@
       "permanent": true
     },
     {
+      "source": "/pricing",
+      "destination": "/packages.html",
+      "permanent": true
+    },
+    {
+      "source": "/pricing.html",
+      "destination": "/packages.html",
+      "permanent": true
+    },
+    {
       "source": "/lead-magnet.html",
       "destination": "/28-day-fat-loss-kickstart.html",
       "permanent": true
@@ -123,10 +133,6 @@
     {
       "source": "/testimonials",
       "destination": "/testimonials.html"
-    },
-    {
-      "source": "/pricing",
-      "destination": "/pricing.html"
     },
     {
       "source": "/contact",

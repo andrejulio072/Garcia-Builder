@@ -1373,7 +1373,7 @@
       email: leadInfo.email,
       phone: leadInfo.phone || '',
       goal: leadInfo.goal || '28-Day Fat Loss Kickstart',
-      source: leadInfo.source || 'website',
+      source: 'website',
       consent: leadInfo.consent === true || leadInfo.consent === 'true' || leadInfo.consent === 'on',
       page: leadInfo.page || window.location.pathname,
       utm_source: leadInfo.utm_source || attribution.utm_source,

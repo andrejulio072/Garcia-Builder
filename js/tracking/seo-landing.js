@@ -21,7 +21,7 @@
   }
   function pushEvent(eventName, params) {
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(Object.assign({ event: eventName }, attributionPayload(), params || {}));
+    window.dataLayer.push(Object.assign({ event: eventName, page: location.pathname, source: 'website' }, attributionPayload(), params || {}));
   }
   window.GB_SEO_TRACK = { pushEvent, attributionPayload };
   document.addEventListener('click', function (event) {
@@ -63,6 +63,13 @@
       status.style.color = isError ? '#ffb4b4' : '#f8e08e';
     }
   }
+  function persistLeadProfile(profile) {
+    try {
+      localStorage.setItem('gb_lead_profile_v1', JSON.stringify(profile));
+    } catch (e) {
+      // Non-blocking localStorage write.
+    }
+  }
   function bindApplication(form) {
     let started = false;
     form.addEventListener('input', function () {
@@ -83,6 +90,13 @@
         source: 'Coaching Application',
         page: location.pathname,
         consent: Boolean(data.consent)
+      });
+      persistLeadProfile({
+        firstName: data.firstName || '',
+        email: data.email || '',
+        phone: data.phone || '',
+        goal: data.goal || data.primaryGoal || '',
+        source: 'coaching_application'
       });
       setStatus(form, 'Submitting your application...', false);
       try {
@@ -116,17 +130,24 @@
       const data = values(form);
       const name = [data.firstName, data.lastName].filter(Boolean).join(' ').trim();
       const payload = Object.assign({}, attributionPayload(), {
+        firstName: data.firstName,
+        lastName: data.lastName,
         email: data.email,
-        name,
-        source: '28-Day Fat Loss Kickstart',
-        guide: '28-day-fat-loss-kickstart',
+        source: 'website',
         goal: data.goal,
         consent: Boolean(data.consent),
         page: location.pathname
       });
+      persistLeadProfile({
+        firstName: data.firstName || '',
+        email: data.email || '',
+        phone: data.phone || '',
+        goal: data.goal || '',
+        source: 'ebook_lead'
+      });
       setStatus(form, 'Sending the guide...', false);
       try {
-        const response = await fetch('/api/lead', {
+        const response = await fetch('/api/ebook-lead', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)

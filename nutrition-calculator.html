@@ -109,12 +109,17 @@
           <p>NHS guidance suggests 6-8 cups or glasses of fluid daily for most people, with more when training, sweating or in hot environments.</p>
           <a href="https://www.nhs.uk/live-well/eat-well/food-guidelines-and-food-labels/water-drinks-nutrition/" target="_blank" rel="noopener">NHS hydration guidance</a>
         </details>
+        <details>
+          <summary><span>Accuracy</span><strong>Daily movement changes the real number.</strong></summary>
+          <p>Non-exercise activity can vary widely between similar people, so the calculator asks for steps and defaults to a conservative start before adjusting from real progress.</p>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK279077/" target="_blank" rel="noopener">Endotext NEAT review</a>
+        </details>
       </section>
 
       <div class="nutrition-grid">
         <form id="nutrition-calculator-form" class="nutrition-form card" novalidate>
           <h2>Build Your Macro Plan</h2>
-          <p class="nutrition-subtitle">Estimated with Mifflin-St Jeor and Katch-McArdle when body fat is provided.</p>
+          <p class="nutrition-subtitle">Estimated with BMR equations, steps, training volume and a conservative starting range.</p>
 
           <div class="nutrition-inline-grid">
             <div>
@@ -139,75 +144,126 @@
 
           <div id="nutrition-errors" class="nutrition-errors" aria-live="polite" hidden></div>
 
-          <div class="nutrition-field-grid">
-            <label for="sex">Sex</label>
-            <select id="sex" name="sex" required>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
+          <div class="nutrition-form-sections">
+            <fieldset class="nutrition-fieldset">
+              <legend>Body Details</legend>
+              <div class="nutrition-field-grid">
+                <label for="sex">Sex</label>
+                <select id="sex" name="sex" required>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
 
-            <label for="age">Age</label>
-            <input id="age" name="age" type="number" min="16" max="80" value="32" required>
+                <label for="age">Age</label>
+                <input id="age" name="age" type="number" min="16" max="80" value="32" required>
 
-            <label for="height">Height (<span id="height-unit-label">cm</span>)</label>
-            <input id="height" name="height" type="number" min="130" max="230" step="0.1" value="165" required>
+                <label for="height">Height (<span id="height-unit-label">cm</span>)</label>
+                <input id="height" name="height" type="number" min="130" max="230" step="0.1" value="165" required>
 
-            <label for="weight">Weight (<span id="weight-unit-label">kg</span>)</label>
-            <input id="weight" name="weight" type="number" min="35" max="250" step="0.1" value="72" required>
+                <label for="weight">Weight (<span id="weight-unit-label">kg</span>)</label>
+                <input id="weight" name="weight" type="number" min="35" max="250" step="0.1" value="72" required>
 
-            <label for="bodyFat">Body fat % (optional)</label>
-            <input id="bodyFat" name="bodyFat" type="number" min="3" max="70" step="0.1" placeholder="e.g. 24">
+                <label for="bodyFat">Body fat % (optional)</label>
+                <input id="bodyFat" name="bodyFat" type="number" min="3" max="70" step="0.1" placeholder="e.g. 24">
+              </div>
+            </fieldset>
 
-            <label for="goal">Goal</label>
-            <select id="goal" name="goal" required>
-              <option value="fat_loss">Fat loss</option>
-              <option value="aggressive_fat_loss">Aggressive fat loss</option>
-              <option value="maintenance">Maintenance</option>
-              <option value="recomposition">Body recomposition</option>
-              <option value="lean_muscle_gain">Lean muscle gain</option>
-              <option value="performance">Performance / high activity</option>
-            </select>
+            <fieldset class="nutrition-fieldset">
+              <legend>Goal + Pace</legend>
+              <div class="nutrition-field-grid">
+                <label for="goal">Goal</label>
+                <select id="goal" name="goal" required>
+                  <option value="fat_loss">Fat loss</option>
+                  <option value="aggressive_fat_loss">Aggressive fat loss</option>
+                  <option value="maintenance">Maintenance</option>
+                  <option value="recomposition">Body recomposition</option>
+                  <option value="lean_muscle_gain">Lean muscle gain</option>
+                  <option value="performance">Performance / high activity</option>
+                </select>
 
-            <label for="trainingFrequency">Training frequency</label>
-            <select id="trainingFrequency" name="trainingFrequency" required>
-              <option value="0">0 days</option>
-              <option value="1-2">1-2 days</option>
-              <option value="3-4" selected>3-4 days</option>
-              <option value="5-6">5-6 days</option>
-              <option value="athlete">Athlete / very high activity</option>
-            </select>
+                <label for="targetPace">Target pace</label>
+                <select id="targetPace" name="targetPace">
+                  <option value="slow">Slow: about 0.25% body weight/week</option>
+                  <option value="moderate" selected>Standard: about 0.5% body weight/week</option>
+                  <option value="aggressive">Assertive: about 0.75% body weight/week</option>
+                </select>
 
-            <label for="dailyActivity">Daily activity</label>
-            <select id="dailyActivity" name="dailyActivity" required>
-              <option value="mostly_sitting">Mostly sitting</option>
-              <option value="light_movement">Light movement</option>
-              <option value="active_job">Active job</option>
-              <option value="very_active_job">Very active job</option>
-            </select>
+                <label for="accuracyMode">Accuracy mode</label>
+                <select id="accuracyMode" name="accuracyMode">
+                  <option value="conservative" selected>Conservative start - if calculators run high</option>
+                  <option value="standard">Standard estimate</option>
+                  <option value="high_output">High-output estimate</option>
+                </select>
+              </div>
+            </fieldset>
 
-            <label for="mealPreference">Meal preference</label>
-            <select id="mealPreference" name="mealPreference" required>
-              <option value="3">3 meals</option>
-              <option value="4" selected>4 meals</option>
-              <option value="5">5 meals</option>
-            </select>
+            <fieldset class="nutrition-fieldset">
+              <legend>Movement + Training</legend>
+              <div class="nutrition-field-grid">
+                <label for="trainingFrequency">Training frequency</label>
+                <select id="trainingFrequency" name="trainingFrequency" required>
+                  <option value="0">0 days</option>
+                  <option value="1-2">1-2 days</option>
+                  <option value="3-4" selected>3-4 days</option>
+                  <option value="5-6">5-6 days</option>
+                  <option value="athlete">Athlete / very high activity</option>
+                </select>
 
-            <label for="dietPreference">Diet preference</label>
-            <select id="dietPreference" name="dietPreference" required>
-              <option value="balanced">Balanced</option>
-              <option value="high_protein">High protein</option>
-              <option value="vegetarian">Vegetarian</option>
-              <option value="pescatarian">Pescatarian</option>
-              <option value="simple_meal_prep">Simple meal prep</option>
-              <option value="busy_professional">Busy professional</option>
-            </select>
+                <label for="sessionDuration">Average session length</label>
+                <select id="sessionDuration" name="sessionDuration" required>
+                  <option value="30">30 minutes</option>
+                  <option value="45" selected>45 minutes</option>
+                  <option value="60">60 minutes</option>
+                  <option value="75">75+ minutes</option>
+                </select>
 
-            <label for="targetPace">Target pace (optional)</label>
-            <select id="targetPace" name="targetPace">
-              <option value="moderate" selected>Moderate</option>
-              <option value="slow">Slow and sustainable</option>
-              <option value="aggressive">Aggressive</option>
-            </select>
+                <label for="trainingIntensity">Training intensity</label>
+                <select id="trainingIntensity" name="trainingIntensity" required>
+                  <option value="light">Light / easy technique</option>
+                  <option value="moderate" selected>Moderate lifting or mixed gym</option>
+                  <option value="hard">Hard lifting, circuits or sport</option>
+                </select>
+
+                <label for="dailyActivity">Daily activity</label>
+                <select id="dailyActivity" name="dailyActivity" required>
+                  <option value="mostly_sitting">Mostly sitting</option>
+                  <option value="light_movement">Light movement</option>
+                  <option value="active_job">Active job</option>
+                  <option value="very_active_job">Very active job</option>
+                </select>
+
+                <label for="dailySteps">Average daily steps</label>
+                <select id="dailySteps" name="dailySteps" required>
+                  <option value="unknown">Not sure</option>
+                  <option value="under_4000">Under 4,000</option>
+                  <option value="4000_7000" selected>4,000-7,000</option>
+                  <option value="7000_10000">7,000-10,000</option>
+                  <option value="over_10000">10,000+</option>
+                </select>
+              </div>
+            </fieldset>
+
+            <fieldset class="nutrition-fieldset">
+              <legend>Eating Structure</legend>
+              <div class="nutrition-field-grid">
+                <label for="mealPreference">Meal preference</label>
+                <select id="mealPreference" name="mealPreference" required>
+                  <option value="3">3 meals</option>
+                  <option value="4" selected>4 meals</option>
+                  <option value="5">5 meals</option>
+                </select>
+
+                <label for="dietPreference">Diet preference</label>
+                <select id="dietPreference" name="dietPreference" required>
+                  <option value="balanced">Balanced</option>
+                  <option value="high_protein">High protein</option>
+                  <option value="vegetarian">Vegetarian</option>
+                  <option value="pescatarian">Pescatarian</option>
+                  <option value="simple_meal_prep">Simple meal prep</option>
+                  <option value="busy_professional">Busy professional</option>
+                </select>
+              </div>
+            </fieldset>
           </div>
 
           <button type="submit" class="btn btn-warning nutrition-submit">
@@ -337,6 +393,11 @@
           <button type="button" class="filter-btn" data-filter="high_fiber">High Fiber</button>
           <button type="button" class="filter-btn" data-filter="social_lifestyle">Social Lifestyle</button>
         </div>
+        <div class="library-search-panel">
+          <label for="templateSearch">Search templates</label>
+          <input id="templateSearch" type="search" autocomplete="off" placeholder="Search by meal style, lifestyle, goal, foods...">
+          <p id="templateResultCount" class="library-result-count">Calculate to load templates.</p>
+        </div>
         <div id="templateCards" class="template-cards"></div>
       </section>
 
@@ -349,11 +410,14 @@
           <button type="button" id="hideFoodLibrary" class="btn btn-outline-warning">Hide Food Library</button>
         </div>
         <div class="food-controls">
+          <label for="foodSearch">Search</label>
+          <input id="foodSearch" type="search" autocomplete="off" placeholder="Search chicken, oats, yoghurt...">
           <label for="foodCategory">Category</label>
           <select id="foodCategory"></select>
           <label for="foodTag">Tag</label>
           <select id="foodTag"></select>
         </div>
+        <p id="foodResultCount" class="library-result-count">Showing all foods.</p>
         <div id="foodCards" class="food-cards"></div>
         <div class="selected-foods">
           <h3>Selected Foods</h3>

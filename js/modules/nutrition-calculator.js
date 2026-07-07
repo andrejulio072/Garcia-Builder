@@ -8,10 +8,12 @@
     profile: null,
     templates: [],
     selectedTemplateFilter: 'all',
+    templateSearch: '',
     showAllTemplates: false,
     selectedFoods: [],
     foodCategoryFilter: CATEGORY_ALL,
-    foodTagFilter: TAG_ALL
+    foodTagFilter: TAG_ALL,
+    foodSearch: ''
   };
 
   function byId(id) {
@@ -29,6 +31,10 @@
   function toNumber(value, fallback) {
     const parsed = Number(value);
     return Number.isFinite(parsed) ? parsed : fallback;
+  }
+
+  function normalizeSearch(value) {
+    return String(value || '').trim().toLowerCase();
   }
 
   function poundsToKg(lb) {
@@ -59,66 +65,106 @@
     return 370 + (21.6 * leanBodyMass);
   }
 
-  function activityMultiplier(dailyActivity, trainingFrequency) {
-    const key = dailyActivity + '|' + trainingFrequency;
+  function trainingDaysPerWeek(trainingFrequency) {
     const map = {
-      'mostly_sitting|0': 1.2,
-      'mostly_sitting|1-2': 1.3,
-      'light_movement|1-2': 1.375,
-      'light_movement|3-4': 1.45,
-      'active_job|3-4': 1.55,
-      'active_job|5-6': 1.65,
-      'very_active_job|5-6': 1.75,
-      'mostly_sitting|athlete': 1.85,
-      'light_movement|athlete': 1.85,
-      'active_job|athlete': 1.85,
-      'very_active_job|athlete': 1.85
+      '0': 0,
+      '1-2': 1.5,
+      '3-4': 3.5,
+      '5-6': 5.5,
+      athlete: 6.5
     };
-    if (map[key]) return map[key];
-
-    if (trainingFrequency === 'athlete') return 1.85;
-    if (dailyActivity === 'very_active_job') return trainingFrequency === '5-6' ? 1.75 : 1.65;
-    if (dailyActivity === 'active_job') return trainingFrequency === '5-6' ? 1.65 : 1.55;
-    if (dailyActivity === 'light_movement') return trainingFrequency === '0' ? 1.25 : 1.4;
-    return trainingFrequency === '0' ? 1.2 : 1.3;
+    return map[trainingFrequency] || 0;
   }
 
-  function goalAdjustment(goal, pace, bodyFat) {
-    const paceBias = pace === 'slow' ? -0.03 : pace === 'aggressive' ? 0.03 : 0;
-    const map = {
-      aggressive_fat_loss: -0.25,
-      fat_loss: -0.18,
-      maintenance: 0,
-      recomposition: bodyFat && bodyFat > 22 ? -0.07 : 0,
-      lean_muscle_gain: 0.08,
-      performance: 0.03
+  function baselineActivityMultiplier(dailyActivity, dailySteps) {
+    const bySteps = {
+      under_4000: 1.2,
+      '4000_7000': 1.3,
+      '7000_10000': 1.42,
+      over_10000: 1.55
     };
-    const base = map[goal] || 0;
-    if (goal === 'fat_loss') {
-      return clamp(base + paceBias, -0.2, -0.15);
+    const byLifestyle = {
+      mostly_sitting: 1.2,
+      light_movement: 1.32,
+      active_job: 1.45,
+      very_active_job: 1.6
+    };
+    const lifestyle = byLifestyle[dailyActivity] || byLifestyle.light_movement;
+    if (!dailySteps || dailySteps === 'unknown') return lifestyle;
+    return Math.max(bySteps[dailySteps] || lifestyle, lifestyle - 0.06);
+  }
+
+  function estimateTrainingCalories(weightKg, trainingFrequency, sessionDuration, trainingIntensity) {
+    const days = trainingDaysPerWeek(trainingFrequency);
+    if (!days) return 0;
+
+    const hours = clamp(toNumber(sessionDuration, 45), 20, 90) / 60;
+    const metMap = {
+      light: 4,
+      moderate: 5.5,
+      hard: 7
+    };
+    const met = metMap[trainingIntensity] || metMap.moderate;
+    const netSessionCalories = Math.max(0, (met - 1) * weightKg * hours);
+    return netSessionCalories * days / 7;
+  }
+
+  function accuracyFactor(mode) {
+    const map = {
+      conservative: 0.93,
+      standard: 1,
+      high_output: 1.05
+    };
+    return map[mode] || map.conservative;
+  }
+
+  function goalCalorieDelta(goal, pace, bodyFat, weightKg, maintenanceCalories) {
+    const lossRates = {
+      slow: 0.0025,
+      moderate: 0.005,
+      aggressive: 0.0075
+    };
+    const gainRates = {
+      slow: 0.00125,
+      moderate: 0.0025,
+      aggressive: 0.004
+    };
+    const lossRate = lossRates[pace] || lossRates.moderate;
+    const gainRate = gainRates[pace] || gainRates.moderate;
+    const kcalPerKg = 7700;
+
+    if (goal === 'fat_loss' || goal === 'aggressive_fat_loss') {
+      const selectedRate = goal === 'aggressive_fat_loss' ? Math.max(lossRate, 0.0075) : lossRate;
+      const rawDeficit = (weightKg * kcalPerKg * selectedRate) / 7;
+      const cap = goal === 'aggressive_fat_loss' ? 0.25 : pace === 'aggressive' ? 0.22 : pace === 'slow' ? 0.12 : 0.18;
+      return -Math.min(rawDeficit, maintenanceCalories * cap);
     }
-    if (goal === 'aggressive_fat_loss') {
-      return clamp(base + paceBias, -0.28, -0.22);
-    }
+
     if (goal === 'lean_muscle_gain') {
-      return clamp(base + paceBias, 0.05, 0.1);
+      const rawSurplus = (weightKg * kcalPerKg * gainRate) / 7;
+      const cap = pace === 'aggressive' ? 0.1 : pace === 'slow' ? 0.04 : 0.07;
+      return Math.min(rawSurplus, maintenanceCalories * cap);
     }
-    if (goal === 'performance') {
-      return clamp(base + paceBias, 0, 0.05);
-    }
+
     if (goal === 'recomposition') {
-      return clamp(base + paceBias, -0.1, 0);
+      const recompDeficit = bodyFat && bodyFat > 24 ? 0.07 : bodyFat && bodyFat > 18 ? 0.04 : 0.02;
+      return -(maintenanceCalories * recompDeficit);
     }
-    return base;
+
+    if (goal === 'performance') {
+      return maintenanceCalories * (pace === 'aggressive' ? 0.05 : pace === 'slow' ? 0.02 : 0.03);
+    }
+
+    return 0;
   }
 
   function proteinPerKg(goal, pace) {
     const ranges = {
-      fat_loss: [2.0, 2.4],
-      aggressive_fat_loss: [2.2, 2.6],
-      recomposition: [2.0, 2.3],
+      fat_loss: [1.8, 2.2],
+      aggressive_fat_loss: [2.0, 2.4],
+      recomposition: [1.8, 2.2],
       maintenance: [1.6, 2.0],
-      lean_muscle_gain: [1.8, 2.2],
+      lean_muscle_gain: [1.6, 2.0],
       performance: [1.6, 2.0]
     };
     const [min, max] = ranges[goal] || ranges.maintenance;
@@ -313,10 +359,14 @@
       bodyFat: bodyFatRaw ? toNumber(bodyFatRaw, null) : null,
       goal: String(form.goal.value || 'maintenance'),
       trainingFrequency: String(form.trainingFrequency.value || '3-4'),
+      sessionDuration: String(form.sessionDuration.value || '45'),
+      trainingIntensity: String(form.trainingIntensity.value || 'moderate'),
       dailyActivity: String(form.dailyActivity.value || 'light_movement'),
+      dailySteps: String(form.dailySteps.value || '4000_7000'),
       mealPreference: String(form.mealPreference.value || '4'),
       dietPreference: String(form.dietPreference.value || 'balanced'),
       targetPace: String(form.targetPace.value || 'moderate'),
+      accuracyMode: String(form.accuracyMode.value || 'conservative'),
       unitSystem
     };
   }
@@ -324,12 +374,22 @@
   function runCalculation(profile) {
     const bmrMifflin = mifflinStJeor(profile.weightKg, profile.heightCm, profile.age, profile.sex);
     const bmrKatch = profile.bodyFat !== null ? katchMcardle(profile.weightKg, profile.bodyFat) : null;
-    const primaryBmr = bmrKatch || bmrMifflin;
-    const multiplier = activityMultiplier(profile.dailyActivity, profile.trainingFrequency);
-    const maintenanceCalories = roundTo(primaryBmr * multiplier, 10);
+    const primaryBmr = bmrKatch ? ((bmrKatch + bmrMifflin) / 2) : bmrMifflin;
+    const baselineMultiplier = baselineActivityMultiplier(profile.dailyActivity, profile.dailySteps);
+    const trainingCaloriesDaily = estimateTrainingCalories(
+      profile.weightKg,
+      profile.trainingFrequency,
+      profile.sessionDuration,
+      profile.trainingIntensity
+    );
+    const maintenanceRaw = (primaryBmr * baselineMultiplier) + trainingCaloriesDaily;
+    const modeFactor = accuracyFactor(profile.accuracyMode);
+    const maintenanceCalories = roundTo(maintenanceRaw * modeFactor, 10);
+    const maintenanceLow = roundTo(maintenanceRaw * modeFactor * 0.92, 10);
+    const maintenanceHigh = roundTo(maintenanceRaw * modeFactor * 1.08, 10);
 
-    const adjustment = goalAdjustment(profile.goal, profile.targetPace, profile.bodyFat);
-    const targetCaloriesRaw = maintenanceCalories * (1 + adjustment);
+    const calorieDelta = goalCalorieDelta(profile.goal, profile.targetPace, profile.bodyFat, profile.weightKg, maintenanceCalories);
+    const targetCaloriesRaw = maintenanceCalories + calorieDelta;
     const targetCalories = roundTo(clamp(targetCaloriesRaw, 1100, 5000), 10);
 
     const proteinKg = proteinPerKg(profile.goal, profile.targetPace);
@@ -347,10 +407,15 @@
 
     return {
       maintenanceCalories,
+      maintenanceLow,
+      maintenanceHigh,
       targetCalories,
       bmrMifflin: roundTo(bmrMifflin, 1),
       bmrKatch: bmrKatch ? roundTo(bmrKatch, 1) : null,
-      multiplier,
+      baselineMultiplier: roundTo(baselineMultiplier, 0.01),
+      trainingCaloriesDaily: roundTo(trainingCaloriesDaily, 10),
+      accuracyFactor: modeFactor,
+      calorieDelta: roundTo(calorieDelta, 10),
       macros,
       fiberTarget,
       waterLow,
@@ -377,14 +442,14 @@
 
   function renderResults(profile, calc) {
     byId('resultMessage').textContent = practicalMessage();
-    byId('resultMaintenanceCalories').textContent = formatKcal(calc.maintenanceCalories);
+    byId('resultMaintenanceCalories').textContent = formatKcal(calc.maintenanceCalories) + ' (' + formatKcal(calc.maintenanceLow) + '-' + formatKcal(calc.maintenanceHigh) + ' range)';
     byId('resultTargetCalories').textContent = formatKcal(calc.targetCalories);
     byId('resultProtein').textContent = formatGram(calc.macros.protein);
     byId('resultCarbs').textContent = formatGram(calc.macros.carbs);
     byId('resultFats').textContent = formatGram(calc.macros.fats);
     byId('resultFormula').textContent = calc.bmrKatch
-      ? 'Katch-McArdle (' + calc.bmrKatch + ' BMR)'
-      : 'Mifflin-St Jeor (' + calc.bmrMifflin + ' BMR)';
+      ? 'Mifflin + Katch average, lifestyle x' + calc.baselineMultiplier + ', +' + calc.trainingCaloriesDaily + ' training kcal/day, ' + profile.accuracyMode.replace(/_/g, ' ') + ' mode'
+      : 'Mifflin-St Jeor, lifestyle x' + calc.baselineMultiplier + ', +' + calc.trainingCaloriesDaily + ' training kcal/day, ' + profile.accuracyMode.replace(/_/g, ' ') + ' mode';
 
     byId('resultFiber').textContent = 'Fiber target: ' + calc.fiberTarget + ' g/day (10-14g per 1000 kcal in practice).';
     byId('resultHydration').textContent = 'Water target: ' + calc.waterLow + '-' + calc.waterHigh + ' ml/day. Increase with heat, sweat and high activity.';
@@ -426,24 +491,30 @@
     const cards = byId('templateCards');
     if (!cards) return;
 
-    const filter = state.selectedTemplateFilter;
-    const filtered = state.templates.filter(function isMatch(template) {
-      if (filter === 'all') return true;
-      if (template.goal === filter) return true;
-      return template.audienceTags.includes(filter);
-    });
-
-    const visibleTemplates = state.showAllTemplates ? filtered : filtered.slice(0, 6);
+    const filtered = getFilteredTemplates();
+    const search = state.templateSearch;
+    const hasSearch = search.length > 0;
+    const hasFilter = state.selectedTemplateFilter !== 'all';
+    const visibleTemplates = state.showAllTemplates || hasSearch || hasFilter ? filtered : filtered.slice(0, 6);
+    const count = byId('templateResultCount');
     const intro = byId('templateLibraryIntro');
     const toggle = byId('toggleAllTemplates');
     if (intro) {
-      intro.textContent = state.showAllTemplates
-        ? 'Showing all templates. Use filters to narrow the library by goal or lifestyle.'
+      intro.textContent = state.showAllTemplates || hasSearch || hasFilter
+        ? 'Use search and filters together to narrow the library by goal, lifestyle, meal style or food preference.'
         : 'Showing the 6 strongest matches first so you do not have to scan every option.';
     }
+    if (count) {
+      count.textContent = filtered.length + ' template' + (filtered.length === 1 ? '' : 's') + ' found';
+    }
     if (toggle) {
-      toggle.hidden = filtered.length <= 6;
+      toggle.hidden = filtered.length <= 6 || hasSearch || hasFilter;
       toggle.textContent = state.showAllTemplates ? 'Show Best Matches' : 'Show All Templates';
+    }
+
+    if (!visibleTemplates.length) {
+      cards.innerHTML = '<p class="library-empty">No templates match this search. Try a broader goal, lifestyle or food term.</p>';
+      return;
     }
 
     cards.innerHTML = visibleTemplates.map(function toCard(template) {
@@ -477,6 +548,34 @@
     }).join('');
   }
 
+  function getFilteredTemplates() {
+    const filter = state.selectedTemplateFilter;
+    const search = state.templateSearch;
+    return state.templates.filter(function isMatch(template) {
+      if (filter === 'all') return true;
+      if (template.goal === filter) return true;
+      return template.audienceTags.includes(filter);
+    }).filter(function bySearch(template) {
+      if (!search) return true;
+      const sampleText = template.sampleDay.map(function mapMeal(item) {
+        return item.meal + ' ' + item.example;
+      }).join(' ');
+      const haystack = normalizeSearch([
+        template.title,
+        template.goal,
+        template.macroEmphasis,
+        template.bestFor,
+        template.notIdealFor,
+        template.coachNote,
+        template.audienceTags.join(' '),
+        template.swaps.join(' '),
+        template.shoppingList.join(' '),
+        sampleText
+      ].join(' '));
+      return haystack.includes(search);
+    });
+  }
+
   function buildEmailPayload(profile, calc) {
     const recommendedTemplates = state.templates.slice(0, 3).map(function mapTemplate(template) {
       return {
@@ -502,15 +601,25 @@
         bodyFat: profile.bodyFat,
         goal: profile.goal,
         trainingFrequency: profile.trainingFrequency,
+        sessionDuration: profile.sessionDuration,
+        trainingIntensity: profile.trainingIntensity,
         dailyActivity: profile.dailyActivity,
+        dailySteps: profile.dailySteps,
         mealPreference: profile.mealPreference,
         dietPreference: profile.dietPreference,
         targetPace: profile.targetPace,
+        accuracyMode: profile.accuracyMode,
         unitSystem: profile.unitSystem
       },
       result: {
         maintenanceCalories: calc.maintenanceCalories,
+        maintenanceLow: calc.maintenanceLow,
+        maintenanceHigh: calc.maintenanceHigh,
         targetCalories: calc.targetCalories,
+        calorieDelta: calc.calorieDelta,
+        baselineMultiplier: calc.baselineMultiplier,
+        trainingCaloriesDaily: calc.trainingCaloriesDaily,
+        accuracyFactor: calc.accuracyFactor,
         protein: calc.macros.protein,
         carbs: calc.macros.carbs,
         fats: calc.macros.fats,
@@ -592,12 +701,17 @@
     const cards = byId('foodCards');
     if (!cards) return;
     const categoryLabels = getCategoryLabels();
+    const count = byId('foodResultCount');
+    const foodItems = getFilteredFoodItems();
 
-    const foodItems = getFoodLibrary().filter(function byFilter(item) {
-      const categoryOk = state.foodCategoryFilter === CATEGORY_ALL || item.category === state.foodCategoryFilter;
-      const tagOk = state.foodTagFilter === TAG_ALL || item.tags.includes(state.foodTagFilter);
-      return categoryOk && tagOk;
-    });
+    if (count) {
+      count.textContent = foodItems.length + ' food' + (foodItems.length === 1 ? '' : 's') + ' found';
+    }
+
+    if (!foodItems.length) {
+      cards.innerHTML = '<p class="library-empty">No foods match this search. Try a different food, category or tag.</p>';
+      return;
+    }
 
     cards.innerHTML = foodItems.map(function toFoodCard(item, index) {
       return [
@@ -615,16 +729,32 @@
       button.addEventListener('click', function onAddFood() {
         const index = toNumber(button.getAttribute('data-food-index'), -1);
         if (index < 0) return;
-        const filteredItems = getFoodLibrary().filter(function byFilter(item) {
-          const categoryOk = state.foodCategoryFilter === CATEGORY_ALL || item.category === state.foodCategoryFilter;
-          const tagOk = state.foodTagFilter === TAG_ALL || item.tags.includes(state.foodTagFilter);
-          return categoryOk && tagOk;
-        });
-        const item = filteredItems[index];
+        const item = getFilteredFoodItems()[index];
         if (!item) return;
         state.selectedFoods.push(item);
         renderSelectedFoods();
       });
+    });
+  }
+
+  function getFilteredFoodItems() {
+    const search = state.foodSearch;
+    return getFoodLibrary().filter(function byFilter(item) {
+      const categoryOk = state.foodCategoryFilter === CATEGORY_ALL || item.category === state.foodCategoryFilter;
+      const tagOk = state.foodTagFilter === TAG_ALL || item.tags.includes(state.foodTagFilter);
+      if (!categoryOk || !tagOk) return false;
+      if (!search) return true;
+      const haystack = normalizeSearch([
+        item.name,
+        item.category,
+        item.serving,
+        item.tags.join(' '),
+        item.calories,
+        item.protein,
+        item.carbs,
+        item.fats
+      ].join(' '));
+      return haystack.includes(search);
     });
   }
 
@@ -698,6 +828,15 @@
   }
 
   function setupTemplateFilters() {
+    const templateSearch = byId('templateSearch');
+    if (templateSearch) {
+      templateSearch.addEventListener('input', function onTemplateSearch() {
+        state.templateSearch = normalizeSearch(templateSearch.value);
+        state.showAllTemplates = false;
+        renderTemplateCards();
+      });
+    }
+
     document.querySelectorAll('.filter-btn').forEach(function bindFilter(button) {
       button.addEventListener('click', function onFilter() {
         document.querySelectorAll('.filter-btn').forEach(function clearState(el) {
@@ -705,6 +844,7 @@
         });
         button.classList.add('is-active');
         state.selectedTemplateFilter = String(button.getAttribute('data-filter') || 'all');
+        state.showAllTemplates = false;
         renderTemplateCards();
       });
     });
@@ -713,7 +853,15 @@
   function setupFoodFilters() {
     const categorySelect = byId('foodCategory');
     const tagSelect = byId('foodTag');
+    const foodSearch = byId('foodSearch');
     if (!categorySelect || !tagSelect) return;
+
+    if (foodSearch) {
+      foodSearch.addEventListener('input', function onFoodSearch() {
+        state.foodSearch = normalizeSearch(foodSearch.value);
+        renderFoodCards();
+      });
+    }
 
     categorySelect.addEventListener('change', function onCategoryChange() {
       state.foodCategoryFilter = categorySelect.value || CATEGORY_ALL;
@@ -795,7 +943,10 @@
       });
       state.templates = sortedTemplates;
       state.selectedTemplateFilter = 'all';
+      state.templateSearch = '';
       state.showAllTemplates = false;
+      const templateSearch = byId('templateSearch');
+      if (templateSearch) templateSearch.value = '';
       document.querySelectorAll('.filter-btn').forEach(function resetFilter(button) {
         button.classList.toggle('is-active', (button.getAttribute('data-filter') || 'all') === 'all');
       });

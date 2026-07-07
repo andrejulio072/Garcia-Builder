@@ -467,7 +467,9 @@ function formatNutritionGoal(value = '') {
 function buildNutritionRows(result = {}) {
     const macros = [
         ['Maintenance calories', `${Number(result.maintenanceCalories || 0)} kcal`],
+        ['Maintenance range', `${Number(result.maintenanceLow || 0)}-${Number(result.maintenanceHigh || 0)} kcal`],
         ['Target calories', `${Number(result.targetCalories || 0)} kcal`],
+        ['Calorie adjustment', `${Number(result.calorieDelta || 0)} kcal/day`],
         ['Protein', `${Number(result.protein || 0)} g`],
         ['Carbs', `${Number(result.carbs || 0)} g`],
         ['Fats', `${Number(result.fats || 0)} g`],
@@ -498,7 +500,7 @@ function buildNutritionPlanEmail({ name, profile = {}, result = {}, templates = 
                 </div>
                 <div style="padding:24px;">
                     <h2 style="margin:0 0 10px;">Your setup</h2>
-                    <p style="margin:0 0 16px;color:#5b6472;">Goal: <strong>${escapeHtml(formatNutritionGoal(profile.goal))}</strong> | Training: <strong>${escapeHtml(formatNutritionGoal(profile.trainingFrequency))}</strong> | Meals: <strong>${escapeHtml(profile.mealPreference || '')}</strong></p>
+                    <p style="margin:0 0 16px;color:#5b6472;">Goal: <strong>${escapeHtml(formatNutritionGoal(profile.goal))}</strong> | Training: <strong>${escapeHtml(formatNutritionGoal(profile.trainingFrequency))}</strong> | Steps: <strong>${escapeHtml(formatNutritionGoal(profile.dailySteps || ''))}</strong> | Mode: <strong>${escapeHtml(formatNutritionGoal(profile.accuracyMode || ''))}</strong> | Meals: <strong>${escapeHtml(profile.mealPreference || '')}</strong></p>
                     <table role="presentation" style="width:100%;border-collapse:collapse;background:#fffaf0;border:1px solid #eadb9e;border-radius:12px;overflow:hidden;margin-bottom:22px;">
                         <tbody>${buildNutritionRows(result)}</tbody>
                     </table>

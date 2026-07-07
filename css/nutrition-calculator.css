@@ -278,6 +278,28 @@
   gap: 0.6rem 0.8rem;
 }
 
+.nutrition-form-sections {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.nutrition-fieldset {
+  border: 1px solid rgba(254, 197, 36, 0.18);
+  border-radius: 14px;
+  margin: 0;
+  padding: 0.85rem;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.nutrition-fieldset legend {
+  padding: 0 0.35rem;
+  color: var(--nutrition-accent);
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .nutrition-field-grid label {
   display: block;
   margin-top: 0.45rem;
@@ -287,7 +309,9 @@
 
 .nutrition-field-grid input,
 .nutrition-field-grid select,
-.nutrition-inline-grid input {
+.nutrition-inline-grid input,
+.library-search-panel input,
+.food-controls input {
   width: 100%;
   border-radius: 10px;
   border: 1px solid rgba(222, 222, 223, 0.22);
@@ -512,6 +536,42 @@
   margin-bottom: 0.9rem;
 }
 
+.library-search-panel {
+  display: grid;
+  grid-template-columns: auto minmax(220px, 1fr) auto;
+  gap: 0.6rem;
+  align-items: center;
+  border: 1px solid rgba(254, 197, 36, 0.18);
+  border-radius: 14px;
+  padding: 0.7rem;
+  margin-bottom: 0.9rem;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.library-search-panel label,
+.food-controls label {
+  color: var(--nutrition-muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.library-result-count {
+  margin: 0;
+  color: var(--nutrition-accent);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.library-empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  border: 1px dashed rgba(254, 197, 36, 0.3);
+  border-radius: 12px;
+  padding: 0.9rem;
+  color: var(--nutrition-muted);
+  background: rgba(0, 0, 0, 0.32);
+}
+
 .nutrition-section-heading {
   display: flex;
   justify-content: space-between;
@@ -612,10 +672,14 @@
 
 .food-controls {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(220px, 1.4fr) auto minmax(160px, 1fr) auto minmax(160px, 1fr);
   gap: 0.45rem;
   align-items: center;
   margin-bottom: 0.8rem;
+  border: 1px solid rgba(254, 197, 36, 0.18);
+  border-radius: 14px;
+  padding: 0.7rem;
+  background: rgba(0, 0, 0, 0.28);
 }
 
 .food-controls select {
@@ -705,6 +769,7 @@
   .nutrition-metric-grid,
   .nutrition-evidence-grid,
   .nutrition-playbook-grid,
+  .library-search-panel,
   .food-controls,
   .food-cards {
     grid-template-columns: 1fr;

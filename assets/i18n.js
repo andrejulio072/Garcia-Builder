@@ -277,7 +277,7 @@
       },
       cta: {
         start: "Book Your Free Consultation",
-        plans: "View Plans & Pricing",
+        plans: "View Packages",
         whatsapp: "Chat on WhatsApp",
         whatsapp_prefer: "Prefer WhatsApp? Chat Now",
         strip: {

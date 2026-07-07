@@ -25,6 +25,15 @@ function normalizeConsent(value) {
   return value === true || value === 'true' || value === 'on' || value === 1 || value === '1';
 }
 
+function getEbookWebhookUrl() {
+  return (
+    process.env.ZAPIER_EBOOK_WEBHOOK_URL ||
+    process.env.ZAPIER_EBOOK_NURTURE_WEBHOOK_URL ||
+    process.env.ZAPIER_LEAD_MAGNET_WEBHOOK_URL ||
+    ''
+  );
+}
+
 async function postJsonWithTimeout(url, payload, timeoutMs = 8000) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -42,12 +51,12 @@ async function postJsonWithTimeout(url, payload, timeoutMs = 8000) {
 }
 
 async function forwardEbookLeadToZapier(payload) {
-  const webhookUrl = process.env.ZAPIER_EBOOK_WEBHOOK_URL;
+  const webhookUrl = getEbookWebhookUrl();
   if (!webhookUrl) {
     throw new Error('Ebook Zapier webhook is not configured');
   }
 
-  const response = await postJsonWithTimeout(webhookUrl, payload, 8000);
+  const response = await postJsonWithTimeout(webhookUrl, payload, 10000);
 
   if (!response.ok) {
     const details = await response.text().catch(() => 'Zapier webhook request failed');
@@ -81,8 +90,15 @@ export default async function handler(req, res) {
     const missingFields = ['firstName', 'lastName', 'email']
       .filter((field) => !payload[field]);
 
+    const missingContext = ['source', 'page']
+      .filter((field) => !payload[field]);
+
     if (missingFields.length) {
       return res.status(400).json({ error: 'Missing required ebook fields', missingFields });
+    }
+
+    if (missingContext.length) {
+      return res.status(400).json({ error: 'Missing required ebook context fields', missingFields: missingContext });
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
@@ -95,12 +111,12 @@ export default async function handler(req, res) {
 
     await forwardEbookLeadToZapier(payload);
 
-    return res.status(200).json({
+    return res.status(201).json({
       ok: true,
       message: 'Your 28-Day Fat Loss Kickstart is on the way. Check your email.'
     });
   } catch (error) {
     console.error('ebook-lead.js error', error);
-    return res.status(500).json({ error: 'Something went wrong. Please try again or message Andre directly.' });
+    return res.status(502).json({ error: 'Ebook lead service unavailable. Please try again shortly.' });
   }
 }

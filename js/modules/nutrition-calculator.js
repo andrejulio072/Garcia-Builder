@@ -8,6 +8,7 @@
     profile: null,
     templates: [],
     selectedTemplateFilter: 'all',
+    showAllTemplates: false,
     selectedFoods: [],
     foodCategoryFilter: CATEGORY_ALL,
     foodTagFilter: TAG_ALL
@@ -252,6 +253,10 @@
     return (window.GBNutritionLibrary && window.GBNutritionLibrary.categoryLabels) || {};
   }
 
+  function isValidEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
+  }
+
   function formatKcal(value) {
     return String(value) + ' kcal';
   }
@@ -428,18 +433,35 @@
       return template.audienceTags.includes(filter);
     });
 
-    cards.innerHTML = filtered.map(function toCard(template) {
+    const visibleTemplates = state.showAllTemplates ? filtered : filtered.slice(0, 6);
+    const intro = byId('templateLibraryIntro');
+    const toggle = byId('toggleAllTemplates');
+    if (intro) {
+      intro.textContent = state.showAllTemplates
+        ? 'Showing all templates. Use filters to narrow the library by goal or lifestyle.'
+        : 'Showing the 6 strongest matches first so you do not have to scan every option.';
+    }
+    if (toggle) {
+      toggle.hidden = filtered.length <= 6;
+      toggle.textContent = state.showAllTemplates ? 'Show Best Matches' : 'Show All Templates';
+    }
+
+    cards.innerHTML = visibleTemplates.map(function toCard(template) {
       const sampleDay = template.sampleDay.map(function toMeal(item) {
         return '<li><strong>' + item.meal + ':</strong> ' + item.example + '</li>';
       }).join('');
       const swaps = template.swaps.map(function toSwap(item) { return '<li>' + item + '</li>'; }).join('');
       const shopping = template.shoppingList.map(function toItem(item) { return '<li>' + item + '</li>'; }).join('');
+      const tags = template.audienceTags.slice(0, 5).map(function toTag(tag) {
+        return '<span>' + tag.replace(/_/g, ' ') + '</span>';
+      }).join('');
 
       return [
         '<article class="template-card">',
         '<header>',
         '<h3>' + template.title + '</h3>',
         '<p class="template-meta">' + template.macroEmphasis + ' | ' + template.calorieRange[0] + '-' + template.calorieRange[1] + ' kcal | ' + template.mealFrequency + ' meals</p>',
+        '<div class="template-pill-row">' + tags + '</div>',
         '</header>',
         '<p><strong>Best for:</strong> ' + template.bestFor + '</p>',
         '<p><strong>Not ideal for:</strong> ' + template.notIdealFor + '</p>',
@@ -453,6 +475,98 @@
         '</article>'
       ].join('');
     }).join('');
+  }
+
+  function buildEmailPayload(profile, calc) {
+    const recommendedTemplates = state.templates.slice(0, 3).map(function mapTemplate(template) {
+      return {
+        title: template.title,
+        macroEmphasis: template.macroEmphasis,
+        calorieRange: template.calorieRange,
+        mealFrequency: template.mealFrequency,
+        bestFor: template.bestFor,
+        sampleDay: template.sampleDay
+      };
+    });
+
+    return {
+      name: profile.name,
+      email: profile.email,
+      source: 'Nutrition Calculator',
+      page: window.location.pathname,
+      profile: {
+        sex: profile.sex,
+        age: profile.age,
+        heightCm: roundTo(profile.heightCm, 1),
+        weightKg: roundTo(profile.weightKg, 1),
+        bodyFat: profile.bodyFat,
+        goal: profile.goal,
+        trainingFrequency: profile.trainingFrequency,
+        dailyActivity: profile.dailyActivity,
+        mealPreference: profile.mealPreference,
+        dietPreference: profile.dietPreference,
+        targetPace: profile.targetPace,
+        unitSystem: profile.unitSystem
+      },
+      result: {
+        maintenanceCalories: calc.maintenanceCalories,
+        targetCalories: calc.targetCalories,
+        protein: calc.macros.protein,
+        carbs: calc.macros.carbs,
+        fats: calc.macros.fats,
+        fiberTarget: calc.fiberTarget,
+        waterLow: calc.waterLow,
+        waterHigh: calc.waterHigh,
+        mealSplitPlan: calc.mealSplitPlan,
+        exampleDay: calc.exampleDay,
+        warnings: calc.warnings
+      },
+      templates: recommendedTemplates
+    };
+  }
+
+  async function sendNutritionPlanCopy(profile, calc) {
+    const status = byId('nutrition-email-status');
+    const wantsEmail = byId('sendPlanEmail')?.checked;
+    if (!wantsEmail) {
+      if (status) status.textContent = '';
+      return;
+    }
+
+    if (!isValidEmail(profile.email)) {
+      if (status) {
+        status.textContent = 'Add a valid email address if you want a copy sent to your inbox.';
+        status.className = 'nutrition-email-status is-error';
+      }
+      return;
+    }
+
+    if (status) {
+      status.textContent = 'Sending your nutrition plan copy...';
+      status.className = 'nutrition-email-status';
+    }
+
+    try {
+      const response = await fetch('/api/nutrition-calculator', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(buildEmailPayload(profile, calc))
+      });
+      const data = await response.json().catch(function fallbackJson() { return {}; });
+      if (!response.ok || data.ok !== true) {
+        throw new Error(data.error || 'Email send failed');
+      }
+      if (status) {
+        status.textContent = data.emailSent ? 'Plan copy sent. Check your inbox.' : 'Plan saved. Email sending is not configured on this environment.';
+        status.className = 'nutrition-email-status is-success';
+      }
+    } catch (error) {
+      if (status) {
+        status.textContent = 'Could not send the email copy right now. Your results are still shown below.';
+        status.className = 'nutrition-email-status is-error';
+      }
+      console.warn('nutrition plan email failed', error);
+    }
   }
 
   function renderFoodSelectors() {
@@ -612,6 +726,35 @@
     });
   }
 
+  function setupLibraryToggles() {
+    const showFood = byId('showFoodLibrary');
+    const hideFood = byId('hideFoodLibrary');
+    const foodLibrary = byId('food-library');
+    const toggleTemplates = byId('toggleAllTemplates');
+
+    if (showFood && foodLibrary) {
+      showFood.addEventListener('click', function onShowFood() {
+        foodLibrary.hidden = false;
+        showFood.hidden = true;
+        foodLibrary.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+
+    if (hideFood && foodLibrary && showFood) {
+      hideFood.addEventListener('click', function onHideFood() {
+        foodLibrary.hidden = true;
+        showFood.hidden = false;
+      });
+    }
+
+    if (toggleTemplates) {
+      toggleTemplates.addEventListener('click', function onToggleTemplates() {
+        state.showAllTemplates = !state.showAllTemplates;
+        renderTemplateCards();
+      });
+    }
+  }
+
   function initialize() {
     const form = byId('nutrition-calculator-form');
     if (!form) return;
@@ -621,6 +764,7 @@
     renderSelectedFoods();
     setupTemplateFilters();
     setupFoodFilters();
+    setupLibraryToggles();
 
     document.querySelectorAll('.unit-btn').forEach(function bindUnitButton(button) {
       button.addEventListener('click', function onUnitClick() {
@@ -651,12 +795,16 @@
       });
       state.templates = sortedTemplates;
       state.selectedTemplateFilter = 'all';
+      state.showAllTemplates = false;
       document.querySelectorAll('.filter-btn').forEach(function resetFilter(button) {
         button.classList.toggle('is-active', (button.getAttribute('data-filter') || 'all') === 'all');
       });
 
       renderResults(profile, calc);
       renderTemplateCards();
+      byId('food-library').hidden = true;
+      byId('showFoodLibrary').hidden = false;
+      sendNutritionPlanCopy(profile, calc);
       byId('nutrition-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }

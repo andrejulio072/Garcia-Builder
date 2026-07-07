@@ -458,6 +458,74 @@ async function sendEmail({ to, subject, html, replyTo, attachments }) {
     return { ok: true };
 }
 
+function formatNutritionGoal(value = '') {
+    return String(value || '')
+        .replace(/_/g, ' ')
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function buildNutritionRows(result = {}) {
+    const macros = [
+        ['Maintenance calories', `${Number(result.maintenanceCalories || 0)} kcal`],
+        ['Target calories', `${Number(result.targetCalories || 0)} kcal`],
+        ['Protein', `${Number(result.protein || 0)} g`],
+        ['Carbs', `${Number(result.carbs || 0)} g`],
+        ['Fats', `${Number(result.fats || 0)} g`],
+        ['Fiber target', `${Number(result.fiberTarget || 0)} g`],
+        ['Hydration guide', `${Number(result.waterLow || 0)}-${Number(result.waterHigh || 0)} ml/day`]
+    ];
+    return macros.map(([label, value]) => `
+        <tr>
+            <td style="padding:10px 12px;border-bottom:1px solid #e7e2d1;color:#5b6472;">${escapeHtml(label)}</td>
+            <td style="padding:10px 12px;border-bottom:1px solid #e7e2d1;font-weight:800;color:#0b1220;">${escapeHtml(value)}</td>
+        </tr>
+    `).join('');
+}
+
+function buildNutritionPlanEmail({ name, profile = {}, result = {}, templates = [] }) {
+    const safeName = escapeHtml(name || 'there');
+    const mealSplit = Array.isArray(result.mealSplitPlan) ? result.mealSplitPlan : [];
+    const examples = Array.isArray(result.exampleDay) ? result.exampleDay : [];
+    const topTemplates = Array.isArray(templates) ? templates.slice(0, 3) : [];
+
+    return `
+        <div style="font-family:Inter,Arial,sans-serif;background:#f7f4ea;color:#0b1220;padding:24px;line-height:1.55;">
+            <div style="max-width:720px;margin:0 auto;background:#ffffff;border:1px solid #e8d48a;border-radius:16px;overflow:hidden;">
+                <div style="background:#080a0f;color:#fff;padding:24px;">
+                    <p style="margin:0 0 8px;color:#f6c84e;font-weight:900;letter-spacing:.12em;text-transform:uppercase;">Garcia Builder Nutrition Plan</p>
+                    <h1 style="margin:0;font-size:28px;line-height:1.1;">Your macro targets and meal structure</h1>
+                    <p style="margin:12px 0 0;color:#d6dae3;">Hi ${safeName}, here is a copy of the nutrition calculation you requested.</p>
+                </div>
+                <div style="padding:24px;">
+                    <h2 style="margin:0 0 10px;">Your setup</h2>
+                    <p style="margin:0 0 16px;color:#5b6472;">Goal: <strong>${escapeHtml(formatNutritionGoal(profile.goal))}</strong> | Training: <strong>${escapeHtml(formatNutritionGoal(profile.trainingFrequency))}</strong> | Meals: <strong>${escapeHtml(profile.mealPreference || '')}</strong></p>
+                    <table role="presentation" style="width:100%;border-collapse:collapse;background:#fffaf0;border:1px solid #eadb9e;border-radius:12px;overflow:hidden;margin-bottom:22px;">
+                        <tbody>${buildNutritionRows(result)}</tbody>
+                    </table>
+                    <h2 style="margin:0 0 10px;">Meal structure</h2>
+                    <ul style="margin:0 0 18px;padding-left:20px;">
+                        ${mealSplit.map((item) => `<li>${escapeHtml(item.meal)}: ${escapeHtml(item.calories)} kcal (${escapeHtml(item.protein)}P / ${escapeHtml(item.carbs)}C / ${escapeHtml(item.fats)}F)</li>`).join('')}
+                    </ul>
+                    <h2 style="margin:0 0 10px;">Example day</h2>
+                    <ol style="margin:0 0 18px;padding-left:20px;">
+                        ${examples.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
+                    </ol>
+                    <h2 style="margin:0 0 10px;">Best matched templates</h2>
+                    ${topTemplates.map((template) => `
+                        <div style="border:1px solid #eadb9e;border-radius:12px;padding:14px;margin:0 0 12px;background:#fffdf7;">
+                            <h3 style="margin:0 0 6px;">${escapeHtml(template.title)}</h3>
+                            <p style="margin:0 0 8px;color:#5b6472;">${escapeHtml(template.macroEmphasis || '')}</p>
+                            <p style="margin:0;"><strong>Best for:</strong> ${escapeHtml(template.bestFor || '')}</p>
+                        </div>
+                    `).join('')}
+                    <p style="margin:20px 0 0;color:#5b6472;">Use this as a starting point for 10-14 days, then review body weight trend, hunger, training performance and adherence before changing calories.</p>
+                    <p style="margin:18px 0 0;"><a href="https://www.garciabuilder.fitness/packages.html" style="display:inline-block;background:#f6c84e;color:#0b1220;text-decoration:none;font-weight:900;padding:12px 18px;border-radius:8px;">View Coaching Packages</a></p>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
 function getPublicBaseUrl(req) {
     const proto = (req.headers['x-forwarded-proto'] || req.protocol || 'https').toString().split(',')[0].trim();
     const host = (req.headers['x-forwarded-host'] || req.get('host') || 'garciabuilder.fitness').toString().split(',')[0].trim();
@@ -477,6 +545,93 @@ function escapeHtml(value = '') {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
 }
+
+app.post('/api/nutrition-calculator', async (req, res) => {
+    try {
+        const body = req.body || {};
+        const email = String(body.email || '').trim().toLowerCase();
+        const name = String(body.name || '').trim();
+        const profile = body.profile || {};
+        const result = body.result || {};
+        const templates = Array.isArray(body.templates) ? body.templates : [];
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            return res.status(400).json({ error: 'A valid email is required' });
+        }
+
+        if (!result.targetCalories || !result.protein || !result.carbs || !result.fats) {
+            return res.status(400).json({ error: 'Nutrition result payload is incomplete' });
+        }
+
+        const submittedAt = new Date().toISOString();
+        let saved = false;
+        const supa = getOptionalSupabaseClient();
+        const notes = JSON.stringify({
+            source: body.source || 'Nutrition Calculator',
+            page: body.page || req.headers.referer || '',
+            profile,
+            result,
+            templates,
+            submitted_at: submittedAt
+        });
+
+        if (supa) {
+            const { error } = await supa.from('leads').upsert({
+                name: name || null,
+                email,
+                source: 'Nutrition Calculator',
+                notes,
+                type: 'nutrition_calculator',
+                status: 'new'
+            }, { onConflict: 'email' });
+            if (error) {
+                console.warn('nutrition calculator Supabase upsert skipped/failed:', error.message);
+            } else {
+                saved = true;
+            }
+        }
+
+        const customerHtml = buildNutritionPlanEmail({ name, profile, result, templates });
+        const customerEmailResult = await sendEmail({
+            to: email,
+            subject: 'Your Garcia Builder macro targets and meal structure',
+            html: customerHtml
+        }).catch((error) => {
+            console.warn('nutrition customer email skipped/failed:', error.message);
+            return { ok: false, error: error.message };
+        });
+
+        const adminEmailResult = await sendAdminEmail({
+            subject: `Nutrition calculator lead: ${name || email}`,
+            replyTo: email,
+            html: `
+                <div style="font-family:Inter,Arial,sans-serif;color:#0b1220;line-height:1.55">
+                    <h2>Nutrition calculator lead</h2>
+                    <p><strong>Name:</strong> ${escapeHtml(name || '')}</p>
+                    <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+                    <p><strong>Goal:</strong> ${escapeHtml(formatNutritionGoal(profile.goal || ''))}</p>
+                    <p><strong>Target:</strong> ${escapeHtml(result.targetCalories)} kcal | ${escapeHtml(result.protein)}P / ${escapeHtml(result.carbs)}C / ${escapeHtml(result.fats)}F</p>
+                    <p><strong>Top templates:</strong> ${escapeHtml(templates.map((template) => template.title).join(', '))}</p>
+                    <pre style="white-space:pre-wrap;background:#f6f7f9;padding:12px;border-radius:8px;">${escapeHtml(notes)}</pre>
+                </div>`
+        }).catch((error) => {
+            console.warn('nutrition admin email skipped/failed:', error.message);
+            return { ok: false, error: error.message };
+        });
+
+        return res.status(200).json({
+            ok: true,
+            saved,
+            emailSent: !!customerEmailResult.ok,
+            adminEmailSent: !!adminEmailResult.ok,
+            emailSkipped: !!customerEmailResult.skipped,
+            adminEmailSkipped: !!adminEmailResult.skipped
+        });
+    } catch (error) {
+        console.error('nutrition calculator endpoint error', error);
+        return res.status(500).json({ error: 'Server error' });
+    }
+});
 
 app.post('/api/contact', async (req, res) => {
     try {

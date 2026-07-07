@@ -650,6 +650,106 @@
       coachNote: 'Short-term block. Review biofeedback weekly.',
       bestFor: 'Experienced users with clear timeline and coaching oversight.',
       notIdealFor: 'Beginners or high stress/lack of sleep.'
+    },
+    {
+      id: 'glp1-high-protein-small-meals',
+      title: 'GLP-1 Support - Small High-Protein Meals',
+      goal: 'fat_loss',
+      audienceTags: ['fat_loss', 'high_protein', 'low_appetite', 'medical_support'],
+      calorieRange: [1200, 2000],
+      macroEmphasis: 'Small meals, protein priority, gentle fiber progression',
+      mealFrequency: 5,
+      sampleDay: [
+        { meal: 'Meal 1', example: 'Greek yogurt, berries, chia', purpose: 'Protein and fiber without heavy volume' },
+        { meal: 'Meal 2', example: 'Eggs or tofu scramble with toast', purpose: 'Small savoury protein meal' },
+        { meal: 'Meal 3', example: 'Chicken soup with potatoes and vegetables', purpose: 'Easy digestion and hydration support' },
+        { meal: 'Meal 4', example: 'Protein shake and banana', purpose: 'Low-effort protein top-up' },
+        { meal: 'Meal 5', example: 'White fish, rice, cooked vegetables', purpose: 'Light dinner with complete protein' }
+      ],
+      swaps: ['Chicken soup -> lentil soup plus Greek yogurt', 'White fish -> tofu or eggs'],
+      shoppingList: ['greek yogurt', 'berries', 'chia', 'eggs', 'tofu', 'toast', 'chicken', 'soup vegetables', 'potatoes', 'protein powder', 'bananas', 'white fish', 'rice'],
+      coachNote: 'If appetite is suppressed, protein, fluids and micronutrient quality become the first priorities. Medical plans should stay aligned with your clinician.',
+      bestFor: 'People using appetite-reducing medication who need structure without large meals.',
+      notIdealFor: 'Anyone needing medical nutrition therapy without clinician input.'
+    },
+    {
+      id: 'shift-worker-fat-loss',
+      title: 'Shift Worker Fat Loss Structure',
+      goal: 'fat_loss',
+      audienceTags: ['fat_loss', 'busy_professional', 'shift_worker', 'meal_prep'],
+      calorieRange: [1600, 2600],
+      macroEmphasis: 'Portable meals, planned caffeine, high-satiety night-shift food',
+      mealFrequency: 4,
+      sampleDay: [
+        { meal: 'Pre-shift', example: 'Protein oats or eggs with toast', purpose: 'Start fed before decision fatigue' },
+        { meal: 'Main break', example: 'Chicken rice box with vegetables', purpose: 'Predictable work meal' },
+        { meal: 'Snack', example: 'Protein yogurt, fruit, rice cakes', purpose: 'Control vending-machine grazing' },
+        { meal: 'Post-shift', example: 'Light omelette or tuna potato salad', purpose: 'Recovery without heavy sleep disruption' }
+      ],
+      swaps: ['Chicken box -> turkey pasta box', 'Omelette -> tofu scramble'],
+      shoppingList: ['oats', 'eggs', 'toast', 'chicken', 'rice', 'vegetables', 'protein yogurt', 'fruit', 'rice cakes', 'tuna', 'potatoes'],
+      coachNote: 'Anchor meals to your shift, not the clock. Keep caffeine earlier in the shift when possible.',
+      bestFor: 'Nurses, security, hospitality and other rotating-shift clients.',
+      notIdealFor: 'People with stable 9-5 routines who can meal-time normally.'
+    },
+    {
+      id: 'family-dinner-flex-plan',
+      title: 'Family Dinner Flexible Fat Loss',
+      goal: 'fat_loss',
+      audienceTags: ['fat_loss', 'social_lifestyle', 'busy_professional', 'family'],
+      calorieRange: [1500, 2600],
+      macroEmphasis: 'Structured breakfast/lunch with flexible family dinners',
+      mealFrequency: 4,
+      sampleDay: [
+        { meal: 'Breakfast', example: 'Protein yogurt, oats, berries', purpose: 'Consistent start before family demands' },
+        { meal: 'Lunch', example: 'Lean protein salad or wrap', purpose: 'High-protein controlled meal' },
+        { meal: 'Snack', example: 'Cottage cheese and fruit', purpose: 'Prevent arriving starving to dinner' },
+        { meal: 'Family dinner', example: 'Same family meal: protein first, half plate veg, measured carb/fat portions', purpose: 'Eat with family while controlling portions' }
+      ],
+      swaps: ['Wrap -> rice bowl', 'Cottage cheese -> protein shake'],
+      shoppingList: ['protein yogurt', 'oats', 'berries', 'lean proteins', 'wraps', 'salad', 'cottage cheese', 'fruit', 'family dinner protein', 'vegetables'],
+      coachNote: 'You do not need separate diet food. Control breakfast, lunch and portions so dinner can stay social.',
+      bestFor: 'Parents and partners who eat shared evening meals.',
+      notIdealFor: 'Users who want fully pre-weighed identical meals.'
+    },
+    {
+      id: 'travel-week-maintenance',
+      title: 'Travel Week Maintenance Plan',
+      goal: 'maintenance',
+      audienceTags: ['maintenance', 'travel', 'busy_professional', 'minimal_cooking'],
+      calorieRange: [1700, 3000],
+      macroEmphasis: 'Hotel-friendly protein, supermarket defaults, restaurant rules',
+      mealFrequency: 3,
+      sampleDay: [
+        { meal: 'Hotel breakfast', example: 'Eggs or yogurt, fruit, toast/oats', purpose: 'Protein-first buffet strategy' },
+        { meal: 'Lunch', example: 'Chicken/tuna salad, wrap or rice bowl', purpose: 'Reliable on-the-go option' },
+        { meal: 'Dinner out', example: 'Lean protein main, potato/rice, vegetables, sauce on side', purpose: 'Restaurant structure without tracking perfectly' }
+      ],
+      swaps: ['Hotel eggs -> Greek yogurt', 'Restaurant potato -> rice or bread portion'],
+      shoppingList: ['protein yogurts', 'fruit', 'water', 'protein bars', 'ready salad bowls', 'tuna packs', 'rice cups'],
+      coachNote: 'Travel weeks are judged by damage control and protein consistency, not perfect macro tracking.',
+      bestFor: 'Work travel, holidays, conferences and weekends away.',
+      notIdealFor: 'Precise contest-prep style tracking.'
+    },
+    {
+      id: 'vegan-high-protein-recomp',
+      title: 'Vegan High-Protein Recomposition',
+      goal: 'recomposition',
+      audienceTags: ['vegetarian', 'vegan', 'recomposition', 'high_protein', 'high_fiber'],
+      calorieRange: [1700, 2900],
+      macroEmphasis: 'Soy, seitan, legumes and planned protein distribution',
+      mealFrequency: 4,
+      sampleDay: [
+        { meal: 'Breakfast', example: 'Soy yogurt, oats, berries, vegan protein', purpose: 'Protein and fiber start' },
+        { meal: 'Lunch', example: 'Seitan wrap with salad and hummus', purpose: 'High-protein portable meal' },
+        { meal: 'Snack', example: 'Edamame and fruit', purpose: 'Protein plus micronutrients' },
+        { meal: 'Dinner', example: 'Tofu noodle stir-fry with vegetables', purpose: 'Complete recovery meal' }
+      ],
+      swaps: ['Seitan -> tempeh', 'Tofu noodles -> lentil pasta'],
+      shoppingList: ['soy yogurt', 'oats', 'berries', 'vegan protein', 'seitan', 'wraps', 'salad', 'hummus', 'edamame', 'fruit', 'tofu', 'noodles', 'vegetables'],
+      coachNote: 'Vegan plans need deliberate protein distribution and enough total calories to support training.',
+      bestFor: 'Plant-based lifters who want structure and adequate protein.',
+      notIdealFor: 'Soy-free vegan plans without further customization.'
     }
   ];
 

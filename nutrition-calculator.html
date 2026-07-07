@@ -64,14 +64,53 @@
 <main class="nutrition-main">
   <section class="nutrition-hero section">
     <div class="container nutrition-hero-shell">
-      <p class="nutrition-kicker">Nutrition Toolkit</p>
-      <h1>Premium Macro Calculator + Nutrition Template Library</h1>
-      <p class="nutrition-lead">This is a real coaching tool. You will get calorie estimates, macro targets, meal structure, practical food options, and matched templates you can run immediately.</p>
+      <div class="nutrition-hero-copy">
+        <p class="nutrition-kicker">Nutrition Toolkit</p>
+        <h1>Premium Macro Calculator + Meal Strategy Builder</h1>
+        <p class="nutrition-lead">Estimate calories and macros, then turn the numbers into meal structure, food swaps, hydration targets, training-day guidance and practical templates you can use today.</p>
+        <div class="nutrition-hero-actions">
+          <a class="btn btn-warning" href="#nutrition-calculator-form">Calculate My Targets</a>
+          <a class="btn btn-outline-warning" href="#nutrition-evidence">Read the Evidence</a>
+        </div>
+      </div>
+      <div class="nutrition-hero-card" aria-label="What the nutrition calculator gives you">
+        <span class="nutrition-card-label">Output</span>
+        <strong>Calories + macros + meal templates</strong>
+        <p>Built for fat loss, recomposition, lean gain and performance phases.</p>
+        <div class="nutrition-mini-stats">
+          <span><b>20+</b> templates</span>
+          <span><b>80+</b> foods</span>
+          <span><b>3</b> meal styles</span>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="section nutrition-content">
     <div class="container">
+      <section id="nutrition-evidence" class="nutrition-evidence-grid" aria-label="Evidence-backed nutrition guidance">
+        <details>
+          <summary><span>Protein</span><strong>Train hard? Start with a protein floor.</strong></summary>
+          <p>ISSN guidance supports 1.4-2.0 g/kg/day for most exercising people, with higher intakes sometimes useful during fat-loss phases.</p>
+          <a href="https://link.springer.com/article/10.1186/s12970-017-0177-8" target="_blank" rel="noopener">ISSN protein position stand</a>
+        </details>
+        <details>
+          <summary><span>Carbs</span><strong>Match carbs to training demand.</strong></summary>
+          <p>BDA/SENR guidance lists 3-5 g/kg/day for light-to-moderate active people, rising with longer or more intense training blocks.</p>
+          <a href="https://www.bda.uk.com/resource/sport-exercise-nutrition.html" target="_blank" rel="noopener">BDA sport nutrition guidance</a>
+        </details>
+        <details>
+          <summary><span>Health base</span><strong>Keep the plate balanced.</strong></summary>
+          <p>The NHS Eatwell Guide prioritises fruit and vegetables, starchy carbohydrates, protein foods, dairy or alternatives, and measured unsaturated fats.</p>
+          <a href="https://www.nhs.uk/live-well/eat-well/food-guidelines-and-food-labels/the-eatwell-guide/" target="_blank" rel="noopener">NHS Eatwell Guide</a>
+        </details>
+        <details>
+          <summary><span>Hydration</span><strong>Use hydration as a performance lever.</strong></summary>
+          <p>NHS guidance suggests 6-8 cups or glasses of fluid daily for most people, with more when training, sweating or in hot environments.</p>
+          <a href="https://www.nhs.uk/live-well/eat-well/food-guidelines-and-food-labels/water-drinks-nutrition/" target="_blank" rel="noopener">NHS hydration guidance</a>
+        </details>
+      </section>
+
       <div class="nutrition-grid">
         <form id="nutrition-calculator-form" class="nutrition-form card" novalidate>
           <h2>Build Your Macro Plan</h2>
@@ -87,6 +126,10 @@
               <input id="email" name="email" type="email" maxlength="120" autocomplete="email" placeholder="you@example.com">
             </div>
           </div>
+          <label class="nutrition-email-option" for="sendPlanEmail">
+            <input id="sendPlanEmail" name="sendPlanEmail" type="checkbox" value="yes">
+            <span>Email me a copy of my macro targets, meal structure and matched templates.</span>
+          </label>
 
           <div class="unit-toggle" role="group" aria-label="Unit preference">
             <button type="button" class="unit-btn is-active" data-unit="metric">Metric</button>
@@ -171,7 +214,8 @@
             <i class="fas fa-calculator" aria-hidden="true"></i>
             Calculate Macros + Get Templates
           </button>
-          <p class="nutrition-note">No query-string dependency and no forced account requirement. Name and email are optional.</p>
+          <p id="nutrition-email-status" class="nutrition-email-status" aria-live="polite"></p>
+          <p class="nutrition-note">No forced account requirement. Email is only needed if you want a copy sent to your inbox.</p>
         </form>
 
         <aside class="nutrition-intel card" aria-label="How this tool works">
@@ -182,9 +226,30 @@
             <li>Goal-specific recommendations and practical meal structure.</li>
             <li>Matched templates from the premium nutrition library.</li>
           </ul>
+          <div class="nutrition-intel-block">
+            <h3>How to use the result</h3>
+            <ol>
+              <li>Run the target for 10-14 days before judging it.</li>
+              <li>Track weekly average body weight, training output and hunger.</li>
+              <li>Adjust only when the trend, adherence and recovery all tell the same story.</li>
+            </ol>
+          </div>
           <p>Inside the Garcia Builder Coaching App/My PT Hub, calories, training, check-ins and weekly adjustments are managed properly.</p>
         </aside>
       </div>
+
+      <section class="nutrition-playbook card" aria-label="Nutrition playbook">
+        <div>
+          <p class="nutrition-kicker">Practical playbook</p>
+          <h2>Turn your result into a week you can actually follow.</h2>
+        </div>
+        <div class="nutrition-playbook-grid">
+          <article><h3>Fat loss</h3><p>Keep protein high, build meals around lean protein and vegetables, measure calorie-dense fats, and review hunger before cutting harder.</p></article>
+          <article><h3>Muscle gain</h3><p>Use a small surplus, add easy carbs around training, include calorie-dense foods, and watch weekly rate of gain instead of chasing scale jumps.</p></article>
+          <article><h3>Recomposition</h3><p>Prioritise resistance training, stable protein, enough carbs for sessions, and progress photos/measurements instead of scale weight alone.</p></article>
+          <article><h3>Busy schedule</h3><p>Repeat two reliable breakfasts, two lunches and two dinners. Consistency beats variety when work and stress are high.</p></article>
+        </div>
+      </section>
 
       <section id="nutrition-results" class="card nutrition-results" aria-live="polite" hidden>
         <h2>Your Nutrition Targets</h2>
@@ -252,8 +317,13 @@
       </section>
 
       <section id="template-library" class="card nutrition-library" hidden>
-        <h2>Nutrition Template Library</h2>
-        <p>Recommended templates are shown first based on your goal and preferences. Use filters to explore all options.</p>
+        <div class="nutrition-section-heading">
+          <div>
+            <h2>Best Matched Templates</h2>
+            <p id="templateLibraryIntro">Showing the strongest matches first so you do not have to scan every option.</p>
+          </div>
+          <button type="button" id="toggleAllTemplates" class="btn btn-outline-warning">Show All Templates</button>
+        </div>
         <div class="template-filters" role="toolbar" aria-label="Template filters">
           <button type="button" class="filter-btn is-active" data-filter="all">All</button>
           <button type="button" class="filter-btn" data-filter="fat_loss">Fat Loss</button>
@@ -263,13 +333,21 @@
           <button type="button" class="filter-btn" data-filter="vegetarian">Vegetarian</button>
           <button type="button" class="filter-btn" data-filter="busy_professional">Busy Professional</button>
           <button type="button" class="filter-btn" data-filter="performance">Performance</button>
+          <button type="button" class="filter-btn" data-filter="meal_prep">Meal Prep</button>
+          <button type="button" class="filter-btn" data-filter="high_fiber">High Fiber</button>
+          <button type="button" class="filter-btn" data-filter="social_lifestyle">Social Lifestyle</button>
         </div>
         <div id="templateCards" class="template-cards"></div>
       </section>
 
       <section id="food-library" class="card food-library" hidden>
-        <h2>Food Library</h2>
-        <p>Choose foods to build practical meal options. Values are per listed serving.</p>
+        <div class="nutrition-section-heading">
+          <div>
+            <h2>Food Library</h2>
+            <p>Choose foods to build practical meal options. Values are per listed serving.</p>
+          </div>
+          <button type="button" id="hideFoodLibrary" class="btn btn-outline-warning">Hide Food Library</button>
+        </div>
         <div class="food-controls">
           <label for="foodCategory">Category</label>
           <select id="foodCategory"></select>
@@ -283,6 +361,9 @@
           <p id="selectedFoodsTotals">Totals: --</p>
         </div>
       </section>
+      <div class="nutrition-library-launch">
+        <button type="button" id="showFoodLibrary" class="btn btn-outline-warning" hidden>Browse Food Library</button>
+      </div>
     </div>
   </section>
 </main>

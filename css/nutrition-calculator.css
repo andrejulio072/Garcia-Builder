@@ -2,11 +2,14 @@
   --nutrition-bg: #000000;
   --nutrition-surface: #1f1f1f;
   --nutrition-surface-soft: #151515;
+  --nutrition-surface-glass: rgba(18, 18, 18, 0.82);
   --nutrition-text: #f6f6f6;
   --nutrition-muted: #dededf;
+  --nutrition-soft: rgba(246, 246, 246, 0.68);
   --nutrition-accent: #fec524;
   --nutrition-accent-dark: #e5ad0e;
   --nutrition-border: rgba(254, 197, 36, 0.26);
+  --nutrition-border-strong: rgba(254, 197, 36, 0.42);
 }
 
 .nutrition-page {
@@ -22,8 +25,19 @@
 }
 
 .nutrition-hero {
-  padding-top: clamp(7.2rem, 10vw, 9rem);
-  padding-bottom: 1.8rem;
+  padding-top: clamp(7.8rem, 10vw, 10rem);
+  padding-bottom: 2.4rem;
+  background:
+    linear-gradient(120deg, rgba(0, 0, 0, 0.94), rgba(0, 0, 0, 0.66)),
+    url('/assets/images/hero/40689-fitness-wallpaperdownload-free-full-hd-background.jpg') center/cover no-repeat;
+  border-bottom: 1px solid rgba(254, 197, 36, 0.14);
+}
+
+.nutrition-hero-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.42fr);
+  gap: clamp(1.4rem, 4vw, 3rem);
+  align-items: end;
 }
 
 .nutrition-kicker {
@@ -37,14 +51,80 @@
 
 .nutrition-hero h1 {
   margin: 0.65rem 0 1rem;
-  font-size: clamp(1.8rem, 4.4vw, 3rem);
-  line-height: 1.12;
+  max-width: 900px;
+  font-size: clamp(2.25rem, 5.7vw, 5.2rem);
+  line-height: 0.98;
+  font-weight: 900;
+  letter-spacing: 0;
 }
 
 .nutrition-lead {
   margin: 0;
   max-width: 72ch;
   color: var(--nutrition-muted);
+  font-size: clamp(1rem, 1.7vw, 1.25rem);
+  line-height: 1.7;
+}
+
+.nutrition-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.4rem;
+}
+
+.nutrition-hero-card {
+  border: 1px solid var(--nutrition-border-strong);
+  border-radius: 18px;
+  background:
+    linear-gradient(165deg, rgba(254, 197, 36, 0.16), rgba(0, 0, 0, 0.88) 42%),
+    var(--nutrition-surface-glass);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+  padding: 1.2rem;
+}
+
+.nutrition-card-label {
+  display: inline-flex;
+  border: 1px solid var(--nutrition-border);
+  border-radius: 999px;
+  padding: 0.25rem 0.58rem;
+  color: var(--nutrition-accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.nutrition-hero-card strong {
+  display: block;
+  margin-top: 0.85rem;
+  color: #fff;
+  font-size: 1.45rem;
+  line-height: 1.15;
+}
+
+.nutrition-hero-card p {
+  color: var(--nutrition-muted);
+}
+
+.nutrition-mini-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.nutrition-mini-stats span {
+  border: 1px solid rgba(254, 197, 36, 0.2);
+  border-radius: 12px;
+  padding: 0.55rem;
+  color: var(--nutrition-soft);
+  background: rgba(0, 0, 0, 0.34);
+}
+
+.nutrition-mini-stats b {
+  display: block;
+  color: var(--nutrition-accent);
+  font-size: 1.15rem;
 }
 
 .nutrition-content {
@@ -58,11 +138,70 @@
   align-items: start;
 }
 
+.nutrition-evidence-grid,
+.nutrition-playbook-grid {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.nutrition-evidence-grid {
+  margin-bottom: 1rem;
+}
+
+.nutrition-evidence-grid details,
+.nutrition-playbook-grid article {
+  border: 1px solid rgba(254, 197, 36, 0.22);
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(31, 31, 31, 0.94), rgba(0, 0, 0, 0.84));
+  padding: 1rem;
+  min-height: 100%;
+}
+
+.nutrition-evidence-grid summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.nutrition-evidence-grid summary::-webkit-details-marker {
+  display: none;
+}
+
+.nutrition-evidence-grid span {
+  display: block;
+  color: var(--nutrition-accent);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.nutrition-evidence-grid strong,
+.nutrition-playbook h2 {
+  display: block;
+  margin: 0.45rem 0 0;
+  color: #fff;
+  font-size: 1.08rem;
+  line-height: 1.2;
+}
+
+.nutrition-evidence-grid p,
+.nutrition-playbook-grid p {
+  color: var(--nutrition-muted);
+  line-height: 1.55;
+}
+
+.nutrition-evidence-grid a {
+  color: var(--nutrition-accent);
+  font-weight: 800;
+}
+
 .nutrition-form,
 .nutrition-intel,
 .nutrition-results,
 .nutrition-library,
-.food-library {
+.food-library,
+.nutrition-playbook {
   border: 1px solid var(--nutrition-border);
   border-radius: 18px;
   background: linear-gradient(170deg, rgba(31, 31, 31, 0.96), rgba(0, 0, 0, 0.96));
@@ -74,7 +213,8 @@
 .nutrition-intel h2,
 .nutrition-results h2,
 .nutrition-library h2,
-.food-library h2 {
+.food-library h2,
+.nutrition-playbook h2 {
   margin: 0 0 0.5rem;
   font-size: 1.35rem;
 }
@@ -182,10 +322,73 @@
   color: var(--nutrition-muted);
 }
 
+.nutrition-email-option {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.55rem;
+  align-items: start;
+  margin: 0 0 0.85rem;
+  border: 1px solid rgba(254, 197, 36, 0.18);
+  border-radius: 12px;
+  padding: 0.7rem;
+  background: rgba(254, 197, 36, 0.06);
+  color: var(--nutrition-muted);
+  font-weight: 650;
+}
+
+.nutrition-email-option input {
+  margin-top: 0.2rem;
+}
+
+.nutrition-email-status {
+  min-height: 1.2rem;
+  margin: 0.75rem 0 0;
+  color: var(--nutrition-muted);
+  font-size: 0.9rem;
+}
+
+.nutrition-email-status.is-success {
+  color: #9ff0bd;
+}
+
+.nutrition-email-status.is-error {
+  color: #ffb5b5;
+}
+
+.nutrition-intel-block {
+  margin-top: 1rem;
+  border: 1px solid rgba(254, 197, 36, 0.2);
+  border-radius: 14px;
+  padding: 0.85rem;
+  background: rgba(0, 0, 0, 0.32);
+}
+
+.nutrition-intel-block h3,
+.nutrition-playbook-grid h3 {
+  margin: 0 0 0.5rem;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.nutrition-intel-block ol {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--nutrition-muted);
+  line-height: 1.55;
+}
+
 .nutrition-results,
 .nutrition-library,
-.food-library {
+.food-library,
+.nutrition-playbook {
   margin-top: 1rem;
+}
+
+.nutrition-playbook {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.42fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
 }
 
 .result-message {
@@ -309,6 +512,25 @@
   margin-bottom: 0.9rem;
 }
 
+.nutrition-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.nutrition-section-heading h2,
+.nutrition-section-heading p {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.nutrition-library-launch {
+  margin-top: 0.8rem;
+  text-align: center;
+}
+
 .filter-btn {
   border: 1px solid rgba(254, 197, 36, 0.45);
   border-radius: 999px;
@@ -332,9 +554,11 @@
 
 .template-card {
   border: 1px solid rgba(254, 197, 36, 0.22);
-  border-radius: 12px;
-  padding: 0.75rem;
-  background: rgba(0, 0, 0, 0.45);
+  border-radius: 16px;
+  padding: 0.9rem;
+  background:
+    linear-gradient(175deg, rgba(254, 197, 36, 0.08), rgba(0, 0, 0, 0.48) 30%),
+    rgba(0, 0, 0, 0.45);
 }
 
 .template-card h3 {
@@ -356,6 +580,8 @@
 .template-meta {
   margin: 0.22rem 0 0.45rem;
   font-size: 0.84rem;
+  color: var(--nutrition-accent);
+  font-weight: 800;
 }
 
 .template-card ul {
@@ -367,6 +593,21 @@
   margin-top: 0.6rem;
   border-top: 1px solid rgba(254, 197, 36, 0.2);
   padding-top: 0.45rem;
+}
+
+.template-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.55rem 0;
+}
+
+.template-pill-row span {
+  border: 1px solid rgba(254, 197, 36, 0.22);
+  border-radius: 999px;
+  padding: 0.18rem 0.48rem;
+  color: var(--nutrition-soft);
+  font-size: 0.76rem;
 }
 
 .food-controls {
@@ -440,10 +681,17 @@
 }
 
 @media (max-width: 1040px) {
+  .nutrition-hero-shell,
   .nutrition-grid,
   .nutrition-advanced-grid,
-  .template-cards {
+  .template-cards,
+  .nutrition-playbook {
     grid-template-columns: 1fr;
+  }
+
+  .nutrition-evidence-grid,
+  .nutrition-playbook-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .food-cards {
@@ -455,9 +703,26 @@
   .nutrition-inline-grid,
   .nutrition-field-grid,
   .nutrition-metric-grid,
+  .nutrition-evidence-grid,
+  .nutrition-playbook-grid,
   .food-controls,
   .food-cards {
     grid-template-columns: 1fr;
+  }
+
+  .nutrition-hero {
+    padding-top: 7rem;
+  }
+
+  .nutrition-hero-actions .btn,
+  .nutrition-cta-buttons .btn,
+  .nutrition-section-heading .btn,
+  .nutrition-library-launch .btn {
+    width: 100%;
+  }
+
+  .nutrition-section-heading {
+    display: grid;
   }
 
   .macro-bar {

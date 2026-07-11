@@ -640,7 +640,7 @@
     const status = byId('nutrition-email-status');
     if (!isValidEmail(profile.email)) {
       if (status) {
-        status.textContent = 'Add a valid email address if you want a copy sent to your inbox.';
+        status.textContent = 'Add a valid email address so we can send your plan and save your results.';
         status.className = 'nutrition-email-status is-error';
       }
       return;
@@ -667,7 +667,7 @@
       }
     } catch (error) {
       if (status) {
-        status.textContent = 'Could not send the email copy right now. Your results are still shown below.';
+        status.textContent = 'We could not save and email your plan right now. Your calculated results are still shown below—please try again shortly.';
         status.className = 'nutrition-email-status is-error';
       }
       console.warn('nutrition plan email failed', error);

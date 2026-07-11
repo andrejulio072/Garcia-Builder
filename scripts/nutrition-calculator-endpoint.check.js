@@ -154,6 +154,9 @@ async function main() {
       savedTypeCorrect: savedLead && savedLead.type === 'nutrition_calculator',
       consentSaved: savedLead && savedLead.consent === true,
       emailsDelivered: sentEmails.length === 2,
+      customerEmailHasPackagesCta: /garciabuilder\.fitness\/packages\.html/.test(String(sentEmails[0]?.html || '')),
+      customerEmailHasWhatsappCta: /wa\.me\/447508497586/.test(String(sentEmails[0]?.html || '')),
+      customerEmailHasConsultationCta: /calendly\.com\/andrenjulio072\/consultation/.test(String(sentEmails[0]?.html || '')),
       invalidStatus: invalid.status,
       invalidRejected: invalid.status === 400 && /email/i.test(String(invalid.data.error || '')),
       missingConsentRejected: missingConsent.status === 400 && /consent/i.test(String(missingConsent.data.error || ''))
@@ -163,7 +166,8 @@ async function main() {
 
     if (summary.validStatus !== 200 || !summary.validOk || !summary.saved ||
         !summary.emailSent || !summary.adminEmailSent || !summary.savedTypeCorrect ||
-        !summary.consentSaved || !summary.emailsDelivered || !summary.invalidRejected ||
+        !summary.consentSaved || !summary.emailsDelivered || !summary.customerEmailHasPackagesCta ||
+        !summary.customerEmailHasWhatsappCta || !summary.customerEmailHasConsultationCta || !summary.invalidRejected ||
         !summary.missingConsentRejected) {
       process.exitCode = 1;
     }

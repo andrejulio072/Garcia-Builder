@@ -187,6 +187,8 @@ app.use('/api/', limiter);
 const defaultCorsOrigins = [
     'http://localhost:3000',
     'http://localhost:3001',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:3001',
     'https://garciabuilder.fitness',
     'https://www.garciabuilder.fitness',
     'https://garciabuilder.uk',
@@ -196,7 +198,8 @@ const envCors = (process.env.CORS_ORIGINS || '')
     .split(',')
     .map(s => s.trim())
     .filter(Boolean);
-const allowedCorsOrigins = envCors.length ? envCors : defaultCorsOrigins;
+// Environment origins extend the safe defaults so local development remains usable.
+const allowedCorsOrigins = [...new Set([...defaultCorsOrigins, ...envCors])];
 
 app.use(cors({
     origin: function(origin, callback) {
@@ -487,30 +490,38 @@ function buildNutritionPlanEmail({ name, profile = {}, result = {}, templates = 
     const mealSplit = Array.isArray(result.mealSplitPlan) ? result.mealSplitPlan : [];
     const examples = Array.isArray(result.exampleDay) ? result.exampleDay : [];
     const topTemplates = Array.isArray(templates) ? templates.slice(0, 3) : [];
+    const packagesUrl = 'https://www.garciabuilder.fitness/packages.html';
+    const consultationUrl = 'https://calendly.com/andrenjulio072/consultation';
+    const whatsappUrl = 'https://wa.me/447508497586?text=Hi%20Andre%2C%20I%20used%20the%20nutrition%20calculator%20and%20would%20like%20help%20turning%20my%20results%20into%20a%20plan.';
 
     return `
-        <div style="font-family:Inter,Arial,sans-serif;background:#f7f4ea;color:#0b1220;padding:24px;line-height:1.55;">
-            <div style="max-width:720px;margin:0 auto;background:#ffffff;border:1px solid #e8d48a;border-radius:16px;overflow:hidden;">
-                <div style="background:#080a0f;color:#fff;padding:24px;">
+        <div style="font-family:Inter,Arial,sans-serif;background:#f4f1e8;color:#0b1220;padding:24px 12px;line-height:1.55;">
+            <div style="max-width:720px;margin:0 auto;background:#ffffff;border:1px solid #e8d48a;border-radius:18px;overflow:hidden;box-shadow:0 8px 28px rgba(11,18,32,.08);">
+                <div style="background:#080a0f;color:#fff;padding:30px 24px;">
                     <p style="margin:0 0 8px;color:#f6c84e;font-weight:900;letter-spacing:.12em;text-transform:uppercase;">Garcia Builder Nutrition Plan</p>
-                    <h1 style="margin:0;font-size:28px;line-height:1.1;">Your macro targets and meal structure</h1>
-                    <p style="margin:12px 0 0;color:#d6dae3;">Hi ${safeName}, here is a copy of the nutrition calculation you requested.</p>
+                    <h1 style="margin:0;font-size:30px;line-height:1.15;">Your personalised starting plan</h1>
+                    <p style="margin:14px 0 0;color:#d6dae3;">Hi ${safeName}, your numbers are below—plus a simple structure to help you put them into practice.</p>
                 </div>
                 <div style="padding:24px;">
-                    <h2 style="margin:0 0 10px;">Your setup</h2>
+                    <div style="background:#fff8dd;border-left:5px solid #f6c84e;border-radius:10px;padding:16px;margin:0 0 24px;">
+                        <strong style="display:block;font-size:18px;margin-bottom:5px;">Your first goal: consistency, not perfection</strong>
+                        <span style="color:#4b5563;">Follow these targets for 10–14 days, track your average body-weight trend, hunger, energy and training performance, then adjust from real feedback.</span>
+                    </div>
+                    <h2 style="margin:0 0 10px;">1. Your starting targets</h2>
                     <p style="margin:0 0 16px;color:#5b6472;">Goal: <strong>${escapeHtml(formatNutritionGoal(profile.goal))}</strong> | Training: <strong>${escapeHtml(formatNutritionGoal(profile.trainingFrequency))}</strong> | Steps: <strong>${escapeHtml(formatNutritionGoal(profile.dailySteps || ''))}</strong> | Mode: <strong>${escapeHtml(formatNutritionGoal(profile.accuracyMode || ''))}</strong> | Meals: <strong>${escapeHtml(profile.mealPreference || '')}</strong></p>
                     <table role="presentation" style="width:100%;border-collapse:collapse;background:#fffaf0;border:1px solid #eadb9e;border-radius:12px;overflow:hidden;margin-bottom:22px;">
                         <tbody>${buildNutritionRows(result)}</tbody>
                     </table>
-                    <h2 style="margin:0 0 10px;">Meal structure</h2>
+                    <h2 style="margin:0 0 10px;">2. Build your meals</h2>
+                    <p style="margin:0 0 12px;color:#5b6472;">Use the split below as a flexible guide. Prioritise a quality protein source, vegetables or fruit, and foods you can repeat consistently.</p>
                     <ul style="margin:0 0 18px;padding-left:20px;">
                         ${mealSplit.map((item) => `<li>${escapeHtml(item.meal)}: ${escapeHtml(item.calories)} kcal (${escapeHtml(item.protein)}P / ${escapeHtml(item.carbs)}C / ${escapeHtml(item.fats)}F)</li>`).join('')}
                     </ul>
-                    <h2 style="margin:0 0 10px;">Example day</h2>
+                    <h3 style="margin:0 0 10px;">Example day</h3>
                     <ol style="margin:0 0 18px;padding-left:20px;">
                         ${examples.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
                     </ol>
-                    <h2 style="margin:0 0 10px;">Best matched templates</h2>
+                    <h2 style="margin:24px 0 10px;">3. Your matched templates</h2>
                     ${topTemplates.map((template) => `
                         <div style="border:1px solid #eadb9e;border-radius:12px;padding:14px;margin:0 0 12px;background:#fffdf7;">
                             <h3 style="margin:0 0 6px;">${escapeHtml(template.title)}</h3>
@@ -518,9 +529,18 @@ function buildNutritionPlanEmail({ name, profile = {}, result = {}, templates = 
                             <p style="margin:0;"><strong>Best for:</strong> ${escapeHtml(template.bestFor || '')}</p>
                         </div>
                     `).join('')}
-                    <p style="margin:20px 0 0;color:#5b6472;">Use this as a starting point for 10-14 days, then review body weight trend, hunger, training performance and adherence before changing calories.</p>
-                    <p style="margin:18px 0 0;"><a href="https://www.garciabuilder.fitness/packages.html" style="display:inline-block;background:#f6c84e;color:#0b1220;text-decoration:none;font-weight:900;padding:12px 18px;border-radius:8px;">View Coaching Packages</a></p>
+                    <div style="background:#0b1220;color:#ffffff;border-radius:14px;padding:24px;margin:28px 0 0;text-align:center;">
+                        <p style="margin:0 0 6px;color:#f6c84e;font-weight:900;letter-spacing:.08em;text-transform:uppercase;">Want help applying this?</p>
+                        <h2 style="margin:0 0 10px;color:#ffffff;">Turn your targets into a plan you can follow</h2>
+                        <p style="margin:0 0 20px;color:#d6dae3;">I can help you choose the right structure, adjust it around your lifestyle and keep you accountable as your results change.</p>
+                        <p style="margin:0 0 12px;"><a href="${packagesUrl}" style="display:block;background:#f6c84e;color:#0b1220;text-decoration:none;font-weight:900;padding:13px 18px;border-radius:8px;">View Coaching Packages</a></p>
+                        <p style="margin:0 0 12px;"><a href="${whatsappUrl}" style="display:block;background:#25d366;color:#07140b;text-decoration:none;font-weight:900;padding:13px 18px;border-radius:8px;">Chat With Andre on WhatsApp</a></p>
+                        <p style="margin:0;"><a href="${consultationUrl}" style="display:block;border:2px solid #f6c84e;color:#ffffff;text-decoration:none;font-weight:900;padding:11px 18px;border-radius:8px;">Book a Free Consultation</a></p>
+                    </div>
+                    <p style="margin:22px 0 0;color:#5b6472;">You can also reply directly to this email with your goal or biggest challenge. I read the replies personally.</p>
+                    <p style="margin:18px 0 0;font-weight:800;">Andre Garcia<br><span style="font-weight:400;color:#5b6472;">Garcia Builder Fitness</span></p>
                 </div>
+                <div style="background:#f7f4ea;padding:16px 24px;color:#6b7280;font-size:12px;text-align:center;">This calculator provides an educational starting estimate, not medical advice. If you have a medical condition, are pregnant or have a history of disordered eating, speak with a qualified healthcare professional before changing your intake. <a href="https://www.garciabuilder.fitness/privacy.html" style="color:#4b5563;">Privacy policy</a></div>
             </div>
         </div>
     `;

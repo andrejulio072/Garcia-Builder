@@ -566,6 +566,8 @@ function escapeHtml(value = '') {
         .replace(/'/g, '&#039;');
 }
 
+const NUTRITION_MARKETING_CONSENT_TEXT = 'I agree to receive my nutrition plan and follow-up emails from Garcia Builder Fitness, including coaching tips, offers and promotions. I can unsubscribe at any time.';
+
 app.post('/api/nutrition-calculator', async (req, res) => {
     try {
         const body = req.body || {};
@@ -575,6 +577,7 @@ app.post('/api/nutrition-calculator', async (req, res) => {
         const result = body.result || {};
         const templates = Array.isArray(body.templates) ? body.templates : [];
         const consent = body.consent === true;
+        const marketingConsent = body.marketingConsent === true;
         const sendEmailCopy = body.sendEmailCopy === true;
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -583,6 +586,10 @@ app.post('/api/nutrition-calculator', async (req, res) => {
 
         if (!consent) {
             return res.status(400).json({ error: 'Consent is required to save and email the nutrition plan' });
+        }
+
+        if (!marketingConsent) {
+            return res.status(400).json({ error: 'Marketing consent is required for nutrition plan delivery and follow-up emails' });
         }
 
         const requiredNumbers = ['targetCalories', 'protein', 'carbs', 'fats'];
@@ -618,6 +625,11 @@ app.post('/api/nutrition-calculator', async (req, res) => {
                 status: 'new',
                 lead_quality: 'Warm',
                 consent,
+                marketing_consent: marketingConsent,
+                marketing_consent_text: NUTRITION_MARKETING_CONSENT_TEXT,
+                marketing_consent_at: submittedAt,
+                lead_stage: 'New Lead',
+                follow_up_status: 'Not Contacted',
                 page,
                 utm_source: String(body.utm_source || '').slice(0, 200) || null,
                 utm_medium: String(body.utm_medium || '').slice(0, 200) || null,

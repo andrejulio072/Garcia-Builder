@@ -47,6 +47,7 @@ const payload = {
   source: 'Nutrition Calculator Test',
   page: '/nutrition-calculator.html',
   consent: true,
+  marketingConsent: true,
   sendEmailCopy: true,
   profile: {
     sex: 'male',
@@ -142,6 +143,10 @@ async function main() {
       ...payload,
       consent: false
     });
+    const missingMarketingConsent = await postJson(`${base}/api/nutrition-calculator`, {
+      ...payload,
+      marketingConsent: false
+    });
 
     const summary = {
       validStatus: valid.status,
@@ -151,24 +156,34 @@ async function main() {
       emailSkipped: valid.data.emailSkipped === true,
       adminEmailSent: valid.data.adminEmailSent === true,
       adminEmailSkipped: valid.data.adminEmailSkipped === true,
+      savedEmailCorrect: savedLead && savedLead.email === payload.email,
+      savedNameCorrect: savedLead && savedLead.name === payload.name,
       savedTypeCorrect: savedLead && savedLead.type === 'nutrition_calculator',
       consentSaved: savedLead && savedLead.consent === true,
+      marketingConsentSaved: savedLead && savedLead.marketing_consent === true,
+      marketingConsentTextSaved: savedLead && typeof savedLead.marketing_consent_text === 'string' && savedLead.marketing_consent_text.length > 0,
+      marketingConsentAtSaved: savedLead && !Number.isNaN(Date.parse(savedLead.marketing_consent_at)),
+      leadStageCorrect: savedLead && savedLead.lead_stage === 'New Lead',
+      followUpStatusCorrect: savedLead && savedLead.follow_up_status === 'Not Contacted',
       emailsDelivered: sentEmails.length === 2,
       customerEmailHasPackagesCta: /garciabuilder\.fitness\/packages\.html/.test(String(sentEmails[0]?.html || '')),
       customerEmailHasWhatsappCta: /wa\.me\/447508497586/.test(String(sentEmails[0]?.html || '')),
       customerEmailHasConsultationCta: /calendly\.com\/andrenjulio072\/consultation/.test(String(sentEmails[0]?.html || '')),
       invalidStatus: invalid.status,
       invalidRejected: invalid.status === 400 && /email/i.test(String(invalid.data.error || '')),
-      missingConsentRejected: missingConsent.status === 400 && /consent/i.test(String(missingConsent.data.error || ''))
+      missingConsentRejected: missingConsent.status === 400 && /consent/i.test(String(missingConsent.data.error || '')),
+      missingMarketingConsentRejected: missingMarketingConsent.status === 400 && /marketing consent/i.test(String(missingMarketingConsent.data.error || ''))
     };
 
     console.log(JSON.stringify(summary, null, 2));
 
     if (summary.validStatus !== 200 || !summary.validOk || !summary.saved ||
-        !summary.emailSent || !summary.adminEmailSent || !summary.savedTypeCorrect ||
-        !summary.consentSaved || !summary.emailsDelivered || !summary.customerEmailHasPackagesCta ||
+        !summary.emailSent || !summary.adminEmailSent || !summary.savedEmailCorrect || !summary.savedNameCorrect ||
+        !summary.savedTypeCorrect || !summary.consentSaved || !summary.marketingConsentSaved ||
+        !summary.marketingConsentTextSaved || !summary.marketingConsentAtSaved || !summary.leadStageCorrect ||
+        !summary.followUpStatusCorrect || !summary.emailsDelivered || !summary.customerEmailHasPackagesCta ||
         !summary.customerEmailHasWhatsappCta || !summary.customerEmailHasConsultationCta || !summary.invalidRejected ||
-        !summary.missingConsentRejected) {
+        !summary.missingConsentRejected || !summary.missingMarketingConsentRejected) {
       process.exitCode = 1;
     }
   } finally {

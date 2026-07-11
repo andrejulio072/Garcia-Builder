@@ -594,6 +594,7 @@
       source: 'Nutrition Calculator',
       page: window.location.pathname,
       consent: true,
+      marketingConsent: true,
       sendEmailCopy: true,
       profile: {
         sex: profile.sex,
@@ -927,11 +928,9 @@
       const profile = gatherProfile(form);
       const errors = validateProfile(profile);
       if (!isValidEmail(profile.email)) errors.push('Add a valid email address to receive your plan.');
-      if (!byId('sendPlanEmail')?.checked) errors.push('Confirm email delivery and lead-storage consent.');
+      if (!byId('sendPlanEmail')?.checked) errors.push('Consent is required to receive your plan and follow-up emails.');
       showErrors(errors);
       if (errors.length) return;
-
-      // TODO: Integrate optional lead capture here if/when a dedicated endpoint is confirmed.
 
       const calc = runCalculation(profile);
       state.profile = profile;

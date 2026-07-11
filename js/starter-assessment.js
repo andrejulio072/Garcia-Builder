@@ -76,6 +76,12 @@
   }
 
   function showError(message) {
+    const visibleContact = !contactStep.hidden;
+    if (visibleContact) {
+      contactStep.insertBefore(errorSummary, contactStep.querySelector('.field-grid'));
+    } else {
+      questionStep.insertBefore(errorSummary, optionGrid);
+    }
     errorSummary.textContent = message;
     errorSummary.hidden = false;
     errorSummary.focus();
@@ -211,6 +217,17 @@
     return '';
   }
 
+  function isLocalPreviewHost() {
+    return ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
+  }
+
+  function getApiUnavailableMessage(status) {
+    if (isLocalPreviewHost() && [404, 405, 501].includes(Number(status))) {
+      return 'Local preview is running without the API. Use Vercel dev or a deploy preview to submit the form; the assessment interface is working.';
+    }
+    return 'Unable to submit the assessment right now.';
+  }
+
   async function submitAssessment(event) {
     event.preventDefault();
     clearError();
@@ -237,7 +254,7 @@
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || !payload.ok) {
-        throw new Error(payload.error || 'Unable to submit the assessment right now.');
+        throw new Error(payload.error || getApiUnavailableMessage(response.status));
       }
       sessionStorage.removeItem(STORAGE_KEY);
       track('assessment_submitted', {
@@ -245,7 +262,10 @@
       });
       window.location.assign(payload.resultUrl || `/start/result/${payload.resultToken}`);
     } catch (error) {
-      showError(error.message || 'Unable to submit the assessment right now.');
+      const offlineMessage = isLocalPreviewHost() && error instanceof TypeError
+        ? 'Local preview cannot reach the assessment API. Use Vercel dev or a deploy preview to submit the form.'
+        : '';
+      showError(offlineMessage || error.message || 'Unable to submit the assessment right now.');
       submitButton.disabled = false;
       submitButton.textContent = 'View My Result';
     }

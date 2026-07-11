@@ -321,13 +321,15 @@ select {
 }
 
 .error-summary {
-  margin-top: 18px;
+  margin: 18px 0;
   border: 1px solid rgba(255, 180, 168, 0.62);
   border-radius: 8px;
   padding: 12px 14px;
   background: rgba(255, 180, 168, 0.08);
   color: var(--starter-danger);
   font-weight: 800;
+  font-size: 0.98rem;
+  line-height: 1.45;
 }
 
 .result-shell {

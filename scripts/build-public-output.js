@@ -31,6 +31,7 @@ const directories = [
   'assets',
   'components',
   'css',
+  'go',
   'js',
   'pages',
   'Logo Files'

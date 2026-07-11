@@ -115,9 +115,22 @@
       "source": "/privacy-policy.html",
       "destination": "/privacy-policy",
       "permanent": true
+    },
+    {
+      "source": "/go/card",
+      "destination": "/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment",
+      "permanent": false
     }
   ],
   "rewrites": [
+    {
+      "source": "/start",
+      "destination": "/start.html"
+    },
+    {
+      "source": "/start/result/:token",
+      "destination": "/start-result.html"
+    },
     {
       "source": "/about",
       "destination": "/about.html"
@@ -217,6 +230,18 @@
     {
       "source": "/28-day-fat-loss-kickstart.pdf",
       "destination": "/assets/28-days-fat-loss-quickstart.pdf"
+    },
+    {
+      "source": "/api/starter-assessment/submit",
+      "destination": "/api/starter-assessment-submit.js"
+    },
+    {
+      "source": "/api/starter-assessment/result/:token",
+      "destination": "/api/starter-assessment-result.js?token=:token"
+    },
+    {
+      "source": "/api/starter-assessment/event",
+      "destination": "/api/starter-assessment-event.js"
     },
     {
       "source": "/api/:path*",

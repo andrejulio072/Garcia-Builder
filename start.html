@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Free Fitness Assessment | Garcia Builder Fitness</title>
+  <meta name="description" content="Complete a free 60-second fitness assessment and get a recommended starting plan from Garcia Builder Fitness.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.garciabuilder.fitness/start">
+  <link rel="stylesheet" href="/css/starter-assessment.css">
+  <script src="/js/env.js" defer></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
+  <script src="/js/starter-assessment.js" defer></script>
+</head>
+<body class="starter-page">
+  <a class="skip-link" href="#assessment-root">Skip to assessment</a>
+  <header class="starter-header" aria-label="Assessment header">
+    <a class="starter-logo" href="/index.html" aria-label="Garcia Builder Fitness home">
+      <img src="/assets/images/logo-nobackground-500.png" alt="Garcia Builder Fitness">
+    </a>
+  </header>
+
+  <main class="starter-shell" id="assessment-root">
+    <section class="starter-hero" id="starter-hero" aria-labelledby="starter-title">
+      <p class="starter-eyebrow">FREE 60-SECOND FITNESS ASSESSMENT</p>
+      <h1 id="starter-title">Find the Right Starting Plan for Your Goal</h1>
+      <p class="starter-copy">Answer a few quick questions about your goal, training routine and biggest challenge. You’ll receive a recommended nutrition and workout starting point, with the option to discuss a fully tailored plan with Andre.</p>
+      <div class="starter-actions">
+        <button class="starter-primary" type="button" data-start-assessment>Build My Starter Plan</button>
+        <span>Free assessment. No commitment.</span>
+      </div>
+      <p class="starter-trust">Created by Andre Garcia, Personal Trainer &amp; Online Coach</p>
+      <p class="starter-disclaimer">This assessment provides general educational guidance and is not a medical assessment or an individually prescribed programme.</p>
+    </section>
+
+    <section class="assessment-card" hidden data-assessment-card aria-live="polite">
+      <div class="progress-wrap" aria-label="Assessment progress">
+        <div class="progress-meta">
+          <span data-progress-label>Question 1 of 8</span>
+          <span data-progress-percent>13%</span>
+        </div>
+        <div class="progress-track" aria-hidden="true"><span data-progress-bar></span></div>
+      </div>
+
+      <form id="starter-assessment-form" novalidate>
+        <div class="error-summary" data-error-summary role="alert" tabindex="-1" hidden></div>
+        <fieldset class="question-step" data-question-step>
+          <legend data-question-text></legend>
+          <div class="option-grid" data-option-grid></div>
+        </fieldset>
+
+        <section class="contact-step" data-contact-step hidden aria-labelledby="contact-heading">
+          <h2 id="contact-heading">Your Recommended Starting Plan Is Ready</h2>
+          <p>Enter your details to view your result and receive your resources by email.</p>
+
+          <div class="field-grid">
+            <label>
+              <span>First name</span>
+              <input name="first_name" autocomplete="given-name" maxlength="60" required>
+            </label>
+            <label>
+              <span>Email</span>
+              <input name="email" type="email" autocomplete="email" maxlength="254" required>
+            </label>
+            <label>
+              <span>Country</span>
+              <select name="country" autocomplete="country-name" required data-country-select>
+                <option value="">Choose country</option>
+              </select>
+            </label>
+            <label>
+              <span>WhatsApp number <small>optional</small></span>
+              <input name="whatsapp" inputmode="tel" autocomplete="tel" maxlength="32" placeholder="+353871234567">
+              <small>Add your WhatsApp number only if you would like Andre to contact you about your result.</small>
+            </label>
+          </div>
+
+          <input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <label class="check-row">
+            <input type="checkbox" name="age_confirmed" required>
+            <span>I confirm I am 18 or older.</span>
+          </label>
+          <label class="check-row">
+            <input type="checkbox" name="resource_delivery_acknowledgement" required>
+            <span>I agree to receive my assessment result and the resources I requested.</span>
+          </label>
+          <label class="check-row">
+            <input type="checkbox" name="marketing_email_consent">
+            <span>I would like to receive occasional fitness guidance, coaching information and offers from Garcia Builder Fitness by email.</span>
+          </label>
+          <label class="check-row">
+            <input type="checkbox" name="marketing_whatsapp_consent">
+            <span>I would like to receive occasional coaching information and follow-up messages from Garcia Builder Fitness by WhatsApp.</span>
+          </label>
+
+          <div class="turnstile-slot" data-turnstile-slot></div>
+
+          <p class="legal-note">By submitting, you can view your result and receive the resources you requested. See the <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms</a>.</p>
+        </section>
+
+        <div class="form-actions">
+          <button class="starter-secondary" type="button" data-back-button>Back</button>
+          <button class="starter-primary" type="button" data-next-button>Continue</button>
+          <button class="starter-primary" type="submit" data-submit-button hidden>View My Result</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

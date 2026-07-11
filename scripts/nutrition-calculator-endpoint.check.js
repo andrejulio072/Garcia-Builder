@@ -1,10 +1,53 @@
+const Module = require('module');
+const originalLoad = Module._load;
+const sentEmails = [];
+let savedLead = null;
+
+Module._load = function mockIntegrations(request, parent, isMain) {
+  if (request === '@supabase/supabase-js') {
+    return {
+      createClient: () => ({
+        from: (table) => ({
+          upsert: async (lead) => {
+            if (table === 'leads') savedLead = lead;
+            return { error: null };
+          }
+        })
+      })
+    };
+  }
+  if (request === 'nodemailer') {
+    return {
+      createTransport: () => ({
+        sendMail: async (mail) => {
+          sentEmails.push(mail);
+          return { accepted: [mail.to], messageId: 'nutrition-test-message' };
+        }
+      })
+    };
+  }
+  return originalLoad(request, parent, isMain);
+};
+
+process.env.SUPABASE_URL = process.env.SUPABASE_URL || 'https://example.supabase.co';
+process.env.SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 'test-service-role';
+process.env.SMTP_HOST = process.env.SMTP_HOST || 'smtp.test';
+process.env.SMTP_PORT = process.env.SMTP_PORT || '587';
+process.env.SMTP_USER = process.env.SMTP_USER || 'test-user';
+process.env.SMTP_PASS = process.env.SMTP_PASS || 'test-pass';
+process.env.FROM_EMAIL = process.env.FROM_EMAIL || 'no-reply@example.com';
+process.env.INQUIRY_NOTIFY_EMAIL = process.env.INQUIRY_NOTIFY_EMAIL || 'admin@example.com';
+
 const app = require('../api/stripe-server-premium');
+Module._load = originalLoad;
 
 const payload = {
   name: 'Nutrition Endpoint Test',
   email: 'nutrition-endpoint-test@example.com',
   source: 'Nutrition Calculator Test',
   page: '/nutrition-calculator.html',
+  consent: true,
+  sendEmailCopy: true,
   profile: {
     sex: 'male',
     age: 35,
@@ -95,6 +138,10 @@ async function main() {
       ...payload,
       email: 'not-an-email'
     });
+    const missingConsent = await postJson(`${base}/api/nutrition-calculator`, {
+      ...payload,
+      consent: false
+    });
 
     const summary = {
       validStatus: valid.status,
@@ -104,13 +151,20 @@ async function main() {
       emailSkipped: valid.data.emailSkipped === true,
       adminEmailSent: valid.data.adminEmailSent === true,
       adminEmailSkipped: valid.data.adminEmailSkipped === true,
+      savedTypeCorrect: savedLead && savedLead.type === 'nutrition_calculator',
+      consentSaved: savedLead && savedLead.consent === true,
+      emailsDelivered: sentEmails.length === 2,
       invalidStatus: invalid.status,
-      invalidRejected: invalid.status === 400 && /email/i.test(String(invalid.data.error || ''))
+      invalidRejected: invalid.status === 400 && /email/i.test(String(invalid.data.error || '')),
+      missingConsentRejected: missingConsent.status === 400 && /consent/i.test(String(missingConsent.data.error || ''))
     };
 
     console.log(JSON.stringify(summary, null, 2));
 
-    if (summary.validStatus !== 200 || !summary.validOk || !summary.invalidRejected) {
+    if (summary.validStatus !== 200 || !summary.validOk || !summary.saved ||
+        !summary.emailSent || !summary.adminEmailSent || !summary.savedTypeCorrect ||
+        !summary.consentSaved || !summary.emailsDelivered || !summary.invalidRejected ||
+        !summary.missingConsentRejected) {
       process.exitCode = 1;
     }
   } finally {

@@ -18,11 +18,9 @@ const { randomUUID } = require('crypto');
 const LEAD_DEDUP_WINDOW_MS = 10 * 60 * 1000;
 const recentConsultationLeadIds = new Map();
 
-// ConfiguraÃ§Ã£o de ambiente segura
-require('dotenv').config({
-    path: path.join(__dirname, '..', '.env'),
-    silent: false
-});
+// Load ignored local overrides first; Vercel-provided variables remain authoritative.
+require('dotenv').config({ path: path.join(__dirname, '..', '.env.local'), quiet: true });
+require('dotenv').config({ path: path.join(__dirname, '..', '.env'), quiet: true });
 
 const app = express();
 
@@ -556,13 +554,24 @@ app.post('/api/nutrition-calculator', async (req, res) => {
         const profile = body.profile || {};
         const result = body.result || {};
         const templates = Array.isArray(body.templates) ? body.templates : [];
+        const consent = body.consent === true;
+        const sendEmailCopy = body.sendEmailCopy === true;
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             return res.status(400).json({ error: 'A valid email is required' });
         }
 
-        if (!result.targetCalories || !result.protein || !result.carbs || !result.fats) {
+        if (!consent) {
+            return res.status(400).json({ error: 'Consent is required to save and email the nutrition plan' });
+        }
+
+        const requiredNumbers = ['targetCalories', 'protein', 'carbs', 'fats'];
+        if (requiredNumbers.some((key) => !Number.isFinite(Number(result[key])) || Number(result[key]) <= 0)) {
             return res.status(400).json({ error: 'Nutrition result payload is incomplete' });
+        }
+
+        if (!profile.goal || !profile.age || !profile.heightCm || !profile.weightKg) {
+            return res.status(400).json({ error: 'Nutrition profile payload is incomplete' });
         }
 
         const submittedAt = new Date().toISOString();
@@ -578,13 +587,25 @@ app.post('/api/nutrition-calculator', async (req, res) => {
         });
 
         if (supa) {
+            const page = String(body.page || req.headers.referer || '').slice(0, 500);
             const { error } = await supa.from('leads').upsert({
                 name: name || null,
                 email,
-                source: 'Nutrition Calculator',
+                source: 'nutrition_calculator',
+                goal: String(profile.goal || '').slice(0, 100),
                 notes,
                 type: 'nutrition_calculator',
-                status: 'new'
+                status: 'new',
+                lead_quality: 'Warm',
+                consent,
+                page,
+                utm_source: String(body.utm_source || '').slice(0, 200) || null,
+                utm_medium: String(body.utm_medium || '').slice(0, 200) || null,
+                utm_campaign: String(body.utm_campaign || '').slice(0, 200) || null,
+                utm_content: String(body.utm_content || '').slice(0, 200) || null,
+                utm_term: String(body.utm_term || '').slice(0, 200) || null,
+                payload: profile,
+                nutrition_result: result
             }, { onConflict: 'email' });
             if (error) {
                 console.warn('nutrition calculator Supabase upsert skipped/failed:', error.message);
@@ -593,15 +614,18 @@ app.post('/api/nutrition-calculator', async (req, res) => {
             }
         }
 
-        const customerHtml = buildNutritionPlanEmail({ name, profile, result, templates });
-        const customerEmailResult = await sendEmail({
-            to: email,
-            subject: 'Your Garcia Builder macro targets and meal structure',
-            html: customerHtml
-        }).catch((error) => {
-            console.warn('nutrition customer email skipped/failed:', error.message);
-            return { ok: false, error: error.message };
-        });
+        let customerEmailResult = { skipped: true };
+        if (sendEmailCopy) {
+            const customerHtml = buildNutritionPlanEmail({ name, profile, result, templates });
+            customerEmailResult = await sendEmail({
+                to: email,
+                subject: 'Your Garcia Builder macro targets and meal structure',
+                html: customerHtml
+            }).catch((error) => {
+                console.warn('nutrition customer email skipped/failed:', error.message);
+                return { ok: false };
+            });
+        }
 
         const adminEmailResult = await sendAdminEmail({
             subject: `Nutrition calculator lead: ${name || email}`,
@@ -618,11 +642,13 @@ app.post('/api/nutrition-calculator', async (req, res) => {
                 </div>`
         }).catch((error) => {
             console.warn('nutrition admin email skipped/failed:', error.message);
-            return { ok: false, error: error.message };
+            return { ok: false };
         });
 
-        return res.status(200).json({
-            ok: true,
+        const integrationsOk = saved && (!sendEmailCopy || !!customerEmailResult.ok) && !!adminEmailResult.ok;
+        return res.status(integrationsOk ? 200 : 502).json({
+            ok: integrationsOk,
+            error: integrationsOk ? undefined : 'One or more lead-delivery services are unavailable',
             saved,
             emailSent: !!customerEmailResult.ok,
             adminEmailSent: !!adminEmailResult.ok,

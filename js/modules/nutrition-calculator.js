@@ -593,6 +593,8 @@
       email: profile.email,
       source: 'Nutrition Calculator',
       page: window.location.pathname,
+      consent: true,
+      sendEmailCopy: true,
       profile: {
         sex: profile.sex,
         age: profile.age,
@@ -636,12 +638,6 @@
 
   async function sendNutritionPlanCopy(profile, calc) {
     const status = byId('nutrition-email-status');
-    const wantsEmail = byId('sendPlanEmail')?.checked;
-    if (!wantsEmail) {
-      if (status) status.textContent = '';
-      return;
-    }
-
     if (!isValidEmail(profile.email)) {
       if (status) {
         status.textContent = 'Add a valid email address if you want a copy sent to your inbox.';
@@ -930,6 +926,8 @@
 
       const profile = gatherProfile(form);
       const errors = validateProfile(profile);
+      if (!isValidEmail(profile.email)) errors.push('Add a valid email address to receive your plan.');
+      if (!byId('sendPlanEmail')?.checked) errors.push('Confirm email delivery and lead-storage consent.');
       showErrors(errors);
       if (errors.length) return;
 

@@ -340,7 +340,7 @@ const INLINE_FALLBACKS = {
             <span class="gb-footer-cta-eyebrow">Ready to start?</span>
             <strong>Build a plan that fits your real life.</strong>
         </div>
-        <a href="/consultation" class="gb-footer-cta-link" data-button-location="footer">Book a Free Consultation</a>
+        <a href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener" class="gb-footer-cta-link" data-button-location="footer">Book a Free Consultation</a>
     </div>
     <div class="gb-footer-main gb-footer-ref">
         <div class="gb-footer-col gb-footer-brand-col">
@@ -349,7 +349,7 @@ const INLINE_FALLBACKS = {
             <div class="footer-bio-ref" style="margin-bottom:8px;">Online Coaching — Evidence-based fitness, nutrition & accountability.<br/>Transform your body, sustainably.</div>
             <div class="footer-contact-ref" style="margin-top:14px;">
                 <div><a href="mailto:andre@garciabuilder.fitness"><i class="fas fa-envelope"></i> andre@garciabuilder.fitness</a></div>
-                <div><a href="/consultation" data-button-location="footer"><i class="fas fa-calendar-check"></i> Book a Free Consultation</a></div>
+                <div><a href="https://calendly.com/andrenjulio072/consultation" target="_blank" rel="noopener" data-button-location="footer"><i class="fas fa-calendar-check"></i> Book a Free Consultation</a></div>
             </div>
         </div>
         <div class="gb-footer-col">

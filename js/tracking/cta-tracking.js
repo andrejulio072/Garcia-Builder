@@ -22,7 +22,7 @@
       const fromStorage = JSON.parse(localStorage.getItem('gb_attrib_v1') || '{}');
       const merged = Object.assign({}, fromStorage || {}, window.GB_ATTRIBUTION || {});
       return ATTR_KEYS.reduce(function collect(acc, key) {
-        if (merged[key]) acc[key] = String(merged[key]).slice(0, 160);
+        acc[key] = merged[key] ? String(merged[key]).slice(0, 160) : '';
         return acc;
       }, fallback);
     } catch (error) {
@@ -81,9 +81,10 @@
     window.dataLayer.push(Object.assign({ event: eventName }, readAttribution(), extras || {}));
   }
 
-  function pushBookConsultation(buttonLocation) {
+  function pushBookConsultation(buttonLocation, packageName) {
     pushDataLayerEvent('book_consultation_click', {
       button_location: buttonLocation,
+      package_name: packageName || undefined,
       page: window.location.pathname,
       source: 'website'
     });
@@ -174,14 +175,9 @@
         button_location: buttonLocation,
         cta_url: trackedHref || ''
       };
-      const safeSalesPayload = {
-        button_location: buttonLocation,
-        package_name: packageName || undefined
-      };
       if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
         window.GB_TRACKING.trackEvent('cta_click', payload);
         if ((trackedHref || '').includes('wa.me') || (trackedHref || '').includes('api.whatsapp.com')) {
-          window.GB_TRACKING.trackEvent('whatsapp_click', safeSalesPayload);
           pushDataLayerEvent('whatsapp_click', {
             button_location: buttonLocation,
             package_name: packageName || undefined,
@@ -190,7 +186,7 @@
           });
         }
         if (consultationIntent) {
-          pushBookConsultation(buttonLocation);
+          pushBookConsultation(buttonLocation, packageName);
         }
       } else {
         pushDataLayerEvent('cta_click', payload);
@@ -203,7 +199,7 @@
           });
         }
         if (consultationIntent) {
-          pushBookConsultation(buttonLocation);
+          pushBookConsultation(buttonLocation, packageName);
         }
       }
     } catch (err) {
@@ -249,7 +245,7 @@
     if (!bookingClick && !consultRouteClick) return;
 
     const buttonLocation = bookingLocationFallback(anchor, currentPath);
-    pushBookConsultation(buttonLocation);
+    pushBookConsultation(buttonLocation, anchor.getAttribute('data-package-name') || undefined);
 
     if (bookingClick) {
       const enriched = withAttributionBookingUrl(resolved.toString());

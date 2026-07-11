@@ -15,7 +15,7 @@
   function attributionPayload() {
     const source = attribution();
     return UTM_KEYS.reduce((acc, key) => {
-      if (source[key]) acc[key] = String(source[key]).slice(0, 160);
+      acc[key] = source[key] ? String(source[key]).slice(0, 160) : '';
       return acc;
     }, {});
   }
@@ -29,8 +29,9 @@
     if (!el) return;
     const eventName = el.getAttribute('data-gb-event');
     if (!eventName) return;
+    const packageCard = el.closest('[data-package-card]');
     pushEvent(eventName, {
-      cta_location: location.pathname,
+      button_location: packageCard ? 'package_card' : location.pathname,
       cta_text: (el.textContent || '').trim().slice(0, 80),
       package_id: el.getAttribute('data-package') || undefined,
       package_name: el.getAttribute('data-package-name') || undefined

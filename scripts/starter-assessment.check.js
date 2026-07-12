@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
 
 const {
   QUESTIONS,
@@ -154,6 +156,20 @@ assert(!whatsappUrl.includes('leadScore'));
 assert(buildWhatsappMessage(baseAnswers).includes('My main goal is: Lose body fat'));
 
 assert.strictEqual(QUESTIONS.length, 8);
+
+const productionServer = fs.readFileSync(path.join(__dirname, '..', 'api', 'stripe-server-premium.js'), 'utf8');
+[
+  "app.get('/start'",
+  "app.get('/start/result/:token'",
+  "app.post('/api/starter-assessment/submit'",
+  "app.get('/api/starter-assessment/result/:token'",
+  "app.post('/api/starter-assessment/event'"
+].forEach((snippet) => {
+  assert(
+    productionServer.includes(snippet),
+    `Render production server missing starter assessment route: ${snippet}`
+  );
+});
 
 function withEnv(overrides, callback) {
   const keys = [

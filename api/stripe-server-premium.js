@@ -245,6 +245,42 @@ app.get(Object.keys(publicPageAliases), (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'pages', 'public', publicPageAliases[req.path]));
 });
 
+function adaptServerlessHandler(handler, label) {
+    return async (req, res) => {
+        try {
+            await handler(req, res);
+        } catch (error) {
+            console.error(`${label} handler failed`, { message: error.message });
+            if (!res.headersSent) {
+                res.status(500).json({ error: 'Request failed.' });
+            }
+        }
+    };
+}
+
+const starterSubmitHandler = require('./starter-assessment-submit.js');
+const starterResultHandler = require('./starter-assessment-result.js');
+const starterEventHandler = require('./starter-assessment-event.js');
+
+app.get('/go/card', (req, res) => {
+    res.redirect(302, '/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment');
+});
+
+app.get('/start', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'start.html'));
+});
+
+app.get('/start/result/:token', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'start-result.html'));
+});
+
+app.post('/api/starter-assessment/submit', adaptServerlessHandler(starterSubmitHandler, 'starter assessment submit'));
+app.get('/api/starter-assessment/result/:token', (req, res) => {
+    req.query = { ...(req.query || {}), token: req.params.token };
+    return adaptServerlessHandler(starterResultHandler, 'starter assessment result')(req, res);
+});
+app.post('/api/starter-assessment/event', adaptServerlessHandler(starterEventHandler, 'starter assessment event'));
+
 // Servir arquivos estÃ¡ticos
 app.use(express.static(path.join(__dirname, '..'), {
     dotfiles: 'deny',

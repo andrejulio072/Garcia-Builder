@@ -1,16 +1,21 @@
 /* Simple static server for local testing */
 const express = require('express');
 const path = require('path');
+const explicitPort = process.env.PORT;
+require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
 const app = express();
 app.disable('x-powered-by');
 const DEFAULT_PORT = 5183;
 const PORT_MAX = 5200;
-let port = Number(process.env.PORT || DEFAULT_PORT);
+let port = Number(explicitPort || process.env.STATIC_SERVER_PORT || DEFAULT_PORT);
 const projectRoot = path.resolve(__dirname, '..');
 const publicRoot = path.join(projectRoot, 'public');
-const root = require('fs').existsSync(publicRoot) ? publicRoot : projectRoot;
+const serveProjectRoot = String(process.env.SERVE_PROJECT_ROOT || '').toLowerCase() === 'true';
+const root = !serveProjectRoot && require('fs').existsSync(publicRoot) ? publicRoot : projectRoot;
 const fs = require('fs');
+
+app.use(express.json({ limit: '120kb' }));
 
 // Global basic headers for local dev (not production security hardening)
 app.use((req, res, next) => {
@@ -19,6 +24,30 @@ app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   next();
 });
+
+function adaptServerlessHandler(handler) {
+  return async (req, res) => {
+    try {
+      await handler(req, res);
+    } catch (error) {
+      console.error(`[static-server] API handler failed for ${req.path}`, error);
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Local API handler failed.' });
+      }
+    }
+  };
+}
+
+const starterSubmitHandler = require('../api/starter-assessment-submit.js');
+const starterResultHandler = require('../api/starter-assessment-result.js');
+const starterEventHandler = require('../api/starter-assessment-event.js');
+
+app.post('/api/starter-assessment/submit', adaptServerlessHandler(starterSubmitHandler));
+app.get('/api/starter-assessment/result/:token', (req, res, next) => {
+  req.query = { ...(req.query || {}), token: req.params.token };
+  return adaptServerlessHandler(starterResultHandler)(req, res, next);
+});
+app.post('/api/starter-assessment/event', adaptServerlessHandler(starterEventHandler));
 
 // Serve static with content-type tweaks for some assets
 app.use(express.static(root, {
@@ -44,6 +73,14 @@ const publicPageAliases = {
 
 app.get(Object.keys(publicPageAliases), (req, res) => {
   res.sendFile(path.join(projectRoot, 'pages', 'public', publicPageAliases[req.path]));
+});
+
+app.get('/go/card', (req, res) => {
+  res.redirect(302, '/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment');
+});
+
+app.get('/start/result/:token', (req, res) => {
+  res.sendFile(path.join(root, 'start-result.html'));
 });
 
 app.get('*', (req, res) => {

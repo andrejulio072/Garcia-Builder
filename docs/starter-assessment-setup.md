@@ -9,6 +9,16 @@ This document covers the QR-code starter assessment funnel at `/go/card`, `/star
 3. Start a static preview with `npm run serve` or another static server.
 4. Open `/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment`.
 
+For local form submission, use the project Node static server rather than `python -m http.server`, because the Python server cannot execute `/api/starter-assessment/*`:
+
+```pwsh
+$env:SERVE_PROJECT_ROOT = "true"
+$env:PORT = "5198"
+node tools/static-server.js
+```
+
+Real lead creation requires `SUPABASE_SERVICE_ROLE_KEY` or `SUPABASE_SECRET_KEY` in `.env`. Result email delivery requires SendGrid variables, or the lead will be stored but email delivery will be skipped.
+
 The frontend stores assessment answers and UTM metadata in `sessionStorage`. It does not persist first name, email, or WhatsApp number in browser storage.
 
 ## Supabase Migration

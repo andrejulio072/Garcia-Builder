@@ -57,7 +57,8 @@ function verifyOrigin(req) {
     'http://localhost:8000',
     'http://127.0.0.1:8000'
   ];
-  return allowed.some((candidate) => origin === candidate);
+  if (allowed.some((candidate) => origin === candidate)) return true;
+  return /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
 }
 
 async function verifyTurnstile(token, ip) {
@@ -116,11 +117,11 @@ function escapeHtml(value) {
 
 async function sendSendGridEmail({ to, subject, html, dynamicTemplateData, useStarterTemplate = true }) {
   const apiKey = process.env.SENDGRID_API_KEY;
-  if (!apiKey) return { skipped: true };
+  if (!apiKey) return { skipped: true, reason: 'missing_sendgrid_api_key' };
 
   const fromEmail = process.env.SENDGRID_FROM_EMAIL || process.env.FROM_EMAIL;
   const fromName = process.env.SENDGRID_FROM_NAME || process.env.FROM_NAME || 'Garcia Builder Fitness';
-  if (!fromEmail) return { skipped: true };
+  if (!fromEmail) return { skipped: true, reason: 'missing_sender_email' };
 
   const templateId = useStarterTemplate ? process.env.SENDGRID_STARTER_RESULT_TEMPLATE_ID : '';
   const payload = {
@@ -245,6 +246,15 @@ function getBookingUrl() {
   return normalizeText(process.env.NEXT_PUBLIC_BOOKING_URL || process.env.BOOKING_URL, 500) || null;
 }
 
+function getDevelopmentConfigError(error) {
+  if (process.env.NODE_ENV === 'production') return '';
+  const message = String(error?.message || '');
+  if (message.includes('Supabase server credentials')) {
+    return 'Local API is running, but SUPABASE_SERVICE_ROLE_KEY or SUPABASE_SECRET_KEY is missing. Add it to .env to create real leads.';
+  }
+  return '';
+}
+
 module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return json(res, 405, { error: 'Method not allowed' });
@@ -326,6 +336,7 @@ module.exports = async function handler(req, res) {
       bookingUrl
     });
 
+    let emailDelivery = { status: 'skipped', reason: 'not_attempted' };
     try {
       const emailResult = await sendSendGridEmail({
         to: validated.contact.email,
@@ -335,9 +346,16 @@ module.exports = async function handler(req, res) {
       });
       if (emailResult.ok) {
         await supabase.from('starter_assessment_leads').update({ result_email_sent_at: new Date().toISOString() }).eq('id', lead.id);
+        emailDelivery = { status: 'sent' };
+      } else {
+        emailDelivery = { status: 'skipped', reason: emailResult.reason || 'not_configured' };
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn('starter assessment email skipped', emailDelivery);
+        }
       }
     } catch (emailError) {
       console.error('starter assessment email failed', { message: emailError.message });
+      emailDelivery = { status: 'failed' };
     }
 
     if (recommendation.leadScore >= 8) {
@@ -384,12 +402,13 @@ module.exports = async function handler(req, res) {
         whatsappUrl,
         bookingUrl,
         showWarmLeadCta: recommendation.leadStatus === 'warm'
-      }
+      },
+      emailDelivery: process.env.NODE_ENV === 'production' ? undefined : emailDelivery
     };
     recentSubmissions.set(submissionKey, { createdAt: Date.now(), response });
     return json(res, 200, response);
   } catch (error) {
     console.error('starter assessment submit error', { message: error.message });
-    return json(res, 500, { error: 'Unable to submit the assessment right now.' });
+    return json(res, 500, { error: getDevelopmentConfigError(error) || 'Unable to submit the assessment right now.' });
   }
 };

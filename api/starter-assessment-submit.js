@@ -28,10 +28,13 @@ function json(res, status, payload) {
 }
 
 function getBaseUrl(req) {
-  const configured = process.env.NEXT_PUBLIC_SITE_URL || process.env.PUBLIC_SITE_URL;
-  if (configured) return String(configured).replace(/\/$/, '');
   const host = req.headers.host || 'www.garciabuilder.fitness';
   const proto = req.headers['x-forwarded-proto'] || (host.includes('localhost') ? 'http' : 'https');
+  if (process.env.NODE_ENV !== 'production' && /^(localhost|127\.0\.0\.1):\d+$/.test(host)) {
+    return `${proto}://${host}`;
+  }
+  const configured = process.env.NEXT_PUBLIC_SITE_URL || process.env.PUBLIC_SITE_URL;
+  if (configured) return String(configured).replace(/\/$/, '');
   return `${proto}://${host}`;
 }
 

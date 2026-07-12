@@ -232,18 +232,6 @@
       "destination": "/assets/28-days-fat-loss-quickstart.pdf"
     },
     {
-      "source": "/api/starter-assessment/submit",
-      "destination": "/api/starter-assessment-submit.js"
-    },
-    {
-      "source": "/api/starter-assessment/result/:token",
-      "destination": "/api/starter-assessment-result.js?token=:token"
-    },
-    {
-      "source": "/api/starter-assessment/event",
-      "destination": "/api/starter-assessment-event.js"
-    },
-    {
       "source": "/api/:path*",
       "destination": "/api/stripe-server-premium.js"
     }

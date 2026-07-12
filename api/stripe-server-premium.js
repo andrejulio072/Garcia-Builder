@@ -258,9 +258,9 @@ function adaptServerlessHandler(handler, label) {
     };
 }
 
-const starterSubmitHandler = require('./starter-assessment-submit.js');
-const starterResultHandler = require('./starter-assessment-result.js');
-const starterEventHandler = require('./starter-assessment-event.js');
+const starterSubmitHandler = require('../lib/starter-assessment/submit-handler.cjs');
+const starterResultHandler = require('../lib/starter-assessment/result-handler.cjs');
+const starterEventHandler = require('../lib/starter-assessment/event-handler.cjs');
 
 app.get('/go/card', (req, res) => {
     res.redirect(302, '/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment');

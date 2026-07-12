@@ -38,9 +38,9 @@ function adaptServerlessHandler(handler) {
   };
 }
 
-const starterSubmitHandler = require('../api/starter-assessment-submit.js');
-const starterResultHandler = require('../api/starter-assessment-result.js');
-const starterEventHandler = require('../api/starter-assessment-event.js');
+const starterSubmitHandler = require('../lib/starter-assessment/submit-handler.cjs');
+const starterResultHandler = require('../lib/starter-assessment/result-handler.cjs');
+const starterEventHandler = require('../lib/starter-assessment/event-handler.cjs');
 
 app.post('/api/starter-assessment/submit', adaptServerlessHandler(starterSubmitHandler));
 app.get('/api/starter-assessment/result/:token', (req, res, next) => {

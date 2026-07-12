@@ -158,6 +158,15 @@ assert(buildWhatsappMessage(baseAnswers).includes('My main goal is: Lose body fa
 assert.strictEqual(QUESTIONS.length, 8);
 
 const productionServer = fs.readFileSync(path.join(__dirname, '..', 'api', 'stripe-server-premium.js'), 'utf8');
+const apiFiles = fs.readdirSync(path.join(__dirname, '..', 'api')).filter((file) => file.endsWith('.js'));
+assert(
+  apiFiles.length <= 12,
+  `Vercel Hobby allows at most 12 Serverless Functions; api contains ${apiFiles.length}`
+);
+assert(
+  !apiFiles.some((file) => file.startsWith('starter-assessment-')),
+  'Starter assessment handlers must stay outside api/ and mount through stripe-server-premium.js'
+);
 [
   "app.get('/start'",
   "app.get('/start/result/:token'",

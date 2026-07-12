@@ -18,6 +18,8 @@ const { validateSubmission, validateMetadata } = require('../lib/starter-assessm
 const { generateResultToken, hashResultToken } = require('../lib/starter-assessment/tokens.cjs');
 const { getDisplayResource } = require('../lib/starter-assessment/resources.cjs');
 const { buildWhatsappMessage, buildWhatsappUrl } = require('../lib/starter-assessment/whatsapp.cjs');
+const { BREVO_API_URL, sendTransactionalEmail } = require('../lib/starter-assessment/email.cjs');
+const { isAllowedOrigin } = require('../lib/starter-assessment/origin.cjs');
 
 const baseAnswers = {
   primary_goal: 'Lose body fat',
@@ -153,4 +155,148 @@ assert(buildWhatsappMessage(baseAnswers).includes('My main goal is: Lose body fa
 
 assert.strictEqual(QUESTIONS.length, 8);
 
-console.log('Starter assessment checks passed.');
+function withEnv(overrides, callback) {
+  const keys = [
+    'BREVO_API_KEY',
+    'BREVO_SENDER_EMAIL',
+    'BREVO_SENDER_NAME',
+    'SMTP_HOST',
+    'SMTP_PORT',
+    'SMTP_USER',
+    'SMTP_PASS',
+    'SMTP_FROM_EMAIL',
+    'FROM_EMAIL',
+    'VERCEL_ENV',
+    'VERCEL_URL'
+  ];
+  const previous = {};
+  keys.forEach((key) => {
+    previous[key] = process.env[key];
+    delete process.env[key];
+  });
+  Object.entries(overrides).forEach(([key, value]) => {
+    process.env[key] = value;
+  });
+  return Promise.resolve()
+    .then(callback)
+    .finally(() => {
+      keys.forEach((key) => {
+        if (previous[key] === undefined) {
+          delete process.env[key];
+        } else {
+          process.env[key] = previous[key];
+        }
+      });
+    });
+}
+
+async function runAsyncChecks() {
+  await withEnv({
+    BREVO_API_KEY: 'test-brevo-key',
+    BREVO_SENDER_EMAIL: 'coach@example.com'
+  }, async () => {
+    let request;
+    const result = await sendTransactionalEmail({
+      to: 'lead@example.com',
+      subject: 'Starter plan',
+      html: '<p>Ready</p>',
+      text: 'Ready'
+    }, {
+      fetch: async (url, options) => {
+        request = { url, options };
+        return { ok: true, status: 201 };
+      }
+    });
+    assert.strictEqual(result.ok, true);
+    assert.strictEqual(result.provider, 'brevo');
+    assert.strictEqual(request.url, BREVO_API_URL);
+    assert.strictEqual(request.options.headers['api-key'], 'test-brevo-key');
+    const payload = JSON.parse(request.options.body);
+    assert.deepStrictEqual(payload.to, [{ email: 'lead@example.com' }]);
+    assert.strictEqual(payload.sender.email, 'coach@example.com');
+  });
+
+  await withEnv({
+    BREVO_API_KEY: 'test-brevo-key',
+    SMTP_HOST: 'smtp.example.com',
+    SMTP_USER: 'smtp-user',
+    SMTP_PASS: 'smtp-pass',
+    SMTP_FROM_EMAIL: 'coach@example.com'
+  }, async () => {
+    let smtpPayload;
+    const result = await sendTransactionalEmail({
+      to: 'lead@example.com',
+      subject: 'Starter plan',
+      html: '<p>Ready</p>',
+      text: 'Ready'
+    }, {
+      fetch: async () => ({
+        ok: false,
+        status: 500,
+        text: async () => 'temporary failure'
+      }),
+      smtpTransporter: {
+        sendMail: async (payload) => {
+          smtpPayload = payload;
+        }
+      }
+    });
+    assert.strictEqual(result.ok, true);
+    assert.strictEqual(result.provider, 'smtp');
+    assert.strictEqual(smtpPayload.to, 'lead@example.com');
+    assert.strictEqual(smtpPayload.from, '"Garcia Builder Fitness" <coach@example.com>');
+  });
+
+  await withEnv({}, async () => {
+    const result = await sendTransactionalEmail({
+      to: 'lead@example.com',
+      subject: 'Starter plan',
+      html: '<p>Ready</p>',
+      text: 'Ready'
+    });
+    assert.strictEqual(result.ok, false);
+    assert.strictEqual(result.skipped, true);
+    assert.strictEqual(result.reason, 'missing_email_provider');
+  });
+
+  assert.strictEqual(isAllowedOrigin({ headers: { origin: 'https://www.garciabuilder.fitness' } }), true);
+  assert.strictEqual(isAllowedOrigin({ headers: { origin: 'https://garciabuilder.fitness' } }), true);
+  assert.strictEqual(isAllowedOrigin({ headers: { origin: 'http://localhost:5197' } }), true);
+  assert.strictEqual(isAllowedOrigin({ headers: { origin: 'http://127.0.0.1:5197' } }), true);
+  assert.strictEqual(isAllowedOrigin({
+    headers: {
+      origin: 'https://garcia-builder-git-qr.vercel.app',
+      host: 'garcia-builder-git-qr.vercel.app'
+    }
+  }, {
+    VERCEL_ENV: 'preview',
+    VERCEL_URL: 'garcia-builder-git-qr.vercel.app'
+  }), true);
+  assert.strictEqual(isAllowedOrigin({
+    headers: {
+      origin: 'https://attacker.vercel.app',
+      host: 'garcia-builder-git-qr.vercel.app'
+    }
+  }, {
+    VERCEL_ENV: 'preview',
+    VERCEL_URL: 'garcia-builder-git-qr.vercel.app'
+  }), false);
+  assert.strictEqual(isAllowedOrigin({
+    headers: {
+      origin: 'https://attacker.vercel.app',
+      host: 'attacker.vercel.app'
+    }
+  }, {
+    VERCEL_ENV: 'production',
+    VERCEL_URL: 'attacker.vercel.app'
+  }), false);
+}
+
+runAsyncChecks()
+  .then(() => {
+    console.log('Starter assessment checks passed.');
+  })
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

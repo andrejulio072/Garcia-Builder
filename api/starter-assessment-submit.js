@@ -6,6 +6,8 @@ const {
 const { validateSubmission, normalizeText } = require('../lib/starter-assessment/validation.cjs');
 const { generateResultToken, getTokenExpiryDate, hashResultToken } = require('../lib/starter-assessment/tokens.cjs');
 const { buildWhatsappUrl } = require('../lib/starter-assessment/whatsapp.cjs');
+const { sendTransactionalEmail } = require('../lib/starter-assessment/email.cjs');
+const { isAllowedOrigin } = require('../lib/starter-assessment/origin.cjs');
 
 const SUBMISSION_WINDOW_MS = 30 * 1000;
 const recentSubmissions = new Map();
@@ -47,21 +49,6 @@ function getSupabase() {
 
 function getIp(req) {
   return String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '').split(',')[0].trim();
-}
-
-function verifyOrigin(req) {
-  const origin = req.headers.origin || '';
-  if (!origin) return true;
-  const allowed = [
-    getBaseUrl(req),
-    'https://garciabuilder.fitness',
-    'https://www.garciabuilder.fitness',
-    'http://localhost:3000',
-    'http://localhost:8000',
-    'http://127.0.0.1:8000'
-  ];
-  if (allowed.some((candidate) => origin === candidate)) return true;
-  return /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
 }
 
 async function verifyTurnstile(token, ip) {
@@ -118,39 +105,6 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
-async function sendSendGridEmail({ to, subject, html, dynamicTemplateData, useStarterTemplate = true }) {
-  const apiKey = process.env.SENDGRID_API_KEY;
-  if (!apiKey) return { skipped: true, reason: 'missing_sendgrid_api_key' };
-
-  const fromEmail = process.env.SENDGRID_FROM_EMAIL || process.env.FROM_EMAIL;
-  const fromName = process.env.SENDGRID_FROM_NAME || process.env.FROM_NAME || 'Garcia Builder Fitness';
-  if (!fromEmail) return { skipped: true, reason: 'missing_sender_email' };
-
-  const templateId = useStarterTemplate ? process.env.SENDGRID_STARTER_RESULT_TEMPLATE_ID : '';
-  const payload = {
-    personalizations: [
-      {
-        to: [{ email: to }],
-        dynamic_template_data: dynamicTemplateData
-      }
-    ],
-    from: { email: fromEmail, name: fromName },
-    subject
-  };
-
-  if (templateId) {
-    payload.template_id = templateId;
-  } else {
-    payload.content = [{ type: 'text/html', value: html }];
-  }
-
-  const response = await postJsonWithTimeout('https://api.sendgrid.com/v3/mail/send', payload, 7000);
-  if (!response.ok) {
-    throw new Error(`SendGrid starter result email failed with ${response.status}`);
-  }
-  return { ok: true };
-}
-
 function buildResultEmail({ req, contact, answers, recommendation, visitorRecommendation, resultUrl, whatsappUrl, bookingUrl }) {
   const firstName = escapeHtml(contact.first_name);
   const privacyUrl = `${getBaseUrl(req)}/privacy.html`;
@@ -188,23 +142,26 @@ function buildResultEmail({ req, contact, answers, recommendation, visitorRecomm
 
   return {
     html,
-    dynamicTemplateData: {
-      first_name: contact.first_name,
-      main_goal: answers.primary_goal,
-      result_title: recommendation.resultTitle,
-      workout_template: recommendation.workoutTemplate,
-      nutrition_template: recommendation.nutritionTemplate,
-      primary_guide: recommendation.primaryResource,
-      result_url: resultUrl,
-      whatsapp_url: whatsappUrl,
-      booking_url: bookingUrl,
-      privacy_url: privacyUrl
-    }
+    text: [
+      `Hi ${contact.first_name},`,
+      '',
+      `Your Garcia Builder starter plan is ready: ${recommendation.resultTitle}.`,
+      `Main stated goal: ${answers.primary_goal}`,
+      `Recommended workout: ${recommendation.workoutTemplate}`,
+      `Recommended nutrition: ${recommendation.nutritionTemplate}`,
+      `Primary guide: ${recommendation.primaryResource}`,
+      '',
+      `View your result: ${resultUrl}`,
+      whatsappUrl ? `Message Andre on WhatsApp: ${whatsappUrl}` : '',
+      bookingUrl ? `Book a consultation: ${bookingUrl}` : '',
+      '',
+      `Privacy Policy: ${privacyUrl}`
+    ].filter(Boolean).join('\n')
   };
 }
 
 async function sendWarmLeadAlert({ contact, answers, recommendation, metadata }) {
-  if (!process.env.LEAD_ALERT_EMAIL || !process.env.SENDGRID_API_KEY) return { skipped: true };
+  if (!process.env.LEAD_ALERT_EMAIL) return { skipped: true, reason: 'missing_lead_alert_email' };
   const html = `<p><strong>Warm Garcia Builder Lead: ${escapeHtml(contact.first_name)}</strong></p>
     <ul>
       <li>Email: ${escapeHtml(contact.email)}</li>
@@ -217,23 +174,22 @@ async function sendWarmLeadAlert({ contact, answers, recommendation, metadata })
       <li>Score: ${recommendation.leadScore}</li>
       <li>UTM source: ${escapeHtml(metadata.utm_source || 'Not set')}</li>
     </ul>`;
-  return sendSendGridEmail({
+  return sendTransactionalEmail({
     to: process.env.LEAD_ALERT_EMAIL,
     subject: `Warm Garcia Builder Lead: ${contact.first_name}`,
     html,
-    useStarterTemplate: false,
-    dynamicTemplateData: {
-      first_name: contact.first_name,
-      email: contact.email,
-      whatsapp: contact.whatsapp,
-      goal: answers.primary_goal,
-      training_days: answers.training_days,
-      main_barrier: answers.main_barrier,
-      timeline: answers.starting_timeline,
-      support_preference: answers.support_preference,
-      score: recommendation.leadScore,
-      utm_source: metadata.utm_source
-    }
+    text: [
+      `Warm Garcia Builder Lead: ${contact.first_name}`,
+      `Email: ${contact.email}`,
+      `WhatsApp: ${contact.whatsapp || 'Not supplied'}`,
+      `Goal: ${answers.primary_goal}`,
+      `Training days: ${answers.training_days}`,
+      `Main barrier: ${answers.main_barrier}`,
+      `Timeline: ${answers.starting_timeline}`,
+      `Preferred support: ${answers.support_preference}`,
+      `Score: ${recommendation.leadScore}`,
+      `UTM source: ${metadata.utm_source || 'Not set'}`
+    ].join('\n')
   });
 }
 
@@ -263,7 +219,7 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return json(res, 405, { error: 'Method not allowed' });
 
   try {
-    if (!verifyOrigin(req)) return json(res, 403, { error: 'Unable to submit the assessment right now.' });
+    if (!isAllowedOrigin(req)) return json(res, 403, { error: 'Unable to submit the assessment right now.' });
 
     const body = parseBody(req);
     if (normalizeText(body.website, 100)) {
@@ -341,24 +297,26 @@ module.exports = async function handler(req, res) {
 
     let emailDelivery = { status: 'skipped', reason: 'not_attempted' };
     try {
-      const emailResult = await sendSendGridEmail({
+      const emailResult = await sendTransactionalEmail({
         to: validated.contact.email,
         subject: 'Your Garcia Builder Starter Plan Is Ready',
         html: email.html,
-        dynamicTemplateData: email.dynamicTemplateData
+        text: email.text
       });
       if (emailResult.ok) {
         await supabase.from('starter_assessment_leads').update({ result_email_sent_at: new Date().toISOString() }).eq('id', lead.id);
-        emailDelivery = { status: 'sent' };
+        emailDelivery = { status: 'sent', provider: emailResult.provider };
       } else {
-        emailDelivery = { status: 'skipped', reason: emailResult.reason || 'not_configured' };
+        emailDelivery = emailResult.skipped
+          ? { status: 'skipped', reason: emailResult.reason || 'not_configured' }
+          : { status: 'failed', provider: emailResult.provider || null, reason: emailResult.reason || 'provider_failed' };
         if (process.env.NODE_ENV !== 'production') {
           console.warn('starter assessment email skipped', emailDelivery);
         }
       }
     } catch (emailError) {
       console.error('starter assessment email failed', { message: emailError.message });
-      emailDelivery = { status: 'failed' };
+      emailDelivery = { status: 'failed', reason: 'provider_exception' };
     }
 
     if (recommendation.leadScore >= 8) {

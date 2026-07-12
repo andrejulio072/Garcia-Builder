@@ -17,7 +17,7 @@ $env:PORT = "5198"
 node tools/static-server.js
 ```
 
-Real lead creation requires `SUPABASE_SERVICE_ROLE_KEY` or `SUPABASE_SECRET_KEY` in `.env`. Result email delivery requires SendGrid variables, or the lead will be stored but email delivery will be skipped.
+Real lead creation requires `SUPABASE_SERVICE_ROLE_KEY` or `SUPABASE_SECRET_KEY` in `.env`. Result email delivery uses Brevo first and SMTP as a fallback. If neither provider is configured, the lead is still stored and email delivery is skipped.
 
 The frontend stores assessment answers and UTM metadata in `sessionStorage`. It does not persist first name, email, or WhatsApp number in browser storage.
 
@@ -53,43 +53,45 @@ Server-only:
 
 - `SUPABASE_URL`
 - `SUPABASE_SECRET_KEY` or `SUPABASE_SERVICE_ROLE_KEY`
-- `SENDGRID_API_KEY`
-- `SENDGRID_FROM_EMAIL`
-- `SENDGRID_FROM_NAME`
-- `SENDGRID_STARTER_RESULT_TEMPLATE_ID` optional
+- `BREVO_API_KEY`
+- `BREVO_SENDER_EMAIL`
+- `BREVO_SENDER_NAME` optional
+- `SMTP_HOST` fallback
+- `SMTP_PORT` fallback, default: `587`
+- `SMTP_USER` fallback
+- `SMTP_PASS` fallback
+- `SMTP_FROM_EMAIL` fallback
 - `LEAD_ALERT_EMAIL` optional
 - `ZAPIER_LEAD_WEBHOOK_URL` optional
 - `TURNSTILE_SECRET_KEY`
 - `RESULT_TOKEN_EXPIRY_DAYS` default: `30`
 - `LEAD_RETENTION_DAYS` documented only; do not enable deletion until Andre approves the production retention period
 
-Never expose service-role Supabase keys, SendGrid keys, Turnstile secret keys, or Zapier webhook URLs in `env-config.json`.
+Never expose service-role Supabase keys, Brevo keys, SMTP passwords, Turnstile secret keys, or Zapier webhook URLs in `env-config.json`.
 
-## SendGrid Setup
+## Transactional Email Setup
 
 The transactional email is sent because the visitor requested their assessment result and resources. It is independent of marketing consent.
 
-Configure either:
+Configure Brevo for primary delivery:
 
-- `SENDGRID_STARTER_RESULT_TEMPLATE_ID` for a dynamic template, using the data shape below.
-- No template ID, which uses the built-in HTML fallback.
-
-Dynamic template data:
-
-```json
-{
-  "first_name": "Andre",
-  "main_goal": "Lose body fat",
-  "result_title": "Fat-Loss and Body-Composition Starter Plan",
-  "workout_template": "Three-Day Full-Body Strength and Fat-Loss Template",
-  "nutrition_template": "High-Protein Plate Builder",
-  "primary_guide": "28-Day Fat Loss Kickstart",
-  "result_url": "https://www.garciabuilder.fitness/start/result/token",
-  "whatsapp_url": "https://wa.me/...",
-  "booking_url": "https://...",
-  "privacy_url": "https://www.garciabuilder.fitness/privacy.html"
-}
+```text
+BREVO_API_KEY=...
+BREVO_SENDER_EMAIL=no-reply@garciabuilder.fitness
+BREVO_SENDER_NAME=Garcia Builder Fitness
 ```
+
+Configure SMTP as the fallback path when Brevo is unavailable:
+
+```text
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=...
+SMTP_PASS=...
+SMTP_FROM_EMAIL=no-reply@garciabuilder.fitness
+```
+
+The built-in HTML and text email includes the result link, recommended resources, WhatsApp CTA, booking CTA, and privacy link. `LEAD_ALERT_EMAIL` sends a separate warm-lead notification through the same Brevo/SMTP provider chain.
 
 If sending fails after database insert, the visitor still receives the on-screen result. Check server logs and resend manually from Supabase if needed.
 
@@ -197,7 +199,7 @@ Manual checks:
 - Apply Supabase migration.
 - Add all server-only environment variables in Vercel.
 - Add public env variables and regenerate `env-config.json`.
-- Confirm SendGrid sender authentication and template.
+- Confirm Brevo sender authentication and SMTP fallback credentials.
 - Confirm Cloudflare Turnstile domain settings.
 - Confirm Zapier webhook destination.
 - Confirm WhatsApp number is E.164-compatible.

@@ -69,6 +69,7 @@ create index if not exists starter_assessment_events_lead_idx on public.starter_
 create or replace function public.set_starter_assessment_updated_at()
 returns trigger
 language plpgsql
+set search_path = public, pg_temp
 as $$
 begin
   new.updated_at = now();
@@ -83,6 +84,10 @@ for each row execute function public.set_starter_assessment_updated_at();
 
 alter table public.starter_assessment_leads enable row level security;
 alter table public.starter_assessment_events enable row level security;
+
+revoke all privileges on table public.starter_assessment_leads from anon, authenticated;
+revoke all privileges on table public.starter_assessment_events from anon, authenticated;
+revoke all on function public.set_starter_assessment_updated_at() from public;
 
 -- No broad public policies are intentionally created.
 -- The serverless endpoints must use a service-role key for controlled inserts,

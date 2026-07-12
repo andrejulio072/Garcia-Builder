@@ -158,6 +158,7 @@ assert(buildWhatsappMessage(baseAnswers).includes('My main goal is: Lose body fa
 assert.strictEqual(QUESTIONS.length, 8);
 
 const productionServer = fs.readFileSync(path.join(__dirname, '..', 'api', 'stripe-server-premium.js'), 'utf8');
+const starterClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-assessment.js'), 'utf8');
 const apiFiles = fs.readdirSync(path.join(__dirname, '..', 'api')).filter((file) => file.endsWith('.js'));
 assert(
   apiFiles.length <= 12,
@@ -179,6 +180,14 @@ assert(
     `Render production server missing starter assessment route: ${snippet}`
   );
 });
+assert(
+  starterClient.includes('window.__ENV_PROMISE.then(renderTurnstile)'),
+  'Starter client should retry Turnstile rendering after env-config loads'
+);
+assert(
+  starterClient.includes('Complete the verification check and try again.'),
+  'Starter client should block submissions that have no Turnstile token'
+);
 
 function withEnv(overrides, callback) {
   const keys = [

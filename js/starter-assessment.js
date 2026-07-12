@@ -135,7 +135,7 @@
         $('[data-country-select]').appendChild(option);
       });
     }
-    renderTurnstile();
+    scheduleTurnstileRender();
   }
 
   function getPublicEnv(name) {
@@ -147,6 +147,19 @@
     const siteKey = getPublicEnv('NEXT_PUBLIC_TURNSTILE_SITE_KEY');
     if (!slot || !siteKey || !window.turnstile || state.turnstileWidgetId !== null) return;
     state.turnstileWidgetId = window.turnstile.render(slot, { sitekey: siteKey });
+  }
+
+  function scheduleTurnstileRender() {
+    renderTurnstile();
+    if (state.turnstileWidgetId !== null) return;
+
+    if (window.__ENV_PROMISE && typeof window.__ENV_PROMISE.then === 'function') {
+      window.__ENV_PROMISE.then(renderTurnstile).catch(() => {});
+    }
+
+    window.addEventListener('load', renderTurnstile, { once: true });
+    setTimeout(renderTurnstile, 500);
+    setTimeout(renderTurnstile, 1500);
   }
 
   function render() {
@@ -237,6 +250,12 @@
       showError(validationMessage);
       return;
     }
+    const turnstileToken = getTurnstileToken();
+    if (getPublicEnv('NEXT_PUBLIC_TURNSTILE_SITE_KEY') && !turnstileToken) {
+      scheduleTurnstileRender();
+      showError('Complete the verification check and try again.');
+      return;
+    }
 
     submitButton.disabled = true;
     submitButton.textContent = 'Preparing result...';
@@ -248,7 +267,7 @@
           answers: state.answers,
           contact,
           metadata: getMeta(),
-          turnstileToken: getTurnstileToken(),
+          turnstileToken,
           website: String(new FormData(form).get('website') || '')
         })
       });

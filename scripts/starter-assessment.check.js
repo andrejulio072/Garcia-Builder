@@ -177,17 +177,11 @@ assert(
 ].forEach((snippet) => {
   assert(
     productionServer.includes(snippet),
-    `Render production server missing starter assessment route: ${snippet}`
+    `Production server missing starter assessment route: ${snippet}`
   );
 });
-assert(
-  starterClient.includes('window.__ENV_PROMISE.then(renderTurnstile)'),
-  'Starter client should retry Turnstile rendering after env-config loads'
-);
-assert(
-  starterClient.includes('Complete the verification check and try again.'),
-  'Starter client should block submissions that have no Turnstile token'
-);
+assert(fs.readFileSync(path.join(__dirname, '..', 'start.html'), 'utf8').includes('name="website"'), 'Starter form should keep the honeypot field');
+assert(fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8').includes('SUBMISSION_WINDOW_MS'), 'Starter submit should keep duplicate-submission throttling');
 
 function withEnv(overrides, callback) {
   const keys = [

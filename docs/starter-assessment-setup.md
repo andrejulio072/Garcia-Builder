@@ -47,7 +47,6 @@ Public:
 - `NEXT_PUBLIC_SITE_URL` or `PUBLIC_SITE_URL`
 - `NEXT_PUBLIC_BOOKING_URL`
 - `NEXT_PUBLIC_WHATSAPP_NUMBER`
-- `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
 
 Server-only:
 
@@ -63,11 +62,10 @@ Server-only:
 - `SMTP_FROM_EMAIL` fallback
 - `LEAD_ALERT_EMAIL` optional
 - `ZAPIER_LEAD_WEBHOOK_URL` optional
-- `TURNSTILE_SECRET_KEY`
 - `RESULT_TOKEN_EXPIRY_DAYS` default: `30`
 - `LEAD_RETENTION_DAYS` documented only; do not enable deletion until Andre approves the production retention period
 
-Never expose service-role Supabase keys, Brevo keys, SMTP passwords, Turnstile secret keys, or Zapier webhook URLs in `env-config.json`.
+Never expose service-role Supabase keys, Brevo keys, SMTP passwords, or Zapier webhook URLs in `env-config.json`.
 
 ## Transactional Email Setup
 
@@ -95,14 +93,9 @@ The built-in HTML and text email includes the result link, recommended resources
 
 If sending fails after database insert, the visitor still receives the on-screen result. Check server logs and resend manually from Supabase if needed.
 
-## Turnstile Setup
+## Spam Protection
 
-1. Create a Cloudflare Turnstile widget for `garciabuilder.fitness` and local test domains as needed.
-2. Put the site key in `NEXT_PUBLIC_TURNSTILE_SITE_KEY`.
-3. Put the secret key in `TURNSTILE_SECRET_KEY`.
-4. For automated/local test mode only, set `TURNSTILE_TEST_MODE=true`.
-
-Client-side rendering alone is not trusted; `/api/starter-assessment/submit` verifies the token server-side.
+The funnel relies on a hidden honeypot field, strict server-side validation, and a short duplicate-submission throttle before inserting into Supabase.
 
 ## Zapier Setup
 
@@ -200,7 +193,6 @@ Manual checks:
 - Add all server-only environment variables in Vercel.
 - Add public env variables and regenerate `env-config.json`.
 - Confirm Brevo sender authentication and SMTP fallback credentials.
-- Confirm Cloudflare Turnstile domain settings.
 - Confirm Zapier webhook destination.
 - Confirm WhatsApp number is E.164-compatible.
 - Confirm booking URL is valid.
@@ -212,4 +204,4 @@ Manual checks:
 1. Remove or disable the `/go/card`, `/start`, `/start/result/:token`, and starter assessment API rewrites in `vercel.json`.
 2. Redeploy the previous Vercel version.
 3. Keep the Supabase tables for auditability unless Andre explicitly approves deletion.
-4. If needed, disable form submission by removing `TURNSTILE_SECRET_KEY` in production or setting the Vercel route to a maintenance page.
+4. If needed, disable form submission by setting the Vercel route to a maintenance page or temporarily removing required Supabase server credentials.

@@ -310,11 +310,6 @@ select {
   opacity: 0;
 }
 
-.turnstile-slot {
-  margin-top: 16px;
-  min-height: 1px;
-}
-
 .legal-note a,
 .resource-card a {
   color: var(--starter-gold);

@@ -14,8 +14,7 @@
   const META_KEY = 'gb_starter_assessment_meta';
   const state = {
     step: -1,
-    answers: {},
-    turnstileWidgetId: null
+    answers: {}
   };
 
   const $ = (selector) => document.querySelector(selector);
@@ -135,31 +134,10 @@
         $('[data-country-select]').appendChild(option);
       });
     }
-    scheduleTurnstileRender();
   }
 
   function getPublicEnv(name) {
     return (window.__ENV && window.__ENV[name]) || window[name] || '';
-  }
-
-  function renderTurnstile() {
-    const slot = $('[data-turnstile-slot]');
-    const siteKey = getPublicEnv('NEXT_PUBLIC_TURNSTILE_SITE_KEY');
-    if (!slot || !siteKey || !window.turnstile || state.turnstileWidgetId !== null) return;
-    state.turnstileWidgetId = window.turnstile.render(slot, { sitekey: siteKey });
-  }
-
-  function scheduleTurnstileRender() {
-    renderTurnstile();
-    if (state.turnstileWidgetId !== null) return;
-
-    if (window.__ENV_PROMISE && typeof window.__ENV_PROMISE.then === 'function') {
-      window.__ENV_PROMISE.then(renderTurnstile).catch(() => {});
-    }
-
-    window.addEventListener('load', renderTurnstile, { once: true });
-    setTimeout(renderTurnstile, 500);
-    setTimeout(renderTurnstile, 1500);
   }
 
   function render() {
@@ -223,13 +201,6 @@
     return '';
   }
 
-  function getTurnstileToken() {
-    if (window.turnstile && state.turnstileWidgetId !== null) {
-      return window.turnstile.getResponse(state.turnstileWidgetId);
-    }
-    return '';
-  }
-
   function isLocalPreviewHost() {
     return ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
   }
@@ -250,13 +221,6 @@
       showError(validationMessage);
       return;
     }
-    const turnstileToken = getTurnstileToken();
-    if (getPublicEnv('NEXT_PUBLIC_TURNSTILE_SITE_KEY') && !turnstileToken) {
-      scheduleTurnstileRender();
-      showError('Complete the verification check and try again.');
-      return;
-    }
-
     submitButton.disabled = true;
     submitButton.textContent = 'Preparing result...';
     try {
@@ -267,7 +231,6 @@
           answers: state.answers,
           contact,
           metadata: getMeta(),
-          turnstileToken,
           website: String(new FormData(form).get('website') || '')
         })
       });

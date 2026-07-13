@@ -5,6 +5,8 @@
   const grid = document.querySelector('[data-resource-grid]');
   const warmSection = document.querySelector('[data-warm-section]');
   const actions = document.querySelector('[data-contact-actions]');
+  const contactHeading = warmSection ? warmSection.querySelector('h2') : null;
+  const contactCopy = warmSection ? warmSection.querySelector('p') : null;
 
   function track(eventName, properties) {
     const safeProperties = properties || {};
@@ -47,6 +49,17 @@
       article.appendChild(note);
     }
 
+    if (Array.isArray(resource.details) && resource.details.length > 0) {
+      const list = document.createElement('ul');
+      list.className = 'resource-detail-list';
+      resource.details.forEach((detail) => {
+        const item = document.createElement('li');
+        item.textContent = detail;
+        list.appendChild(item);
+      });
+      article.appendChild(list);
+    }
+
     if (resource.available && resource.url) {
       const link = document.createElement('a');
       link.className = resource.role === 'primary' ? 'starter-primary' : 'starter-secondary';
@@ -59,8 +72,8 @@
       article.appendChild(link);
     } else {
       const unavailable = document.createElement('span');
-      unavailable.className = 'starter-secondary';
-      unavailable.textContent = 'Resource coming soon';
+      unavailable.className = 'resource-included';
+      unavailable.textContent = 'Included in your starter plan above';
       article.appendChild(unavailable);
     }
     return article;
@@ -107,7 +120,11 @@
       contactLinks.push(site);
     }
     contactLinks.forEach((link) => actions.appendChild(link));
-    warmSection.hidden = !payload.actions?.showWarmLeadCta || contactLinks.length === 0;
+    if (contactHeading && contactCopy && !payload.actions?.showWarmLeadCta) {
+      contactHeading.textContent = 'Want help turning this into a real plan?';
+      contactCopy.textContent = 'Use the contact options below if you want Andre to review your goal, training schedule and nutrition starting point.';
+    }
+    warmSection.hidden = contactLinks.length === 0;
   }
 
   async function loadResult() {

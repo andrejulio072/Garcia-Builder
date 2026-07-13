@@ -271,7 +271,11 @@ async function main() {
     assert(resource.unavailableTitle, 'Fallback resource missing unavailableTitle');
     assert.equal(resource.title, '28-Day Fat Loss Kickstart', 'Fallback resource presented as a different unavailable template');
   }
-  add('Fallback resources', 'PASS', fallbackResources.length ? 'Missing templates clearly use the available guide fallback' : 'No fallback resource in this recommendation');
+  for (const resource of resources.filter((item) => item.role !== 'primary')) {
+    assert(Array.isArray(resource.details) && resource.details.length > 0, `${resource.role} resource is missing inline starter details`);
+    assert(!resource.url, `${resource.role} resource should not direct-download the guide fallback`);
+  }
+  add('Workout and macro resources', 'PASS', 'Training and nutrition cards include inline starter details and no fallback download links');
 
   const contactExpectations = configuredContactExpectations();
   for (const [key, expected] of Object.entries(contactExpectations)) {

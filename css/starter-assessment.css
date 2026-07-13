@@ -315,6 +315,14 @@ select {
   color: var(--starter-gold);
 }
 
+.resource-card a.starter-primary {
+  color: #101114;
+}
+
+.resource-card a.starter-secondary {
+  color: var(--starter-gold);
+}
+
 .error-summary {
   margin: 18px 0;
   border: 1px solid rgba(255, 180, 168, 0.62);
@@ -363,11 +371,32 @@ select {
   line-height: 1.55;
 }
 
+.resource-detail-list {
+  margin: 4px 0 18px;
+  padding-left: 20px;
+  color: var(--starter-text);
+  line-height: 1.45;
+}
+
+.resource-detail-list li + li {
+  margin-top: 8px;
+}
+
 .resource-card .starter-primary,
 .resource-card .starter-secondary {
   margin-top: auto;
   text-align: center;
   text-decoration: none;
+}
+
+.resource-included {
+  margin-top: auto;
+  border: 1px solid rgba(246, 200, 78, 0.38);
+  border-radius: 8px;
+  padding: 13px 18px;
+  color: var(--starter-gold);
+  font-weight: 900;
+  text-align: center;
 }
 
 .fallback-note {

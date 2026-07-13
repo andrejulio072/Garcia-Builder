@@ -141,13 +141,16 @@ assert.strictEqual(hashResultToken(token).length, 64);
 assert.notStrictEqual(hashResultToken(token), token);
 
 const fallback = getDisplayResource('Four-Day Upper/Lower Template');
-assert.strictEqual(fallback.fallbackUsed, true);
-assert.strictEqual(fallback.resource.available, true);
+assert.strictEqual(fallback.fallbackUsed, false);
+assert.strictEqual(fallback.resource.available, false);
+assert(Array.isArray(fallback.details) && fallback.details.length > 0);
 
 const visitor = toVisitorRecommendation(warm);
 assert(!('leadScore' in visitor));
 assert(!('scoreReasons' in visitor));
 assert.strictEqual(visitor.resources.length, 3);
+assert(visitor.resources.find((resource) => resource.role === 'workout').details.length > 0);
+assert(visitor.resources.find((resource) => resource.role === 'nutrition').details.length > 0);
 
 const whatsappUrl = buildWhatsappUrl(baseAnswers, '+353871234567');
 assert(whatsappUrl.startsWith('https://wa.me/353871234567?text='));

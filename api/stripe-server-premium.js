@@ -170,6 +170,8 @@ app.use(helmet({
 }));
 
 // Rate limiting - proteÃ§Ã£o contra ataques
+app.set('trust proxy', 1);
+
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos
     max: 100, // limite de 100 requests por IP
@@ -200,12 +202,14 @@ const envCors = (process.env.CORS_ORIGINS || '')
     .filter(Boolean);
 // Environment origins extend the safe defaults so local development remains usable.
 const allowedCorsOrigins = [...new Set([...defaultCorsOrigins, ...envCors])];
+const allowedPreviewOriginPattern = /^https:\/\/[a-z0-9-]+-andrejulio072s-projects\.vercel\.app$/i;
 
 app.use(cors({
     origin: function(origin, callback) {
         // Permitir chamadas sem origin (ex: curl, mobile app) e checar lista quando houver origin
         if (!origin) return callback(null, true);
         if (allowedCorsOrigins.includes(origin)) return callback(null, true);
+        if (allowedPreviewOriginPattern.test(origin)) return callback(null, true);
         return callback(new Error('Not allowed by CORS'));
     },
     credentials: true,

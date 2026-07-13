@@ -85,7 +85,28 @@
       booking.addEventListener('click', () => recordEvent('consultation_clicked', 'consultation_clicked'));
       contactLinks.push(booking);
     }
-    contactLinks.slice(0, 2).forEach((link) => actions.appendChild(link));
+    if (payload.actions?.instagramUrl) {
+      const instagram = document.createElement('a');
+      instagram.className = 'starter-secondary';
+      instagram.href = payload.actions.instagramUrl;
+      instagram.textContent = 'Instagram';
+      contactLinks.push(instagram);
+    }
+    if (payload.actions?.contactEmailUrl) {
+      const email = document.createElement('a');
+      email.className = 'starter-secondary';
+      email.href = payload.actions.contactEmailUrl;
+      email.textContent = 'Email Andre';
+      contactLinks.push(email);
+    }
+    if (payload.actions?.siteUrl) {
+      const site = document.createElement('a');
+      site.className = 'starter-secondary';
+      site.href = payload.actions.siteUrl;
+      site.textContent = 'Visit Garcia Builder Fitness';
+      contactLinks.push(site);
+    }
+    contactLinks.forEach((link) => actions.appendChild(link));
     warmSection.hidden = !payload.actions?.showWarmLeadCta || contactLinks.length === 0;
   }
 

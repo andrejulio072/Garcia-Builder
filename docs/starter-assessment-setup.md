@@ -47,6 +47,8 @@ Public:
 - `NEXT_PUBLIC_SITE_URL` or `PUBLIC_SITE_URL`
 - `NEXT_PUBLIC_BOOKING_URL`
 - `NEXT_PUBLIC_WHATSAPP_NUMBER`
+- `NEXT_PUBLIC_INSTAGRAM_URL` optional
+- `NEXT_PUBLIC_CONTACT_EMAIL` optional
 
 Server-only:
 
@@ -96,6 +98,29 @@ If sending fails after database insert, the visitor still receives the on-screen
 ## Spam Protection
 
 The funnel relies on a hidden honeypot field, strict server-side validation, and a short duplicate-submission throttle before inserting into Supabase.
+
+## Marketing Consent Query
+
+Supabase is the source of truth for lead details, assessment answers, UTM attribution, and marketing consent. The resource delivery acknowledgement is not marketing consent. Use consent fields separately when reviewing eligible follow-up leads:
+
+```sql
+select
+  created_at,
+  first_name,
+  email,
+  country,
+  primary_goal,
+  lead_status,
+  marketing_email_consent,
+  marketing_email_consent_at,
+  utm_source,
+  utm_campaign
+from public.starter_assessment_leads
+where marketing_email_consent = true
+order by created_at desc;
+```
+
+Do not expose this query through a public browser endpoint.
 
 ## Zapier Setup
 

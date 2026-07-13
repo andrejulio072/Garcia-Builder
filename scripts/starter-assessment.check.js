@@ -140,10 +140,12 @@ assert(token.length >= 40);
 assert.strictEqual(hashResultToken(token).length, 64);
 assert.notStrictEqual(hashResultToken(token), token);
 
-const fallback = getDisplayResource('Four-Day Upper/Lower Template');
-assert.strictEqual(fallback.fallbackUsed, false);
-assert.strictEqual(fallback.resource.available, false);
-assert(Array.isArray(fallback.details) && fallback.details.length > 0);
+const workoutResource = getDisplayResource('Four-Day Upper/Lower Template');
+assert.strictEqual(workoutResource.fallbackUsed, false);
+assert.strictEqual(workoutResource.resource.available, true);
+assert.strictEqual(workoutResource.resource.url, '/workouts.html#workout-library');
+assert.notStrictEqual(workoutResource.resource.url, '/assets/28-days-fat-loss-quickstart.pdf');
+assert(Array.isArray(workoutResource.details) && workoutResource.details.length > 0);
 
 const visitor = toVisitorRecommendation(warm);
 assert(!('leadScore' in visitor));
@@ -151,6 +153,10 @@ assert(!('scoreReasons' in visitor));
 assert.strictEqual(visitor.resources.length, 3);
 assert(visitor.resources.find((resource) => resource.role === 'workout').details.length > 0);
 assert(visitor.resources.find((resource) => resource.role === 'nutrition').details.length > 0);
+assert(visitor.resources.find((resource) => resource.role === 'workout').url);
+assert(visitor.resources.find((resource) => resource.role === 'nutrition').url);
+assert.notStrictEqual(visitor.resources.find((resource) => resource.role === 'workout').url, visitor.resources.find((resource) => resource.role === 'primary').url);
+assert.notStrictEqual(visitor.resources.find((resource) => resource.role === 'nutrition').url, visitor.resources.find((resource) => resource.role === 'primary').url);
 
 const whatsappUrl = buildWhatsappUrl(baseAnswers, '+353871234567');
 assert(whatsappUrl.startsWith('https://wa.me/353871234567?text='));

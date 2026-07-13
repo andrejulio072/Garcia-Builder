@@ -66,7 +66,7 @@
       link.href = resource.url;
       link.target = '_blank';
       link.rel = 'noopener';
-      link.textContent = resource.role === 'primary' ? 'Download My 28-Day Kickstart' : 'View Resource';
+      link.textContent = resource.actionLabel || (resource.role === 'primary' ? 'Download My 28-Day Kickstart' : 'Open Resource');
       link.setAttribute('aria-label', `${link.textContent}: ${resource.title}`);
       link.addEventListener('click', () => recordEvent(resourceEventName(resource.role), resource.slug));
       article.appendChild(link);

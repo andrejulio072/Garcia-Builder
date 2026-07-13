@@ -391,12 +391,11 @@ select {
 
 .resource-included {
   margin-top: auto;
-  border: 1px solid rgba(246, 200, 78, 0.38);
-  border-radius: 8px;
-  padding: 13px 18px;
-  color: var(--starter-gold);
-  font-weight: 900;
-  text-align: center;
+  border-top: 1px solid var(--starter-line);
+  padding-top: 12px;
+  color: var(--starter-muted);
+  font-size: 0.92rem;
+  font-weight: 800;
 }
 
 .fallback-note {

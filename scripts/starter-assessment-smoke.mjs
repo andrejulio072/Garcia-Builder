@@ -273,9 +273,12 @@ async function main() {
   }
   for (const resource of resources.filter((item) => item.role !== 'primary')) {
     assert(Array.isArray(resource.details) && resource.details.length > 0, `${resource.role} resource is missing inline starter details`);
-    assert(!resource.url, `${resource.role} resource should not direct-download the guide fallback`);
+    assert(resource.available && resource.url, `${resource.role} resource is missing an actionable link`);
+    assert.notEqual(resource.url, guide.url, `${resource.role} resource should not direct-download the guide fallback`);
+    const resourceResponse = await fetch(absoluteUrl(baseUrl, resource.url), { method: 'HEAD' });
+    assert([200, 304, 405].includes(resourceResponse.status), `${resource.role} resource link returned HTTP ${resourceResponse.status}`);
   }
-  add('Workout and macro resources', 'PASS', 'Training and nutrition cards include inline starter details and no fallback download links');
+  add('Workout and macro resources', 'PASS', 'Training and nutrition cards include inline starter details and actionable non-fallback links');
 
   const contactExpectations = configuredContactExpectations();
   for (const [key, expected] of Object.entries(contactExpectations)) {

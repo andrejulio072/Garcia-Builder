@@ -8,6 +8,99 @@
   const contactHeading = warmSection ? warmSection.querySelector('h2') : null;
   const contactCopy = warmSection ? warmSection.querySelector('p') : null;
 
+  function appendList(parent, items) {
+    if (!Array.isArray(items) || items.length === 0) return;
+    const list = document.createElement('ul');
+    items.forEach((value) => {
+      const item = document.createElement('li');
+      item.textContent = value;
+      list.appendChild(item);
+    });
+    parent.appendChild(list);
+  }
+
+  function renderPlanSection(plan) {
+    document.querySelectorAll('[data-generated-plan]').forEach((node) => node.remove());
+    if (!plan || !grid || !grid.parentNode) return;
+
+    const section = document.createElement('section');
+    section.className = 'starter-plan-output';
+    section.setAttribute('data-generated-plan', '');
+
+    const heading = document.createElement('h2');
+    heading.textContent = plan.title || 'Your Practical Starter Plan';
+    const goal = document.createElement('p');
+    goal.className = 'plan-goal';
+    goal.textContent = plan.goalTarget || 'Use this as your first-week structure before making advanced changes.';
+    section.append(heading, goal);
+
+    const planGrid = document.createElement('div');
+    planGrid.className = 'starter-plan-grid';
+
+    const trainingBlock = document.createElement('article');
+    trainingBlock.className = 'starter-plan-block';
+    const trainingTitle = document.createElement('h3');
+    trainingTitle.textContent = `Training this week: ${plan.training?.title || 'Starter training structure'}`;
+    trainingBlock.appendChild(trainingTitle);
+    appendList(trainingBlock, plan.training?.weeklyStructure);
+    (plan.training?.sessions || []).forEach((session) => {
+      const sessionHeading = document.createElement('h4');
+      sessionHeading.textContent = session.name;
+      const focus = document.createElement('p');
+      focus.textContent = session.focus;
+      trainingBlock.append(sessionHeading, focus);
+      appendList(trainingBlock, session.work);
+    });
+
+    const nutritionBlock = document.createElement('article');
+    nutritionBlock.className = 'starter-plan-block';
+    const nutritionTitle = document.createElement('h3');
+    nutritionTitle.textContent = `Macro targets: ${plan.nutrition?.title || 'Nutrition starter framework'}`;
+    nutritionBlock.appendChild(nutritionTitle);
+    appendList(nutritionBlock, plan.nutrition?.macroTargets);
+    if (plan.nutrition?.calculatorUrl) {
+      const calculatorLink = document.createElement('a');
+      calculatorLink.className = 'starter-secondary plan-link';
+      calculatorLink.href = plan.nutrition.calculatorUrl;
+      calculatorLink.textContent = 'Calculate exact macro targets';
+      calculatorLink.addEventListener('click', () => recordEvent('nutrition_template_viewed', 'macro_calculator'));
+      nutritionBlock.appendChild(calculatorLink);
+    }
+
+    const mealsBlock = document.createElement('article');
+    mealsBlock.className = 'starter-plan-block starter-plan-block-wide';
+    const mealsTitle = document.createElement('h3');
+    mealsTitle.textContent = 'Simple day of eating';
+    mealsBlock.appendChild(mealsTitle);
+    const mealList = document.createElement('div');
+    mealList.className = 'meal-template-list';
+    (plan.nutrition?.meals || []).forEach((meal) => {
+      const mealItem = document.createElement('div');
+      const mealName = document.createElement('strong');
+      mealName.textContent = meal.meal;
+      const mealCopy = document.createElement('p');
+      mealCopy.textContent = `${meal.example}. ${meal.purpose}`;
+      mealItem.append(mealName, mealCopy);
+      mealList.appendChild(mealItem);
+    });
+    mealsBlock.appendChild(mealList);
+    const shoppingTitle = document.createElement('h4');
+    shoppingTitle.textContent = 'Starter shopping list';
+    mealsBlock.appendChild(shoppingTitle);
+    appendList(mealsBlock, plan.nutrition?.shoppingList);
+
+    const nextStepsBlock = document.createElement('article');
+    nextStepsBlock.className = 'starter-plan-block starter-plan-block-wide';
+    const nextTitle = document.createElement('h3');
+    nextTitle.textContent = 'Next 7 days';
+    nextStepsBlock.appendChild(nextTitle);
+    appendList(nextStepsBlock, plan.nextSteps);
+
+    planGrid.append(trainingBlock, nutritionBlock, mealsBlock, nextStepsBlock);
+    section.appendChild(planGrid);
+    grid.parentNode.insertBefore(section, grid);
+  }
+
   function track(eventName, properties) {
     const safeProperties = properties || {};
     window.dataLayer = window.dataLayer || [];
@@ -135,6 +228,7 @@
 
     title.textContent = `Your Best Starting Path: ${payload.recommendation.resultTitle}`;
     summary.textContent = payload.recommendation.summary;
+    renderPlanSection(payload.recommendation.starterPlan);
     grid.innerHTML = '';
     payload.recommendation.resources.forEach((resource) => grid.appendChild(renderResource(resource)));
     grid.hidden = false;

@@ -151,6 +151,16 @@ assert(Array.isArray(workoutResource.details) && workoutResource.details.length 
 const visitor = toVisitorRecommendation(warm);
 assert(!('leadScore' in visitor));
 assert(!('scoreReasons' in visitor));
+assert(visitor.starterPlan);
+assert.strictEqual(visitor.starterPlan.title, 'Your Practical Starter Plan');
+assert(visitor.starterPlan.training.weeklyStructure.length > 0);
+assert(visitor.starterPlan.training.sessions.length > 0);
+assert(visitor.starterPlan.nutrition.macroTargets.length > 0);
+assert(visitor.starterPlan.nutrition.meals.length >= 4);
+assert(visitor.starterPlan.nutrition.shoppingList.length > 0);
+assert.strictEqual(visitor.starterPlan.nutrition.calculatorUrl, '/nutrition-calculator.html');
+const macroVisitor = toVisitorRecommendation(buildRecommendation(withAnswers({ nutrition_support: 'Calories and macro targets' }), baseContact));
+assert(macroVisitor.starterPlan.nutrition.macroTargets.some((target) => target.includes('1.6-2.2 g')));
 assert.strictEqual(visitor.resources.length, 3);
 assert(visitor.resources.find((resource) => resource.role === 'workout').details.length > 0);
 assert(visitor.resources.find((resource) => resource.role === 'nutrition').details.length > 0);

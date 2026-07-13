@@ -82,7 +82,12 @@ const publicEnv = {
   NEXT_PUBLIC_BOOKING_URL: process.env.NEXT_PUBLIC_BOOKING_URL || process.env.BOOKING_URL || null,
   NEXT_PUBLIC_WHATSAPP_NUMBER: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || process.env.WHATSAPP_NUMBER || null,
   NEXT_PUBLIC_INSTAGRAM_URL: process.env.NEXT_PUBLIC_INSTAGRAM_URL || process.env.INSTAGRAM_URL || null,
-  NEXT_PUBLIC_CONTACT_EMAIL: process.env.NEXT_PUBLIC_CONTACT_EMAIL || process.env.CONTACT_EMAIL || process.env.BREVO_SENDER_EMAIL || null,
+  NEXT_PUBLIC_CONTACT_EMAIL:
+    process.env.NEXT_PUBLIC_CONTACT_EMAIL ||
+    process.env.CONTACT_EMAIL ||
+    process.env.INQUIRY_NOTIFY_EMAIL ||
+    process.env.ADMIN_EMAIL ||
+    'inquiries@garciabuilder.fitness',
   GOOGLE_OAUTH_ENABLED: parseBooleanEnv(process.env.GOOGLE_OAUTH_ENABLED, true),
   FACEBOOK_OAUTH_ENABLED: parseBooleanEnv(process.env.FACEBOOK_OAUTH_ENABLED, false)
 };

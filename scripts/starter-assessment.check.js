@@ -21,6 +21,7 @@ const { generateResultToken, hashResultToken } = require('../lib/starter-assessm
 const { getDisplayResource } = require('../lib/starter-assessment/resources.cjs');
 const { buildWhatsappMessage, buildWhatsappUrl } = require('../lib/starter-assessment/whatsapp.cjs');
 const { BREVO_API_URL, sendTransactionalEmail } = require('../lib/starter-assessment/email.cjs');
+const { buildContactActions, getContactEmail } = require('../lib/starter-assessment/contact-actions.cjs');
 const { isAllowedOrigin } = require('../lib/starter-assessment/origin.cjs');
 
 const baseAnswers = {
@@ -163,6 +164,8 @@ assert(whatsappUrl.startsWith('https://wa.me/353871234567?text='));
 assert(!whatsappUrl.includes('andre@example.com'));
 assert(!whatsappUrl.includes('leadScore'));
 assert(buildWhatsappMessage(baseAnswers).includes('My main goal is: Lose body fat'));
+assert.strictEqual(getContactEmail({ BREVO_SENDER_EMAIL: 'no-reply@garciabuilder.fitness' }), 'inquiries@garciabuilder.fitness');
+assert.strictEqual(buildContactActions({}, { PUBLIC_SITE_URL: 'https://www.garciabuilder.fitness' }).contactEmail, 'inquiries@garciabuilder.fitness');
 
 assert.strictEqual(QUESTIONS.length, 8);
 

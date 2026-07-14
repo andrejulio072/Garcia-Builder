@@ -16,13 +16,14 @@ const {
   toVisitorRecommendation
 } = require('../lib/starter-assessment/recommendation.cjs');
 const { applyEventScore } = require('../lib/starter-assessment/events.cjs');
-const { validateSubmission, validateMetadata } = require('../lib/starter-assessment/validation.cjs');
+const { validateSubmission, validateMetadata, getPublicConfig } = require('../lib/starter-assessment/validation.cjs');
 const { generateResultToken, hashResultToken } = require('../lib/starter-assessment/tokens.cjs');
 const { getDisplayResource } = require('../lib/starter-assessment/resources.cjs');
 const { buildWhatsappMessage, buildWhatsappUrl } = require('../lib/starter-assessment/whatsapp.cjs');
 const { BREVO_API_URL, sendTransactionalEmail } = require('../lib/starter-assessment/email.cjs');
 const { buildContactActions, getContactEmail } = require('../lib/starter-assessment/contact-actions.cjs');
 const { isAllowedOrigin } = require('../lib/starter-assessment/origin.cjs');
+const starterI18n = require('../js/starter-locales.js');
 
 const baseAnswers = {
   primary_goal: 'Lose body fat',
@@ -177,10 +178,25 @@ assert(buildWhatsappMessage(baseAnswers).includes('My main goal is: Lose body fa
 assert.strictEqual(getContactEmail({ BREVO_SENDER_EMAIL: 'no-reply@garciabuilder.fitness' }), 'inquiries@garciabuilder.fitness');
 assert.strictEqual(buildContactActions({}, { PUBLIC_SITE_URL: 'https://www.garciabuilder.fitness' }).contactEmail, 'inquiries@garciabuilder.fitness');
 
-assert.strictEqual(QUESTIONS.length, 8);
+assert.strictEqual(QUESTIONS.length, 7);
+assert(!QUESTIONS.some((question) => question.id === 'desired_result'));
+assert.strictEqual(starterI18n.translateText('Lose body fat', 'pt'), 'Perder gordura corporal');
+assert.strictEqual(starterI18n.translateText('Lose body fat', 'es'), 'Perder grasa corporal');
+const portugueseVisitor = toVisitorRecommendation(buildRecommendation(baseAnswers, baseContact, 'pt'), 'pt');
+const spanishVisitor = toVisitorRecommendation(buildRecommendation(baseAnswers, baseContact, 'es'), 'es');
+assert(portugueseVisitor.starterPlan.title.includes('Plano Inicial'));
+assert(portugueseVisitor.starterPlan.training.sessions[0].work[0].includes('séries'));
+assert(spanishVisitor.starterPlan.training.sessions[0].work[0].includes('series'));
+assert.strictEqual(portugueseVisitor.starterPlan.nutrition.meals[0].meal, 'Pequeno-almoço');
+assert.strictEqual(spanishVisitor.starterPlan.nutrition.meals[0].meal, 'Desayuno');
+assert.deepStrictEqual(getPublicConfig().languages, ['en', 'pt', 'es']);
+assert(!Object.prototype.hasOwnProperty.call(getPublicConfig(), 'countries'));
 
 const productionServer = fs.readFileSync(path.join(__dirname, '..', 'api', 'stripe-server-premium.js'), 'utf8');
 const starterClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-assessment.js'), 'utf8');
+const resultClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-result.js'), 'utf8');
+const submitHandler = fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8');
+const starterLocales = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-locales.js'), 'utf8');
 const apiFiles = fs.readdirSync(path.join(__dirname, '..', 'api')).filter((file) => file.endsWith('.js'));
 assert(
   apiFiles.length <= 12,
@@ -204,6 +220,13 @@ assert(
 });
 assert(fs.readFileSync(path.join(__dirname, '..', 'start.html'), 'utf8').includes('name="website"'), 'Starter form should keep the honeypot field');
 assert(fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8').includes('SUBMISSION_WINDOW_MS'), 'Starter submit should keep duplicate-submission throttling');
+assert(starterClient.includes('resourceDelivery?.email'), 'Starter form should preserve the email delivery status before redirecting');
+assert(starterLocales.includes('Email sent. A copy of this workout and nutrition plan is on its way.'), 'Result page should confirm successful email delivery');
+assert(starterLocales.includes('Open workout exercise library'), 'Result plan should link directly to the workout library');
+assert(submitHandler.includes('emailCopy.startHere'), 'Result email should lead with a localized actionable quick start');
+assert(submitHandler.includes("emailDelivery.status === 'sent' ? 'sent' : 'not_sent'"), 'Submit response should expose a privacy-safe delivery status');
+assert(submitHandler.includes('replyTo: contactActions.contactEmail'), 'Starter plan email should be directly replyable');
+assert(!fs.readFileSync(path.join(__dirname, '..', 'start.html'), 'utf8').includes('name="country"'), 'Starter contact form should not request country');
 
 function withEnv(overrides, callback) {
   const keys = [

@@ -11,6 +11,15 @@
 
   function safeParse(v){try{return JSON.parse(v);}catch(_){return null}}
 
+  function getLanguage(){
+    const storedLanguage = (localStorage.getItem('gb_lang') || '').toLowerCase();
+    const browserLanguage = (navigator.language || 'en').toLowerCase();
+    const language = storedLanguage || browserLanguage;
+    if (language.startsWith('pt')) return 'pt';
+    if (language.startsWith('es')) return 'es';
+    return 'en';
+  }
+
   function consentUpdate(status, granular){
     const base = {
       ad_storage: status==='granted' ? 'granted':'denied',
@@ -29,8 +38,9 @@
   }
 
   function renderBanner(){
-    const lang = (navigator.language||'en').toLowerCase();
-    const isPT = lang.startsWith('pt');
+    const lang = getLanguage();
+    const isPT = lang === 'pt';
+    const isES = lang === 'es';
     // Textos em inglês (padrão)
     let t = {
       title: 'Cookies & Tracking',
@@ -49,6 +59,15 @@
         custom: 'Personalizar'
       };
     }
+    if(isES){
+      t = {
+        title: 'Cookies y seguimiento',
+        desc: 'Usamos cookies para métricas (GA4) y anuncios (Google Ads / Meta). Puedes aceptar todo o rechazarlo y cambiarlo después.',
+        accept: 'Aceptar todo',
+        reject: 'Rechazar',
+        custom: 'Personalizar'
+      };
+    }
     const div=document.createElement('div');
     div.id='consent-banner';
     div.innerHTML=`<div class="cb-wrapper"><div class="cb-box"><h4>${t.title}</h4><p>${t.desc}</p><div class="cb-actions"><button id="cb-accept" class="cb-btn primary">${t.accept}</button><button id="cb-reject" class="cb-btn">${t.reject}</button><button id="cb-custom" class="cb-link">${t.custom}</button></div></div></div>`;
@@ -61,8 +80,9 @@
 
   function renderPanel(){
     if (document.getElementById('consent-panel')) return;
-    const lang = (navigator.language||'en').toLowerCase();
-    const isPT = lang.startsWith('pt');
+    const lang = getLanguage();
+    const isPT = lang === 'pt';
+    const isES = lang === 'es';
     // Textos em inglês (padrão)
     let t = {
       title: 'Cookie Preferences',
@@ -86,6 +106,19 @@
         save: 'Salvar',
         cancel: 'Cancelar',
         note: 'Funcionais e segurança sempre ativos.'
+      };
+    }
+    if(isES){
+      t = {
+        title: 'Preferencias de cookies',
+        close: 'Cerrar',
+        analytics: 'Analítica',
+        ad_storage: 'Anuncios (almacenamiento)',
+        ad_user_data: 'Datos de usuario para anuncios',
+        ad_personalization: 'Personalización de anuncios',
+        save: 'Guardar',
+        cancel: 'Cancelar',
+        note: 'Las cookies funcionales y de seguridad están siempre activas.'
       };
     }
     const wrap=document.createElement('div');

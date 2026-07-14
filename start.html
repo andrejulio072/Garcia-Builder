@@ -8,34 +8,49 @@
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.garciabuilder.fitness/start">
   <link rel="stylesheet" href="/css/starter-assessment.css">
+  <script src="/js/starter-tracking-bootstrap.js"></script>
   <script src="/js/env.js" defer></script>
+  <script src="/js/starter-locales.js" defer></script>
   <script src="/js/starter-assessment.js" defer></script>
 </head>
 <body class="starter-page">
-  <a class="skip-link" href="#assessment-root">Skip to assessment</a>
+  <a class="skip-link" href="#assessment-root" data-starter-copy="skipAssessment">Skip to assessment</a>
   <header class="starter-header" aria-label="Assessment header">
     <a class="starter-logo" href="/index.html" aria-label="Garcia Builder Fitness home">
       <img src="/assets/images/logo-nobackground-500.png" alt="Garcia Builder Fitness">
     </a>
+    <label class="starter-language">
+      <span data-starter-copy="languageLabel">Language</span>
+      <select data-starter-language aria-label="Assessment language">
+        <option value="en">EN</option>
+        <option value="pt">PT</option>
+        <option value="es">ES</option>
+      </select>
+    </label>
   </header>
 
   <main class="starter-shell" id="assessment-root">
     <section class="starter-hero" id="starter-hero" aria-labelledby="starter-title">
-      <p class="starter-eyebrow">FREE 60-SECOND FITNESS ASSESSMENT</p>
-      <h1 id="starter-title">Find the Right Starting Plan for Your Goal</h1>
-      <p class="starter-copy">Answer a few quick questions about your goal, training routine and biggest challenge. You’ll receive a recommended nutrition and workout starting point, with the option to discuss a fully tailored plan with Andre.</p>
+      <p class="starter-eyebrow" data-starter-copy="heroEyebrow">FREE 60-SECOND FITNESS ASSESSMENT</p>
+      <h1 id="starter-title" data-starter-copy="heroTitle">Find the Right Starting Plan for Your Goal</h1>
+      <p class="starter-copy" data-starter-copy="heroCopy">Answer a few quick questions about your goal, training routine and biggest challenge. You’ll receive a recommended nutrition and workout starting point, with the option to discuss a fully tailored plan with Andre.</p>
       <div class="starter-actions">
-        <button class="starter-primary" type="button" data-start-assessment>Build My Starter Plan</button>
-        <span>Free assessment. No commitment.</span>
+        <button class="starter-primary" type="button" data-start-assessment data-starter-copy="heroCta">Build My Starter Plan</button>
+        <span data-starter-copy="heroNote">Free assessment. No commitment.</span>
       </div>
-      <p class="starter-trust">Created by Andre Garcia, Personal Trainer &amp; Online Coach</p>
-      <p class="starter-disclaimer">This assessment provides general educational guidance and is not a medical assessment or an individually prescribed programme.</p>
+      <ul class="starter-proof" aria-label="Assessment benefits">
+        <li data-starter-copy="trustOne">7 focused questions</li>
+        <li data-starter-copy="trustTwo">Instant starter plan</li>
+        <li data-starter-copy="trustThree">Workout + nutrition by email</li>
+      </ul>
+      <p class="starter-trust" data-starter-copy="heroTrust">Created by Andre Garcia, Personal Trainer &amp; Online Coach</p>
+      <p class="starter-disclaimer" data-starter-copy="disclaimer">This assessment provides general educational guidance and is not a medical assessment or an individually prescribed programme.</p>
     </section>
 
     <section class="assessment-card" hidden data-assessment-card aria-live="polite">
       <div class="progress-wrap" aria-label="Assessment progress">
         <div class="progress-meta">
-          <span data-progress-label>Question 1 of 8</span>
+          <span data-progress-label>Question 1 of 7</span>
           <span data-progress-percent>13%</span>
         </div>
         <div class="progress-track" aria-hidden="true"><span data-progress-bar></span></div>
@@ -49,28 +64,22 @@
         </fieldset>
 
         <section class="contact-step" data-contact-step hidden aria-labelledby="contact-heading">
-          <h2 id="contact-heading">Your Recommended Starting Plan Is Ready</h2>
-          <p>Enter your details to view your result and receive your resources by email.</p>
+          <h2 id="contact-heading" data-starter-copy="contactTitle">Your Recommended Starting Plan Is Ready</h2>
+          <p data-starter-copy="contactCopy">Enter your details to view your result and receive your resources by email.</p>
 
           <div class="field-grid">
             <label>
-              <span>First name</span>
+              <span data-starter-copy="firstName">First name</span>
               <input name="first_name" autocomplete="given-name" maxlength="60" required>
             </label>
             <label>
-              <span>Email</span>
+              <span data-starter-copy="email">Email</span>
               <input name="email" type="email" autocomplete="email" maxlength="254" required>
             </label>
             <label>
-              <span>Country</span>
-              <select name="country" autocomplete="country-name" required data-country-select>
-                <option value="">Choose country</option>
-              </select>
-            </label>
-            <label>
-              <span>WhatsApp number <small>optional</small></span>
+              <span><span data-starter-copy="whatsapp">WhatsApp number</span> <small data-starter-copy="optional">optional</small></span>
               <input name="whatsapp" inputmode="tel" autocomplete="tel" maxlength="32" placeholder="+353871234567">
-              <small>Add your WhatsApp number only if you would like Andre to contact you about your result.</small>
+              <small data-starter-copy="whatsappHelp">Add your WhatsApp number only if you would like Andre to contact you about your result.</small>
             </label>
           </div>
 
@@ -78,28 +87,27 @@
 
           <label class="check-row">
             <input type="checkbox" name="age_confirmed" required>
-            <span>I confirm I am 18 or older.</span>
+            <span data-starter-copy="ageConsent">I confirm I am 18 or older.</span>
           </label>
           <label class="check-row">
             <input type="checkbox" name="resource_delivery_acknowledgement" required>
-            <span>I agree to receive my assessment result and the resources I requested.</span>
+            <span data-starter-copy="deliveryConsent">I agree to receive my assessment result and the resources I requested.</span>
           </label>
           <label class="check-row">
             <input type="checkbox" name="marketing_email_consent">
-            <span>I would like to receive occasional fitness guidance, coaching information and offers from Garcia Builder Fitness by email.</span>
+            <span data-starter-copy="marketingEmail">I would like to receive occasional fitness guidance, coaching information and offers from Garcia Builder Fitness by email.</span>
           </label>
-          <label class="check-row">
+          <label class="check-row" data-whatsapp-consent hidden>
             <input type="checkbox" name="marketing_whatsapp_consent">
-            <span>I would like to receive occasional coaching information and follow-up messages from Garcia Builder Fitness by WhatsApp.</span>
+            <span data-starter-copy="marketingWhatsapp">I would like to receive occasional coaching information and follow-up messages from Garcia Builder Fitness by WhatsApp.</span>
           </label>
 
-          <p class="legal-note">By submitting, you can view your result and receive the resources you requested. See the <a href="/privacy.html">Privacy Policy</a> and <a href="/terms.html">Terms</a>.</p>
+          <p class="legal-note"><span data-starter-copy="legalBefore">By submitting, you can view your result and receive the resources you requested. See the</span> <a href="/privacy.html" data-starter-copy="privacy">Privacy Policy</a> <span data-starter-copy="and">and</span> <a href="/terms.html" data-starter-copy="terms">Terms</a>.</p>
         </section>
 
         <div class="form-actions">
-          <button class="starter-secondary" type="button" data-back-button>Back</button>
-          <button class="starter-primary" type="button" data-next-button>Continue</button>
-          <button class="starter-primary" type="submit" data-submit-button hidden>View My Result</button>
+          <button class="starter-secondary" type="button" data-back-button data-starter-copy="back">Back</button>
+          <button class="starter-primary" type="submit" data-submit-button hidden data-starter-copy="viewResult">View My Result</button>
         </div>
       </form>
     </section>

@@ -9,7 +9,8 @@ create table if not exists public.starter_assessment_leads (
   updated_at timestamptz not null default now(),
   first_name text not null check (char_length(first_name) between 1 and 60),
   email text not null check (char_length(email) between 3 and 254),
-  country text not null check (country in ('Ireland', 'United Kingdom', 'United States', 'Canada', 'Australia', 'Portugal', 'Brazil', 'Spain', 'France', 'Germany', 'Netherlands', 'Other')),
+  country text null check (country is null or country in ('Ireland', 'United Kingdom', 'United States', 'Canada', 'Australia', 'Portugal', 'Brazil', 'Spain', 'France', 'Germany', 'Netherlands', 'Other')),
+  language text not null default 'en' check (language in ('en', 'pt', 'es')),
   whatsapp text null check (whatsapp is null or whatsapp ~ '^\+[1-9][0-9]{7,14}$'),
   age_confirmed boolean not null,
   primary_goal text not null check (primary_goal in ('Lose body fat', 'Build muscle', 'Improve body composition', 'Become fitter and more energetic', 'Rebuild consistency', 'Not sure yet')),
@@ -47,6 +48,17 @@ create table if not exists public.starter_assessment_leads (
   zapier_notified_at timestamptz null,
   last_activity_at timestamptz null
 );
+
+-- Backwards-compatible upgrades for environments where this migration was
+-- already applied before language support and the shorter contact form.
+alter table public.starter_assessment_leads
+  add column if not exists language text not null default 'en';
+alter table public.starter_assessment_leads
+  drop constraint if exists starter_assessment_leads_language_check;
+alter table public.starter_assessment_leads
+  add constraint starter_assessment_leads_language_check check (language in ('en', 'pt', 'es'));
+alter table public.starter_assessment_leads
+  alter column country drop not null;
 
 create table if not exists public.starter_assessment_events (
   id uuid primary key default gen_random_uuid(),

@@ -9,6 +9,7 @@ const {
 } = require('../lib/starter-assessment/config.cjs');
 const {
   buildRecommendation,
+  getCtaMode,
   getLeadStatus,
   getNutritionTemplate,
   getWorkoutTemplate,
@@ -94,6 +95,9 @@ assert.strictEqual(getLeadStatus(3), 'cold');
 assert.strictEqual(getLeadStatus(4), 'interested');
 assert.strictEqual(getLeadStatus(7), 'interested');
 assert.strictEqual(getLeadStatus(8), 'warm');
+assert.strictEqual(getCtaMode('warm'), 'conversation');
+assert.strictEqual(getCtaMode('interested'), 'templates');
+assert.strictEqual(getCtaMode('cold'), 'resources');
 
 const warm = buildRecommendation(withAnswers({
   support_preference: 'A fully tailored coaching plan',
@@ -152,6 +156,7 @@ assert(Array.isArray(workoutResource.details) && workoutResource.details.length 
 const visitor = toVisitorRecommendation(warm);
 assert(!('leadScore' in visitor));
 assert(!('scoreReasons' in visitor));
+assert.strictEqual(visitor.ctaMode, 'conversation');
 assert(visitor.starterPlan);
 assert.strictEqual(visitor.starterPlan.title, 'Your Practical Starter Plan');
 assert(visitor.starterPlan.training.weeklyStructure.length > 0);
@@ -236,6 +241,8 @@ assert(!starterSmoke.includes("  'desired_result',"), 'Production smoke test sho
 assert(!starterSmoke.includes('STARTER_ASSESSMENT_TEST_COUNTRY'), 'Production smoke test should not require country');
 assert(starterSmoke.includes('STARTER_ASSESSMENT_TEST_LANGUAGE'), 'Production smoke test should verify assessment language');
 assert(submitHandler.includes('await sideEffectsPromise;'), 'Serverless handler should await lead side effects before responding');
+assert(resultClient.includes('primary_recommendation_cta_clicked'), 'Result page should track the personalized primary CTA');
+assert(resultClient.includes('payload.recommendation.supportCTA'), 'Result page should render the recommended CTA label');
 assert(starterMigration.includes("add column if not exists language text not null default 'en'"), 'Migration should add assessment language');
 assert(starterMigration.includes('alter column country drop not null'), 'Migration should remove the legacy country requirement');
 

@@ -5,6 +5,8 @@
   const DELIVERY_KEY_PREFIX = 'gb_starter_delivery_';
   const title = document.querySelector('[data-result-title]');
   const summary = document.querySelector('[data-result-summary]');
+  const primaryAction = document.querySelector('[data-primary-action]');
+  const primaryActionLink = document.querySelector('[data-primary-action-link]');
   const deliveryNotice = document.querySelector('[data-delivery-notice]');
   const grid = document.querySelector('[data-resource-grid]');
   const warmSection = document.querySelector('[data-warm-section]');
@@ -54,6 +56,7 @@
 
     const section = document.createElement('section');
     section.className = 'starter-plan-output';
+    section.id = 'starter-plan';
     section.setAttribute('data-generated-plan', '');
     const heading = document.createElement('h2');
     heading.textContent = plan.title || copy('planDefault');
@@ -192,7 +195,7 @@
     actions.innerHTML = '';
     const contactLinks = [];
     const definitions = [
-      [payload.actions?.whatsappUrl, 'starter-primary', copy('messageAndre'), 'whatsapp_clicked'],
+      [payload.actions?.whatsappUrl, 'starter-secondary', copy('messageAndre'), 'whatsapp_clicked'],
       [payload.actions?.bookingUrl, 'starter-secondary', copy('bookConsultation'), 'consultation_clicked'],
       [payload.actions?.instagramUrl, 'starter-secondary', 'Instagram', 'instagram_clicked'],
       [payload.actions?.contactEmailUrl, 'starter-secondary', copy('emailAndre'), 'contact_email_clicked'],
@@ -218,6 +221,59 @@
     warmSection.hidden = contactLinks.length === 0;
   }
 
+  function renderPrimaryAction(payload) {
+    if (!primaryAction || !primaryActionLink) return;
+    const mode = payload.recommendation?.ctaMode || 'resources';
+    const resources = payload.recommendation?.resources || [];
+    const primaryResource = resources.find((resource) => resource.role === 'primary' && resource.available && resource.url);
+    let href = '';
+    let destination = '';
+    let serverEvent = '';
+
+    if (mode === 'conversation') {
+      if (payload.actions?.whatsappUrl) {
+        href = payload.actions.whatsappUrl;
+        destination = 'whatsapp';
+        serverEvent = 'whatsapp_clicked';
+      } else if (payload.actions?.bookingUrl) {
+        href = payload.actions.bookingUrl;
+        destination = 'consultation';
+        serverEvent = 'consultation_clicked';
+      } else if (payload.actions?.contactEmailUrl) {
+        href = payload.actions.contactEmailUrl;
+        destination = 'email';
+      }
+    } else if (mode === 'templates') {
+      href = '#starter-plan';
+      destination = 'starter_plan';
+    } else if (primaryResource) {
+      href = primaryResource.url;
+      destination = primaryResource.slug || 'primary_resource';
+      serverEvent = resourceEventName(primaryResource.role);
+    }
+
+    if (!href) {
+      primaryAction.hidden = true;
+      return;
+    }
+
+    primaryAction.dataset.ctaMode = mode;
+    primaryActionLink.href = href;
+    primaryActionLink.textContent = payload.recommendation.supportCTA;
+    primaryActionLink.target = mode === 'resources' ? '_blank' : '';
+    primaryActionLink.rel = mode === 'resources' ? 'noopener' : '';
+    primaryActionLink.onclick = (event) => {
+      track('primary_recommendation_cta_clicked', { cta_mode: mode, destination_slug: destination });
+      if (serverEvent) recordEvent(serverEvent, `primary_${destination}`);
+      if (mode === 'templates') {
+        event.preventDefault();
+        const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+        document.querySelector(href)?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+      }
+    };
+    primaryAction.hidden = false;
+  }
+
   async function loadResult() {
     if (!token) throw new Error(copy('resultNotFound'));
     const response = await fetch(`/api/starter-assessment/result/${encodeURIComponent(token)}?language=${encodeURIComponent(language)}`);
@@ -229,6 +285,7 @@
     grid.innerHTML = '';
     payload.recommendation.resources.forEach((resource) => grid.appendChild(renderResource(resource)));
     grid.hidden = false;
+    renderPrimaryAction(payload);
     renderActions(payload);
     track('result_viewed', { result_path_slug: payload.recommendation.primaryPath });
   }
@@ -253,6 +310,7 @@
       title.textContent = copy('resultLoadErrorTitle');
       summary.textContent = error.message || copy('resultNotFound');
       grid.hidden = true;
+      primaryAction.hidden = true;
       warmSection.hidden = true;
       track('result_load_failed', {});
     });

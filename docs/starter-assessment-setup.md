@@ -25,11 +25,27 @@ The assessment supports `en`, `pt`, and `es`. The selected language is saved as 
 
 ## Supabase Migration
 
-Apply:
+For a fresh environment, review and apply the baseline schema:
 
 ```sql
 supabase/07_starter_assessment.sql
 ```
+
+For an existing environment that already has the assessment tables, deploy the tracked transition migration through the Supabase CLI:
+
+```pwsh
+npx supabase@latest migration list --linked
+npx supabase@latest db push --dry-run
+npx supabase@latest db push
+```
+
+Tracked migration:
+
+```text
+supabase/migrations/20260714225452_starter_assessment_funnel.sql
+```
+
+Do not apply the tracked migration until the project is linked and the remote migration history has been reviewed. Do not make the same change independently in the remote SQL editor after adopting the migration workflow.
 
 The script creates or updates:
 
@@ -61,6 +77,7 @@ Server-only:
 - `BREVO_API_KEY`
 - `BREVO_SENDER_EMAIL`
 - `BREVO_SENDER_NAME` optional
+- `BREVO_TIMEOUT_MS` optional, default: `8000`
 - `SMTP_HOST` fallback
 - `SMTP_PORT` fallback, default: `587`
 - `SMTP_USER` fallback
@@ -163,6 +180,8 @@ Payload fields:
 - `referrer`
 
 Failures are logged without blocking the visitor result.
+
+The submit endpoint starts email delivery, warm-lead alerting and Zapier notification in parallel, then waits for their controlled completion before ending the serverless request. Brevo and Zapier calls use explicit timeouts so an unavailable provider cannot hold the assessment indefinitely.
 
 ### Automated nutrition nurture
 

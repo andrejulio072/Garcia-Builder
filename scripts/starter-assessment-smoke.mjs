@@ -11,7 +11,6 @@ const { hashResultToken } = require('../lib/starter-assessment/tokens.cjs');
 
 const QUESTION_IDS = [
   'primary_goal',
-  'desired_result',
   'training_environment',
   'training_days',
   'main_barrier',
@@ -22,7 +21,6 @@ const QUESTION_IDS = [
 
 const answers = {
   primary_goal: 'Lose body fat',
-  desired_result: 'Lose weight and reduce my waist',
   training_environment: 'Commercial gym',
   training_days: '3 days',
   main_barrier: 'Nutrition and food choices',
@@ -119,7 +117,8 @@ function verifyLeadRow(lead, expected) {
   assert(lead, 'Supabase lead row was not found');
   assert(lead.first_name, 'Lead first_name missing');
   assert.equal(lead.email, expected.email.toLowerCase(), 'Lead email mismatch');
-  assert.equal(lead.country, expected.country, 'Lead country mismatch');
+  assert.equal(lead.country, null, 'Legacy country field should remain empty');
+  assert.equal(lead.language, expected.language, 'Lead language mismatch');
   assert.equal(lead.whatsapp, expected.whatsapp || null, 'Lead WhatsApp mismatch');
   for (const id of QUESTION_IDS) assert.equal(lead[id], answers[id], `Lead answer missing or incorrect: ${id}`);
   for (const field of ['recommended_path', 'recommended_workout', 'recommended_nutrition', 'recommended_resource', 'lead_score', 'lead_status']) {
@@ -170,7 +169,8 @@ async function main() {
   const email = requiredEnv('STARTER_ASSESSMENT_TEST_EMAIL').toLowerCase();
   const firstName = optionalEnv('STARTER_ASSESSMENT_TEST_FIRST_NAME') || 'Assessment Smoke';
   const whatsapp = optionalEnv('STARTER_ASSESSMENT_TEST_WHATSAPP') || '';
-  const country = optionalEnv('STARTER_ASSESSMENT_TEST_COUNTRY') || 'United Kingdom';
+  const language = optionalEnv('STARTER_ASSESSMENT_TEST_LANGUAGE') || 'en';
+  assert(['en', 'pt', 'es'].includes(language), 'STARTER_ASSESSMENT_TEST_LANGUAGE must be en, pt or es');
   const supabaseUrl = requiredEnv('SUPABASE_URL');
   const supabaseKey = requiredAnyEnv(['SUPABASE_SERVICE_ROLE_KEY', 'SUPABASE_SECRET_KEY']);
   const report = [];
@@ -191,7 +191,7 @@ async function main() {
   assert(!/turnstile-slot|captcha/i.test(start.text), 'Start page contains an empty CAPTCHA area');
   add('Start page', 'PASS', 'HTTP 200, title present, no challenge markup');
 
-  for (const asset of ['/css/starter-assessment.css', '/js/env.js', '/js/starter-assessment.js', '/js/starter-result.js']) {
+  for (const asset of ['/css/starter-assessment.css', '/js/env.js', '/js/starter-locales.js', '/js/starter-tracking-bootstrap.js', '/js/starter-assessment.js', '/js/starter-result.js']) {
     const assetResponse = await fetch(absoluteUrl(baseUrl, asset));
     assert.equal(assetResponse.status, 200, `${asset} did not return HTTP 200`);
     const body = await assetResponse.text();
@@ -200,20 +200,20 @@ async function main() {
       for (const id of QUESTION_IDS) assert(body.includes(id), `Question missing from assessment JS: ${id}`);
     }
   }
-  add('Assessment assets', 'PASS', 'CSS/env/client/result assets returned HTTP 200, eight questions present, no challenge references');
+  add('Assessment assets', 'PASS', 'CSS/env/locales/tracking/client/result assets returned HTTP 200, seven questions present, no challenge references');
 
   const body = {
     website: '',
     contact: {
       first_name: firstName,
       email,
-      country,
       whatsapp,
       age_confirmed: true,
       resource_delivery_acknowledgement: true,
       marketing_email_consent: true,
       marketing_whatsapp_consent: false
     },
+    language,
     answers,
     metadata: {
       utm_source: 'business_card',
@@ -243,14 +243,14 @@ async function main() {
   const tokenHash = hashResultToken(submitPayload.resultToken);
   const supabase = createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } });
   const lead = await waitForLeadEmailTimestamp(supabase, tokenHash);
-  verifyLeadRow(lead, { email, country, whatsapp: whatsapp || null, resultToken: submitPayload.resultToken });
+  verifyLeadRow(lead, { email, language, whatsapp: whatsapp || null, resultToken: submitPayload.resultToken });
   add('Supabase lead storage', 'PASS', `Lead stored for ${maskEmail(email)} with all answers, consent and UTM fields`);
 
   const resultPage = await fetchText(submitPayload.resultUrl);
   assert.equal(resultPage.response.status, 200, 'Result page shell did not return HTTP 200');
   add('Result page shell', 'PASS', 'HTTP 200');
 
-  const resultApiUrl = `${baseUrl}/api/starter-assessment/result/${encodeURIComponent(submitPayload.resultToken)}`;
+  const resultApiUrl = `${baseUrl}/api/starter-assessment/result/${encodeURIComponent(submitPayload.resultToken)}?language=${encodeURIComponent(language)}`;
   const resultApi = await fetch(resultApiUrl, { headers: { origin: baseUrl } });
   const resultPayload = await resultApi.json().catch(() => ({}));
   assert.equal(resultApi.status, 200, `Result API returned HTTP ${resultApi.status}`);

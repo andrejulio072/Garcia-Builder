@@ -20,7 +20,7 @@ const { validateSubmission, validateMetadata, getPublicConfig } = require('../li
 const { generateResultToken, hashResultToken } = require('../lib/starter-assessment/tokens.cjs');
 const { getDisplayResource } = require('../lib/starter-assessment/resources.cjs');
 const { buildWhatsappMessage, buildWhatsappUrl } = require('../lib/starter-assessment/whatsapp.cjs');
-const { BREVO_API_URL, sendTransactionalEmail } = require('../lib/starter-assessment/email.cjs');
+const { BREVO_API_URL, DEFAULT_EMAIL_TIMEOUT_MS, getEmailTimeoutMs, sendTransactionalEmail } = require('../lib/starter-assessment/email.cjs');
 const { buildContactActions, getContactEmail } = require('../lib/starter-assessment/contact-actions.cjs');
 const { isAllowedOrigin } = require('../lib/starter-assessment/origin.cjs');
 const starterI18n = require('../js/starter-locales.js');
@@ -197,6 +197,11 @@ const starterClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-
 const resultClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-result.js'), 'utf8');
 const submitHandler = fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8');
 const starterLocales = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-locales.js'), 'utf8');
+const starterSmoke = fs.readFileSync(path.join(__dirname, 'starter-assessment-smoke.mjs'), 'utf8');
+const migrationDirectory = path.join(__dirname, '..', 'supabase', 'migrations');
+const starterMigrationFile = fs.readdirSync(migrationDirectory).find((file) => file.endsWith('_starter_assessment_funnel.sql'));
+assert(starterMigrationFile, 'Tracked starter assessment migration is missing');
+const starterMigration = fs.readFileSync(path.join(migrationDirectory, starterMigrationFile), 'utf8');
 const apiFiles = fs.readdirSync(path.join(__dirname, '..', 'api')).filter((file) => file.endsWith('.js'));
 assert(
   apiFiles.length <= 12,
@@ -227,6 +232,12 @@ assert(submitHandler.includes('emailCopy.startHere'), 'Result email should lead 
 assert(submitHandler.includes("emailDelivery.status === 'sent' ? 'sent' : 'not_sent'"), 'Submit response should expose a privacy-safe delivery status');
 assert(submitHandler.includes('replyTo: contactActions.contactEmail'), 'Starter plan email should be directly replyable');
 assert(!fs.readFileSync(path.join(__dirname, '..', 'start.html'), 'utf8').includes('name="country"'), 'Starter contact form should not request country');
+assert(!starterSmoke.includes("  'desired_result',"), 'Production smoke test should use the seven-question assessment');
+assert(!starterSmoke.includes('STARTER_ASSESSMENT_TEST_COUNTRY'), 'Production smoke test should not require country');
+assert(starterSmoke.includes('STARTER_ASSESSMENT_TEST_LANGUAGE'), 'Production smoke test should verify assessment language');
+assert(submitHandler.includes('await sideEffectsPromise;'), 'Serverless handler should await lead side effects before responding');
+assert(starterMigration.includes("add column if not exists language text not null default 'en'"), 'Migration should add assessment language');
+assert(starterMigration.includes('alter column country drop not null'), 'Migration should remove the legacy country requirement');
 
 function withEnv(overrides, callback) {
   const keys = [
@@ -284,10 +295,15 @@ async function runAsyncChecks() {
     assert.strictEqual(result.provider, 'brevo');
     assert.strictEqual(request.url, BREVO_API_URL);
     assert.strictEqual(request.options.headers['api-key'], 'test-brevo-key');
+    assert(request.options.signal, 'Brevo request should include an abort signal');
     const payload = JSON.parse(request.options.body);
     assert.deepStrictEqual(payload.to, [{ email: 'lead@example.com' }]);
     assert.strictEqual(payload.sender.email, 'coach@example.com');
   });
+
+  assert.strictEqual(getEmailTimeoutMs(''), DEFAULT_EMAIL_TIMEOUT_MS);
+  assert.strictEqual(getEmailTimeoutMs(1), 1000);
+  assert.strictEqual(getEmailTimeoutMs(999999), 20000);
 
   await withEnv({
     BREVO_API_KEY: 'test-brevo-key',

@@ -1,6 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 import nodemailer from 'nodemailer';
-import {
+import leadBackend from '../lib/lead-backend.cjs';
+
+const {
   buildZapierLeadPayload,
   forwardHotLeadToZapier,
   forwardLeadToZapier,
@@ -10,7 +12,7 @@ import {
   releaseLeadId,
   reserveLeadId,
   validateCanonicalLead
-} from '../lib/lead-backend.mjs';
+} = leadBackend;
 
 const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
 const recentConsultationLeadIds = new Map();

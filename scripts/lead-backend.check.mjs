@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict';
-import {
+import leadBackend from '../lib/lead-backend.cjs';
+
+const {
   CANONICAL_ZAPIER_LEAD_KEYS,
   buildZapierLeadPayload,
   forwardHotLeadToZapier,
@@ -10,7 +12,7 @@ import {
   releaseLeadId,
   reserveLeadId,
   validateCanonicalLead
-} from '../lib/lead-backend.mjs';
+} = leadBackend;
 
 const fixture = {
   lead_id: 'codex-backend-test-001',

@@ -194,6 +194,8 @@ assert(!Object.prototype.hasOwnProperty.call(getPublicConfig(), 'countries'));
 
 const productionServer = fs.readFileSync(path.join(__dirname, '..', 'api', 'stripe-server-premium.js'), 'utf8');
 const starterClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-assessment.js'), 'utf8');
+const starterPage = fs.readFileSync(path.join(__dirname, '..', 'start.html'), 'utf8');
+const starterContactPage = fs.readFileSync(path.join(__dirname, '..', 'start-contact.html'), 'utf8');
 const resultClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-result.js'), 'utf8');
 const submitHandler = fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8');
 const starterLocales = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-locales.js'), 'utf8');
@@ -213,6 +215,7 @@ assert(
 );
 [
   "app.get('/start'",
+  "app.get('/start/contact'",
   "app.get('/start/result/:token'",
   "app.post('/api/starter-assessment/submit'",
   "app.get('/api/starter-assessment/result/:token'",
@@ -223,7 +226,16 @@ assert(
     `Production server missing starter assessment route: ${snippet}`
   );
 });
-assert(fs.readFileSync(path.join(__dirname, '..', 'start.html'), 'utf8').includes('name="website"'), 'Starter form should keep the honeypot field');
+assert(starterPage.includes('name="website"'), 'Starter form should keep the honeypot field');
+assert(starterPage.includes('data-start-assessment'), 'QR landing should keep the assessment start button');
+assert(starterPage.includes('/packages.html?utm_source=business_card'), 'QR landing should link directly to packages');
+assert(starterPage.includes('/start/contact?utm_source=business_card'), 'QR landing should link to the direct contact page');
+assert(starterContactPage.includes('https://wa.me/447508497586'), 'QR contact page should include Andre WhatsApp');
+assert(starterContactPage.includes('https://instagram.com/garciabuilder.fitness'), 'QR contact page should include Instagram');
+assert(starterContactPage.includes('https://calendly.com/andrenjulio072/consultation'), 'QR contact page should include consultation booking');
+assert(starterContactPage.includes('mailto:inquiries@garciabuilder.fitness'), 'QR contact page should include inquiries email');
+assert(starterContactPage.includes('/packages.html?utm_source=business_card'), 'QR contact page should include package link');
+assert(starterContactPage.includes('/start?utm_source=business_card'), 'QR contact page should still link back to the assessment');
 assert(fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8').includes('SUBMISSION_WINDOW_MS'), 'Starter submit should keep duplicate-submission throttling');
 assert(starterClient.includes('resourceDelivery?.email'), 'Starter form should preserve the email delivery status before redirecting');
 assert(starterLocales.includes('Email sent. A copy of this workout and nutrition plan is on its way.'), 'Result page should confirm successful email delivery');
@@ -231,7 +243,7 @@ assert(starterLocales.includes('Open workout exercise library'), 'Result plan sh
 assert(submitHandler.includes('emailCopy.startHere'), 'Result email should lead with a localized actionable quick start');
 assert(submitHandler.includes("emailDelivery.status === 'sent' ? 'sent' : 'not_sent'"), 'Submit response should expose a privacy-safe delivery status');
 assert(submitHandler.includes('replyTo: contactActions.contactEmail'), 'Starter plan email should be directly replyable');
-assert(!fs.readFileSync(path.join(__dirname, '..', 'start.html'), 'utf8').includes('name="country"'), 'Starter contact form should not request country');
+assert(!starterPage.includes('name="country"'), 'Starter contact form should not request country');
 assert(!starterSmoke.includes("  'desired_result',"), 'Production smoke test should use the seven-question assessment');
 assert(!starterSmoke.includes('STARTER_ASSESSMENT_TEST_COUNTRY'), 'Production smoke test should not require country');
 assert(starterSmoke.includes('STARTER_ASSESSMENT_TEST_LANGUAGE'), 'Production smoke test should verify assessment language');

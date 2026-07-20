@@ -151,6 +151,18 @@
     return 'nutrition_template_viewed';
   }
 
+  function isExternalUrl(url) {
+    try {
+      return new URL(url, window.location.origin).origin !== window.location.origin;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function isDownloadUrl(url) {
+    return /\.(pdf|zip|docx?|xlsx?)($|[?#])/i.test(String(url || ''));
+  }
+
   function renderResource(resource) {
     const article = document.createElement('article');
     article.className = 'resource-card';
@@ -173,8 +185,15 @@
       const link = document.createElement('a');
       link.className = resource.role === 'primary' ? 'starter-primary' : 'starter-secondary';
       link.href = resource.url;
-      link.target = '_blank';
-      link.rel = 'noopener';
+      link.dataset.resourceLink = resource.slug || resource.role || 'resource';
+      if (isExternalUrl(resource.url)) {
+        link.target = '_blank';
+        link.rel = 'noopener';
+      }
+      if (isDownloadUrl(resource.url)) {
+        link.setAttribute('download', resource.downloadFilename || '');
+        link.dataset.downloadResource = 'true';
+      }
       link.textContent = resource.actionLabel || (resource.role === 'primary' ? copy('downloadGuide') : copy('openResource'));
       link.setAttribute('aria-label', `${link.textContent}: ${resource.title}`);
       link.addEventListener('click', () => recordEvent(resourceEventName(resource.role), resource.slug));
@@ -244,6 +263,10 @@
   document.addEventListener('DOMContentLoaded', () => {
     i18n?.applyDocument?.(language);
     renderDeliveryNotice();
+    const slowLoadTimer = setTimeout(() => {
+      if (!grid.hidden || !summary) return;
+      summary.textContent = copy('resultStillLoading');
+    }, 3500);
     document.querySelectorAll('[data-starter-language]').forEach((selector) => {
       selector.addEventListener('change', (event) => {
         changeLanguage(event.target.value).catch(() => {});
@@ -255,6 +278,8 @@
       grid.hidden = true;
       warmSection.hidden = true;
       track('result_load_failed', {});
+    }).finally(() => {
+      clearTimeout(slowLoadTimer);
     });
   });
 })();

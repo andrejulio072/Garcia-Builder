@@ -602,6 +602,25 @@ select {
 .resource-card .starter-primary,
 .resource-card .starter-secondary {
   margin-top: auto;
+  width: 100%;
+  min-height: 56px;
+  text-decoration: none;
+}
+
+.resource-card .starter-primary {
+  color: #07090c;
+  background: linear-gradient(135deg, #ffd85f, #e5ad25);
+  border-color: rgba(255, 216, 95, 0.85);
+  box-shadow: 0 10px 24px rgba(246, 200, 78, 0.24);
+}
+
+.resource-card .starter-primary:hover {
+  color: #07090c;
+}
+
+.resource-card .starter-secondary {
+  color: var(--starter-gold);
+  background: rgba(255, 255, 255, 0.025);
 }
 
 .resource-included {

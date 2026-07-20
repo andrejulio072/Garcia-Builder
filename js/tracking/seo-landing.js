@@ -73,6 +73,7 @@
   }
   function bindApplication(form) {
     let started = false;
+    let submitting = false;
     form.addEventListener('input', function () {
       if (!started) {
         started = true;
@@ -81,10 +82,14 @@
     }, { once: false });
     form.addEventListener('submit', async function (event) {
       event.preventDefault();
+      if (submitting) return;
       if (!form.checkValidity()) {
         form.reportValidity();
         return;
       }
+      submitting = true;
+      const submitButton = form.querySelector('button[type="submit"]');
+      if (submitButton) submitButton.disabled = true;
       const data = values(form);
       const payload = Object.assign({}, data, attributionPayload(), {
         lead_id: (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : 'lead-' + Date.now(),
@@ -106,8 +111,9 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-        if (!response.ok) {
-          const error = await response.json().catch(() => ({}));
+        const responseData = await response.json().catch(() => ({}));
+        if (!response.ok || responseData.ok !== true) {
+          const error = responseData || {};
           throw new Error(error.error || 'Application could not be submitted.');
         }
         pushEvent('generate_lead', { lead_type: 'coaching_application' });
@@ -118,6 +124,8 @@
         location.assign('/thank-you-application');
       } catch (err) {
         setStatus(form, err.message || 'Something went wrong. Please try again.', true);
+        submitting = false;
+        if (submitButton) submitButton.disabled = false;
       }
     });
   }

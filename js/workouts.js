@@ -926,7 +926,15 @@
   const projectLabels = {
     'summer-shred': { key: 'summer', title: 'Summer Shred', duration: '12 weeks' },
     'glute-launch': { key: 'glutes', title: 'Glute Launch', duration: '16 weeks' },
-    'fit-dad-blueprint': { key: 'dad', title: 'Fit Dad Blueprint', duration: '20 weeks' }
+    'fit-dad-blueprint': { key: 'dad', title: 'Fit Dad Blueprint', duration: '20 weeks' },
+    'strength-reset': { key: 'strengthReset', title: 'Strength Reset', duration: '12 weeks' },
+    'home-fit-accelerator': { key: 'homeFit', title: 'Home Fit Accelerator', duration: '8 weeks' },
+    'mobility-reset': { key: 'mobilityReset', title: 'Mobility Reset', duration: '10 weeks' },
+    'muscle-build-pro': { key: 'muscleBuild', title: 'Muscle Build Pro', duration: '14 weeks' },
+    'endurance-engine': { key: 'enduranceEngine', title: 'Endurance Engine', duration: '12 weeks' },
+    'athletic-performance': { key: 'athleticPerformance', title: 'Athletic Performance', duration: '16 weeks' },
+    'masters-strength': { key: 'mastersStrength', title: 'Masters Strength', duration: '12 weeks' },
+    'travel-ready-fitness': { key: 'travelReady', title: 'Travel Ready Fitness', duration: '6 weeks' }
   };
 
   const localizedProjectLabels = {
@@ -960,7 +968,31 @@
     'Home Bodyweight Beginner': { project: 'summer-shred', keywords: 'home bodyweight beginner summer shred verao verano emagrecimento' },
     'Home Advanced Density': { project: 'summer-shred', keywords: 'home density advanced summer shred verao verano fat loss' },
     'Low Impact Rebuild': { project: 'summer-shred', keywords: 'low impact rebuild beginner consistency summer shred verao verano' },
-    'Mobility and Core for Lifters': { project: 'fit-dad-blueprint', keywords: 'fit dad blueprint mobility core lifters pai sarado papa en forma support' }
+    'Mobility and Core for Lifters': { project: 'fit-dad-blueprint', keywords: 'fit dad blueprint mobility core lifters pai sarado papa en forma support' },
+    'Barbell Confidence Basics': { project: 'strength-reset', keywords: 'barbell confidence beginner strength basics technique' },
+    'Powerlifting Base Builder': { project: 'strength-reset', keywords: 'powerlifting base squat bench deadlift intermediate' },
+    'Advanced Strength Peak': { project: 'strength-reset', keywords: 'advanced peak strength testing heavy lifts' },
+    'Small Space Starter': { project: 'home-fit-accelerator', keywords: 'small space home beginner limited equipment' },
+    'Dumbbell Lean Builder': { project: 'home-fit-accelerator', keywords: 'home dumbbell lean builder muscle fat loss' },
+    'Home Metabolic Challenge': { project: 'home-fit-accelerator', keywords: 'home metabolic advanced density conditioning' },
+    'Desk Mobility Reset': { project: 'mobility-reset', keywords: 'desk mobility posture beginner' },
+    'Joint Friendly Strength': { project: 'mobility-reset', keywords: 'joint friendly strength mobility returning' },
+    'Advanced Mobility Flow': { project: 'mobility-reset', keywords: 'advanced mobility flow lifters' },
+    'Classic Hypertrophy Starter': { project: 'muscle-build-pro', keywords: 'classic hypertrophy beginner muscle' },
+    'Body Part Balance Split': { project: 'muscle-build-pro', keywords: 'body part balance split hypertrophy' },
+    'Specialization Mass Cycle': { project: 'muscle-build-pro', keywords: 'advanced specialization mass cycle' },
+    'Run Strong Beginner': { project: 'endurance-engine', keywords: 'run strong beginner hybrid endurance' },
+    'Hybrid Engine Builder': { project: 'endurance-engine', keywords: 'hybrid engine conditioning endurance' },
+    'Advanced Hybrid Race Prep': { project: 'endurance-engine', keywords: 'advanced hybrid race prep endurance' },
+    'Speed Power Intro': { project: 'athletic-performance', keywords: 'speed power intro athlete beginner' },
+    'Field Athlete Builder': { project: 'athletic-performance', keywords: 'field athlete builder power conditioning' },
+    'Advanced Performance Camp': { project: 'athletic-performance', keywords: 'advanced performance camp athletic' },
+    'Over 40 Strength Start': { project: 'masters-strength', keywords: 'over 40 strength start masters' },
+    'Longevity Muscle Builder': { project: 'masters-strength', keywords: 'longevity muscle builder masters' },
+    'Advanced Masters Performance': { project: 'masters-strength', keywords: 'advanced masters performance over 40' },
+    'Hotel Room Starter': { project: 'travel-ready-fitness', keywords: 'hotel room starter travel' },
+    'Band and Backpack Builder': { project: 'travel-ready-fitness', keywords: 'band backpack builder travel' },
+    'Travel Athlete Express': { project: 'travel-ready-fitness', keywords: 'travel athlete express advanced' },
   };
 
   const filters = {
@@ -981,7 +1013,7 @@
   let modalTrigger = null;
 
   const validFilterValues = {
-    project: new Set(['all', 'summer-shred', 'glute-launch', 'fit-dad-blueprint']),
+    project: new Set(['all', 'summer-shred', 'glute-launch', 'fit-dad-blueprint', 'strength-reset', 'home-fit-accelerator', 'mobility-reset', 'muscle-build-pro', 'endurance-engine', 'athletic-performance', 'masters-strength', 'travel-ready-fitness']),
     goal: new Set(['all', 'fat-loss', 'muscle', 'strength', 'mobility']),
     level: new Set(['all', 'beginner', 'intermediate', 'advanced']),
     place: new Set(['all', 'home', 'gym'])

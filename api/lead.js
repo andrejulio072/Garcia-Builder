@@ -1,9 +1,20 @@
 import { createClient } from '@supabase/supabase-js';
 import nodemailer from 'nodemailer';
-import { randomUUID } from 'crypto';
+import leadBackend from '../lib/lead-backend.cjs';
+
+const {
+  buildZapierLeadPayload,
+  forwardHotLeadToZapier,
+  forwardLeadToZapier,
+  hasConsultationPayload,
+  isHotLead,
+  maskEmail,
+  releaseLeadId,
+  reserveLeadId,
+  validateCanonicalLead
+} = leadBackend;
 
 const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
-const LEAD_DEDUP_WINDOW_MS = 10 * 60 * 1000;
 const recentConsultationLeadIds = new Map();
 
 function escapeHtml(value) {
@@ -36,84 +47,6 @@ function normalizeText(value) {
 
 function normalizeEmail(value) {
   return normalizeText(value).toLowerCase();
-}
-
-function isDuplicateConsultationLead(leadId) {
-  if (!leadId) return false;
-  const now = Date.now();
-
-  for (const [id, ts] of recentConsultationLeadIds.entries()) {
-    if (now - ts > LEAD_DEDUP_WINDOW_MS) {
-      recentConsultationLeadIds.delete(id);
-    }
-  }
-
-  if (recentConsultationLeadIds.has(leadId)) {
-    return true;
-  }
-
-  recentConsultationLeadIds.set(leadId, now);
-  return false;
-}
-
-function normalizeWeight(value) {
-  const parsed = Number(normalizeText(value));
-  if (!Number.isFinite(parsed)) return null;
-  if (parsed < 30 || parsed > 300) return null;
-  return parsed;
-}
-
-async function postJsonWithTimeout(url, payload, timeoutMs = 8000) {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
-
-  try {
-    return await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-      signal: controller.signal
-    });
-  } finally {
-    clearTimeout(timeout);
-  }
-}
-
-async function forwardLeadToZapier(payload) {
-  const webhookUrl = process.env.ZAPIER_LEAD_WEBHOOK_URL || process.env.ZAPIER_MAIN_COACHING_WEBHOOK_URL;
-  if (!webhookUrl) {
-    throw new Error('Main coaching Zapier webhook is not configured');
-  }
-
-  const response = await postJsonWithTimeout(webhookUrl, payload, 8000);
-
-  if (!response.ok) {
-    const details = await response.text().catch(() => 'Zapier webhook request failed');
-    throw new Error(`Zapier webhook error: ${response.status} ${details}`);
-  }
-}
-
-async function forwardHotLeadToZapier(payload) {
-  const webhookUrl = process.env.ZAPIER_HOT_LEAD_WEBHOOK_URL;
-  if (!webhookUrl) {
-    console.warn('lead.js: ZAPIER_HOT_LEAD_WEBHOOK_URL is not configured');
-    return { skipped: true };
-  }
-
-  const response = await postJsonWithTimeout(webhookUrl, payload, 8000);
-
-  if (!response.ok) {
-    const details = await response.text().catch(() => 'Zapier webhook request failed');
-    throw new Error(`Hot lead Zapier webhook error: ${response.status} ${details}`);
-  }
-
-  return { ok: true };
-}
-
-function isHotLead(payload) {
-  const readiness = normalizeText(payload.investmentReadiness).toLowerCase();
-  const timeline = normalizeText(payload.startTimeline).toLowerCase();
-  return readiness === 'ready now' && (timeline === 'now' || timeline === 'this week');
 }
 
 function getSupabase() {
@@ -331,12 +264,26 @@ export default async function handler(req, res) {
 
   try {
     const body = parseBody(req);
-    const hasConsultationPayload = ['firstName', 'lastName', 'email', 'phone', 'goal', 'currentWeight', 'mainStruggle', 'trainingLocation', 'startTimeline', 'investmentReadiness', 'consent']
-      .some((key) => body[key] !== undefined);
+    if (hasConsultationPayload(body)) {
+      const canonicalPayload = buildZapierLeadPayload({
+        ...body,
+        source: normalizeText(body.source) || 'Contact Consultation Form',
+        page: normalizeText(body.page) || req.headers.referer || ''
+      });
+      const validation = validateCanonicalLead(canonicalPayload);
+      if (!validation.ok) {
+        const response = { error: validation.error };
+        if (validation.missingFields) response.missingFields = validation.missingFields;
+        return res.status(validation.status || 400).json(response);
+      }
 
-    if (hasConsultationPayload) {
-      const leadId = normalizeText(body.lead_id) || randomUUID();
-      if (isDuplicateConsultationLead(leadId)) {
+      const leadId = canonicalPayload.lead_id;
+      const duplicate = reserveLeadId(recentConsultationLeadIds, leadId);
+      if (duplicate.duplicate) {
+        console.info('lead.js duplicate consultation lead ignored', {
+          leadId,
+          email: maskEmail(canonicalPayload.email)
+        });
         return res.status(200).json({
           ok: true,
           duplicate: true,
@@ -344,96 +291,94 @@ export default async function handler(req, res) {
           message: 'This consultation request was already received.'
         });
       }
-      const consultationPayload = {
-        firstName: normalizeText(body.firstName),
-        lastName: normalizeText(body.lastName),
-        email: normalizeEmail(body.email),
-        phone: normalizeText(body.phone),
-        goal: normalizeText(body.goal),
-        currentWeight: normalizeText(body.currentWeight),
-        mainStruggle: normalizeText(body.mainStruggle),
-        trainingLocation: normalizeText(body.trainingLocation),
-        startTimeline: normalizeText(body.startTimeline),
-        investmentReadiness: normalizeText(body.investmentReadiness),
-        consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
-        source: normalizeText(body.source) || 'Contact Consultation Form',
-        page: normalizeText(body.page) || req.headers.referer || '',
-        utm_source: normalizeText(body.utm_source),
-        utm_medium: normalizeText(body.utm_medium),
-        utm_campaign: normalizeText(body.utm_campaign),
-        utm_content: normalizeText(body.utm_content),
-        utm_term: normalizeText(body.utm_term),
-        gclid: normalizeText(body.gclid),
-        fbclid: normalizeText(body.fbclid),
-      };
 
-      const missingFields = ['firstName', 'lastName', 'email', 'phone', 'goal', 'currentWeight', 'mainStruggle', 'trainingLocation', 'startTimeline', 'investmentReadiness']
-        .filter((field) => !consultationPayload[field]);
-
-      if (missingFields.length) {
-        return res.status(400).json({ error: 'Missing required consultation fields', missingFields });
+      let zapierSent = false;
+      try {
+        await forwardLeadToZapier(canonicalPayload);
+        zapierSent = true;
+      } catch (zapierError) {
+        releaseLeadId(recentConsultationLeadIds, leadId);
+        console.error('lead.js primary Zapier forwarding failed', {
+          leadId,
+          email: maskEmail(canonicalPayload.email),
+          message: zapierError.message
+        });
+        return res.status(502).json({
+          ok: false,
+          error: 'Lead forwarding failed. Please try again or message Andre directly.'
+        });
       }
 
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(consultationPayload.email)) {
-        return res.status(400).json({ error: 'A valid email is required' });
-      }
-
-      if (!consultationPayload.consent) {
-        return res.status(400).json({ error: 'Consent is required' });
-      }
-
-      await forwardLeadToZapier(consultationPayload);
-
-      let hotLeadSent = false;
-      let hotLeadSkipped = true;
-      if (isHotLead(consultationPayload)) {
-        hotLeadSkipped = false;
-        try {
-          const hotResult = await forwardHotLeadToZapier(consultationPayload);
-          hotLeadSent = hotResult?.ok === true;
-          hotLeadSkipped = hotResult?.skipped === true;
-        } catch (hotLeadError) {
-          console.error('lead.js hot lead Zapier error', hotLeadError);
-        }
-      }
-
+      let leadSaved = false;
       try {
         const supa = getSupabase();
-        const leadName = `${consultationPayload.firstName} ${consultationPayload.lastName}`.trim();
         const insertCandidates = [
           {
-            email: consultationPayload.email,
-            name: leadName,
-            source: consultationPayload.source,
-            notes: JSON.stringify(consultationPayload),
+            email: canonicalPayload.email,
+            name: canonicalPayload.fullName,
+            source: canonicalPayload.source,
+            notes: JSON.stringify(canonicalPayload),
             type: 'consultation',
             status: 'new'
           },
           {
-            email: consultationPayload.email,
-            name: leadName,
-            source: consultationPayload.source,
-            notes: JSON.stringify(consultationPayload)
+            email: canonicalPayload.email,
+            name: canonicalPayload.fullName,
+            source: canonicalPayload.source,
+            notes: JSON.stringify(canonicalPayload)
           },
           {
-            email: consultationPayload.email,
-            name: leadName,
-            source: consultationPayload.source
+            email: canonicalPayload.email,
+            name: canonicalPayload.fullName,
+            source: canonicalPayload.source
           }
         ];
 
         const saveResult = await insertLeadWithSchemaFallback(supa, insertCandidates);
+        leadSaved = saveResult.ok;
         if (!saveResult.ok) {
-          console.warn('lead.js consultation save warning', saveResult.error);
+          console.warn('lead.js consultation save warning', {
+            leadId,
+            email: maskEmail(canonicalPayload.email),
+            message: saveResult.error?.message || 'unknown persistence error'
+          });
+        } else {
+          console.info('lead.js consultation saved', { leadId, email: maskEmail(canonicalPayload.email) });
         }
       } catch (saveError) {
-        console.warn('lead.js consultation Supabase skipped/failed', saveError);
+        console.warn('lead.js consultation Supabase skipped/failed', {
+          leadId,
+          email: maskEmail(canonicalPayload.email),
+          message: saveError.message
+        });
+      }
+
+      let hotLeadSent = false;
+      let hotLeadSkipped = true;
+      const hotLead = isHotLead(canonicalPayload);
+      if (hotLead) {
+        hotLeadSkipped = false;
+        try {
+          const hotResult = await forwardHotLeadToZapier(canonicalPayload);
+          hotLeadSent = hotResult?.ok === true;
+          hotLeadSkipped = hotResult?.skipped === true;
+          console.info('lead.js hot-lead forwarding complete', { leadId, sent: hotLeadSent, skipped: hotLeadSkipped });
+        } catch (hotLeadError) {
+          console.error('lead.js hot lead Zapier error', {
+            leadId,
+            email: maskEmail(canonicalPayload.email),
+            message: hotLeadError.message
+          });
+        }
       }
 
       return res.status(200).json({
         ok: true,
         leadId,
-        hotLead: hotLeadSent,
+        zapierSent,
+        leadSaved,
+        hotLead,
+        hotLeadSent,
         hotLeadSkipped,
         message: 'Thanks \u2014 your application has been received. I\'ll review your goal and get back to you.'
       });

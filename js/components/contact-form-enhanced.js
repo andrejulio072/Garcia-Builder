@@ -144,6 +144,7 @@
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (btn.disabled) return;
 
     const qp = new URLSearchParams(window.location.search || '');
     const attrib = window.GB_ATTRIBUTION || (() => {
@@ -163,6 +164,8 @@
     if (utmCampaignEl) utmCampaignEl.value = qp.get('utm_campaign') || attrib.utm_campaign || localStorage.getItem('gb_utm_campaign') || '';
     if (utmContentEl) utmContentEl.value = qp.get('utm_content') || attrib.utm_content || localStorage.getItem('gb_utm_content') || '';
     if (utmTermEl) utmTermEl.value = qp.get('utm_term') || attrib.utm_term || localStorage.getItem('gb_utm_term') || '';
+    const gclid = qp.get('gclid') || attrib.gclid || localStorage.getItem('gb_gclid') || '';
+    const fbclid = qp.get('fbclid') || attrib.fbclid || localStorage.getItem('gb_fbclid') || '';
 
     // Validate required fields
     let bad = false;
@@ -199,7 +202,9 @@
     }
 
     try {
+      const leadId = createLeadId();
       const payload = {
+        lead_id: leadId,
         firstName: firstNameEl.value.trim(),
         lastName: lastNameEl.value.trim(),
         email: emailEl.value.trim(),
@@ -217,7 +222,9 @@
         utm_medium: utmMediumEl?.value || '',
         utm_campaign: utmCampaignEl?.value || '',
         utm_content: utmContentEl?.value || '',
-        utm_term: utmTermEl?.value || ''
+        utm_term: utmTermEl?.value || '',
+        gclid,
+        fbclid
       };
 
       const res = await fetch('/api/lead', {
@@ -230,7 +237,7 @@
 
       const responseData = await res.json().catch(() => ({}));
 
-      if (res.ok && (responseData?.ok || !responseData?.error)) {
+      if (res.ok && responseData?.ok === true) {
         localStorage.setItem('gb_last_submit', Date.now().toString());
         form.reset();
         alertBox.classList.remove('visually-hidden');

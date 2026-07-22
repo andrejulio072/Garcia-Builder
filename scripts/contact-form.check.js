@@ -189,6 +189,7 @@ const { JSDOM } = require('jsdom');
 
   const payload = JSON.parse(apiCall.options?.body || '{}');
   const expectedFields = [
+    'lead_id',
     'firstName',
     'lastName',
     'email',
@@ -203,6 +204,8 @@ const { JSDOM } = require('jsdom');
     'page',
     'utm_source',
     'utm_campaign',
+    'gclid',
+    'fbclid',
     'consent'
   ];
 
@@ -222,6 +225,16 @@ const { JSDOM } = require('jsdom');
 
   if (payload.page !== '/contact.html') {
     throw new Error(`Unexpected page value: ${payload.page}`);
+  }
+
+  if (!payload.lead_id) {
+    throw new Error('Expected frontend payload to include lead_id.');
+  }
+
+  form.dispatchEvent(submitEvent);
+  await new Promise(resolve => setTimeout(resolve, 20));
+  if (fetchCalls.length !== 1) {
+    throw new Error(`Expected in-flight duplicate submit to be ignored, got ${fetchCalls.length} calls.`);
   }
 
   console.log('Contact form automated check passed.');

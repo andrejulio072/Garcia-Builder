@@ -278,6 +278,10 @@ app.get('/start/result/:token', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'start-result.html'));
 });
 
+app.get('/start/contact', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'start-contact.html'));
+});
+
 app.post('/api/starter-assessment/submit', adaptServerlessHandler(starterSubmitHandler, 'starter assessment submit'));
 app.get('/api/starter-assessment/result/:token', (req, res) => {
     req.query = { ...(req.query || {}), token: req.params.token };

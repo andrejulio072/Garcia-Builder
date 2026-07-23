@@ -94,6 +94,34 @@ onIdle(() => {
   }
 });
 
+// Reveal the homepage pathway cards as they enter the viewport.
+(() => {
+  const section = document.querySelector('.homepage-seo-pathways');
+  if (!section) return;
+
+  const cards = Array.from(section.querySelectorAll('.homepage-pathway-card'));
+  cards.forEach((card, index) => {
+    card.style.setProperty('--pathway-delay', `${index * 75}ms`);
+  });
+
+  const revealCards = () => cards.forEach(card => card.classList.add('is-visible'));
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduceMotion || typeof window.IntersectionObserver !== 'function') {
+    revealCards();
+    return;
+  }
+
+  section.classList.add('pathway-animations-ready');
+  const observer = new IntersectionObserver((entries) => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    revealCards();
+    observer.disconnect();
+  }, { threshold: 0.16, rootMargin: '0px 0px -40px' });
+
+  observer.observe(section);
+})();
+
 // FAQ search: debouce (evita rodar a cada tecla)
 const $q = document.querySelector('#faq-search');
 if ($q) {

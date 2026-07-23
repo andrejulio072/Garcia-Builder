@@ -596,16 +596,20 @@
       .exit-intent-popup {
         background: #0b1220;
         border: 1px solid rgba(246, 200, 78, .28);
-        border-radius: 8px;
+        border-radius: 20px;
         box-shadow: 0 34px 90px rgba(0, 0, 0, .48);
         color: #f8fafc;
         display: grid;
         grid-template-columns: minmax(240px, .72fr) minmax(360px, 1fr);
+        height: auto;
+        inset: auto;
+        margin: 0;
         max-height: calc(100dvh - 32px);
         max-width: 980px;
         overflow: hidden auto;
         position: relative;
         overscroll-behavior: contain;
+        text-align: left;
         width: min(100%, 980px);
       }
 
@@ -630,10 +634,11 @@
 
       .exit-intent-close:hover,
       .exit-intent-close:focus-visible {
-        background: rgba(246, 200, 78, .18);
+        background: #f6c84e;
         border-color: rgba(246, 200, 78, .62);
+        color: #0b1220;
         outline: none;
-        transform: translateY(-1px);
+        transform: translateY(-1px) rotate(4deg);
       }
 
       .exit-intent-visual {
@@ -730,6 +735,7 @@
 
       .exit-intent-content {
         padding: 28px 34px 24px;
+        text-align: left;
       }
 
       .exit-intent-header {
@@ -738,12 +744,18 @@
       }
 
       .exit-intent-badge {
+        animation: none;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
         color: #f6c84e;
         display: block;
         font-size: .74rem;
         font-weight: 900;
         letter-spacing: .12em;
         margin-bottom: 10px;
+        padding: 0;
+        width: auto;
         text-transform: uppercase;
       }
 
@@ -765,7 +777,24 @@
 
       .exit-intent-form {
         display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
+        margin: 0;
+      }
+
+      .exit-intent-form.download-form {
+        background: linear-gradient(145deg, rgba(255, 255, 255, .055), rgba(246, 200, 78, .035));
+        border: 1px solid rgba(246, 200, 78, .38);
+        border-radius: 16px;
+        padding: 20px;
+        text-align: left;
+      }
+
+      .exit-intent-field:nth-child(3),
+      .exit-intent-field:nth-child(4),
+      .exit-intent-consent,
+      .exit-intent-form button[type="submit"] {
+        grid-column: 1 / -1;
       }
 
       .exit-intent-field {
@@ -777,6 +806,9 @@
         color: rgba(248, 250, 252, .86);
         font-size: .82rem;
         font-weight: 800;
+        line-height: 1.25;
+        margin: 0;
+        text-align: left;
       }
 
       .exit-intent-form input[type="text"],
@@ -788,6 +820,8 @@
         color: #fff;
         font-size: 1rem;
         height: 44px;
+        margin: 0;
+        min-width: 0;
         padding: 0 14px;
         transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
         width: 100%;
@@ -830,14 +864,17 @@
       .exit-intent-consent input {
         accent-color: #f6c84e;
         flex: 0 0 auto;
+        height: 18px;
         margin-top: 3px;
+        width: 18px;
       }
 
       .exit-intent-form button[type="submit"] {
         align-items: center;
-        background: linear-gradient(135deg, #f6c84e, #d8a927);
-        border: 0;
-        border-radius: 8px;
+        background: linear-gradient(135deg, #ffe17a 0%, #f6c84e 52%, #e7ae20 100%);
+        border: 1px solid #ffe17a;
+        border-radius: 12px;
+        box-shadow: 0 12px 28px rgba(246, 200, 78, .2), inset 0 1px 0 rgba(255, 255, 255, .55);
         color: #111827;
         display: inline-flex;
         font-size: .98rem;
@@ -846,16 +883,25 @@
         height: 48px;
         justify-content: center;
         margin-top: 4px;
+        overflow: hidden;
         padding: 0 18px;
-        transition: filter .18s ease, transform .18s ease;
+        position: relative;
+        transition: box-shadow .2s ease, filter .2s ease, transform .2s ease;
         width: 100%;
       }
 
       .exit-intent-form button[type="submit"]:hover,
       .exit-intent-form button[type="submit"]:focus-visible {
-        filter: brightness(1.04);
-        outline: none;
-        transform: translateY(-1px);
+        box-shadow: 0 17px 36px rgba(246, 200, 78, .34), inset 0 1px 0 rgba(255, 255, 255, .72);
+        filter: brightness(1.055);
+        outline: 3px solid rgba(255, 255, 255, .88);
+        outline-offset: 3px;
+        transform: translateY(-2px);
+      }
+
+      .exit-intent-form button[type="submit"]:active {
+        box-shadow: 0 8px 20px rgba(246, 200, 78, .2);
+        transform: translateY(0) scale(.985);
       }
 
       .exit-intent-form button[type="submit"]:disabled {
@@ -942,17 +988,18 @@
 
       @media (max-width: 760px) {
         .exit-intent-overlay {
-          align-items: flex-start;
+          align-items: center;
           overflow-y: auto;
-          padding: 10px;
+          padding: 12px;
         }
 
         .exit-intent-popup {
           grid-template-columns: 1fr;
           margin: auto 0;
-          max-height: none;
+          max-height: calc(100dvh - 24px);
           max-width: 440px;
-          overflow: visible;
+          overflow: hidden auto;
+          width: 100%;
         }
 
         .exit-intent-visual {
@@ -971,16 +1018,92 @@
         }
 
         .exit-intent-content {
-          padding: 56px 16px 18px;
+          padding: 26px 20px 20px;
         }
 
         .exit-intent-header {
-          padding-right: 36px;
+          margin-bottom: 14px;
+          padding-right: 42px;
+        }
+
+        .exit-intent-header h3 {
+          font-size: clamp(1.35rem, 7vw, 1.72rem);
+          max-width: 15ch;
+        }
+
+        .exit-intent-header p {
+          font-size: .86rem;
+          line-height: 1.42;
+        }
+
+        .exit-intent-form {
+          gap: 9px;
+        }
+
+        .exit-intent-form.download-form {
+          padding: 14px;
+        }
+
+        .exit-intent-form input[type="text"],
+        .exit-intent-form input[type="email"],
+        .exit-intent-form select {
+          font-size: 16px;
+          height: 46px;
+          padding-inline: 12px;
+        }
+
+        .exit-intent-consent {
+          font-size: .75rem;
+          line-height: 1.38;
+          margin-top: 2px;
+        }
+
+        .exit-intent-form button[type="submit"] {
+          height: 52px;
+          margin-top: 2px;
+        }
+
+        .exit-intent-benefits {
+          display: none;
+        }
+
+        .exit-intent-privacy {
+          font-size: .72rem;
+          margin-top: 9px;
+          text-align: center;
         }
 
         .exit-intent-close {
           right: 10px;
           top: 10px;
+        }
+      }
+
+      @media (max-width: 390px) {
+        .exit-intent-content {
+          padding: 22px 14px 16px;
+        }
+
+        .exit-intent-form {
+          grid-template-columns: 1fr;
+        }
+
+        .exit-intent-field,
+        .exit-intent-field:nth-child(3),
+        .exit-intent-field:nth-child(4),
+        .exit-intent-consent,
+        .exit-intent-form button[type="submit"] {
+          grid-column: 1;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .exit-intent-overlay,
+        .exit-intent-popup,
+        .exit-intent-close,
+        .exit-intent-form button[type="submit"] {
+          animation: none !important;
+          transition-duration: .01ms !important;
         }
       }
     `;
@@ -1011,6 +1134,7 @@
       lastNameLabel: getI18nText('leadmagnet.last_name', 'Last Name'),
       emailLabel: getI18nText('leadmagnet.email', 'Email Address'),
       goalLabel: getI18nText('leadmagnet.goal', 'Main Goal'),
+      goalSelect: getI18nText('leadmagnet.goal_select', 'Select your goal'),
       consent: getI18nText('leadmagnet.consent', 'I agree to receive the guide and follow-up emails from Garcia Builder Fitness.'),
       email: getI18nText('leadmagnet.email_placeholder', 'you@email.com'),
       button: getI18nText('leadmagnet.popup_button', 'Send Me the Guide'),
@@ -1064,7 +1188,7 @@
             <div class="exit-intent-field">
               <label for="exit-intent-goal">${t.goalLabel}</label>
               <select id="exit-intent-goal" name="goal" required>
-              <option value="" disabled selected>Main Goal</option>
+              <option value="" disabled selected>${t.goalSelect}</option>
               <option value="Fat Loss">Fat Loss</option>
               <option value="Muscle Gain">Muscle Gain</option>
               <option value="Strength">Strength</option>

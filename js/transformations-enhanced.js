@@ -100,11 +100,6 @@ class TransformationsManager {
                 beforeImg.src = card.dataset.before;
             }
 
-            if (card.dataset.composite === 'true') {
-                slider.classList.add('is-composite');
-                return;
-            }
-
             const afterSrc = card.dataset.after;
             if (afterSrc && !slider.querySelector('.after-img')) {
                 const afterImg = beforeImg.cloneNode(true);
@@ -358,7 +353,7 @@ class TransformationsManager {
         const beforeImg = card.dataset.before;
         const afterImg = card.dataset.after;
         const timeline = card.dataset.timeline;
-        const isComposite = card.dataset.composite === 'true';
+        const cropPreset = card.dataset.photoCrop;
 
     // Update modal content (i18n aware)
     const titleSuffix = this.t('transformations.modal.titleSuffix', "'s Transformation");
@@ -369,10 +364,18 @@ class TransformationsManager {
         const comparison = document.getElementById('modalComparison');
         const beforeLabel = this.t('transformations.modal.before', 'Before');
         const afterLabel = this.t('transformations.modal.after', 'After');
-        comparison.classList.toggle('is-composite', isComposite);
-        comparison.innerHTML = isComposite ? `
+        comparison.innerHTML = cropPreset ? `
             <div class="comparison-item">
-                <img src="${beforeImg}" alt="${clientName} transformation collage" class="comparison-img">
+                <div class="comparison-img comparison-photo-stage">
+                    <div class="photo-crop photo-crop--${cropPreset}-before"><img src="${beforeImg}" alt="${beforeLabel}"></div>
+                </div>
+                <div class="comparison-label">${beforeLabel}</div>
+            </div>
+            <div class="comparison-item">
+                <div class="comparison-img comparison-photo-stage">
+                    <div class="photo-crop photo-crop--${cropPreset}-after"><img src="${afterImg}" alt="${afterLabel}"></div>
+                </div>
+                <div class="comparison-label">${afterLabel}</div>
             </div>
         ` : `
             <div class="comparison-item">

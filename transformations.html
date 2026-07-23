@@ -391,11 +391,6 @@
   transform: translateY(12px);
 }
 
-.before-after-slider.is-composite::before,
-.before-after-slider.is-composite::after {
-    display: none;
-}
-
 .before-img, .after-img {
     position: absolute;
     top: 0;
@@ -408,6 +403,64 @@
 
 .after-img {
     opacity: 0;
+}
+
+.before-after-slider.has-photo-crops {
+    background: #070a10;
+}
+
+.photo-crop {
+    --crop-ratio: 0.75;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    height: 100%;
+    width: auto;
+    aspect-ratio: var(--crop-ratio);
+    overflow: hidden;
+    transform: translateX(-50%);
+    background: transparent;
+}
+
+.photo-crop img,
+.before-after-slider.has-photo-crops .photo-crop img {
+    position: absolute;
+    max-width: none;
+    object-fit: fill;
+    transform: none;
+    filter: none;
+}
+
+.photo-crop--ana-before { --crop-ratio: 0.7096; }
+.photo-crop--ana-after { --crop-ratio: 0.7233; }
+
+.photo-crop--ana-before img,
+.photo-crop--ana-after img {
+    top: -123.01%;
+    height: 350.68%;
+    width: auto;
+}
+
+.photo-crop--ana-before img { left: -9.27%; }
+.photo-crop--ana-after img { left: -117.05%; }
+
+.photo-crop--isabella-before { --crop-ratio: 0.6403; }
+.photo-crop--isabella-after { --crop-ratio: 0.6715; }
+
+.photo-crop--isabella-before img,
+.photo-crop--isabella-after img {
+    top: -67.15%;
+    height: 306.96%;
+    width: auto;
+}
+
+.photo-crop--isabella-before img { left: -6.37%; }
+.photo-crop--isabella-after img { left: -106.07%; }
+
+.transformation-card:hover .before-after-slider.has-photo-crops .before-img {
+    transform: none;
+    filter: none;
 }
 
 .transformation-card:hover .after-img {
@@ -568,21 +621,6 @@
     grid-template-columns: 1fr 1fr;
     gap: 20px;
     margin: 20px 0;
-}
-
-.before-after-comparison.is-composite {
-    grid-template-columns: minmax(0, 1fr);
-    justify-items: center;
-}
-
-.before-after-comparison.is-composite .comparison-item {
-    width: min(100%, 520px);
-}
-
-.before-after-comparison.is-composite .comparison-img {
-    height: min(70vh, 760px);
-    object-fit: contain;
-    background: #070a10;
 }
 
 .comparison-item {
@@ -788,6 +826,12 @@
     }
 }
 
+.comparison-photo-stage {
+    position: relative;
+    overflow: hidden;
+    background: #070a10;
+}
+
 @media (min-width: 901px) {
     .transformations-results-section {
         padding-top: 48px;
@@ -951,12 +995,13 @@ window.addEventListener('load', function() {
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Ana Paula" data-story="Ana Paula completed a focused three-month transformation, losing 10kg through structured training, practical nutrition targets, and consistent weekly accountability. She also rebuilt her energy, confidence, and a routine she could sustain."
-             data-before="assets/images/transformations/ana-paula-transformation.jpg" data-after="assets/images/transformations/ana-paula-transformation.jpg"
-             data-composite="true" data-weight-lost="10" data-timeline="3 months">
+             data-before="assets/images/transformations/ana-paula-crop-source.jpg" data-after="assets/images/transformations/ana-paula-crop-source.jpg"
+             data-photo-crop="ana" data-weight-lost="10" data-timeline="3 months">
           <div class="before-after-container">
             <div class="transformation-overlay">10kg Lost in 3 Months</div>
-            <div class="before-after-slider">
-              <img src="assets/images/transformations/ana-paula-transformation.jpg" alt="Ana Paula before and after her three-month transformation" class="before-img" style="object-position:center 48%">
+            <div class="before-after-slider has-photo-crops">
+              <div class="photo-crop photo-crop--ana-before"><img src="assets/images/transformations/ana-paula-crop-source.jpg" alt="Ana Paula before her three-month transformation" class="before-img"></div>
+              <div class="photo-crop photo-crop--ana-after"><img src="assets/images/transformations/ana-paula-crop-source.jpg" alt="Ana Paula after her three-month transformation" class="after-img"></div>
             </div>
           </div>
           <div class="transformation-info">
@@ -985,12 +1030,13 @@ window.addEventListener('load', function() {
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
         <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
              data-client="Isabella" data-story="Across two years of coaching, Isabella achieved a complete body recomposition through personalised training, intelligent progression, proper recovery, and long-term consistency—building lean muscle, strength, confidence, and control over her training."
-             data-before="assets/images/transformations/isabella-transformation.jpg" data-after="assets/images/transformations/isabella-transformation.jpg"
-             data-composite="true" data-muscle="Lean muscle gained" data-timeline="2 years">
+             data-before="assets/images/transformations/isabella-crop-source.jpg" data-after="assets/images/transformations/isabella-crop-source.jpg"
+             data-photo-crop="isabella" data-muscle="Lean muscle gained" data-timeline="2 years">
           <div class="before-after-container">
             <div class="transformation-overlay">2-Year Body Recomposition</div>
-            <div class="before-after-slider">
-              <img src="assets/images/transformations/isabella-transformation.jpg" alt="Isabella before and after her two-year body recomposition" class="before-img" style="object-position:center 39%">
+            <div class="before-after-slider has-photo-crops">
+              <div class="photo-crop photo-crop--isabella-before"><img src="assets/images/transformations/isabella-crop-source.jpg" alt="Isabella before her two-year body recomposition" class="before-img"></div>
+              <div class="photo-crop photo-crop--isabella-after"><img src="assets/images/transformations/isabella-crop-source.jpg" alt="Isabella after her two-year body recomposition" class="after-img"></div>
             </div>
           </div>
           <div class="transformation-info">

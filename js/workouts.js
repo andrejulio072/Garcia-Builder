@@ -1008,6 +1008,7 @@
   const count = document.getElementById('workout-count');
   const noResults = document.getElementById('no-results');
   const clearFilters = document.getElementById('clear-workout-filters');
+  const workoutGrid = document.getElementById('workout-grid');
   const jumpLinks = Array.from(document.querySelectorAll('[data-jump-filter]'));
   const projectLinks = Array.from(document.querySelectorAll('[data-project-filter]'));
   let modalTrigger = null;
@@ -1341,7 +1342,7 @@
       setButtonState('level', filters.level);
       setButtonState('place', filters.place);
       applyFilters();
-      document.getElementById('workout-library')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      workoutGrid?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
 

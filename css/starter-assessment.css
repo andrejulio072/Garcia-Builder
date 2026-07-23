@@ -15,6 +15,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body.starter-page {
   margin: 0;
   min-height: 100vh;
@@ -153,6 +157,74 @@ body.starter-page {
   margin: 22px 0 0;
   max-width: 680px;
   font-size: 0.86rem;
+}
+
+.campaign-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 28px;
+  text-align: left;
+}
+
+.campaign-info-card,
+.campaign-faq {
+  border: 1px solid var(--starter-line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.035);
+  padding: 20px;
+}
+
+.campaign-info-card h2,
+.campaign-faq h2 {
+  margin: 0 0 12px;
+  color: var(--starter-gold);
+  font-size: 1.15rem;
+}
+
+.campaign-info-card p,
+.campaign-info-card li,
+.campaign-faq p {
+  color: var(--starter-muted);
+  line-height: 1.6;
+}
+
+.campaign-info-card ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.campaign-faq {
+  margin-top: 16px;
+  text-align: left;
+}
+
+.campaign-faq details {
+  border-top: 1px solid var(--starter-line);
+  padding: 12px 0;
+}
+
+.campaign-faq summary {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--starter-text);
+  font-weight: 700;
+}
+
+.starter-actions--repeat {
+  margin-top: 22px;
+}
+
+.delivery-notice {
+  margin: 18px 0;
+  border: 1px solid rgba(246, 200, 78, 0.45);
+  border-radius: 12px;
+  background: rgba(246, 200, 78, 0.08);
+  padding: 14px 16px;
+  color: var(--starter-text);
+  line-height: 1.5;
 }
 
 button,
@@ -440,6 +512,10 @@ select {
 }
 
 @media (max-width: 760px) {
+  .campaign-info-grid {
+    grid-template-columns: 1fr;
+  }
+
   .starter-header,
   .starter-shell {
     width: min(100% - 24px, 720px);

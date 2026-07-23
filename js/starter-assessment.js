@@ -85,6 +85,7 @@
       const meta = {
         ...existing,
         ...fresh,
+        language: document.documentElement.lang || existing.language || 'en',
         landing_path: fresh.landing_path || existing.landing_path || window.location.pathname
       };
       sessionStorage.setItem(META_KEY, JSON.stringify(meta));
@@ -151,6 +152,7 @@
       button.textContent = option;
       button.setAttribute('aria-pressed', state.answers[id] === option ? 'true' : 'false');
       button.addEventListener('click', () => {
+        const selectedStep = state.step;
         state.answers[id] = option;
         saveAnswers();
         renderQuestion();
@@ -159,6 +161,11 @@
           question_number: state.step + 1,
           goal_slug: id === 'primary_goal' ? option.toLowerCase().replace(/[^a-z0-9]+/g, '-') : undefined
         });
+        setTimeout(() => {
+          if (state.step === selectedStep && state.answers[id] === option) {
+            advanceFromCurrentQuestion();
+          }
+        }, 180);
       });
       if (index === 0) button.dataset.firstOption = 'true';
       optionGrid.appendChild(button);
@@ -252,6 +259,17 @@
     return true;
   }
 
+  function advanceFromCurrentQuestion() {
+    if (state.transitionLocked || state.step < 0 || state.step >= QUESTIONS.length) return;
+    if (!validateCurrentQuestion()) return;
+    state.transitionLocked = true;
+    state.step += 1;
+    render();
+    setTimeout(() => {
+      state.transitionLocked = false;
+    }, 150);
+  }
+
   function collectContact() {
     const data = new FormData(form);
     return {
@@ -341,12 +359,10 @@
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || !payload.ok) {
-        track('assessment_submission_failed', {
-          entry_context: getMeta().entry_context || 'organic',
-          stage: 'submit_request',
-          http_status_category: `${Math.floor(Number(response.status || 0) / 100)}xx`
-        });
-        throw new Error(payload.error || getApiUnavailableMessage(response.status));
+        const submitError = new Error(payload.error || getApiUnavailableMessage(response.status));
+        submitError.failureStage = 'submit_request';
+        submitError.httpStatusCategory = `${Math.floor(Number(response.status || 0) / 100)}xx`;
+        throw submitError;
       }
       state.submitted = true;
       state.redirecting = true;
@@ -369,8 +385,8 @@
     } catch (error) {
       track('assessment_submission_failed', {
         entry_context: getMeta().entry_context || 'organic',
-        stage: 'submit_exception',
-        http_status_category: '0xx'
+        stage: error.failureStage || 'submit_exception',
+        http_status_category: error.httpStatusCategory || '0xx'
       });
       const offlineMessage = isLocalPreviewHost() && error instanceof TypeError
         ? 'Local preview cannot reach the assessment API. Use Vercel dev or a deploy preview to submit the form.'
@@ -415,25 +431,17 @@
 
     const packagesCard = document.querySelector('[data-qr-only]');
     const organicCard = document.querySelector('[data-organic-only]');
-    const paidOnly = context === 'paid';
     if (packagesCard) {
       packagesCard.hidden = context !== 'qr';
     }
     if (organicCard) {
-      organicCard.hidden = paidOnly;
+      organicCard.hidden = context !== 'organic';
     }
 
-    $('[data-start-assessment]')?.addEventListener('click', startAssessment);
-    nextButton?.addEventListener('click', () => {
-      if (state.transitionLocked) return;
-      if (!validateCurrentQuestion()) return;
-      state.transitionLocked = true;
-      state.step += 1;
-      render();
-      setTimeout(() => {
-        state.transitionLocked = false;
-      }, 150);
+    document.querySelectorAll('[data-start-assessment]').forEach((button) => {
+      button.addEventListener('click', startAssessment);
     });
+    nextButton?.addEventListener('click', advanceFromCurrentQuestion);
     backButton?.addEventListener('click', () => {
       state.step = Math.max(0, state.step - 1);
       render();

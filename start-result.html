@@ -5,24 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Your Starter Plan | Garcia Builder Fitness</title>
   <meta name="robots" content="noindex, follow">
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    try {
-      const stored = JSON.parse(localStorage.getItem('gb_consent_v1') || 'null');
-      const granted = stored && stored.status === 'granted';
-      gtag('consent', 'default', {
-        ad_storage: granted ? 'granted' : 'denied',
-        analytics_storage: granted ? 'granted' : 'denied',
-        ad_user_data: granted ? 'granted' : 'denied',
-        ad_personalization: granted ? 'granted' : 'denied',
-        functionality_storage: 'granted',
-        security_storage: 'granted'
-      });
-    } catch (e) {
-      gtag('consent', 'default', { ad_storage: 'denied', analytics_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', functionality_storage: 'granted', security_storage: 'granted' });
-    }
-  </script>
+  <script src="/js/tracking/consent-default.js"></script>
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -48,10 +31,11 @@
       <p class="starter-eyebrow">YOUR STARTER ASSESSMENT RESULT</p>
       <h1 data-result-title>Loading your result...</h1>
       <p class="starter-copy" data-result-summary>Please wait while we open your recommended starting plan.</p>
+      <p class="delivery-notice" data-email-notice hidden>Your result is available here now. If the email does not arrive, save this private result link or contact Andre for help.</p>
       <div class="resource-grid" data-resource-grid hidden></div>
       <div class="warm-lead-box" data-warm-section hidden>
-        <h2>Your answers suggest that structure and accountability may be more valuable than another generic plan.</h2>
-        <p>A tailored Garcia Builder coaching plan can be built around your schedule, training environment, experience, nutrition preferences and specific goal.</p>
+        <h2 data-next-step-title>Your next step</h2>
+        <p data-next-step-copy>Choose the option that best suits your goal.</p>
         <div class="result-actions" data-contact-actions></div>
       </div>
       <p class="starter-disclaimer">This assessment provides general educational guidance and is not a medical assessment or an individually prescribed programme.</p>

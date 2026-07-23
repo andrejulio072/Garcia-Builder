@@ -11,7 +11,8 @@ const submitHandlerPath = path.join(root, 'lib', 'starter-assessment', 'submit-h
 const validationPath = path.join(root, 'lib', 'starter-assessment', 'validation.cjs');
 const schemaFiles = [
   path.join(root, 'supabase', '07_starter_assessment.sql'),
-  path.join(root, 'supabase', '08_starter_assessment_ads_readiness.sql')
+  path.join(root, 'supabase', '08_starter_assessment_ads_readiness.sql'),
+  path.join(root, 'supabase', '09_starter_assessment_conversion_quality.sql')
 ];
 
 const submitSource = fs.readFileSync(submitHandlerPath, 'utf8');
@@ -33,6 +34,7 @@ const requiredColumns = [
   'marketing_whatsapp_consent_at',
   'consent_copy_version',
   'privacy_policy_version',
+  'language',
   'primary_goal',
   'training_environment',
   'training_days',

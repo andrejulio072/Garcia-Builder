@@ -68,12 +68,13 @@ function ensureNoPii(payload) {
       },
       metadata: {
         entry_context: 'paid',
+        language: 'en',
         utm_source: 'meta',
         utm_medium: 'paid_social',
         utm_campaign: 'starter_assessment_smoke',
         utm_content: 'smoke_a',
-        landing_path: '/start',
-        landing_url: joinUrl('/start'),
+        landing_path: '/assessment',
+        landing_url: joinUrl('/assessment'),
         referrer: ''
       },
       turnstileToken: 'test-turnstile-token',
@@ -94,7 +95,11 @@ function ensureNoPii(payload) {
     throw new Error('submit response missing resultToken');
   }
 
-  await must200(`/start/result/${encodeURIComponent(token)}`);
+  const resultPagePath = new URL(submitPayload.resultUrl, baseUrl).pathname;
+  if (!resultPagePath.startsWith('/assessment/result/')) {
+    throw new Error(`paid submission returned unexpected result path: ${resultPagePath}`);
+  }
+  await must200(resultPagePath);
   const resultApiResponse = await fetch(joinUrl(`/api/starter-assessment/result/${encodeURIComponent(token)}`));
   const resultPayload = await resultApiResponse.json().catch(() => ({}));
   if (!resultApiResponse.ok || !resultPayload.ok) {

@@ -215,7 +215,11 @@ assert(
 ].forEach((filePath) => {
   const html = fs.readFileSync(filePath, 'utf8');
   const label = path.basename(filePath);
-  assert(html.includes("gtag('consent', 'default'"), `${label} must set a Consent Mode default before GTM loads`);
+  assert(html.includes('/js/tracking/consent-default.js'), `${label} must load the shared Consent Mode default`);
+  assert(
+    html.indexOf('/js/tracking/consent-default.js') < html.indexOf('googletagmanager.com/gtm.js'),
+    `${label} must set the Consent Mode default before GTM loads`
+  );
   assert(html.includes('GTM-TG5TFZ2C'), `${label} must load the site GTM container so dataLayer events reach GA4/Ads/Meta`);
   assert(html.includes('/js/tracking/consent-banner.js'), `${label} must load the consent banner so cookie preferences and consent updates work`);
 });

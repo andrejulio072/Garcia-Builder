@@ -7,24 +7,7 @@
   <meta name="description" content="Complete a quick fitness starter assessment and get a recommended training and nutrition starting plan from Garcia Builder Fitness.">
   <meta name="robots" content="noindex, follow">
   <link rel="canonical" href="https://www.garciabuilder.fitness/assessment">
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    try {
-      const stored = JSON.parse(localStorage.getItem('gb_consent_v1') || 'null');
-      const granted = stored && stored.status === 'granted';
-      gtag('consent', 'default', {
-        ad_storage: granted ? 'granted' : 'denied',
-        analytics_storage: granted ? 'granted' : 'denied',
-        ad_user_data: granted ? 'granted' : 'denied',
-        ad_personalization: granted ? 'granted' : 'denied',
-        functionality_storage: 'granted',
-        security_storage: 'granted'
-      });
-    } catch (e) {
-      gtag('consent', 'default', { ad_storage: 'denied', analytics_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', functionality_storage: 'granted', security_storage: 'granted' });
-    }
-  </script>
+  <script src="/js/tracking/consent-default.js"></script>
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -43,16 +26,16 @@
   </noscript>
   <a class="skip-link" href="#assessment-root">Skip to assessment</a>
   <header class="starter-header" aria-label="Assessment header">
-    <a class="starter-logo" href="/index.html" aria-label="Garcia Builder Fitness home">
-      <img src="/assets/images/logo-nobackground-500.png" alt="Garcia Builder Fitness">
-    </a>
+    <div class="starter-logo" aria-label="Garcia Builder Fitness">
+      <img src="/assets/images/logo-nobackground-500.png" alt="Garcia Builder Fitness" width="500" height="500">
+    </div>
   </header>
 
   <main class="starter-shell" id="assessment-root">
     <section class="starter-hero" id="starter-hero" aria-labelledby="starter-title">
       <p class="starter-eyebrow">FREE FITNESS STARTER ASSESSMENT</p>
       <h1 id="starter-title">Find the Right Starting Plan for Your Goal</h1>
-      <p class="starter-copy">Answer seven short questions and get a practical training structure, nutrition guidance and the best next step for your goal. This paid-ads version keeps the focus on the assessment so you can move straight into your result without browsing around the site.</p>
+      <p class="starter-copy">Answer eight quick questions about your goal, routine and biggest challenge. Get a practical workout and nutrition starting point, plus the option to discuss a fully tailored plan with Andre.</p>
       <div class="starter-actions">
         <button class="starter-primary" type="button" data-start-assessment>Build My Starter Plan</button>
         <span>Free assessment. No commitment.</span>
@@ -66,6 +49,42 @@
       </ul>
       <p class="starter-trust">Created by Andre Garcia, Personal Trainer &amp; Online Coach</p>
       <p class="starter-disclaimer">This assessment provides general educational guidance and is not a medical assessment or an individually prescribed programme.</p>
+
+      <div class="campaign-info-grid">
+        <section class="campaign-info-card" aria-labelledby="campaign-benefits-title">
+          <h2 id="campaign-benefits-title">What You Will Get</h2>
+          <ul>
+            <li>A realistic training structure for your schedule and environment</li>
+            <li>Practical nutrition guidance based on your main challenge</li>
+            <li>Useful starter resources and a clear next step</li>
+          </ul>
+        </section>
+        <section class="campaign-info-card" aria-labelledby="campaign-coach-title">
+          <h2 id="campaign-coach-title">Built by Andre Garcia</h2>
+          <p>Andre is a Personal Trainer and Online Coach focused on practical training, nutrition structure and sustainable progress. Support is available in English, Portuguese and Spanish.</p>
+        </section>
+      </div>
+
+      <section class="campaign-faq" aria-labelledby="campaign-faq-title">
+        <h2 id="campaign-faq-title">Quick Questions</h2>
+        <details>
+          <summary>Is the assessment free?</summary>
+          <p>Yes. There is no payment or commitment required to view your starter result.</p>
+        </details>
+        <details>
+          <summary>Do I need a gym?</summary>
+          <p>No. The assessment includes home, gym and mixed training options.</p>
+        </details>
+        <details>
+          <summary>Is this a medical or fully prescribed programme?</summary>
+          <p>No. It provides general educational guidance and a practical starting direction. Individual coaching is discussed separately.</p>
+        </details>
+      </section>
+
+      <div class="starter-actions starter-actions--repeat">
+        <button class="starter-primary" type="button" data-start-assessment>Build My Starter Plan</button>
+        <span>Free assessment. No commitment.</span>
+      </div>
     </section>
 
     <section class="assessment-card" hidden data-assessment-card aria-live="polite">

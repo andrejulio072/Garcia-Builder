@@ -4,15 +4,15 @@
   const summary = document.querySelector('[data-result-summary]');
   const grid = document.querySelector('[data-resource-grid]');
   const warmSection = document.querySelector('[data-warm-section]');
+  const nextStepTitle = document.querySelector('[data-next-step-title]');
+  const nextStepCopy = document.querySelector('[data-next-step-copy]');
+  const emailNotice = document.querySelector('[data-email-notice]');
   const actions = document.querySelector('[data-contact-actions]');
 
   function track(eventName, properties) {
     const safeProperties = properties || {};
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: eventName, ...safeProperties });
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', eventName, safeProperties);
-    }
   }
 
   function recordEvent(eventName, eventKey) {
@@ -68,25 +68,55 @@
 
   function renderActions(payload) {
     actions.innerHTML = '';
-    const contactLinks = [];
-    if (payload.actions?.whatsappUrl) {
-      const whatsapp = document.createElement('a');
-      whatsapp.className = 'starter-primary';
-      whatsapp.href = payload.actions.whatsappUrl;
-      whatsapp.textContent = 'Message Andre on WhatsApp';
-      whatsapp.addEventListener('click', () => recordEvent('whatsapp_clicked', 'whatsapp_clicked'));
-      contactLinks.push(whatsapp);
-    }
+    const temperature = payload.actions?.leadTemperatureCategory || 'cold';
+    const links = {};
+
     if (payload.actions?.bookingUrl) {
       const booking = document.createElement('a');
       booking.className = 'starter-secondary';
       booking.href = payload.actions.bookingUrl;
-      booking.textContent = 'Book a Consultation';
+      booking.textContent = 'Book a Free Coaching Consultation';
       booking.addEventListener('click', () => recordEvent('consultation_clicked', 'consultation_clicked'));
-      contactLinks.push(booking);
+      links.booking = booking;
     }
-    contactLinks.slice(0, 2).forEach((link) => actions.appendChild(link));
-    warmSection.hidden = !payload.actions?.showWarmLeadCta || contactLinks.length === 0;
+    if (payload.actions?.whatsappUrl) {
+      const whatsapp = document.createElement('a');
+      whatsapp.className = 'starter-secondary';
+      whatsapp.href = payload.actions.whatsappUrl;
+      whatsapp.textContent = 'Message Andre About My Plan';
+      whatsapp.addEventListener('click', () => recordEvent('whatsapp_clicked', 'whatsapp_clicked'));
+      links.whatsapp = whatsapp;
+    }
+
+    const coaching = document.createElement('a');
+    coaching.className = 'starter-secondary';
+    coaching.href = payload.actions?.coachingUrl || '/online-coaching.html';
+    coaching.textContent = 'Learn About Online Coaching';
+    coaching.addEventListener('click', () => track('online_coaching_clicked', { lead_temperature_category: temperature }));
+    links.coaching = coaching;
+
+    const order = temperature === 'warm'
+      ? ['booking', 'whatsapp']
+      : temperature === 'interested'
+        ? ['whatsapp', 'booking']
+        : ['coaching'];
+
+    if (temperature === 'warm') {
+      nextStepTitle.textContent = 'Ready for a plan built around you?';
+      nextStepCopy.textContent = 'Book a free coaching consultation to discuss your goal, schedule and the support that would help most.';
+    } else if (temperature === 'interested') {
+      nextStepTitle.textContent = 'Would you like help applying your result?';
+      nextStepCopy.textContent = 'Message Andre about your plan or book a free consultation when you are ready.';
+    } else {
+      nextStepTitle.textContent = 'Want to see how tailored support works?';
+      nextStepCopy.textContent = 'Use your free resources first, then learn how online coaching can add structure and accountability.';
+    }
+
+    order.map((key) => links[key]).filter(Boolean).forEach((link, index) => {
+      link.className = index === 0 ? 'starter-primary' : 'starter-secondary';
+      actions.appendChild(link);
+    });
+    warmSection.hidden = actions.children.length === 0;
   }
 
   async function loadResult() {
@@ -101,7 +131,11 @@
     payload.recommendation.resources.forEach((resource) => grid.appendChild(renderResource(resource)));
     grid.hidden = false;
     renderActions(payload);
-    track('result_viewed', { result_path_slug: payload.recommendation.primaryPath });
+    emailNotice.hidden = payload.delivery?.emailSent !== false;
+    track('result_viewed', {
+      result_path_slug: payload.recommendation.primaryPath,
+      lead_temperature_category: payload.actions?.leadTemperatureCategory || undefined
+    });
   }
 
   document.addEventListener('DOMContentLoaded', () => {

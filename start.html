@@ -7,24 +7,7 @@
   <meta name="description" content="Complete a quick fitness starter assessment and get a recommended training and nutrition starting plan from Garcia Builder Fitness.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.garciabuilder.fitness/start">
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    try {
-      const stored = JSON.parse(localStorage.getItem('gb_consent_v1') || 'null');
-      const granted = stored && stored.status === 'granted';
-      gtag('consent', 'default', {
-        ad_storage: granted ? 'granted' : 'denied',
-        analytics_storage: granted ? 'granted' : 'denied',
-        ad_user_data: granted ? 'granted' : 'denied',
-        ad_personalization: granted ? 'granted' : 'denied',
-        functionality_storage: 'granted',
-        security_storage: 'granted'
-      });
-    } catch (e) {
-      gtag('consent', 'default', { ad_storage: 'denied', analytics_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', functionality_storage: 'granted', security_storage: 'granted' });
-    }
-  </script>
+  <script src="/js/tracking/consent-default.js"></script>
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -52,7 +35,7 @@
     <section class="starter-hero" id="starter-hero" aria-labelledby="starter-title">
       <p class="starter-eyebrow">FREE FITNESS STARTER ASSESSMENT</p>
       <h1 id="starter-title">Find the Right Starting Plan for Your Goal</h1>
-      <p class="starter-copy">Complete the quick assessment in around 2 minutes. You will answer seven short questions and receive a recommended training structure, practical nutrition guidance, relevant free resources and the option to discuss tailored coaching with Andre.</p>
+      <p class="starter-copy">Complete the quick assessment in around 2 minutes. You will answer eight short questions and receive a recommended training structure, practical nutrition guidance, relevant free resources and the option to discuss tailored coaching with Andre.</p>
       <div class="starter-actions">
         <button class="starter-primary" type="button" data-start-assessment>Build My Starter Plan</button>
         <span>Free assessment. No commitment.</span>

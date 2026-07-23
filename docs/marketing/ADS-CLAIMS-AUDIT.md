@@ -63,7 +63,8 @@ Status legend:
 - Status: `owner confirmation required`
 
 ## Recommended Immediate Ad-Safety Actions
-- Replace conflicting site-wide success-rate claims (`95%` vs `98%`) with neutral qualitative copy until owner evidence is confirmed.
+- Completed in code: conflicting aggregate success-rate claims (`95%` vs `98%`), review counts, transformation counts and other summary counters were replaced with neutral qualitative copy on the homepage, transformations page and testimonials page.
 - Keep claim-heavy metrics off the paid landing experience (`/assessment`) until verified.
-- Add/retain visible disclaimer near transformation proof:
+- Completed in code: visible disclaimers were added near homepage, transformation and testimonial proof:
   - `Individual results vary based on starting point, consistency, training, nutrition, recovery and other personal factors.`
+- Individual client stories and outcome details remain owner-confirmation items; retain them only where permission and supporting context are available.

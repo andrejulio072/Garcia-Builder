@@ -80,6 +80,8 @@ Server:
    - `supabase/07_starter_assessment.sql`
 2. Apply ads-readiness alignment migration:
    - `supabase/08_starter_assessment_ads_readiness.sql`
+3. Apply conversion-quality alignment migration:
+  - `supabase/09_starter_assessment_conversion_quality.sql`
 
 ## Smoke Test Command
 - Basic route smoke:
@@ -102,3 +104,6 @@ Server:
 - No conversion on failed submit.
 - `/assessment` and `/starter-plan` resolve on both Render (Express routes) and Vercel (rewrites) before spending ad budget.
 - Manual GTM/GA4/Meta verification completed (see `docs/marketing/GTM-MANUAL-STEPS.md`).
+- Language (`en`, `pt` or `es`) is stored with each assessment lead.
+- Result CTAs are ordered by lead temperature and the result remains useful when transactional email is unavailable.
+- Automated Playwright coverage confirms one success conversion, one failure diagnostic event, zero false conversions, no post-success abandonment, and QR/paid exit separation.

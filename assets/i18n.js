@@ -6,6 +6,12 @@
     en: {
       nav: {
         home: "Home",
+        online_coaching: "Online Coaching",
+        consultation: "Book Consultation",
+        nutrition_calculator: "Nutrition Calculator",
+        group_start: "Start here",
+        group_results: "Results",
+        group_explore: "Explore",
         about: "About",
         workouts: "Workouts",
         trans: "Transformations",
@@ -758,6 +764,12 @@
     pt: {
       nav: {
         home: "Início",
+        online_coaching: "Coaching Online",
+        consultation: "Agendar Consulta",
+        nutrition_calculator: "Calculadora de Nutrição",
+        group_start: "Comece aqui",
+        group_results: "Resultados",
+        group_explore: "Explorar",
         about: "Sobre",
         workouts: "Treinos",
         trans: "Transformações",
@@ -1510,6 +1522,12 @@
     es: {
       nav: {
         home: "Inicio",
+        online_coaching: "Coaching Online",
+        consultation: "Reservar Consulta",
+        nutrition_calculator: "Calculadora Nutricional",
+        group_start: "Empieza aquí",
+        group_results: "Resultados",
+        group_explore: "Explorar",
         about: "Sobre mí",
         workouts: "Entrenamientos",
         trans: "Transformaciones",

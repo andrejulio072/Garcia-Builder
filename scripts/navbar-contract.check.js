@@ -8,6 +8,37 @@ const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), 'u
 const navbarHtml = read('components/navbar.html');
 const loaderSource = read('js/utils/component-loader-v3-simplified.js');
 
+const priorityTargets = [
+  'index.html',
+  'online-coaching.html',
+  'packages.html',
+  '/consultation',
+  'transformations.html',
+  'testimonials.html',
+  'workouts.html',
+  'nutrition-calculator.html',
+  'blog.html',
+  'about.html',
+  'faq.html',
+  'contact.html'
+];
+
+function assertPriorityOrder(source, navClass, label) {
+  const start = source.indexOf(`class="${navClass}"`);
+  assert.notEqual(start, -1, `${label} should include ${navClass}`);
+  const end = source.indexOf('</nav>', start);
+  const navMarkup = source.slice(start, end);
+  let previousIndex = -1;
+
+  for (const target of priorityTargets) {
+    const marker = target === '/consultation' ? 'href="/consultation"' : `data-gb-nav="${target}"`;
+    const currentIndex = navMarkup.indexOf(marker);
+    assert.notEqual(currentIndex, -1, `${label} should include ${target}`);
+    assert.ok(currentIndex > previousIndex, `${label} should keep ${target} in visitor-priority order`);
+    previousIndex = currentIndex;
+  }
+}
+
 const primaryPages = [
   'index.html',
   'about.html',
@@ -36,6 +67,10 @@ for (const source of [navbarHtml, loaderSource]) {
     /data-gb-logo-src="Logo Files\/For Web\/logo-nobackground-500\.png"/,
     'Navbar logo resolver should keep a project-relative source'
   );
+  assertPriorityOrder(source, 'gb-navbar-links', 'Desktop navbar');
+  assertPriorityOrder(source, 'gb-menu-links', 'Drawer navbar');
+  assert.match(source, /gb-menu-link gb-menu-link--cta/, 'Drawer navbar should emphasize the consultation CTA');
+  assert.match(source, /data-i18n="nav\.group_start"/, 'Drawer navbar should group high-priority links');
 }
 
 assert.match(

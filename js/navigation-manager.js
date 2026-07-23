@@ -91,11 +91,15 @@
       // Marketing/primary links (always visible)
       const links = [
         { href: 'index.html', key: 'nav.home', text: 'Home', active: path === 'index.html' || path === '' },
-        { href: 'about.html', key: 'nav.about', text: 'About', active: path === 'about.html' },
-        { href: 'workouts.html', key: 'nav.workouts', text: 'Workouts', active: path === 'workouts.html' },
+        { href: 'online-coaching.html', key: 'nav.online_coaching', text: 'Online Coaching', active: path === 'online-coaching.html' },
+        { href: 'packages.html', key: 'nav.packages', text: 'Packages', active: path === 'packages.html' },
+        { href: 'consultation.html', key: 'nav.consultation', text: 'Book Consultation', active: path === 'consultation.html' },
         { href: 'transformations.html', key: 'nav.trans', text: 'Transformations', active: path === 'transformations.html' },
         { href: 'testimonials.html', key: 'nav.testi', text: 'Testimonials', active: path === 'testimonials.html' },
-        { href: 'pricing.html', key: 'nav.pricing', text: 'Pricing', active: path === 'pricing.html' },
+        { href: 'workouts.html', key: 'nav.workouts', text: 'Workouts', active: path === 'workouts.html' },
+        { href: 'nutrition-calculator.html', key: 'nav.nutrition_calculator', text: 'Nutrition Calculator', active: path === 'nutrition-calculator.html' },
+        { href: 'blog.html', key: 'nav.blog', text: 'Blog', active: path === 'blog.html' },
+        { href: 'about.html', key: 'nav.about', text: 'About', active: path === 'about.html' },
         { href: 'faq.html', key: 'nav.faq', text: 'FAQ', active: path === 'faq.html' },
         { href: 'contact.html', key: 'nav.contact', text: 'Contact', active: path === 'contact.html' }
       ];

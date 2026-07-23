@@ -65,6 +65,12 @@ app.use(express.static(root, {
   }
 }));
 
+// Mirror the privacy aliases configured by Vercel so local audits exercise
+// the same public URLs visitors use in production.
+app.get(['/privacy-policy', '/privacy-policy.html'], (req, res) => {
+  res.sendFile(path.join(root, 'privacy.html'));
+});
+
 const publicPageAliases = {
   '/lead-magnet.html': 'lead-magnet.html',
   '/thanks-ebook.html': 'thanks-ebook.html',

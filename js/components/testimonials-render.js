@@ -58,8 +58,9 @@
     const aria = `Testimonial from ${isAnon ? 'Anonymous' : t.name}`;
     const cat = (t.categories || []).join(' ');
 
+    const imageStyle = t.imagePosition ? ` style="object-position:${escapeHtml(t.imagePosition)}"` : '';
     const avatar = (!isAnon && t.imageUrl)
-      ? `<img src="${t.imageUrl}" alt="${t.name} avatar" width="60" height="60" loading="lazy" data-avatar-fallback="${escapeHtml(getInitials(t.name))}" data-avatar-index="${(idx % 10) + 1}" />`
+      ? `<img src="${t.imageUrl}" alt="${t.name} avatar" width="60" height="60" loading="lazy"${imageStyle} data-avatar-fallback="${escapeHtml(getInitials(t.name))}" data-avatar-index="${(idx % 10) + 1}" />`
       : `<div class="testimonial-avatar avatar-${(idx % 10) + 1}" aria-hidden="true">${getInitials(t.name)}</div>`;
 
     const cardText = translate(t.textKey, t.text);
@@ -160,8 +161,9 @@
     const badgeList = categories.filter(cat => !['anonymous', 'identified'].includes(cat));
     const safeParagraph = escapeHtml(paragraphText).replace(/\n/g, '<br>');
 
+    const spotlightImageStyle = data.imagePosition ? ` style="object-position:${escapeHtml(data.imagePosition)}"` : '';
     const media = (!categories.includes('anonymous') && data.imageUrl)
-      ? `<img src="${data.imageUrl}" alt="${escapeHtml(name)}" loading="lazy" />`
+      ? `<img src="${data.imageUrl}" alt="${escapeHtml(name)}" loading="lazy"${spotlightImageStyle} />`
       : `<div class="spotlight-avatar">${getInitials(name)}</div>`;
 
     spotlightEl.hidden = false;

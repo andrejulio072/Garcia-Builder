@@ -100,6 +100,11 @@ class TransformationsManager {
                 beforeImg.src = card.dataset.before;
             }
 
+            if (card.dataset.composite === 'true') {
+                slider.classList.add('is-composite');
+                return;
+            }
+
             const afterSrc = card.dataset.after;
             if (afterSrc && !slider.querySelector('.after-img')) {
                 const afterImg = beforeImg.cloneNode(true);
@@ -117,15 +122,19 @@ class TransformationsManager {
         const stats = document.querySelectorAll('.stat-number[data-count]');
 
         const animateCounter = (element, target) => {
+            const originalText = element.textContent.trim();
+            const numericMatch = originalText.match(/-?\d+(?:\.\d+)?/);
+            const prefix = numericMatch ? originalText.slice(0, numericMatch.index) : '';
+            const suffix = numericMatch ? originalText.slice(numericMatch.index + numericMatch[0].length) : '';
             let current = 0;
             const increment = target / 100;
             const timer = setInterval(() => {
                 current += increment;
                 if (current >= target) {
-                    element.textContent = target;
+                    element.textContent = `${prefix}${target}${suffix}`;
                     clearInterval(timer);
                 } else {
-                    element.textContent = Math.floor(current);
+                    element.textContent = `${prefix}${Math.floor(current)}${suffix}`;
                 }
             }, 30);
         };
@@ -349,6 +358,7 @@ class TransformationsManager {
         const beforeImg = card.dataset.before;
         const afterImg = card.dataset.after;
         const timeline = card.dataset.timeline;
+        const isComposite = card.dataset.composite === 'true';
 
     // Update modal content (i18n aware)
     const titleSuffix = this.t('transformations.modal.titleSuffix', "'s Transformation");
@@ -359,7 +369,12 @@ class TransformationsManager {
         const comparison = document.getElementById('modalComparison');
         const beforeLabel = this.t('transformations.modal.before', 'Before');
         const afterLabel = this.t('transformations.modal.after', 'After');
-        comparison.innerHTML = `
+        comparison.classList.toggle('is-composite', isComposite);
+        comparison.innerHTML = isComposite ? `
+            <div class="comparison-item">
+                <img src="${beforeImg}" alt="${clientName} transformation collage" class="comparison-img">
+            </div>
+        ` : `
             <div class="comparison-item">
                 <img src="${beforeImg}" alt="${beforeLabel}" class="comparison-img">
                 <div class="comparison-label">${beforeLabel}</div>

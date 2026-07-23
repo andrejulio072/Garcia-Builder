@@ -158,12 +158,30 @@
 .about-block{
   --gold:#F6C84E; --muted:#cfd2d6;
   color:#fff;
-  padding:72px 0 56px;
+  min-height:clamp(460px,58vw,640px);
+  padding:clamp(72px,9vw,112px) 0 64px;
+  display:flex;
+  align-items:center;
   background:
-    linear-gradient(180deg, rgba(12,14,18,.88), rgba(12,14,18,.68)),
-    url('assets/images/about/about1.jpg') center/cover no-repeat;
+    linear-gradient(90deg, rgba(8,11,17,.98) 0%, rgba(8,11,17,.9) 43%, rgba(8,11,17,.34) 76%, rgba(8,11,17,.66) 100%),
+    url('assets/images/about/about1.jpg') center 32%/cover no-repeat;
   border-bottom:1px solid rgba(255,255,255,.08);
 }
+.about-hero-copy{
+  width:min(680px,64%);
+  padding:clamp(24px,4vw,42px);
+  border:1px solid rgba(246,200,78,.2);
+  border-radius:24px;
+  background:linear-gradient(145deg,rgba(13,17,25,.84),rgba(13,17,25,.58));
+  box-shadow:0 28px 80px rgba(0,0,0,.34);
+  backdrop-filter:blur(8px);
+}
+.about-hero-kicker{
+  display:inline-flex; align-items:center; gap:10px;
+  margin:0 0 16px; color:var(--gold); font-size:13px;
+  font-weight:900; letter-spacing:.13em; text-transform:uppercase;
+}
+.about-hero-kicker::before{ content:""; width:9px; height:9px; border-radius:50%; background:var(--gold); box-shadow:0 0 18px rgba(246,200,78,.65) }
 .about-title{
   margin:0 0 10px; font-size:clamp(36px,6.2vw,58px);
   line-height:1.05; letter-spacing:-.02em;
@@ -180,6 +198,40 @@
 }
 .about-text{ margin:0 0 10px; max-width:80ch; color:#e7ebf1; line-height:1.65 }
 @media (min-width:900px){ .about-text{ font-size:18px } }
+.about-story-section{
+  padding:clamp(64px,8vw,96px) 0;
+  background:
+    radial-gradient(circle at 8% 20%,rgba(246,200,78,.09),transparent 32%),
+    linear-gradient(180deg,#090c12,#0d1119);
+}
+.about-story-grid{ display:grid; grid-template-columns:minmax(260px,.72fr) minmax(0,1.28fr); gap:clamp(24px,4vw,48px); align-items:start }
+.about-story-card{
+  padding:clamp(26px,4vw,42px);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:24px;
+  background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));
+  box-shadow:0 24px 60px rgba(0,0,0,.22);
+}
+.about-story-card--mission{ border-color:rgba(246,200,78,.24) }
+.about-story-card .about-subtitle{ margin-top:0 }
+.about-journey-copy p{ margin:0 0 20px; color:#dce1e8; line-height:1.78; font-size:clamp(16px,1.5vw,18px) }
+.about-journey-copy p:last-child{ margin-bottom:0 }
+@media (max-width:899px){
+  .about-block{
+    min-height:520px; padding:76px 0 48px; align-items:flex-end;
+    background:
+      linear-gradient(180deg,rgba(8,11,17,.18) 0%,rgba(8,11,17,.62) 42%,rgba(8,11,17,.98) 84%),
+      url('assets/images/about/about1.jpg') center 22%/cover no-repeat;
+  }
+  .about-hero-copy{ width:100%; padding:24px; border-radius:20px; backdrop-filter:blur(5px) }
+  .about-story-grid{ grid-template-columns:1fr }
+}
+@media (max-width:575px){
+  .about-block{ min-height:500px; padding-top:64px }
+  .about-hero-copy{ padding:22px 18px }
+  .about-story-section{ padding:52px 0 }
+  .about-story-card{ padding:24px 20px; border-radius:18px }
+}
 
 /* Micro-interactions nos cards (tilt + shine) */
 .container.grid.grid-3{ perspective:900px }
@@ -262,18 +314,29 @@ window.addEventListener('load', function() {
 
 <section class="about-block">
 <div class="container">
-<h1 class="title-gradient" data-i18n="about.title">About Andre Garcia</h1>
-<p class="lead" data-i18n="about.subtitle">We coach real people to build strong, athletic bodies - with simple nutrition, precise training and accountability that sticks.</p>
-<h2 class="title-gradient" data-i18n="about.mission">Mission &amp; Vision</h2>
-<p data-i18n="about.mission_text">Garcia Builder exists to turn discipline into results. Our mission is to coach busy people to build muscle, drop fat and move with confidence - without crash diets or gimmicks. Guided by the GB mark and its gold standard, we keep the process simple: clear training blocks, flexible nutrition and weekly check-ins that drive consistency. The vision is a community known for strong bodies and stronger habits, where progress survives real life.</p>
+<div class="about-hero-copy">
+<p class="about-hero-kicker">Coach. Structure. Accountability.</p>
+<h1 class="about-title" data-i18n="about.title">About Andre Garcia</h1>
+<p class="about-lead" data-i18n="about.subtitle">We coach real people to build strong, athletic bodies - with simple nutrition, precise training and accountability that sticks.</p>
+</div>
+</div>
+</section>
+
+<section class="about-story-section">
+<div class="container about-story-grid">
+<article class="about-story-card about-story-card--mission">
+<p class="about-hero-kicker">The Garcia Builder standard</p>
+<h2 class="about-subtitle" data-i18n="about.mission">Mission &amp; Vision</h2>
+<p class="about-text" data-i18n="about.mission_text">Garcia Builder exists to turn discipline into results. Our mission is to coach busy people to build muscle, drop fat and move with confidence - without crash diets or gimmicks. Guided by the GB mark and its gold standard, we keep the process simple: clear training blocks, flexible nutrition and weekly check-ins that drive consistency. The vision is a community known for strong bodies and stronger habits, where progress survives real life.</p>
+</article>
+<article class="about-story-card">
 <h2 class="about-subtitle" data-i18n="about.andre_title">Andre Garcia - My Journey</h2>
-<p class="about-text">
-    I didn't grow up with perfect conditions. The Air Force was my first coach: 05:00 alarms, inspections, and standards that didn't care about excuses. There I learned that discipline beats mood and that progress is a decision repeated daily. When I moved to London, I carried that mindset into a city where I knew no one. I worked long hours, learned a new rhythm, and rebuilt my life one training session at a time. The gym became my compass; iron gave me structure when everything else was uncertain, and reps became a language I could trust.
-  <br><br>
-    Coaching grew naturally from that path. I studied, earned credentials, and chose to serve on the gym floor - listening, teaching, and leading by example. As a personal trainer and coach, I've helped clients in English, Portuguese and Spanish get stronger, drop fat and move without pain. More than before-and-after pictures, I'm proud of the messages that say "I'm a different person now." My method is simple and relentless: clear training blocks, simple nutrition you can follow, and accountability that respects real life. No hype, no judgment - just the truth and a plan.
-  <br><br>
-    Garcia Builder is my mission: to build people who keep their results. If you're juggling work, family, or doubt, I'll meet you where you are, set a pace you can sustain, and hold a standard that improves both your body and your character. Your story isn't stuck; it's waiting for a coach. Let's start.
-</p>
+<div class="about-journey-copy">
+<p>I didn't grow up with perfect conditions. The Air Force was my first coach: 05:00 alarms, inspections, and standards that didn't care about excuses. There I learned that discipline beats mood and that progress is a decision repeated daily. When I moved to London, I carried that mindset into a city where I knew no one. I worked long hours, learned a new rhythm, and rebuilt my life one training session at a time. The gym became my compass; iron gave me structure when everything else was uncertain, and reps became a language I could trust.</p>
+<p>Coaching grew naturally from that path. I studied, earned credentials, and chose to serve on the gym floor - listening, teaching, and leading by example. As a personal trainer and coach, I've helped clients in English, Portuguese and Spanish get stronger, drop fat and move without pain. More than before-and-after pictures, I'm proud of the messages that say "I'm a different person now." My method is simple and relentless: clear training blocks, simple nutrition you can follow, and accountability that respects real life. No hype, no judgment - just the truth and a plan.</p>
+<p>Garcia Builder is my mission: to build people who keep their results. If you're juggling work, family, or doubt, I'll meet you where you are, set a pace you can sustain, and hold a standard that improves both your body and your character. Your story isn't stuck; it's waiting for a coach. Let's start.</p>
+</div>
+</article>
 </div>
 </section>
 

@@ -68,6 +68,9 @@
         const decimalsAttr = el.getAttribute('data-decimals');
         let decimals = Number.isFinite(parseInt(decimalsAttr, 10)) ? Math.max(0, parseInt(decimalsAttr, 10)) : undefined;
         const isPercent = rawTarget.endsWith('%') || suffix === '%';
+        if (isPercent && suffix === '%') {
+          suffix = '';
+        }
         const hasPlus = rawTarget.endsWith('+');
 
         if (!suffix && hasPlus) {

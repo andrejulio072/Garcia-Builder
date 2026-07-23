@@ -100,11 +100,11 @@
 /* Transformations Enhanced Styles */
 .transformations-hero {
     background:
-    linear-gradient(135deg, rgba(246,200,78,0.10), rgba(121,146,153,0.06) 38%, rgba(6,9,16,0.84)),
-    url('assets/images/transformations/client-paulo-beforeafter.png') center/cover no-repeat,
-    rgba(7, 10, 18, 0.96);
-    padding: 80px 0 60px;
-    margin-bottom: 60px;
+    url('assets/images/transformations/client-paulo-beforeafter.png') 72% 42%/cover no-repeat,
+    #060910;
+    min-height: 660px;
+    padding: 64px 0;
+    margin-bottom: 30px;
     border-radius: 0 0 28px 28px;
     position: relative;
     overflow: hidden;
@@ -114,18 +114,51 @@
 .transformations-hero::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23F6C84E" fill-opacity="0.1"><path d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/></g></g></svg>') repeat;
-  opacity: 0.05;
-    animation: float 22s ease-in-out infinite;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(4,7,12,.98) 0%, rgba(4,7,12,.94) 34%, rgba(4,7,12,.7) 58%, rgba(4,7,12,.42) 100%),
+      linear-gradient(180deg, rgba(4,7,12,.15) 50%, rgba(4,7,12,.82) 100%);
+    pointer-events: none;
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+.transformations-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 68% 24%, rgba(246,200,78,.14), transparent 28%);
+    pointer-events: none;
+}
+
+.transformations-hero-layout {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, .86fr) minmax(480px, 1.14fr);
+    align-items: center;
+    gap: clamp(42px, 6vw, 88px);
+    min-height: 532px;
+}
+
+.transformations-hero-copy {
+    text-align: left;
+}
+
+.transformations-hero-copy h1 {
+    max-width: 100%;
+    margin-bottom: 22px !important;
+    font-size: clamp(3.1rem, 3.8vw, 4rem);
+    font-weight: 900;
+    line-height: .98;
+    letter-spacing: -.045em;
+    overflow-wrap: normal;
+}
+
+.transformations-hero-copy .lead {
+    max-width: 34ch;
+    margin: 0 !important;
+    color: rgba(255,255,255,.86);
+    font-size: clamp(1.08rem, 1.7vw, 1.3rem);
+    line-height: 1.58;
 }
 
 .stats-row {
@@ -133,9 +166,9 @@
   background:
     linear-gradient(135deg, rgba(246,200,78,0.14), rgba(121,146,153,0.08)),
     rgba(8, 12, 20, 0.68);
-  border-radius: 16px;
-  padding: 30px;
-  margin: 40px 0;
+  border-radius: 22px;
+  padding: 16px;
+  margin: 0;
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   border: 1px solid rgba(246,200,78,0.22);
@@ -156,16 +189,38 @@
 .stats-row .row {
   position: relative;
   z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.stats-row .col-md-3,
+.stats-row .col-6 {
+  width: auto;
+  max-width: none;
+  padding: 0;
 }
 
 .stat-item {
+    min-height: 154px;
     text-align: center;
-    padding: 20px;
-    transition: transform 0.3s ease;
+    padding: 22px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 16px;
+    background: linear-gradient(145deg, rgba(255,255,255,.09), rgba(255,255,255,.035));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+    transition: transform 0.3s ease, border-color .3s ease, background .3s ease;
 }
 
 .stat-item:hover {
     transform: translateY(-5px);
+    border-color: rgba(246,200,78,.34);
+    background: linear-gradient(145deg, rgba(246,200,78,.14), rgba(255,255,255,.04));
 }
 
 .stat-number {
@@ -183,6 +238,7 @@
     color: #cfd2d6;
     font-size: 1.1rem;
     font-weight: 500;
+    line-height: 1.3;
 }
 
 .filter-tabs {
@@ -335,6 +391,11 @@
   transform: translateY(12px);
 }
 
+.before-after-slider.is-composite::before,
+.before-after-slider.is-composite::after {
+    display: none;
+}
+
 .before-img, .after-img {
     position: absolute;
     top: 0;
@@ -385,10 +446,19 @@
 /* Grid layout fix - cards lado a lado no desktop without gaps */
 #transformations-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
     margin-top: 30px;
-    max-width: 100%;
+    max-width: 1180px;
+    margin-inline: auto;
+}
+
+#transformations-grid > .transformation-item {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin: 0 !important;
+    padding: 0;
 }
 
 @media (max-width: 900px) {
@@ -500,6 +570,21 @@
     margin: 20px 0;
 }
 
+.before-after-comparison.is-composite {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+}
+
+.before-after-comparison.is-composite .comparison-item {
+    width: min(100%, 520px);
+}
+
+.before-after-comparison.is-composite .comparison-img {
+    height: min(70vh, 760px);
+    object-fit: contain;
+    background: #070a10;
+}
+
 .comparison-item {
     text-align: center;
 }
@@ -555,63 +640,111 @@
 
 @media (max-width: 900px) {
     .transformations-hero {
-        padding: 64px 0 48px;
+        min-height: 0;
+        padding: 46px 0 34px;
+        margin-bottom: 18px;
+        border-radius: 0 0 20px 20px;
+        background-position: center 38%;
     }
 
-    .transformations-hero .lead {
+    .transformations-hero::before {
+        background:
+          linear-gradient(180deg, rgba(4,7,12,.72) 0%, rgba(4,7,12,.66) 30%, rgba(4,7,12,.9) 100%),
+          linear-gradient(90deg, rgba(4,7,12,.38), rgba(4,7,12,.3));
+    }
+
+    .transformations-hero-layout {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        min-height: 0;
+    }
+
+    .transformations-hero-copy {
+        text-align: center;
+    }
+
+    .transformations-hero-copy h1 {
         max-width: 100%;
+        margin-bottom: 14px !important;
+        font-size: clamp(2.25rem, 9vw, 3.25rem);
+        line-height: 1.02;
+        letter-spacing: -.035em;
+    }
+
+    .transformations-hero-copy .lead {
+        max-width: 34ch;
+        margin-inline: auto !important;
+        font-size: 1rem;
+        line-height: 1.5;
         overflow-wrap: anywhere;
     }
 
     .stats-row {
-        padding: 1rem;
+        padding: 10px;
         margin-left: 0;
         margin-right: 0;
         max-width: 100%;
+        border-radius: 18px;
     }
 
     .stats-row .row {
-        --bs-gutter-x: 0.75rem;
-        --bs-gutter-y: 0.75rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
         margin-left: 0;
         margin-right: 0;
     }
 
+    .stats-row .col-md-3,
     .stats-row .col-6 {
-        flex: 0 0 100%;
-        max-width: 100%;
-        width: 100%;
+        flex: none;
+        max-width: none;
+        width: auto;
+        padding: 0;
     }
 
     .stats-row .stat-item {
         min-width: 0;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
+        min-height: 112px;
+        padding: 14px 8px;
+        border-radius: 13px;
     }
 
     .filter-tabs {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 10px;
-        padding: 0;
-        max-width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        gap: 8px;
+        margin: 10px 0 22px;
+        padding: 2px 2px 10px;
+        max-width: none;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(246,200,78,.45) transparent;
     }
 
     .filter-btn {
-        width: 100%;
-        padding: 10px 18px;
-        font-size: 0.9rem;
-        max-width: 100%;
-        white-space: normal;
+        flex: 0 0 auto;
+        width: auto;
+        min-height: 44px;
+        padding: 10px 16px;
+        font-size: 0.84rem;
+        max-width: none;
+        white-space: nowrap;
     }
 
     .stat-number {
-        font-size: 2.5rem;
+        font-size: 2.15rem;
+        margin-bottom: 7px;
+    }
+
+    .stat-label {
+        font-size: .8rem;
     }
 
     .transformation-stats {
-        flex-direction: column;
-        gap: 10px;
+        gap: 6px;
+        padding: 10px 6px;
     }
 
     .before-after-comparison {
@@ -622,6 +755,82 @@
     .transformation-item,
     .transformation-card {
         min-width: 0;
+    }
+
+    .transformations-results-section {
+        padding: 26px 14px 64px;
+    }
+
+    #transformations-grid {
+        gap: 18px;
+        margin-top: 0;
+    }
+
+    .before-after-container {
+        height: clamp(280px, 88vw, 360px);
+    }
+
+    .transformation-info {
+        padding: 18px;
+    }
+
+    .transformation-story {
+        font-size: .94rem;
+        line-height: 1.55;
+    }
+
+    .transformation-overlay {
+        top: 10px;
+        left: 10px;
+        max-width: calc(100% - 20px);
+        padding: 7px 12px;
+        font-size: .78rem;
+    }
+}
+
+@media (min-width: 901px) {
+    .transformations-results-section {
+        padding-top: 48px;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .transformation-card:hover,
+    .transformation-card.is-visible:hover {
+        transform: translateY(0);
+    }
+
+    .transformation-card:hover .after-img {
+        opacity: 0;
+    }
+
+    .transformation-card:hover .before-img {
+        transform: none;
+        filter: none;
+    }
+
+    .transformation-card:hover .before-after-slider::before {
+        opacity: 1;
+        transform: none;
+    }
+
+    .transformation-card:hover .before-after-slider::after {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    .transformation-card:hover .before-after-container::after {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .transformations-hero::after,
+    .stat-item,
+    .filter-btn,
+    .transformation-card {
+        animation: none !important;
+        transition-duration: .01ms !important;
     }
 }
 </style>
@@ -672,9 +881,11 @@ window.addEventListener('load', function() {
 <!-- Hero Section -->
 <section class="transformations-hero">
   <div class="container">
-    <div class="text-center">
+    <div class="transformations-hero-layout">
+      <div class="transformations-hero-copy">
       <h1 class="title-gradient text-glow mb-4" data-i18n="transformations.title">Client Transformations</h1>
       <p class="lead mb-4" data-i18n="transformations.subtitle">Real people. Real results. See what's possible with evidence-based coaching.</p>
+      </div>
 
       <!-- Success Statistics -->
       <div class="stats-row">
@@ -710,7 +921,7 @@ window.addEventListener('load', function() {
 </section>
 
 <!-- Filter Tabs -->
-<section class="section">
+<section class="section transformations-results-section">
   <div class="container">
     <div class="filter-tabs">
       <button class="filter-btn active" data-filter="all">
@@ -736,6 +947,74 @@ window.addEventListener('load', function() {
     <!-- Transformations Grid -->
   <div class="transformations-grid" id="transformations-grid">
     <!-- All transformation-item cards will be rendered here by JS, no duplicates, unified grid. -->
+      <!-- Ana Paula - 3 Month Weight Loss -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="weight-loss">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Ana Paula" data-story="Ana Paula completed a focused three-month transformation, losing 10kg through structured training, practical nutrition targets, and consistent weekly accountability. She also rebuilt her energy, confidence, and a routine she could sustain."
+             data-before="assets/images/transformations/ana-paula-transformation.jpg" data-after="assets/images/transformations/ana-paula-transformation.jpg"
+             data-composite="true" data-weight-lost="10" data-timeline="3 months">
+          <div class="before-after-container">
+            <div class="transformation-overlay">10kg Lost in 3 Months</div>
+            <div class="before-after-slider">
+              <img src="assets/images/transformations/ana-paula-transformation.jpg" alt="Ana Paula before and after her three-month transformation" class="before-img" style="object-position:center 48%">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Ana Paula</h3>
+            <div class="timeline-badge"><span>3 Months</span></div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">10</div>
+                <div class="stat-unit">kg Lost</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">3</div>
+                <div class="stat-unit">Months</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">Weekly</div>
+                <div class="stat-unit">Check-ins</div>
+              </div>
+            </div>
+            <p class="transformation-story">Ana Paula combined structured training, practical nutrition and weekly accountability to lose 10kg in three months while building energy, confidence and sustainable habits.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Isabella - 2 Year Body Recomposition -->
+      <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
+        <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
+             data-client="Isabella" data-story="Across two years of coaching, Isabella achieved a complete body recomposition through personalised training, intelligent progression, proper recovery, and long-term consistency—building lean muscle, strength, confidence, and control over her training."
+             data-before="assets/images/transformations/isabella-transformation.jpg" data-after="assets/images/transformations/isabella-transformation.jpg"
+             data-composite="true" data-muscle="Lean muscle gained" data-timeline="2 years">
+          <div class="before-after-container">
+            <div class="transformation-overlay">2-Year Body Recomposition</div>
+            <div class="before-after-slider">
+              <img src="assets/images/transformations/isabella-transformation.jpg" alt="Isabella before and after her two-year body recomposition" class="before-img" style="object-position:center 39%">
+            </div>
+          </div>
+          <div class="transformation-info">
+            <h3 class="client-name">Isabella</h3>
+            <div class="timeline-badge"><span>2 Years</span></div>
+            <div class="transformation-stats">
+              <div class="stat-item-small">
+                <div class="stat-value">2</div>
+                <div class="stat-unit">Years</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">Lean</div>
+                <div class="stat-unit">Muscle Gained</div>
+              </div>
+              <div class="stat-item-small">
+                <div class="stat-value">Stronger</div>
+                <div class="stat-unit">Performance</div>
+              </div>
+            </div>
+            <p class="transformation-story">Isabella's two-year coaching journey focused on intelligent progression, recovery and consistency—producing a complete body recomposition with more lean muscle, strength and confidence.</p>
+          </div>
+        </div>
+      </div>
+
       <!-- Conrad N. - 12 Week Recomposition -->
       <div class="col-lg-6 col-md-6 mb-4 transformation-item" data-category="body-recomp">
      <div class="transformation-card" data-bs-toggle="modal" data-bs-target="#transformationModal"
@@ -1568,8 +1847,8 @@ window.addEventListener('load', function() {
 <script defer src="js/core/supabase-config.js"></script>
 <script defer src="js/app.js"></script>
 <script defer src="js/components/lightbox.js"></script>
-<script defer src="js/transformations-enhanced.js?v=2026061202"></script>
-<script defer src="js/components/newsletter-manager.js?v=20260704a"></script>
+<script defer src="js/transformations-enhanced.js?v=20260723"></script>
+<script defer src="js/components/newsletter-manager.js?v=20260723"></script>
 <script defer src="js/core/auth.js"></script>
 <script defer src="js/auth-guard.js?v=20251025"></script>
 </body></html>

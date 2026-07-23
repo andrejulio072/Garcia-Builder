@@ -1,8 +1,8 @@
-// 25 testimonials: 15 identified and 10 anonymous.
+// 27 testimonials: 17 identified and 10 anonymous.
 // Each item: { id, name, text, textKey (for i18n), categories[], rating, imageUrl?, anonymous }
 
 window.GB_TESTIMONIALS = [
-  // Identified (15)
+  // Identified (17)
   { id: 1, name: "Conrad NorNam", textKey: "testimonial.conrad", text: "Andre rebuilt my training around 60-hour workweeks. We dropped 9kg of fat, added lean muscle, and my shoulders are pain-free for the first time in years.", categories: ["body-recomp", "muscle-gain", "identified"], rating: 5, imageUrl: "assets/images/avatars/conrad-2025.jpg" },
   { id: 2, name: "Lucas Almeida", textKey: "testimonial.lucas", text: "I tried every plan on my own and kept quitting after two weeks. Andre gave me structure, habits I could actually follow and honest feedback. I lost inches from my waist and, more importantly, I feel capable again.", categories: ["weight-loss", "transformation", "identified"], rating: 5, imageUrl: "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?w=300&h=300&fit=crop" },
   { id: 3, name: "Noah Williams", textKey: "testimonial.noah", text: "Sleep, stress, and steps became part of the plan. The holistic view is what finally made my results stick.", categories: ["lifestyle", "health", "identified"], rating: 5, imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop" },
@@ -18,6 +18,8 @@ window.GB_TESTIMONIALS = [
   { id: 13, name: "Ana Morales", textKey: "testimonial.ana", text: "We fixed my shoulder impingement while building my first pull-up. Coaching is detailed and encouraging at the same time.", categories: ["muscle-gain", "health", "identified"], rating: 5, imageUrl: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=300&h=300&fit=crop" },
   { id: 14, name: "Emma Johansson", textKey: "testimonial.emma", text: "I finally enjoy cooking again. The weekly recipes and shopping lists took away decision fatigue and helped me stay on track.", categories: ["weight-loss", "health", "identified"], rating: 5, imageUrl: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=300&h=300&fit=crop" },
   { id: 15, name: "Sofia Martins", textKey: "testimonial.sofia", text: "Nutrition was always my struggle. Andre flexible approach removed guilt.", categories: ["health", "weight-loss", "identified"], rating: 5, imageUrl: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=300&h=300&fit=crop" },
+  { id: 26, name: "Ana Paula", text: "Ana Paula completed a focused three-month transformation, losing 10kg through structured training, practical nutrition targets, and consistent weekly accountability. She also rebuilt her energy, confidence, and a routine she could sustain.", categories: ["weight-loss", "transformation", "lifestyle", "identified"], rating: 5 },
+  { id: 27, name: "Isabella", text: "Across two years of coaching, Isabella achieved a complete body recomposition through personalised training, intelligent progression, recovery, and long-term consistency—building lean muscle, strength, confidence, and control over her training.", categories: ["transformation", "muscle-gain", "performance", "identified"], rating: 5 },
 
   // Anonymous (10)
   { id: 16, name: "Anonymous", textKey: "testimonial.anon1", text: "Finally consistent after years of stops and starts.", categories: ["anonymous", "lifestyle"], rating: 5 },

@@ -304,16 +304,16 @@ const INLINE_FALLBACKS = {
 
     <div class="gb-menu" id="gb-menu">
         <div class="gb-menu-inner">
+            <div class="gb-menu-actions" aria-label="Priority actions">
+                <a href="/consultation" class="gb-menu-action gb-menu-action--primary" data-i18n="nav.consultation" data-button-location="mobile_menu">Book Consultation</a>
+                <a href="#" class="gb-menu-action gb-menu-action--secondary" data-i18n="nav.packages" data-gb-nav="packages.html">Packages</a>
+            </div>
+
             <nav class="gb-menu-links" role="menubar">
                 <a href="#" class="gb-menu-link" data-i18n="nav.home" role="menuitem" data-gb-nav="index.html">Home</a>
-                <span class="gb-menu-section-label" data-i18n="nav.group_start" role="presentation">Start here</span>
                 <a href="#" class="gb-menu-link" data-i18n="nav.online_coaching" role="menuitem" data-gb-nav="online-coaching.html">Online Coaching</a>
-                <a href="#" class="gb-menu-link" data-i18n="nav.packages" role="menuitem" data-gb-nav="packages.html">Packages</a>
-                <a href="/consultation" class="gb-menu-link gb-menu-link--cta" data-i18n="nav.consultation" role="menuitem" data-button-location="mobile_menu">Book Consultation</a>
-                <span class="gb-menu-section-label" data-i18n="nav.group_results" role="presentation">Results</span>
                 <a href="#" class="gb-menu-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="transformations.html">Transformations</a>
                 <a href="#" class="gb-menu-link" data-i18n="nav.testi" role="menuitem" data-gb-nav="testimonials.html">Testimonials</a>
-                <span class="gb-menu-section-label" data-i18n="nav.group_explore" role="presentation">Explore</span>
                 <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.workouts" role="menuitem" data-gb-nav="workouts.html">Workouts</a>
                 <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.nutrition_calculator" role="menuitem" data-gb-nav="nutrition-calculator.html">Nutrition Calculator</a>
                 <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.blog" role="menuitem" data-gb-nav="blog.html">Blog</a>
@@ -542,6 +542,7 @@ function initializeNavbar() {
         }
 
         console.log('[Component Loader] ✓ Navbar elements found! Initializing...');
+        normalizeMobileDrawerStructure();
 
         // Remove any existing listeners (prevent duplicates)
         const newMenuToggle = menuToggle.cloneNode(true);
@@ -570,7 +571,7 @@ function initializeNavbar() {
             }
         });
 
-        const menuLinks = menu.querySelectorAll('.gb-menu-link');
+        const menuLinks = menu.querySelectorAll('.gb-menu-link, .gb-menu-action');
         const desktopLinks = document.querySelectorAll('.gb-navbar-links .gb-navbar-link');
         console.log('[Component Loader] Found', menuLinks.length, 'menu links and', desktopLinks.length, 'desktop links');
 
@@ -585,6 +586,22 @@ function initializeNavbar() {
                 }
                 document.body.style.overflow = '';
             });
+        });
+
+        menu.addEventListener('click', function(e) {
+            const clickedMenuLink = e.target.closest('.gb-menu-link, .gb-menu-action');
+            if (!clickedMenuLink) {
+                return;
+            }
+
+            const currentMenu = document.getElementById('gb-menu');
+            const currentToggle = document.getElementById('gb-menu-toggle');
+            if (currentMenu) currentMenu.classList.remove('active');
+            if (currentToggle) {
+                currentToggle.classList.remove('active');
+                currentToggle.setAttribute('aria-expanded', 'false');
+            }
+            document.body.style.overflow = '';
         });
 
         const normalizePath = (rawPath) => {
@@ -717,7 +734,94 @@ function ensureNavbarLogoPath(logoEl) {
     }
 }
 
+const MOBILE_MENU_ACTIONS = [
+    {
+        text: 'Book Consultation',
+        i18n: 'nav.consultation',
+        href: '/consultation',
+        className: 'gb-menu-action gb-menu-action--primary',
+        buttonLocation: 'mobile_menu'
+    },
+    {
+        text: 'Packages',
+        i18n: 'nav.packages',
+        nav: 'packages.html',
+        className: 'gb-menu-action gb-menu-action--secondary'
+    }
+];
+
+const MOBILE_MENU_LINKS = [
+    { text: 'Home', i18n: 'nav.home', nav: 'index.html', className: 'gb-menu-link' },
+    { text: 'Online Coaching', i18n: 'nav.online_coaching', nav: 'online-coaching.html', className: 'gb-menu-link' },
+    { text: 'Transformations', i18n: 'nav.trans', nav: 'transformations.html', className: 'gb-menu-link' },
+    { text: 'Testimonials', i18n: 'nav.testi', nav: 'testimonials.html', className: 'gb-menu-link' },
+    { text: 'Workouts', i18n: 'nav.workouts', nav: 'workouts.html', className: 'gb-menu-link gb-menu-link--secondary' },
+    { text: 'Nutrition Calculator', i18n: 'nav.nutrition_calculator', nav: 'nutrition-calculator.html', className: 'gb-menu-link gb-menu-link--secondary' },
+    { text: 'Blog', i18n: 'nav.blog', nav: 'blog.html', className: 'gb-menu-link gb-menu-link--secondary' },
+    { text: 'About', i18n: 'nav.about', nav: 'about.html', className: 'gb-menu-link gb-menu-link--secondary' },
+    { text: 'FAQ', i18n: 'nav.faq', nav: 'faq.html', className: 'gb-menu-link gb-menu-link--secondary' },
+    { text: 'Contact', i18n: 'nav.contact', nav: 'contact.html', className: 'gb-menu-link gb-menu-link--secondary' }
+];
+
+function createNavbarAnchor(item, includeMenuRole) {
+    const anchor = document.createElement('a');
+    anchor.className = item.className;
+    anchor.textContent = item.text;
+    if (item.i18n) {
+        anchor.setAttribute('data-i18n', item.i18n);
+    }
+    if (item.nav) {
+        anchor.setAttribute('data-gb-nav', item.nav);
+        anchor.href = resolveNavHref(item.nav);
+    } else {
+        anchor.href = item.href;
+    }
+    if (item.buttonLocation) {
+        anchor.setAttribute('data-button-location', item.buttonLocation);
+    }
+    if (includeMenuRole) {
+        anchor.setAttribute('role', 'menuitem');
+    }
+    return anchor;
+}
+
+function normalizeMobileDrawerStructure() {
+    const menu = document.getElementById('gb-menu');
+    const menuInner = menu ? menu.querySelector('.gb-menu-inner') : null;
+    const menuLinks = menu ? menu.querySelector('.gb-menu-links') : null;
+    if (!menu || !menuInner || !menuLinks) {
+        return;
+    }
+
+    let actions = menu.querySelector('.gb-menu-actions');
+    if (!actions) {
+        actions = document.createElement('div');
+        actions.className = 'gb-menu-actions';
+        actions.setAttribute('aria-label', 'Priority actions');
+        menuInner.insertBefore(actions, menuLinks);
+    }
+
+    actions.replaceChildren(...MOBILE_MENU_ACTIONS.map(item => createNavbarAnchor(item, false)));
+    menuLinks.replaceChildren(...MOBILE_MENU_LINKS.map(item => createNavbarAnchor(item, true)));
+    menu.querySelectorAll('.gb-menu-section-label').forEach(label => label.remove());
+
+    const currentProjectPath = getCurrentProjectPath();
+    menu.querySelectorAll('.gb-menu-link, .gb-menu-action').forEach(anchor => {
+        const navTarget = anchor.getAttribute('data-gb-nav');
+        if (!navTarget) {
+            return;
+        }
+
+        const targetPath = navTarget.trim().replace(/^\/+/, '').split('?')[0];
+        if (targetPath && targetPath === currentProjectPath) {
+            anchor.classList.add('active');
+        }
+    });
+}
+
 function ensureNavbarLinks() {
+    normalizeMobileDrawerStructure();
+
     const anchors = document.querySelectorAll('.gb-navbar [data-gb-nav], .gb-footer [data-gb-nav]');
     if (!anchors.length) {
         return;
@@ -1126,6 +1230,12 @@ window.ComponentLoader = {
 
 document.addEventListener('componentLoaded', normalizeGlobalAssets);
 document.addEventListener('componentLoaded', bindFooterNewsletterForms);
+document.addEventListener('componentLoaded', function(event) {
+    if (event && event.detail && event.detail.componentName === 'navbar') {
+        setTimeout(ensureNavbarLinks, 250);
+        setTimeout(ensureNavbarLinks, 1000);
+    }
+});
 
 // AUTO-INITIALIZE
 console.log('[Component Loader] Document state:', document.readyState);
@@ -1147,6 +1257,7 @@ window.addEventListener('load', function() {
         console.warn('[Component Loader] Safety check - retrying...');
         initComponents();
     }
+    setTimeout(ensureNavbarLinks, 250);
 });
 
 console.log('[Component Loader v3.0] Script loaded successfully!');

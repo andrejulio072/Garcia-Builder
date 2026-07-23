@@ -852,6 +852,22 @@
 
   const renderWorkoutPlan = (plan) => `
     <section class="workout-plan" aria-label="Complete exercise prescription">
+      <header class="workout-plan-brand">
+        <div class="workout-plan-brand-main">
+          <img class="workout-plan-logo" src="assets/images/logo-nobackground-500.png" alt="Garcia Builder Fitness logo" width="88" height="88" loading="lazy">
+          <div>
+            <p class="workout-plan-kicker">Premium workout prescription</p>
+            <h4>Garcia Builder Fitness</h4>
+            <p>Structured plan by Andre Garcia with exercises, sets, reps, rest intervals, coaching notes and progression guidance.</p>
+          </div>
+        </div>
+        <div class="workout-plan-contact" aria-label="Coach contact details">
+          <span>Instagram: @garciabuilder.fitness</span>
+          <span>Phone / WhatsApp: +44 7508 497586</span>
+          <span>Email: inquiries@garciabuilder.fitness</span>
+          <span>Website: www.garciabuilder.fitness</span>
+        </div>
+      </header>
       <h4>Complete sessions</h4>
       <p class="workout-plan-note">${escapeHtml(plan.note)}</p>
       ${plan.sessions.map((session) => `
@@ -884,8 +900,287 @@
           </div>
         </div>
       `).join('')}
+      <footer class="workout-plan-cta">
+        <strong>Want this adapted to your body, schedule and equipment?</strong>
+        <span>Book a consultation or message Andre on WhatsApp to turn this template into a coached plan.</span>
+        <span>calendly.com/andrenjulio072/consultation · instagram.com/garciabuilder.fitness</span>
+      </footer>
     </section>
   `;
+
+  const buildStructuredPlanFromCard = (card, title) => {
+    const goals = card.dataset.goal || '';
+    const place = card.dataset.place || '';
+    const level = card.dataset.level || '';
+    const schedule = card.querySelector('.workout-card-head span:last-child')?.textContent.trim() || '3 sessions per week';
+    const isHome = place.includes('home') && !place.includes('gym');
+    const isAdvanced = level.includes('advanced');
+    const isBeginner = level.includes('beginner') && !level.includes('advanced');
+    const titleLower = title.toLowerCase();
+    const note = `${title} is written as a follow-along ${schedule.toLowerCase()} template. Start with two reps in reserve, log every set, and progress only when the final set still looks clean.`;
+
+    const fullBodyHome = [
+      {
+        title: 'Day 1 - Foundation Strength',
+        meta: '40-50 minutes. Warm up with 5 minutes of easy movement and one lighter round.',
+        exercises: [
+          ['Goblet squat or backpack squat', '3', isBeginner ? '10-12' : '12-15', '60 sec', 'Control the bottom and stand tall.'],
+          ['Incline push-up or floor press', '3', '8-12', '60 sec', 'Stop before your hips sag.'],
+          ['One-arm dumbbell or backpack row', '3', '10-12/side', '45 sec', 'Pull elbow toward hip.'],
+          ['Glute bridge or hip thrust', '3', '12-15', '45 sec', 'Pause for 1 second at the top.'],
+          ['Dead bug', '3', '8-10/side', '30 sec', 'Keep ribs down and move slowly.']
+        ]
+      },
+      {
+        title: 'Day 2 - Conditioning and Core',
+        meta: '30-40 minutes. Keep the pace repeatable, not chaotic.',
+        exercises: [
+          ['Reverse lunge or step-back squat', '3', '8-10/side', '60 sec', 'Use support if balance limits form.'],
+          ['Dumbbell Romanian deadlift', '3', '10-12', '60 sec', 'Hips back, soft knees.'],
+          ['Shoulder tap or plank', '3', '20-35 sec', '35 sec', 'Keep hips quiet.'],
+          ['Low-impact cardio interval', '8', '30 sec brisk / 60 sec easy', 'Built in', 'Breathe hard but stay controlled.'],
+          ['Easy cooldown walk', '1', '5 min', 'None', 'Finish with nasal breathing if possible.']
+        ]
+      },
+      {
+        title: 'Day 3 - Progression Circuit',
+        meta: '35-45 minutes. Add load or reps only after completing all rounds cleanly.',
+        exercises: [
+          ['Split squat', '3', '8-10/side', '60 sec', 'Long stance and upright chest.'],
+          ['Pike push-up or dumbbell press', '3', '8-10', '60 sec', 'Press without shrugging.'],
+          ['Band row or towel row', '3', '12-15', '45 sec', 'Squeeze shoulder blades together.'],
+          ['Suitcase carry or march', '4', '30-40 sec/side', '45 sec', 'Do not lean.'],
+          ['Side plank', '3', '20-30 sec/side', '30 sec', 'Straight line from shoulder to ankle.']
+        ]
+      }
+    ];
+
+    const gymStrength = [
+      {
+        title: 'Day 1 - Squat and Push',
+        meta: '55-70 minutes. Use 2-3 warm-up sets before the first main lift.',
+        exercises: [
+          ['Back squat or leg press', isAdvanced ? '5' : '4', isAdvanced ? '3-5' : '6-8', '2 min', 'Same depth on every rep.'],
+          ['Bench press or machine chest press', '4', isBeginner ? '8-10' : '5-8', '90 sec', 'Brace and keep shoulder blades set.'],
+          ['Seated row', '3', '10-12', '75 sec', 'Pause at the ribs.'],
+          ['Walking lunge', '3', '8-10/side', '75 sec', 'Control the knee and hip.'],
+          ['Pallof press', '3', '10/side', '35 sec', 'Resist rotation.']
+        ]
+      },
+      {
+        title: 'Day 2 - Hinge and Pull',
+        meta: '55-70 minutes. Keep heavy reps crisp and avoid grinding.',
+        exercises: [
+          ['Deadlift or Romanian deadlift', isAdvanced ? '5' : '4', isAdvanced ? '3-5' : '6-8', '2-3 min', 'Brace before the bar moves.'],
+          ['Lat pulldown or pull-up', '4', '6-10', '90 sec', 'Drive elbows down.'],
+          ['Dumbbell incline press', '3', '8-10', '75 sec', 'Use a full but pain-free range.'],
+          ['Leg curl', '3', '10-12', '60 sec', 'Squeeze for 1 second.'],
+          ['Farmer carry', '4', '30-40 m', '60 sec', 'Walk tall and controlled.']
+        ]
+      },
+      {
+        title: 'Day 3 - Volume Builder',
+        meta: '50-65 minutes. Moderate loads, clean reps, shorter rests.',
+        exercises: [
+          ['Front squat or hack squat', '3', '8-10', '90 sec', 'Keep torso position consistent.'],
+          ['Overhead press', '3', '6-10', '90 sec', 'Ribs down and glutes tight.'],
+          ['Chest-supported row', '3', '10-12', '75 sec', 'No torso swing.'],
+          ['Hip thrust', '3', '10-12', '75 sec', 'Hard pause at lockout.'],
+          ['Bike or rower intervals', '6', '30 sec hard / 75 sec easy', 'Built in', 'Strong effort without losing rhythm.']
+        ]
+      }
+    ];
+
+    const hypertrophy = [
+      {
+        title: 'Day 1 - Upper Muscle',
+        meta: '55-65 minutes. Most sets should finish 1-2 reps before failure.',
+        exercises: [
+          ['Incline dumbbell press', '4', '8-12', '75 sec', 'Deep stretch, smooth press.'],
+          ['Chest-supported row', '4', '8-12', '75 sec', 'Pause each rep.'],
+          ['Machine shoulder press', '3', '8-10', '75 sec', 'Do not shorten the range.'],
+          ['Lat pulldown', '3', '10-12', '60 sec', 'Pull to upper chest.'],
+          ['Lateral raise', '3', '12-20', '45 sec', 'Lead with elbows.']
+        ]
+      },
+      {
+        title: 'Day 2 - Lower Muscle',
+        meta: '55-65 minutes. Chase stable reps before load jumps.',
+        exercises: [
+          ['Hack squat or leg press', '4', '8-12', '90 sec', 'Use full foot pressure.'],
+          ['Romanian deadlift', '4', '8-10', '90 sec', 'Feel hamstrings stretch.'],
+          ['Bulgarian split squat', '3', '8-10/side', '75 sec', 'Keep hips square.'],
+          ['Leg curl', '3', '10-15', '60 sec', 'Control the negative.'],
+          ['Standing calf raise', '4', '10-15', '45 sec', 'Pause top and bottom.']
+        ]
+      },
+      {
+        title: 'Day 3 - Pump and Balance',
+        meta: '45-60 minutes. Short rests, no rushed technique.',
+        exercises: [
+          ['Cable fly', '3', '12-15', '45 sec', 'Squeeze around the rib cage.'],
+          ['Single-arm cable row', '3', '10-12/side', '60 sec', 'Reach then pull low.'],
+          ['Rear delt fly', '3', '15-20', '45 sec', 'Keep traps quiet.'],
+          ['Cable curl plus rope pressdown', '3', '12-15 each', '45 sec', 'Full range on both movements.'],
+          ['Loaded carry or incline walk', '1', '8-12 min', 'None', 'Finish with steady breathing.']
+        ]
+      }
+    ];
+
+    const mobility = [
+      {
+        title: 'Day 1 - Hips, Ankles and Core',
+        meta: '30-40 minutes. Move slowly and keep all ranges pain-free.',
+        exercises: [
+          ['90/90 hip switch', '3', '8/side', '20 sec', 'Keep chest tall.'],
+          ['Knee-to-wall ankle rocks', '3', '10/side', '20 sec', 'Heel stays down.'],
+          ['Goblet squat pry', '3', '30 sec', '30 sec', 'Breathe at the bottom.'],
+          ['Dead bug', '3', '8-10/side', '30 sec', 'Exhale before each reach.'],
+          ['Suitcase carry', '3', '30 m/side', '45 sec', 'Stay straight.']
+        ]
+      },
+      {
+        title: 'Day 2 - Upper Back and Shoulders',
+        meta: '25-35 minutes. Ideal before upper body lifting or after desk-heavy days.',
+        exercises: [
+          ['Open book rotation', '2', '8/side', '15 sec', 'Follow hand with eyes.'],
+          ['Wall slide', '3', '10', '30 sec', 'Keep ribs down.'],
+          ['Band face pull', '3', '12-15', '30 sec', 'Pull toward eye level.'],
+          ['Prone Y raise', '3', '10-12', '30 sec', 'Thumbs up.'],
+          ['Side plank reach-through', '3', '8/side', '30 sec', 'Rotate under control.']
+        ]
+      },
+      {
+        title: 'Day 3 - Joint-Friendly Strength',
+        meta: '35-45 minutes. Use light to moderate load and perfect control.',
+        exercises: [
+          ['Tempo goblet squat', '3', '8-10', '60 sec', 'Three seconds down.'],
+          ['Incline push-up', '3', '8-12', '60 sec', 'Shoulders away from ears.'],
+          ['Cable or band row', '3', '10-12', '60 sec', 'Pause without shrugging.'],
+          ['Glute bridge march', '3', '8/side', '45 sec', 'Keep hips level.'],
+          ['Easy bike or walk', '1', '10 min', 'None', 'Low-impact finish.']
+        ]
+      }
+    ];
+
+    const endurance = [
+      {
+        title: 'Day 1 - Strength Support',
+        meta: '45-55 minutes. Lift before hard running or on a separate day.',
+        exercises: [
+          ['Trap bar deadlift or Romanian deadlift', '3', '5-8', '2 min', 'Powerful but not maximal.'],
+          ['Split squat', '3', '8/side', '75 sec', 'Stable knee and hip.'],
+          ['Dumbbell bench press', '3', '8-10', '75 sec', 'Controlled tempo.'],
+          ['Cable row', '3', '10-12', '60 sec', 'Pause at ribs.'],
+          ['Pallof press', '3', '10/side', '35 sec', 'Stay square.']
+        ]
+      },
+      {
+        title: 'Day 2 - Aerobic Base',
+        meta: '35-50 minutes. Stay conversational for most of the work.',
+        exercises: [
+          ['Run, bike or row', '1', isBeginner ? '25-35 min' : '35-45 min', 'None', 'Zone 2 effort.'],
+          ['Walking lunge', '2', '10/side', '60 sec', 'Controlled stride.'],
+          ['Calf raise', '3', '12-15', '45 sec', 'Full range.'],
+          ['Side plank', '3', '25-35 sec/side', '30 sec', 'Keep hips stacked.'],
+          ['Cooldown walk', '1', '5 min', 'None', 'Bring breathing down.']
+        ]
+      },
+      {
+        title: 'Day 3 - Intervals and Resilience',
+        meta: '35-45 minutes. Keep fast reps repeatable.',
+        exercises: [
+          ['Run, bike or row intervals', isAdvanced ? '10' : '8', '45 sec hard / 75 sec easy', 'Built in', 'Fast but technically clean.'],
+          ['Step-up', '3', '8/side', '60 sec', 'Drive through the full foot.'],
+          ['Single-leg Romanian deadlift', '3', '8/side', '60 sec', 'Hips square.'],
+          ['Hollow hold', '3', '20-30 sec', '35 sec', 'Low back down.'],
+          ['Mobility cooldown', '1', '6 min', 'None', 'Hips, calves and t-spine.']
+        ]
+      }
+    ];
+
+    const athletic = [
+      {
+        title: 'Day 1 - Power and Lower Strength',
+        meta: '55-70 minutes. Every explosive rep should look fast.',
+        exercises: [
+          ['Box jump or broad jump', '5', '3 reps', '60 sec', 'Reset fully between jumps.'],
+          ['Trap bar deadlift', '4', isAdvanced ? '3-5' : '5-6', '2 min', 'Fast up, controlled down.'],
+          ['Front-foot elevated split squat', '3', '8/side', '75 sec', 'Own the bottom position.'],
+          ['Hamstring curl', '3', '10-12', '60 sec', 'Slow negative.'],
+          ['Sled push or incline sprint', '6', '15-20 sec', '75 sec', 'Stop before speed drops hard.']
+        ]
+      },
+      {
+        title: 'Day 2 - Upper Strength and Trunk',
+        meta: '50-65 minutes. Strong presses and pulls with braced positions.',
+        exercises: [
+          ['Bench press or push press', '4', '5-8', '90 sec', 'Explode without losing control.'],
+          ['Pull-up or lat pulldown', '4', '6-10', '90 sec', 'Full reach then pull.'],
+          ['Single-arm row', '3', '10/side', '60 sec', 'No torso twist.'],
+          ['Medicine ball slam', '5', '5 reps', '45 sec', 'Power from hips and trunk.'],
+          ['Farmer carry', '4', '30-40 m', '60 sec', 'Tall posture.']
+        ]
+      },
+      {
+        title: 'Day 3 - Repeat Sprint Conditioning',
+        meta: '35-50 minutes. Quality beats exhaustion.',
+        exercises: [
+          ['Acceleration drill', '6', '10-20 m', '60 sec', 'Crisp start and relaxed shoulders.'],
+          ['Bike, rower or shuttle intervals', '8', '20 sec hard / 80 sec easy', 'Built in', 'Repeat the same output each round.'],
+          ['Lateral lunge', '3', '8/side', '60 sec', 'Load the hip.'],
+          ['Plank shoulder tap', '3', '20 taps', '35 sec', 'Keep hips steady.'],
+          ['Mobility cooldown', '1', '8 min', 'None', 'Hips, ankles and upper back.']
+        ]
+      }
+    ];
+
+    const travel = [
+      {
+        title: 'Day 1 - Hotel Full Body',
+        meta: '25-40 minutes. Complete in a small room with bodyweight, bands or a backpack.',
+        exercises: [
+          ['Tempo squat', '4', '12-15', '45 sec', 'Three seconds down.'],
+          ['Push-up variation', '4', '8-15', '45 sec', 'Elevate hands if needed.'],
+          ['Backpack row or band row', '4', '12-15', '45 sec', 'Squeeze at the top.'],
+          ['Reverse lunge', '3', '10/side', '45 sec', 'Long controlled step.'],
+          ['Plank', '3', '30-45 sec', '30 sec', 'Brace like a hard exhale.']
+        ]
+      },
+      {
+        title: 'Day 2 - Travel Conditioning',
+        meta: '20-35 minutes. Use low noise if training in a hotel.',
+        exercises: [
+          ['Step-up, stairs or brisk walk', '1', '10-15 min', 'None', 'Steady pace.'],
+          ['Backpack Romanian deadlift', '3', '12-15', '45 sec', 'Hips back.'],
+          ['Band pull-apart', '3', '15-20', '30 sec', 'Keep shoulders down.'],
+          ['Mountain climber or dead bug', '3', '30 sec', '30 sec', 'Choose the version you can control.'],
+          ['Suitcase carry with bag', '4', '30 sec/side', '30 sec', 'Do not lean.']
+        ]
+      },
+      {
+        title: 'Day 3 - Express Strength',
+        meta: '20-30 minutes. Use when time is tight.',
+        exercises: [
+          ['Split squat', '3', '10/side', '45 sec', 'Smooth reps.'],
+          ['Pike push-up or band press', '3', '8-12', '45 sec', 'Press cleanly.'],
+          ['Band row', '3', '12-15', '35 sec', 'Elbows low.'],
+          ['Glute bridge march', '3', '10/side', '35 sec', 'Hips level.'],
+          ['Easy walk', '1', '8-10 min', 'None', 'Finish with relaxed breathing.']
+        ]
+      }
+    ];
+
+    let sessions = isHome ? fullBodyHome : gymStrength;
+    if (goals.includes('mobility') || titleLower.includes('mobility') || titleLower.includes('joint')) sessions = mobility;
+    if (goals.includes('muscle') || titleLower.includes('hypertrophy') || titleLower.includes('mass')) sessions = isHome ? fullBodyHome : hypertrophy;
+    if (titleLower.includes('run') || titleLower.includes('endurance') || titleLower.includes('hybrid')) sessions = endurance;
+    if (titleLower.includes('athlete') || titleLower.includes('speed') || titleLower.includes('performance')) sessions = athletic;
+    if (titleLower.includes('hotel') || titleLower.includes('travel') || titleLower.includes('band and backpack')) sessions = travel;
+    if (goals.includes('strength') && !isHome && !goals.includes('muscle') && !goals.includes('mobility')) sessions = gymStrength;
+
+    return { note, sessions };
+  };
 
   const setupMenu = () => {
     const menuToggle = document.getElementById('gb-menu-toggle');
@@ -1089,7 +1384,7 @@
     cards.forEach((card) => {
       const title = card.querySelector('h3')?.textContent.trim();
       const detail = card.querySelector('.workout-detail');
-      const plan = workoutPlans[title];
+      const plan = workoutPlans[title] || buildStructuredPlanFromCard(card, title);
       if (!detail || !plan || detail.querySelector('.workout-plan')) return;
       detail.insertAdjacentHTML('beforeend', renderWorkoutPlan(plan));
     });

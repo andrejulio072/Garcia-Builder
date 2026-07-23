@@ -260,7 +260,7 @@ const INLINE_FALLBACKS = {
                 <a href="#" class="gb-navbar-link" data-i18n="nav.home" role="menuitem" data-gb-nav="index.html">Home</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.online_coaching" role="menuitem" data-gb-nav="online-coaching.html">Online Coaching</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.packages" role="menuitem" data-gb-nav="packages.html">Packages</a>
-                <a href="/consultation" class="gb-navbar-link gb-navbar-link--cta" data-i18n="nav.consultation" role="menuitem" data-button-location="desktop_menu">Book Consultation</a>
+                <a href="/consultation.html" class="gb-navbar-link gb-navbar-link--cta" data-i18n="nav.consultation" role="menuitem" data-button-location="desktop_menu">Book Consultation</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="transformations.html">Transformations</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.testi" role="menuitem" data-gb-nav="testimonials.html">Testimonials</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.workouts" role="menuitem" data-gb-nav="workouts.html">Workouts</a>
@@ -309,7 +309,7 @@ const INLINE_FALLBACKS = {
                 <span class="gb-menu-section-label" data-i18n="nav.group_start">Start Here</span>
                 <a href="#" class="gb-menu-link" data-i18n="nav.online_coaching" role="menuitem" data-gb-nav="online-coaching.html">Online Coaching</a>
                 <a href="#" class="gb-menu-link" data-i18n="nav.packages" role="menuitem" data-gb-nav="packages.html">Packages</a>
-                <a href="/consultation" class="gb-menu-link gb-menu-link--cta" data-i18n="nav.consultation" role="menuitem" data-button-location="mobile_menu">Book Consultation</a>
+                <a href="/consultation.html" class="gb-menu-link gb-menu-link--cta" data-i18n="nav.consultation" role="menuitem" data-button-location="mobile_menu">Book Consultation</a>
                 <span class="gb-menu-section-label" data-i18n="nav.group_results">Results</span>
                 <a href="#" class="gb-menu-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="transformations.html">Transformations</a>
                 <a href="#" class="gb-menu-link" data-i18n="nav.testi" role="menuitem" data-gb-nav="testimonials.html">Testimonials</a>
@@ -377,12 +377,12 @@ const INLINE_FALLBACKS = {
                 <li><a href="#" data-gb-nav="28-day-fat-loss-kickstart.html">Free 28-Day Fat Loss Kickstart</a></li>
                 <li><a href="#" data-gb-nav="contact.html">Contact</a></li>
                 <li><a href="#" data-gb-nav="apply.html">Apply for Coaching</a></li>
-                <li><a href="/consultation" data-button-location="footer">Book a Call</a></li>
+                <li><a href="/consultation.html" data-button-location="footer">Book a Call</a></li>
             </ul>
             <div class="footer-follow">
                 <span class="footer-subhead">Follow us</span>
                 <a href="https://instagram.com/garciabuilder.fitness" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="/consultation" data-button-location="footer" aria-label="Schedule a free consultation"><i class="fas fa-calendar-check"></i></a>
+                <a href="/consultation.html" data-button-location="footer" aria-label="Schedule a free consultation"><i class="fas fa-calendar-check"></i></a>
             </div>
         </div>
         <div class="gb-footer-col gb-footer-newsletter">
@@ -739,7 +739,7 @@ const MOBILE_MENU_ITEMS = [
     { type: 'label', text: 'Start Here', i18n: 'nav.group_start' },
     { type: 'link', text: 'Online Coaching', i18n: 'nav.online_coaching', nav: 'online-coaching.html', className: 'gb-menu-link' },
     { type: 'link', text: 'Packages', i18n: 'nav.packages', nav: 'packages.html', className: 'gb-menu-link' },
-    { type: 'link', text: 'Book Consultation', i18n: 'nav.consultation', href: '/consultation', className: 'gb-menu-link gb-menu-link--cta', buttonLocation: 'mobile_menu' },
+    { type: 'link', text: 'Book Consultation', i18n: 'nav.consultation', href: '/consultation.html', className: 'gb-menu-link gb-menu-link--cta', buttonLocation: 'mobile_menu' },
     { type: 'label', text: 'Results', i18n: 'nav.group_results' },
     { type: 'link', text: 'Transformations', i18n: 'nav.trans', nav: 'transformations.html', className: 'gb-menu-link' },
     { type: 'link', text: 'Testimonials', i18n: 'nav.testi', nav: 'testimonials.html', className: 'gb-menu-link' },

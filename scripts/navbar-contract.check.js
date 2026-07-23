@@ -12,7 +12,7 @@ const priorityTargets = [
   'index.html',
   'online-coaching.html',
   'packages.html',
-  '/consultation',
+  '/consultation.html',
   'transformations.html',
   'testimonials.html',
   'workouts.html',
@@ -27,7 +27,7 @@ const drawerTargets = [
   'index.html',
   'online-coaching.html',
   'packages.html',
-  '/consultation',
+  '/consultation.html',
   'transformations.html',
   'testimonials.html',
   'workouts.html',
@@ -52,7 +52,7 @@ function assertPriorityOrder(source, navClass, label, targets = priorityTargets)
   let previousIndex = -1;
 
   for (const target of targets) {
-    const marker = target === '/consultation' ? 'href="/consultation"' : `data-gb-nav="${target}"`;
+    const marker = target === '/consultation.html' ? 'href="/consultation.html"' : `data-gb-nav="${target}"`;
     const currentIndex = navMarkup.indexOf(marker);
     assert.notEqual(currentIndex, -1, `${label} should include ${target}`);
     assert.ok(currentIndex > previousIndex, `${label} should keep ${target} in visitor-priority order`);

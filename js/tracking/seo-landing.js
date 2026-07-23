@@ -121,7 +121,7 @@
         if (data.investmentReadiness === 'Ready Now' && (data.startTimeline === 'Now' || data.startTimeline === 'This Week')) {
           pushEvent('hot_lead', { readiness: 'ready_now', timeline: data.startTimeline });
         }
-        location.assign('/thank-you-application');
+        location.assign('/thank-you-application.html');
       } catch (err) {
         setStatus(form, err.message || 'Something went wrong. Please try again.', true);
         submitting = false;
@@ -167,7 +167,7 @@
         }
         pushEvent('generate_lead', { lead_type: 'ebook' });
         pushEvent('ebook_download', { guide: '28-day-fat-loss-kickstart' });
-        location.assign('/thank-you-ebook');
+        location.assign('/thank-you-ebook.html');
       } catch (err) {
         setStatus(form, err.message || 'Something went wrong. Please try again.', true);
       }

@@ -235,7 +235,7 @@ assert(
 assert(starterPage.includes('name="website"'), 'Starter form should keep the honeypot field');
 assert(starterPage.includes('data-start-assessment'), 'QR landing should keep the assessment start button');
 assert(starterPage.includes('/packages.html?utm_source=business_card'), 'QR landing should link directly to packages');
-assert(starterPage.includes('/start/contact?utm_source=business_card'), 'QR landing should link to the direct contact page');
+assert(starterPage.includes('/start-contact.html?utm_source=business_card'), 'QR landing should link to the direct contact page');
 assert(vercelConfig.includes('"source": "/start/contact"'), 'Vercel should rewrite /start/contact to the QR contact page');
 assert(vercelConfig.includes('"destination": "/start-contact.html"'), 'Vercel should serve start-contact.html for /start/contact');
 assert(starterContactPage.includes('https://wa.me/447508497586'), 'QR contact page should include Andre WhatsApp');
@@ -243,7 +243,7 @@ assert(starterContactPage.includes('https://instagram.com/garciabuilder.fitness'
 assert(starterContactPage.includes('https://calendly.com/andrenjulio072/consultation'), 'QR contact page should include consultation booking');
 assert(starterContactPage.includes('mailto:inquiries@garciabuilder.fitness'), 'QR contact page should include inquiries email');
 assert(starterContactPage.includes('/packages.html?utm_source=business_card'), 'QR contact page should include package link');
-assert(starterContactPage.includes('/start?utm_source=business_card'), 'QR contact page should still link back to the assessment');
+assert(starterContactPage.includes('/start.html?utm_source=business_card'), 'QR contact page should still link back to the assessment');
 assert(fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8').includes('SUBMISSION_WINDOW_MS'), 'Starter submit should keep duplicate-submission throttling');
 assert(starterClient.includes('resourceDelivery?.email'), 'Starter form should preserve the email delivery status before redirecting');
 assert(starterLocales.includes('Email sent. A copy of this workout and nutrition plan is on its way.'), 'Result page should confirm successful email delivery');

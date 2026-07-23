@@ -297,7 +297,7 @@
         } catch(e){ console.warn('fbq lead track failed', e); }
 
         if (!window.__GB_DISABLE_FORM_REDIRECT) {
-          window.location.href = '/thank-you-application';
+          window.location.href = '/thank-you-application.html';
         }
       } else {
         alertBox.classList.remove('visually-hidden');

@@ -1322,7 +1322,7 @@
 
         setTimeout(() => {
           document.body.style.overflow = '';
-          window.location.href = '/thank-you-ebook';
+          window.location.href = '/thank-you-ebook.html';
         }, 700);
 
       } catch (error) {
@@ -1449,7 +1449,7 @@
         form.reset();
       }
 
-      window.location.href = '/thank-you-ebook';
+      window.location.href = '/thank-you-ebook.html';
 
     } catch (error) {
       console.error('Error processing download:', error);

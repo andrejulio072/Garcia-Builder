@@ -234,6 +234,7 @@ img { max-width: 100%; height: auto; display: block; }
   height: 60px;
   border-radius: 16px;
   object-fit: cover;
+  object-position: top center;
   margin: 0 auto 1rem;
   border: 1px solid rgba(248, 224, 142, 0.34);
   box-shadow: 0 12px 24px rgba(0,0,0,0.28);
@@ -255,6 +256,30 @@ img { max-width: 100%; height: auto; display: block; }
   text-transform: uppercase;
   border: 1px solid rgba(248, 224, 142, 0.45);
   box-shadow: 0 12px 24px rgba(0,0,0,0.28);
+}
+
+.testimonial-photo-avatar,
+.spotlight-photo-avatar {
+  border-radius: 16px;
+  background-image: var(--avatar-image);
+  background-size: var(--avatar-size, 260%);
+  background-position: var(--avatar-position, 50% 20%);
+  background-repeat: no-repeat;
+  border: 1px solid rgba(248, 224, 142, 0.34);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.28);
+}
+
+.testimonial-photo-avatar {
+  flex: 0 0 60px;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1rem;
+}
+
+.spotlight-photo-avatar {
+  width: 84px;
+  height: 84px;
+  border-radius: 18px;
 }
 /* Color variants for avatars */
 .avatar-1 { background: linear-gradient(135deg, #f8e08e 0%, #caa24c 100%); }
@@ -318,6 +343,109 @@ img { max-width: 100%; height: auto; display: block; }
 
 .testimonial-count strong {
   color: #f8e08e;
+}
+
+.google-review-proof {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.65fr);
+  gap: 1.25rem;
+  align-items: stretch;
+  margin: 2rem 0 1.25rem;
+}
+
+.google-review-card,
+.review-note-card {
+  border: 1px solid rgba(248, 224, 142, 0.18);
+  border-radius: 16px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.075), rgba(255,255,255,0.025)),
+    rgba(8, 13, 22, 0.9);
+  box-shadow: 0 18px 42px rgba(0,0,0,0.24);
+  padding: 1.35rem;
+}
+
+.google-review-card {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.google-mark {
+  flex: 0 0 54px;
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  color: #4285f4;
+  font-size: 1.75rem;
+  font-weight: 900;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.24);
+}
+
+.google-review-eyebrow,
+.review-note-label {
+  margin: 0 0 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: rgba(248, 224, 142, 0.84);
+}
+
+.google-review-title {
+  margin: 0;
+  color: #fff3c4;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 900;
+}
+
+.google-review-copy,
+.review-note-card p {
+  margin: 0.45rem 0 0;
+  color: rgba(221, 230, 248, 0.78);
+  line-height: 1.55;
+}
+
+.google-review-stars {
+  color: #fcd34d;
+  letter-spacing: 0.16rem;
+  font-size: 1rem;
+}
+
+.review-card-meta {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.45rem;
+}
+
+.review-source,
+.review-result {
+  display: inline-flex;
+  max-width: 100%;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.review-source {
+  color: #b8e0ff;
+  background: rgba(107, 199, 255, 0.1);
+  border: 1px solid rgba(107, 199, 255, 0.18);
+}
+
+.review-result {
+  margin-top: 0.85rem;
+  color: #0b1220;
+  background: linear-gradient(135deg, #fff2b8, #f6c84e);
+  border: 1px solid rgba(248, 224, 142, 0.45);
 }
 
 .testimonials-hero {
@@ -400,6 +528,7 @@ img { max-width: 100%; height: auto; display: block; }
   max-width: 900px;
   margin: 0 auto;
   text-align: center;
+  overflow: hidden;
   background: linear-gradient(135deg, rgba(11, 18, 32, 0.94) 0%, rgba(18, 27, 43, 0.98) 100%);
   border: 1px solid rgba(248, 224, 142, 0.18);
   border-radius: 24px;
@@ -537,11 +666,13 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .spotlight-media img,
-.spotlight-avatar {
+.spotlight-avatar,
+.spotlight-photo-avatar {
   width: 84px;
   height: 84px;
   border-radius: 18px;
   object-fit: cover;
+  object-position: top center;
   display: block;
   border: 1px solid rgba(248, 224, 142, 0.34);
   box-shadow: 0 14px 28px rgba(0,0,0,0.34);
@@ -592,6 +723,18 @@ img { max-width: 100%; height: auto; display: block; }
   letter-spacing: 0.15rem;
 }
 
+.spotlight-meta span:not(.spotlight-rating) {
+  border-radius: 999px;
+  padding: 0.28rem 0.7rem;
+  background: rgba(107, 199, 255, 0.1);
+  border: 1px solid rgba(107, 199, 255, 0.18);
+  color: #b8e0ff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .spotlight-copy {
   background: rgba(248, 224, 142, 0.12);
   color: #f8e08e;
@@ -639,6 +782,14 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 @media (max-width: 900px) {
+  .google-review-proof {
+    grid-template-columns: 1fr;
+  }
+
+  .google-review-card {
+    align-items: flex-start;
+  }
+
   .testimonial-controls {
     flex-direction: column;
     align-items: stretch;
@@ -900,7 +1051,7 @@ window.addEventListener('load', function() {
     <p data-i18n="testimonials.subtitle">What clients say about their Garcia Builder experience.</p>
     <div class="testimonials-hero-stats" aria-label="Testimonials summary">
       <span>127+ transformations</span>
-      <span>5.0 average rating</span>
+      <span>5.0 on Google</span>
       <span>Weekly accountability</span>
     </div>
   </div>
@@ -922,12 +1073,28 @@ window.addEventListener('load', function() {
     </div>
     <div class="stat-item">
       <div class="stat-number" data-target="5.0" data-decimals="1">5.0</div>
-      <div class="stat-label">Average Rating</div>
+      <div class="stat-label">Google Rating</div>
     </div>
     <div class="stat-item">
       <div class="stat-number" data-target="18">18</div>
       <div class="stat-label">Countries Served</div>
     </div>
+  </div>
+</div>
+
+<div class="google-review-proof" aria-label="Google reviews summary">
+  <div class="google-review-card">
+    <div class="google-mark" aria-hidden="true">G</div>
+    <div>
+      <p class="google-review-eyebrow">Google Reviews</p>
+      <h2 class="google-review-title">Rated 5.0 from 25 Google reviews</h2>
+      <div class="google-review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+      <p class="google-review-copy">A quick trust snapshot for visitors who want third-party proof before reading the client stories.</p>
+    </div>
+  </div>
+  <div class="review-note-card">
+    <p class="review-note-label">Client proof</p>
+    <p>Reviews below use the same named clients and local transformation images from the transformations gallery, so the social proof matches the visible results on the site.</p>
   </div>
 </div>
 
@@ -937,7 +1104,7 @@ window.addEventListener('load', function() {
       <input id="testimonial-search" type="search" placeholder="Search by name, goal, or quote" autocomplete="off" spellcheck="false" />
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27a6 6 0 1 0-.71.71l.27.28v.79l4.5 4.5 1.49-1.49zm-5.5 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z" /></svg>
     </div>
-    <div id="testimonial-count" class="testimonial-count" role="status" aria-live="polite" aria-atomic="true">Showing <strong>27</strong> stories</div>
+    <div id="testimonial-count" class="testimonial-count" role="status" aria-live="polite" aria-atomic="true">Showing <strong>37</strong> stories</div>
   </div>
 
   <div id="testimonial-spotlight" class="testimonial-spotlight" hidden></div>
@@ -967,7 +1134,7 @@ window.addEventListener('load', function() {
     .grid.grid-3 .card{ height:100% }
   </style>
 </div>
-<!-- Dynamic testimonials grid (27 cards injected via JS) -->
+<!-- Dynamic testimonials grid (37 cards injected via JS) -->
 <div id="testimonials-grid" class="grid grid-3 mt-3 compact" role="list" aria-label="Client testimonials"></div>
 </div></section>
 
@@ -1000,8 +1167,8 @@ window.addEventListener('load', function() {
   Book Free Consultation
 </a>
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script defer src="js/testimonials-data.js?v=20260723"></script>
-<script defer src="js/components/testimonials-render.js?v=20260723"></script>
+<script defer src="js/testimonials-data.js?v=20260723c"></script>
+<script defer src="js/components/testimonials-render.js?v=20260723c"></script>
 <script defer src="js/app.js"></script>
 <script defer src="js/components/lightbox.js"></script>
 <!-- testimonials-filter.js replaced by testimonials-render.js dynamic filtering -->

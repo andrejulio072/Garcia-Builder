@@ -36,6 +36,7 @@
     const mapping = {
       'weight-loss': 'Weight loss',
       'muscle-gain': 'Muscle gain',
+      'body-recomp': 'Body recomposition',
       'transformation': 'Body recomposition',
       'health': 'Health & wellness',
       'performance': 'Performance',
@@ -57,29 +58,42 @@
     const isAnon = !!t.categories?.includes('anonymous') || t.name.toLowerCase() === 'anonymous';
     const aria = `Testimonial from ${isAnon ? 'Anonymous' : t.name}`;
     const cat = (t.categories || []).join(' ');
-
-    const imageStyle = t.imagePosition ? ` style="object-position:${escapeHtml(t.imagePosition)}"` : '';
-    const avatar = (!isAnon && t.imageUrl)
-      ? `<img src="${t.imageUrl}" alt="${t.name} avatar" width="60" height="60" loading="lazy"${imageStyle} data-avatar-fallback="${escapeHtml(getInitials(t.name))}" data-avatar-index="${(idx % 10) + 1}" />`
-      : `<div class="testimonial-avatar avatar-${(idx % 10) + 1}" aria-hidden="true">${getInitials(t.name)}</div>`;
-
     const cardText = translate(t.textKey, t.text);
+    const result = t.result ? `<span class="review-result">${escapeHtml(t.result)}</span>` : '';
+    const source = t.source ? `<span class="review-source">${escapeHtml(t.source)}</span>` : '';
+    const avatarPosition = escapeHtml(t.avatarPosition || '50% 20%');
+    const avatarSize = escapeHtml(t.avatarSize || '260%');
+    const avatarUrl = t.imageUrl ? escapeHtml(t.imageUrl) : '';
+
+    const avatar = (!isAnon && t.imageUrl && t.avatarCrop)
+      ? `<div class="testimonial-photo-avatar" role="img" aria-label="${escapeHtml(t.name)} avatar" style="--avatar-image:url(&quot;${avatarUrl}&quot;);--avatar-position:${avatarPosition};--avatar-size:${avatarSize};"></div>`
+      : (!isAnon && t.imageUrl)
+      ? `<img src="${avatarUrl}" alt="${escapeHtml(t.name)} avatar" width="60" height="60" loading="lazy" data-avatar-fallback="${escapeHtml(getInitials(t.name))}" data-avatar-index="${(idx % 10) + 1}" />`
+      : `<div class="testimonial-avatar avatar-${(idx % 10) + 1}" aria-hidden="true">${getInitials(t.name)}</div>`;
 
     return `
       <div class="card tcard" data-category="${cat}" role="listitem" tabindex="0" aria-label="${aria}">
         ${avatar}
         <div>
           <div class="name">${isAnon ? 'Anonymous' : t.name}</div>
-          <span class="badge" aria-label="${t.rating} star rating">${star(t.rating)}</span>
-          <p>${cardText}</p>
+          <div class="review-card-meta">
+            <span class="badge" aria-label="${t.rating} star rating">${star(t.rating)}</span>
+            ${source}
+          </div>
+          <p>${escapeHtml(cardText)}</p>
+          ${result}
         </div>
       </div>
     `;
   };
 
-  const identified = window.GB_TESTIMONIALS.filter(t => !(t.categories || []).includes('anonymous'));
+  const isAnonymous = (t) => (t.categories || []).includes('anonymous');
+  const isTransformationClient = (t) => t.source === 'Transformation client' || t.avatarCrop;
+  const identified = window.GB_TESTIMONIALS.filter(t => !isAnonymous(t));
   const anonymous = window.GB_TESTIMONIALS.filter(t => (t.categories || []).includes('anonymous'));
-  const ordered = [...identified, ...anonymous];
+  const featuredTransformations = identified.filter(t => t.id === 1 || isTransformationClient(t));
+  const remainingIdentified = identified.filter(t => t.id !== 1 && !isTransformationClient(t));
+  const ordered = [...featuredTransformations, ...remainingIdentified, ...anonymous];
   grid.innerHTML = ordered.map((t, i) => makeCard(t, i)).join('');
 
   grid.querySelectorAll('img[data-avatar-fallback]').forEach((img) => {
@@ -134,6 +148,10 @@
     visibleList.forEach(item => {
       item.categories.forEach(cat => counts.set(cat, (counts.get(cat) || 0) + 1));
     });
+    counts.set('transformation', visibleList.filter(item =>
+      item.categories.includes('transformation') || item.categories.includes('body-recomp')
+    ).length);
+    counts.set('body-recomp', counts.get('transformation'));
     filterButtons.forEach(({ el, filter, label }) => {
       const value = counts.get(filter) || 0;
       el.textContent = `${label} (${value})`;
@@ -160,10 +178,16 @@
     const copyPayload = paragraphText;
     const badgeList = categories.filter(cat => !['anonymous', 'identified'].includes(cat));
     const safeParagraph = escapeHtml(paragraphText).replace(/\n/g, '<br>');
+    const source = data.source ? `<span>${escapeHtml(data.source)}</span>` : '';
+    const result = data.result ? `<span>${escapeHtml(data.result)}</span>` : '';
 
-    const spotlightImageStyle = data.imagePosition ? ` style="object-position:${escapeHtml(data.imagePosition)}"` : '';
-    const media = (!categories.includes('anonymous') && data.imageUrl)
-      ? `<img src="${data.imageUrl}" alt="${escapeHtml(name)}" loading="lazy"${spotlightImageStyle} />`
+    const mediaPosition = escapeHtml(data.avatarPosition || '50% 20%');
+    const mediaSize = escapeHtml(data.avatarSize || '260%');
+    const mediaUrl = data.imageUrl ? escapeHtml(data.imageUrl) : '';
+    const media = (!categories.includes('anonymous') && data.imageUrl && data.avatarCrop)
+      ? `<div class="spotlight-photo-avatar" role="img" aria-label="${escapeHtml(name)}" style="--avatar-image:url(&quot;${mediaUrl}&quot;);--avatar-position:${mediaPosition};--avatar-size:${mediaSize};"></div>`
+      : (!categories.includes('anonymous') && data.imageUrl)
+      ? `<img src="${mediaUrl}" alt="${escapeHtml(name)}" loading="lazy" />`
       : `<div class="spotlight-avatar">${getInitials(name)}</div>`;
 
     spotlightEl.hidden = false;
@@ -175,6 +199,8 @@
           <h2>${escapeHtml(name)}</h2>
           <div class="spotlight-meta">
             <span class="spotlight-rating" aria-label="${data.rating} out of 5">${star(data.rating)}</span>
+            ${source}
+            ${result}
             <button type="button" class="spotlight-copy" data-clipboard="${escapeHtml(copyPayload)}">Copy testimonial</button>
           </div>
           <p>${safeParagraph}</p>
@@ -221,7 +247,10 @@
     const visible = [];
 
     meta.forEach(item => {
-      const matchesFilter = activeFilter === 'all' || item.categories.includes(activeFilter);
+      const matchesFilter = activeFilter === 'all' ||
+        item.categories.includes(activeFilter) ||
+        (activeFilter === 'transformation' && item.categories.includes('body-recomp')) ||
+        (activeFilter === 'body-recomp' && item.categories.includes('transformation'));
       const matchesQuery = !query || item.searchText.includes(query);
       const shouldShow = matchesFilter && matchesQuery;
       item.el.style.display = shouldShow ? '' : 'none';

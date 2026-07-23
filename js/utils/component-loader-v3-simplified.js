@@ -304,16 +304,16 @@ const INLINE_FALLBACKS = {
 
     <div class="gb-menu" id="gb-menu">
         <div class="gb-menu-inner">
-            <div class="gb-menu-actions" aria-label="Priority actions">
-                <a href="/consultation" class="gb-menu-action gb-menu-action--primary" data-i18n="nav.consultation" data-button-location="mobile_menu">Book Consultation</a>
-                <a href="#" class="gb-menu-action gb-menu-action--secondary" data-i18n="nav.packages" data-gb-nav="packages.html">Packages</a>
-            </div>
-
             <nav class="gb-menu-links" role="menubar">
                 <a href="#" class="gb-menu-link" data-i18n="nav.home" role="menuitem" data-gb-nav="index.html">Home</a>
+                <span class="gb-menu-section-label" data-i18n="nav.group_start">Start Here</span>
                 <a href="#" class="gb-menu-link" data-i18n="nav.online_coaching" role="menuitem" data-gb-nav="online-coaching.html">Online Coaching</a>
+                <a href="#" class="gb-menu-link" data-i18n="nav.packages" role="menuitem" data-gb-nav="packages.html">Packages</a>
+                <a href="/consultation" class="gb-menu-link gb-menu-link--cta" data-i18n="nav.consultation" role="menuitem" data-button-location="mobile_menu">Book Consultation</a>
+                <span class="gb-menu-section-label" data-i18n="nav.group_results">Results</span>
                 <a href="#" class="gb-menu-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="transformations.html">Transformations</a>
                 <a href="#" class="gb-menu-link" data-i18n="nav.testi" role="menuitem" data-gb-nav="testimonials.html">Testimonials</a>
+                <span class="gb-menu-section-label" data-i18n="nav.group_explore">Explore</span>
                 <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.workouts" role="menuitem" data-gb-nav="workouts.html">Workouts</a>
                 <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.nutrition_calculator" role="menuitem" data-gb-nav="nutrition-calculator.html">Nutrition Calculator</a>
                 <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.blog" role="menuitem" data-gb-nav="blog.html">Blog</a>
@@ -571,7 +571,7 @@ function initializeNavbar() {
             }
         });
 
-        const menuLinks = menu.querySelectorAll('.gb-menu-link, .gb-menu-action');
+        const menuLinks = menu.querySelectorAll('.gb-menu-link');
         const desktopLinks = document.querySelectorAll('.gb-navbar-links .gb-navbar-link');
         console.log('[Component Loader] Found', menuLinks.length, 'menu links and', desktopLinks.length, 'desktop links');
 
@@ -589,7 +589,7 @@ function initializeNavbar() {
         });
 
         menu.addEventListener('click', function(e) {
-            const clickedMenuLink = e.target.closest('.gb-menu-link, .gb-menu-action');
+            const clickedMenuLink = e.target.closest('.gb-menu-link');
             if (!clickedMenuLink) {
                 return;
             }
@@ -734,34 +734,33 @@ function ensureNavbarLogoPath(logoEl) {
     }
 }
 
-const MOBILE_MENU_ACTIONS = [
-    {
-        text: 'Book Consultation',
-        i18n: 'nav.consultation',
-        href: '/consultation',
-        className: 'gb-menu-action gb-menu-action--primary',
-        buttonLocation: 'mobile_menu'
-    },
-    {
-        text: 'Packages',
-        i18n: 'nav.packages',
-        nav: 'packages.html',
-        className: 'gb-menu-action gb-menu-action--secondary'
-    }
+const MOBILE_MENU_ITEMS = [
+    { type: 'link', text: 'Home', i18n: 'nav.home', nav: 'index.html', className: 'gb-menu-link' },
+    { type: 'label', text: 'Start Here', i18n: 'nav.group_start' },
+    { type: 'link', text: 'Online Coaching', i18n: 'nav.online_coaching', nav: 'online-coaching.html', className: 'gb-menu-link' },
+    { type: 'link', text: 'Packages', i18n: 'nav.packages', nav: 'packages.html', className: 'gb-menu-link' },
+    { type: 'link', text: 'Book Consultation', i18n: 'nav.consultation', href: '/consultation', className: 'gb-menu-link gb-menu-link--cta', buttonLocation: 'mobile_menu' },
+    { type: 'label', text: 'Results', i18n: 'nav.group_results' },
+    { type: 'link', text: 'Transformations', i18n: 'nav.trans', nav: 'transformations.html', className: 'gb-menu-link' },
+    { type: 'link', text: 'Testimonials', i18n: 'nav.testi', nav: 'testimonials.html', className: 'gb-menu-link' },
+    { type: 'label', text: 'Explore', i18n: 'nav.group_explore' },
+    { type: 'link', text: 'Workouts', i18n: 'nav.workouts', nav: 'workouts.html', className: 'gb-menu-link gb-menu-link--secondary' },
+    { type: 'link', text: 'Nutrition Calculator', i18n: 'nav.nutrition_calculator', nav: 'nutrition-calculator.html', className: 'gb-menu-link gb-menu-link--secondary' },
+    { type: 'link', text: 'Blog', i18n: 'nav.blog', nav: 'blog.html', className: 'gb-menu-link gb-menu-link--secondary' },
+    { type: 'link', text: 'About', i18n: 'nav.about', nav: 'about.html', className: 'gb-menu-link gb-menu-link--secondary' },
+    { type: 'link', text: 'FAQ', i18n: 'nav.faq', nav: 'faq.html', className: 'gb-menu-link gb-menu-link--secondary' },
+    { type: 'link', text: 'Contact', i18n: 'nav.contact', nav: 'contact.html', className: 'gb-menu-link gb-menu-link--secondary' }
 ];
 
-const MOBILE_MENU_LINKS = [
-    { text: 'Home', i18n: 'nav.home', nav: 'index.html', className: 'gb-menu-link' },
-    { text: 'Online Coaching', i18n: 'nav.online_coaching', nav: 'online-coaching.html', className: 'gb-menu-link' },
-    { text: 'Transformations', i18n: 'nav.trans', nav: 'transformations.html', className: 'gb-menu-link' },
-    { text: 'Testimonials', i18n: 'nav.testi', nav: 'testimonials.html', className: 'gb-menu-link' },
-    { text: 'Workouts', i18n: 'nav.workouts', nav: 'workouts.html', className: 'gb-menu-link gb-menu-link--secondary' },
-    { text: 'Nutrition Calculator', i18n: 'nav.nutrition_calculator', nav: 'nutrition-calculator.html', className: 'gb-menu-link gb-menu-link--secondary' },
-    { text: 'Blog', i18n: 'nav.blog', nav: 'blog.html', className: 'gb-menu-link gb-menu-link--secondary' },
-    { text: 'About', i18n: 'nav.about', nav: 'about.html', className: 'gb-menu-link gb-menu-link--secondary' },
-    { text: 'FAQ', i18n: 'nav.faq', nav: 'faq.html', className: 'gb-menu-link gb-menu-link--secondary' },
-    { text: 'Contact', i18n: 'nav.contact', nav: 'contact.html', className: 'gb-menu-link gb-menu-link--secondary' }
-];
+function createNavbarLabel(item) {
+    const label = document.createElement('span');
+    label.className = 'gb-menu-section-label';
+    label.textContent = item.text;
+    if (item.i18n) {
+        label.setAttribute('data-i18n', item.i18n);
+    }
+    return label;
+}
 
 function createNavbarAnchor(item, includeMenuRole) {
     const anchor = document.createElement('a');
@@ -793,26 +792,19 @@ function normalizeMobileDrawerStructure() {
         return;
     }
 
-    let actions = menu.querySelector('.gb-menu-actions');
-    if (!actions) {
-        actions = document.createElement('div');
-        actions.className = 'gb-menu-actions';
-        actions.setAttribute('aria-label', 'Priority actions');
-        menuInner.insertBefore(actions, menuLinks);
-    }
-
-    actions.replaceChildren(...MOBILE_MENU_ACTIONS.map(item => createNavbarAnchor(item, false)));
-    menuLinks.replaceChildren(...MOBILE_MENU_LINKS.map(item => createNavbarAnchor(item, true)));
-    menu.querySelectorAll('.gb-menu-section-label').forEach(label => label.remove());
+    menu.querySelectorAll('.gb-menu-actions').forEach(actions => actions.remove());
+    menuLinks.replaceChildren(...MOBILE_MENU_ITEMS.map(item => (
+        item.type === 'label' ? createNavbarLabel(item) : createNavbarAnchor(item, true)
+    )));
 
     const currentProjectPath = getCurrentProjectPath();
-    menu.querySelectorAll('.gb-menu-link, .gb-menu-action').forEach(anchor => {
+    menu.querySelectorAll('.gb-menu-link').forEach(anchor => {
         const navTarget = anchor.getAttribute('data-gb-nav');
-        if (!navTarget) {
-            return;
-        }
+        const hrefTarget = (anchor.getAttribute('href') || '').replace(/^\/+/, '');
+        const target = navTarget || hrefTarget;
+        if (!target) return;
 
-        const targetPath = navTarget.trim().replace(/^\/+/, '').split('?')[0];
+        const targetPath = target.trim().replace(/^\/+/, '').split('?')[0];
         if (targetPath && targetPath === currentProjectPath) {
             anchor.classList.add('active');
         }

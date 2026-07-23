@@ -23,14 +23,11 @@ const priorityTargets = [
   'contact.html'
 ];
 
-const drawerActionTargets = [
-  '/consultation',
-  'packages.html'
-];
-
-const drawerLinkTargets = [
+const drawerTargets = [
   'index.html',
   'online-coaching.html',
+  'packages.html',
+  '/consultation',
   'transformations.html',
   'testimonials.html',
   'workouts.html',
@@ -39,6 +36,12 @@ const drawerLinkTargets = [
   'about.html',
   'faq.html',
   'contact.html'
+];
+
+const drawerLabels = [
+  'nav.group_start',
+  'nav.group_results',
+  'nav.group_explore'
 ];
 
 function assertPriorityOrder(source, navClass, label, targets = priorityTargets) {
@@ -57,20 +60,13 @@ function assertPriorityOrder(source, navClass, label, targets = priorityTargets)
   }
 }
 
-function assertDrawerActions(source, label) {
-  const start = source.indexOf('class="gb-menu-actions"');
-  assert.notEqual(start, -1, `${label} should include priority actions`);
-  const end = source.indexOf('</div>', start);
-  const actionMarkup = source.slice(start, end);
-  let previousIndex = -1;
-
-  for (const target of drawerActionTargets) {
-    const marker = target === '/consultation' ? 'href="/consultation"' : `data-gb-nav="${target}"`;
-    const currentIndex = actionMarkup.indexOf(marker);
-    assert.notEqual(currentIndex, -1, `${label} priority actions should include ${target}`);
-    assert.ok(currentIndex > previousIndex, `${label} priority actions should keep ${target} in order`);
-    previousIndex = currentIndex;
+function assertDrawerPattern(source, label) {
+  assertPriorityOrder(source, 'gb-menu-links', label, drawerTargets);
+  for (const i18nKey of drawerLabels) {
+    assert.match(source, new RegExp(`data-i18n="${i18nKey.replace('.', '\\.')}"`), `${label} should include ${i18nKey}`);
   }
+  assert.match(source, /gb-menu-link gb-menu-link--cta/, `${label} should emphasize consultation as the primary action`);
+  assert.doesNotMatch(source, /class="gb-menu-actions"/, `${label} should keep the grouped link pattern without a separate action row`);
 }
 
 const primaryPages = [
@@ -102,11 +98,7 @@ for (const source of [navbarHtml, loaderSource]) {
     'Navbar logo resolver should keep a project-relative source'
   );
   assertPriorityOrder(source, 'gb-navbar-links', 'Desktop navbar');
-  assertDrawerActions(source, 'Drawer navbar');
-  assertPriorityOrder(source, 'gb-menu-links', 'Drawer navbar', drawerLinkTargets);
-  assert.match(source, /gb-menu-action gb-menu-action--primary/, 'Drawer navbar should emphasize consultation as the primary action');
-  assert.match(source, /gb-menu-action gb-menu-action--secondary/, 'Drawer navbar should expose packages as the secondary action');
-  assert.doesNotMatch(source, /data-i18n="nav\.group_start"/, 'Drawer navbar should not use section labels');
+  assertDrawerPattern(source, 'Drawer navbar');
 }
 
 assert.match(

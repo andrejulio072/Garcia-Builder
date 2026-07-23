@@ -270,7 +270,15 @@ app.get('/start', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'start.html'));
 });
 
+app.get(['/assessment', '/starter-plan'], (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'assessment.html'));
+});
+
 app.get('/start/result/:token', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'start-result.html'));
+});
+
+app.get(['/assessment/result/:token', '/starter-plan/result/:token'], (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'start-result.html'));
 });
 

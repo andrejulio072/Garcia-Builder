@@ -63,6 +63,31 @@ function normalizeWeight(value) {
   return parsed;
 }
 
+function buildConsultationPayload(body, req) {
+  return {
+    firstName: normalizeText(body.firstName),
+    lastName: normalizeText(body.lastName),
+    email: normalizeEmail(body.email),
+    phone: normalizeText(body.phone),
+    goal: normalizeText(body.goal),
+    currentWeight: normalizeText(body.currentWeight),
+    mainStruggle: normalizeText(body.mainStruggle),
+    trainingLocation: normalizeText(body.trainingLocation),
+    startTimeline: normalizeText(body.startTimeline),
+    investmentReadiness: normalizeText(body.investmentReadiness),
+    consent: normalizeConsent(body.consent),
+    source: normalizeText(body.source) || 'Contact Consultation Form',
+    page: normalizeText(body.page) || req.headers.referer || '',
+    utm_source: normalizeText(body.utm_source),
+    utm_medium: normalizeText(body.utm_medium),
+    utm_campaign: normalizeText(body.utm_campaign),
+    utm_content: normalizeText(body.utm_content),
+    utm_term: normalizeText(body.utm_term),
+    gclid: normalizeText(body.gclid),
+    fbclid: normalizeText(body.fbclid)
+  };
+}
+
 async function postJsonWithTimeout(url, payload, timeoutMs = 8000) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -344,28 +369,7 @@ export default async function handler(req, res) {
           message: 'This consultation request was already received.'
         });
       }
-      const consultationPayload = {
-        firstName: normalizeText(body.firstName),
-        lastName: normalizeText(body.lastName),
-        email: normalizeEmail(body.email),
-        phone: normalizeText(body.phone),
-        goal: normalizeText(body.goal),
-        currentWeight: normalizeText(body.currentWeight),
-        mainStruggle: normalizeText(body.mainStruggle),
-        trainingLocation: normalizeText(body.trainingLocation),
-        startTimeline: normalizeText(body.startTimeline),
-        investmentReadiness: normalizeText(body.investmentReadiness),
-        consent: body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === 1 || body.consent === '1',
-        source: normalizeText(body.source) || 'Contact Consultation Form',
-        page: normalizeText(body.page) || req.headers.referer || '',
-        utm_source: normalizeText(body.utm_source),
-        utm_medium: normalizeText(body.utm_medium),
-        utm_campaign: normalizeText(body.utm_campaign),
-        utm_content: normalizeText(body.utm_content),
-        utm_term: normalizeText(body.utm_term),
-        gclid: normalizeText(body.gclid),
-        fbclid: normalizeText(body.fbclid),
-      };
+      const consultationPayload = buildConsultationPayload(body, req);
 
       const missingFields = ['firstName', 'lastName', 'email', 'phone', 'goal', 'currentWeight', 'mainStruggle', 'trainingLocation', 'startTimeline', 'investmentReadiness']
         .filter((field) => !consultationPayload[field]);
@@ -382,20 +386,11 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Consent is required' });
       }
 
-      await forwardLeadToZapier(consultationPayload);
-
+      let leadSaved = false;
+      let saveErrorMessage = '';
+      let zapierSent = false;
       let hotLeadSent = false;
       let hotLeadSkipped = true;
-      if (isHotLead(consultationPayload)) {
-        hotLeadSkipped = false;
-        try {
-          const hotResult = await forwardHotLeadToZapier(consultationPayload);
-          hotLeadSent = hotResult?.ok === true;
-          hotLeadSkipped = hotResult?.skipped === true;
-        } catch (hotLeadError) {
-          console.error('lead.js hot lead Zapier error', hotLeadError);
-        }
-      }
 
       try {
         const supa = getSupabase();
@@ -423,18 +418,56 @@ export default async function handler(req, res) {
         ];
 
         const saveResult = await insertLeadWithSchemaFallback(supa, insertCandidates);
-        if (!saveResult.ok) {
+        leadSaved = saveResult.ok;
+        if (!leadSaved) {
+          saveErrorMessage = String(saveResult.error?.message || 'Lead save failed');
           console.warn('lead.js consultation save warning', saveResult.error);
         }
       } catch (saveError) {
+        leadSaved = false;
+        saveErrorMessage = String(saveError?.message || 'Lead save failed');
         console.warn('lead.js consultation Supabase skipped/failed', saveError);
+      }
+
+      if (!leadSaved) {
+        return res.status(500).json({
+          ok: false,
+          error: 'Unable to save your request right now.',
+          leadId,
+          leadSaved: false,
+          zapierSent: false,
+          hotLeadSent: false,
+          details: saveErrorMessage || undefined
+        });
+      }
+
+      try {
+        await forwardLeadToZapier(consultationPayload);
+        zapierSent = true;
+      } catch (zapierError) {
+        console.error('lead.js main Zapier error', zapierError);
+      }
+
+      if (isHotLead(consultationPayload)) {
+        hotLeadSkipped = false;
+        try {
+          const hotResult = await forwardHotLeadToZapier(consultationPayload);
+          hotLeadSent = hotResult?.ok === true;
+          hotLeadSkipped = hotResult?.skipped === true;
+        } catch (hotLeadError) {
+          console.error('lead.js hot lead Zapier error', hotLeadError);
+        }
       }
 
       return res.status(200).json({
         ok: true,
         leadId,
+        leadSaved,
+        zapierSent,
         hotLead: hotLeadSent,
+        hotLeadSent,
         hotLeadSkipped,
+        emailSent: false,
         message: 'Thanks \u2014 your application has been received. I\'ll review your goal and get back to you.'
       });
     }

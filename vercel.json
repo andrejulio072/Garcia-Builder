@@ -112,8 +112,23 @@
       "permanent": true
     },
     {
+      "source": "/privacy-policy",
+      "destination": "/privacy.html",
+      "permanent": false
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html",
+      "permanent": false
+    },
+    {
+      "source": "/cookie-policy",
+      "destination": "/cookie-policy.html",
+      "permanent": false
+    },
+    {
       "source": "/privacy-policy.html",
-      "destination": "/privacy-policy",
+      "destination": "/privacy.html",
       "permanent": true
     },
     {
@@ -129,6 +144,22 @@
     },
     {
       "source": "/start/result/:token",
+      "destination": "/start-result.html"
+    },
+    {
+      "source": "/assessment",
+      "destination": "/assessment.html"
+    },
+    {
+      "source": "/starter-plan",
+      "destination": "/assessment.html"
+    },
+    {
+      "source": "/assessment/result/:token",
+      "destination": "/start-result.html"
+    },
+    {
+      "source": "/starter-plan/result/:token",
       "destination": "/start-result.html"
     },
     {
@@ -239,6 +270,24 @@
   "headers": [
     {
       "source": "/go/card",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/assessment",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/starter-plan",
       "headers": [
         {
           "key": "Cache-Control",

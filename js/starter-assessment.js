@@ -12,10 +12,15 @@
   const COUNTRIES = ['Ireland', 'United Kingdom', 'United States', 'Canada', 'Australia', 'Portugal', 'Brazil', 'Spain', 'France', 'Germany', 'Netherlands', 'Other'];
   const STORAGE_KEY = 'gb_starter_assessment_answers';
   const META_KEY = 'gb_starter_assessment_meta';
+  const LAST_SUBMISSION_KEY = 'gb_starter_last_submission_v1';
   const state = {
     step: -1,
     answers: {},
-    turnstileWidgetId: null
+    turnstileWidgetId: null,
+    submitted: false,
+    redirecting: false,
+    transitionLocked: false,
+    submitEventId: ''
   };
 
   const $ = (selector) => document.querySelector(selector);
@@ -33,28 +38,54 @@
   const nextButton = $('[data-next-button]');
   const submitButton = $('[data-submit-button]');
   const errorSummary = $('[data-error-summary]');
+  const whatsappInput = $('[data-whatsapp-input]');
+  const whatsappConsentRow = $('[data-whatsapp-consent-row]');
+  const openCookiePreferencesButton = $('[data-open-cookie-preferences]');
+  let lastViewedQuestionId = '';
+  let contactViewedTracked = false;
 
   function track(eventName, properties) {
     const safeProperties = properties || {};
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: eventName, ...safeProperties });
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', eventName, safeProperties);
+  }
+
+  function makeEventId() {
+    try {
+      if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+        return window.crypto.randomUUID();
+      }
+    } catch {}
+    return `evt-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+  }
+
+  function getEntryContextMeta() {
+    if (window.GB_STARTER_ENTRY_CONTEXT && typeof window.GB_STARTER_ENTRY_CONTEXT.buildAttributionMeta === 'function') {
+      return window.GB_STARTER_ENTRY_CONTEXT.buildAttributionMeta();
     }
+    const params = new URLSearchParams(window.location.search);
+    const landingPath = window.location.pathname;
+    return {
+      entry_context: landingPath.startsWith('/assessment') || landingPath.startsWith('/starter-plan') ? 'paid' : 'organic',
+      utm_source: params.get('utm_source') || null,
+      utm_medium: params.get('utm_medium') || null,
+      utm_campaign: params.get('utm_campaign') || null,
+      utm_content: params.get('utm_content') || null,
+      utm_term: params.get('utm_term') || null,
+      landing_path: landingPath,
+      landing_url: window.location.origin + window.location.pathname,
+      referrer: document.referrer || null
+    };
   }
 
   function getMeta() {
     try {
-      const existing = JSON.parse(sessionStorage.getItem(META_KEY) || '{}');
-      const params = new URLSearchParams(window.location.search);
+      const existing = JSON.parse(sessionStorage.getItem(META_KEY) || '{}') || {};
+      const fresh = getEntryContextMeta();
       const meta = {
-        utm_source: params.get('utm_source') || existing.utm_source || '',
-        utm_medium: params.get('utm_medium') || existing.utm_medium || '',
-        utm_campaign: params.get('utm_campaign') || existing.utm_campaign || '',
-        utm_content: params.get('utm_content') || existing.utm_content || '',
-        utm_term: params.get('utm_term') || existing.utm_term || '',
-        referrer: existing.referrer || document.referrer || '',
-        landing_path: existing.landing_path || window.location.pathname
+        ...existing,
+        ...fresh,
+        landing_path: fresh.landing_path || existing.landing_path || window.location.pathname
       };
       sessionStorage.setItem(META_KEY, JSON.stringify(meta));
       return meta;
@@ -104,6 +135,13 @@
   function renderQuestion() {
     const question = QUESTIONS[state.step];
     const [id, text, options] = question;
+    if (lastViewedQuestionId !== id) {
+      track('assessment_question_viewed', {
+        question_id: id,
+        question_number: state.step + 1
+      });
+      lastViewedQuestionId = id;
+    }
     questionText.textContent = text;
     optionGrid.innerHTML = '';
     options.forEach((option, index) => {
@@ -117,6 +155,7 @@
         saveAnswers();
         renderQuestion();
         track('assessment_step_completed', {
+          question_id: id,
           question_number: state.step + 1,
           goal_slug: id === 'primary_goal' ? option.toLowerCase().replace(/[^a-z0-9]+/g, '-') : undefined
         });
@@ -127,6 +166,13 @@
   }
 
   function renderContact() {
+    if (!contactViewedTracked) {
+      contactViewedTracked = true;
+      track('assessment_contact_viewed', {
+        entry_context: getMeta().entry_context || 'organic'
+      });
+    }
+
     if (!$('[data-country-select]').children.length || $('[data-country-select]').children.length === 1) {
       COUNTRIES.forEach((country) => {
         const option = document.createElement('option');
@@ -183,10 +229,17 @@
 
   function startAssessment() {
     restoreAnswers();
+    state.submitted = false;
+    state.redirecting = false;
+    state.submitEventId = makeEventId();
     state.step = 0;
     hero.hidden = true;
     card.hidden = false;
-    track('assessment_started');
+    track('assessment_started', {
+      entry_context: getMeta().entry_context || 'organic',
+      resumed: Object.keys(state.answers).length > 0,
+      language: document.documentElement.lang || 'en'
+    });
     render();
   }
 
@@ -211,6 +264,16 @@
       marketing_email_consent: data.get('marketing_email_consent') === 'on',
       marketing_whatsapp_consent: data.get('marketing_whatsapp_consent') === 'on'
     };
+  }
+
+  function syncWhatsappConsentVisibility() {
+    if (!whatsappInput || !whatsappConsentRow) return;
+    const hasNumber = String(whatsappInput.value || '').trim().length > 0;
+    whatsappConsentRow.hidden = !hasNumber;
+    if (!hasNumber) {
+      const checkbox = whatsappConsentRow.querySelector('input[name="marketing_whatsapp_consent"]');
+      if (checkbox) checkbox.checked = false;
+    }
   }
 
   function validateContact(contact) {
@@ -257,6 +320,11 @@
       return;
     }
 
+    track('assessment_submission_started', {
+      entry_context: getMeta().entry_context || 'organic',
+      event_id: state.submitEventId || makeEventId()
+    });
+
     submitButton.disabled = true;
     submitButton.textContent = 'Preparing result...';
     try {
@@ -273,14 +341,37 @@
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || !payload.ok) {
+        track('assessment_submission_failed', {
+          entry_context: getMeta().entry_context || 'organic',
+          stage: 'submit_request',
+          http_status_category: `${Math.floor(Number(response.status || 0) / 100)}xx`
+        });
         throw new Error(payload.error || getApiUnavailableMessage(response.status));
       }
+      state.submitted = true;
+      state.redirecting = true;
       sessionStorage.removeItem(STORAGE_KEY);
+      sessionStorage.removeItem(META_KEY);
+      try {
+        sessionStorage.setItem(LAST_SUBMISSION_KEY, new Date().toISOString());
+      } catch {}
       track('assessment_submitted', {
-        result_path_slug: payload.recommendation && payload.recommendation.primaryPath
+        event_id: payload.eventId || state.submitEventId || makeEventId(),
+        entry_context: payload.entryContext || getMeta().entry_context || 'organic',
+        result_path_slug: payload.recommendation && payload.recommendation.primaryPath,
+        lead_temperature_category: payload.leadTemperatureCategory || undefined,
+        email_delivery: payload.emailDeliveryStatus || undefined,
+        utm_source: getMeta().utm_source || undefined,
+        utm_medium: getMeta().utm_medium || undefined,
+        utm_campaign: getMeta().utm_campaign || undefined
       });
       window.location.assign(payload.resultUrl || `/start/result/${payload.resultToken}`);
     } catch (error) {
+      track('assessment_submission_failed', {
+        entry_context: getMeta().entry_context || 'organic',
+        stage: 'submit_exception',
+        http_status_category: '0xx'
+      });
       const offlineMessage = isLocalPreviewHost() && error instanceof TypeError
         ? 'Local preview cannot reach the assessment API. Use Vercel dev or a deploy preview to submit the form.'
         : '';
@@ -291,25 +382,72 @@
   }
 
   window.addEventListener('beforeunload', () => {
-    if (!card.hidden && state.step >= 0 && state.step < QUESTIONS.length) {
+    if (!card.hidden && state.step >= 0 && state.step < QUESTIONS.length && !state.submitted && !state.redirecting) {
       track('assessment_abandoned', { question_number: state.step + 1 });
     }
   });
 
   document.addEventListener('DOMContentLoaded', () => {
-    getMeta();
-    track('qr_landing_view', { source_slug: new URLSearchParams(window.location.search).get('utm_source') || 'direct' });
+    const meta = getMeta();
+    if (window.GB_STARTER_ENTRY_CONTEXT && typeof window.GB_STARTER_ENTRY_CONTEXT.hasCampaignSessionChanged === 'function') {
+      const changed = window.GB_STARTER_ENTRY_CONTEXT.hasCampaignSessionChanged(meta);
+      if (changed) {
+        sessionStorage.removeItem(STORAGE_KEY);
+      }
+    }
+
+    const context = meta.entry_context || 'organic';
+    track('assessment_landing_view', {
+      entry_context: context,
+      utm_source: meta.utm_source || undefined,
+      utm_medium: meta.utm_medium || undefined,
+      utm_campaign: meta.utm_campaign || undefined,
+      language: document.documentElement.lang || 'en',
+      page_path: window.location.pathname
+    });
+    if (context === 'qr') {
+      track('qr_landing_view', {
+        source_slug: meta.utm_source || 'business_card'
+      });
+    }
+
+    document.body.dataset.entryContext = context;
+
+    const packagesCard = document.querySelector('[data-qr-only]');
+    const organicCard = document.querySelector('[data-organic-only]');
+    const paidOnly = context === 'paid';
+    if (packagesCard) {
+      packagesCard.hidden = context !== 'qr';
+    }
+    if (organicCard) {
+      organicCard.hidden = paidOnly;
+    }
+
     $('[data-start-assessment]')?.addEventListener('click', startAssessment);
     nextButton?.addEventListener('click', () => {
+      if (state.transitionLocked) return;
       if (!validateCurrentQuestion()) return;
+      state.transitionLocked = true;
       state.step += 1;
       render();
+      setTimeout(() => {
+        state.transitionLocked = false;
+      }, 150);
     });
     backButton?.addEventListener('click', () => {
       state.step = Math.max(0, state.step - 1);
       render();
     });
     form?.addEventListener('submit', submitAssessment);
+    whatsappInput?.addEventListener('input', syncWhatsappConsentVisibility);
+    syncWhatsappConsentVisibility();
+
+    openCookiePreferencesButton?.addEventListener('click', () => {
+      if (typeof window.openConsentPreferences === 'function') {
+        window.openConsentPreferences();
+      }
+    });
+
     restoreAnswers();
     if (Object.keys(state.answers).length) startAssessment();
   });

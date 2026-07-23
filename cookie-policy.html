@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cookie Policy | Garcia Builder Fitness</title>
+  <meta name="description" content="Learn how Garcia Builder Fitness uses essential, functionality, analytics and advertising storage, and how to manage cookie preferences.">
+  <link rel="canonical" href="https://www.garciabuilder.fitness/cookie-policy">
+  <link rel="stylesheet" href="/css/global.css">
+  <script defer src="/js/tracking/consent-banner.js"></script>
+  <style>
+    main{max-width:900px;margin:40px auto;padding:0 16px;line-height:1.6}
+    h1,h2{margin-top:24px}
+    ul{padding-left:20px}
+    .prefs{margin-top:20px}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Cookie Policy</h1>
+    <p>Version: cookie-2026-07-20</p>
+    <p>This page explains storage categories used on Garcia Builder Fitness and how to manage your preferences.</p>
+
+    <h2>Storage Categories</h2>
+    <ul>
+      <li>Essential / security storage: required for core site security and safe operation.</li>
+      <li>Functionality storage: remembers certain experience preferences.</li>
+      <li>Analytics storage: helps measure site and funnel performance.</li>
+      <li>Advertising storage: supports campaign attribution and ad measurement.</li>
+      <li>Ad user data: controls how ad-related user data may be used.</li>
+      <li>Ad personalization: controls personalized advertising behavior.</li>
+    </ul>
+
+    <h2>How To Reject Or Change</h2>
+    <p>You can reject non-essential categories and reopen cookie settings at any time.</p>
+    <p class="prefs"><button type="button" id="open-cookie-preferences">Open Cookie Preferences</button></p>
+
+    <h2>Advertising Identifiers</h2>
+    <p>Where available and permitted by consent, campaign identifiers such as <code>gclid</code>, <code>gbraid</code>, <code>wbraid</code> and <code>fbclid</code> may be captured for attribution.</p>
+
+    <h2>Contact</h2>
+    <p>For privacy requests: andre@garciabuilder.fitness</p>
+  </main>
+  <script>
+    document.getElementById('open-cookie-preferences')?.addEventListener('click', function () {
+      if (typeof window.openConsentPreferences === 'function') {
+        window.openConsentPreferences();
+      }
+    });
+  </script>
+</body>
+</html>

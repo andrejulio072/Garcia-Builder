@@ -16,6 +16,7 @@ const {
   toVisitorRecommendation
 } = require('../lib/starter-assessment/recommendation.cjs');
 const { applyEventScore } = require('../lib/starter-assessment/events.cjs');
+const { classifyEntryContext } = require('../lib/starter-assessment/entry-context.cjs');
 const { validateSubmission, validateMetadata } = require('../lib/starter-assessment/validation.cjs');
 const { generateResultToken, hashResultToken } = require('../lib/starter-assessment/tokens.cjs');
 const { getDisplayResource } = require('../lib/starter-assessment/resources.cjs');
@@ -130,10 +131,14 @@ assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...base
 
 const metadata = validateMetadata({
   utm_source: ' qr ',
+  utm_medium: 'paid_social',
+  gclid: 'abc123',
   unexpected: 'ignored'
 });
-assert.deepStrictEqual(Object.keys(metadata).sort(), ['landing_path', 'referrer', 'utm_campaign', 'utm_content', 'utm_medium', 'utm_source', 'utm_term'].sort());
 assert.strictEqual(metadata.utm_source, 'qr');
+assert.strictEqual(metadata.gclid, 'abc123');
+assert.strictEqual(metadata.entry_context, 'paid');
+assert.strictEqual(classifyEntryContext({ utm_source: 'business_card', utm_medium: 'qr' }), 'qr');
 
 const token = generateResultToken();
 assert(token.length >= 40);
@@ -170,7 +175,9 @@ assert(
 );
 [
   "app.get('/start'",
+  "app.get(['/assessment', '/starter-plan']",
   "app.get('/start/result/:token'",
+  "app.get(['/assessment/result/:token', '/starter-plan/result/:token']",
   "app.post('/api/starter-assessment/submit'",
   "app.get('/api/starter-assessment/result/:token'",
   "app.post('/api/starter-assessment/event'"
@@ -180,10 +187,38 @@ assert(
     `Render production server missing starter assessment route: ${snippet}`
   );
 });
+
+const vercelConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'vercel.json'), 'utf8'));
+const vercelRewriteSources = (vercelConfig.rewrites || []).map((rewrite) => rewrite.source);
+[
+  '/start',
+  '/start/result/:token',
+  '/assessment',
+  '/starter-plan',
+  '/assessment/result/:token',
+  '/starter-plan/result/:token'
+].forEach((source) => {
+  assert(
+    vercelRewriteSources.includes(source),
+    `vercel.json is missing the production rewrite for starter assessment route: ${source}`
+  );
+});
 assert(
   starterClient.includes('window.__ENV_PROMISE.then(renderTurnstile)'),
   'Starter client should retry Turnstile rendering after env-config loads'
 );
+
+[
+  path.join(__dirname, '..', 'start.html'),
+  path.join(__dirname, '..', 'assessment.html'),
+  path.join(__dirname, '..', 'start-result.html')
+].forEach((filePath) => {
+  const html = fs.readFileSync(filePath, 'utf8');
+  const label = path.basename(filePath);
+  assert(html.includes("gtag('consent', 'default'"), `${label} must set a Consent Mode default before GTM loads`);
+  assert(html.includes('GTM-TG5TFZ2C'), `${label} must load the site GTM container so dataLayer events reach GA4/Ads/Meta`);
+  assert(html.includes('/js/tracking/consent-banner.js'), `${label} must load the consent banner so cookie preferences and consent updates work`);
+});
 assert(
   starterClient.includes('Complete the verification check and try again.'),
   'Starter client should block submissions that have no Turnstile token'

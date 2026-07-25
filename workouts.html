@@ -80,11 +80,11 @@
   <link rel="icon" href="Logo Files/For Web/logo-nobackground-500.png" type="image/png">
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/components/navbar-component.css">
-  <link rel="stylesheet" href="css/workouts.css?v=20260617">
+  <link rel="stylesheet" href="css/workouts.css?v=20260725">
   <script defer src="assets/i18n.js"></script>
   <script src="js/utils/component-loader-v3-simplified.js?v=20260723-nav2"></script>
   <script defer src="js/app.js"></script>
-  <script defer src="js/workouts.js?v=20260723"></script>
+  <script defer src="js/workouts.js?v=20260725"></script>
 </head>
 <body class="workouts-page">
 <!-- Google Tag Manager (noscript) -->
@@ -102,8 +102,8 @@
         <a class="btn" href="contact.html" data-i18n="workouts.hero.customize">Customize my plan</a>
       </div>
       <div class="workout-stats" aria-label="Workout library summary">
-        <div><strong>42</strong><span data-i18n="workouts.hero.stat_templates">Templates</span></div>
-        <div><strong>11</strong><span data-i18n="workouts.hero.stat_projects">Projects</span></div>
+        <div><strong>52</strong><span data-i18n="workouts.hero.stat_templates">Templates</span></div>
+        <div><strong>13</strong><span data-i18n="workouts.hero.stat_projects">Projects</span></div>
         <div><strong>2-20</strong><span data-i18n="workouts.hero.stat_weeks">Week options</span></div>
       </div>
     </div>
@@ -153,6 +153,8 @@
           <article class="project-card project-card-athlete"><span class="project-duration">16 weeks</span><h3>Athletic Performance</h3><p>Power, speed, strength and conditioning templates for people who want to move, lift and perform like athletes.</p><button type="button" data-project-filter="athletic-performance">View templates</button></article>
           <article class="project-card project-card-masters"><span class="project-duration">12 weeks</span><h3>Masters Strength</h3><p>Joint-friendly strength and muscle plans for lifters over 40 who want confidence, longevity and visible progress.</p><button type="button" data-project-filter="masters-strength">View templates</button></article>
           <article class="project-card project-card-travel"><span class="project-duration">6 weeks</span><h3>Travel Ready Fitness</h3><p>Portable workouts for hotels, holidays and unpredictable weeks so training does not disappear when life gets busy.</p><button type="button" data-project-filter="travel-ready-fitness">View templates</button></article>
+          <article class="project-card project-card-hyrox"><span class="project-duration">12 weeks</span><h3>HYROX Race Prep</h3><p>Run-station templates for beginners, home athletes, doubles partners and advanced competitors preparing for HYROX-style demands.</p><button type="button" data-project-filter="hyrox-race-prep">View templates</button></article>
+          <article class="project-card project-card-tryka"><span class="project-duration">10 weeks</span><h3>TRYKA Race Prep</h3><p>TRYKA-focused 800 m run and station plans with gym and no-gym options for solo and doubles preparation.</p><button type="button" data-project-filter="tryka-race-prep">View templates</button></article>
         </div>
       </div>
     </section>
@@ -178,6 +180,8 @@
           <button type="button" data-filter-group="project" data-filter="athletic-performance">Athletic</button>
           <button type="button" data-filter-group="project" data-filter="masters-strength">Masters</button>
           <button type="button" data-filter-group="project" data-filter="travel-ready-fitness">Travel</button>
+          <button type="button" data-filter-group="project" data-filter="hyrox-race-prep">HYROX</button>
+          <button type="button" data-filter-group="project" data-filter="tryka-race-prep">TRYKA</button>
         </div>
 
         <div class="filter-group" aria-label="Goal filter">
@@ -205,7 +209,7 @@
         </div>
 
         <div class="filter-results">
-          <p class="result-count" aria-live="polite" aria-atomic="true"><span id="workout-count">42</span> templates showing</p>
+          <p class="result-count" aria-live="polite" aria-atomic="true"><span id="workout-count">52</span> templates showing</p>
           <button type="button" class="clear-filters" id="clear-workout-filters" hidden>Clear filters</button>
         </div>
       </div>
@@ -1263,6 +1267,256 @@
               </div>
             </details>
           </article>
+
+          <article class="workout-card" data-goal="fat-loss strength" data-level="beginner" data-place="home gym" data-audience="hyrox beginner race prep home gym running stations HYROX Race Prep">
+            <div class="workout-card-head">
+              <span class="level level-beginner">Beginner</span>
+              <span>3 days/week</span>
+            </div>
+            <h3>HYROX Starter Engine</h3>
+            <p>A beginner run-station plan for building HYROX rhythm with home or gym substitutions.</p>
+            <ul class="quick-facts">
+              <li>Best for: first HYROX-style block</li>
+              <li>Equipment: dumbbells, bands or gym machines</li>
+              <li>Block: 6 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Run and stations, low-impact engine, mini HYROX practice.</p>
+                <h4>Session focus</h4>
+                <p>Repeatable running, carries, lunges, burpees, wall-ball pattern and basic strength.</p>
+                <h4>Progression</h4>
+                <p>Add distance and station volume before increasing speed.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="fat-loss strength" data-level="intermediate" data-place="gym" data-audience="hyrox intermediate open gym race prep sled ski erg row HYROX Race Prep">
+            <div class="workout-card-head">
+              <span class="level level-intermediate">Intermediate</span>
+              <span>4 days/week</span>
+            </div>
+            <h3>HYROX Open Gym Base</h3>
+            <p>A full-gym HYROX base with sleds, ergs, carries, lunges and race-paced running.</p>
+            <ul class="quick-facts">
+              <li>Best for: gym athletes building a race base</li>
+              <li>Equipment: sled, SkiErg, rower and free weights</li>
+              <li>Block: 8 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Sled and lower power, pull and carry, run durability, combo intervals.</p>
+                <h4>Session focus</h4>
+                <p>HYROX station mechanics, repeatable 1 km pace and controlled transitions.</p>
+                <h4>Progression</h4>
+                <p>Improve repeatability first, then reduce transition time.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="fat-loss strength" data-level="intermediate" data-place="home" data-audience="hyrox home no sled dumbbell backpack bands running HYROX Race Prep">
+            <div class="workout-card-head">
+              <span class="level level-intermediate">Intermediate</span>
+              <span>4 days/week</span>
+            </div>
+            <h3>HYROX No-Sled Home Prep</h3>
+            <p>A home HYROX template using dumbbells, bands and loaded carries instead of specialist kit.</p>
+            <ul class="quick-facts">
+              <li>Best for: no-sled training weeks</li>
+              <li>Equipment: dumbbells, backpack, bands and timer</li>
+              <li>Block: 8 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Home stations, aerobic support, burpee/lunge capacity, race-flow practice.</p>
+                <h4>Session focus</h4>
+                <p>Running, bear-hug marches, reverse band walks, burpees, lunges and thrusters.</p>
+                <h4>Progression</h4>
+                <p>Increase total quality work while keeping run pace even.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="fat-loss strength" data-level="intermediate advanced" data-place="gym" data-audience="hyrox doubles partner prep gym relay HYROX Race Prep">
+            <div class="workout-card-head">
+              <span class="level level-intermediate">Intermediate+</span>
+              <span>5 days/week</span>
+            </div>
+            <h3>HYROX Doubles Partner Prep</h3>
+            <p>A partner-focused plan for HYROX doubles pacing, handoffs and shared station strategy.</p>
+            <ul class="quick-facts">
+              <li>Best for: doubles teams</li>
+              <li>Equipment: full gym and race stations</li>
+              <li>Block: 10 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Shared station strength, erg relay, lower durability and partner simulation.</p>
+                <h4>Session focus</h4>
+                <p>Communication, pacing, station handoffs, shared reps and controlled fatigue.</p>
+                <h4>Progression</h4>
+                <p>Plan handoffs before adding speed or heavier race loads.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="strength fat-loss" data-level="advanced" data-place="gym" data-audience="hyrox pro advanced race simulation gym HYROX Race Prep">
+            <div class="workout-card-head">
+              <span class="level level-advanced">Advanced</span>
+              <span>5-6 days/week</span>
+            </div>
+            <h3>HYROX Pro Race Simulation</h3>
+            <p>An advanced HYROX race-prep block with heavy stations, threshold work and simulation days.</p>
+            <ul class="quick-facts">
+              <li>Best for: experienced race athletes</li>
+              <li>Equipment: full HYROX-style gym setup</li>
+              <li>Block: 12 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Heavy stations, threshold run and erg, strength maintenance, race simulation and recovery engine.</p>
+                <h4>Session focus</h4>
+                <p>Race order, station loads, pacing discipline, strength maintenance and recovery.</p>
+                <h4>Progression</h4>
+                <p>One hard simulation per week, with volume adjusted around recovery.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="fat-loss strength" data-level="beginner" data-place="home gym" data-audience="tryka beginner race prep 800m home gym TRYKA Race Prep">
+            <div class="workout-card-head">
+              <span class="level level-beginner">Beginner</span>
+              <span>3 days/week</span>
+            </div>
+            <h3>TRYKA Beginner Race Base</h3>
+            <p>A beginner TRYKA-style plan built around shorter runs, basic stations and clean pacing.</p>
+            <ul class="quick-facts">
+              <li>Best for: new race-format training</li>
+              <li>Equipment: home kit or basic gym</li>
+              <li>Block: 6 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>800 m rhythm, station technique and mini TRYKA flow.</p>
+                <h4>Session focus</h4>
+                <p>Walk-run pacing, carries, lunges, band pulls, thrusters and trunk control.</p>
+                <h4>Progression</h4>
+                <p>Extend runs and reduce rest before increasing intensity.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="fat-loss strength" data-level="intermediate" data-place="gym" data-audience="tryka gym stations intermediate sled ski erg row ram thruster TRYKA Race Prep">
+            <div class="workout-card-head">
+              <span class="level level-intermediate">Intermediate</span>
+              <span>4 days/week</span>
+            </div>
+            <h3>TRYKA Gym Station Builder</h3>
+            <p>A gym-based TRYKA template for improving sled, erg, carry, lunge and ram-thruster stations.</p>
+            <ul class="quick-facts">
+              <li>Best for: station-specific gym prep</li>
+              <li>Equipment: sled, SkiErg, rower, ram or sandbag</li>
+              <li>Block: 8 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Sled and run, erg capacity, ram thruster and lunge, combo day.</p>
+                <h4>Session focus</h4>
+                <p>800 m repeats, station mechanics and transition control.</p>
+                <h4>Progression</h4>
+                <p>Keep station output repeatable before making combinations longer.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="fat-loss strength" data-level="intermediate" data-place="home" data-audience="tryka home no gym no sled running dumbbell bands backpack TRYKA Race Prep">
+            <div class="workout-card-head">
+              <span class="level level-intermediate">Intermediate</span>
+              <span>4 days/week</span>
+            </div>
+            <h3>TRYKA No-Gym Engine</h3>
+            <p>A no-gym TRYKA plan using outdoor runs, dumbbells, bands and backpack-loaded stations.</p>
+            <ul class="quick-facts">
+              <li>Best for: home-based race prep</li>
+              <li>Equipment: dumbbells, bands, backpack and outdoor route</li>
+              <li>Block: 8 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Run and loaded home work, aerobic support, bodyweight stations and TRYKA flow.</p>
+                <h4>Session focus</h4>
+                <p>Run repeats, bear-hug marches, band pulls, carries, lunges and thrusters.</p>
+                <h4>Progression</h4>
+                <p>Build total work capacity without letting form break.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="fat-loss strength" data-level="intermediate advanced" data-place="gym" data-audience="tryka doubles partner prep gym relay TRYKA Race Prep">
+            <div class="workout-card-head">
+              <span class="level level-intermediate">Intermediate+</span>
+              <span>4-5 days/week</span>
+            </div>
+            <h3>TRYKA Doubles Prep</h3>
+            <p>A doubles race-prep plan for TRYKA partners practicing shared stations, pacing and handoffs.</p>
+            <ul class="quick-facts">
+              <li>Best for: partner race teams</li>
+              <li>Equipment: full gym and station tools</li>
+              <li>Block: 10 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Partner run and sled, erg relay, shared lunge and burpee, doubles simulation.</p>
+                <h4>Session focus</h4>
+                <p>Shared work strategy, station handoffs and sustainable race pace.</p>
+                <h4>Progression</h4>
+                <p>Make communication automatic before increasing race speed.</p>
+              </div>
+            </details>
+          </article>
+
+          <article class="workout-card" data-goal="strength fat-loss" data-level="advanced" data-place="gym" data-audience="tryka advanced solo simulation gym 800m TRYKA Race Prep">
+            <div class="workout-card-head">
+              <span class="level level-advanced">Advanced</span>
+              <span>5 days/week</span>
+            </div>
+            <h3>TRYKA Advanced Solo Simulation</h3>
+            <p>An advanced solo TRYKA block using 800 m repeats, full station practice and recovery control.</p>
+            <ul class="quick-facts">
+              <li>Best for: experienced solo athletes</li>
+              <li>Equipment: full race-style gym setup</li>
+              <li>Block: 10 weeks</li>
+            </ul>
+            <details>
+              <summary>View template</summary>
+              <div class="workout-detail">
+                <h4>Weekly split</h4>
+                <p>Race-pace station set, strength support, threshold density, lunge/carry/burpee and recovery engine.</p>
+                <h4>Session focus</h4>
+                <p>800 m race rhythm, station density, strength maintenance and movement efficiency.</p>
+                <h4>Progression</h4>
+                <p>Push the simulation day, then keep recovery work genuinely easy.</p>
+              </div>
+            </details>
+          </article>
         </div>
 
         <p class="no-results" id="no-results" hidden>No matching workout templates. Try another goal, level or search term.</p>
@@ -1280,6 +1534,8 @@
           <a href="#workout-library" data-jump-filter="muscle">Build muscle workouts</a>
           <a href="#workout-library" data-jump-filter="home">Home workout plans</a>
           <a href="#workout-library" data-jump-filter="strength">Strength workouts</a>
+          <a href="#workout-library" data-jump-filter="hyrox">HYROX race prep</a>
+          <a href="#workout-library" data-jump-filter="tryka">TRYKA race prep</a>
         </div>
       </div>
     </section>

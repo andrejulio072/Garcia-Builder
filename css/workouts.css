@@ -199,6 +199,18 @@
     radial-gradient(260px 180px at 84% 18%, rgba(246, 200, 78, .2), transparent 64%);
 }
 
+.project-card-hyrox::before {
+  background:
+    linear-gradient(135deg, rgba(246, 200, 78, .18), transparent 44%),
+    radial-gradient(280px 190px at 84% 18%, rgba(255, 80, 80, .18), transparent 66%);
+}
+
+.project-card-tryka::before {
+  background:
+    linear-gradient(135deg, rgba(107, 199, 255, .18), transparent 44%),
+    radial-gradient(280px 190px at 84% 18%, rgba(58, 210, 167, .18), transparent 66%);
+}
+
 .project-duration {
   display: inline-flex;
   align-items: center;

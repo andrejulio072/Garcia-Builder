@@ -839,6 +839,496 @@
           ]
         }
       ]
+    },
+    'HYROX Starter Engine': {
+      note: 'Beginner HYROX-style plan. Build the run-station rhythm first, then add speed. Use home swaps when SkiErg, sleds or rowers are not available.',
+      sessions: [
+        {
+          title: 'Day 1 - Run and Station Basics',
+          meta: '45 minutes. Warm up with 6 minutes easy jog or brisk walk plus mobility.',
+          exercises: [
+            ['Easy run or incline walk', '4', '500 m', '90 sec', 'Stay at a pace you could repeat for all rounds.'],
+            ['Goblet squat', '3', '10-12', '60 sec', 'Build leg stamina without rushing depth.'],
+            ['Farmer carry or suitcase carry', '4', '30 m', '60 sec', 'Walk tall and keep grip relaxed.'],
+            ['Incline push-up', '3', '8-12', '60 sec', 'Keep ribs down and elbows controlled.'],
+            ['Wall ball pattern or squat to reach', '3', '12-15', '45 sec', 'Practice smooth squat-to-throw rhythm.']
+          ]
+        },
+        {
+          title: 'Day 2 - Low Impact Engine',
+          meta: '35-45 minutes. Home or gym conditioning without maximal intensity.',
+          exercises: [
+            ['Bike, rower or step-up', '8', '45 sec steady / 45 sec easy', 'Built in', 'Hold the same output every round.'],
+            ['Reverse lunge', '3', '8/side', '60 sec', 'Use bodyweight until balance is solid.'],
+            ['Backpack or cable row', '3', '10-12', '60 sec', 'Pull elbows to ribs.'],
+            ['Dead bug', '3', '8/side', '30 sec', 'Exhale before each extension.'],
+            ['Cooldown walk', '1', '6-8 min', 'None', 'Finish breathing under control.']
+          ]
+        },
+        {
+          title: 'Day 3 - Mini HYROX Practice',
+          meta: '40-50 minutes. Complete as controlled rounds, not a race.',
+          exercises: [
+            ['Run or brisk walk', '6', '400 m', '60 sec', 'Same pace from first to last round.'],
+            ['Burpee broad jump or step-back burpee', '4', '6 reps', '60 sec', 'Reset the feet before each jump.'],
+            ['Walking lunge', '3', '12 steps', '60 sec', 'Long controlled steps.'],
+            ['Rower, band row or backpack pull', '4', '250 m or 45 sec', '60 sec', 'Strong drive, relaxed shoulders.'],
+            ['Wall balls or thrusters', '3', '10-12', '60 sec', 'Smooth breathing through the set.']
+          ]
+        }
+      ]
+    },
+    'HYROX Open Gym Base': {
+      note: 'Intermediate HYROX preparation using full-gym stations. Keep most work submaximal so running quality does not collapse.',
+      sessions: [
+        {
+          title: 'Day 1 - Sled and Lower Power',
+          meta: '60 minutes. Full warm-up before loaded sled work.',
+          exercises: [
+            ['Run', '4', '800 m', '90 sec', 'Controlled race rhythm, not a sprint.'],
+            ['Sled push', '5', '15-20 m', '90 sec', 'Drive low with powerful steps.'],
+            ['Front squat or leg press', '4', '6-8', '2 min', 'Build force for sled and lunges.'],
+            ['Walking lunge', '3', '20 m', '75 sec', 'Stay tall and breathe every step.'],
+            ['Wall balls', '4', '15 reps', '60 sec', 'Break before technique fades.']
+          ]
+        },
+        {
+          title: 'Day 2 - Pull, Row and Carry',
+          meta: '55-65 minutes. Prioritize clean station mechanics.',
+          exercises: [
+            ['SkiErg', '5', '500 m', '75 sec', 'Long pulls with hips and lats.'],
+            ['Sled pull', '5', '15-20 m', '90 sec', 'Brace and walk the rope back with control.'],
+            ['Rower', '4', '500 m', '75 sec', 'Hold a repeatable split.'],
+            ['Farmer carry', '5', '60 m', '60 sec', 'Fast feet without leaning.'],
+            ['Side plank', '3', '35 sec/side', '30 sec', 'Anti-rotation for carries.']
+          ]
+        },
+        {
+          title: 'Day 3 - Run Durability',
+          meta: '45-55 minutes. Aerobic support for the repeated 1 km runs.',
+          exercises: [
+            ['Run', '1', '35-45 min', 'None', 'Zone 2 effort.'],
+            ['Calf raise', '4', '12-15', '45 sec', 'Full range and slow lowering.'],
+            ['Romanian deadlift', '3', '8-10', '90 sec', 'Hamstrings loaded, back flat.'],
+            ['Pallof press', '3', '10/side', '30 sec', 'Stay square.'],
+            ['Hip and ankle mobility', '1', '8 min', 'None', 'Keep ranges comfortable.']
+          ]
+        },
+        {
+          title: 'Day 4 - HYROX Combo Intervals',
+          meta: '50-60 minutes. Practice transitions with controlled fatigue.',
+          exercises: [
+            ['Run', '6', '500 m', '45 sec', 'Start each rep under control.'],
+            ['Burpee broad jump', '6', '8 reps', 'Built in', 'Pair one station after each run.'],
+            ['Rower', '3', '750 m', '90 sec', 'Strong but repeatable.'],
+            ['Sandbag lunge', '3', '20 m', '75 sec', 'Short breaks allowed.'],
+            ['Wall balls', '3', '20 reps', '75 sec', 'Aim for efficient sets, not failure.']
+          ]
+        }
+      ]
+    },
+    'HYROX No-Sled Home Prep': {
+      note: 'Home-focused HYROX prep for athletes without sleds, SkiErg or rower. Swaps preserve the same movement demand and fatigue pattern.',
+      sessions: [
+        {
+          title: 'Day 1 - Home Strength Stations',
+          meta: '45-55 minutes. Dumbbells, bands, backpack and a timer.',
+          exercises: [
+            ['Run or outdoor walk-run', '5', '600 m', '75 sec', 'Keep pace even across all rounds.'],
+            ['Heavy backpack bear hug march', '5', '45 sec', '60 sec', 'Sled push substitute: high leg drive.'],
+            ['Band-resisted reverse walk', '4', '45 sec', '60 sec', 'Sled pull substitute: constant tension.'],
+            ['Dumbbell farmer carry', '5', '40 m or 45 sec', '60 sec', 'Tall posture.'],
+            ['Dumbbell thruster', '4', '10-12', '60 sec', 'Wall ball substitute with smooth lockout.']
+          ]
+        },
+        {
+          title: 'Day 2 - Aerobic and Core',
+          meta: '35-45 minutes. Keep this recoverable.',
+          exercises: [
+            ['Easy run', '1', '30-40 min', 'None', 'Comfortable breathing.'],
+            ['Step-up', '3', '12/side', '60 sec', 'Steady rhythm.'],
+            ['Backpack row', '3', '12-15', '45 sec', 'Pause at top.'],
+            ['Hollow hold', '3', '25-35 sec', '35 sec', 'Low back down.'],
+            ['Calf and hip mobility', '1', '8 min', 'None', 'Prepare for running volume.']
+          ]
+        },
+        {
+          title: 'Day 3 - Burpee and Lunge Capacity',
+          meta: '40-50 minutes. Short rests, but no sloppy reps.',
+          exercises: [
+            ['Run', '6', '400 m', '45 sec', 'Use a repeatable training pace.'],
+            ['Burpee broad jump', '5', '8-10 reps', '60 sec', 'Land softly and reset.'],
+            ['Backpack walking lunge', '4', '16-20 steps', '75 sec', 'Keep torso tall.'],
+            ['Mountain climber', '4', '30 sec', '30 sec', 'Fast feet, stable shoulders.'],
+            ['Wall ball swap: squat jump or thruster', '4', '12 reps', '60 sec', 'Choose low impact if needed.']
+          ]
+        },
+        {
+          title: 'Day 4 - Home Race Flow',
+          meta: '50-60 minutes. Two controlled simulation rounds.',
+          exercises: [
+            ['Run', '8', '300 m', 'Built in', 'Run before each station.'],
+            ['SkiErg swap: band pulldown', '2', '45 sec', '45 sec', 'Long pulls, ribs down.'],
+            ['Sled push swap: bear crawl', '2', '30 m', '60 sec', 'Small powerful steps.'],
+            ['Carry plus lunge complex', '2', '40 m carry + 20 steps', '90 sec', 'Break only if posture fails.'],
+            ['Thruster finisher', '2', '20 reps', '90 sec', 'Finish smooth, not frantic.']
+          ]
+        }
+      ]
+    },
+    'HYROX Doubles Partner Prep': {
+      note: 'Use this when preparing for a doubles format. Practice communication, station handoffs and even pacing, not just fitness.',
+      sessions: [
+        {
+          title: 'Day 1 - Shared Station Strength',
+          meta: '60 minutes. Both partners complete all strength work.',
+          exercises: [
+            ['Run together', '4', '1 km', '2 min', 'Slower partner sets the sustainable pace.'],
+            ['Sled push', '6', '15 m each', '60 sec', 'Switch before speed collapses.'],
+            ['Sled pull', '6', '15 m each', '60 sec', 'Call out rope management.'],
+            ['Farmer carry', '6', '50 m alternating', '45 sec', 'Fast controlled handoffs.'],
+            ['Wall balls', '5', '20 shared reps', '60 sec', 'Use planned sets before failure.']
+          ]
+        },
+        {
+          title: 'Day 2 - Upper Pull and Engine',
+          meta: '55-65 minutes. Gym machines plus station pacing.',
+          exercises: [
+            ['SkiErg relay', '6', '250 m each', '45 sec', 'Match splits within 5 seconds.'],
+            ['Rower relay', '6', '300 m each', '45 sec', 'Smooth strap transitions.'],
+            ['Chest-supported row', '4', '8-10', '75 sec', 'Upper-back support for stations.'],
+            ['Dumbbell bench press', '3', '8-10', '75 sec', 'Maintain pressing strength.'],
+            ['Pallof press', '3', '12/side', '30 sec', 'Brace for carries and pulls.']
+          ]
+        },
+        {
+          title: 'Day 3 - Lower Durability',
+          meta: '55-65 minutes. Build legs that can run after stations.',
+          exercises: [
+            ['Run', '5', '800 m', '75 sec', 'Hold target doubles pace.'],
+            ['Sandbag walking lunge', '5', '20 m', '75 sec', 'Switch with partner at planned marks.'],
+            ['Romanian deadlift', '4', '6-8', '2 min', 'Heavy but clean.'],
+            ['Step-up', '3', '10/side', '60 sec', 'Condition single-leg drive.'],
+            ['Cooldown jog or walk', '1', '8 min', 'None', 'Downshift breathing.']
+          ]
+        },
+        {
+          title: 'Day 4 - Partner Simulation',
+          meta: '70 minutes. Keep it at 80-85 percent race effort.',
+          exercises: [
+            ['Run', '8', '500 m together', 'Built in', 'Transition directly into each station.'],
+            ['SkiErg or rower', '4', '500 m shared', '60 sec', 'Split work before output drops.'],
+            ['Sled push or pull', '4', '20 m shared', '90 sec', 'Agree handoffs before starting.'],
+            ['Burpee broad jump', '4', '12 shared reps', '60 sec', 'Alternate small sets.'],
+            ['Wall balls', '4', '25 shared reps', '90 sec', 'Finish with race-style communication.']
+          ]
+        }
+      ]
+    },
+    'HYROX Pro Race Simulation': {
+      note: 'Advanced HYROX block for experienced athletes with full equipment. Use one true simulation day per week and protect recovery.',
+      sessions: [
+        {
+          title: 'Day 1 - Heavy Stations',
+          meta: '70 minutes. Full gym. Keep loads challenging but repeatable.',
+          exercises: [
+            ['Run', '5', '1 km', '90 sec', 'Settle into controlled race pace.'],
+            ['Sled push', '6', '20 m', '2 min', 'Heavy enough to force low drive.'],
+            ['Sled pull', '6', '20 m', '2 min', 'Stay braced and step back cleanly.'],
+            ['Sandbag lunge', '4', '30 m', '90 sec', 'No knee collapse under fatigue.'],
+            ['Wall balls', '5', '25 reps', '75 sec', 'Break into planned sets.']
+          ]
+        },
+        {
+          title: 'Day 2 - Threshold Run and Erg',
+          meta: '55-65 minutes. Hard but not maximal.',
+          exercises: [
+            ['Run threshold intervals', '4', '1.2 km', '2 min', 'Sustain fast controlled pace.'],
+            ['SkiErg', '5', '500 m', '60 sec', 'Strong hip snap and long arms.'],
+            ['Rower', '5', '500 m', '60 sec', 'Hold race split without sprinting.'],
+            ['Farmer carry', '5', '100 m', '75 sec', 'Grip, posture, breathing.'],
+            ['Dead bug or hollow rock', '3', '12 reps', '30 sec', 'Trunk stays controlled.']
+          ]
+        },
+        {
+          title: 'Day 3 - Strength Maintenance',
+          meta: '55-65 minutes. Preserve strength without adding unnecessary soreness.',
+          exercises: [
+            ['Trap bar deadlift', '4', '3-5', '2-3 min', 'Fast reps, no grinders.'],
+            ['Front squat', '4', '4-6', '2 min', 'Upright and braced.'],
+            ['Weighted pull-up or pulldown', '4', '6-8', '90 sec', 'Full reach.'],
+            ['Dumbbell bench press', '3', '8-10', '75 sec', 'Stable shoulders.'],
+            ['Easy bike cooldown', '1', '12 min', 'None', 'Recovery output.']
+          ]
+        },
+        {
+          title: 'Day 4 - Race Broken Simulation',
+          meta: '75-90 minutes. Run this at 85-90 percent effort.',
+          exercises: [
+            ['Run', '8', '1 km', 'Built in', 'Use the same pace cap each round.'],
+            ['SkiErg / sled push / sled pull / burpees', '1', 'Race order half-volume', 'Built in', 'Move station to station with purpose.'],
+            ['Rower / farmer carry / lunges / wall balls', '1', 'Race order half-volume', 'Built in', 'Keep planned breaks short.'],
+            ['Cooldown walk', '1', '10 min', 'None', 'Bring breathing down before stretching.'],
+            ['Mobility reset', '1', '8 min', 'None', 'Calves, hips, adductors and lats.']
+          ]
+        },
+        {
+          title: 'Day 5 - Recovery Aerobic',
+          meta: '35-45 minutes. Mandatory easy day.',
+          exercises: [
+            ['Easy run, bike or row', '1', '30-40 min', 'None', 'Zone 2 only.'],
+            ['Copenhagen plank short lever', '2', '20 sec/side', '30 sec', 'Light adductor support.'],
+            ['Calf raise', '3', '15', '30 sec', 'Slow and controlled.'],
+            ['Open book rotation', '2', '8/side', '15 sec', 'Restore upper-back movement.'],
+            ['Box breathing', '3', '5 breaths', '20 sec', 'Downshift after the week.']
+          ]
+        }
+      ]
+    },
+    'TRYKA Beginner Race Base': {
+      note: 'Beginner TRYKA-style plan based around shorter run repeats and simple station skill. Keep every station smooth before chasing speed.',
+      sessions: [
+        {
+          title: 'Day 1 - 800 m Rhythm',
+          meta: '40-50 minutes. Build comfort running before and after stations.',
+          exercises: [
+            ['Run or walk-run', '5', '400-600 m', '75 sec', 'Use a pace you can repeat.'],
+            ['Bodyweight squat', '3', '12-15', '45 sec', 'Consistent depth.'],
+            ['Farmer carry or suitcase carry', '4', '30 m', '60 sec', 'Stay tall and controlled.'],
+            ['Band row', '3', '12-15', '45 sec', 'Squeeze shoulder blades.'],
+            ['Dumbbell thruster or squat to reach', '3', '10-12', '60 sec', 'Smooth squat-to-press pattern.']
+          ]
+        },
+        {
+          title: 'Day 2 - Station Technique',
+          meta: '35-45 minutes. Gym or home substitutions allowed.',
+          exercises: [
+            ['SkiErg, band pulldown or row', '5', '45 sec', '45 sec', 'Long pulls, steady breathing.'],
+            ['Reverse lunge', '3', '8/side', '60 sec', 'Control each step.'],
+            ['Push-up or incline push-up', '3', '8-12', '60 sec', 'Keep body line straight.'],
+            ['Step-up', '3', '10/side', '45 sec', 'Build low-impact leg stamina.'],
+            ['Front plank', '3', '25-40 sec', '30 sec', 'Brace without holding breath.']
+          ]
+        },
+        {
+          title: 'Day 3 - TRYKA Mini Flow',
+          meta: '45 minutes. Controlled circuit practice.',
+          exercises: [
+            ['Run', '6', '300 m', 'Built in', 'Run before each station.'],
+            ['Rower or mountain climber', '3', '300 m or 40 sec', '60 sec', 'Steady output.'],
+            ['Backpack bear hug march', '3', '40 sec', '60 sec', 'Sled push substitute.'],
+            ['Walking lunge', '3', '16 steps', '60 sec', 'Stay tall.'],
+            ['Thruster or wall ball', '3', '12 reps', '60 sec', 'Finish with clean breathing.']
+          ]
+        }
+      ]
+    },
+    'TRYKA Gym Station Builder': {
+      note: 'Intermediate TRYKA prep for athletes with gym access. Practice the 800 m run-to-station rhythm and recover just enough to repeat output.',
+      sessions: [
+        {
+          title: 'Day 1 - Sled and Run',
+          meta: '55-65 minutes. Keep sled loads challenging but trainable.',
+          exercises: [
+            ['Run', '6', '800 m', '75 sec', 'Hold a repeatable target pace.'],
+            ['Sled push', '5', '20 m', '90 sec', 'Low drive and quick feet.'],
+            ['Sled pull', '5', '20 m', '90 sec', 'Brace and walk the rope back.'],
+            ['Leg press', '4', '8-10', '90 sec', 'Strength support for stations.'],
+            ['Calf raise', '4', '12-15', '45 sec', 'Protect lower legs for run volume.']
+          ]
+        },
+        {
+          title: 'Day 2 - Erg Capacity',
+          meta: '50-60 minutes. Ski and row without sprinting early.',
+          exercises: [
+            ['SkiErg', '6', '400 m', '60 sec', 'Strong hip-driven pulls.'],
+            ['Rower', '6', '400 m', '60 sec', 'Same split every round.'],
+            ['Farmer carry', '5', '50-60 m', '60 sec', 'Grip and posture.'],
+            ['Chest-supported row', '3', '10-12', '60 sec', 'Upper-back support.'],
+            ['Side plank', '3', '30 sec/side', '30 sec', 'Stay long through the body.']
+          ]
+        },
+        {
+          title: 'Day 3 - Ram Thruster and Lunge',
+          meta: '55-65 minutes. Use a sandbag, wall ball or dumbbells if no ram is available.',
+          exercises: [
+            ['Run', '5', '600 m', '60 sec', 'Transition straight into work.'],
+            ['Ram thruster or dumbbell thruster', '5', '12 reps', '75 sec', 'Smooth full-body drive.'],
+            ['Sandbag walking lunge', '4', '20 m', '75 sec', 'Break before posture fails.'],
+            ['Burpee broad jump', '4', '8-10 reps', '75 sec', 'Land and reset each rep.'],
+            ['Hip mobility cooldown', '1', '8 min', 'None', 'Lunges should not tighten the next run.']
+          ]
+        },
+        {
+          title: 'Day 4 - TRYKA Combo Day',
+          meta: '60-70 minutes. Station combinations with controlled transitions.',
+          exercises: [
+            ['Run', '8', '400 m', 'Built in', 'Run into each station.'],
+            ['SkiErg plus sled push', '3', '300 m + 15 m', '90 sec', 'Keep breathing under control.'],
+            ['Rower plus farmer carry', '3', '400 m + 50 m', '90 sec', 'Stand tall after rowing.'],
+            ['Lunge plus ram thruster', '3', '20 m + 12 reps', '90 sec', 'Use planned breaks.'],
+            ['Easy cooldown', '1', '10 min', 'None', 'Walk or bike only.']
+          ]
+        }
+      ]
+    },
+    'TRYKA No-Gym Engine': {
+      note: 'TRYKA-inspired conditioning for home training. These swaps mimic the race demands without sleds, SkiErg or specialty kit.',
+      sessions: [
+        {
+          title: 'Day 1 - Run and Loaded Home Work',
+          meta: '45-55 minutes. Use dumbbells, backpack, bands and outdoor space.',
+          exercises: [
+            ['Run', '6', '500 m', '60 sec', 'Even pacing.'],
+            ['Backpack bear hug march', '5', '45 sec', '60 sec', 'Sled push pattern.'],
+            ['Band-resisted reverse walk', '5', '45 sec', '60 sec', 'Sled pull pattern.'],
+            ['Dumbbell suitcase carry', '5', '40 sec/side', '45 sec', 'Do not lean.'],
+            ['Dumbbell thruster', '4', '12 reps', '60 sec', 'Ram thruster substitute.']
+          ]
+        },
+        {
+          title: 'Day 2 - Home Aerobic Support',
+          meta: '35-45 minutes. Low joint stress.',
+          exercises: [
+            ['Easy run or incline walk', '1', '30-40 min', 'None', 'Zone 2 effort.'],
+            ['Step-up', '3', '12/side', '45 sec', 'Steady cadence.'],
+            ['Band pulldown', '4', '15 reps', '35 sec', 'SkiErg pattern.'],
+            ['Dead bug', '3', '10/side', '30 sec', 'Slow exhale.'],
+            ['Calf mobility', '1', '5 min', 'None', 'Restore ankles.']
+          ]
+        },
+        {
+          title: 'Day 3 - Bodyweight Station Density',
+          meta: '35-45 minutes. Work hard but keep the circuit repeatable.',
+          exercises: [
+            ['Burpee broad jump or step-back burpee', '5', '8 reps', '60 sec', 'Reset before each rep.'],
+            ['Walking lunge', '4', '20 steps', '60 sec', 'Long stride and tall chest.'],
+            ['Mountain climber', '5', '35 sec', '35 sec', 'Rower substitute with stable shoulders.'],
+            ['Push-up', '4', 'AMRAP leaving 2 reps', '60 sec', 'Do not grind.'],
+            ['Side plank', '3', '30 sec/side', '30 sec', 'Keep hips stacked.']
+          ]
+        },
+        {
+          title: 'Day 4 - Home TRYKA Flow',
+          meta: '50-60 minutes. Four rounds with an 800 m race rhythm scaled down.',
+          exercises: [
+            ['Run', '4', '800 m', 'Built in', 'Keep it controlled.'],
+            ['Band pulldown', '4', '60 sec', 'Built in', 'Move straight from the run.'],
+            ['Bear crawl', '4', '20 m', 'Built in', 'Low powerful steps.'],
+            ['Suitcase carry', '4', '60 m', 'Built in', 'Switch hands halfway.'],
+            ['Thruster', '4', '15 reps', '90 sec after round', 'Clean reps to finish each round.']
+          ]
+        }
+      ]
+    },
+    'TRYKA Doubles Prep': {
+      note: 'Doubles-focused TRYKA template. Practice sharing work, handoffs and pacing so the event feels organized under fatigue.',
+      sessions: [
+        {
+          title: 'Day 1 - Partner Run and Sled',
+          meta: '60-70 minutes. Communicate before every station.',
+          exercises: [
+            ['Run together', '6', '800 m', '90 sec', 'Use the pace both partners can repeat.'],
+            ['Sled push', '6', '15-20 m shared', '60 sec', 'Switch before speed drops.'],
+            ['Sled pull', '6', '15-20 m shared', '60 sec', 'Clean rope handoffs.'],
+            ['Farmer carry relay', '6', '50 m shared', '45 sec', 'Plan turns before starting.'],
+            ['Ram thruster or wall ball', '5', '20 shared reps', '60 sec', 'Alternate small sets.']
+          ]
+        },
+        {
+          title: 'Day 2 - Erg Relay',
+          meta: '50-60 minutes. Match outputs instead of competing in training.',
+          exercises: [
+            ['SkiErg relay', '8', '200 m each', '45 sec', 'Partners hold similar splits.'],
+            ['Rower relay', '8', '250 m each', '45 sec', 'Fast strap setup.'],
+            ['Dumbbell row', '3', '10/side', '60 sec', 'Upper-back durability.'],
+            ['Dumbbell floor press', '3', '10-12', '60 sec', 'Balanced upper body.'],
+            ['Pallof press', '3', '12/side', '30 sec', 'Brace for station changes.']
+          ]
+        },
+        {
+          title: 'Day 3 - Shared Lunge and Burpee',
+          meta: '55-65 minutes. Build repeatable lower-body fatigue tolerance.',
+          exercises: [
+            ['Run', '5', '600 m together', '60 sec', 'Keep transitions short.'],
+            ['Sandbag lunge relay', '5', '30 m shared', '75 sec', 'Switch on planned marks.'],
+            ['Burpee broad jump relay', '5', '16 shared reps', '75 sec', 'Small clean sets.'],
+            ['Romanian deadlift', '3', '8', '90 sec', 'Hamstring support.'],
+            ['Cooldown walk', '1', '8 min', 'None', 'Downshift together.']
+          ]
+        },
+        {
+          title: 'Day 4 - Doubles Simulation',
+          meta: '70 minutes. 80 percent race effort with station handoff practice.',
+          exercises: [
+            ['Run', '8', '400 m together', 'Built in', 'Move into each station.'],
+            ['SkiErg or row', '4', '500 m shared', '60 sec', 'Split work evenly.'],
+            ['Sled push or pull', '4', '20 m shared', '90 sec', 'One clear handoff plan.'],
+            ['Carry plus lunge', '4', '50 m carry + 20 m lunge', '90 sec', 'Trade before posture fades.'],
+            ['Ram thruster', '4', '24 shared reps', '90 sec', 'Finish controlled.']
+          ]
+        }
+      ]
+    },
+    'TRYKA Advanced Solo Simulation': {
+      note: 'Advanced TRYKA preparation with full-gym stations and race-specific 800 m repeats. Keep the simulation day hard, then recover properly.',
+      sessions: [
+        {
+          title: 'Day 1 - Race-Pace Station Set',
+          meta: '70 minutes. Full equipment recommended.',
+          exercises: [
+            ['Run', '8', '800 m', 'Built in', 'Use target race rhythm.'],
+            ['SkiErg', '2', '750 m', 'Built in', 'Long powerful pulls.'],
+            ['Sled push', '2', '25 m', 'Built in', 'Low drive under fatigue.'],
+            ['Sled pull', '2', '25 m', 'Built in', 'Brace and step back.'],
+            ['Rower', '2', '750 m', '2 min after block', 'Strong, repeatable splits.']
+          ]
+        },
+        {
+          title: 'Day 2 - Strength Support',
+          meta: '60 minutes. Heavy enough to maintain force, not enough to ruin running.',
+          exercises: [
+            ['Front squat', '4', '4-6', '2 min', 'Upright and braced.'],
+            ['Romanian deadlift', '4', '6-8', '2 min', 'Hamstring strength.'],
+            ['Weighted step-up', '3', '8/side', '75 sec', 'Single-leg drive.'],
+            ['Pull-up or pulldown', '4', '6-10', '90 sec', 'Full reach and pull.'],
+            ['Farmer carry', '4', '80 m', '75 sec', 'Race posture.']
+          ]
+        },
+        {
+          title: 'Day 3 - Threshold and Erg Density',
+          meta: '55-65 minutes. Hard aerobic work without maximal sprinting.',
+          exercises: [
+            ['Run threshold', '5', '1 km', '90 sec', 'Smooth fast pace.'],
+            ['SkiErg', '5', '400 m', '45 sec', 'Do not overpull early.'],
+            ['Rower', '5', '400 m', '45 sec', 'Consistent split.'],
+            ['Ram thruster', '5', '15 reps', '60 sec', 'Full lockout each rep.'],
+            ['Side plank', '3', '40 sec/side', '30 sec', 'Resist rotation.']
+          ]
+        },
+        {
+          title: 'Day 4 - Lunge, Carry and Burpee',
+          meta: '55-65 minutes. The goal is efficient movement while tired.',
+          exercises: [
+            ['Run', '6', '600 m', '60 sec', 'Hold form after stations.'],
+            ['Sandbag walking lunge', '5', '30 m', '90 sec', 'Use planned breaks.'],
+            ['Farmer carry', '5', '100 m', '75 sec', 'Fast feet, tall chest.'],
+            ['Burpee broad jump', '5', '12 reps', '75 sec', 'Reset every landing.'],
+            ['Mobility cooldown', '1', '10 min', 'None', 'Hips, calves and adductors.']
+          ]
+        },
+        {
+          title: 'Day 5 - Recovery Engine',
+          meta: '35-45 minutes. Keep this easy so the next quality session works.',
+          exercises: [
+            ['Easy bike, row or jog', '1', '30-40 min', 'None', 'Zone 2 only.'],
+            ['Dead bug', '3', '10/side', '30 sec', 'Slow exhale.'],
+            ['Calf raise', '3', '15-20', '35 sec', 'Controlled tempo.'],
+            ['90/90 hip switch', '2', '8/side', '20 sec', 'No forcing range.'],
+            ['Box breathing', '3', '5 breaths', '20 sec', 'Recovery focus.']
+          ]
+        }
+      ]
     }
   };
 
@@ -1229,7 +1719,9 @@
     'endurance-engine': { key: 'enduranceEngine', title: 'Endurance Engine', duration: '12 weeks' },
     'athletic-performance': { key: 'athleticPerformance', title: 'Athletic Performance', duration: '16 weeks' },
     'masters-strength': { key: 'mastersStrength', title: 'Masters Strength', duration: '12 weeks' },
-    'travel-ready-fitness': { key: 'travelReady', title: 'Travel Ready Fitness', duration: '6 weeks' }
+    'travel-ready-fitness': { key: 'travelReady', title: 'Travel Ready Fitness', duration: '6 weeks' },
+    'hyrox-race-prep': { key: 'hyroxRacePrep', title: 'HYROX Race Prep', duration: '12 weeks' },
+    'tryka-race-prep': { key: 'trykaRacePrep', title: 'TRYKA Race Prep', duration: '10 weeks' }
   };
 
   const localizedProjectLabels = {
@@ -1288,6 +1780,16 @@
     'Hotel Room Starter': { project: 'travel-ready-fitness', keywords: 'hotel room starter travel' },
     'Band and Backpack Builder': { project: 'travel-ready-fitness', keywords: 'band backpack builder travel' },
     'Travel Athlete Express': { project: 'travel-ready-fitness', keywords: 'travel athlete express advanced' },
+    'HYROX Starter Engine': { project: 'hyrox-race-prep', keywords: 'hyrox race prep beginner home gym running stations sled ski erg row wall balls' },
+    'HYROX Open Gym Base': { project: 'hyrox-race-prep', keywords: 'hyrox open gym intermediate running sled push pull ski erg row farmer carry wall balls' },
+    'HYROX No-Sled Home Prep': { project: 'hyrox-race-prep', keywords: 'hyrox home no sled dumbbell backpack bands running stations' },
+    'HYROX Doubles Partner Prep': { project: 'hyrox-race-prep', keywords: 'hyrox doubles partner race prep gym relay stations running' },
+    'HYROX Pro Race Simulation': { project: 'hyrox-race-prep', keywords: 'hyrox pro advanced race simulation gym sled ski erg row wall balls' },
+    'TRYKA Beginner Race Base': { project: 'tryka-race-prep', keywords: 'tryka race prep beginner 800m run stations gym home' },
+    'TRYKA Gym Station Builder': { project: 'tryka-race-prep', keywords: 'tryka gym station builder intermediate ski erg sled row farmer carry ram thruster' },
+    'TRYKA No-Gym Engine': { project: 'tryka-race-prep', keywords: 'tryka home no gym no sled engine dumbbells bands backpack running stations' },
+    'TRYKA Doubles Prep': { project: 'tryka-race-prep', keywords: 'tryka doubles partner prep relay stations gym running' },
+    'TRYKA Advanced Solo Simulation': { project: 'tryka-race-prep', keywords: 'tryka advanced solo race simulation 800m gym sled row ski erg ram thruster' },
   };
 
   const filters = {
@@ -1309,7 +1811,7 @@
   let modalTrigger = null;
 
   const validFilterValues = {
-    project: new Set(['all', 'summer-shred', 'glute-launch', 'fit-dad-blueprint', 'strength-reset', 'home-fit-accelerator', 'mobility-reset', 'muscle-build-pro', 'endurance-engine', 'athletic-performance', 'masters-strength', 'travel-ready-fitness']),
+    project: new Set(['all', 'summer-shred', 'glute-launch', 'fit-dad-blueprint', 'strength-reset', 'home-fit-accelerator', 'mobility-reset', 'muscle-build-pro', 'endurance-engine', 'athletic-performance', 'masters-strength', 'travel-ready-fitness', 'hyrox-race-prep', 'tryka-race-prep']),
     goal: new Set(['all', 'fat-loss', 'muscle', 'strength', 'mobility']),
     level: new Set(['all', 'beginner', 'intermediate', 'advanced']),
     place: new Set(['all', 'home', 'gym'])
@@ -1610,12 +2112,23 @@
   jumpLinks.forEach((link) => {
     link.addEventListener('click', () => {
       const value = link.dataset.jumpFilter;
-      const group = value === 'home' ? 'place' : 'goal';
+      const group = value === 'home'
+        ? 'place'
+        : value === 'hyrox'
+          ? 'project'
+          : value === 'tryka'
+            ? 'project'
+            : 'goal';
+      const filterValue = value === 'hyrox'
+        ? 'hyrox-race-prep'
+        : value === 'tryka'
+          ? 'tryka-race-prep'
+          : value;
       filters.project = 'all';
       filters.goal = 'all';
       filters.level = 'all';
       filters.place = 'all';
-      filters[group] = value;
+      filters[group] = filterValue;
       if (search) search.value = '';
       setButtonState('project', filters.project);
       setButtonState('goal', filters.goal);

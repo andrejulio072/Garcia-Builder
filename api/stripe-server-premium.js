@@ -128,6 +128,7 @@ app.use(helmet({
                 "https://www.googletagmanager.com",
                 "https://www.google-analytics.com",
                 "https://connect.facebook.net",
+                "https://challenges.cloudflare.com",
                 "https://cdn.jsdelivr.net",
                 "https://cdnjs.cloudflare.com"
             ],
@@ -137,7 +138,9 @@ app.use(helmet({
                 "https://api.stripe.com",
                 "https://*.supabase.co",
                 "https://www.google-analytics.com",
+                "https://*.google-analytics.com",
                 "https://analytics.google.com",
+                "https://challenges.cloudflare.com",
                 "https://stats.g.doubleclick.net"
             ],
             // Allow external images (testimonials avatars etc.) and data URLs
@@ -154,6 +157,7 @@ app.use(helmet({
                 "https://checkout.stripe.com",
                 "https://js.stripe.com",
                 "https://www.googletagmanager.com",
+                "https://challenges.cloudflare.com",
                 "https://www.youtube.com",
                 "https://www.youtube-nocookie.com"
             ],

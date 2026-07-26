@@ -166,6 +166,14 @@ const productionServer = fs.readFileSync(path.join(__dirname, '..', 'api', 'stri
 const starterClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-assessment.js'), 'utf8');
 const apiFiles = fs.readdirSync(path.join(__dirname, '..', 'api')).filter((file) => file.endsWith('.js'));
 assert(
+  (productionServer.match(/https:\/\/challenges\.cloudflare\.com/g) || []).length >= 3,
+  'Express CSP must allow Cloudflare Turnstile in scriptSrc, connectSrc and frameSrc'
+);
+assert(
+  productionServer.includes('https://*.google-analytics.com'),
+  'Express CSP must allow GA4 regional collection endpoints'
+);
+assert(
   apiFiles.length <= 12,
   `Vercel Hobby allows at most 12 Serverless Functions; api contains ${apiFiles.length}`
 );

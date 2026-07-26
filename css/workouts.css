@@ -438,6 +438,11 @@
   box-shadow: 0 28px 70px rgba(0, 0, 0, .46);
 }
 
+.workout-card.is-direct-target {
+  border-color: rgba(246, 200, 78, .75);
+  box-shadow: 0 28px 80px rgba(246, 200, 78, .18), 0 28px 70px rgba(0, 0, 0, .46);
+}
+
 .workout-card:hover::before,
 .workout-card:focus-within::before {
   opacity: 1;
@@ -783,6 +788,16 @@
   border-top: 1px solid rgba(255, 255, 255, .1);
   border-bottom: 0;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  background: rgba(6, 11, 20, .78);
+}
+
+.workout-modal-footer .btn {
+  min-height: 42px;
+}
+
+.workout-modal-footer [data-workout-close] {
+  margin-left: auto;
 }
 
 .workout-modal-kicker {
@@ -870,7 +885,22 @@
 
 @media print {
   @page {
-    margin: 14mm;
+    size: A4;
+    margin: 11mm 10mm;
+  }
+
+  html,
+  body {
+    width: auto;
+    min-height: 0;
+    background: #fff !important;
+  }
+
+  body.workouts-page {
+    color: #111827 !important;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.38;
   }
 
   body.workouts-page > *:not(.workout-modal),
@@ -889,72 +919,209 @@
     max-width: none;
     max-height: none;
     overflow: visible;
-    background: #fff;
-    color: #111;
+    background: #fff !important;
+    color: #111827 !important;
     box-shadow: none;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
 
-  .workout-modal-header {
+  .workout-modal-panel {
     border: 0;
-    padding: 0 0 18px;
+    border-radius: 0;
+    margin: 0 auto;
+    padding: 0;
   }
 
-  .workout-modal-title,
-  .workout-modal-summary,
-  .workout-modal-body,
-  .workout-modal-body h3,
-  .workout-modal-body h4,
-  .workout-modal-body p,
-  .workout-modal-body li,
-  .workout-modal-meta span,
-  .workout-plan-brand,
-  .workout-plan-brand h4,
-  .workout-plan-brand p,
-  .workout-plan-kicker,
-  .workout-plan-contact span,
-  .workout-plan-cta,
-  .workout-plan-cta strong,
-  .workout-plan-cta span,
-  .exercise-table th,
-  .exercise-table td {
-    color: #111 !important;
+  .workout-modal-header {
+    display: block;
+    border: 1px solid #d6b85d;
+    border-left: 7px solid #d6b85d;
+    border-radius: 0;
+    padding: 9mm 9mm 7mm;
+    margin: 0 0 7mm;
+    background:
+      linear-gradient(90deg, rgba(214, 184, 93, .16), transparent 54%),
+      #fff !important;
   }
 
-  .workout-modal-meta span,
-  .workout-plan-brand,
-  .workout-plan-contact span,
-  .workout-plan-cta,
-  .workout-plan,
-  .session-block {
-    border-color: #bbb !important;
+  .workout-modal-kicker {
+    margin: 0 0 2.5mm;
+    color: #b18414 !important;
+    font-size: 8pt;
+    font-weight: 900;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+
+  .workout-modal-title {
+    margin: 0;
+    color: #060b14 !important;
+    font-size: 26pt;
+    line-height: 1.02;
+    letter-spacing: 0;
+  }
+
+  .workout-modal-summary {
+    max-width: 165mm;
+    margin: 3mm 0 0;
+    color: #374151 !important;
+    font-size: 11pt;
+    line-height: 1.35;
+  }
+
+  .workout-modal-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2mm;
+    margin: 5mm 0 0;
+  }
+
+  .workout-modal-meta span {
+    border: 1px solid #d7dde8 !important;
+    border-radius: 999px;
+    background: #f8fafc !important;
+    color: #111827 !important;
+    padding: 2mm 3mm;
+    font-size: 8.5pt;
+    font-weight: 800;
+  }
+
+  .workout-modal-body {
+    padding: 0;
+  }
+
+  .workout-modal-body > h4 {
+    margin: 4.5mm 0 1.5mm;
+    color: #060b14 !important;
+    font-size: 10.5pt;
+    line-height: 1.2;
+  }
+
+  .workout-modal-body > h4:first-child {
+    margin-top: 0;
+  }
+
+  .workout-modal-body > p,
+  .workout-modal-body > ul,
+  .workout-modal-body > ol {
+    margin: 0 0 4mm;
+    color: #374151 !important;
+    font-size: 9.7pt;
+  }
+
+  .workout-plan {
+    display: block;
+    margin-top: 6mm;
+    border: 0 !important;
     background: transparent !important;
   }
 
   .workout-plan-brand,
-  .workout-plan-cta,
-  .session-block,
-  .exercise-table {
+  .session-block {
     break-inside: avoid;
     page-break-inside: avoid;
   }
 
   .workout-plan-brand {
-    border-color: #111 !important;
-    padding: 14px;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 0;
+    background: #f9fafb !important;
+    padding: 5mm;
+    margin: 0 0 5mm;
     box-shadow: none;
   }
 
+  .workout-plan-brand-main {
+    display: grid;
+    grid-template-columns: 18mm 1fr;
+    gap: 4mm;
+    align-items: center;
+  }
+
   .workout-plan-logo {
-    width: 82px;
-    height: 82px;
+    width: 18mm;
+    height: 18mm;
     border: 1px solid #ddd;
     background: #fff !important;
+    padding: 1.5mm;
+  }
+
+  .workout-plan-kicker {
+    margin: 0 0 1mm;
+    color: #b18414 !important;
+    font-size: 7.5pt;
+    font-weight: 900;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  .workout-plan-brand h4 {
+    margin: 0;
+    color: #060b14 !important;
+    font-size: 15pt;
+    line-height: 1.05;
+  }
+
+  .workout-plan-brand p,
+  .workout-plan-contact span,
+  .workout-plan-cta span {
+    color: #374151 !important;
+    font-size: 8.5pt;
+    line-height: 1.32;
   }
 
   .workout-plan-contact {
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2mm;
+    margin-top: 4mm;
+  }
+
+  .workout-plan-contact span {
+    border: 1px solid #e5e7eb !important;
+    border-radius: 0;
+    background: #fff !important;
+    padding: 2.2mm 2.5mm;
+    overflow-wrap: anywhere;
+  }
+
+  .workout-plan > h4 {
+    margin: 5mm 0 3mm;
+    padding: 0 0 1.5mm;
+    border-bottom: 2px solid #d6b85d;
+    color: #060b14 !important;
+    font-size: 13pt;
+  }
+
+  .workout-plan-note {
+    border-left: 4px solid #d6b85d !important;
+    background: #fff8df !important;
+    color: #111827 !important;
+    margin: 0 0 5mm;
+    padding: 3mm 4mm;
+    font-size: 9pt;
+  }
+
+  .session-block {
+    border: 1px solid #e5e7eb !important;
+    border-radius: 0;
+    background: #fff !important;
+    margin: 0 0 5mm;
+    padding: 4mm;
+  }
+
+  .session-block h5 {
+    margin: 0;
+    color: #060b14 !important;
+    font-size: 11.5pt;
+    line-height: 1.2;
+  }
+
+  .session-meta {
+    margin: 1mm 0 3mm;
+    color: #4b5563 !important;
+    font-size: 8.7pt;
   }
 
   .exercise-table-wrap {
@@ -962,14 +1129,53 @@
   }
 
   .exercise-table {
+    width: 100%;
     min-width: 0;
-    font-size: 11px;
+    border-collapse: collapse;
+    font-size: 8.2pt;
+    page-break-inside: auto;
+  }
+
+  .exercise-table thead {
+    display: table-header-group;
   }
 
   .exercise-table th,
   .exercise-table td {
-    border-color: #ddd !important;
-    padding: 6px;
+    border: 1px solid #e5e7eb !important;
+    padding: 2.2mm;
+    color: #111827 !important;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .exercise-table th {
+    background: #111827 !important;
+    color: #fff !important;
+    font-size: 7.3pt;
+    font-weight: 900;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  .exercise-table tr:nth-child(even) td {
+    background: #f9fafb !important;
+  }
+
+  .workout-plan-cta {
+    border: 1px solid #d6b85d !important;
+    border-radius: 0;
+    background: #fff8df !important;
+    color: #111827 !important;
+    margin-top: 6mm;
+    padding: 4mm;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .workout-plan-cta strong {
+    color: #060b14 !important;
+    font-size: 10pt;
   }
 }
 
@@ -1103,6 +1309,32 @@
   .workout-plan-brand-main,
   .workout-plan-contact {
     grid-template-columns: 1fr;
+  }
+
+  .workout-modal {
+    align-items: stretch;
+    padding: 0;
+  }
+
+  .workout-modal-panel {
+    width: 100%;
+    min-height: 100svh;
+    max-height: 100svh;
+    border-radius: 0;
+  }
+
+  .workout-modal-header,
+  .workout-modal-footer {
+    align-items: stretch;
+  }
+
+  .workout-modal-footer .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .workout-modal-footer [data-workout-close] {
+    margin-left: 0;
   }
 
   .filter-shell {

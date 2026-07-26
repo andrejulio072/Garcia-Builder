@@ -1340,6 +1340,30 @@
     "'": '&#39;'
   }[char]));
 
+  const slugify = (value) => String(value || '')
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+  const getWorkoutSlug = (card, title) => card?.dataset.workoutSlug || `workout-${slugify(title)}`;
+
+  const buildAssessmentUrl = (card, title) => {
+    const slug = getWorkoutSlug(card, title).replace(/^workout-/, '');
+    const params = new URLSearchParams({
+      utm_source: 'workouts',
+      utm_medium: 'template',
+      utm_campaign: 'workout_library',
+      utm_content: slug
+    });
+    return `start.html?${params.toString()}`;
+  };
+
+  const buildWorkoutWhatsappUrl = (title) => {
+    const text = `Hi Andre, I viewed the ${title} workout template and would like help adapting it to my goal.`;
+    return `https://wa.me/447508497586?text=${encodeURIComponent(text)}`;
+  };
+
   const renderWorkoutPlan = (plan) => `
     <section class="workout-plan" aria-label="Complete exercise prescription">
       <header class="workout-plan-brand">
@@ -1844,6 +1868,8 @@
   const hydrateProjectMeta = () => {
     cards.forEach((card) => {
       const title = card.querySelector('h3')?.textContent.trim();
+      if (!card.dataset.workoutSlug) card.dataset.workoutSlug = `workout-${slugify(title)}`;
+      if (!card.id) card.id = card.dataset.workoutSlug;
       const meta = templateProjects[title];
       const projectMeta = meta && projectLabels[meta.project];
       if (!meta) return;
@@ -1911,7 +1937,8 @@
           </header>
           <div class="workout-modal-body" id="workout-modal-body"></div>
           <footer class="workout-modal-footer">
-            <a class="btn btn-gold" href="contact.html">Customize this plan</a>
+            <a class="btn btn-gold" id="customize-workout-plan" href="start.html?utm_source=workouts&amp;utm_medium=template&amp;utm_campaign=workout_library&amp;utm_content=modal">Get tailored version</a>
+            <a class="btn" id="message-workout-plan" href="https://wa.me/447508497586?text=Hi%20Andre%2C%20I%20viewed%20a%20workout%20template%20and%20would%20like%20help%20adapting%20it." target="_blank" rel="noopener">Message Andre</a>
             <button type="button" class="btn" id="print-workout-plan">Print plan</button>
             <button type="button" class="btn" data-workout-close>Close plan</button>
           </footer>
@@ -1930,13 +1957,18 @@
   const closeWorkoutModal = () => {
     const modal = document.getElementById('workout-modal');
     if (!modal || modal.hidden) return;
+    const activeSlug = modal.dataset.activeWorkoutSlug;
     modal.hidden = true;
     document.body.style.overflow = '';
+    if (activeSlug && window.location.hash === `#${activeSlug}` && window.history?.replaceState) {
+      window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+    }
+    delete modal.dataset.activeWorkoutSlug;
     modalTrigger?.focus();
     modalTrigger = null;
   };
 
-  const openWorkoutModal = (card) => {
+  const openWorkoutModal = (card, { syncHash = true } = {}) => {
     const modal = ensureWorkoutModal();
     modalTrigger = card;
     const title = card.querySelector('h3')?.textContent.trim() || 'Workout template';
@@ -1955,8 +1987,25 @@
       .join('');
     document.getElementById('workout-modal-body').innerHTML = detail ? detail.innerHTML : '';
 
+    const workoutSlug = getWorkoutSlug(card, title);
+    modal.dataset.activeWorkoutSlug = workoutSlug;
+    const assessmentLink = document.getElementById('customize-workout-plan');
+    const whatsappLink = document.getElementById('message-workout-plan');
+    if (assessmentLink) {
+      assessmentLink.href = buildAssessmentUrl(card, title);
+      assessmentLink.setAttribute('aria-label', `Get a tailored version of ${title}`);
+    }
+    if (whatsappLink) {
+      whatsappLink.href = buildWorkoutWhatsappUrl(title);
+      whatsappLink.setAttribute('aria-label', `Message Andre about ${title}`);
+    }
+
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
+    if (syncHash && window.history?.replaceState) {
+      window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}#${workoutSlug}`);
+    }
+    cards.forEach((item) => item.classList.toggle('is-direct-target', item === card));
     modal.querySelector('.workout-modal-close')?.focus();
   };
 
@@ -1964,9 +2013,12 @@
     document.body.classList.add('workout-js');
 
     cards.forEach((card) => {
+      const title = card.querySelector('h3')?.textContent.trim() || 'workout';
+      if (!card.dataset.workoutSlug) card.dataset.workoutSlug = `workout-${slugify(title)}`;
+      if (!card.id) card.id = card.dataset.workoutSlug;
       card.setAttribute('tabindex', '0');
       card.setAttribute('role', 'button');
-      card.setAttribute('aria-label', `Open ${card.querySelector('h3')?.textContent.trim() || 'workout'} template`);
+      card.setAttribute('aria-label', `Open ${title} template`);
 
       const summary = card.querySelector('summary');
       summary?.addEventListener('click', (event) => {
@@ -2110,7 +2162,8 @@
   clearFilters?.addEventListener('click', resetFilters);
 
   jumpLinks.forEach((link) => {
-    link.addEventListener('click', () => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
       const value = link.dataset.jumpFilter;
       const group = value === 'home'
         ? 'place'
@@ -2135,11 +2188,13 @@
       setButtonState('level', filters.level);
       setButtonState('place', filters.place);
       applyFilters();
+      workoutGrid?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
 
   projectLinks.forEach((link) => {
-    link.addEventListener('click', () => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
       filters.project = link.dataset.projectFilter;
       filters.goal = 'all';
       filters.level = 'all';
@@ -2154,6 +2209,19 @@
     });
   });
 
+  const openWorkoutFromHash = () => {
+    const hash = decodeURIComponent(window.location.hash || '').replace(/^#/, '');
+    if (!hash || hash === 'workout-library' || !hash.startsWith('workout-')) return false;
+    const card = cards.find((item) => getWorkoutSlug(item) === hash || item.id === hash);
+    if (!card) return false;
+    card.hidden = false;
+    card.classList.add('is-visible');
+    card.scrollIntoView({ behavior: 'auto', block: 'center' });
+    openWorkoutModal(card, { syncHash: false });
+    return true;
+  };
+
+  window.addEventListener('hashchange', openWorkoutFromHash);
   document.addEventListener('languageChanged', syncProjectPills);
 
   setupMenu();
@@ -2164,4 +2232,5 @@
   setupWorkoutModal();
   setupCardAnimations();
   applyFilters({ syncUrl: false });
+  openWorkoutFromHash();
 })();

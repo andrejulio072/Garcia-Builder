@@ -149,7 +149,7 @@ assert.notStrictEqual(hashResultToken(token), token);
 const workoutResource = getDisplayResource('Four-Day Upper/Lower Template');
 assert.strictEqual(workoutResource.fallbackUsed, false);
 assert.strictEqual(workoutResource.resource.available, true);
-assert.strictEqual(workoutResource.resource.url, '/workouts.html#workout-library');
+assert.strictEqual(workoutResource.resource.url, '/workouts.html#workout-gym-upper-lower-builder');
 assert.notStrictEqual(workoutResource.resource.url, '/assets/28-days-fat-loss-quickstart.pdf');
 assert(Array.isArray(workoutResource.details) && workoutResource.details.length > 0);
 
@@ -159,6 +159,7 @@ assert(!('scoreReasons' in visitor));
 assert.strictEqual(visitor.ctaMode, 'conversation');
 assert(visitor.starterPlan);
 assert.strictEqual(visitor.starterPlan.title, 'Your Practical Starter Plan');
+assert(visitor.starterPlan.training.libraryUrl.startsWith('/workouts.html#workout-'));
 assert(visitor.starterPlan.training.weeklyStructure.length > 0);
 assert(visitor.starterPlan.training.sessions.length > 0);
 assert(visitor.starterPlan.nutrition.macroTargets.length > 0);

@@ -5,7 +5,8 @@ const path = require('path');
 const { validateMetadata } = require('../lib/starter-assessment/validation.cjs');
 
 const requiredColumns = [
-  'id', 'created_at', 'first_name', 'email', 'whatsapp',
+  'id', 'created_at', 'full_name', 'first_name', 'date_of_birth', 'email', 'whatsapp',
+  'instagram_handle', 'facebook_profile', 'preferred_contact_method', 'best_contact_time',
   'age_confirmed', 'resource_delivery_acknowledgement',
   'marketing_email_consent', 'marketing_whatsapp_consent',
   'marketing_email_consent_at', 'marketing_whatsapp_consent_at',
@@ -38,7 +39,8 @@ const metadataKeys = Object.keys(validateMetadata({}));
 const sqlFiles = [
   path.join(__dirname, '..', 'supabase', '07_starter_assessment.sql'),
   path.join(__dirname, '..', 'supabase', 'migrations', '20260714225452_starter_assessment_funnel.sql'),
-  path.join(__dirname, '..', 'supabase', 'migrations', '20260727103000_paid_assessment_attribution_recovery.sql')
+  path.join(__dirname, '..', 'supabase', 'migrations', '20260727103000_paid_assessment_attribution_recovery.sql'),
+  path.join(__dirname, '..', 'supabase', 'migrations', '20260727223000_assessment_contact_enrichment.sql')
 ];
 
 const sql = sqlFiles

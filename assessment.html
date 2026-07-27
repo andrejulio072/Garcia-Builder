@@ -35,6 +35,20 @@
       <p class="starter-eyebrow" data-starter-copy="heroEyebrowPaid">FREE FITNESS STARTER ASSESSMENT</p>
       <h1 id="starter-title" data-starter-copy="heroTitle">Find the Right Starting Plan for Your Goal</h1>
       <p class="starter-copy" data-starter-copy="heroCopyPaid">Answer seven quick questions about your goal, routine and biggest challenge. Get a practical workout and nutrition starting point, plus the option to discuss a fully tailored plan with Andre.</p>
+      <div class="starter-signal-row" aria-label="Premium trust signals">
+        <article class="signal-card">
+          <strong data-starter-copy="signalOneTitle">Tailored by your profile</strong>
+          <span data-starter-copy="signalOneCopy">Questions adapt your starting structure in minutes.</span>
+        </article>
+        <article class="signal-card">
+          <strong data-starter-copy="signalTwoTitle">Multi-channel support</strong>
+          <span data-starter-copy="signalTwoCopy">Choose the easiest way for Andre to follow up.</span>
+        </article>
+        <article class="signal-card">
+          <strong data-starter-copy="signalThreeTitle">Fast, practical, actionable</strong>
+          <span data-starter-copy="signalThreeCopy">Clear next steps you can start this week.</span>
+        </article>
+      </div>
       <div class="starter-actions starter-actions-paid">
         <button class="starter-primary" type="button" data-start-assessment data-starter-copy="heroCta">Build My Starter Plan</button>
         <span data-starter-copy="heroNote">Free assessment. No commitment.</span>
@@ -80,10 +94,15 @@
           <h2 id="contact-heading" data-starter-copy="contactTitle">Your Recommended Starting Plan Is Ready</h2>
           <p data-starter-copy="contactCopy">Enter your details to view your result and receive your resources by email.</p>
 
-          <div class="field-grid">
+          <div class="field-grid field-grid-premium">
             <label>
-              <span data-starter-copy="firstName">First name</span>
-              <input name="first_name" autocomplete="given-name" maxlength="60" required>
+              <span data-starter-copy="fullName">Full name</span>
+              <input name="full_name" autocomplete="name" maxlength="90" required>
+            </label>
+            <label>
+              <span><span data-starter-copy="dateOfBirth">Date of birth</span> <small data-starter-copy="optional">optional</small></span>
+              <input name="date_of_birth" type="date" autocomplete="bday" max="2099-12-31">
+              <small data-starter-copy="dobHelp">Optional but useful to tailor your recommendation and communication.</small>
             </label>
             <label>
               <span data-starter-copy="email">Email</span>
@@ -94,6 +113,28 @@
               <span><span data-starter-copy="whatsapp">WhatsApp number</span> <small data-starter-copy="optional">optional</small></span>
               <input name="whatsapp" inputmode="tel" autocomplete="tel" maxlength="32" placeholder="+353871234567">
               <small data-starter-copy="whatsappHelp">WhatsApp is optional. Add it only if you would like Andre to contact you about your result.</small>
+            </label>
+            <label>
+              <span><span data-starter-copy="instagram">Instagram profile</span> <small data-starter-copy="optional">optional</small></span>
+              <input name="instagram_handle" autocomplete="off" maxlength="120" placeholder="@yourhandle or instagram.com/yourprofile">
+            </label>
+            <label>
+              <span><span data-starter-copy="facebook">Facebook profile</span> <small data-starter-copy="optional">optional</small></span>
+              <input name="facebook_profile" autocomplete="off" maxlength="180" placeholder="facebook.com/yourprofile">
+            </label>
+            <label>
+              <span><span data-starter-copy="preferredContact">Preferred contact channel</span> <small data-starter-copy="optional">optional</small></span>
+              <select name="preferred_contact_method">
+                <option value="" data-starter-copy="noPreference">No preference</option>
+                <option value="email" data-starter-copy="channelEmail">Email</option>
+                <option value="whatsapp" data-starter-copy="channelWhatsapp">WhatsApp</option>
+                <option value="instagram" data-starter-copy="channelInstagram">Instagram</option>
+                <option value="facebook" data-starter-copy="channelFacebook">Facebook</option>
+              </select>
+            </label>
+            <label>
+              <span><span data-starter-copy="bestContactTime">Best contact time</span> <small data-starter-copy="optional">optional</small></span>
+              <input name="best_contact_time" autocomplete="off" maxlength="80" placeholder="Weekdays after 18:00">
             </label>
           </div>
 
@@ -118,6 +159,11 @@
 
           <p class="legal-note"><span data-starter-copy="contactReassurance">Your details are used to deliver your result and respond to your enquiry. Marketing messages are optional.</span></p>
           <p class="legal-note"><span data-starter-copy="legalBefore">By submitting, you can view your result and receive the resources you requested. See the</span> <a href="/privacy.html" data-starter-copy="privacy">Privacy Policy</a> <span data-starter-copy="and">and</span> <a href="/terms.html" data-starter-copy="terms">Terms</a> <span data-starter-copy="and">and</span> <a href="/cookie-policy.html">Cookie Policy</a>.</p>
+          <div class="contact-method-hints" aria-label="Contact options">
+            <span data-starter-copy="contactHintEmail">Email reply with your starter plan.</span>
+            <span data-starter-copy="contactHintWhatsapp">Optional WhatsApp follow-up for faster support.</span>
+            <span data-starter-copy="contactHintSocial">Optional Instagram/Facebook for social-first contact.</span>
+          </div>
         </section>
 
         <div class="form-actions">

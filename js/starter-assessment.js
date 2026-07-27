@@ -209,7 +209,7 @@
         track('assessment_contact_viewed', { completed_questions: QUESTIONS.length });
         state.contactTracked = true;
       }
-      setTimeout(() => $('[name="first_name"]')?.focus(), 0);
+      setTimeout(() => $('[name="full_name"]')?.focus(), 0);
     } else {
       renderQuestion();
       setTimeout(() => $('[data-first-option]')?.focus(), 0);
@@ -230,9 +230,14 @@
   function collectContact() {
     const data = new FormData(form);
     return {
-      first_name: String(data.get('first_name') || '').trim(),
+      full_name: String(data.get('full_name') || '').trim(),
+      date_of_birth: String(data.get('date_of_birth') || '').trim(),
       email: String(data.get('email') || '').trim(),
       whatsapp: String(data.get('whatsapp') || '').trim(),
+      instagram_handle: String(data.get('instagram_handle') || '').trim(),
+      facebook_profile: String(data.get('facebook_profile') || '').trim(),
+      preferred_contact_method: String(data.get('preferred_contact_method') || '').trim(),
+      best_contact_time: String(data.get('best_contact_time') || '').trim(),
       age_confirmed: data.get('age_confirmed') === 'on',
       resource_delivery_acknowledgement: data.get('resource_delivery_acknowledgement') === 'on',
       marketing_email_consent: data.get('marketing_email_consent') === 'on',
@@ -240,10 +245,20 @@
     };
   }
 
+  function isValidDateString(value) {
+    if (!value) return true;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+    const parsed = new Date(`${value}T00:00:00Z`);
+    return !Number.isNaN(parsed.getTime()) && value >= '1900-01-01' && value <= '2099-12-31';
+  }
+
   function validateContact(contact) {
-    if (!contact.first_name) return { message: copy('enterName'), field: 'first_name' };
+    if (!contact.full_name || contact.full_name.length < 2) return { message: copy('enterName'), field: 'full_name' };
+    if (!isValidDateString(contact.date_of_birth)) return { message: copy('validDob'), field: 'date_of_birth' };
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email.toLowerCase())) return { message: copy('validEmail'), field: 'email' };
     if (contact.whatsapp && !/^\+[1-9]\d{7,14}$/.test(contact.whatsapp)) return { message: copy('validWhatsapp'), field: 'whatsapp' };
+    if (contact.instagram_handle && contact.instagram_handle.length > 120) return { message: copy('validInstagram'), field: 'instagram_handle' };
+    if (contact.facebook_profile && contact.facebook_profile.length > 180) return { message: copy('validFacebook'), field: 'facebook_profile' };
     if (!contact.age_confirmed) return { message: copy('confirmAge'), field: 'age_confirmed' };
     if (!contact.resource_delivery_acknowledgement) return { message: copy('confirmDelivery'), field: 'resource_delivery_acknowledgement' };
     return null;
@@ -271,6 +286,9 @@
     submitButton.textContent = copy('preparing');
     track('assessment_submission_started', {
       has_whatsapp: Boolean(contact.whatsapp),
+      has_instagram: Boolean(contact.instagram_handle),
+      has_facebook: Boolean(contact.facebook_profile),
+      preferred_contact_method: contact.preferred_contact_method || 'none',
       marketing_email_consent: contact.marketing_email_consent,
       marketing_whatsapp_consent: contact.marketing_whatsapp_consent
     });

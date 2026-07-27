@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@500;700;800&display=swap');
+
 :root {
   --starter-bg: #07090c;
   --starter-panel: #121417;
@@ -27,7 +29,7 @@ body.starter-page {
     linear-gradient(135deg, rgba(246, 200, 78, 0.12), transparent 38%),
     var(--starter-bg);
   color: var(--starter-text);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Manrope, Segoe UI, Helvetica, sans-serif;
   letter-spacing: 0;
   overflow-x: hidden;
 }
@@ -170,6 +172,7 @@ body.starter-page::before {
 
 .starter-hero h1,
 .result-panel h1 {
+    font-family: Sora, Manrope, Segoe UI, sans-serif;
   margin: 0;
   max-width: 760px;
   font-size: clamp(2.35rem, 8vw, 4.8rem);
@@ -191,6 +194,38 @@ body.starter-page::before {
   align-items: center;
   gap: 16px 18px;
   margin-top: 32px;
+}
+
+.starter-signal-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.signal-card {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  background: linear-gradient(150deg, rgba(15, 17, 20, 0.94), rgba(18, 23, 29, 0.76));
+  padding: 12px 13px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+}
+
+.signal-card strong {
+  display: block;
+  color: var(--starter-gold);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.signal-card span {
+  display: block;
+  margin-top: 5px;
+  color: var(--starter-muted);
+  font-size: 0.86rem;
+  line-height: 1.4;
 }
 
 .starter-choice-grid {
@@ -332,7 +367,7 @@ select {
   align-items: center;
   justify-content: center;
   min-height: 54px;
-  border-radius: 8px;
+  border-radius: 12px;
   border: 1px solid transparent;
   padding: 15px 22px;
   cursor: pointer;
@@ -348,7 +383,7 @@ select {
   background:
     linear-gradient(135deg, var(--starter-gold-3), var(--starter-gold) 46%, var(--starter-gold-2));
   color: var(--starter-ink);
-  box-shadow: 0 18px 36px rgba(246, 200, 78, 0.28);
+  box-shadow: 0 18px 36px rgba(246, 200, 78, 0.28), 0 0 0 1px rgba(255, 225, 136, 0.34);
   animation: starter-pulse 3.8s ease-in-out infinite;
 }
 
@@ -356,12 +391,19 @@ select {
   content: "";
   position: absolute;
   inset: -35% -22%;
+  z-index: -1;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: translateX(-140%) skewX(-18deg);
+}
+
 .starter-page-paid .starter-actions {
   gap: 12px 16px;
 }
+
 .legal-note-hero {
   margin-top: 18px;
 }
+
 .starter-link-button {
   appearance: none;
   border: 0;
@@ -371,10 +413,6 @@ select {
   cursor: pointer;
   padding: 0;
   text-decoration: underline;
-}
-  z-index: -1;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
-  transform: translateX(-140%) skewX(-18deg);
 }
 
 .starter-primary:hover::after {
@@ -422,7 +460,7 @@ select {
 .result-panel {
   background: color-mix(in srgb, var(--starter-panel) 92%, black);
   border: 1px solid var(--starter-line);
-  border-radius: 8px;
+  border-radius: 14px;
   padding: clamp(20px, 5vw, 34px);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
 }
@@ -483,10 +521,17 @@ select {
   text-align: left;
   padding: 16px;
   border: 1px solid var(--starter-line);
-  border-radius: 8px;
+  border-radius: 11px;
   background: var(--starter-panel-2);
   color: var(--starter-text);
   font-weight: 800;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.option-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(246, 200, 78, 0.6);
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.24);
 }
 
 .option-card[aria-pressed="true"] {
@@ -510,6 +555,17 @@ select {
   gap: 14px;
 }
 
+.field-grid-premium {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 16px;
+}
+
+.field-grid-premium label:first-child,
+.field-grid-premium label:nth-child(2),
+.field-grid-premium label:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
 .field-grid label,
 .check-row {
   display: grid;
@@ -528,12 +584,24 @@ select {
 .field-grid select {
   width: 100%;
   min-height: 48px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--starter-line);
   background: #0f1114;
   color: var(--starter-text);
   padding: 12px;
   font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.field-grid input:focus,
+.field-grid select:focus {
+  border-color: rgba(246, 200, 78, 0.68);
+  box-shadow: 0 0 0 3px rgba(246, 200, 78, 0.18);
+  background: #12161c;
+}
+
+.field-grid input::placeholder {
+  color: rgba(201, 194, 175, 0.6);
 }
 
 .check-row {
@@ -582,6 +650,22 @@ select {
   font-weight: 800;
   font-size: 0.98rem;
   line-height: 1.45;
+}
+
+.contact-method-hints {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.contact-method-hints span {
+  border: 1px solid rgba(143, 211, 255, 0.34);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  color: #dcecf7;
+  background: rgba(143, 211, 255, 0.09);
 }
 
 .result-shell {
@@ -877,6 +961,11 @@ select {
 
   .starter-choice-grid,
   .qr-contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .starter-signal-row,
+  .field-grid-premium {
     grid-template-columns: 1fr;
   }
 

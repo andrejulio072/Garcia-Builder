@@ -19,7 +19,7 @@ node tools/static-server.js
 
 Real lead creation requires `SUPABASE_SERVICE_ROLE_KEY` or `SUPABASE_SECRET_KEY` in `.env`. Result email delivery uses Brevo first and SMTP as a fallback. If neither provider is configured, the lead is still stored and email delivery is skipped.
 
-The frontend stores the seven assessment answers and UTM metadata in `sessionStorage`. It does not persist first name, email, or WhatsApp number in browser storage. Questions advance automatically after an answer; Back remains available. Country is not requested or required.
+The frontend stores the seven assessment answers and UTM metadata in `sessionStorage`. It does not persist contact PII (full name, email, WhatsApp, DOB, Instagram, Facebook) in browser storage. Questions advance automatically after an answer; Back remains available.
 
 The assessment supports `en`, `pt`, and `es`. The selected language is saved as `gb_lang`, included with the lead, and used for the result page and transactional email. It remains QR-exclusive: do not add assessment links to the public navigation or other site CTAs yet.
 

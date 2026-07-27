@@ -545,44 +545,42 @@ body.starter-page::before {
   font-size: 0.8rem;
 }
 
-.starter-coach-proof {
+.starter-coach-showcase {
   margin-top: 14px;
-  border: 1px solid rgba(246, 200, 78, 0.32);
-  border-radius: 14px;
-  padding: 14px;
-  display: grid;
-  grid-template-columns: 186px 1fr;
-  gap: 14px;
-  align-items: start;
-  background: linear-gradient(155deg, rgba(246, 200, 78, 0.16), rgba(255, 255, 255, 0.025));
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.24);
 }
 
-.starter-coach-photo {
-  margin: 0;
-  width: 186px;
-  border-radius: 10px;
+.starter-coach-portrait {
+  margin: 0 0 10px;
+  width: min(100%, 360px);
+  border-radius: 14px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.22);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.32);
   position: relative;
 }
 
-.starter-coach-photo::after {
+.starter-coach-portrait::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(9, 12, 16, 0.16), transparent 42%);
+  background: linear-gradient(to top, rgba(9, 12, 16, 0.12), transparent 48%);
   pointer-events: none;
 }
 
-.starter-coach-photo img {
+.starter-coach-portrait img {
   width: 100%;
-  height: 236px;
-  min-height: 0;
+  height: 390px;
   object-fit: cover;
-  object-position: center 22%;
+  object-position: center 28%;
   display: block;
+}
+
+.starter-coach-proof {
+  border: 1px solid rgba(246, 200, 78, 0.34);
+  border-radius: 14px;
+  padding: 14px;
+  background: linear-gradient(155deg, rgba(246, 200, 78, 0.14), rgba(255, 255, 255, 0.02));
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
 }
 
 .starter-coach-copy h2 {
@@ -1246,36 +1244,27 @@ select {
 }
 
 @media (max-width: 760px) {
-  .starter-header,
+  .starter-reviews-grid {
   .starter-shell {
     width: min(100% - 24px, 720px);
   }
-
-  .starter-shell {
-    align-items: start;
-    padding-top: 22px;
+  .starter-coach-portrait {
+    width: min(100%, 320px);
+    margin: 0 auto 10px;
   }
 
-  .starter-hero-premium {
-    padding: 16px;
-    border-radius: 14px;
-  }
-
+  .starter-coach-portrait img {
+    height: 332px;
   .starter-cta-cluster {
     width: 100%;
     padding: 10px;
   }
-
-  .starter-cta-meta {
-    margin: 8px 2px 0;
-    flex-direction: column;
-    gap: 5px;
+  .starter-coach-portrait {
+    width: min(100%, 286px);
   }
 
-  .starter-logo img {
-    width: 128px;
-  }
-
+  .starter-coach-portrait img {
+    height: 298px;
   .starter-actions,
   .form-actions,
   .result-actions {

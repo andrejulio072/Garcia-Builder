@@ -4,13 +4,15 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const NEW_TOKEN = '20260728-premium-v1';
+const NEW_TOKEN = '20260728-premium-main-v2';
 const OLD_TOKENS = [
   '20260727-ads-final',
   '20260727-ads-corrective',
   '20260727-premium-v1',
   '20260728-ads-storyfree',
-  '20260728-ads-mobilefix'
+  '20260728-ads-mobilefix',
+  '20260728-ads-socialbox',
+  '20260728-premium-v1'
 ];
 const TARGET_FILES = ['assessment.html', 'start.html', 'start-result.html'];
 const CHANGED_ASSETS = [

@@ -333,7 +333,7 @@
     if (!isValidDateString(contact.date_of_birth)) return { message: copy('validDob'), field: 'date_of_birth' };
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email.toLowerCase())) return { message: copy('validEmail'), field: 'email' };
     if (contact.whatsapp && !/^\+[1-9]\d{7,14}$/.test(contact.whatsapp)) return { message: copy('validWhatsapp'), field: 'whatsapp' };
-    if (contact.instagram_handle && contact.instagram_handle.length > 120) return { message: copy('validInstagram'), field: 'instagram_handle' };
+    if (contact.instagram_handle && contact.instagram_handle.length > 180) return { message: copy('validInstagram'), field: 'instagram_handle' };
     if (contact.facebook_profile && contact.facebook_profile.length > 180) return { message: copy('validFacebook'), field: 'facebook_profile' };
     if (!contact.age_confirmed) return { message: copy('confirmAge'), field: 'age_confirmed' };
     if (!contact.resource_delivery_acknowledgement) return { message: copy('confirmDelivery'), field: 'resource_delivery_acknowledgement' };

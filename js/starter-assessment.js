@@ -11,13 +11,18 @@
   const STORAGE_KEY = 'gb_starter_assessment_answers';
   const META_KEY = 'gb_starter_assessment_meta';
   const DELIVERY_KEY_PREFIX = 'gb_starter_delivery_';
+  const pageMode = document.body?.dataset?.starterPageMode || 'qr';
+  const defaultEntryContext = document.body?.dataset?.starterEntryDefault || (window.location.pathname === '/assessment' ? 'paid' : 'organic');
   const i18n = window.GB_STARTER_I18N;
   const state = {
     step: -1,
     answers: {},
     language: i18n?.getBrowserLanguage?.() || 'en',
     advanceTimer: null,
-    contactTracked: false
+    contactTracked: false,
+    entryContext: defaultEntryContext,
+    submitted: false,
+    campaignKey: ''
   };
 
   const $ = (selector) => document.querySelector(selector);
@@ -46,7 +51,13 @@
   }
 
   function track(eventName, properties) {
-    const safeProperties = { language: state.language, ...(properties || {}) };
+    const safeProperties = {
+      language: state.language,
+      entry_context: state.entryContext,
+      page_mode: pageMode,
+      page_path: window.location.pathname,
+      ...(properties || {})
+    };
     if (window.GB_TRACKING?.trackEvent) {
       window.GB_TRACKING.trackEvent(eventName, safeProperties);
       return;
@@ -57,32 +68,47 @@
 
   function getMeta() {
     try {
-      const existing = JSON.parse(sessionStorage.getItem(META_KEY) || '{}');
-      const params = new URLSearchParams(window.location.search);
-      const attribution = window.GB_TRACKING?.getAttribution?.() || {};
+      const existing = JSON.parse(sessionStorage.getItem(META_KEY) || '{}') || {};
+      const captured = window.GB_STARTER_CONTEXT?.getMetadata
+        ? window.GB_STARTER_CONTEXT.getMetadata(defaultEntryContext)
+        : {
+            entry_context: defaultEntryContext,
+            landing_path: window.location.pathname,
+            landing_url: window.location.href,
+            referrer: document.referrer || null
+          };
       const meta = {
-        utm_source: params.get('utm_source') || attribution.utm_source || existing.utm_source || '',
-        utm_medium: params.get('utm_medium') || attribution.utm_medium || existing.utm_medium || '',
-        utm_campaign: params.get('utm_campaign') || attribution.utm_campaign || existing.utm_campaign || '',
-        utm_content: params.get('utm_content') || attribution.utm_content || existing.utm_content || '',
-        utm_term: params.get('utm_term') || attribution.utm_term || existing.utm_term || '',
-        referrer: existing.referrer || document.referrer || '',
-        landing_path: existing.landing_path || window.location.pathname
+        ...existing,
+        ...captured
       };
+      state.entryContext = meta.entry_context || defaultEntryContext;
+      state.campaignKey = [meta.entry_context, meta.utm_source, meta.utm_medium, meta.utm_campaign, meta.landing_path]
+        .map((value) => String(value || ''))
+        .join('|');
       sessionStorage.setItem(META_KEY, JSON.stringify(meta));
       return meta;
     } catch {
-      return { landing_path: window.location.pathname };
+      return { entry_context: defaultEntryContext, landing_path: window.location.pathname };
     }
   }
 
   function saveAnswers() {
-    try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state.answers)); } catch (_) {}
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+        campaignKey: state.campaignKey,
+        answers: state.answers
+      }));
+    } catch (_) {}
   }
 
   function restoreAnswers() {
     try {
-      state.answers = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}') || {};
+      const raw = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}') || {};
+      const answers = raw.answers && typeof raw.answers === 'object' ? raw.answers : raw;
+      const storedCampaignKey = raw.campaignKey || '';
+      state.answers = storedCampaignKey && state.campaignKey && storedCampaignKey !== state.campaignKey
+        ? {}
+        : (answers || {});
     } catch {
       state.answers = {};
     }
@@ -139,6 +165,7 @@
       button.setAttribute('aria-pressed', state.answers[id] === option ? 'true' : 'false');
       button.addEventListener('click', () => {
         if (state.advanceTimer) clearTimeout(state.advanceTimer);
+        if (button.disabled) return;
         state.answers[id] = option;
         saveAnswers();
         optionGrid.querySelectorAll('.option-card').forEach((item) => {
@@ -190,6 +217,7 @@
   }
 
   function startAssessment() {
+    getMeta();
     restoreAnswers();
     const unansweredIndex = QUESTIONS.findIndex(([id]) => !state.answers[id]);
     state.step = unansweredIndex === -1 ? QUESTIONS.length : unansweredIndex;
@@ -261,9 +289,16 @@
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || !payload.ok) throw new Error(payload.error || getApiUnavailableMessage(response.status));
       try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) {}
+      state.submitted = true;
       track('assessment_submitted', {
+        event_id: payload.eventId,
         result_path_slug: payload.recommendation?.primaryPath,
-        email_delivery: payload.resourceDelivery?.email || 'unknown'
+        email_delivery: payload.resourceDelivery?.email || 'unknown',
+        utm_source: payload.attribution?.utm_source || getMeta().utm_source || undefined,
+        utm_medium: payload.attribution?.utm_medium || getMeta().utm_medium || undefined,
+        utm_campaign: payload.attribution?.utm_campaign || getMeta().utm_campaign || undefined,
+        utm_content: payload.attribution?.utm_content || getMeta().utm_content || undefined,
+        utm_term: payload.attribution?.utm_term || getMeta().utm_term || undefined
       });
       if (payload.resultToken && payload.resourceDelivery?.email) {
         try { sessionStorage.setItem(`${DELIVERY_KEY_PREFIX}${payload.resultToken}`, payload.resourceDelivery.email); } catch (_) {}
@@ -271,7 +306,12 @@
       window.location.assign(payload.resultUrl || `/start/result/${payload.resultToken}`);
     } catch (error) {
       const offlineMessage = isLocalPreviewHost() && error instanceof TypeError ? copy('localApi') : '';
-      track('assessment_submission_failed', { reason: error instanceof TypeError ? 'network' : 'api' });
+      const statusCode = error?.status || 0;
+      track('assessment_submission_failed', {
+        reason: error instanceof TypeError ? 'network' : 'api',
+        stage: 'submit',
+        status_category: statusCode ? `${Math.floor(Number(statusCode) / 100)}xx` : 'unknown'
+      });
       showError(offlineMessage || error.message || copy('submitUnavailable'), 'submission');
       submitButton.disabled = false;
       submitButton.textContent = copy('viewResult');
@@ -286,7 +326,7 @@
   }
 
   window.addEventListener('beforeunload', () => {
-    if (!card.hidden && state.step >= 0) {
+    if (!state.submitted && !card.hidden && state.step >= 0) {
       track('assessment_abandoned', {
         stage: state.step >= QUESTIONS.length ? 'contact' : 'question',
         question_number: Math.min(state.step + 1, QUESTIONS.length)
@@ -296,8 +336,15 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     i18n?.applyDocument?.(state.language);
-    getMeta();
-    track('qr_landing_view', { source_slug: new URLSearchParams(window.location.search).get('utm_source') || 'direct' });
+    const meta = getMeta();
+    track('assessment_landing_view', {
+      utm_source: meta.utm_source || undefined,
+      utm_medium: meta.utm_medium || undefined,
+      utm_campaign: meta.utm_campaign || undefined
+    });
+    if (state.entryContext === 'qr') {
+      track('qr_landing_view', { source_slug: meta.utm_source || 'business_card' });
+    }
     $('[data-start-assessment]')?.addEventListener('click', startAssessment);
     backButton?.addEventListener('click', () => {
       if (state.advanceTimer) clearTimeout(state.advanceTimer);
@@ -312,5 +359,12 @@
     form?.addEventListener('submit', submitAssessment);
     restoreAnswers();
     if (Object.keys(state.answers).some((key) => QUESTIONS.some(([id]) => id === key))) startAssessment();
+    document.querySelectorAll('[data-open-cookie-preferences]').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (typeof window.openConsentPreferences === 'function') {
+          window.openConsentPreferences();
+        }
+      });
+    });
   });
 })();

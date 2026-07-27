@@ -138,8 +138,30 @@ const metadata = validateMetadata({
   utm_source: ' qr ',
   unexpected: 'ignored'
 });
-assert.deepStrictEqual(Object.keys(metadata).sort(), ['landing_path', 'referrer', 'utm_campaign', 'utm_content', 'utm_medium', 'utm_source', 'utm_term'].sort());
+assert.deepStrictEqual(Object.keys(metadata).sort(), [
+  'entry_context',
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'utm_term',
+  'latest_utm_source',
+  'latest_utm_medium',
+  'latest_utm_campaign',
+  'latest_utm_content',
+  'latest_utm_term',
+  'gclid',
+  'gbraid',
+  'wbraid',
+  'fbclid',
+  'referrer',
+  'landing_path',
+  'landing_url',
+  'first_touch_at',
+  'latest_touch_at'
+].sort());
 assert.strictEqual(metadata.utm_source, 'qr');
+assert.strictEqual(metadata.entry_context, 'organic');
 
 const token = generateResultToken();
 assert(token.length >= 40);
@@ -201,7 +223,9 @@ assert(!Object.prototype.hasOwnProperty.call(getPublicConfig(), 'countries'));
 const productionServer = fs.readFileSync(path.join(__dirname, '..', 'api', 'stripe-server-premium.js'), 'utf8');
 const vercelConfig = fs.readFileSync(path.join(__dirname, '..', 'vercel.json'), 'utf8');
 const starterClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-assessment.js'), 'utf8');
+const starterContext = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-context.js'), 'utf8');
 const starterPage = fs.readFileSync(path.join(__dirname, '..', 'start.html'), 'utf8');
+const paidAssessmentPage = fs.readFileSync(path.join(__dirname, '..', 'assessment.html'), 'utf8');
 const starterContactPage = fs.readFileSync(path.join(__dirname, '..', 'start-contact.html'), 'utf8');
 const resultClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-result.js'), 'utf8');
 const submitHandler = fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8');
@@ -221,6 +245,7 @@ assert(
   'Starter assessment handlers must stay outside api/ and mount through stripe-server-premium.js'
 );
 [
+  "app.get('/assessment'",
   "app.get('/start'",
   "app.get('/start/contact'",
   "app.get('/start/result/:token'",
@@ -234,9 +259,18 @@ assert(
   );
 });
 assert(starterPage.includes('name="website"'), 'Starter form should keep the honeypot field');
+assert(starterPage.includes('/js/starter-context.js'), 'Starter page should load shared starter context script');
+assert(starterContext.includes('detectEntryContext'), 'Shared starter context should include entry-context classification');
 assert(starterPage.includes('data-start-assessment'), 'QR landing should keep the assessment start button');
 assert(starterPage.includes('/packages.html?utm_source=business_card'), 'QR landing should link directly to packages');
 assert(starterPage.includes('/start-contact.html?utm_source=business_card'), 'QR landing should link to the direct contact page');
+assert(paidAssessmentPage.includes('Find the Right Starting Plan for Your Goal'), 'Paid assessment page should include paid hero headline');
+assert(paidAssessmentPage.includes('data-starter-entry-default="paid"'), 'Paid assessment page should default entry context to paid');
+assert(!paidAssessmentPage.includes('data-qr-choice="packages"'), 'Paid assessment page should not include package pre-assessment choices');
+assert(!paidAssessmentPage.includes('data-qr-choice="contact"'), 'Paid assessment page should not include contact pre-assessment choices');
+assert(paidAssessmentPage.includes('/cookie-policy'), 'Paid assessment page should expose cookie policy link');
+assert(paidAssessmentPage.includes('data-open-cookie-preferences'), 'Paid assessment page should expose cookie preferences action');
+assert(vercelConfig.includes('"source": "/assessment"'), 'Vercel should rewrite /assessment to paid landing page');
 assert(vercelConfig.includes('"source": "/start/contact"'), 'Vercel should rewrite /start/contact to the QR contact page');
 assert(vercelConfig.includes('"destination": "/start-contact.html"'), 'Vercel should serve start-contact.html for /start/contact');
 assert(starterContactPage.includes('https://wa.me/447508497586'), 'QR contact page should include Andre WhatsApp');

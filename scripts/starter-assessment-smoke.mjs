@@ -65,6 +65,10 @@ function requiredAnyEnv(names) {
   throw new Error(`${names.join(' or ')} is required`);
 }
 
+function requiredBaseUrlEnv() {
+  return requiredAnyEnv(['STARTER_ASSESSMENT_BASE_URL', 'STARTER_SMOKE_BASE_URL']);
+}
+
 function maskEmail(value) {
   const [local, domain] = String(value || '').split('@');
   if (!domain) return '[invalid-email]';
@@ -165,7 +169,7 @@ function configuredContactExpectations() {
 }
 
 async function main() {
-  const baseUrl = cleanBaseUrl(requiredEnv('STARTER_ASSESSMENT_BASE_URL'));
+  const baseUrl = cleanBaseUrl(requiredBaseUrlEnv());
   const email = requiredEnv('STARTER_ASSESSMENT_TEST_EMAIL').toLowerCase();
   const firstName = optionalEnv('STARTER_ASSESSMENT_TEST_FIRST_NAME') || 'Assessment Smoke';
   const whatsapp = optionalEnv('STARTER_ASSESSMENT_TEST_WHATSAPP') || '';
@@ -190,6 +194,19 @@ async function main() {
   assertNoTurnstile(start.text, 'Start page');
   assert(!/turnstile-slot|captcha/i.test(start.text), 'Start page contains an empty CAPTCHA area');
   add('Start page', 'PASS', 'HTTP 200, title present, no challenge markup');
+
+  const assessment = await fetchText(`${baseUrl}/assessment`);
+  assert.equal(assessment.response.status, 200, '/assessment did not return HTTP 200');
+  assert(assessment.text.includes('Find the Right Starting Plan for Your Goal'), '/assessment headline missing');
+  assert(!assessment.text.includes('Package information'), '/assessment should not include package quick-choice cards');
+  assert(!assessment.text.includes('Contact Andre directly'), '/assessment should not include contact quick-choice cards');
+  add('Paid assessment page', 'PASS', 'HTTP 200 with focused paid-landing content');
+
+  for (const policyPath of ['/privacy-policy', '/cookie-policy', '/terms']) {
+    const policy = await fetchText(`${baseUrl}${policyPath}`);
+    assert.equal(policy.response.status, 200, `${policyPath} did not return HTTP 200`);
+  }
+  add('Policy routes', 'PASS', '/privacy-policy, /cookie-policy and /terms returned HTTP 200');
 
   for (const asset of ['/css/starter-assessment.css', '/js/env.js', '/js/starter-locales.js', '/js/starter-tracking-bootstrap.js', '/js/starter-assessment.js', '/js/starter-result.js']) {
     const assetResponse = await fetch(absoluteUrl(baseUrl, asset));

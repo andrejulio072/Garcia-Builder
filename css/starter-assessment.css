@@ -402,6 +402,28 @@ body.starter-page::before {
   line-height: 1.5;
 }
 
+.starter-direct-links {
+  margin: 10px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+}
+
+.starter-direct-links a {
+  color: #d4cab4;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  opacity: 0.9;
+}
+
+.starter-direct-links a:hover {
+  color: var(--starter-gold);
+  opacity: 1;
+}
+
 .starter-trust {
   margin: 20px 0 0;
 }
@@ -1413,6 +1435,14 @@ select {
   .starter-proof {
     gap: 8px;
     margin-top: 16px;
+  }
+
+  .starter-direct-links {
+    gap: 8px;
+  }
+
+  .starter-direct-links a {
+    font-size: 0.78rem;
   }
 
   .starter-proof li {

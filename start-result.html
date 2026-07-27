@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Your Starter Plan | Garcia Builder Fitness</title>
   <meta name="robots" content="noindex, follow">
-  <link rel="stylesheet" href="/css/starter-assessment.css?v=20260728-ads-mobilefix">
-  <script src="/js/starter-tracking-bootstrap.js?v=20260727-ads-final"></script>
-  <script src="/js/starter-locales.js?v=20260728-ads-storyfree" defer></script>
-  <script src="/js/starter-result.js?v=20260728-ads-storyfree" defer></script>
+  <link rel="stylesheet" href="/css/starter-assessment.css?v=20260728-premium-v1">
+  <script src="/js/starter-tracking-bootstrap.js?v=20260728-premium-v1"></script>
+  <script src="/js/starter-locales.js?v=20260728-premium-v1" defer></script>
+  <script src="/js/starter-result.js?v=20260728-premium-v1" defer></script>
 </head>
 <body class="starter-page result-page">
   <a class="skip-link" href="#result-root" data-starter-copy="skipResult">Skip to result</a>
@@ -28,17 +28,36 @@
 
   <main class="starter-shell result-shell" id="result-root">
     <section class="result-panel" data-result-panel aria-live="polite">
-      <p class="starter-eyebrow" data-starter-copy="resultEyebrow">YOUR STARTER ASSESSMENT RESULT</p>
-      <h1 data-result-title data-starter-copy="resultTitleLoading">Loading your result...</h1>
-      <p class="starter-copy" data-result-summary data-starter-copy="resultSummaryLoading">Please wait while we open your recommended starting plan.</p>
+      <div class="result-ambient" aria-hidden="true"></div>
+      <div class="result-reveal-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path d="m7 16 6 6L26 9"/></svg>
+      </div>
+      <div class="result-opening">
+        <p class="starter-eyebrow" data-starter-copy="resultEyebrow">YOUR STARTER ASSESSMENT RESULT</p>
+        <h1 data-result-title data-starter-copy="resultTitleLoading">Loading your result...</h1>
+        <p class="starter-copy" data-result-summary data-starter-copy="resultSummaryLoading">Please wait while we open your recommended starting plan.</p>
+      </div>
       <aside class="recommended-action" data-primary-action hidden>
         <p class="recommended-action-label" data-starter-copy="recommendedNextStep">Recommended next step</p>
         <a class="starter-primary" data-primary-action-link href="#"></a>
       </aside>
       <div class="delivery-notice" data-delivery-notice role="status" hidden></div>
-      <div class="resource-grid" data-resource-grid hidden></div>
+      <div data-plan-mount></div>
+      <section class="result-resources" data-resource-section hidden aria-labelledby="result-resources-title">
+        <div class="result-section-heading">
+          <p class="starter-eyebrow" data-starter-copy="resultResourcesEyebrow">KEEP BUILDING</p>
+          <h2 id="result-resources-title" data-starter-copy="resultResourcesTitle">Your next useful tools</h2>
+        </div>
+        <div class="resource-grid" data-resource-grid></div>
+      </section>
       <div class="warm-lead-box" data-warm-section hidden>
-        <h2 data-starter-copy="resultHelpTitle">Your answers suggest that structure and accountability may be more valuable than another generic plan.</h2>
+        <div class="result-coach">
+          <img src="/assets/images/about/about1.jpg" alt="Andre Garcia, Personal Trainer and Online Coach" width="96" height="96" loading="lazy" decoding="async">
+          <div>
+            <p class="coach-authority-label" data-starter-copy="coachAuthorityLabel">YOUR COACH</p>
+            <h2 data-starter-copy="resultHelpTitle">Your answers suggest that structure and accountability may be more valuable than another generic plan.</h2>
+          </div>
+        </div>
         <p data-starter-copy="resultHelpCopy">A tailored Garcia Builder coaching plan can be built around your schedule, training environment, experience, nutrition preferences and specific goal.</p>
         <div class="result-actions" data-contact-actions></div>
       </div>

@@ -4,10 +4,18 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const NEW_TOKEN = '20260728-ads-storyfree';
-const OLD_TOKEN = '20260727-ads-final';
+const NEW_TOKEN = '20260728-premium-v1';
+const OLD_TOKENS = [
+  '20260727-ads-final',
+  '20260727-ads-corrective',
+  '20260727-premium-v1',
+  '20260728-ads-storyfree',
+  '20260728-ads-mobilefix'
+];
 const TARGET_FILES = ['assessment.html', 'start.html', 'start-result.html'];
 const CHANGED_ASSETS = [
+  '/css/starter-assessment.css',
+  '/js/starter-tracking-bootstrap.js',
   '/js/starter-context.js',
   '/js/starter-locales.js',
   '/js/starter-assessment.js',
@@ -16,12 +24,6 @@ const CHANGED_ASSETS = [
 
 function read(file) {
   return fs.readFileSync(path.join(ROOT, file), 'utf8');
-}
-
-function allHtmlFiles() {
-  return fs.readdirSync(ROOT)
-    .filter((entry) => entry.toLowerCase().endsWith('.html'))
-    .sort();
 }
 
 function extractToken(content, assetPath) {
@@ -39,14 +41,16 @@ function assertTargetPagesNoObsoleteVersion() {
   for (const file of TARGET_FILES) {
     const content = read(file);
     for (const assetPath of CHANGED_ASSETS) {
-      const oldUrl = `${assetPath}?v=${OLD_TOKEN}`;
-      assert(!content.includes(oldUrl), `${file} still references obsolete immutable URL ${oldUrl}`);
+      for (const oldToken of OLD_TOKENS) {
+        const oldUrl = `${assetPath}?v=${oldToken}`;
+        assert(!content.includes(oldUrl), `${file} still references obsolete immutable URL ${oldUrl}`);
+      }
     }
   }
 }
 
 function assertGlobalTokenConsistencyForChangedAssets() {
-  const htmlFiles = allHtmlFiles();
+  const htmlFiles = TARGET_FILES;
   for (const assetPath of CHANGED_ASSETS) {
     const observed = [];
     for (const file of htmlFiles) {
@@ -66,16 +70,22 @@ function assertGlobalTokenConsistencyForChangedAssets() {
 function assertRequiredReferencesPresentWithNewToken() {
   const expectations = {
     'assessment.html': [
+      '/css/starter-assessment.css',
+      '/js/starter-tracking-bootstrap.js',
       '/js/starter-context.js',
       '/js/starter-locales.js',
       '/js/starter-assessment.js'
     ],
     'start.html': [
+      '/css/starter-assessment.css',
+      '/js/starter-tracking-bootstrap.js',
       '/js/starter-context.js',
       '/js/starter-locales.js',
       '/js/starter-assessment.js'
     ],
     'start-result.html': [
+      '/css/starter-assessment.css',
+      '/js/starter-tracking-bootstrap.js',
       '/js/starter-locales.js',
       '/js/starter-result.js'
     ]

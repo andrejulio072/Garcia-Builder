@@ -8,6 +8,9 @@
   const primaryAction = document.querySelector('[data-primary-action]');
   const primaryActionLink = document.querySelector('[data-primary-action-link]');
   const deliveryNotice = document.querySelector('[data-delivery-notice]');
+  const panel = document.querySelector('[data-result-panel]');
+  const planMount = document.querySelector('[data-plan-mount]');
+  const resourceSection = document.querySelector('[data-resource-section]');
   const grid = document.querySelector('[data-resource-grid]');
   const warmSection = document.querySelector('[data-warm-section]');
   const actions = document.querySelector('[data-contact-actions]');
@@ -52,7 +55,7 @@
 
   function renderPlanSection(plan) {
     document.querySelectorAll('[data-generated-plan]').forEach((node) => node.remove());
-    if (!plan || !grid?.parentNode) return;
+    if (!plan || !planMount) return;
 
     const section = document.createElement('section');
     section.className = 'starter-plan-output';
@@ -135,7 +138,7 @@
     appendList(nextStepsBlock, plan.nextSteps);
     planGrid.append(trainingBlock, nutritionBlock, mealsBlock, nextStepsBlock);
     section.appendChild(planGrid);
-    grid.parentNode.insertBefore(section, grid);
+    planMount.appendChild(section);
   }
 
   function recordEvent(eventName, eventKey) {
@@ -224,6 +227,7 @@
       if (!href) return;
       const link = document.createElement('a');
       link.className = className;
+      link.classList.add('result-action');
       link.href = href;
       link.textContent = label;
       link.addEventListener('click', () => {
@@ -235,18 +239,21 @@
 
     const plansLink = document.createElement('a');
     plansLink.className = 'starter-secondary';
+    plansLink.classList.add('result-action');
     plansLink.href = '/packages.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=view_plans';
     plansLink.textContent = copy('viewPlans');
     plansLink.addEventListener('click', () => track('result_packages_clicked', {}));
 
     const workoutLink = document.createElement('a');
     workoutLink.className = 'starter-secondary';
+    workoutLink.classList.add('result-action');
     workoutLink.href = '/workouts.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=workout_library';
     workoutLink.textContent = copy('workoutLibrary');
     workoutLink.addEventListener('click', () => track('result_workout_library_clicked', {}));
 
     const nutritionLink = document.createElement('a');
     nutritionLink.className = 'starter-secondary';
+    nutritionLink.classList.add('result-action');
     nutritionLink.href = '/nutrition-calculator.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=nutrition_calculator';
     nutritionLink.textContent = copy('calculateMacros');
     nutritionLink.addEventListener('click', () => track('result_nutrition_calculator_clicked', {}));
@@ -286,8 +293,17 @@
     primaryAction.dataset.ctaMode = mode;
     primaryActionLink.href = href;
     primaryActionLink.textContent = copy('downloadGuide');
-    primaryActionLink.target = '_blank';
-    primaryActionLink.rel = 'noopener';
+    if (isExternalUrl(href)) {
+      primaryActionLink.target = '_blank';
+      primaryActionLink.rel = 'noopener';
+    } else {
+      primaryActionLink.removeAttribute('target');
+      primaryActionLink.removeAttribute('rel');
+    }
+    if (isDownloadUrl(href)) {
+      primaryActionLink.setAttribute('download', primaryResource?.downloadFilename || '');
+      primaryActionLink.dataset.downloadResource = 'true';
+    }
     primaryActionLink.onclick = (event) => {
       track('primary_recommendation_cta_clicked', { cta_mode: mode, destination_slug: destination });
       if (serverEvent) recordEvent(serverEvent, `primary_${destination}`);
@@ -305,10 +321,12 @@
     summary.textContent = payload.recommendation.summary;
     renderPlanSection(payload.recommendation.starterPlan);
     grid.innerHTML = '';
-    payload.recommendation.resources.forEach((resource) => grid.appendChild(renderResource(resource)));
-    grid.hidden = false;
     renderPrimaryAction(payload);
+    const secondaryResources = payload.recommendation.resources.filter((resource) => resource.role !== 'primary');
+    secondaryResources.forEach((resource) => grid.appendChild(renderResource(resource)));
+    resourceSection.hidden = secondaryResources.length === 0;
     renderActions(payload);
+    panel?.classList.add('is-result-ready');
     track('result_viewed', { result_path_slug: payload.recommendation.primaryPath });
   }
 
@@ -324,7 +342,7 @@
     i18n?.applyDocument?.(language);
     renderDeliveryNotice();
     const slowLoadTimer = setTimeout(() => {
-      if (!grid.hidden || !summary) return;
+      if (panel?.classList.contains('is-result-ready') || !summary) return;
       summary.textContent = copy('resultStillLoading');
     }, 3500);
     document.querySelectorAll('[data-starter-language]').forEach((selector) => {
@@ -335,9 +353,10 @@
     loadResult().catch((error) => {
       title.textContent = copy('resultLoadErrorTitle');
       summary.textContent = error.message || copy('resultNotFound');
-      grid.hidden = true;
+      resourceSection.hidden = true;
       primaryAction.hidden = true;
       warmSection.hidden = true;
+      panel?.classList.add('is-result-error');
       track('result_load_failed', {});
     }).finally(() => {
       clearTimeout(slowLoadTimer);

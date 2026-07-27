@@ -20,6 +20,7 @@
     answers: {},
     language: i18n?.getBrowserLanguage?.() || 'en',
     advanceTimer: null,
+    transitionDirection: 'forward',
     contactTracked: false,
     entryContext: defaultEntryContext,
     submitted: false,
@@ -27,6 +28,7 @@
   };
 
   const $ = (selector) => document.querySelector(selector);
+  const shell = $('#assessment-root');
   const hero = $('#starter-hero');
   const card = $('[data-assessment-card]');
   const form = $('#starter-assessment-form');
@@ -37,6 +39,8 @@
   const progressLabel = $('[data-progress-label]');
   const progressPercent = $('[data-progress-percent]');
   const progressBar = $('[data-progress-bar]');
+  const progressTrack = $('[data-progress-track]');
+  const progressEncouragement = $('[data-progress-encouragement]');
   const backButton = $('[data-back-button]');
   const submitButton = $('[data-submit-button]');
   const errorSummary = $('[data-error-summary]');
@@ -128,6 +132,7 @@
   }
 
   function renderError(message) {
+    const field = arguments[1];
     const visibleContact = !contactStep.hidden;
     if (visibleContact) {
       contactStep.insertBefore(errorSummary, contactStep.querySelector('.field-grid'));
@@ -136,6 +141,10 @@
     }
     errorSummary.textContent = message;
     errorSummary.hidden = false;
+    if (field) {
+      const input = form?.elements?.namedItem?.(field);
+      if (input?.setAttribute) input.setAttribute('aria-invalid', 'true');
+    }
     errorSummary.focus();
   }
 
@@ -150,6 +159,7 @@
   function clearError() {
     errorSummary.hidden = true;
     errorSummary.textContent = '';
+    form?.querySelectorAll('[aria-invalid="true"]').forEach((field) => field.removeAttribute('aria-invalid'));
   }
 
   function setProgress() {
@@ -161,10 +171,36 @@
       : copy('contactProgress');
     progressPercent.textContent = `${percent}%`;
     progressBar.style.width = `${percent}%`;
+    if (progressTrack) {
+      progressTrack.setAttribute('aria-valuenow', String(percent));
+      progressTrack.setAttribute('aria-valuetext', progressLabel.textContent);
+    }
+    if (progressEncouragement) {
+      progressEncouragement.hidden = state.step < 5 || state.step >= QUESTIONS.length;
+    }
+  }
+
+  function prefersReducedMotion() {
+    return Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
+  }
+
+  function stageFocusDelay() {
+    return prefersReducedMotion() ? 0 : 230;
+  }
+
+  function restartStageAnimation(element) {
+    if (!element || prefersReducedMotion()) return;
+    element.classList.remove('is-stage-entering');
+    element.dataset.transitionDirection = state.transitionDirection;
+    requestAnimationFrame(() => {
+      element.classList.add('is-stage-entering');
+      element.addEventListener('animationend', () => element.classList.remove('is-stage-entering'), { once: true });
+    });
   }
 
   function moveToNextQuestion() {
     state.advanceTimer = null;
+    state.transitionDirection = 'forward';
     state.step += 1;
     render();
   }
@@ -178,7 +214,18 @@
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'option-card';
-      button.textContent = translated(option);
+      const marker = document.createElement('span');
+      marker.className = 'option-marker';
+      marker.setAttribute('aria-hidden', 'true');
+      marker.textContent = String(index + 1).padStart(2, '0');
+      const label = document.createElement('span');
+      label.className = 'option-label';
+      label.textContent = translated(option);
+      const check = document.createElement('span');
+      check.className = 'option-check';
+      check.setAttribute('aria-hidden', 'true');
+      check.innerHTML = '<svg viewBox="0 0 20 20"><path d="m4 10 4 4 8-9"/></svg>';
+      button.append(marker, label, check);
       button.setAttribute('aria-pressed', state.answers[id] === option ? 'true' : 'false');
       button.addEventListener('click', () => {
         if (state.advanceTimer) clearTimeout(state.advanceTimer);
@@ -188,6 +235,8 @@
         optionGrid.querySelectorAll('.option-card').forEach((item) => {
           item.disabled = true;
           item.setAttribute('aria-pressed', item === button ? 'true' : 'false');
+          item.classList.toggle('is-confirmed', item === button);
+          item.classList.toggle('is-muted', item !== button);
         });
         track('assessment_step_completed', {
           question_id: id,
@@ -199,6 +248,7 @@
       if (index === 0) button.dataset.firstOption = 'true';
       optionGrid.appendChild(button);
     });
+    restartStageAnimation(questionStep);
     track('assessment_question_viewed', { question_id: id, question_number: state.step + 1 });
   }
 
@@ -221,15 +271,16 @@
     backButton.hidden = state.step <= 0;
 
     if (isContact) {
+      restartStageAnimation(contactStep);
       syncWhatsappConsent();
       if (!state.contactTracked) {
         track('assessment_contact_viewed', { completed_questions: QUESTIONS.length });
         state.contactTracked = true;
       }
-      setTimeout(() => $('[name="full_name"]')?.focus(), 0);
+      setTimeout(() => $('[name="full_name"]')?.focus(), stageFocusDelay());
     } else {
       renderQuestion();
-      setTimeout(() => $('[data-first-option]')?.focus(), 0);
+      setTimeout(() => $('[data-first-option]')?.focus(), stageFocusDelay());
     }
   }
 
@@ -238,8 +289,16 @@
     restoreAnswers();
     const unansweredIndex = QUESTIONS.findIndex(([id]) => !state.answers[id]);
     state.step = unansweredIndex === -1 ? QUESTIONS.length : unansweredIndex;
-    hero.hidden = true;
     card.hidden = false;
+    shell?.classList.add('is-assessment-active');
+    hero?.classList.add('is-hero-exiting');
+    card.classList.add('is-assessment-entering');
+    setTimeout(() => {
+      hero.hidden = true;
+      hero.classList.remove('is-hero-exiting');
+      card.classList.remove('is-assessment-entering');
+      card.scrollIntoView({ block: 'start', behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+    }, prefersReducedMotion() ? 0 : 300);
     track('assessment_started', { resumed: Object.keys(state.answers).length > 0 });
     render();
   }
@@ -335,15 +394,18 @@
 
   async function submitAssessment(event) {
     event.preventDefault();
+    if (state.submitted || submitButton.disabled) return;
     clearError();
     const contact = collectContact();
     const validationError = validateContact(contact);
     if (validationError) {
       trackValidationError(validationError.field);
-      renderError(validationError.message);
+      renderError(validationError.message, validationError.field);
       return;
     }
     submitButton.disabled = true;
+    submitButton.dataset.loading = 'true';
+    submitButton.setAttribute('aria-busy', 'true');
     submitButton.textContent = copy('preparing');
     track('assessment_submission_started', {
       has_whatsapp: Boolean(contact.whatsapp),
@@ -374,6 +436,8 @@
         track('assessment_submission_ignored', { reason: 'honeypot' });
         renderError(copy('submitUnavailable'));
         submitButton.disabled = false;
+        delete submitButton.dataset.loading;
+        submitButton.removeAttribute('aria-busy');
         submitButton.textContent = copy('viewResult');
         return;
       }
@@ -412,6 +476,10 @@
       if (payload.resultToken && payload.resourceDelivery?.email) {
         try { sessionStorage.setItem(`${DELIVERY_KEY_PREFIX}${payload.resultToken}`, payload.resourceDelivery.email); } catch (_) {}
       }
+      delete submitButton.dataset.loading;
+      submitButton.removeAttribute('aria-busy');
+      submitButton.dataset.success = 'true';
+      submitButton.textContent = copy('resultReady');
       window.location.assign(payload.resultUrl);
     } catch (error) {
       const offlineMessage = isLocalPreviewHost() && error instanceof TypeError ? copy('localApi') : '';
@@ -422,6 +490,8 @@
       });
       renderError(offlineMessage || error.message || copy('submitUnavailable'));
       submitButton.disabled = false;
+      delete submitButton.dataset.loading;
+      submitButton.removeAttribute('aria-busy');
       submitButton.textContent = copy('viewResult');
     }
   }
@@ -457,6 +527,7 @@
     backButton?.addEventListener('click', () => {
       if (state.advanceTimer) clearTimeout(state.advanceTimer);
       state.advanceTimer = null;
+      state.transitionDirection = 'back';
       state.step = Math.max(0, state.step - 1);
       render();
     });

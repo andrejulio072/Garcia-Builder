@@ -124,6 +124,10 @@
   ],
   "rewrites": [
     {
+      "source": "/assessment",
+      "destination": "/assessment.html"
+    },
+    {
       "source": "/start",
       "destination": "/start.html"
     },
@@ -222,6 +226,10 @@
     {
       "source": "/terms",
       "destination": "/terms.html"
+    },
+    {
+      "source": "/cookie-policy",
+      "destination": "/cookie-policy.html"
     },
     {
       "source": "/thanks-ebook.html",

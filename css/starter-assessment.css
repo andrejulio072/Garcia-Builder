@@ -356,6 +356,22 @@ select {
   content: "";
   position: absolute;
   inset: -35% -22%;
+.starter-page-paid .starter-actions {
+  gap: 12px 16px;
+}
+.legal-note-hero {
+  margin-top: 18px;
+}
+.starter-link-button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--starter-gold);
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
   z-index: -1;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
   transform: translateX(-140%) skewX(-18deg);

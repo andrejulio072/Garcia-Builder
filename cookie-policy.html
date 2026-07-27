@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cookie Policy | Garcia Builder Fitness</title>
+  <meta name="description" content="Learn how Garcia Builder Fitness uses essential, analytics, and advertising storage, and how to manage cookie preferences.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.garciabuilder.fitness/cookie-policy">
+  <link rel="stylesheet" href="/css/global.css">
+  <style>
+    main{max-width:900px;margin:40px auto;padding:0 16px;line-height:1.6}
+    h1,h2{margin-top:24px}
+    ul{padding-left:20px}
+    .cookie-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+    .cookie-actions button{min-height:48px;padding:10px 16px;border-radius:8px;border:1px solid #111;background:#111;color:#fff;cursor:pointer}
+  </style>
+  <script src="/js/starter-tracking-bootstrap.js?v=20260727-paid-landing"></script>
+</head>
+<body>
+  <main>
+    <h1>Cookie Policy</h1>
+    <p>Revision date: 2026-07-27</p>
+    <p>This page explains how storage and tracking technologies are used on Garcia Builder Fitness pages, including the starter assessment flow.</p>
+
+    <h2>Essential and Security Storage</h2>
+    <p>These settings help keep the site secure, preserve core functionality and maintain service reliability. They are enabled by default.</p>
+
+    <h2>Functionality Storage</h2>
+    <p>Used to remember preferences such as language and interface state that improve usability.</p>
+
+    <h2>Analytics Storage</h2>
+    <p>Used to understand page usage and funnel performance through analytics tools. This storage respects your cookie preference selection.</p>
+
+    <h2>Advertising Storage, User Data and Personalization</h2>
+    <p>Used for advertising measurement and campaign optimization where consent allows. Consent Mode signals include:</p>
+    <ul>
+      <li>ad_storage</li>
+      <li>ad_user_data</li>
+      <li>ad_personalization</li>
+    </ul>
+
+    <h2>How to Reject or Change Choices</h2>
+    <p>You can reject non-essential categories and reopen cookie preferences at any time.</p>
+    <div class="cookie-actions">
+      <button type="button" data-open-cookie-preferences>Open Cookie Preferences</button>
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/terms">Terms</a>
+    </div>
+
+    <h2>Contact</h2>
+    <p>For privacy and data-rights requests: andre@garciabuilder.fitness</p>
+  </main>
+  <script>
+    document.querySelectorAll('[data-open-cookie-preferences]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        if (typeof window.openConsentPreferences === 'function') {
+          window.openConsentPreferences();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

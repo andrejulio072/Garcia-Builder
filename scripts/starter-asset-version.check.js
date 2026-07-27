@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const NEW_TOKEN = '20260728-ads-storyfree';
+const NEW_TOKEN = '20260728-ads-socialbox';
 const OLD_TOKEN = '20260727-ads-final';
 const TARGET_FILES = ['assessment.html', 'start.html', 'start-result.html'];
 const CHANGED_ASSETS = [

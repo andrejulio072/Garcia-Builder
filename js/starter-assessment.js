@@ -42,8 +42,20 @@
   const whatsappInput = $('[name="whatsapp"]');
   const whatsappConsent = $('[data-whatsapp-consent]');
 
+  const PAID_COPY_FALLBACK = {
+    heroTrustPaid: 'heroTrust',
+    disclaimerPaid: 'disclaimer'
+  };
+
   function copy(key, variables) {
-    return i18n?.ui?.(key, state.language, variables) || key;
+    const value = i18n?.ui?.(key, state.language, variables);
+    if (value && value !== key) return value;
+    const fallbackKey = PAID_COPY_FALLBACK[key];
+    if (fallbackKey) {
+      const fallback = i18n?.ui?.(fallbackKey, state.language, variables);
+      if (fallback && fallback !== fallbackKey) return fallback;
+    }
+    return key;
   }
 
   function translated(value) {

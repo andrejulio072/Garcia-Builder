@@ -31,7 +31,7 @@
   </header>
 
   <main class="starter-shell" id="assessment-root">
-    <section class="starter-hero" id="starter-hero" aria-labelledby="starter-title">
+    <section class="starter-hero starter-hero-premium" id="starter-hero" aria-labelledby="starter-title">
       <p class="starter-eyebrow" data-starter-copy="heroEyebrowPaid">FREE FITNESS STARTER ASSESSMENT</p>
       <h1 id="starter-title" data-starter-copy="heroTitle">Find the Right Starting Plan for Your Goal</h1>
       <p class="starter-copy" data-starter-copy="heroCopyPaid">Answer seven quick questions about your goal, routine and biggest challenge. Get a practical workout and nutrition starting point, plus the option to discuss a fully tailored plan with Andre.</p>
@@ -50,9 +50,18 @@
         </article>
       </div>
       <div class="starter-actions starter-actions-paid">
-        <button class="starter-primary" type="button" data-start-assessment data-starter-copy="heroCta">Build My Starter Plan</button>
-        <span data-starter-copy="heroNote">Free assessment. No commitment.</span>
-        <span data-starter-copy="heroDuration">Takes around 2 minutes.</span>
+        <div class="starter-cta-cluster">
+          <button class="starter-primary" type="button" data-start-assessment data-starter-copy="heroCta">Build My Starter Plan</button>
+          <p class="starter-cta-meta">
+            <span data-starter-copy="heroNote">Free assessment. No commitment.</span>
+            <span data-starter-copy="heroDuration">Takes around 2 minutes.</span>
+          </p>
+        </div>
+      </div>
+      <div class="starter-kpis" aria-label="Assessment highlights">
+        <span data-starter-copy="kpiOne">2-minute flow</span>
+        <span data-starter-copy="kpiTwo">Name + email required</span>
+        <span data-starter-copy="kpiThree">Human coach follow-up</span>
       </div>
       <ul class="starter-proof" aria-label="Assessment benefits">
         <li data-starter-copy="benefitOne">Seven focused questions</li>
@@ -93,6 +102,7 @@
         <section class="contact-step" data-contact-step hidden aria-labelledby="contact-heading">
           <h2 id="contact-heading" data-starter-copy="contactTitle">Your Recommended Starting Plan Is Ready</h2>
           <p data-starter-copy="contactCopy">Enter your details to view your result and receive your resources by email.</p>
+          <p class="starter-friction-note" data-starter-copy="frictionNote">To keep this fast: only full name and email are required. All other contact fields are optional.</p>
 
           <div class="field-grid field-grid-premium">
             <label>

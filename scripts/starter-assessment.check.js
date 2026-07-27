@@ -294,8 +294,10 @@ assert(starterPage.includes('name="website"'), 'Starter form should keep the hon
 assert(starterPage.includes('/js/starter-context.js'), 'Starter page should load shared starter context script');
 assert(starterContext.includes('detectEntryContext'), 'Shared starter context should include entry-context classification');
 assert(starterPage.includes('data-start-assessment'), 'QR landing should keep the assessment start button');
-assert(starterPage.includes('/packages.html?utm_source=business_card'), 'QR landing should link directly to packages');
-assert(starterPage.includes('/start-contact.html?utm_source=business_card'), 'QR landing should link to the direct contact page');
+assert(!starterPage.includes('data-qr-choice="packages"'), 'QR landing should remove package shortcut CTA before the assessment starts');
+assert(!starterPage.includes('data-qr-choice="contact"'), 'QR landing should remove direct contact shortcut CTA before the assessment starts');
+assert(starterPage.includes('data-starter-copy="freePlanHighlight"'), 'QR landing should highlight that the first plan is free');
+assert(starterPage.includes('starter-transformations'), 'QR landing should include social-proof transformation preview section');
 assert(paidAssessmentPage.includes('Find the Right Starting Plan for Your Goal'), 'Paid assessment page should include paid hero headline');
 assert(paidAssessmentPage.includes('data-starter-entry-default="organic"'), 'Paid assessment path should classify organically unless paid attribution exists');
 assert(paidAssessmentPage.includes('name="robots" content="noindex, follow"'), 'Paid assessment should be noindex, follow');

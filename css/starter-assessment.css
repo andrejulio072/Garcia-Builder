@@ -229,6 +229,20 @@ body.starter-page::before {
   line-height: 1.65;
 }
 
+.starter-free-highlight {
+  margin: 18px 0 0;
+  max-width: 700px;
+  border: 1px solid rgba(246, 200, 78, 0.48);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: linear-gradient(120deg, rgba(246, 200, 78, 0.18), rgba(246, 200, 78, 0.06));
+  color: #fff5d6;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.5;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+}
+
 .starter-actions {
   display: flex;
   flex-wrap: wrap;
@@ -423,6 +437,195 @@ body.starter-page::before {
   border-radius: 999px;
   background: linear-gradient(180deg, #ffd96a, #e5ad25);
   box-shadow: 0 0 0 3px rgba(246, 200, 78, 0.16);
+}
+
+.starter-transformations {
+  margin-top: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  padding: 16px;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.018));
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.25);
+}
+
+.starter-transformations h2 {
+  margin: 0;
+  color: var(--starter-gold);
+  font-size: 1.08rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.starter-transformations p {
+  margin: 10px 0 0;
+  color: var(--starter-muted);
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+
+.starter-transform-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.starter-transform-card {
+  margin: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(9, 12, 16, 0.88);
+}
+
+.starter-transform-card img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  display: block;
+}
+
+.starter-transform-card figcaption {
+  margin: 0;
+  padding: 10px 10px 12px;
+  color: var(--starter-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.starter-reviews {
+  margin-top: 18px;
+}
+
+.starter-reviews h2 {
+  margin: 0;
+  color: var(--starter-gold);
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.starter-reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.starter-review-card {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 14px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  position: relative;
+}
+
+.starter-review-quote {
+  margin: 0;
+  color: #f6f2e8;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  font-weight: 600;
+}
+
+.starter-review-card::before {
+  content: "\201C";
+  position: absolute;
+  right: 10px;
+  top: -4px;
+  color: rgba(246, 200, 78, 0.35);
+  font-size: 2rem;
+  line-height: 1;
+  font-family: Georgia, serif;
+}
+
+.starter-review-meta {
+  margin: 8px 0 0;
+  color: var(--starter-muted);
+  font-size: 0.8rem;
+}
+
+.starter-coach-showcase {
+  margin-top: 14px;
+}
+
+.starter-coach-portrait {
+  margin: 0 0 10px;
+  width: min(100%, 360px);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.32);
+  position: relative;
+}
+
+.starter-coach-portrait::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(9, 12, 16, 0.12), transparent 48%);
+  pointer-events: none;
+}
+
+.starter-coach-portrait img {
+  width: 100%;
+  height: 390px;
+  object-fit: cover;
+  object-position: center 28%;
+  display: block;
+}
+
+.starter-coach-proof {
+  border: 1px solid rgba(246, 200, 78, 0.34);
+  border-radius: 14px;
+  padding: 14px;
+  background: linear-gradient(155deg, rgba(246, 200, 78, 0.14), rgba(255, 255, 255, 0.02));
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+}
+
+.starter-coach-copy h2 {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.35;
+  color: var(--starter-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.starter-coach-body {
+  margin: 7px 0 0;
+  color: #f8f0df;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+.starter-coach-story {
+  margin: 8px 0 0;
+  color: #e8dec9;
+  font-size: 0.84rem;
+  line-height: 1.62;
+  max-width: 66ch;
+  border-left: 2px solid rgba(246, 200, 78, 0.5);
+  padding-left: 10px;
+}
+
+.starter-coach-badges {
+  margin: 9px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.starter-coach-badges li {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  padding: 6px 9px;
+  font-size: 0.75rem;
+  color: var(--starter-text);
+  background: rgba(7, 10, 14, 0.42);
 }
 
 .starter-disclaimer {
@@ -1051,19 +1254,80 @@ select {
 }
 
 @media (max-width: 760px) {
-  .starter-header,
   .starter-shell {
-    width: min(100% - 24px, 720px);
+    width: min(100% - 20px, 720px);
+    padding: 18px 0 34px;
+    min-height: auto;
   }
 
-  .starter-shell {
-    align-items: start;
-    padding-top: 22px;
+  .starter-hero,
+  .assessment-card,
+  .result-panel {
+    width: 100%;
   }
 
-  .starter-hero-premium {
-    padding: 16px;
-    border-radius: 14px;
+  .starter-hero h1,
+  .result-panel h1 {
+    font-size: clamp(1.9rem, 9vw, 2.9rem);
+    line-height: 1.04;
+  }
+
+  .starter-copy {
+    font-size: 0.98rem;
+    line-height: 1.56;
+  }
+
+  .starter-free-highlight {
+    padding: 12px 13px;
+    font-size: 0.92rem;
+  }
+
+  .starter-transformations {
+    margin-top: 18px;
+    padding: 13px;
+  }
+
+  .starter-transform-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .starter-transform-card img {
+    height: 176px;
+    object-position: center 20%;
+  }
+
+  .starter-transform-card figcaption {
+    font-size: 0.78rem;
+    padding: 9px 9px 11px;
+  }
+
+  .starter-reviews-grid {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .starter-review-card {
+    padding: 12px;
+  }
+
+  .starter-review-quote {
+    font-size: 0.84rem;
+    line-height: 1.5;
+  }
+
+  .starter-coach-showcase {
+    margin-top: 12px;
+  }
+
+  .starter-coach-portrait {
+    width: min(100%, 300px);
+    margin: 0 auto 10px;
+  }
+
+  .starter-coach-portrait img {
+    height: 322px;
+    object-position: center 24%;
   }
 
   .starter-cta-cluster {
@@ -1071,14 +1335,27 @@ select {
     padding: 10px;
   }
 
-  .starter-cta-meta {
-    margin: 8px 2px 0;
-    flex-direction: column;
-    gap: 5px;
+  .starter-coach-proof {
+    padding: 12px;
   }
 
-  .starter-logo img {
-    width: 128px;
+  .starter-coach-copy h2 {
+    font-size: 0.9rem;
+  }
+
+  .starter-coach-body {
+    font-size: 0.84rem;
+  }
+
+  .starter-coach-story {
+    font-size: 0.79rem;
+    line-height: 1.54;
+    padding-left: 8px;
+  }
+
+  .starter-coach-badges li {
+    font-size: 0.71rem;
+    padding: 5px 8px;
   }
 
   .starter-actions,
@@ -1102,6 +1379,96 @@ select {
   .starter-choice-grid,
   .qr-contact-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .starter-shell {
+    width: min(100% - 14px, 640px);
+    padding: 14px 0 28px;
+  }
+
+  .starter-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.09em;
+  }
+
+  .starter-hero h1,
+  .result-panel h1 {
+    font-size: clamp(1.72rem, 10vw, 2.35rem);
+    line-height: 1.06;
+  }
+
+  .starter-copy {
+    margin-top: 16px;
+    font-size: 0.93rem;
+    line-height: 1.52;
+  }
+
+  .starter-actions {
+    margin-top: 22px;
+    gap: 10px;
+  }
+
+  .starter-proof {
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .starter-proof li {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.76rem;
+    padding: 8px 12px;
+  }
+
+  .starter-transformations {
+    padding: 12px;
+  }
+
+  .starter-transform-grid {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .starter-transform-card {
+    flex: 0 0 78%;
+    min-width: 78%;
+    scroll-snap-align: start;
+  }
+
+  .starter-transform-card img {
+    height: 206px;
+    object-position: center 18%;
+  }
+
+  .starter-reviews h2,
+  .starter-transformations h2,
+  .starter-coach-copy h2 {
+    font-size: 0.9rem;
+  }
+
+  .starter-coach-portrait {
+    width: min(100%, 268px);
+  }
+
+  .starter-coach-portrait img {
+    height: 286px;
+    object-position: center 22%;
+  }
+
+  .starter-coach-copy h2,
+  .starter-coach-body,
+  .starter-coach-story {
+    text-align: left;
+  }
+
+  .starter-coach-badges {
+    justify-content: flex-start;
   }
 
   .starter-signal-row,

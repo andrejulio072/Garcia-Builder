@@ -236,7 +236,7 @@
     const plansLink = document.createElement('a');
     plansLink.className = 'starter-secondary';
     plansLink.href = '/packages.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=view_plans';
-    plansLink.textContent = 'View Coaching Plans';
+    plansLink.textContent = copy('viewPlans');
     plansLink.addEventListener('click', () => track('result_packages_clicked', {}));
 
     const workoutLink = document.createElement('a');

@@ -5,7 +5,6 @@
   const MAX_URL_LENGTH = 500;
   const ATTR_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'gclid', 'gbraid', 'wbraid', 'fbclid'];
   const PAID_MEDIA = new Set(['paid_social', 'cpc', 'ppc', 'paid', 'display', 'retargeting']);
-  const PAID_SOURCES = new Set(['meta', 'facebook', 'instagram', 'google', 'youtube']);
 
   function normalizeText(value, max) {
     return String(value || '').trim().slice(0, max || 120);
@@ -49,13 +48,11 @@
     const medium = String(attrs.utm_medium || '').toLowerCase();
     const source = String(attrs.utm_source || '').toLowerCase();
     const hasPaidClickId = Boolean(attrs.gclid || attrs.gbraid || attrs.wbraid || attrs.fbclid);
+    void defaultEntry;
 
     if (source === 'business_card' && medium === 'qr') return 'qr';
     if (hasPaidClickId) return 'paid';
     if (PAID_MEDIA.has(medium)) return 'paid';
-    if (PAID_SOURCES.has(source) && PAID_MEDIA.has(medium)) return 'paid';
-    if (PAID_SOURCES.has(source) && hasPaidClickId) return 'paid';
-    if (window.location.pathname === '/start') return 'organic';
     return 'organic';
   }
 
@@ -63,36 +60,31 @@
     const nowIso = new Date().toISOString();
     const stored = parseStored();
     const queryAttrs = getQueryAttribution();
+    const hasStoredFirstTouch = Boolean(
+      stored.first_touch &&
+      typeof stored.first_touch === 'object' &&
+      stored.first_touch.at
+    );
 
-    const firstTouch = stored.first_touch || {
-      at: nowIso,
-      landing_path: window.location.pathname,
-      landing_url: safeUrl(window.location.href),
-      referrer: normalizeText(document.referrer, 500)
-    };
-
-    const firstWithAttribution = { ...firstTouch };
-    ATTR_KEYS.forEach((key) => {
-      if (!firstWithAttribution[key] && queryAttrs[key]) {
-        firstWithAttribution[key] = queryAttrs[key];
-      }
-    });
+    const firstTouch = hasStoredFirstTouch
+      ? { ...stored.first_touch }
+      : {
+          at: nowIso,
+          landing_path: window.location.pathname,
+          landing_url: safeUrl(window.location.href),
+          referrer: normalizeText(document.referrer, 500),
+          ...queryAttrs,
+          entry_context: detectEntryContext(queryAttrs, defaultEntry)
+        };
 
     const latestBase = stored.latest_touch && typeof stored.latest_touch === 'object'
       ? stored.latest_touch
-      : firstWithAttribution;
+      : firstTouch;
     const mergedLatest = { ...latestBase, ...queryAttrs };
     const entryContext = detectEntryContext(mergedLatest, defaultEntry);
 
     const next = {
-      first_touch: {
-        ...firstWithAttribution,
-        at: firstWithAttribution.at || nowIso,
-        landing_path: firstWithAttribution.landing_path || window.location.pathname,
-        landing_url: firstWithAttribution.landing_url || safeUrl(window.location.href),
-        referrer: firstWithAttribution.referrer || normalizeText(document.referrer, 500),
-        entry_context: detectEntryContext(firstWithAttribution, defaultEntry)
-      },
+      first_touch: firstTouch,
       latest_touch: {
         ...mergedLatest,
         at: nowIso,

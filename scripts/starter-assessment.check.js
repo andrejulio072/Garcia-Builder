@@ -163,6 +163,37 @@ assert.deepStrictEqual(Object.keys(metadata).sort(), [
 assert.strictEqual(metadata.utm_source, 'qr');
 assert.strictEqual(metadata.entry_context, 'organic');
 
+const paidByLatestGoogle = validateMetadata({
+  utm_source: 'website',
+  utm_medium: 'organic',
+  latest_utm_source: 'google',
+  latest_utm_medium: 'cpc'
+});
+assert.strictEqual(paidByLatestGoogle.entry_context, 'paid');
+
+const paidByLatestMeta = validateMetadata({
+  latest_utm_source: 'meta',
+  latest_utm_medium: 'paid_social'
+});
+assert.strictEqual(paidByLatestMeta.entry_context, 'paid');
+
+const qrEntryContext = validateMetadata({
+  utm_source: 'business_card',
+  utm_medium: 'qr'
+});
+assert.strictEqual(qrEntryContext.entry_context, 'qr');
+
+const organicWebsite = validateMetadata({
+  utm_source: 'website',
+  utm_medium: 'organic'
+});
+assert.strictEqual(organicWebsite.entry_context, 'organic');
+
+const directAssessment = validateMetadata({
+  landing_path: '/assessment'
+});
+assert.strictEqual(directAssessment.entry_context, 'organic');
+
 const token = generateResultToken();
 assert(token.length >= 40);
 assert.strictEqual(hashResultToken(token).length, 64);
@@ -292,12 +323,55 @@ assert(starterClient.includes('resourceDelivery?.email'), 'Starter form should p
 assert(starterClient.includes('shouldTrackCanonicalSubmission(payload)'), 'Starter form should gate primary conversion to the canonical server response contract');
 assert(starterClient.includes('SUBMITTED_EVENT_GUARD_KEY'), 'Starter form should guard against duplicate assessment_submitted event ids per browser session');
 assert(starterClient.includes("track('assessment_submission_ignored'"), 'Honeypot responses should be handled without success redirect or conversion');
+assert(starterClient.includes('function renderError(message)'), 'Starter form should separate error rendering from event tracking');
+assert(starterClient.includes('function trackValidationError(field)'), 'Starter form should track validation separately from rendering');
+assert(!starterClient.includes('function showError('), 'Legacy combined showError tracking function should be removed');
+assert(starterClient.includes("status_category: classifyStatusCategory(error)"), 'Submission failure diagnostics should use normalized status categories');
+assert(starterClient.includes("return '4xx';") && starterClient.includes("return '5xx';") && starterClient.includes("return 'network';") && starterClient.includes("return 'unknown';"), 'Failure diagnostics should classify as 4xx, 5xx, network, unknown');
+
+const startedPayloadMatch = starterClient.match(/track\('assessment_submission_started',\s*\{([\s\S]*?)\}\);/);
+assert(startedPayloadMatch, 'assessment_submission_started payload should exist');
+assert(!startedPayloadMatch[1].includes('marketing_email_consent'), 'assessment_submission_started must not include email marketing consent');
+assert(!startedPayloadMatch[1].includes('marketing_whatsapp_consent'), 'assessment_submission_started must not include WhatsApp marketing consent');
+
+const submittedPayloadMatch = starterClient.match(/track\('assessment_submitted',\s*\{([\s\S]*?)\}\);/);
+assert(submittedPayloadMatch, 'assessment_submitted payload should exist');
+[
+  'full_name',
+  'first_name',
+  'email',
+  'whatsapp',
+  'date_of_birth',
+  'instagram_handle',
+  'facebook_profile',
+  'marketing_email_consent',
+  'marketing_whatsapp_consent',
+  'resultToken',
+  'lead_score',
+  'lead_id'
+].forEach((forbidden) => {
+  assert(!submittedPayloadMatch[1].includes(forbidden), `assessment_submitted payload must not include sensitive key: ${forbidden}`);
+});
+
+const ignoredBranchMatch = starterClient.match(/if \(payload\.ignored\) \{([\s\S]*?)return;/);
+assert(ignoredBranchMatch, 'Honeypot ignored branch should exist');
+assert(ignoredBranchMatch[1].includes("track('assessment_submission_ignored'"), 'Honeypot branch should track assessment_submission_ignored');
+assert(!ignoredBranchMatch[1].includes('assessment_validation_error'), 'Honeypot branch must not emit assessment_validation_error');
+
+const catchBlockMatch = starterClient.match(/catch \(error\) \{([\s\S]*?)\n\s*\}/);
+assert(catchBlockMatch, 'Submit catch block should exist');
+assert(catchBlockMatch[1].includes("track('assessment_submission_failed'"), 'API/network failures should emit assessment_submission_failed');
+assert(!catchBlockMatch[1].includes('assessment_validation_error'), 'API/network failures should not emit assessment_validation_error');
+
 assert(starterLocales.includes('Email sent. A copy of this workout and nutrition plan is on its way.'), 'Result page should confirm successful email delivery');
 assert(starterLocales.includes('Still building your plan.'), 'Result page should show slow-load feedback instead of looking stuck');
 assert(starterLocales.includes('Open workout exercise library'), 'Result plan should link directly to the workout library');
+assert(starterLocales.includes("viewPlans: 'View Coaching Plans'"), 'English locale should include viewPlans label');
+assert(starterLocales.includes("viewPlans: 'Ver Planos de Acompanhamento'"), 'Portuguese locale should include viewPlans label');
+assert(starterLocales.includes("viewPlans: 'Ver Planes de Coaching'"), 'Spanish locale should include viewPlans label');
 assert(resultClient.includes('isExternalUrl(resource.url)'), 'Result resource links should distinguish internal and external destinations');
 assert(resultClient.includes('isDownloadUrl(resource.url)'), 'Result resource links should explicitly mark downloadable resources');
-assert(resultClient.includes('View Coaching Plans'), 'Result page should include View Coaching Plans action');
+assert(resultClient.includes("plansLink.textContent = copy('viewPlans')"), 'Result page plans action should use localized copy');
 assert(resultClient.includes('/packages.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=view_plans'), 'Result page should preserve attribution when linking to coaching plans');
 assert(resultClient.includes('/workouts.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=workout_library'), 'Result page should include workout tools link with attribution');
 assert(resultClient.includes('/nutrition-calculator.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=nutrition_calculator'), 'Result page should include nutrition calculator link with attribution');
@@ -310,8 +384,9 @@ assert(submitHandler.includes('isNewLead: true'), 'Submit response should identi
 assert(submitHandler.includes('deduplicated: true'), 'Submit response should identify repeated submissions as deduplicated');
 assert(submitHandler.includes('ignored: true'), 'Submit response should return ignored=true for honeypot requests');
 assert(submitHandler.includes('replyTo: contactActions.contactEmail'), 'Starter plan email should be directly replyable');
-assert(submitHandler.includes('View Coaching Plans'), 'Starter result email should include a coaching plans link');
-assert(starterContext.includes('if (!firstWithAttribution[key] && queryAttrs[key])'), 'First-touch attribution should not be overwritten by later visits');
+assert(submitHandler.includes("starterI18n.ui('viewPlans', language)"), 'Starter result email should use localized viewPlans copy');
+assert(starterContext.includes('const hasStoredFirstTouch = Boolean('), 'Starter context should detect existing first-touch state before writing attribution');
+assert(starterContext.includes('first_touch: firstTouch'), 'Stored first-touch payload should remain immutable after first capture');
 assert(starterContext.includes('utm_source: first.utm_source || null'), 'Submitted metadata should map utm_* to first-touch attribution');
 assert(starterContext.includes('latest_utm_source: latest.utm_source || null'), 'Submitted metadata should preserve latest-touch attribution in latest_utm_* fields');
 assert(!starterPage.includes('name="country"'), 'Starter contact form should not request country');

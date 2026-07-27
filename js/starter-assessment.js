@@ -127,7 +127,7 @@
     }
   }
 
-  function showError(message, field) {
+  function renderError(message) {
     const visibleContact = !contactStep.hidden;
     if (visibleContact) {
       contactStep.insertBefore(errorSummary, contactStep.querySelector('.field-grid'));
@@ -137,6 +137,10 @@
     errorSummary.textContent = message;
     errorSummary.hidden = false;
     errorSummary.focus();
+  }
+
+  function trackValidationError(field) {
+    const visibleContact = !contactStep.hidden;
     track('assessment_validation_error', {
       stage: visibleContact ? 'contact' : 'question',
       field: field || (visibleContact ? 'contact' : QUESTIONS[state.step]?.[0])
@@ -286,6 +290,14 @@
     return copy('submitUnavailable');
   }
 
+  function classifyStatusCategory(error) {
+    if (error instanceof TypeError) return 'network';
+    const status = Number(error?.status || 0);
+    if (status >= 400 && status < 500) return '4xx';
+    if (status >= 500 && status < 600) return '5xx';
+    return 'unknown';
+  }
+
   function shouldTrackCanonicalSubmission(payload) {
     return Boolean(
       payload?.ok === true &&
@@ -327,7 +339,8 @@
     const contact = collectContact();
     const validationError = validateContact(contact);
     if (validationError) {
-      showError(validationError.message, validationError.field);
+      trackValidationError(validationError.field);
+      renderError(validationError.message);
       return;
     }
     submitButton.disabled = true;
@@ -336,9 +349,7 @@
       has_whatsapp: Boolean(contact.whatsapp),
       has_instagram: Boolean(contact.instagram_handle),
       has_facebook: Boolean(contact.facebook_profile),
-      preferred_contact_method: contact.preferred_contact_method || 'none',
-      marketing_email_consent: contact.marketing_email_consent,
-      marketing_whatsapp_consent: contact.marketing_whatsapp_consent
+      preferred_contact_method: contact.preferred_contact_method || 'none'
     });
     try {
       const response = await fetch('/api/starter-assessment/submit', {
@@ -353,18 +364,24 @@
         })
       });
       const payload = await response.json().catch(() => ({}));
-      if (!response.ok || !payload.ok) throw new Error(payload.error || getApiUnavailableMessage(response.status));
+      if (!response.ok || !payload.ok) {
+        const error = new Error(payload.error || getApiUnavailableMessage(response.status));
+        error.status = response.status;
+        throw error;
+      }
 
       if (payload.ignored) {
         track('assessment_submission_ignored', { reason: 'honeypot' });
-        showError(copy('submitUnavailable'), 'submission');
+        renderError(copy('submitUnavailable'));
         submitButton.disabled = false;
         submitButton.textContent = copy('viewResult');
         return;
       }
 
       if (!payload.leadSaved || !payload.resultToken || !payload.resultUrl) {
-        throw new Error(copy('submitUnavailable'));
+        const error = new Error(copy('submitUnavailable'));
+        error.status = response.status || 500;
+        throw error;
       }
 
       try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) {}
@@ -398,13 +415,12 @@
       window.location.assign(payload.resultUrl);
     } catch (error) {
       const offlineMessage = isLocalPreviewHost() && error instanceof TypeError ? copy('localApi') : '';
-      const statusCode = error?.status || 0;
       track('assessment_submission_failed', {
-        reason: error instanceof TypeError ? 'network' : 'api',
+        reason: error instanceof TypeError ? 'network' : 'api_or_persistence',
         stage: 'submit',
-        status_category: statusCode ? `${Math.floor(Number(statusCode) / 100)}xx` : 'unknown'
+        status_category: classifyStatusCategory(error)
       });
-      showError(offlineMessage || error.message || copy('submitUnavailable'), 'submission');
+      renderError(offlineMessage || error.message || copy('submitUnavailable'));
       submitButton.disabled = false;
       submitButton.textContent = copy('viewResult');
     }

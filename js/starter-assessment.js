@@ -11,8 +11,9 @@
   const STORAGE_KEY = 'gb_starter_assessment_answers';
   const META_KEY = 'gb_starter_assessment_meta';
   const DELIVERY_KEY_PREFIX = 'gb_starter_delivery_';
+  const SUBMITTED_EVENT_GUARD_KEY = 'gb_assessment_submitted_event_ids_v1';
   const pageMode = document.body?.dataset?.starterPageMode || 'qr';
-  const defaultEntryContext = document.body?.dataset?.starterEntryDefault || (window.location.pathname === '/assessment' ? 'paid' : 'organic');
+  const defaultEntryContext = document.body?.dataset?.starterEntryDefault || 'organic';
   const i18n = window.GB_STARTER_I18N;
   const state = {
     step: -1,
@@ -285,6 +286,41 @@
     return copy('submitUnavailable');
   }
 
+  function shouldTrackCanonicalSubmission(payload) {
+    return Boolean(
+      payload?.ok === true &&
+      payload?.leadSaved === true &&
+      payload?.isNewLead === true &&
+      payload?.deduplicated === false &&
+      payload?.ignored === false &&
+      payload?.eventId &&
+      payload?.resultToken &&
+      payload?.resultUrl
+    );
+  }
+
+  function hasTrackedEventId(eventId) {
+    if (!eventId) return false;
+    try {
+      const raw = sessionStorage.getItem(SUBMITTED_EVENT_GUARD_KEY);
+      const parsed = JSON.parse(raw || '[]');
+      return Array.isArray(parsed) && parsed.includes(eventId);
+    } catch {
+      return false;
+    }
+  }
+
+  function markTrackedEventId(eventId) {
+    if (!eventId) return;
+    try {
+      const raw = sessionStorage.getItem(SUBMITTED_EVENT_GUARD_KEY);
+      const parsed = JSON.parse(raw || '[]');
+      const next = Array.isArray(parsed) ? parsed.slice(0, 30) : [];
+      if (!next.includes(eventId)) next.push(eventId);
+      sessionStorage.setItem(SUBMITTED_EVENT_GUARD_KEY, JSON.stringify(next));
+    } catch (_) {}
+  }
+
   async function submitAssessment(event) {
     event.preventDefault();
     clearError();
@@ -318,22 +354,48 @@
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || !payload.ok) throw new Error(payload.error || getApiUnavailableMessage(response.status));
+
+      if (payload.ignored) {
+        track('assessment_submission_ignored', { reason: 'honeypot' });
+        showError(copy('submitUnavailable'), 'submission');
+        submitButton.disabled = false;
+        submitButton.textContent = copy('viewResult');
+        return;
+      }
+
+      if (!payload.leadSaved || !payload.resultToken || !payload.resultUrl) {
+        throw new Error(copy('submitUnavailable'));
+      }
+
       try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) {}
       state.submitted = true;
-      track('assessment_submitted', {
-        event_id: payload.eventId,
-        result_path_slug: payload.recommendation?.primaryPath,
-        email_delivery: payload.resourceDelivery?.email || 'unknown',
-        utm_source: payload.attribution?.utm_source || getMeta().utm_source || undefined,
-        utm_medium: payload.attribution?.utm_medium || getMeta().utm_medium || undefined,
-        utm_campaign: payload.attribution?.utm_campaign || getMeta().utm_campaign || undefined,
-        utm_content: payload.attribution?.utm_content || getMeta().utm_content || undefined,
-        utm_term: payload.attribution?.utm_term || getMeta().utm_term || undefined
-      });
+      if (payload.deduplicated) {
+        track('assessment_submission_deduplicated', {
+          event_id: payload.eventId,
+          entry_context: payload.attribution?.entry_context || state.entryContext
+        });
+      }
+
+      const canTrackPrimary = shouldTrackCanonicalSubmission(payload) && !hasTrackedEventId(payload.eventId);
+      if (canTrackPrimary) {
+        track('assessment_submitted', {
+          event_id: payload.eventId,
+          entry_context: payload.attribution?.entry_context || state.entryContext,
+          language: state.language,
+          utm_source: payload.attribution?.utm_source || getMeta().utm_source || undefined,
+          utm_medium: payload.attribution?.utm_medium || getMeta().utm_medium || undefined,
+          utm_campaign: payload.attribution?.utm_campaign || getMeta().utm_campaign || undefined,
+          utm_content: payload.attribution?.utm_content || getMeta().utm_content || undefined,
+          utm_term: payload.attribution?.utm_term || getMeta().utm_term || undefined,
+          result_path_slug: payload.recommendation?.primaryPath
+        });
+        markTrackedEventId(payload.eventId);
+      }
+
       if (payload.resultToken && payload.resourceDelivery?.email) {
         try { sessionStorage.setItem(`${DELIVERY_KEY_PREFIX}${payload.resultToken}`, payload.resourceDelivery.email); } catch (_) {}
       }
-      window.location.assign(payload.resultUrl || `/start/result/${payload.resultToken}`);
+      window.location.assign(payload.resultUrl);
     } catch (error) {
       const offlineMessage = isLocalPreviewHost() && error instanceof TypeError ? copy('localApi') : '';
       const statusCode = error?.status || 0;

@@ -41,6 +41,7 @@ const assetExtensions = new Set([
 
 const cleanAliases = new Set([
   '/',
+  '/assessment',
   '/privacy-policy',
   '/privacy-policy.html',
   '/start',

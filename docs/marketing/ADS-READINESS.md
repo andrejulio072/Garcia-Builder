@@ -1,5 +1,14 @@
 # ADS READINESS
 
+## Already Completed Externally
+- Supabase attribution migration applied.
+- Supabase contact enrichment migration applied.
+- Required columns present.
+- RLS enabled.
+- Insert contract validated in rolled-back transaction.
+- Production `/assessment` route published.
+- Existing email and Zapier configuration preserved.
+
 ## Paid Funnel Architecture
 - Paid funnel route: `/assessment`.
 - QR and organic route: `/start`.
@@ -64,3 +73,25 @@
 - No conversion on failed submit.
 - Result token stored as hash only.
 - Manual GTM Preview, GA4 DebugView, and Meta Test Events verified before ads spend.
+
+## Final Manual QA After Merge
+1. Confirm Vercel production uses the expected merge SHA.
+2. Open `/assessment` with Google Ads-style UTMs.
+3. Complete one identifiable QA assessment.
+4. Confirm exactly one Supabase lead.
+5. Confirm `entry_context=paid`.
+6. Confirm first and latest UTMs.
+7. Confirm `event_id` exists.
+8. Confirm the personalized result.
+9. Download the 28 Day Fat Loss Kickstart.
+10. Open the workout library.
+11. Open the nutrition calculator.
+12. Open View Coaching Plans.
+13. Verify the result email.
+14. Verify Zapier notification.
+15. Verify one `assessment_submitted` event in GTM Preview.
+16. Verify GA4 DebugView.
+17. Verify the Google Ads conversion.
+18. Optionally verify Meta Test Events.
+19. Verify a failed submission sends zero conversions.
+20. Begin with a controlled advertising budget.

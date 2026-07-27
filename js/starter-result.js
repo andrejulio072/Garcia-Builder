@@ -232,40 +232,47 @@
       });
       contactLinks.push(link);
     });
+
+    const plansLink = document.createElement('a');
+    plansLink.className = 'starter-secondary';
+    plansLink.href = '/packages.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=view_plans';
+    plansLink.textContent = 'View Coaching Plans';
+    plansLink.addEventListener('click', () => track('result_packages_clicked', {}));
+
+    const workoutLink = document.createElement('a');
+    workoutLink.className = 'starter-secondary';
+    workoutLink.href = '/workouts.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=workout_library';
+    workoutLink.textContent = copy('workoutLibrary');
+    workoutLink.addEventListener('click', () => track('result_workout_library_clicked', {}));
+
+    const nutritionLink = document.createElement('a');
+    nutritionLink.className = 'starter-secondary';
+    nutritionLink.href = '/nutrition-calculator.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=nutrition_calculator';
+    nutritionLink.textContent = copy('calculateMacros');
+    nutritionLink.addEventListener('click', () => track('result_nutrition_calculator_clicked', {}));
+
     contactLinks.forEach((link) => actions.appendChild(link));
+    actions.appendChild(plansLink);
+    actions.appendChild(workoutLink);
+    actions.appendChild(nutritionLink);
+
     if (contactHeading && contactCopy && !payload.actions?.showWarmLeadCta) {
       contactHeading.textContent = copy('helpPlanTitle');
       contactCopy.textContent = copy('helpPlanCopy');
     }
-    warmSection.hidden = contactLinks.length === 0;
+    warmSection.hidden = false;
   }
 
   function renderPrimaryAction(payload) {
     if (!primaryAction || !primaryActionLink) return;
-    const mode = payload.recommendation?.ctaMode || 'resources';
+    const mode = 'resources';
     const resources = payload.recommendation?.resources || [];
     const primaryResource = resources.find((resource) => resource.role === 'primary' && resource.available && resource.url);
     let href = '';
     let destination = '';
     let serverEvent = '';
 
-    if (mode === 'conversation') {
-      if (payload.actions?.whatsappUrl) {
-        href = payload.actions.whatsappUrl;
-        destination = 'whatsapp';
-        serverEvent = 'whatsapp_clicked';
-      } else if (payload.actions?.bookingUrl) {
-        href = payload.actions.bookingUrl;
-        destination = 'consultation';
-        serverEvent = 'consultation_clicked';
-      } else if (payload.actions?.contactEmailUrl) {
-        href = payload.actions.contactEmailUrl;
-        destination = 'email';
-      }
-    } else if (mode === 'templates') {
-      href = '#starter-plan';
-      destination = 'starter_plan';
-    } else if (primaryResource) {
+    if (primaryResource) {
       href = primaryResource.url;
       destination = primaryResource.slug || 'primary_resource';
       serverEvent = resourceEventName(primaryResource.role);
@@ -278,17 +285,13 @@
 
     primaryAction.dataset.ctaMode = mode;
     primaryActionLink.href = href;
-    primaryActionLink.textContent = payload.recommendation.supportCTA;
-    primaryActionLink.target = mode === 'resources' ? '_blank' : '';
-    primaryActionLink.rel = mode === 'resources' ? 'noopener' : '';
+    primaryActionLink.textContent = copy('downloadGuide');
+    primaryActionLink.target = '_blank';
+    primaryActionLink.rel = 'noopener';
     primaryActionLink.onclick = (event) => {
       track('primary_recommendation_cta_clicked', { cta_mode: mode, destination_slug: destination });
       if (serverEvent) recordEvent(serverEvent, `primary_${destination}`);
-      if (mode === 'templates') {
-        event.preventDefault();
-        const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-        document.querySelector(href)?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
-      }
+      void event;
     };
     primaryAction.hidden = false;
   }

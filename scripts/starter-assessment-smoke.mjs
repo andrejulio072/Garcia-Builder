@@ -197,7 +197,7 @@ async function main() {
 
   const assessment = await fetchText(`${baseUrl}/assessment`);
   assert.equal(assessment.response.status, 200, '/assessment did not return HTTP 200');
-  assert(assessment.text.includes('Find the Right Starting Plan for Your Goal'), '/assessment headline missing');
+  assert(assessment.text.includes('Get Your Free Personalised') && assessment.text.includes('Fat-Loss Starter Plan'), '/assessment headline missing');
   assert(!assessment.text.includes('Package information'), '/assessment should not include package quick-choice cards');
   assert(!assessment.text.includes('Contact Andre directly'), '/assessment should not include contact quick-choice cards');
   add('Paid assessment page', 'PASS', 'HTTP 200 with focused paid-landing content');

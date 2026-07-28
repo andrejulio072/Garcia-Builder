@@ -139,7 +139,8 @@
         finalcta: {
           title: "Ready to transform your body, health, and routine?",
           subtitle: "Secure your free consultation now and get a personalised roadmap within 24 hours."
-        }
+        },
+        assessmentShortcut: "Take the Free Fitness Assessment"
       },
       workouts: {
         hero: {
@@ -897,7 +898,8 @@
         finalcta: {
           title: "Pronto para transformar seu corpo, saúde e rotina?",
           subtitle: "Garanta sua consulta gratuita agora e receba um plano personalizado em até 24 horas."
-        }
+        },
+        assessmentShortcut: "Fazer a Avaliação Fitness Gratuita"
       },
       workouts: {
         hero: {
@@ -1655,7 +1657,8 @@
         finalcta: {
           title: "¿Listo para transformar tu cuerpo, salud y rutina?",
           subtitle: "Asegura tu consulta gratuita ahora y recibe un plan personalizado en menos de 24 horas."
-        }
+        },
+        assessmentShortcut: "Hacer la Evaluación Fitness Gratuita"
       },
       workouts: {
         hero: {

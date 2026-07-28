@@ -328,6 +328,10 @@ assert(!paidAssessmentPage.includes('name="preferred_contact_method"'), 'Paid as
 assert(!paidAssessmentPage.includes('name="best_contact_time"'), 'Paid assessment contact form should not include best contact time pre-conversion');
 assert.equal((paidAssessmentPage.match(/class="starter-transform-card"/g) || []).length, 3, 'Paid assessment should show three transformation proof cards');
 assert(homepage.includes('/assessment?utm_source=website&amp;utm_medium=organic&amp;utm_campaign=starter_assessment&amp;utm_content=site_assessment_cta'), 'Main website should include assessment CTA with organic UTM parameters');
+assert(paidAssessmentPage.includes('class="starter-page-return__link" href="/"'), 'Paid assessment should include a compact route back to the main website');
+assert(paidAssessmentPage.includes('data-starter-copy="returnToMainSite"'), 'Assessment return route should use localized copy');
+assert(homepage.includes('class="homepage-assessment-shortcut__link"'), 'Homepage should include a compact assessment shortcut near the footer');
+assert(homepage.includes('utm_content=homepage_footer_assessment'), 'Homepage footer assessment shortcut should preserve its own attribution');
 assert(paidAssessmentPage.includes('/cookie-policy'), 'Paid assessment page should expose cookie policy link');
 assert(paidAssessmentPage.includes('data-open-cookie-preferences'), 'Paid assessment page should expose cookie preferences action');
 assert(vercelConfig.includes('"source": "/assessment"'), 'Vercel should rewrite /assessment to paid landing page');
@@ -393,6 +397,9 @@ assert(starterLocales.includes('Open workout exercise library'), 'Result plan sh
 assert(starterLocales.includes("viewPlans: 'View Coaching Plans'"), 'English locale should include viewPlans label');
 assert(starterLocales.includes("viewPlans: 'Ver Planos de Acompanhamento'"), 'Portuguese locale should include viewPlans label');
 assert(starterLocales.includes("viewPlans: 'Ver Planes de Coaching'"), 'Spanish locale should include viewPlans label');
+assert.strictEqual(starterI18n.ui('returnToMainSite', 'en'), 'Back to Garcia Builder Fitness');
+assert.strictEqual(starterI18n.ui('returnToMainSite', 'pt'), 'Voltar ao site Garcia Builder Fitness');
+assert.strictEqual(starterI18n.ui('returnToMainSite', 'es'), 'Volver al sitio Garcia Builder Fitness');
 assert(resultClient.includes('isExternalUrl(resource.url)'), 'Result resource links should distinguish internal and external destinations');
 assert(resultClient.includes('isDownloadUrl(resource.url)'), 'Result resource links should explicitly mark downloadable resources');
 assert(resultClient.includes("plansLink.textContent = copy('viewPlans')"), 'Result page plans action should use localized copy');

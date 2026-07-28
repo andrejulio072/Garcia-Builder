@@ -1969,6 +1969,44 @@ html {
   }
 }
 
+.homepage-assessment-shortcut {
+  display: flex;
+  justify-content: center;
+  padding: 8px 18px 28px;
+  text-align: center;
+}
+
+.homepage-assessment-shortcut__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 10px 17px;
+  border: 1px solid rgba(251, 191, 36, 0.34);
+  border-radius: 999px;
+  background: rgba(16, 20, 28, 0.76);
+  color: #f8d36f;
+  font-size: 0.88rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-decoration: none;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.homepage-assessment-shortcut__link:hover {
+  transform: translateY(-2px);
+  border-color: rgba(251, 191, 36, 0.72);
+  background: rgba(24, 29, 39, 0.94);
+  color: #ffe299;
+}
+
+.homepage-assessment-shortcut__link:focus-visible {
+  outline: 3px solid rgba(251, 191, 36, 0.45);
+  outline-offset: 3px;
+}
+
 @keyframes heroPortraitDrift {
   from { transform: scale(1.025) translate3d(0, 0, 0); }
   to { transform: scale(1.055) translate3d(-0.35%, -0.25%, 0); }
@@ -1987,7 +2025,8 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .hero::before,
   .hero-actions .btn,
-  .homepage-pathway-card {
+  .homepage-pathway-card,
+  .homepage-assessment-shortcut__link {
     animation: none !important;
     transition-duration: 0.01ms !important;
   }

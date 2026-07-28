@@ -67,6 +67,8 @@ for (const clientName of ['Conrad N.', 'James W.', 'Daniela C.']) {
 }
 assert(assessment.includes('data-start-assessment-proof'), 'Transformation proof section must reinforce the assessment CTA');
 assert(!assessment.includes('<nav'), 'Paid assessment must not add competing navigation');
+assert(assessment.includes('class="starter-page-return__link" href="/"'), 'Paid assessment must expose the compact main-site return route');
+assert(css.includes('.starter-page-return__link'), 'Main-site return route must retain its compact button treatment');
 
 for (const requiredField of ['full_name', 'email', 'date_of_birth', 'age_confirmed', 'resource_delivery_acknowledgement']) {
   assert(assessment.includes(`name="${requiredField}"`), `Paid assessment is missing required field ${requiredField}`);

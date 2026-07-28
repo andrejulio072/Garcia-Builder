@@ -3629,6 +3629,53 @@ body.result-page::before {
   }
 }
 
+.starter-page-return {
+  width: min(1180px, calc(100% - 40px));
+  margin: -22px auto 34px;
+  display: flex;
+  justify-content: center;
+}
+
+.starter-page-return__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 1px solid rgba(224, 184, 111, 0.3);
+  border-radius: 999px;
+  background: rgba(10, 13, 18, 0.74);
+  color: var(--gb-gold-strong);
+  font-size: 0.82rem;
+  font-weight: 750;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.starter-page-return__link:hover {
+  transform: translateY(-2px);
+  border-color: rgba(246, 200, 78, 0.68);
+  background: rgba(20, 24, 31, 0.92);
+  color: var(--starter-gold-3);
+}
+
+.starter-page-return__link:focus-visible {
+  outline: 3px solid rgba(246, 200, 78, 0.48);
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .starter-page-return {
+    width: min(100% - 24px, 720px);
+    margin-top: -12px;
+    margin-bottom: 28px;
+  }
+}
+
 /* 20. Accessibility and motion preferences */
 @media (forced-colors: active) {
   .starter-primary,

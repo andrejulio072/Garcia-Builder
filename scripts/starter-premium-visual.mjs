@@ -195,8 +195,36 @@ try {
   });
 
   await page.goto(`${baseUrl}/assessment`, { waitUntil: 'networkidle' });
+  const languageSelector = await page.locator('[data-starter-language]').evaluate((select) => {
+    const selectStyle = getComputedStyle(select);
+    const optionStyle = getComputedStyle(select.options[0]);
+    return {
+      minWidth: Number.parseFloat(selectStyle.minWidth),
+      colorScheme: selectStyle.colorScheme,
+      optionColor: optionStyle.color,
+      labels: Array.from(select.options).map((option) => option.textContent.trim())
+    };
+  });
+  assert(languageSelector.minWidth >= 138, 'Language selector is too narrow to identify the selected language');
+  assert(languageSelector.colorScheme.includes('light'), 'Language selector should use a readable native popup color scheme');
+  assert(languageSelector.optionColor === 'rgb(17, 24, 39)', `Language option text contrast is incorrect: ${languageSelector.optionColor}`);
+  assert(languageSelector.labels.includes('PT · Português'), 'Portuguese native language label is missing');
+  assert(languageSelector.labels.includes('RU · Русский'), 'Russian native language label is missing');
+  assert.equal(await page.locator('.starter-client-voice').count(), 3, 'Three client testimonials should be visible below transformations');
+  assert(await page.locator('.starter-client-voices').isVisible(), 'Client testimonial section is not visible');
   await page.selectOption('[data-starter-language]', 'pt');
-  assert((await page.locator('#starter-title').innerText()).includes('O Seu Objetivo'), 'Portuguese hero copy did not apply');
+  assert((await page.locator('#starter-title').innerText()).includes('Pare de Adivinhar'), 'Portuguese hero copy did not apply');
+  const englishHero = 'Stop Guessing';
+  for (const language of ['fr', 'de', 'it', 'nl', 'pl', 'ro', 'ru']) {
+    await page.selectOption('[data-starter-language]', language);
+    assert.equal(await page.locator('html').getAttribute('lang'), language, `${language} document language did not apply`);
+    const localizedHero = await page.locator('#starter-title').innerText();
+    const localizedTestimonials = await page.locator('#client-voices-title').innerText();
+    assert(localizedHero.trim().length > 10, `${language} hero copy is empty`);
+    assert(!localizedHero.includes(englishHero), `${language} hero copy fell back to English`);
+    assert(localizedTestimonials.trim().length > 10, `${language} testimonial heading is empty`);
+    assert(!localizedTestimonials.includes('What Clients Say'), `${language} testimonials fell back to English`);
+  }
   await page.selectOption('[data-starter-language]', 'en');
   await page.click('[data-start-assessment]');
   await waitForQuestion(page, 1);
@@ -219,6 +247,7 @@ try {
 
   await page.fill('[name="full_name"]', 'Visual Test');
   await page.fill('[name="email"]', 'visual@example.test');
+  await page.fill('[name="date_of_birth"]', '1990-01-01');
   await page.check('[name="age_confirmed"]');
   await page.check('[name="resource_delivery_acknowledgement"]');
   await page.locator('[data-submit-button]').evaluate((button) => {

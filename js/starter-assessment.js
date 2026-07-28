@@ -46,6 +46,7 @@
   const errorSummary = $('[data-error-summary]');
   const whatsappInput = $('[name="whatsapp"]');
   const whatsappConsent = $('[data-whatsapp-consent]');
+  const dobInput = $('[name="date_of_birth"]');
 
   const PAID_COPY_FALLBACK = {
     heroTrustPaid: 'heroTrust',
@@ -328,9 +329,26 @@
     return !Number.isNaN(parsed.getTime()) && value >= '1900-01-01' && value <= '2099-12-31';
   }
 
+  function adultDobCutoff() {
+    const cutoff = new Date();
+    cutoff.setHours(0, 0, 0, 0);
+    cutoff.setFullYear(cutoff.getFullYear() - 18);
+    return [
+      cutoff.getFullYear(),
+      String(cutoff.getMonth() + 1).padStart(2, '0'),
+      String(cutoff.getDate()).padStart(2, '0')
+    ].join('-');
+  }
+
+  function syncDobLimit() {
+    if (dobInput) dobInput.max = adultDobCutoff();
+  }
+
   function validateContact(contact) {
     if (!contact.full_name || contact.full_name.length < 2) return { message: copy('enterName'), field: 'full_name' };
+    if (dobInput?.required && !contact.date_of_birth) return { message: copy('enterDob'), field: 'date_of_birth' };
     if (!isValidDateString(contact.date_of_birth)) return { message: copy('validDob'), field: 'date_of_birth' };
+    if (contact.date_of_birth && contact.date_of_birth > adultDobCutoff()) return { message: copy('adultDob'), field: 'date_of_birth' };
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email.toLowerCase())) return { message: copy('validEmail'), field: 'email' };
     if (contact.whatsapp && !/^\+[1-9]\d{7,14}$/.test(contact.whatsapp)) return { message: copy('validWhatsapp'), field: 'whatsapp' };
     if (contact.instagram_handle && contact.instagram_handle.length > 180) return { message: copy('validInstagram'), field: 'instagram_handle' };
@@ -523,7 +541,9 @@
     if (state.entryContext === 'qr') {
       track('qr_landing_view', { source_slug: meta.utm_source || 'business_card' });
     }
-    $('[data-start-assessment]')?.addEventListener('click', startAssessment);
+    document.querySelectorAll('[data-start-assessment], [data-start-assessment-proof]').forEach((button) => {
+      button.addEventListener('click', startAssessment);
+    });
     backButton?.addEventListener('click', () => {
       if (state.advanceTimer) clearTimeout(state.advanceTimer);
       state.advanceTimer = null;
@@ -532,6 +552,7 @@
       render();
     });
     whatsappInput?.addEventListener('input', syncWhatsappConsent);
+    syncDobLimit();
     document.querySelectorAll('[data-starter-language]').forEach((selector) => {
       selector.addEventListener('change', (event) => applyLanguage(event.target.value));
     });

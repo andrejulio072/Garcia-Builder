@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const NEW_TOKEN = '20260728-premium-main-v2';
+const NEW_TOKEN = '20260728-testimonials-v6';
 const OLD_TOKENS = [
   '20260727-ads-final',
   '20260727-ads-corrective',
@@ -12,13 +12,18 @@ const OLD_TOKENS = [
   '20260728-ads-storyfree',
   '20260728-ads-mobilefix',
   '20260728-ads-socialbox',
-  '20260728-premium-v1'
+  '20260728-premium-v1',
+  '20260728-premium-main-v2',
+  '20260728-lead-value-v3',
+  '20260728-assessment-10lang-v4',
+  '20260728-language-contrast-v5'
 ];
 const TARGET_FILES = ['assessment.html', 'start.html', 'start-result.html'];
 const CHANGED_ASSETS = [
   '/css/starter-assessment.css',
   '/js/starter-tracking-bootstrap.js',
   '/js/starter-context.js',
+  '/js/starter-locales-expanded.js',
   '/js/starter-locales.js',
   '/js/starter-assessment.js',
   '/js/starter-result.js'
@@ -75,6 +80,7 @@ function assertRequiredReferencesPresentWithNewToken() {
       '/css/starter-assessment.css',
       '/js/starter-tracking-bootstrap.js',
       '/js/starter-context.js',
+      '/js/starter-locales-expanded.js',
       '/js/starter-locales.js',
       '/js/starter-assessment.js'
     ],
@@ -82,12 +88,14 @@ function assertRequiredReferencesPresentWithNewToken() {
       '/css/starter-assessment.css',
       '/js/starter-tracking-bootstrap.js',
       '/js/starter-context.js',
+      '/js/starter-locales-expanded.js',
       '/js/starter-locales.js',
       '/js/starter-assessment.js'
     ],
     'start-result.html': [
       '/css/starter-assessment.css',
       '/js/starter-tracking-bootstrap.js',
+      '/js/starter-locales-expanded.js',
       '/js/starter-locales.js',
       '/js/starter-result.js'
     ]

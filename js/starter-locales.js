@@ -3,7 +3,10 @@
   if (typeof module === 'object' && module.exports) module.exports = api;
   if (root) root.GB_STARTER_I18N = api;
 })(typeof window !== 'undefined' ? window : globalThis, function () {
-  const SUPPORTED = ['en', 'pt', 'es'];
+  const EXPANDED = typeof module === 'object' && module.exports
+    ? require('./starter-locales-expanded.js')
+    : (globalThis.GB_STARTER_EXPANDED_LOCALES || {});
+  const SUPPORTED = ['en', 'pt', 'es', ...(EXPANDED.SUPPORTED || [])];
   const UI = {
     en: {
       pageTitle: 'Free Fitness Assessment | Garcia Builder Fitness',
@@ -11,29 +14,43 @@
       metaDescription: 'Complete a free 60-second fitness assessment and get a recommended starting plan from Garcia Builder Fitness.',
       skipAssessment: 'Skip to assessment', languageLabel: 'Language',
       heroEyebrow: 'FREE 60-SECOND FITNESS ASSESSMENT',
-      heroEyebrowPaid: 'FREE FITNESS STARTER ASSESSMENT',
+      heroEyebrowPaid: 'FREE 2-MINUTE FITNESS ASSESSMENT',
       heroTitle: 'Find the Right Starting Plan for Your Goal',
-      heroTitleLead: 'Your Goal Needs More Than',
-      heroTitleAccent: 'a Generic Plan',
+      heroTitleLead: 'Stop Guessing.',
+      heroTitleAccent: 'Start With a Clear Plan',
       heroCopy: 'Answer a few quick questions about your goal, training routine and biggest challenge. You’ll receive a recommended nutrition and workout starting point, with the option to discuss a fully tailored plan with Andre.',
       freePlanHighlight: 'Your first starter plan is 100% free. Answer 7 focused questions and get your workout + nutrition direction instantly.',
-      heroCopyPaid: 'Answer seven focused questions and get a practical training and nutrition starting point built around your goal, routine and experience.',
+      heroCopyPaid: 'Answer seven focused questions to reveal a practical first-week training and nutrition plan, built around your goal, routine and experience.',
       heroCta: 'Build My FREE Starter Plan', heroNote: 'Free assessment. No commitment.',
       heroCtaPaid: 'Build My Starter Plan',
       heroDuration: 'Takes around 2 minutes.',
       benefitOne: 'Seven focused questions',
       benefitTwo: 'Training starting structure',
       benefitThree: 'Practical nutrition guidance',
-      benefitFour: 'Instant starter plan',
-      benefitFive: 'English, Portuguese and Spanish',
+      benefitFour: 'A practical 7-day starting plan',
+      benefitFive: 'Available in 10 languages',
       packagesCta: 'See Packages', contactAndreCta: 'Contact Andre', viewPlans: 'View Coaching Plans',
       packagesChoiceTitle: 'Package information', packagesChoiceCopy: 'Compare coaching options before filling anything in.',
       contactChoiceTitle: 'Contact Andre directly', contactChoiceCopy: 'Use WhatsApp, Instagram, email or book a consultation.',
-      transformationsTitle: 'Real Client Transformations',
-      transformationsCopy: 'These are examples of what consistency with structured training and nutrition can produce. Start with your free plan now, then unlock packages and direct contact options after your result.',
-      transformationCaptionOne: 'Body recomposition with structured coaching and consistency.',
-      transformationCaptionTwo: 'Visible fat loss and stronger shape from practical weekly habits.',
-      transformationCaptionThree: 'Sustainable progress built from simple training + nutrition execution.',
+      transformationsKicker: 'REAL COACHING OUTCOMES',
+      transformationsTitle: 'Real People. Clear Structure. Visible Progress.',
+      transformationsCopy: 'These clients progressed by following structured training and nutrition consistently. Your free assessment gives you the first step: a clear starting direction based on your answers.',
+      transformationBadgeOne: 'BODY RECOMPOSITION',
+      transformationBadgeTwo: 'FAT LOSS + DEFINITION',
+      transformationBadgeThree: 'STRENGTH + SHAPE',
+      transformationCaptionOne: 'Less guesswork. A repeatable training structure and consistent nutrition.',
+      transformationCaptionTwo: 'Practical weekly habits that produced visible fat loss and stronger definition.',
+      transformationCaptionThree: 'Training and nutrition executed consistently enough to change body shape.',
+      transformationsDisclaimer: 'Individual results vary. The free assessment is a practical starting point, not a promise of identical results.',
+      transformationsCta: 'Reveal My Starting Plan',
+      premiumReviewFeedbackLabel: 'CLIENT FEEDBACK',
+      premiumReviewsTitle: 'What Clients Say About the Coaching',
+      premiumReviewOneQuote: '“Andre rebuilt my training around 60-hour workweeks. We dropped 9kg of fat, added lean muscle, and my shoulders are pain-free for the first time in years.”',
+      premiumReviewOneMeta: 'Body recomposition coaching',
+      premiumReviewTwoQuote: '“As a busy dad I did not think I had time. Andre simplified training and I stuck with it.”',
+      premiumReviewTwoMeta: 'Busy-parent consistency coaching',
+      premiumReviewThreeQuote: '“I appreciate the honest, data-driven approach. No gimmicks, just a plan tailored to me that I could actually follow.”',
+      premiumReviewThreeMeta: 'Personalised coaching',
       reviewsTitle: 'What clients say after starting',
       reviewOneQuote: '"I stopped guessing, followed the plan, and finally saw my waist drop while keeping strength."',
       reviewOneMeta: '- Paulo, body recomposition focus',
@@ -53,32 +70,33 @@
       questionProgress: 'Question {current} of {total}', contactProgress: 'Contact details',
       contactTitle: 'Your Recommended Starting Plan Is Ready',
       contactCopy: 'Enter your details to view your result and receive your resources by email.',
-      signalOneTitle: 'Tailored by your profile',
-      signalOneCopy: 'Built around your goal, routine and experience.',
-      signalTwoTitle: 'Training + nutrition',
-      signalTwoCopy: 'Clear direction for home or gym.',
-      signalThreeTitle: 'Built by a real coach',
-      signalThreeCopy: 'Human support beyond a generic calculator.',
-      signalFourTitle: 'Instant + by email',
-      signalFourCopy: 'Open your result now and keep a copy.',
+      signalOneTitle: 'Your training direction',
+      signalOneCopy: 'A realistic weekly structure for your goal and available days.',
+      signalTwoTitle: 'Your nutrition priorities',
+      signalTwoCopy: 'Simple meal, protein and portion guidance you can use now.',
+      signalThreeTitle: 'Your next 7 days',
+      signalThreeCopy: 'Clear actions that turn advice into a starting routine.',
+      signalFourTitle: 'Instant result + email copy',
+      signalFourCopy: 'Open your plan immediately and keep it for the week ahead.',
       coachAuthorityLabel: 'YOUR COACH',
       coachAuthorityRole: 'Personal Trainer & Online Coach',
       coachAuthorityPromise: 'Practical guidance. Real human follow-up.',
       nextCueLabel: 'WHAT HAPPENS NEXT',
       nextCueOne: 'Answer 7 questions',
-      nextCueTwo: 'Add your email',
+      nextCueTwo: 'Add your details',
       nextCueThree: 'Reveal your plan',
       almostThere: 'Almost there — your starting plan is taking shape.',
       contactReadyLabel: 'ASSESSMENT COMPLETE',
       kpiOne: '2-minute flow',
-      kpiTwo: 'Name + email required',
+      kpiTwo: 'Adult details + email',
       kpiThree: 'Human coach follow-up',
-      frictionNote: 'To keep this fast: only full name and email are required. All other contact fields are optional.',
+      frictionNote: 'Your age helps make the starting direction appropriate. A social profile is optional, but helps Andre understand who is genuinely considering support before following up.',
       fullName: 'Full name',
       dateOfBirth: 'Date of birth',
-      dobHelp: 'Optional but useful to tailor your recommendation and communication.',
+      dobHelp: 'Required to confirm adult eligibility and make your starting direction more appropriate.',
       firstName: 'First name', email: 'Email', whatsapp: 'WhatsApp number', optional: 'optional',
       instagram: 'Instagram or Facebook profile',
+      socialHelp: 'Optional, but useful if you would like Andre to understand your context before contacting you.',
       facebook: 'Facebook profile',
       preferredContact: 'Preferred contact channel',
       noPreference: 'No preference',
@@ -91,7 +109,7 @@
       whatsappHelp: 'Add your WhatsApp number only if you would like Andre to contact you about your result.',
       contactHintEmail: 'Email reply with your starter plan.',
       contactHintWhatsapp: 'Optional WhatsApp follow-up for faster support.',
-      contactHintSocial: 'Optional Instagram/Facebook for social-first contact.',
+      contactHintSocial: 'Optional Instagram/Facebook context before follow-up.',
       contactReassurance: 'Your details are used to deliver your result and respond to your enquiry. Marketing messages are optional.',
       ageConsent: 'I confirm I am 18 or older.',
       deliveryConsent: 'I agree to receive my assessment result and the resources I requested.',
@@ -100,7 +118,7 @@
       legalBefore: 'By submitting, you can view your result and receive the resources you requested. See the',
       privacy: 'Privacy Policy', and: 'and', terms: 'Terms', back: 'Back', viewResult: 'Reveal My Personalised Plan',
       preparing: 'Preparing your plan…', resultReady: 'Your plan is ready', chooseAnswer: 'Choose an answer to continue.',
-      enterName: 'Enter your full name.', validEmail: 'Enter a valid email address.',
+      enterName: 'Enter your full name.', enterDob: 'Enter your date of birth.', adultDob: 'You must be 18 or older to use this assessment.', validEmail: 'Enter a valid email address.',
       validDob: 'Enter date of birth in valid format.',
       validWhatsapp: 'Enter WhatsApp in international format, for example +353871234567.',
       validInstagram: 'Instagram/Facebook profile is too long.',
@@ -135,29 +153,43 @@
       metaDescription: 'Complete uma avaliação fitness gratuita de 60 segundos e receba um plano inicial recomendado pela Garcia Builder Fitness.',
       skipAssessment: 'Ir para a avaliação', languageLabel: 'Idioma',
       heroEyebrow: 'AVALIAÇÃO FITNESS GRATUITA DE 60 SEGUNDOS',
-      heroEyebrowPaid: 'AVALIAÇÃO FITNESS INICIAL GRATUITA',
+      heroEyebrowPaid: 'AVALIAÇÃO FITNESS GRATUITA DE 2 MINUTOS',
       heroTitle: 'Encontre o Plano Inicial Certo para o Seu Objetivo',
-      heroTitleLead: 'O Seu Objetivo Merece Mais do Que',
-      heroTitleAccent: 'um Plano Genérico',
+      heroTitleLead: 'Pare de Adivinhar.',
+      heroTitleAccent: 'Comece com um Plano Claro',
       heroCopy: 'Responda a algumas perguntas rápidas sobre o seu objetivo, rotina de treino e maior dificuldade. Você receberá um ponto de partida recomendado para treino e nutrição, com a opção de conversar com Andre sobre um plano totalmente personalizado.',
       freePlanHighlight: 'O seu primeiro plano inicial é 100% gratuito. Responda 7 perguntas objetivas e receba imediatamente a sua direção de treino + nutrição.',
-      heroCopyPaid: 'Responda sete perguntas objetivas e receba um ponto de partida prático de treino e nutrição construído em torno do seu objetivo, rotina e experiência.',
+      heroCopyPaid: 'Responda sete perguntas objetivas para revelar um plano prático de treino e nutrição para a primeira semana, criado em torno do seu objetivo, rotina e experiência.',
       heroCta: 'Criar Meu Plano Inicial FREE', heroNote: 'Avaliação gratuita. Sem compromisso.',
       heroCtaPaid: 'Criar Meu Plano Inicial',
       heroDuration: 'Leva cerca de 2 minutos.',
       benefitOne: 'Sete perguntas objetivas',
       benefitTwo: 'Estrutura inicial de treino',
       benefitThree: 'Orientação prática de nutrição',
-      benefitFour: 'Plano inicial imediato',
-      benefitFive: 'Inglês, Português e Espanhol',
+      benefitFour: 'Plano prático para os próximos 7 dias',
+      benefitFive: 'Disponível em 10 idiomas',
       packagesCta: 'Ver Pacotes', contactAndreCta: 'Contactar Andre', viewPlans: 'Ver Planos de Acompanhamento',
       packagesChoiceTitle: 'Informações dos pacotes', packagesChoiceCopy: 'Compare as opções de coaching antes de preencher qualquer coisa.',
       contactChoiceTitle: 'Contactar Andre diretamente', contactChoiceCopy: 'Use WhatsApp, Instagram, email ou agende uma consulta.',
-      transformationsTitle: 'Transformações Reais de Clientes',
-      transformationsCopy: 'Estes são exemplos do que consistência com treino e nutrição estruturados pode gerar. Comece agora com o seu plano gratuito e desbloqueie pacotes e contacto direto após ver o resultado.',
-      transformationCaptionOne: 'Recomposição corporal com coaching estruturado e consistência.',
-      transformationCaptionTwo: 'Perda de gordura visível e forma mais forte com hábitos semanais práticos.',
-      transformationCaptionThree: 'Progresso sustentável construído com execução simples de treino + nutrição.',
+      transformationsKicker: 'RESULTADOS REAIS DE COACHING',
+      transformationsTitle: 'Pessoas Reais. Estrutura Clara. Progresso Visível.',
+      transformationsCopy: 'Estes clientes progrediram ao seguir treino e nutrição estruturados com consistência. A sua avaliação gratuita oferece o primeiro passo: uma direção inicial clara baseada nas suas respostas.',
+      transformationBadgeOne: 'RECOMPOSIÇÃO CORPORAL',
+      transformationBadgeTwo: 'PERDA DE GORDURA + DEFINIÇÃO',
+      transformationBadgeThree: 'FORÇA + FORMA',
+      transformationCaptionOne: 'Menos improviso. Uma estrutura de treino repetível e nutrição consistente.',
+      transformationCaptionTwo: 'Hábitos semanais práticos que produziram perda de gordura visível e maior definição.',
+      transformationCaptionThree: 'Treino e nutrição executados com consistência suficiente para mudar a forma corporal.',
+      transformationsDisclaimer: 'Os resultados individuais variam. A avaliação gratuita é um ponto de partida prático, não uma promessa de resultados idênticos.',
+      transformationsCta: 'Revelar o Meu Plano Inicial',
+      premiumReviewFeedbackLabel: 'FEEDBACK DE CLIENTES',
+      premiumReviewsTitle: 'O que os clientes dizem sobre o acompanhamento',
+      premiumReviewOneQuote: '“Andre reorganizou o meu treino em torno de semanas de trabalho de 60 horas. Perdemos 9 kg de gordura, ganhei massa magra e os meus ombros estão sem dor pela primeira vez em anos.”',
+      premiumReviewOneMeta: 'Acompanhamento de recomposição corporal',
+      premiumReviewTwoQuote: '“Como pai ocupado, eu não achava que tinha tempo. Andre simplificou o treino e eu finalmente consegui manter a rotina.”',
+      premiumReviewTwoMeta: 'Consistência para pais ocupados',
+      premiumReviewThreeQuote: '“Valorizo a abordagem honesta e baseada em dados. Sem truques, apenas um plano adaptado a mim que realmente consegui seguir.”',
+      premiumReviewThreeMeta: 'Acompanhamento personalizado',
       reviewsTitle: 'O que os clientes dizem após começar',
       reviewOneQuote: '"Deixei de adivinhar, segui o plano e finalmente vi a cintura reduzir mantendo força."',
       reviewOneMeta: '- Paulo, foco em recomposição corporal',
@@ -177,32 +209,33 @@
       questionProgress: 'Pergunta {current} de {total}', contactProgress: 'Dados de contacto',
       contactTitle: 'Seu Plano Inicial Recomendado Está Pronto',
       contactCopy: 'Informe os seus dados para ver o resultado e receber os recursos por email.',
-      signalOneTitle: 'Personalizado pelo seu perfil',
-      signalOneCopy: 'Construído em torno do seu objetivo, rotina e experiência.',
-      signalTwoTitle: 'Treino + nutrição',
-      signalTwoCopy: 'Direção clara para casa ou academia.',
-      signalThreeTitle: 'Criado por um coach real',
-      signalThreeCopy: 'Suporte humano além de uma calculadora genérica.',
-      signalFourTitle: 'Imediato + por email',
-      signalFourCopy: 'Abra o resultado agora e guarde uma cópia.',
+      signalOneTitle: 'A sua direção de treino',
+      signalOneCopy: 'Uma estrutura semanal realista para o seu objetivo e dias disponíveis.',
+      signalTwoTitle: 'As suas prioridades nutricionais',
+      signalTwoCopy: 'Orientação simples de refeições, proteína e porções para usar agora.',
+      signalThreeTitle: 'Os seus próximos 7 dias',
+      signalThreeCopy: 'Ações claras que transformam orientação numa rotina inicial.',
+      signalFourTitle: 'Resultado imediato + cópia por email',
+      signalFourCopy: 'Abra o plano imediatamente e guarde-o para a próxima semana.',
       coachAuthorityLabel: 'O SEU COACH',
       coachAuthorityRole: 'Personal Trainer e Coach Online',
       coachAuthorityPromise: 'Orientação prática. Follow-up humano real.',
       nextCueLabel: 'O QUE ACONTECE A SEGUIR',
       nextCueOne: 'Responda 7 perguntas',
-      nextCueTwo: 'Adicione o seu email',
+      nextCueTwo: 'Adicione os seus dados',
       nextCueThree: 'Revele o seu plano',
       almostThere: 'Quase lá — o seu plano inicial está a ganhar forma.',
       contactReadyLabel: 'AVALIAÇÃO CONCLUÍDA',
       kpiOne: 'Fluxo em 2 minutos',
-      kpiTwo: 'Só nome + email obrigatórios',
+      kpiTwo: 'Dados de adulto + email',
       kpiThree: 'Follow-up com coach humano',
-      frictionNote: 'Para manter rapidez: apenas nome completo e email são obrigatórios. Todos os outros campos de contacto são opcionais.',
+      frictionNote: 'A sua idade ajuda a tornar a direção inicial adequada. O perfil social é opcional, mas ajuda Andre a perceber quem considera realmente apoio antes do follow-up.',
       fullName: 'Nome completo',
       dateOfBirth: 'Data de nascimento',
-      dobHelp: 'Opcional, mas útil para personalizar sua recomendação e comunicação.',
+      dobHelp: 'Obrigatório para confirmar a elegibilidade adulta e tornar a direção inicial mais adequada.',
       firstName: 'Primeiro nome', email: 'Email', whatsapp: 'Número de WhatsApp', optional: 'opcional',
       instagram: 'Perfil de Instagram ou Facebook',
+      socialHelp: 'Opcional, mas útil se quiser que Andre compreenda o seu contexto antes de entrar em contacto.',
       facebook: 'Perfil do Facebook',
       preferredContact: 'Canal de contacto preferido',
       noPreference: 'Sem preferência',
@@ -215,7 +248,7 @@
       whatsappHelp: 'Adicione o WhatsApp apenas se quiser que Andre entre em contacto sobre o seu resultado.',
       contactHintEmail: 'Resposta por email com seu plano inicial.',
       contactHintWhatsapp: 'Follow-up opcional por WhatsApp para suporte mais rápido.',
-      contactHintSocial: 'Instagram/Facebook opcionais para contacto social-first.',
+      contactHintSocial: 'Contexto opcional de Instagram/Facebook antes do follow-up.',
       contactReassurance: 'Seus dados são usados para entregar o resultado e responder ao seu pedido. Mensagens de marketing são opcionais.',
       ageConsent: 'Confirmo que tenho 18 anos ou mais.',
       deliveryConsent: 'Concordo em receber o resultado da avaliação e os recursos solicitados.',
@@ -224,7 +257,7 @@
       legalBefore: 'Ao enviar, você poderá ver o resultado e receber os recursos solicitados. Consulte a',
       privacy: 'Política de Privacidade', and: 'e os', terms: 'Termos', back: 'Voltar', viewResult: 'Revelar o Meu Plano Personalizado',
       preparing: 'Preparando o seu plano…', resultReady: 'O seu plano está pronto', chooseAnswer: 'Escolha uma resposta para continuar.',
-      enterName: 'Informe o seu nome completo.', validEmail: 'Informe um endereço de email válido.',
+      enterName: 'Informe o seu nome completo.', enterDob: 'Informe a sua data de nascimento.', adultDob: 'É necessário ter 18 anos ou mais para usar esta avaliação.', validEmail: 'Informe um endereço de email válido.',
       validDob: 'Informe uma data de nascimento válida.',
       validWhatsapp: 'Informe o WhatsApp no formato internacional, por exemplo +353871234567.',
       validInstagram: 'O perfil de Instagram/Facebook está muito longo.',
@@ -259,29 +292,43 @@
       metaDescription: 'Completa una evaluación fitness gratuita de 60 segundos y recibe un plan inicial recomendado por Garcia Builder Fitness.',
       skipAssessment: 'Ir a la evaluación', languageLabel: 'Idioma',
       heroEyebrow: 'EVALUACIÓN FITNESS GRATUITA DE 60 SEGUNDOS',
-      heroEyebrowPaid: 'EVALUACIÓN FITNESS INICIAL GRATUITA',
+      heroEyebrowPaid: 'EVALUACIÓN FITNESS GRATUITA DE 2 MINUTOS',
       heroTitle: 'Encuentra el Plan Inicial Adecuado para Tu Objetivo',
-      heroTitleLead: 'Tu Objetivo Necesita Más Que',
-      heroTitleAccent: 'un Plan Genérico',
+      heroTitleLead: 'Deja de Improvisar.',
+      heroTitleAccent: 'Empieza con un Plan Claro',
       heroCopy: 'Responde unas preguntas rápidas sobre tu objetivo, rutina de entrenamiento y mayor dificultad. Recibirás un punto de partida recomendado para entrenamiento y nutrición, con la opción de hablar con Andre sobre un plan totalmente personalizado.',
       freePlanHighlight: 'Tu primer plan inicial es 100% gratuito. Responde 7 preguntas clave y recibe al instante tu dirección de entrenamiento + nutrición.',
-      heroCopyPaid: 'Responde siete preguntas clave y recibe un punto de partida práctico de entrenamiento y nutrición creado en torno a tu objetivo, rutina y experiencia.',
+      heroCopyPaid: 'Responde siete preguntas clave para descubrir un plan práctico de entrenamiento y nutrición para la primera semana, creado según tu objetivo, rutina y experiencia.',
       heroCta: 'Crear Mi Plan Inicial FREE', heroNote: 'Evaluación gratuita. Sin compromiso.',
       heroCtaPaid: 'Crear Mi Plan Inicial',
       heroDuration: 'Tarda aproximadamente 2 minutos.',
       benefitOne: 'Siete preguntas concretas',
       benefitTwo: 'Estructura inicial de entrenamiento',
       benefitThree: 'Guía práctica de nutrición',
-      benefitFour: 'Plan inicial inmediato',
-      benefitFive: 'Inglés, Portugués y Español',
+      benefitFour: 'Plan práctico para los próximos 7 días',
+      benefitFive: 'Disponible en 10 idiomas',
       packagesCta: 'Ver Paquetes', contactAndreCta: 'Contactar a Andre', viewPlans: 'Ver Planes de Coaching',
       packagesChoiceTitle: 'Información de paquetes', packagesChoiceCopy: 'Compara las opciones de coaching antes de completar nada.',
       contactChoiceTitle: 'Contactar a Andre directamente', contactChoiceCopy: 'Usa WhatsApp, Instagram, email o reserva una consulta.',
-      transformationsTitle: 'Transformaciones Reales de Clientes',
-      transformationsCopy: 'Estos son ejemplos de lo que la constancia con entrenamiento y nutrición estructurados puede lograr. Empieza con tu plan gratuito ahora y desbloquea paquetes y contacto directo después de ver tu resultado.',
-      transformationCaptionOne: 'Recomposición corporal con coaching estructurado y constancia.',
-      transformationCaptionTwo: 'Pérdida de grasa visible y una forma más fuerte con hábitos semanales prácticos.',
-      transformationCaptionThree: 'Progreso sostenible construido con una ejecución simple de entrenamiento + nutrición.',
+      transformationsKicker: 'RESULTADOS REALES DE COACHING',
+      transformationsTitle: 'Personas Reales. Estructura Clara. Progreso Visible.',
+      transformationsCopy: 'Estos clientes progresaron siguiendo entrenamiento y nutrición estructurados con constancia. Tu evaluación gratuita ofrece el primer paso: una dirección inicial clara basada en tus respuestas.',
+      transformationBadgeOne: 'RECOMPOSICIÓN CORPORAL',
+      transformationBadgeTwo: 'PÉRDIDA DE GRASA + DEFINICIÓN',
+      transformationBadgeThree: 'FUERZA + FORMA',
+      transformationCaptionOne: 'Menos improvisación. Una estructura de entrenamiento repetible y nutrición constante.',
+      transformationCaptionTwo: 'Hábitos semanales prácticos que produjeron pérdida de grasa visible y mayor definición.',
+      transformationCaptionThree: 'Entrenamiento y nutrición ejecutados con suficiente constancia para cambiar la forma corporal.',
+      transformationsDisclaimer: 'Los resultados individuales varían. La evaluación gratuita es un punto de partida práctico, no una promesa de resultados idénticos.',
+      transformationsCta: 'Descubrir Mi Plan Inicial',
+      premiumReviewFeedbackLabel: 'OPINIONES DE CLIENTES',
+      premiumReviewsTitle: 'Lo que dicen los clientes sobre el coaching',
+      premiumReviewOneQuote: '“Andre reorganizó mi entrenamiento en torno a semanas laborales de 60 horas. Perdimos 9 kg de grasa, gané masa magra y mis hombros están sin dolor por primera vez en años.”',
+      premiumReviewOneMeta: 'Coaching de recomposición corporal',
+      premiumReviewTwoQuote: '“Como padre ocupado, no pensaba que tuviera tiempo. Andre simplificó el entrenamiento y conseguí mantenerlo.”',
+      premiumReviewTwoMeta: 'Constancia para padres ocupados',
+      premiumReviewThreeQuote: '“Valoro el enfoque honesto y basado en datos. Sin trucos, solo un plan adaptado a mí que realmente podía seguir.”',
+      premiumReviewThreeMeta: 'Coaching personalizado',
       reviewsTitle: 'Lo que dicen los clientes al empezar',
       reviewOneQuote: '"Dejé de improvisar, seguí el plan y por fin vi bajar mi cintura manteniendo fuerza."',
       reviewOneMeta: '- Paulo, enfoque en recomposición corporal',
@@ -301,32 +348,33 @@
       questionProgress: 'Pregunta {current} de {total}', contactProgress: 'Datos de contacto',
       contactTitle: 'Tu Plan Inicial Recomendado Está Listo',
       contactCopy: 'Introduce tus datos para ver el resultado y recibir los recursos por email.',
-      signalOneTitle: 'Personalizado por tu perfil',
-      signalOneCopy: 'Creado en torno a tu objetivo, rutina y experiencia.',
-      signalTwoTitle: 'Entrenamiento + nutrición',
-      signalTwoCopy: 'Dirección clara para casa o gimnasio.',
-      signalThreeTitle: 'Creado por un coach real',
-      signalThreeCopy: 'Apoyo humano más allá de una calculadora genérica.',
-      signalFourTitle: 'Instantáneo + por email',
-      signalFourCopy: 'Abre tu resultado ahora y guarda una copia.',
+      signalOneTitle: 'Tu dirección de entrenamiento',
+      signalOneCopy: 'Una estructura semanal realista para tu objetivo y días disponibles.',
+      signalTwoTitle: 'Tus prioridades nutricionales',
+      signalTwoCopy: 'Guía sencilla de comidas, proteína y porciones para usar ahora.',
+      signalThreeTitle: 'Tus próximos 7 días',
+      signalThreeCopy: 'Acciones claras que convierten la orientación en una rutina inicial.',
+      signalFourTitle: 'Resultado inmediato + copia por email',
+      signalFourCopy: 'Abre el plan inmediatamente y guárdalo para la próxima semana.',
       coachAuthorityLabel: 'TU COACH',
       coachAuthorityRole: 'Entrenador Personal y Coach Online',
       coachAuthorityPromise: 'Orientación práctica. Seguimiento humano real.',
       nextCueLabel: 'QUÉ PASA DESPUÉS',
       nextCueOne: 'Responde 7 preguntas',
-      nextCueTwo: 'Añade tu email',
+      nextCueTwo: 'Añade tus datos',
       nextCueThree: 'Descubre tu plan',
       almostThere: 'Ya casi está — tu plan inicial está tomando forma.',
       contactReadyLabel: 'EVALUACIÓN COMPLETADA',
       kpiOne: 'Flujo en 2 minutos',
-      kpiTwo: 'Solo nombre + email obligatorios',
+      kpiTwo: 'Datos de adulto + email',
       kpiThree: 'Seguimiento con coach humano',
-      frictionNote: 'Para mantener velocidad: solo nombre completo y email son obligatorios. Todos los demás campos de contacto son opcionales.',
+      frictionNote: 'Tu edad ayuda a que la dirección inicial sea adecuada. El perfil social es opcional, pero ayuda a Andre a entender quién considera realmente apoyo antes del seguimiento.',
       fullName: 'Nombre completo',
       dateOfBirth: 'Fecha de nacimiento',
-      dobHelp: 'Opcional, pero útil para personalizar tu recomendación y comunicación.',
+      dobHelp: 'Obligatorio para confirmar la elegibilidad adulta y hacer más adecuada tu dirección inicial.',
       firstName: 'Nombre', email: 'Email', whatsapp: 'Número de WhatsApp', optional: 'opcional',
       instagram: 'Perfil de Instagram o Facebook',
+      socialHelp: 'Opcional, pero útil si quieres que Andre entienda tu contexto antes de contactarte.',
       facebook: 'Perfil de Facebook',
       preferredContact: 'Canal de contacto preferido',
       noPreference: 'Sin preferencia',
@@ -339,7 +387,7 @@
       whatsappHelp: 'Añade WhatsApp solo si quieres que Andre contacte contigo sobre tu resultado.',
       contactHintEmail: 'Respuesta por email con tu plan inicial.',
       contactHintWhatsapp: 'Seguimiento opcional por WhatsApp para soporte más rápido.',
-      contactHintSocial: 'Instagram/Facebook opcionales para contacto social-first.',
+      contactHintSocial: 'Contexto opcional de Instagram/Facebook antes del seguimiento.',
       contactReassurance: 'Tus datos se usan para entregar tu resultado y responder tu consulta. Los mensajes de marketing son opcionales.',
       ageConsent: 'Confirmo que tengo 18 años o más.',
       deliveryConsent: 'Acepto recibir el resultado de mi evaluación y los recursos solicitados.',
@@ -348,7 +396,7 @@
       legalBefore: 'Al enviar, podrás ver el resultado y recibir los recursos solicitados. Consulta la',
       privacy: 'Política de Privacidad', and: 'y los', terms: 'Términos', back: 'Volver', viewResult: 'Descubrir Mi Plan Personalizado',
       preparing: 'Preparando tu plan…', resultReady: 'Tu plan está listo', chooseAnswer: 'Elige una respuesta para continuar.',
-      enterName: 'Introduce tu nombre completo.', validEmail: 'Introduce un email válido.',
+      enterName: 'Introduce tu nombre completo.', enterDob: 'Introduce tu fecha de nacimiento.', adultDob: 'Debes tener 18 años o más para usar esta evaluación.', validEmail: 'Introduce un email válido.',
       validDob: 'Introduce una fecha de nacimiento válida.',
       validWhatsapp: 'Introduce WhatsApp en formato internacional, por ejemplo +353871234567.',
       validInstagram: 'El perfil de Instagram/Facebook es demasiado largo.',
@@ -378,6 +426,8 @@
       resultLoadErrorTitle: 'No pudimos abrir este resultado', resultNotFound: 'Completa de nuevo la evaluación para generar un resultado nuevo.'
     }
   };
+
+  Object.assign(UI, EXPANDED.UI || {});
 
   const TEXT = {
     pt: {
@@ -548,6 +598,8 @@
     }
   };
 
+  Object.assign(TEXT, EXPANDED.TEXT || {});
+
   const REPLACEMENTS = {
     pt: [
       ['Five-Day Structured Gym Template', 'Modelo Estruturado de Academia de Cinco Dias'], ['Three-Day Full-Body Strength and Fat-Loss Template', 'Modelo de Corpo Inteiro de Três Dias para Força e Perda de Gordura'],
@@ -587,11 +639,15 @@
     ]
   };
 
+  Object.assign(REPLACEMENTS, EXPANDED.REPLACEMENTS || {});
+
   const EMAIL = {
     en: { subject: 'Your Garcia Builder Starter Plan Is Ready', greeting: 'Hi', ready: 'Your Garcia Builder Starter Plan Is Ready', bestPath: 'Based on your assessment, your best starting path is', mainGoal: 'Main stated goal', startHere: 'Start here: your first 3 actions', actions: ['Choose your training days from the weekly structure below and put them in your calendar.', 'Complete your first workout using the session written in this email.', 'Set your nutrition baseline with the meal structure below, then calculate exact targets when you are ready.'], openPlan: 'Open My Full Plan', openWorkout: 'Open Workout Library', calculate: 'Calculate My Macros', helpful: 'Helpful resources', viewPlan: 'View Your Starter Plan', preheader: 'Your workout, nutrition structure and first three actions are ready.', training: 'Training this week', nutrition: 'Macro targets and simple diet', eating: 'Simple day of eating', shopping: 'Starter shopping list', educational: 'This assessment provides general educational guidance and is not a medical assessment or individually prescribed programme.', receiving: 'You are receiving this email because you requested your assessment result and resources. Read the', privacy: 'Privacy Policy', business: 'Personal training and online coaching.' },
     pt: { subject: 'Seu Plano Inicial Garcia Builder Está Pronto', greeting: 'Olá', ready: 'Seu Plano Inicial Garcia Builder Está Pronto', bestPath: 'Com base na sua avaliação, o melhor caminho inicial é', mainGoal: 'Objetivo principal informado', startHere: 'Comece aqui: suas primeiras 3 ações', actions: ['Escolha os dias de treino na estrutura semanal abaixo e coloque-os no calendário.', 'Complete o primeiro treino usando a sessão descrita neste email.', 'Defina a sua base nutricional com a estrutura de refeições abaixo e calcule metas exatas quando estiver pronto.'], openPlan: 'Abrir Meu Plano Completo', openWorkout: 'Abrir Biblioteca de Treinos', calculate: 'Calcular Meus Macros', helpful: 'Recursos úteis', viewPlan: 'Ver Meu Plano Inicial', preheader: 'Seu treino, estrutura nutricional e primeiras três ações estão prontos.', training: 'Treino desta semana', nutrition: 'Metas de macros e alimentação simples', eating: 'Exemplo simples de alimentação diária', shopping: 'Lista inicial de compras', educational: 'Esta avaliação oferece orientação educativa geral e não é uma avaliação médica nem um programa prescrito individualmente.', receiving: 'Você está recebendo este email porque solicitou o resultado da avaliação e os recursos. Consulte a', privacy: 'Política de Privacidade', business: 'Personal training e coaching online.' },
     es: { subject: 'Tu Plan Inicial Garcia Builder Está Listo', greeting: 'Hola', ready: 'Tu Plan Inicial Garcia Builder Está Listo', bestPath: 'Según tu evaluación, el mejor camino inicial es', mainGoal: 'Objetivo principal indicado', startHere: 'Empieza aquí: tus primeras 3 acciones', actions: ['Elige tus días de entrenamiento en la estructura semanal y añádelos al calendario.', 'Completa el primer entrenamiento usando la sesión descrita en este email.', 'Define tu base nutricional con la estructura de comidas y calcula objetivos exactos cuando estés listo.'], openPlan: 'Abrir Mi Plan Completo', openWorkout: 'Abrir Biblioteca de Entrenamientos', calculate: 'Calcular Mis Macros', helpful: 'Recursos útiles', viewPlan: 'Ver Mi Plan Inicial', preheader: 'Tu entrenamiento, estructura nutricional y primeras tres acciones están listos.', training: 'Entrenamiento de esta semana', nutrition: 'Objetivos de macros y alimentación sencilla', eating: 'Ejemplo sencillo de alimentación diaria', shopping: 'Lista inicial de compras', educational: 'Esta evaluación ofrece orientación educativa general y no es una evaluación médica ni un programa prescrito individualmente.', receiving: 'Recibes este email porque solicitaste el resultado de la evaluación y los recursos. Consulta la', privacy: 'Política de Privacidad', business: 'Entrenamiento personal y coaching online.' }
   };
+
+  Object.assign(EMAIL, EXPANDED.EMAIL || {});
 
   const RESOURCE_COPY = {
     pt: {
@@ -611,6 +667,8 @@
       nutritionDetails: ['Incluye una fuente clara de proteína en las comidas principales.', 'Mantén porciones y horarios constantes durante 10 a 14 días antes de ajustar.', 'Usa el ejemplo de comidas y la lista de compras como base, adaptándolos a tus preferencias.']
     }
   };
+
+  Object.assign(RESOURCE_COPY, EXPANDED.RESOURCE_COPY || {});
 
   const PLAN_COPY = {
     pt: {
@@ -665,6 +723,8 @@
     }
   };
 
+  Object.assign(PLAN_COPY, EXPANDED.PLAN_COPY || {});
+
   function normalizeLanguage(value) {
     const language = String(value || '').toLowerCase().split('-')[0];
     return SUPPORTED.includes(language) ? language : 'en';
@@ -683,8 +743,10 @@
     const lang = normalizeLanguage(language);
     const source = String(value == null ? '' : value);
     if (lang === 'en' || !source || /^(https?:|mailto:|\/)/.test(source)) return source;
-    if (TEXT[lang][source]) return TEXT[lang][source];
-    return REPLACEMENTS[lang].reduce((translated, pair) => {
+    const dictionary = TEXT[lang] || {};
+    const replacements = REPLACEMENTS[lang] || [];
+    if (dictionary[source]) return dictionary[source];
+    return replacements.reduce((translated, pair) => {
       const escaped = pair[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const startsWithWord = /^\w/.test(pair[0]);
       const endsWithWord = /\w$/.test(pair[0]);
@@ -705,6 +767,7 @@
     const lang = normalizeLanguage(language);
     if (lang === 'en' || !resource) return resource;
     const copy = RESOURCE_COPY[lang];
+    if (!copy) return translateDeep(resource, lang);
     const type = resource.type === 'workout' || resource.type === 'nutrition' ? resource.type : 'guide';
     return {
       ...resource,
@@ -721,6 +784,7 @@
     const lang = normalizeLanguage(language);
     if (lang === 'en' || !plan) return plan;
     const copy = PLAN_COPY[lang];
+    if (!copy) return translateDeep(plan, lang);
     const rawTitle = String(plan.training?.title || '');
     const weeklyKey = rawTitle.includes('Five-Day') ? 'five' : rawTitle.includes('Four-Day') ? 'four' : rawTitle.includes('Hybrid') ? 'hybrid' : rawTitle.includes('Home') || rawTitle.includes('Bodyweight') ? 'home' : rawTitle.includes('Three-Day') ? 'three' : 'two';
     const sessions = (plan.training?.sessions || []).map((session, index) => {
@@ -783,6 +847,6 @@
     getBrowserLanguage,
     setBrowserLanguage,
     applyDocument,
-    getEmailCopy: (language) => EMAIL[normalizeLanguage(language)]
+    getEmailCopy: (language) => ({ ...EMAIL.en, ...(EMAIL[normalizeLanguage(language)] || {}) })
   };
 });

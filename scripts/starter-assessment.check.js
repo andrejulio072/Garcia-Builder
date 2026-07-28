@@ -248,7 +248,25 @@ assert(portugueseVisitor.starterPlan.training.sessions[0].work[0].includes('sér
 assert(spanishVisitor.starterPlan.training.sessions[0].work[0].includes('series'));
 assert.strictEqual(portugueseVisitor.starterPlan.nutrition.meals[0].meal, 'Pequeno-almoço');
 assert.strictEqual(spanishVisitor.starterPlan.nutrition.meals[0].meal, 'Desayuno');
-assert.deepStrictEqual(getPublicConfig().languages, ['en', 'pt', 'es']);
+const supportedAssessmentLanguages = ['en', 'pt', 'es', 'fr', 'de', 'it', 'nl', 'pl', 'ro', 'ru'];
+assert.deepStrictEqual(getPublicConfig().languages, supportedAssessmentLanguages);
+for (const language of supportedAssessmentLanguages.slice(3)) {
+  assert.notStrictEqual(
+    starterI18n.translateText('What would you most like to achieve right now?', language),
+    'What would you most like to achieve right now?',
+    `${language} should translate the first assessment question`
+  );
+  assert.notStrictEqual(
+    starterI18n.translateText('Lose body fat', language),
+    'Lose body fat',
+    `${language} should translate assessment answers`
+  );
+  assert(starterI18n.getEmailCopy(language).subject, `${language} should provide localized assessment email copy`);
+  const visitor = toVisitorRecommendation(buildRecommendation(baseAnswers, baseContact, language), language);
+  assert(visitor.resultTitle, `${language} should produce a localized result title`);
+  assert(visitor.summary, `${language} should produce a localized recommendation summary`);
+  assert(visitor.starterPlan, `${language} should produce a starter plan without errors`);
+}
 assert(!Object.prototype.hasOwnProperty.call(getPublicConfig(), 'countries'));
 
 const productionServer = fs.readFileSync(path.join(__dirname, '..', 'api', 'stripe-server-premium.js'), 'utf8');
@@ -296,16 +314,17 @@ assert(starterContext.includes('detectEntryContext'), 'Shared starter context sh
 assert(starterPage.includes('data-start-assessment'), 'QR landing should keep the assessment start button');
 assert(starterPage.includes('/packages.html?utm_source=business_card'), 'QR landing should link directly to packages');
 assert(starterPage.includes('/start-contact.html?utm_source=business_card'), 'QR landing should link to the direct contact page');
-assert(paidAssessmentPage.includes('Your Goal Needs More Than'), 'Paid assessment page should include premium paid hero headline');
+assert(paidAssessmentPage.includes('Stop Guessing.'), 'Paid assessment page should include value-led premium headline');
 assert(paidAssessmentPage.includes('data-starter-entry-default="organic"'), 'Paid assessment path should classify organically unless paid attribution exists');
 assert(paidAssessmentPage.includes('name="robots" content="noindex, follow"'), 'Paid assessment should be noindex, follow');
 assert(!paidAssessmentPage.includes('data-qr-choice="packages"'), 'Paid assessment page should not include package pre-assessment choices');
 assert(!paidAssessmentPage.includes('data-qr-choice="contact"'), 'Paid assessment page should not include contact pre-assessment choices');
-assert(!paidAssessmentPage.includes('name="date_of_birth"'), 'Paid assessment contact form should not include date of birth pre-conversion');
-assert(!paidAssessmentPage.includes('name="instagram_handle"'), 'Paid assessment contact form should not include Instagram pre-conversion');
+assert(paidAssessmentPage.includes('name="date_of_birth"'), 'Paid assessment contact form should include date of birth for adult lead qualification');
+assert(paidAssessmentPage.includes('name="instagram_handle"'), 'Paid assessment contact form should include the optional Instagram/Facebook qualifier');
 assert(!paidAssessmentPage.includes('name="facebook_profile"'), 'Paid assessment contact form should not include Facebook pre-conversion');
 assert(!paidAssessmentPage.includes('name="preferred_contact_method"'), 'Paid assessment contact form should not include preferred contact pre-conversion');
 assert(!paidAssessmentPage.includes('name="best_contact_time"'), 'Paid assessment contact form should not include best contact time pre-conversion');
+assert.equal((paidAssessmentPage.match(/class="starter-transform-card"/g) || []).length, 3, 'Paid assessment should show three transformation proof cards');
 assert(homepage.includes('/assessment?utm_source=website&amp;utm_medium=organic&amp;utm_campaign=starter_assessment&amp;utm_content=site_assessment_cta'), 'Main website should include assessment CTA with organic UTM parameters');
 assert(paidAssessmentPage.includes('/cookie-policy'), 'Paid assessment page should expose cookie policy link');
 assert(paidAssessmentPage.includes('data-open-cookie-preferences'), 'Paid assessment page should expose cookie preferences action');
@@ -318,7 +337,10 @@ assert(starterContactPage.includes('https://calendly.com/andrenjulio072/consulta
 assert(starterContactPage.includes('mailto:inquiries@garciabuilder.fitness'), 'QR contact page should include inquiries email');
 assert(starterContactPage.includes('/packages.html?utm_source=business_card'), 'QR contact page should include package link');
 assert(starterContactPage.includes('/start.html?utm_source=business_card'), 'QR contact page should still link back to the assessment');
-assert(fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8').includes('SUBMISSION_WINDOW_MS'), 'Starter submit should keep duplicate-submission throttling');
+const submitHandlerSource = fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8');
+assert(submitHandlerSource.includes('SUBMISSION_WINDOW_MS'), 'Starter submit should keep duplicate-submission throttling');
+assert(submitHandlerSource.includes('<li>Age:'), 'Warm lead alert should calculate and display lead age');
+assert(submitHandlerSource.includes('Instagram/Facebook profile:'), 'Warm lead alert should label the combined social profile clearly');
 assert(starterClient.includes('resourceDelivery?.email'), 'Starter form should preserve the email delivery status before redirecting');
 assert(starterClient.includes('shouldTrackCanonicalSubmission(payload)'), 'Starter form should gate primary conversion to the canonical server response contract');
 assert(starterClient.includes('SUBMITTED_EVENT_GUARD_KEY'), 'Starter form should guard against duplicate assessment_submitted event ids per browser session');

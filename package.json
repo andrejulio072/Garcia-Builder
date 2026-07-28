@@ -12,6 +12,7 @@
     "test:auth": "node scripts/auth-login-register.check.js",
     "test:starter-assessment:smoke": "node scripts/starter-assessment-smoke.mjs",
     "test:starter-premium:visual": "node scripts/starter-premium-visual.mjs",
+    "test:starter-email-previews": "node scripts/starter-assessment-email-previews.cjs",
     "test:nutrition-endpoint": "node scripts/nutrition-calculator-endpoint.check.js",
     "test:package-ctas": "node scripts/package-cta-contract.check.js",
     "test:e2e:user-area:live": "node scripts/live-user-area.e2e.mjs",

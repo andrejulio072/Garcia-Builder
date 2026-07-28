@@ -13,6 +13,7 @@ const css = read('css/starter-assessment.css');
 const client = read('js/starter-assessment.js');
 const resultClient = read('js/starter-result.js');
 const locales = read('js/starter-locales.js');
+const expandedLocales = require(path.join(ROOT, 'js', 'starter-locales-expanded.js'));
 const server = read('api/stripe-server-premium.js');
 const vercel = read('vercel.json');
 
@@ -40,12 +41,32 @@ assert.equal(
   4,
   'Premium hero must expose four concise trust signals'
 );
+assert.equal(
+  (assessment.match(/class="starter-transform-card"/g) || []).length,
+  3,
+  'Premium hero must expose three authentic transformation cards'
+);
+assert.equal(
+  (assessment.match(/class="starter-client-voice"/g) || []).length,
+  3,
+  'Premium transformation section must expose three client testimonials'
+);
+assert(
+  assessment.indexOf('class="starter-transform-grid"') < assessment.indexOf('class="starter-client-voices"') &&
+  assessment.indexOf('class="starter-client-voices"') < assessment.indexOf('class="starter-transform-footer"'),
+  'Client testimonials must appear directly below the transformation cards'
+);
+for (const clientName of ['Conrad N.', 'James W.', 'Daniela C.']) {
+  assert(assessment.includes(clientName), `Premium testimonial is missing existing client ${clientName}`);
+}
+assert(assessment.includes('data-start-assessment-proof'), 'Transformation proof section must reinforce the assessment CTA');
 assert(!assessment.includes('<nav'), 'Paid assessment must not add competing navigation');
 
-for (const requiredField of ['full_name', 'email', 'age_confirmed', 'resource_delivery_acknowledgement']) {
+for (const requiredField of ['full_name', 'email', 'date_of_birth', 'age_confirmed', 'resource_delivery_acknowledgement']) {
   assert(assessment.includes(`name="${requiredField}"`), `Paid assessment is missing required field ${requiredField}`);
 }
-for (const removedField of ['date_of_birth', 'instagram_handle', 'facebook_profile', 'preferred_contact_method', 'best_contact_time']) {
+assert(assessment.includes('name="instagram_handle"'), 'Paid assessment must capture an optional Instagram/Facebook profile');
+for (const removedField of ['facebook_profile', 'preferred_contact_method', 'best_contact_time']) {
   assert(!assessment.includes(`name="${removedField}"`), `Paid assessment reintroduced ${removedField}`);
 }
 
@@ -100,6 +121,15 @@ for (const key of [
   'heroTitleLead',
   'heroTitleAccent',
   'signalFourTitle',
+  'transformationsKicker',
+  'transformationBadgeOne',
+  'transformationsDisclaimer',
+  'transformationsCta',
+  'premiumReviewFeedbackLabel',
+  'premiumReviewsTitle',
+  'premiumReviewOneQuote',
+  'premiumReviewTwoQuote',
+  'premiumReviewThreeQuote',
   'coachAuthorityPromise',
   'almostThere',
   'contactReadyLabel',
@@ -111,6 +141,31 @@ for (const key of [
     3,
     `${key} must be present in EN/PT/ES`
   );
+}
+
+const assessmentLanguages = ['en', 'pt', 'es', 'fr', 'de', 'it', 'nl', 'pl', 'ro', 'ru'];
+for (const page of [assessment, start, result]) {
+  for (const language of assessmentLanguages) {
+    assert(page.includes(`<option value="${language}">`), `Assessment page is missing the ${language} language option`);
+  }
+  assert(page.includes('PT · Português'), 'Language selector should show a readable native language name');
+  assert(page.includes('RU · Русский'), 'Language selector should preserve readable non-Latin language names');
+  assert(
+    page.indexOf('/js/starter-locales-expanded.js') < page.indexOf('/js/starter-locales.js'),
+    'Expanded locale packs must load before the assessment locale runtime'
+  );
+}
+assert(css.includes('.starter-language select option'), 'Native language options need an explicit contrast rule');
+assert(css.includes('color-scheme: light'), 'Language popup should request a readable light native menu');
+assert(/\.starter-language select option\s*\{[\s\S]{0,160}?color:\s*#111827/.test(css), 'Language options need dark text on the light popup');
+assert.deepStrictEqual(expandedLocales.SUPPORTED, assessmentLanguages.slice(3));
+for (const language of expandedLocales.SUPPORTED) {
+  assert(expandedLocales.UI[language]?.heroTitleLead, `${language} premium hero translation is missing`);
+  assert(expandedLocales.UI[language]?.contactTitle, `${language} contact-step translation is missing`);
+  assert(expandedLocales.UI[language]?.resultResourcesTitle, `${language} result translation is missing`);
+  assert(expandedLocales.UI[language]?.premiumReviewOneQuote, `${language} testimonial translation is missing`);
+  assert(expandedLocales.TEXT[language]?.['What would you most like to achieve right now?'], `${language} question translation is missing`);
+  assert(expandedLocales.EMAIL[language]?.subject, `${language} email subject translation is missing`);
 }
 
 assert(start.includes('data-start-assessment'), '/start assessment entry must remain available');

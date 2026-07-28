@@ -40,6 +40,7 @@
   const progressPercent = $('[data-progress-percent]');
   const progressBar = $('[data-progress-bar]');
   const progressTrack = $('[data-progress-track]');
+  const progressSegments = Array.from(document.querySelectorAll('[data-progress-segments] li'));
   const progressEncouragement = $('[data-progress-encouragement]');
   const backButton = $('[data-back-button]');
   const submitButton = $('[data-submit-button]');
@@ -176,6 +177,10 @@
       progressTrack.setAttribute('aria-valuenow', String(percent));
       progressTrack.setAttribute('aria-valuetext', progressLabel.textContent);
     }
+    progressSegments.forEach((segment, index) => {
+      segment.classList.toggle('is-complete', index < current - 1);
+      segment.classList.toggle('is-active', index === current - 1);
+    });
     if (progressEncouragement) {
       progressEncouragement.hidden = state.step < 5 || state.step >= QUESTIONS.length;
     }

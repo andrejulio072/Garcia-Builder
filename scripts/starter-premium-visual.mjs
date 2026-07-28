@@ -142,6 +142,15 @@ try {
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     assert(overflow <= 1, `${viewport.name} has ${overflow}px horizontal overflow`);
     assert(await page.locator('[data-start-assessment]').isVisible(), `${viewport.name} hero CTA is not visible`);
+    for (const selector of ['.starter-trust-strip', '.starter-process-block']) {
+      const opacity = Number.parseFloat(await page.locator(selector).evaluate((node) => getComputedStyle(node).opacity));
+      assert(opacity > 0.95, `${viewport.name} ${selector} remained visually hidden`);
+    }
+    if (viewport.width <= 390) {
+      const ctaBox = await page.locator('[data-start-assessment]').boundingBox();
+      assert(ctaBox && ctaBox.y + ctaBox.height <= viewport.height, `${viewport.name} hero CTA is below the initial viewport`);
+    }
+    assert.equal(await page.locator('nav').count(), 0, `${viewport.name} paid page contains competing navigation`);
     await page.screenshot({ path: path.join(OUTPUT, `${viewport.name}.png`), fullPage: true });
     await page.close();
   }
@@ -177,6 +186,9 @@ try {
       body: JSON.stringify({
         ok: true,
         leadSaved: true,
+        isNewLead: true,
+        deduplicated: false,
+        ignored: false,
         resultToken: 'mock-token',
         resultUrl: '/start/result/mock-token',
         eventId: 'visual-test-event',
@@ -212,9 +224,12 @@ try {
   assert(languageSelector.labels.includes('RU · Русский'), 'Russian native language label is missing');
   assert.equal(await page.locator('.starter-client-voice').count(), 3, 'Three client testimonials should be visible below transformations');
   assert(await page.locator('.starter-client-voices').isVisible(), 'Client testimonial section is not visible');
+  assert.equal(await page.locator('.starter-plan-signal-row .signal-card').count(), 4, 'Existing four-card plan preview should remain visible');
+  assert.equal(await page.locator('.starter-process-block .signal-card').count(), 3, 'New process block should show three delivery/value cards');
+  assert.equal(await page.locator('.starter-trust-strip li').count(), 4, 'Credential trust strip should show four trust signals');
   await page.selectOption('[data-starter-language]', 'pt');
-  assert((await page.locator('#starter-title').innerText()).includes('Pare de Adivinhar'), 'Portuguese hero copy did not apply');
-  const englishHero = 'Stop Guessing';
+  assert((await page.locator('#starter-title').innerText()).includes('Receba o Seu Plano Gratuito'), 'Portuguese hero copy did not apply');
+  const englishHero = 'Get Your Free Personalised';
   for (const language of ['fr', 'de', 'it', 'nl', 'pl', 'ro', 'ru']) {
     await page.selectOption('[data-starter-language]', language);
     assert.equal(await page.locator('html').getAttribute('lang'), language, `${language} document language did not apply`);
@@ -228,6 +243,8 @@ try {
   await page.selectOption('[data-starter-language]', 'en');
   await page.click('[data-start-assessment]');
   await waitForQuestion(page, 1);
+  assert.equal(await page.locator('.progress-segments li').count(), 8, 'Segmented progress should include seven questions plus contact');
+  assert.equal(await page.locator('.progress-segments li.is-active').count(), 1, 'Segmented progress should identify the active step');
   await page.waitForFunction(() => document.querySelector('.option-card') === document.activeElement);
   assert(await page.locator('.option-card').first().evaluate((node) => node === document.activeElement), 'First answer did not receive keyboard focus');
   await page.screenshot({ path: path.join(OUTPUT, 'question-mobile-390.png'), fullPage: true });

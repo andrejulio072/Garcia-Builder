@@ -217,13 +217,13 @@
     actions.innerHTML = '';
     const contactLinks = [];
     const definitions = [
-      [payload.actions?.whatsappUrl, 'starter-secondary', copy('messageAndre'), 'whatsapp_clicked'],
-      [payload.actions?.bookingUrl, 'starter-secondary', copy('bookConsultation'), 'consultation_clicked'],
-      [payload.actions?.instagramUrl, 'starter-secondary', 'Instagram', 'instagram_clicked'],
-      [payload.actions?.contactEmailUrl, 'starter-secondary', copy('emailAndre'), 'contact_email_clicked'],
-      [payload.actions?.siteUrl, 'starter-secondary', copy('visitSite'), 'site_clicked']
+      [payload.actions?.whatsappUrl, 'starter-secondary', copy('messageAndre'), 'whatsapp'],
+      [payload.actions?.bookingUrl, 'starter-secondary', copy('bookConsultation'), 'booking'],
+      [payload.actions?.instagramUrl, 'starter-secondary', 'Instagram', 'instagram'],
+      [payload.actions?.contactEmailUrl, 'starter-secondary', copy('emailAndre'), 'email'],
+      [payload.actions?.siteUrl, 'starter-secondary', copy('visitSite'), 'website']
     ];
-    definitions.forEach(([href, className, label, eventName]) => {
+    definitions.forEach(([href, className, label, channel]) => {
       if (!href) return;
       const link = document.createElement('a');
       link.className = className;
@@ -231,8 +231,8 @@
       link.href = href;
       link.textContent = label;
       link.addEventListener('click', () => {
-        if (['whatsapp_clicked', 'consultation_clicked'].includes(eventName)) recordEvent(eventName, eventName);
-        else track(eventName, {});
+        track('contact_click', { contact_channel: channel });
+        if (['whatsapp', 'booking'].includes(channel)) recordEvent(`${channel}_clicked`, `${channel}_clicked`);
       });
       contactLinks.push(link);
     });
@@ -242,21 +242,21 @@
     plansLink.classList.add('result-action');
     plansLink.href = '/packages.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=view_plans';
     plansLink.textContent = copy('viewPlans');
-    plansLink.addEventListener('click', () => track('result_packages_clicked', {}));
+    plansLink.addEventListener('click', () => track('view_plans_click', {}));
 
     const workoutLink = document.createElement('a');
     workoutLink.className = 'starter-secondary';
     workoutLink.classList.add('result-action');
     workoutLink.href = '/workouts.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=workout_library';
     workoutLink.textContent = copy('workoutLibrary');
-    workoutLink.addEventListener('click', () => track('result_workout_library_clicked', {}));
+    workoutLink.addEventListener('click', () => track('workout_tools_click', {}));
 
     const nutritionLink = document.createElement('a');
     nutritionLink.className = 'starter-secondary';
     nutritionLink.classList.add('result-action');
     nutritionLink.href = '/nutrition-calculator.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=nutrition_calculator';
     nutritionLink.textContent = copy('calculateMacros');
-    nutritionLink.addEventListener('click', () => track('result_nutrition_calculator_clicked', {}));
+    nutritionLink.addEventListener('click', () => track('nutrition_tools_click', {}));
 
     contactLinks.forEach((link) => actions.appendChild(link));
     actions.appendChild(plansLink);

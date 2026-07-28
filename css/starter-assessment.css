@@ -1,6 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@500;700;800&display=swap');
 
 :root {
+  --gb-bg: #08090b;
+  --gb-surface: #141417;
+  --gb-text: #f4f1ea;
+  --gb-muted: #b7af9e;
+  --gb-gold-strong: #e0b86f;
   --gb-bg-deep: #05070a;
   --gb-bg-surface: #0d1116;
   --gb-bg-elevated: #151a21;
@@ -1634,6 +1639,15 @@ body.result-page::before {
   width: 100%;
 }
 
+.starter-page-paid {
+  --gb-bg: #08090b;
+  --gb-surface: #141417;
+  --gb-text: #f4f1ea;
+  --gb-muted: #b7af9e;
+  --gb-gold: #c9a35f;
+  --gb-gold-strong: #e0b86f;
+}
+
 .starter-page-paid .starter-hero-premium {
   isolation: isolate;
   overflow: hidden;
@@ -2014,6 +2028,103 @@ body.result-page::before {
   margin-top: 6px;
   color: var(--gb-text-secondary);
   font-size: 0.77rem;
+}
+
+.starter-page-paid .starter-hero > .starter-trust-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin: 30px 0 0;
+  padding: 1px;
+  overflow: hidden;
+  border: 1px solid rgba(224, 184, 111, 0.24);
+  border-radius: var(--gb-radius-md);
+  background: rgba(224, 184, 111, 0.16);
+  list-style: none;
+  opacity: 0;
+  animation: gb-rise-in 450ms 500ms var(--gb-ease-premium) forwards;
+}
+
+.starter-trust-strip li {
+  position: relative;
+  min-width: 0;
+  padding: 14px 12px 14px 31px;
+  background: rgba(8, 11, 15, 0.96);
+  color: var(--gb-text);
+  font-size: 0.72rem;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.starter-trust-strip li::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gb-gold-strong);
+  box-shadow: 0 0 14px rgba(224, 184, 111, 0.52);
+  transform: translateY(-50%);
+}
+
+.starter-page-paid .starter-hero > .starter-process-block {
+  margin-top: 22px;
+  padding: clamp(19px, 2.6vw, 28px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--gb-radius-lg);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(224, 184, 111, 0.1), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.014));
+  box-shadow: 0 22px 54px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  animation: gb-rise-in 480ms 620ms var(--gb-ease-premium) forwards;
+}
+
+.starter-process-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.starter-process-kicker {
+  margin: 0 0 8px;
+  color: var(--gb-gold-strong);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.starter-process-heading h2 {
+  max-width: 650px;
+  margin: 0;
+  color: var(--gb-text);
+  font-family: Sora, Manrope, sans-serif;
+  font-size: clamp(1.35rem, 2vw, 1.9rem);
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+}
+
+.starter-process-heading > span {
+  flex: 0 0 auto;
+  padding: 8px 11px;
+  border: 1px solid rgba(224, 184, 111, 0.25);
+  border-radius: 999px;
+  background: rgba(224, 184, 111, 0.06);
+  color: #e4d5b1;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.starter-process-block .starter-signal-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 18px;
+}
+
+.starter-process-block .signal-card {
+  min-height: 106px;
 }
 
 .starter-page-paid .starter-transformations-premium {
@@ -2439,6 +2550,50 @@ body.result-page::before {
 .progress-meta [data-progress-percent] {
   color: var(--gb-gold-light);
   font-family: Sora, sans-serif;
+}
+
+.progress-segments {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 6px;
+  margin: 13px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.progress-segments li {
+  height: 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.44);
+}
+
+.progress-segments li::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #b88943, var(--gb-gold-strong));
+  box-shadow: 0 0 12px rgba(224, 184, 111, 0.35);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--gb-transition-standard) var(--gb-ease-premium);
+}
+
+.progress-segments li.is-complete::after,
+.progress-segments li.is-active::after {
+  transform: scaleX(1);
+}
+
+.progress-segments li.is-active::after {
+  animation: gb-segment-confirm 420ms var(--gb-ease-premium) both;
+}
+
+@keyframes gb-segment-confirm {
+  from { opacity: 0.5; transform: scaleX(0.35); }
+  to { opacity: 1; transform: scaleX(1); }
 }
 
 .progress-track {
@@ -3072,6 +3227,10 @@ body.result-page::before {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .starter-process-block .starter-signal-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .result-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -3177,6 +3336,28 @@ body.result-page::before {
   .starter-page-paid .starter-signal-row {
     grid-template-columns: 1fr 1fr;
     margin-top: 20px;
+  }
+
+  .starter-trust-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 22px;
+  }
+
+  .starter-process-block {
+    padding: 18px;
+  }
+
+  .starter-process-heading {
+    display: grid;
+    gap: 13px;
+  }
+
+  .starter-process-heading > span {
+    justify-self: start;
+  }
+
+  .starter-process-block .starter-signal-row {
+    grid-template-columns: 1fr;
   }
 
   .starter-page-paid .signal-card {
@@ -3310,6 +3491,24 @@ body.result-page::before {
 
   .starter-page-paid .starter-signal-row {
     grid-template-columns: 1fr;
+  }
+
+  .starter-trust-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .starter-trust-strip li {
+    min-height: 54px;
+    padding: 12px 9px 12px 25px;
+    font-size: 0.65rem;
+  }
+
+  .starter-trust-strip li::before {
+    left: 10px;
+  }
+
+  .progress-segments {
+    gap: 4px;
   }
 
   .starter-page-paid .signal-card {
@@ -3474,10 +3673,16 @@ body.result-page::before {
   .coach-authority-card,
   .starter-page-paid .signal-card,
   .starter-transformations-premium,
+  .starter-trust-strip,
+  .starter-process-block,
   .starter-next-cue {
     opacity: 1;
     transform: none;
     clip-path: none;
     animation: none !important;
+  }
+
+  .progress-segments li::after {
+    transition: none;
   }
 }

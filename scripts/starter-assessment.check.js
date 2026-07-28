@@ -314,7 +314,9 @@ assert(starterContext.includes('detectEntryContext'), 'Shared starter context sh
 assert(starterPage.includes('data-start-assessment'), 'QR landing should keep the assessment start button');
 assert(starterPage.includes('/packages.html?utm_source=business_card'), 'QR landing should link directly to packages');
 assert(starterPage.includes('/start-contact.html?utm_source=business_card'), 'QR landing should link to the direct contact page');
-assert(paidAssessmentPage.includes('Stop Guessing.'), 'Paid assessment page should include value-led premium headline');
+assert(paidAssessmentPage.includes('Get Your Free Personalised'), 'Paid assessment page should make the free personalised plan explicit');
+assert(paidAssessmentPage.includes('Fat-Loss Starter Plan'), 'Paid assessment page should keep offer-message match in the premium headline');
+assert(paidAssessmentPage.includes('ActiveIQ Level 3 PT'), 'Paid assessment page should include the compact coach credential strip');
 assert(paidAssessmentPage.includes('data-starter-entry-default="organic"'), 'Paid assessment path should classify organically unless paid attribution exists');
 assert(paidAssessmentPage.includes('name="robots" content="noindex, follow"'), 'Paid assessment should be noindex, follow');
 assert(!paidAssessmentPage.includes('data-qr-choice="packages"'), 'Paid assessment page should not include package pre-assessment choices');
@@ -394,6 +396,8 @@ assert(starterLocales.includes("viewPlans: 'Ver Planes de Coaching'"), 'Spanish 
 assert(resultClient.includes('isExternalUrl(resource.url)'), 'Result resource links should distinguish internal and external destinations');
 assert(resultClient.includes('isDownloadUrl(resource.url)'), 'Result resource links should explicitly mark downloadable resources');
 assert(resultClient.includes("plansLink.textContent = copy('viewPlans')"), 'Result page plans action should use localized copy');
+assert(resultClient.includes("track('contact_click'"), 'Result page contact actions should emit contact_click without contact data');
+assert(resultClient.includes("track('view_plans_click'"), 'Result page plans action should emit view_plans_click');
 assert(resultClient.includes('/packages.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=view_plans'), 'Result page should preserve attribution when linking to coaching plans');
 assert(resultClient.includes('/workouts.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=workout_library'), 'Result page should include workout tools link with attribution');
 assert(resultClient.includes('/nutrition-calculator.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=nutrition_calculator'), 'Result page should include nutrition calculator link with attribution');

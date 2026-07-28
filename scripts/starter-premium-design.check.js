@@ -38,9 +38,15 @@ assert(
 );
 assert.equal(
   (assessment.match(/class="signal-card"/g) || []).length,
-  4,
-  'Premium hero must expose four concise trust signals'
+  7,
+  'Paid assessment must preserve four plan-preview cards and add three delivery/value cards'
 );
+assert(assessment.includes('class="starter-proof starter-proof-hero"'), 'Existing hero benefit bullets must remain in place');
+assert(assessment.includes('class="starter-signal-row starter-plan-signal-row"'), 'Existing four-card plan preview must remain in place');
+assert(assessment.includes('class="starter-trust-strip"'), 'Paid assessment must expose the compact credential trust strip');
+for (const key of ['trustCredential', 'trustExperience', 'trustRating', 'trustLanguages']) {
+  assert(assessment.includes(`data-starter-copy="${key}"`), `Paid assessment trust strip is missing ${key}`);
+}
 assert.equal(
   (assessment.match(/class="starter-transform-card"/g) || []).length,
   3,
@@ -71,6 +77,11 @@ for (const removedField of ['facebook_profile', 'preferred_contact_method', 'bes
 }
 
 assert(assessment.includes('role="progressbar"'), 'Assessment progress must expose progressbar semantics');
+assert.equal(
+  (assessment.match(/<li><\/li>/g) || []).length,
+  8,
+  'Assessment progress must expose seven question segments and one contact segment'
+);
 assert(assessment.includes('data-progress-encouragement'), 'Late-step completion reinforcement is missing');
 assert(client.includes("state.transitionDirection = 'back'"), 'Back transitions must reverse direction');
 assert(client.includes("state.transitionDirection = 'forward'"), 'Forward transitions must preserve direction');
@@ -90,8 +101,15 @@ assert(
 );
 assert(resultClient.includes("resource.role !== 'primary'"), 'Primary guide must not be duplicated in secondary resource cards');
 assert(resultClient.includes("copy('downloadGuide')"), 'Primary guide CTA must use translated copy');
+assert(resultClient.includes("track('contact_click'"), 'Result contact actions must use the canonical contact_click event');
+assert(resultClient.includes("track('view_plans_click'"), 'Result plans action must use the canonical view_plans_click event');
 
 for (const token of [
+  '--gb-bg',
+  '--gb-surface',
+  '--gb-text',
+  '--gb-muted',
+  '--gb-gold-strong',
   '--gb-bg-deep',
   '--gb-bg-surface',
   '--gb-bg-elevated',
@@ -118,6 +136,20 @@ assert(css.includes('@media (forced-colors: active)'), 'High-contrast support is
 assert(/\.starter-primary\s*\{[\s\S]{0,120}?animation:\s*none;/.test(css), 'Primary CTAs must not use an infinite pulse');
 
 for (const key of [
+  'heroNotePaid',
+  'heroDurationPaid',
+  'trustCredential',
+  'trustExperience',
+  'trustRating',
+  'trustLanguages',
+  'processKicker',
+  'processTitle',
+  'processOneTitle',
+  'processOneCopy',
+  'processTwoTitle',
+  'processTwoCopy',
+  'processThreeTitle',
+  'processThreeCopy',
   'heroTitleLead',
   'heroTitleAccent',
   'signalFourTitle',

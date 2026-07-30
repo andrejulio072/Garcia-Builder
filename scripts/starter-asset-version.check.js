@@ -4,8 +4,9 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const NEW_TOKEN = '20260728-footer-links-v8';
+const NEW_TOKEN = '20260730-mobile-preview-v1';
 const OLD_TOKENS = [
+  '20260728-footer-links-v8',
   '20260727-ads-final',
   '20260727-ads-corrective',
   '20260727-premium-v1',

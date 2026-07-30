@@ -177,6 +177,8 @@ body.starter-page::before {
 .assessment-card,
 .result-panel {
   width: min(720px, 100%);
+  min-width: 0;
+  max-width: 100%;
   margin: 0 auto;
 }
 
@@ -1433,6 +1435,15 @@ select {
 }
 
 @media (max-width: 520px) {
+  .starter-header {
+    width: min(100% - 14px, 640px);
+    gap: 8px;
+  }
+
+  .starter-logo img {
+    width: min(124px, 38vw);
+  }
+
   .starter-shell {
     width: min(100% - 14px, 640px);
     padding: 14px 0 28px;

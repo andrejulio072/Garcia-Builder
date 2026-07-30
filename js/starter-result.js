@@ -1,5 +1,8 @@
 (function () {
-  const token = decodeURIComponent(window.location.pathname.split('/').filter(Boolean).pop() || '');
+  const resultPathSegment = window.location.pathname.split('/').filter(Boolean).pop() || '';
+  const token = /^(?:start-result(?:\.html)?)$/i.test(resultPathSegment)
+    ? ''
+    : decodeURIComponent(resultPathSegment);
   const i18n = window.GB_STARTER_I18N;
   let language = i18n?.getBrowserLanguage?.() || 'en';
   const resultParams = new URLSearchParams(window.location.search);

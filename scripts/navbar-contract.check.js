@@ -89,13 +89,13 @@ for (const source of [navbarHtml, loaderSource]) {
   );
   assert.match(
     source,
-    /src="Logo Files\/For Web\/logo-nobackground-500\.png"/,
-    'Navbar logo should use the project-relative logo path for file:// and hosted pages'
+    /src="\/assets\/images\/logo-nobackground-500\.png"/,
+    'Navbar logo should use the root-relative canonical asset path on every hosted route'
   );
   assert.match(
     source,
-    /data-gb-logo-src="Logo Files\/For Web\/logo-nobackground-500\.png"/,
-    'Navbar logo resolver should keep a project-relative source'
+    /data-gb-logo-src="\/assets\/images\/logo-nobackground-500\.png"/,
+    'Navbar logo resolver should keep the root-relative canonical asset source'
   );
   assertPriorityOrder(source, 'gb-navbar-links', 'Desktop navbar');
   assertDrawerPattern(source, 'Drawer navbar');

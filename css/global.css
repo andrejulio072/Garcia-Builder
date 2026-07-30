@@ -44,8 +44,27 @@
   flex-direction: column;
   align-items: flex-start;
   min-width: 160px;
+  max-width: 100%;
   margin-bottom: 0;
   gap: 2px;
+}
+
+.gb-footer-logo,
+.gb-footer-logo-link,
+.gb-footer-brand img {
+  max-width: 100%;
+}
+
+.gb-footer-logo {
+  width: min(180px, 100%);
+  height: auto;
+}
+
+.gb-footer a,
+.gb-footer p,
+.gb-footer li,
+.gb-footer-disclaimer-ref {
+  overflow-wrap: anywhere;
 }
 .footer-follow {
   margin-top: 18px;
@@ -90,6 +109,10 @@
   box-shadow: 0 2px 8px 0 rgba(0,0,0,0.08);
 }
 .newsletter-input-ref {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
   padding: 10px 14px;
   border-radius: 6px;
   border: 1px solid #444;

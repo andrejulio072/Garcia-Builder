@@ -27,7 +27,7 @@ class AdminDashboard {
         // Simple auth check
         const authData = localStorage.getItem('gb_currentUser');
         if (!authData) {
-            window.location.href = 'login.html';
+            window.location.href = '../auth/login.html';
             return false;
         }
 
@@ -40,7 +40,7 @@ class AdminDashboard {
             }
             return true;
         } catch (error) {
-            window.location.href = 'login.html';
+            window.location.href = '../auth/login.html';
             return false;
         }
     }

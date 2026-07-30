@@ -274,6 +274,8 @@ body.blog-article-page {
   color: #f6c84e;
   text-decoration: underline;
   text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .blog-step-grid,

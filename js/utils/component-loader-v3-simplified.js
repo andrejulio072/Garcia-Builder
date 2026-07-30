@@ -246,8 +246,8 @@ const INLINE_FALLBACKS = {
     <div class="container">
         <div class="gb-navbar-content">
             <a href="#" class="gb-logo-section" aria-label="Garcia Builder Home" data-gb-nav="index.html">
-             <img src="Logo Files/For Web/logo-nobackground-500.png"
-                 data-gb-logo-src="Logo Files/For Web/logo-nobackground-500.png"
+             <img src="/assets/images/logo-nobackground-500.png"
+                 data-gb-logo-src="/assets/images/logo-nobackground-500.png"
                      alt="Garcia Builder Logo"
                      class="gb-logo-img"
                      loading="eager"
@@ -390,7 +390,7 @@ const INLINE_FALLBACKS = {
         <div class="gb-footer-col gb-footer-newsletter">
             <span class="footer-title footer-title-ref">Newsletter</span>
             <form class="newsletter-form newsletter-form-ref" id="footer-newsletter" action="/api/newsletter" method="post" data-source="Footer Newsletter" aria-label="Footer newsletter signup">
-                <input type="email" class="newsletter-input-ref" id="footer-newsletter-email-fallback" name="email" placeholder="Email address" required autocomplete="email" />
+                <input type="email" class="newsletter-input-ref" id="footer-newsletter-email-fallback" name="email" placeholder="Email address" aria-label="Email address" required autocomplete="email" />
                 <label class="newsletter-checkbox-ref" for="footer-newsletter-consent-fallback">
                     <input type="checkbox" id="footer-newsletter-consent-fallback" name="consent" value="yes" required /> I would like to receive updates and tips from Garcia Builder.
                 </label>

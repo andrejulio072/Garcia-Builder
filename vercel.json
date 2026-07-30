@@ -115,14 +115,13 @@
       "source": "/privacy-policy.html",
       "destination": "/privacy-policy",
       "permanent": true
-    },
-    {
-      "source": "/go/card",
-      "destination": "/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment",
-      "permanent": false
     }
   ],
   "rewrites": [
+    {
+      "source": "/go/card",
+      "destination": "/go/card/index.html"
+    },
     {
       "source": "/assessment",
       "destination": "/assessment.html"

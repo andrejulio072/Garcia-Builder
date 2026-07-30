@@ -267,7 +267,7 @@ const starterResultHandler = require('../lib/starter-assessment/result-handler.c
 const starterEventHandler = require('../lib/starter-assessment/event-handler.cjs');
 
 app.get('/go/card', (req, res) => {
-    res.redirect(302, '/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment');
+    res.sendFile(path.join(__dirname, '..', 'go', 'card', 'index.html'));
 });
 
 app.get('/start', (req, res) => {

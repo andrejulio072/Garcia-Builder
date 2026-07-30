@@ -3676,6 +3676,184 @@ body.result-page::before {
   }
 }
 
+/* Mobile-first QR card experience */
+.starter-page-card .starter-header,
+.starter-page-card .starter-shell,
+.starter-page-card .starter-page-return {
+  width: min(100% - 24px, 600px);
+}
+
+.starter-page-card .starter-header {
+  min-height: 78px;
+  padding: 9px 0 5px;
+}
+
+.starter-page-card .starter-logo img {
+  width: 76px;
+}
+
+.starter-page-card .starter-shell {
+  min-height: 0;
+  padding: 7px 0 36px;
+}
+
+.starter-page-card .starter-hero-premium,
+.starter-page-card .assessment-card-premium {
+  border-radius: 14px;
+  padding: 20px 18px;
+}
+
+.starter-page-card .starter-hero-grid,
+.starter-page-card .starter-signal-row,
+.starter-page-card .starter-process-block .starter-signal-row,
+.starter-page-card .starter-transform-grid,
+.starter-page-card .starter-client-voices-grid,
+.starter-page-card .starter-trust-strip,
+.starter-page-card .field-grid-premium {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.starter-page-card .starter-hero-grid {
+  gap: 26px;
+}
+
+.starter-page-card .starter-hero h1 {
+  font-size: 2.2rem;
+  line-height: 1.03;
+}
+
+.starter-page-card .starter-copy {
+  margin-top: 18px;
+  font-size: 0.96rem;
+  line-height: 1.58;
+}
+
+.starter-page-card .starter-actions {
+  margin-top: 22px;
+}
+
+.starter-page-card .starter-cta-cluster {
+  display: grid;
+  width: 100%;
+  gap: 7px;
+  padding: 6px;
+  border-radius: 10px;
+}
+
+.starter-page-card .starter-primary {
+  width: 100%;
+  min-width: 0;
+  min-height: 52px;
+  padding: 13px 16px;
+  font-size: 0.94rem;
+}
+
+.starter-page-card .starter-cta-meta {
+  display: grid;
+  justify-content: start;
+  gap: 4px;
+  margin: 8px 8px 4px;
+  text-align: left;
+}
+
+.starter-page-card .starter-proof-hero {
+  display: grid;
+  gap: 4px;
+  margin-top: 13px;
+}
+
+.starter-page-card .starter-proof li {
+  padding: 5px 2px;
+  font-size: 0.76rem;
+}
+
+.starter-page-card .coach-photo-frame {
+  height: 255px;
+}
+
+.starter-page-card .coach-authority-card {
+  display: block;
+}
+
+.coach-direct-actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.coach-direct-action {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+  align-items: center;
+  gap: 9px;
+  min-height: 50px;
+  border: 1px solid var(--gb-border);
+  border-radius: 8px;
+  padding: 9px 11px;
+  background: #151a20;
+  color: var(--gb-text-primary);
+  text-decoration: none;
+}
+
+.coach-direct-action:hover,
+.coach-direct-action:focus-visible {
+  background: #1b2128;
+  color: var(--gb-text-primary);
+}
+
+.coach-direct-action:focus-visible {
+  outline: 3px solid var(--starter-focus);
+  outline-offset: 2px;
+}
+
+.coach-direct-action strong {
+  font-size: 0.75rem;
+}
+
+.coach-direct-action span {
+  min-width: 0;
+  margin: 0;
+  color: var(--gb-text-secondary);
+  font-size: 0.74rem;
+  overflow-wrap: anywhere;
+}
+
+.coach-direct-action--whatsapp {
+  border-color: rgba(37, 211, 102, 0.68);
+}
+
+.coach-direct-action--whatsapp strong {
+  color: #72ec9f;
+}
+
+.coach-direct-action--instagram {
+  border-color: rgba(255, 122, 151, 0.68);
+}
+
+.coach-direct-action--instagram strong {
+  color: #ffb0c2;
+}
+
+.starter-page-card .starter-trust-strip,
+.starter-page-card .starter-client-voice {
+  min-height: 0;
+}
+
+@media (max-width: 360px) {
+  .starter-page-card .starter-hero h1 {
+    font-size: 2rem;
+  }
+
+  .starter-page-card .starter-language > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
 /* 20. Accessibility and motion preferences */
 @media (forced-colors: active) {
   .starter-primary,

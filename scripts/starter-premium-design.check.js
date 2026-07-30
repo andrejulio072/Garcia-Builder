@@ -7,6 +7,7 @@ const ROOT = path.join(__dirname, '..');
 const read = (file) => fs.readFileSync(path.join(ROOT, file), 'utf8');
 
 const assessment = read('assessment.html');
+const card = read('go/card/index.html');
 const start = read('start.html');
 const result = read('start-result.html');
 const css = read('css/starter-assessment.css');
@@ -14,6 +15,7 @@ const client = read('js/starter-assessment.js');
 const resultClient = read('js/starter-result.js');
 const locales = read('js/starter-locales.js');
 const expandedLocales = require(path.join(ROOT, 'js', 'starter-locales-expanded.js'));
+const starterI18n = require(path.join(ROOT, 'js', 'starter-locales.js'));
 const server = read('api/stripe-server-premium.js');
 const vercel = read('vercel.json');
 
@@ -206,5 +208,12 @@ assert(start.includes('data-start-assessment'), '/start assessment entry must re
 assert(start.includes('/packages.html?utm_source=business_card'), '/start package shortcut must remain available');
 assert(server.includes("app.get('/start'"), 'Server /start route must remain available');
 assert(vercel.includes('"source": "/go/card"'), 'Vercel /go/card route must remain available');
+assert(card.includes('starter-page-card'), 'QR card route must keep its mobile-first page mode');
+assert(card.includes('data-starter-copy="followInstagram"'), 'QR card coach bio must include the localized Instagram action');
+assert.equal((card.match(/data-qr-contact="whatsapp"/g) || []).length, 1, 'QR card must include exactly one direct WhatsApp action');
+assert.equal((card.match(/<option value="/g) || []).length, 10, 'QR card must expose all ten supported language options');
+for (const language of assessmentLanguages) {
+  assert(starterI18n.ui('followInstagram', language), `${language} Instagram follow translation is missing`);
+}
 
 console.log('starter-premium-design.check.js: ok');

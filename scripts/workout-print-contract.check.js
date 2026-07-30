@@ -71,6 +71,26 @@ assert(
   assert(workoutsCss.includes(text), `Workout print CSS should include ${text}`);
 });
 
+[
+  'const buildWorkoutPrintUrl = (workoutSlug) =>',
+  'const setupWorkoutPrintView = (modal, title) =>',
+  "params.set('print', '1')",
+  'workout-print-toolbar',
+  'workout-print-now',
+  'window.print()',
+  'Print / save PDF',
+  'workout-action-primary',
+  'workout-action-whatsapp',
+  'workout-action-print'
+].forEach((text) => {
+  assert(workoutsJs.includes(text), `Workout print controls should include ${text}`);
+});
+
+assert(
+  workoutsJs.includes('printLink.href = buildWorkoutPrintUrl(workoutSlug)'),
+  'Print action should open the prepared print route'
+);
+
 console.log(
   `Workout print contract passed: ${cardTitles.length} branded printable plans ` +
   `(${cardTitles.length - fallbackCoveredPlans.length} bespoke, ${fallbackCoveredPlans.length} structured fallback).`

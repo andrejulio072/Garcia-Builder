@@ -798,17 +798,255 @@
 .workout-modal-footer {
   border-top: 1px solid rgba(255, 255, 255, .1);
   border-bottom: 0;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(250px, 1.08fr) minmax(360px, 1fr) auto;
+  align-items: stretch;
+  background: #080e18;
+}
+
+.workout-action {
+  display: flex;
+  min-width: 0;
+  min-height: 60px;
+  align-items: center;
   justify-content: flex-start;
-  background: rgba(6, 11, 20, .78);
+  gap: 12px;
+  border: 1px solid #34435d;
+  border-radius: 8px;
+  padding: 11px 14px;
+  background: #171f2d;
+  color: #f7f9ff;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
 }
 
-.workout-modal-footer .btn {
-  min-height: 42px;
+.workout-action:hover,
+.workout-action:focus-visible {
+  transform: translateY(-2px);
+  border-color: #5d7397;
+  background: #202b3c;
+  color: #fff;
 }
 
-.workout-modal-footer [data-workout-close] {
-  margin-left: auto;
+.workout-action:focus-visible,
+.workout-action-close:focus-visible {
+  outline: 3px solid #8bd3ff;
+  outline-offset: 2px;
+}
+
+.workout-action-primary {
+  justify-content: space-between;
+  border-color: #f6c84e;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .28), transparent 38%),
+    linear-gradient(120deg, #ffe59a, #f6c84e 48%, #e4a82a);
+  color: #11130f;
+  box-shadow: 0 12px 32px rgba(246, 200, 78, .18), inset 0 1px 0 rgba(255, 255, 255, .42);
+}
+
+.workout-action-primary:hover,
+.workout-action-primary:focus-visible {
+  border-color: #ffe18a;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .34), transparent 40%),
+    linear-gradient(120deg, #fff0b4, #f6c84e 48%, #edae29);
+  color: #11130f;
+  box-shadow: 0 16px 38px rgba(246, 200, 78, .27), inset 0 1px 0 rgba(255, 255, 255, .5);
+}
+
+.workout-action-secondary {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.workout-action-whatsapp {
+  border-color: rgba(37, 211, 102, .68);
+}
+
+.workout-action-whatsapp .workout-action-icon {
+  color: #72ec9f;
+}
+
+.workout-action-print .workout-action-icon {
+  color: #8bd3ff;
+}
+
+.workout-action-copy {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.workout-action-copy strong {
+  color: inherit;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.workout-action-copy small {
+  color: #bac6d9;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.workout-action-primary .workout-action-copy small {
+  color: #3f351e;
+}
+
+.workout-action-icon {
+  width: 21px;
+  height: 21px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.workout-action-primary .workout-action-icon {
+  transition: transform .18s ease;
+}
+
+.workout-action-primary:hover .workout-action-icon {
+  transform: translateX(4px);
+}
+
+.workout-action:disabled {
+  cursor: wait;
+  opacity: .68;
+  transform: none;
+}
+
+.workout-action-close {
+  display: inline-flex;
+  min-height: 60px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 13px;
+  background: transparent;
+  color: #c6d0df;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.workout-action-close:hover {
+  background: rgba(255, 255, 255, .07);
+  color: #fff;
+}
+
+.workout-action-close .workout-action-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.workout-print-toolbar {
+  display: none;
+}
+
+body.workout-print-view {
+  min-height: 100%;
+  overflow: visible !important;
+  background: #080e18;
+}
+
+body.workout-print-view > *:not(.workout-modal):not(.workout-print-toolbar) {
+  display: none !important;
+}
+
+body.workout-print-view .workout-print-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2100;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(246, 200, 78, .34);
+  padding: 12px clamp(14px, 3vw, 24px);
+  background: #0c1421;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .3);
+}
+
+.workout-print-toolbar > div {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.workout-print-toolbar strong {
+  color: #fff;
+  font-size: 15px;
+}
+
+.workout-print-toolbar span {
+  color: #bfcadc;
+  font-size: 12px;
+}
+
+.workout-print-toolbar-button,
+.workout-print-toolbar-close {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.workout-print-toolbar-button {
+  border: 1px solid #f6c84e;
+  padding: 9px 15px;
+  background: #f6c84e;
+  color: #11130f;
+}
+
+.workout-print-toolbar-close {
+  width: 44px;
+  border: 1px solid #34435d;
+  background: #171f2d;
+  color: #fff;
+}
+
+body.workout-print-view .workout-modal,
+body.workout-print-view .workout-modal-panel,
+body.workout-print-view .workout-modal-body {
+  position: static;
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  overflow: visible;
+}
+
+body.workout-print-view .workout-modal {
+  display: block;
+  padding: 0;
+}
+
+body.workout-print-view .workout-modal-panel {
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+body.workout-print-view .workout-modal-backdrop,
+body.workout-print-view .workout-modal-close,
+body.workout-print-view .workout-modal-footer {
+  display: none !important;
 }
 
 .workout-modal-kicker {
@@ -923,6 +1161,14 @@
   .workout-modal-backdrop,
   .workout-modal-header .workout-modal-close,
   .workout-modal-footer {
+    display: none !important;
+  }
+
+  body.workout-print-document > *:not(.workout-modal) {
+    display: none !important;
+  }
+
+  .workout-print-toolbar {
     display: none !important;
   }
 
@@ -1405,17 +1651,55 @@
 
   .workout-modal-footer {
     display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
     align-items: stretch;
-    padding: 18px;
+    padding: 14px 16px calc(16px + env(safe-area-inset-bottom));
   }
 
-  .workout-modal-footer .btn {
+  .workout-action,
+  .workout-action-close {
     width: 100%;
-    justify-content: center;
   }
 
-  .workout-modal-footer [data-workout-close] {
-    margin-left: 0;
+  .workout-action {
+    min-height: 62px;
+    padding: 11px 13px;
+  }
+
+  .workout-action-secondary {
+    grid-template-columns: 1fr;
+  }
+
+  .workout-action-close {
+    min-height: 44px;
+  }
+
+  .workout-action-copy strong {
+    font-size: 15px;
+  }
+
+  .workout-action-copy small {
+    font-size: 12px;
+  }
+
+  body.workout-print-view .workout-print-toolbar {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .workout-print-toolbar > div span {
+    display: none;
+  }
+
+  .workout-print-toolbar-button {
+    padding: 8px 11px;
+  }
+
+  .workout-print-toolbar-button span {
+    color: #11130f;
+    font-size: 13px;
   }
 
   .session-block {

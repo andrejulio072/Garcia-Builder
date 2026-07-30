@@ -1977,6 +1977,66 @@
     });
   };
 
+  const workoutActionIcon = (name) => {
+    const paths = {
+      arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+      message: '<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/><path d="M8 9h8M8 13h5"/>',
+      printer: '<path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/>',
+      close: '<path d="M18 6 6 18M6 6l12 12"/>'
+    };
+    return `<svg class="workout-action-icon" viewBox="0 0 24 24" aria-hidden="true">${paths[name] || ''}</svg>`;
+  };
+
+  const buildWorkoutPrintUrl = (workoutSlug) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set('print', '1');
+    const query = params.toString();
+    return `${window.location.pathname}${query ? `?${query}` : ''}#${workoutSlug}`;
+  };
+
+  const setupWorkoutPrintView = (modal, title) => {
+    if (new URLSearchParams(window.location.search).get('print') !== '1') return;
+
+    document.body.classList.add('workout-print-view');
+    document.body.style.overflow = '';
+    document.title = `${title} | Printable Workout Plan`;
+    modal.setAttribute('aria-modal', 'false');
+
+    if (!document.getElementById('workout-print-toolbar')) {
+      document.body.insertAdjacentHTML('afterbegin', `
+        <div class="workout-print-toolbar" id="workout-print-toolbar" role="region" aria-label="Print controls">
+          <div>
+            <strong>Print-ready workout plan</strong>
+            <span>Choose Save as PDF in your phone or browser print options.</span>
+          </div>
+          <button type="button" class="workout-print-toolbar-button" id="workout-print-now">
+            ${workoutActionIcon('printer')}
+            <span>Print now</span>
+          </button>
+          <button type="button" class="workout-print-toolbar-close" id="workout-print-close" aria-label="Close print view">
+            ${workoutActionIcon('close')}
+          </button>
+        </div>
+      `);
+
+      document.getElementById('workout-print-now')?.addEventListener('click', () => window.print());
+      document.getElementById('workout-print-close')?.addEventListener('click', () => {
+        if (window.opener) {
+          window.close();
+          return;
+        }
+        window.history.back();
+      });
+    }
+
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'auto' }));
+    window.setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      window.print();
+      window.setTimeout(() => window.scrollTo({ top: 0, behavior: 'auto' }), 250);
+    }, 700);
+  };
+
   const ensureWorkoutModal = () => {
     let modal = document.getElementById('workout-modal');
     if (modal) return modal;
@@ -1995,11 +2055,25 @@
             <button type="button" class="workout-modal-close" data-workout-close aria-label="Close workout template">&times;</button>
           </header>
           <div class="workout-modal-body" id="workout-modal-body"></div>
-          <footer class="workout-modal-footer">
-            <a class="btn btn-gold" id="customize-workout-plan" href="start.html?utm_source=workouts&amp;utm_medium=template&amp;utm_campaign=workout_library&amp;utm_content=modal">Get tailored version</a>
-            <a class="btn" id="message-workout-plan" href="https://wa.me/447508497586?text=Hi%20Andre%2C%20I%20viewed%20a%20workout%20template%20and%20would%20like%20help%20adapting%20it." target="_blank" rel="noopener">Message Andre</a>
-            <button type="button" class="btn" id="print-workout-plan">Print plan</button>
-            <button type="button" class="btn" data-workout-close>Close plan</button>
+          <footer class="workout-modal-footer" aria-label="Workout plan actions">
+            <a class="workout-action workout-action-primary" id="customize-workout-plan" href="start.html?utm_source=workouts&amp;utm_medium=template&amp;utm_campaign=workout_library&amp;utm_content=modal">
+              <span class="workout-action-copy"><strong>Get tailored version</strong><small>Free personalised assessment</small></span>
+              ${workoutActionIcon('arrow')}
+            </a>
+            <div class="workout-action-secondary">
+              <a class="workout-action workout-action-whatsapp" id="message-workout-plan" href="https://wa.me/447508497586?text=Hi%20Andre%2C%20I%20viewed%20a%20workout%20template%20and%20would%20like%20help%20adapting%20it." target="_blank" rel="noopener">
+                ${workoutActionIcon('message')}
+                <span class="workout-action-copy"><strong>Message Andre</strong><small>Chat on WhatsApp</small></span>
+              </a>
+              <a class="workout-action workout-action-print" id="print-workout-plan" href="workouts.html?print=1" target="_blank" rel="noopener">
+                ${workoutActionIcon('printer')}
+                <span class="workout-action-copy"><strong>Print / save PDF</strong><small>Open a clean printable view</small></span>
+              </a>
+            </div>
+            <button type="button" class="workout-action-close" data-workout-close>
+              ${workoutActionIcon('close')}
+              <span>Close plan</span>
+            </button>
           </footer>
         </div>
       </div>
@@ -2009,7 +2083,6 @@
     modal.querySelectorAll('[data-workout-close]').forEach((control) => {
       control.addEventListener('click', () => closeWorkoutModal());
     });
-    modal.querySelector('#print-workout-plan')?.addEventListener('click', () => window.print());
     return modal;
   };
 
@@ -2050,6 +2123,7 @@
     modal.dataset.activeWorkoutSlug = workoutSlug;
     const assessmentLink = document.getElementById('customize-workout-plan');
     const whatsappLink = document.getElementById('message-workout-plan');
+    const printLink = document.getElementById('print-workout-plan');
     if (assessmentLink) {
       assessmentLink.href = buildAssessmentUrl(card, title);
       assessmentLink.setAttribute('aria-label', `Get a tailored version of ${title}`);
@@ -2058,6 +2132,10 @@
       whatsappLink.href = buildWorkoutWhatsappUrl(title);
       whatsappLink.setAttribute('aria-label', `Message Andre about ${title}`);
     }
+    if (printLink) {
+      printLink.href = buildWorkoutPrintUrl(workoutSlug);
+      printLink.setAttribute('aria-label', `Open printable version of ${title}`);
+    }
 
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -2065,6 +2143,7 @@
       window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}#${workoutSlug}`);
     }
     cards.forEach((item) => item.classList.toggle('is-direct-target', item === card));
+    setupWorkoutPrintView(modal, title);
     modal.querySelector('.workout-modal-close')?.focus();
   };
 
@@ -2283,7 +2362,9 @@
     if (!card) return false;
     card.hidden = false;
     card.classList.add('is-visible');
-    card.scrollIntoView({ behavior: 'auto', block: 'center' });
+    if (new URLSearchParams(window.location.search).get('print') !== '1') {
+      card.scrollIntoView({ behavior: 'auto', block: 'center' });
+    }
     openWorkoutModal(card, { syncHash: false });
     return true;
   };

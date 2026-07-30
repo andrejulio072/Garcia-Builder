@@ -275,6 +275,7 @@ const starterClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-
 const starterContext = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-context.js'), 'utf8');
 const starterPage = fs.readFileSync(path.join(__dirname, '..', 'start.html'), 'utf8');
 const paidAssessmentPage = fs.readFileSync(path.join(__dirname, '..', 'assessment.html'), 'utf8');
+const cardAssessmentPage = fs.readFileSync(path.join(__dirname, '..', 'go', 'card', 'index.html'), 'utf8');
 const homepage = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 const starterContactPage = fs.readFileSync(path.join(__dirname, '..', 'start-contact.html'), 'utf8');
 const resultClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-result.js'), 'utf8');
@@ -295,6 +296,7 @@ assert(
   'Starter assessment handlers must stay outside api/ and mount through stripe-server-premium.js'
 );
 [
+  "app.get('/go/card'",
   "app.get('/assessment'",
   "app.get('/start'",
   "app.get('/start/contact'",
@@ -334,7 +336,16 @@ assert(homepage.includes('class="homepage-assessment-shortcut__link"'), 'Homepag
 assert(homepage.includes('utm_content=homepage_footer_assessment'), 'Homepage footer assessment shortcut should preserve its own attribution');
 assert(paidAssessmentPage.includes('/cookie-policy'), 'Paid assessment page should expose cookie policy link');
 assert(paidAssessmentPage.includes('data-open-cookie-preferences'), 'Paid assessment page should expose cookie preferences action');
+assert(cardAssessmentPage.includes('class="starter-page starter-page-paid starter-page-card"'), 'QR card page should use the mobile assessment structure');
+assert(cardAssessmentPage.includes('data-starter-entry-default="qr"'), 'QR card page should use QR attribution');
+assert.equal((cardAssessmentPage.match(/data-qr-contact="whatsapp"/g) || []).length, 1, 'QR card page should include one coach WhatsApp action');
+assert.equal((cardAssessmentPage.match(/https:\/\/wa\.me\/447508497586/g) || []).length, 1, 'QR card page should not duplicate the coach WhatsApp link');
+assert.equal((cardAssessmentPage.match(/data-qr-contact="instagram"/g) || []).length, 1, 'QR card page should include one coach Instagram action');
+assert(cardAssessmentPage.includes('name="instagram_handle"'), 'QR card form should keep the optional social profile field');
+assert(cardAssessmentPage.includes('name="whatsapp"'), 'QR card form should keep the optional WhatsApp field');
+assert.equal((cardAssessmentPage.match(/<option value="/g) || []).length, 10, 'QR card page should expose all ten assessment languages');
 assert(vercelConfig.includes('"source": "/assessment"'), 'Vercel should rewrite /assessment to paid landing page');
+assert(vercelConfig.includes('"destination": "/go/card/index.html"'), 'Vercel should serve the dedicated QR card page');
 assert(vercelConfig.includes('"source": "/start/contact"'), 'Vercel should rewrite /start/contact to the QR contact page');
 assert(vercelConfig.includes('"destination": "/start-contact.html"'), 'Vercel should serve start-contact.html for /start/contact');
 assert(starterContactPage.includes('https://wa.me/447508497586'), 'QR contact page should include Andre WhatsApp');

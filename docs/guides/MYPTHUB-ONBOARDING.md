@@ -45,7 +45,7 @@ If SMTP isnâ€™t fully configured, the email step is skipped safely.
 
 1. Add the meta tag on the success page or pricing page with your invite URL.
 2. Run the backend and complete a test payment (Stripe test mode):
-   - Server: `npm start` (Render/production uses your existing deploy)
+   - Server: `npm start` (Vercel production uses the existing project deployment)
 3. After paying, confirm on the success page:
    - The My PT Hub CTA appears and opens your invite URL
 4. Check your email (to the customer address used):

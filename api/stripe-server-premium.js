@@ -465,7 +465,7 @@ app.get('/health', (req, res) => {
         memory: process.memoryUsage()
     };
 
-    // Sempre retornar 200 para manter o serviÃ§o saudÃ¡vel no Render; refletir readiness em payload
+    // Keep the Vercel health endpoint available while reporting integration readiness in the payload.
     res.status(200).json(healthStatus);
 });
 

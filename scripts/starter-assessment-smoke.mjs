@@ -31,7 +31,10 @@ const answers = {
 
 const piiLeakKeys = [
   'first_name',
+  'last_name',
   'email',
+  'phone',
+  'instagram',
   'whatsapp',
   'marketing_email_consent',
   'marketing_whatsapp_consent',
@@ -116,10 +119,13 @@ async function waitForLeadEmailTimestamp(supabase, tokenHash) {
 function verifyLeadRow(lead, expected) {
   assert(lead, 'Supabase lead row was not found');
   assert(lead.first_name, 'Lead first_name missing');
+  assert.equal(lead.last_name, expected.lastName, 'Lead last_name mismatch');
   assert.equal(lead.email, expected.email.toLowerCase(), 'Lead email mismatch');
+  assert.equal(lead.phone, expected.phone, 'Lead phone mismatch');
+  assert.equal(lead.instagram, expected.instagram || null, 'Lead Instagram mismatch');
   assert.equal(lead.country, null, 'Legacy country field should remain empty');
   assert.equal(lead.language, expected.language, 'Lead language mismatch');
-  assert.equal(lead.whatsapp, expected.whatsapp || null, 'Lead WhatsApp mismatch');
+  assert.equal(lead.whatsapp, expected.phone, 'Legacy WhatsApp column should mirror phone');
   for (const id of QUESTION_IDS) assert.equal(lead[id], answers[id], `Lead answer missing or incorrect: ${id}`);
   for (const field of ['recommended_path', 'recommended_workout', 'recommended_nutrition', 'recommended_resource', 'lead_score', 'lead_status']) {
     assert(lead[field] !== null && lead[field] !== undefined && lead[field] !== '', `Lead ${field} missing`);
@@ -168,7 +174,9 @@ async function main() {
   const baseUrl = cleanBaseUrl(requiredEnv('STARTER_ASSESSMENT_BASE_URL'));
   const email = requiredEnv('STARTER_ASSESSMENT_TEST_EMAIL').toLowerCase();
   const firstName = optionalEnv('STARTER_ASSESSMENT_TEST_FIRST_NAME') || 'Assessment Smoke';
-  const whatsapp = optionalEnv('STARTER_ASSESSMENT_TEST_WHATSAPP') || '';
+  const lastName = optionalEnv('STARTER_ASSESSMENT_TEST_LAST_NAME') || 'Test';
+  const phone = optionalEnv('STARTER_ASSESSMENT_TEST_PHONE') || optionalEnv('STARTER_ASSESSMENT_TEST_WHATSAPP') || '+353871234567';
+  const instagram = optionalEnv('STARTER_ASSESSMENT_TEST_INSTAGRAM') || '';
   const language = optionalEnv('STARTER_ASSESSMENT_TEST_LANGUAGE') || 'en';
   assert(['en', 'pt', 'es'].includes(language), 'STARTER_ASSESSMENT_TEST_LANGUAGE must be en, pt or es');
   const supabaseUrl = requiredEnv('SUPABASE_URL');
@@ -177,11 +185,13 @@ async function main() {
 
   const add = (check, result, evidence) => report.push({ check, result, evidence });
 
-  const redirect = await fetch(`${baseUrl}/go/card`, { redirect: 'manual' });
-  assert([302, 307].includes(redirect.status), `/go/card returned ${redirect.status}, expected 302 or 307`);
-  const location = redirect.headers.get('location') || '';
-  assert(location.includes('/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment'), 'QR redirect lost expected UTM values');
-  add('QR redirect', 'PASS', `${redirect.status} -> ${location}`);
+  const cardUrl = `${baseUrl}/go/card`;
+  const card = await fetchText(cardUrl);
+  assert.equal(card.response.status, 200, '/go/card did not return HTTP 200');
+  assert(card.text.includes('Business Card Fitness Assessment') && card.text.includes('data-start-assessment'), 'QR card page assessment markup missing');
+  assert(card.text.includes("utm_source: 'business_card'") && card.text.includes("utm_medium: 'qr'"), 'QR card page attribution defaults missing');
+  assertNoTurnstile(card.text, 'QR card page');
+  add('QR card page', 'PASS', 'HTTP 200, assessment markup present, attribution defaults present, no challenge markup');
 
   const startUrl = `${baseUrl}/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment`;
   const start = await fetchText(startUrl);
@@ -206,8 +216,10 @@ async function main() {
     website: '',
     contact: {
       first_name: firstName,
+      last_name: lastName,
       email,
-      whatsapp,
+      phone,
+      instagram,
       age_confirmed: true,
       resource_delivery_acknowledgement: true,
       marketing_email_consent: true,
@@ -237,13 +249,13 @@ async function main() {
   assert(submitPayload.resultToken, 'Submit resultToken missing');
   assert(submitPayload.resultUrl, 'Submit resultUrl missing');
   assert(submitPayload.recommendation, 'Submit recommendation missing');
-  assertNoSensitiveUrlValues(submitPayload.resultUrl, [email, whatsapp, firstName], 'Result URL');
+  assertNoSensitiveUrlValues(submitPayload.resultUrl, [email, phone, firstName, lastName, instagram], 'Result URL');
   add('Submission API', 'PASS', 'HTTP 200 with token, result URL and recommendation');
 
   const tokenHash = hashResultToken(submitPayload.resultToken);
   const supabase = createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } });
   const lead = await waitForLeadEmailTimestamp(supabase, tokenHash);
-  verifyLeadRow(lead, { email, language, whatsapp: whatsapp || null, resultToken: submitPayload.resultToken });
+  verifyLeadRow(lead, { email, language, firstName, lastName, phone, instagram: instagram || null, resultToken: submitPayload.resultToken });
   add('Supabase lead storage', 'PASS', `Lead stored for ${maskEmail(email)} with all answers, consent and UTM fields`);
 
   const resultPage = await fetchText(submitPayload.resultUrl);
@@ -254,7 +266,7 @@ async function main() {
   const resultApi = await fetch(resultApiUrl, { headers: { origin: baseUrl } });
   const resultPayload = await resultApi.json().catch(() => ({}));
   assert.equal(resultApi.status, 200, `Result API returned HTTP ${resultApi.status}`);
-  verifyPublicResult(resultPayload, [email, whatsapp, firstName]);
+  verifyPublicResult(resultPayload, [email, phone, firstName, lastName, instagram]);
   add('Public result API', 'PASS', 'HTTP 200, recommendation present, no PII/internal fields');
 
   const resources = resultPayload.recommendation.resources || [];
@@ -284,7 +296,7 @@ async function main() {
   for (const [key, expected] of Object.entries(contactExpectations)) {
     if (expected) assert(resultPayload.actions?.[key], `Configured contact action missing: ${key}`);
     if (resultPayload.actions?.[key]) {
-      assertNoSensitiveUrlValues(resultPayload.actions[key], [email, whatsapp, firstName, submitPayload.resultToken], key);
+      assertNoSensitiveUrlValues(resultPayload.actions[key], [email, phone, firstName, lastName, instagram, submitPayload.resultToken], key);
       assert(!/example\.com|placeholder|your-/i.test(resultPayload.actions[key]), `${key} contains placeholder content`);
     }
   }

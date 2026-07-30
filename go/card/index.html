@@ -3,15 +3,171 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Redirecting | Garcia Builder Fitness</title>
+  <title>Business Card Fitness Assessment | Garcia Builder Fitness</title>
+  <meta name="description" content="Start the free Garcia Builder Fitness assessment from Andre Garcia's business card QR code.">
   <meta name="robots" content="noindex, follow">
-  <meta http-equiv="refresh" content="0; url=/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment">
-  <script>window.location.replace('/start.html?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment');</script>
-  <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#07090c;color:#fff8e7;font-family:Arial,sans-serif}a{color:#f6c84e}</style>
+  <link rel="canonical" href="https://www.garciabuilder.fitness/assessment">
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const defaults = { utm_source: 'business_card', utm_medium: 'qr', utm_campaign: 'starter_assessment' };
+      let changed = false;
+      Object.entries(defaults).forEach(([key, value]) => {
+        if (!params.get(key)) {
+          params.set(key, value);
+          changed = true;
+        }
+      });
+      if (changed) window.history.replaceState(null, '', `${window.location.pathname}?${params.toString()}${window.location.hash}`);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/starter-assessment.css?v=20260729-card-mobile">
+  <script src="/js/starter-tracking-bootstrap.js?v=20260720-result-links"></script>
+  <script src="/js/env.js" defer></script>
+  <script src="/js/starter-card-locales.js?v=20260729-card-mobile" defer></script>
+  <script src="/js/starter-locales.js?v=20260729-card-mobile" defer></script>
+  <script src="/js/starter-assessment.js?v=20260729-card-mobile" defer></script>
 </head>
-<body>
-  <main>
-    <p>Redirecting to <a href="/start.html?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment">the starter assessment</a>.</p>
+<body class="starter-page starter-page-paid starter-page-card">
+  <a class="skip-link" href="#assessment-root" data-starter-copy="skipAssessment">Skip to assessment</a>
+  <header class="starter-header" aria-label="Assessment header">
+    <span class="starter-logo" aria-label="Garcia Builder Fitness branding">
+      <img src="/assets/images/logo-nobackground-500.png" alt="Garcia Builder Fitness" width="148" height="56">
+    </span>
+    <details class="starter-language-menu" data-language-menu>
+      <summary aria-label="Choose assessment language">
+        <span class="starter-language-menu__label" data-starter-copy="languageLabel">Language</span>
+        <strong data-language-current>EN</strong>
+        <span class="starter-language-menu__chevron" aria-hidden="true">⌄</span>
+      </summary>
+      <div class="starter-language-menu__panel" role="group" aria-label="Assessment language">
+        <button type="button" value="en" data-starter-language-option aria-pressed="true"><strong>EN</strong><span>English</span></button>
+        <button type="button" value="pt" data-starter-language-option aria-pressed="false"><strong>PT</strong><span>Português</span></button>
+        <button type="button" value="es" data-starter-language-option aria-pressed="false"><strong>ES</strong><span>Español</span></button>
+        <button type="button" value="fr" data-starter-language-option aria-pressed="false"><strong>FR</strong><span>Français</span></button>
+        <button type="button" value="it" data-starter-language-option aria-pressed="false"><strong>IT</strong><span>Italiano</span></button>
+        <button type="button" value="de" data-starter-language-option aria-pressed="false"><strong>DE</strong><span>Deutsch</span></button>
+        <button type="button" value="pl" data-starter-language-option aria-pressed="false"><strong>PL</strong><span>Polski</span></button>
+        <button type="button" value="ro" data-starter-language-option aria-pressed="false"><strong>RO</strong><span>Română</span></button>
+        <button type="button" value="ar" data-starter-language-option aria-pressed="false"><strong>AR</strong><span>العربية</span></button>
+        <button type="button" value="ru" data-starter-language-option aria-pressed="false"><strong>RU</strong><span>Русский</span></button>
+      </div>
+    </details>
+  </header>
+
+  <main class="starter-shell" id="assessment-root">
+    <section class="starter-hero starter-hero-premium" id="starter-hero" aria-labelledby="starter-title">
+      <div class="starter-ambient starter-ambient-gold" aria-hidden="true"></div>
+      <div class="starter-ambient starter-ambient-cool" aria-hidden="true"></div>
+      <div class="starter-hero-grid">
+        <div class="starter-hero-copy-block">
+          <p class="starter-eyebrow" data-starter-copy="cardEyebrow">FREE PERSONALISED FITNESS STARTER PLAN</p>
+          <h1 id="starter-title"><span data-starter-copy="cardTitleLead">Get Your Free Personalised</span><span class="starter-title-accent" data-starter-copy="cardTitleAccent">Fat-Loss Starter Plan</span></h1>
+          <p class="starter-copy" data-starter-copy="cardHeroCopy">Answer seven quick questions and get a tailored training and nutrition starting point, plus the 28 Day Fat Loss Kickstart. Your plan is shown instantly and sent by email.</p>
+          <div class="starter-actions starter-actions-paid">
+            <div class="starter-cta-cluster">
+              <button class="starter-primary starter-primary-arrow" type="button" data-start-assessment><span data-starter-copy="cardPrimaryCta">Get My Free Plan</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+              <p class="starter-cta-meta"><span data-starter-copy="cardMetaPersonalised">Free today. Personalised to your answers.</span><span data-starter-copy="cardMetaTime">Takes about 60-90 seconds.</span></p>
+            </div>
+          </div>
+          <ul class="starter-proof starter-proof-hero" aria-label="Assessment benefits">
+            <li data-starter-copy="cardBenefitQuestions">Seven focused questions</li><li data-starter-copy="cardBenefitPlan">A practical 7-day starting plan</li><li data-starter-copy="cardBenefitLanguages">Assessment available in 10 languages</li>
+          </ul>
+        </div>
+        <aside class="coach-authority-card" aria-labelledby="coach-authority-name">
+          <div class="coach-photo-frame"><img src="/assets/images/about/about1.jpg" alt="Andre Garcia, Personal Trainer and Online Coach" width="640" height="768" decoding="async"></div>
+          <div class="coach-authority-copy">
+            <p class="coach-authority-label" data-starter-copy="cardCoachLabel">YOUR COACH</p>
+            <h2 id="coach-authority-name">Andre Garcia</h2>
+            <p data-starter-copy="cardCoachRole">Personal Trainer &amp; Online Coach</p>
+            <span data-starter-copy="cardCoachBio">Practical guidance. Real human follow-up.</span>
+            <div class="coach-direct-actions">
+              <a class="coach-direct-action coach-direct-action--whatsapp" href="https://wa.me/447508497586?text=Hi%20Andre%2C%20I%20scanned%20your%20gym%20QR%20card%20and%20would%20like%20to%20talk%20about%20coaching." target="_blank" rel="noopener" data-qr-contact="whatsapp"><strong>WhatsApp</strong><span data-starter-copy="cardCoachWhatsapp">Message Andre directly</span></a>
+              <a class="coach-direct-action coach-direct-action--instagram" href="https://www.instagram.com/garciabuilder.fitness" target="_blank" rel="noopener" data-qr-contact="instagram"><strong>Instagram</strong><span data-starter-copy="cardInstagramCta">Follow @garciabuilder.fitness</span></a>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <ul class="starter-trust-strip" aria-label="Coach credentials and service trust">
+        <li><strong>ActiveIQ Level 3 PT</strong></li><li><strong>12+ Years Coaching</strong></li><li><strong>Rated 5.0 on Google</strong></li><li><strong>EN / PT / ES</strong></li>
+      </ul>
+      <div class="starter-signal-row starter-plan-signal-row" aria-label="Plan preview">
+        <article class="signal-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></svg><div><strong>Your training direction</strong><span>A realistic weekly structure for your goal and available days.</span></div></article>
+        <article class="signal-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M7 4v6M17 4v6M5 11h14v9H5z"/></svg><div><strong>Your nutrition priorities</strong><span>Simple meal, protein and portion guidance you can use now.</span></div></article>
+        <article class="signal-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0-6 6v3l-2 3h16l-2-3V9a6 6 0 0 0-6-6ZM9 19h6"/></svg><div><strong>Your next 7 days</strong><span>Clear actions that turn advice into a starting routine.</span></div></article>
+        <article class="signal-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 7l8 6 8-6"/></svg><div><strong>Instant result + email copy</strong><span>Open your plan immediately and keep it for the week ahead.</span></div></article>
+      </div>
+      <section class="starter-process-block" aria-labelledby="starter-process-title-card">
+        <div class="starter-process-heading"><div><p class="starter-process-kicker">WHAT YOU GET</p><h2 id="starter-process-title-card">A useful starting point, not another generic score.</h2></div><span>Takes about 60-90 seconds.</span></div>
+        <div class="starter-signal-row">
+          <article class="signal-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><div><strong>Personalised to your answers</strong><span>Your goal, schedule and training experience shape the recommendation.</span></div></article>
+          <article class="signal-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 7l8 6 8-6"/></svg><div><strong>Sent by email after completion</strong><span>View the result immediately and keep a copy in your inbox.</span></div></article>
+          <article class="signal-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6zM9 11h6M9 15h6"/></svg><div><strong>Includes 28 Day Fat Loss Kickstart</strong><span>Download the practical guide after completing your assessment.</span></div></article>
+        </div>
+      </section>
+      <section class="starter-transformations starter-transformations-premium" aria-labelledby="transformations-title-card">
+        <div class="starter-transform-heading"><p class="starter-transform-kicker">REAL COACHING OUTCOMES</p><h2 id="transformations-title-card">Real People. Clear Structure. Visible Progress.</h2><p>These clients progressed by following structured training and nutrition consistently. Your free assessment gives you the first step: a clear starting direction based on your answers.</p></div>
+        <div class="starter-transform-grid">
+          <figure class="starter-transform-card"><div class="starter-transform-media"><img src="/assets/images/transformations/client-paulo-beforeafter.png" alt="Client body recomposition before and after comparison" loading="lazy" decoding="async"><span>BODY RECOMPOSITION</span></div><figcaption>Less guesswork. A repeatable training structure and consistent nutrition.</figcaption></figure>
+          <figure class="starter-transform-card"><div class="starter-transform-media"><img src="/assets/images/transformations/IMG-20250929-WA0002.jpg" alt="Client fat loss and muscle definition before and after comparison" loading="lazy" decoding="async"><span>FAT LOSS + DEFINITION</span></div><figcaption>Practical weekly habits that produced visible fat loss and stronger definition.</figcaption></figure>
+          <figure class="starter-transform-card"><div class="starter-transform-media"><img src="/assets/images/transformations/IMG-20250929-WA0004.jpg" alt="Client back transformation before and after comparison" loading="lazy" decoding="async"><span>STRENGTH + SHAPE</span></div><figcaption>Training and nutrition executed consistently enough to change body shape.</figcaption></figure>
+        </div>
+        <section class="starter-client-voices" aria-labelledby="client-voices-title-card">
+          <div class="starter-client-voices-heading"><div><p class="starter-client-voices-kicker">CLIENT FEEDBACK</p><h3 id="client-voices-title-card">What Clients Say About the Coaching</h3></div><span class="starter-client-rating" aria-label="Five out of five stars"><span aria-hidden="true">★★★★★</span><strong>5.0</strong></span></div>
+          <div class="starter-client-voices-grid">
+            <article class="starter-client-voice"><div class="starter-client-stars" aria-hidden="true">★★★★★</div><blockquote><p>"Andre rebuilt my training around 60-hour workweeks. We dropped 9kg of fat, added lean muscle, and my shoulders are pain-free for the first time in years."</p></blockquote><footer><span class="starter-client-avatar" aria-hidden="true">CN</span><div><strong>Conrad N.</strong><span>Body recomposition coaching</span></div></footer></article>
+            <article class="starter-client-voice"><div class="starter-client-stars" aria-hidden="true">★★★★★</div><blockquote><p>"As a busy dad I did not think I had time. Andre simplified training and I stuck with it."</p></blockquote><footer><span class="starter-client-avatar" aria-hidden="true">JW</span><div><strong>James W.</strong><span>Busy-parent consistency coaching</span></div></footer></article>
+            <article class="starter-client-voice"><div class="starter-client-stars" aria-hidden="true">★★★★★</div><blockquote><p>"I appreciate the honest, data-driven approach. No gimmicks, just a plan tailored to me that I could actually follow."</p></blockquote><footer><span class="starter-client-avatar" aria-hidden="true">DC</span><div><strong>Daniela C.</strong><span>Personalised coaching</span></div></footer></article>
+          </div>
+        </section>
+        <div class="starter-transform-footer"><p>Individual results vary. The free assessment is a practical starting point, not a promise of identical results.</p><button class="starter-primary starter-primary-arrow starter-proof-cta" type="button" data-start-assessment-proof><span>Reveal My Starting Plan</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button></div>
+      </section>
+      <div class="starter-next-cue" aria-label="What happens next"><span class="starter-next-label">WHAT HAPPENS NEXT</span><ol><li><span>01</span><strong>Answer 7 questions</strong></li><li><span>02</span><strong>Add your email</strong></li><li><span>03</span><strong>Reveal your plan</strong></li></ol></div>
+      <p class="starter-disclaimer">General educational guidance only. This is not a medical assessment.</p>
+      <p class="legal-note legal-note-hero"><a href="/privacy.html" data-starter-copy="privacy">Privacy Policy</a> <span data-starter-copy="and">and</span> <a href="/terms.html" data-starter-copy="terms">Terms</a></p>
+    </section>
+    <section class="assessment-card assessment-card-premium" hidden data-assessment-card aria-live="polite">
+      <div class="assessment-card-glow" aria-hidden="true"></div>
+      <div class="progress-wrap" aria-label="Assessment progress"><div class="progress-meta"><span data-progress-label>Question 1 of 7</span><span data-progress-percent>13%</span></div><ol class="progress-segments" aria-hidden="true" data-progress-segments><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ol><div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="13" data-progress-track><span data-progress-bar></span></div></div>
+      <form id="starter-assessment-form" novalidate>
+        <div class="error-summary" data-error-summary role="alert" tabindex="-1" hidden></div>
+        <fieldset class="question-step" data-question-step><legend data-question-text></legend><div class="option-grid" data-option-grid></div></fieldset>
+        <section class="contact-step" data-contact-step hidden aria-labelledby="contact-heading">
+          <div class="contact-ready-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg></div>
+          <p class="contact-ready-label" data-starter-copy="contactReadyLabel">ASSESSMENT COMPLETE</p>
+          <h2 id="contact-heading" data-starter-copy="contactTitle">Your Recommended Starting Plan Is Ready</h2>
+          <p data-starter-copy="contactCopy">Enter your details to view your result and receive your resources by email.</p>
+          <div class="field-grid field-grid-premium">
+            <label><span data-starter-copy="firstName">First name</span><input name="first_name" autocomplete="given-name" maxlength="60" required></label>
+            <label><span data-starter-copy="lastName">Last name</span><input name="last_name" autocomplete="family-name" maxlength="80" required></label>
+            <label><span data-starter-copy="email">Email</span><input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+            <label><span data-starter-copy="phone">Phone number</span><input name="phone" inputmode="tel" autocomplete="tel" maxlength="32" placeholder="+353871234567" required><small data-starter-copy="phoneHelp">Use international format if possible, for example +353871234567.</small></label>
+            <label><span><span data-starter-copy="socialProfile">Instagram or social profile</span> <small data-starter-copy="optional">optional</small></span><input name="instagram" autocomplete="off" maxlength="120" placeholder="@yourhandle" data-starter-placeholder="socialPlaceholder"></label>
+          </div>
+          <fieldset class="contact-preference">
+            <legend data-starter-copy="preferredContact">How should Andre contact you?</legend>
+            <div class="contact-preference-options">
+              <label class="contact-preference-option"><input type="radio" name="preferred_contact_method" value="whatsapp" required><span data-starter-copy="preferredWhatsapp">WhatsApp</span></label>
+              <label class="contact-preference-option"><input type="radio" name="preferred_contact_method" value="instagram" required><span data-starter-copy="preferredInstagram">Instagram</span></label>
+              <label class="contact-preference-option"><input type="radio" name="preferred_contact_method" value="email" required><span data-starter-copy="preferredEmail">Email</span></label>
+            </div>
+            <small data-starter-copy="preferredContactHelp">Choose the easiest place for Andre to reply.</small>
+          </fieldset>
+          <input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <label class="check-row"><input type="checkbox" name="age_confirmed" required><span data-starter-copy="ageConsent">I confirm I am 18 or older.</span></label>
+          <label class="check-row"><input type="checkbox" name="resource_delivery_acknowledgement" required><span data-starter-copy="deliveryConsent">I agree to receive my assessment result and the resources I requested.</span></label>
+          <label class="check-row"><input type="checkbox" name="marketing_email_consent"><span data-starter-copy="marketingEmail">I would like to receive occasional fitness guidance, coaching information and offers from Garcia Builder Fitness by email.</span></label>
+          <label class="check-row" data-whatsapp-consent hidden><input type="checkbox" name="marketing_whatsapp_consent"><span data-starter-copy="marketingWhatsapp">I would like to receive occasional coaching information and follow-up messages from Garcia Builder Fitness by WhatsApp.</span></label>
+          <p class="legal-note" data-starter-copy="contactUse">Your details are used to deliver your result and respond to your enquiry. Marketing messages are optional.</p>
+          <p class="legal-note"><span data-starter-copy="legalBefore">By submitting, you can view your result and receive the resources you requested. See the</span> <a href="/privacy.html" data-starter-copy="privacy">Privacy Policy</a> <span data-starter-copy="and">and</span> <a href="/terms.html" data-starter-copy="terms">Terms</a>.</p>
+        </section>
+        <div class="form-actions"><button class="starter-secondary" type="button" data-back-button data-starter-copy="back">Back</button><button class="starter-primary starter-submit" type="submit" data-submit-button hidden data-starter-copy="viewResult">View My Result</button></div>
+      </form>
+    </section>
   </main>
+  <div class="starter-page-return"><a class="starter-page-return__link" href="/"><span aria-hidden="true">&larr;</span><span data-starter-copy="backToSite">Back to Garcia Builder Fitness</span></a></div>
 </body>
 </html>

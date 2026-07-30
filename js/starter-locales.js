@@ -1,14 +1,22 @@
 (function (root, factory) {
-  const api = factory();
+  const commonJs = typeof module === 'object' && module.exports;
+  const cardLocales = root?.GB_STARTER_CARD_TRANSLATIONS || (commonJs ? require('./starter-card-locales.js') : undefined);
+  const planLocales = root?.GB_STARTER_PLAN_TRANSLATIONS || (commonJs ? require('./starter-plan-locales.js') : undefined);
+  const api = factory(cardLocales, planLocales);
   if (typeof module === 'object' && module.exports) module.exports = api;
   if (root) root.GB_STARTER_I18N = api;
-})(typeof window !== 'undefined' ? window : globalThis, function () {
-  const SUPPORTED = ['en', 'pt', 'es'];
+})(typeof window !== 'undefined' ? window : globalThis, function (cardLocales, planLocales) {
+  const EXTENDED_SUPPORTED = ['en', 'pt', 'es', 'fr', 'it', 'de', 'pl', 'ro', 'ar', 'ru'];
+  const SUPPORTED = typeof document === 'undefined' || cardLocales?.supported?.length
+    ? EXTENDED_SUPPORTED
+    : ['en', 'pt', 'es'];
   const UI = {
     en: {
       pageTitle: 'Free Fitness Assessment | Garcia Builder Fitness',
+      pageTitlePaid: 'Free Fitness Starter Assessment | Garcia Builder Fitness',
       resultPageTitle: 'Your Starter Fitness Plan | Garcia Builder Fitness',
       metaDescription: 'Complete a free 60-second fitness assessment and get a recommended starting plan from Garcia Builder Fitness.',
+      metaDescriptionPaid: 'Answer seven quick questions and get your practical workout and nutrition starting point from Garcia Builder Fitness.',
       skipAssessment: 'Skip to assessment', languageLabel: 'Language',
       heroEyebrow: 'FREE 60-SECOND FITNESS ASSESSMENT',
       heroTitle: 'Find the Right Starting Plan for Your Goal',
@@ -23,7 +31,8 @@
       questionProgress: 'Question {current} of {total}', contactProgress: 'Contact details',
       contactTitle: 'Your Recommended Starting Plan Is Ready',
       contactCopy: 'Enter your details to view your result and receive your resources by email.',
-      firstName: 'First name', email: 'Email', whatsapp: 'WhatsApp number', optional: 'optional',
+      firstName: 'First name', lastName: 'Last name', email: 'Email', phone: 'Phone number', instagram: 'Instagram', whatsapp: 'WhatsApp number', optional: 'optional',
+      phoneHelp: 'Use international format if possible, for example +353871234567.',
       whatsappHelp: 'Add your WhatsApp number only if you would like Andre to contact you about your result.',
       ageConsent: 'I confirm I am 18 or older.',
       deliveryConsent: 'I agree to receive my assessment result and the resources I requested.',
@@ -32,7 +41,8 @@
       legalBefore: 'By submitting, you can view your result and receive the resources you requested. See the',
       privacy: 'Privacy Policy', and: 'and', terms: 'Terms', back: 'Back', viewResult: 'View My Result',
       preparing: 'Preparing result…', chooseAnswer: 'Choose an answer to continue.',
-      enterName: 'Enter your first name.', validEmail: 'Enter a valid email address.',
+      enterName: 'Enter your first name.', enterLastName: 'Enter your last name.', validEmail: 'Enter a valid email address.',
+      validPhone: 'Enter a valid phone number in international format, for example +353871234567.',
       validWhatsapp: 'Enter WhatsApp in international format, for example +353871234567.',
       confirmAge: 'Confirm you are 18 or older.', confirmDelivery: 'Confirm you want to receive your result and requested resources.',
       submitUnavailable: 'Unable to submit the assessment right now.',
@@ -58,8 +68,10 @@
     },
     pt: {
       pageTitle: 'Avaliação Fitness Gratuita | Garcia Builder Fitness',
+      pageTitlePaid: 'Avaliação Fitness Inicial Gratuita | Garcia Builder Fitness',
       resultPageTitle: 'Seu Plano Fitness Inicial | Garcia Builder Fitness',
       metaDescription: 'Complete uma avaliação fitness gratuita de 60 segundos e receba um plano inicial recomendado pela Garcia Builder Fitness.',
+      metaDescriptionPaid: 'Responda sete perguntas rápidas e receba um ponto de partida prático para treino e nutrição da Garcia Builder Fitness.',
       skipAssessment: 'Ir para a avaliação', languageLabel: 'Idioma',
       heroEyebrow: 'AVALIAÇÃO FITNESS GRATUITA DE 60 SEGUNDOS',
       heroTitle: 'Encontre o Plano Inicial Certo para o Seu Objetivo',
@@ -74,7 +86,8 @@
       questionProgress: 'Pergunta {current} de {total}', contactProgress: 'Dados de contacto',
       contactTitle: 'Seu Plano Inicial Recomendado Está Pronto',
       contactCopy: 'Informe os seus dados para ver o resultado e receber os recursos por email.',
-      firstName: 'Primeiro nome', email: 'Email', whatsapp: 'Número de WhatsApp', optional: 'opcional',
+      firstName: 'Primeiro nome', lastName: 'Sobrenome', email: 'Email', phone: 'Telefone', instagram: 'Instagram', whatsapp: 'Número de WhatsApp', optional: 'opcional',
+      phoneHelp: 'Use o formato internacional se possível, por exemplo +353871234567.',
       whatsappHelp: 'Adicione o WhatsApp apenas se quiser que Andre entre em contacto sobre o seu resultado.',
       ageConsent: 'Confirmo que tenho 18 anos ou mais.',
       deliveryConsent: 'Concordo em receber o resultado da avaliação e os recursos solicitados.',
@@ -83,7 +96,8 @@
       legalBefore: 'Ao enviar, você poderá ver o resultado e receber os recursos solicitados. Consulte a',
       privacy: 'Política de Privacidade', and: 'e os', terms: 'Termos', back: 'Voltar', viewResult: 'Ver Meu Resultado',
       preparing: 'Preparando resultado…', chooseAnswer: 'Escolha uma resposta para continuar.',
-      enterName: 'Informe o seu primeiro nome.', validEmail: 'Informe um endereço de email válido.',
+      enterName: 'Informe o seu primeiro nome.', enterLastName: 'Informe o seu sobrenome.', validEmail: 'Informe um endereço de email válido.',
+      validPhone: 'Informe um telefone válido no formato internacional, por exemplo +353871234567.',
       validWhatsapp: 'Informe o WhatsApp no formato internacional, por exemplo +353871234567.',
       confirmAge: 'Confirme que você tem 18 anos ou mais.', confirmDelivery: 'Confirme que deseja receber o resultado e os recursos solicitados.',
       submitUnavailable: 'Não foi possível enviar a avaliação agora.',
@@ -109,8 +123,10 @@
     },
     es: {
       pageTitle: 'Evaluación Fitness Gratuita | Garcia Builder Fitness',
+      pageTitlePaid: 'Evaluación Fitness Inicial Gratuita | Garcia Builder Fitness',
       resultPageTitle: 'Tu Plan Fitness Inicial | Garcia Builder Fitness',
       metaDescription: 'Completa una evaluación fitness gratuita de 60 segundos y recibe un plan inicial recomendado por Garcia Builder Fitness.',
+      metaDescriptionPaid: 'Responde siete preguntas rápidas y recibe un punto de partida práctico de entrenamiento y nutrición de Garcia Builder Fitness.',
       skipAssessment: 'Ir a la evaluación', languageLabel: 'Idioma',
       heroEyebrow: 'EVALUACIÓN FITNESS GRATUITA DE 60 SEGUNDOS',
       heroTitle: 'Encuentra el Plan Inicial Adecuado para Tu Objetivo',
@@ -125,7 +141,8 @@
       questionProgress: 'Pregunta {current} de {total}', contactProgress: 'Datos de contacto',
       contactTitle: 'Tu Plan Inicial Recomendado Está Listo',
       contactCopy: 'Introduce tus datos para ver el resultado y recibir los recursos por email.',
-      firstName: 'Nombre', email: 'Email', whatsapp: 'Número de WhatsApp', optional: 'opcional',
+      firstName: 'Nombre', lastName: 'Apellido', email: 'Email', phone: 'Teléfono', instagram: 'Instagram', whatsapp: 'Número de WhatsApp', optional: 'opcional',
+      phoneHelp: 'Usa el formato internacional si es posible, por ejemplo +353871234567.',
       whatsappHelp: 'Añade WhatsApp solo si quieres que Andre contacte contigo sobre tu resultado.',
       ageConsent: 'Confirmo que tengo 18 años o más.',
       deliveryConsent: 'Acepto recibir el resultado de mi evaluación y los recursos solicitados.',
@@ -134,7 +151,8 @@
       legalBefore: 'Al enviar, podrás ver el resultado y recibir los recursos solicitados. Consulta la',
       privacy: 'Política de Privacidad', and: 'y los', terms: 'Términos', back: 'Volver', viewResult: 'Ver Mi Resultado',
       preparing: 'Preparando resultado…', chooseAnswer: 'Elige una respuesta para continuar.',
-      enterName: 'Introduce tu nombre.', validEmail: 'Introduce un email válido.',
+      enterName: 'Introduce tu nombre.', enterLastName: 'Introduce tu apellido.', validEmail: 'Introduce un email válido.',
+      validPhone: 'Introduce un teléfono válido en formato internacional, por ejemplo +353871234567.',
       validWhatsapp: 'Introduce WhatsApp en formato internacional, por ejemplo +353871234567.',
       confirmAge: 'Confirma que tienes 18 años o más.', confirmDelivery: 'Confirma que quieres recibir el resultado y los recursos solicitados.',
       submitUnavailable: 'No se pudo enviar la evaluación en este momento.',
@@ -159,6 +177,10 @@
       resultLoadErrorTitle: 'No pudimos abrir este resultado', resultNotFound: 'Completa de nuevo la evaluación para generar un resultado nuevo.'
     }
   };
+
+  Object.entries(cardLocales?.ui || {}).forEach(([language, copy]) => {
+    UI[language] = { ...UI.en, ...(UI[language] || {}), ...copy };
+  });
 
   const TEXT = {
     pt: {
@@ -329,6 +351,11 @@
     }
   };
 
+  Object.assign(TEXT, cardLocales?.text || {});
+  Object.entries(planLocales?.text || {}).forEach(([language, dictionary]) => {
+    TEXT[language] = { ...(TEXT[language] || {}), ...dictionary };
+  });
+
   const REPLACEMENTS = {
     pt: [
       ['Five-Day Structured Gym Template', 'Modelo Estruturado de Academia de Cinco Dias'], ['Three-Day Full-Body Strength and Fat-Loss Template', 'Modelo de Corpo Inteiro de Três Dias para Força e Perda de Gordura'],
@@ -373,6 +400,7 @@
     pt: { subject: 'Seu Plano Inicial Garcia Builder Está Pronto', greeting: 'Olá', ready: 'Seu Plano Inicial Garcia Builder Está Pronto', bestPath: 'Com base na sua avaliação, o melhor caminho inicial é', mainGoal: 'Objetivo principal informado', startHere: 'Comece aqui: suas primeiras 3 ações', actions: ['Escolha os dias de treino na estrutura semanal abaixo e coloque-os no calendário.', 'Complete o primeiro treino usando a sessão descrita neste email.', 'Defina a sua base nutricional com a estrutura de refeições abaixo e calcule metas exatas quando estiver pronto.'], openPlan: 'Abrir Meu Plano Completo', openWorkout: 'Abrir Biblioteca de Treinos', calculate: 'Calcular Meus Macros', helpful: 'Recursos úteis', viewPlan: 'Ver Meu Plano Inicial', preheader: 'Seu treino, estrutura nutricional e primeiras três ações estão prontos.', training: 'Treino desta semana', nutrition: 'Metas de macros e alimentação simples', eating: 'Exemplo simples de alimentação diária', shopping: 'Lista inicial de compras', educational: 'Esta avaliação oferece orientação educativa geral e não é uma avaliação médica nem um programa prescrito individualmente.', receiving: 'Você está recebendo este email porque solicitou o resultado da avaliação e os recursos. Consulte a', privacy: 'Política de Privacidade', business: 'Personal training e coaching online.' },
     es: { subject: 'Tu Plan Inicial Garcia Builder Está Listo', greeting: 'Hola', ready: 'Tu Plan Inicial Garcia Builder Está Listo', bestPath: 'Según tu evaluación, el mejor camino inicial es', mainGoal: 'Objetivo principal indicado', startHere: 'Empieza aquí: tus primeras 3 acciones', actions: ['Elige tus días de entrenamiento en la estructura semanal y añádelos al calendario.', 'Completa el primer entrenamiento usando la sesión descrita en este email.', 'Define tu base nutricional con la estructura de comidas y calcula objetivos exactos cuando estés listo.'], openPlan: 'Abrir Mi Plan Completo', openWorkout: 'Abrir Biblioteca de Entrenamientos', calculate: 'Calcular Mis Macros', helpful: 'Recursos útiles', viewPlan: 'Ver Mi Plan Inicial', preheader: 'Tu entrenamiento, estructura nutricional y primeras tres acciones están listos.', training: 'Entrenamiento de esta semana', nutrition: 'Objetivos de macros y alimentación sencilla', eating: 'Ejemplo sencillo de alimentación diaria', shopping: 'Lista inicial de compras', educational: 'Esta evaluación ofrece orientación educativa general y no es una evaluación médica ni un programa prescrito individualmente.', receiving: 'Recibes este email porque solicitaste el resultado de la evaluación y los recursos. Consulta la', privacy: 'Política de Privacidad', business: 'Entrenamiento personal y coaching online.' }
   };
+  Object.assign(EMAIL, planLocales?.email || {});
 
   const RESOURCE_COPY = {
     pt: {
@@ -392,6 +420,7 @@
       nutritionDetails: ['Incluye una fuente clara de proteína en las comidas principales.', 'Mantén porciones y horarios constantes durante 10 a 14 días antes de ajustar.', 'Usa el ejemplo de comidas y la lista de compras como base, adaptándolos a tus preferencias.']
     }
   };
+  Object.assign(RESOURCE_COPY, planLocales?.resourceCopy || {});
 
   const PLAN_COPY = {
     pt: {
@@ -445,6 +474,7 @@
       shopping: ['Huevos', 'Yogur griego', 'Pollo, pescado o tofu', 'Arroz o patatas', 'Avena', 'Verduras', 'Fruta', 'Proteína en polvo, si es necesaria']
     }
   };
+  Object.assign(PLAN_COPY, planLocales?.planCopy || {});
 
   function normalizeLanguage(value) {
     const language = String(value || '').toLowerCase().split('-')[0];
@@ -457,15 +487,16 @@
 
   function ui(key, language, variables) {
     const lang = normalizeLanguage(language);
-    return format(UI[lang][key] || UI.en[key] || key, variables);
+    const dictionary = UI[lang] || UI.en;
+    return format(dictionary[key] || UI.en[key] || key, variables);
   }
 
   function translateText(value, language) {
     const lang = normalizeLanguage(language);
     const source = String(value == null ? '' : value);
     if (lang === 'en' || !source || /^(https?:|mailto:|\/)/.test(source)) return source;
-    if (TEXT[lang][source]) return TEXT[lang][source];
-    return REPLACEMENTS[lang].reduce((translated, pair) => {
+    if (TEXT[lang]?.[source]) return TEXT[lang][source];
+    return (REPLACEMENTS[lang] || []).reduce((translated, pair) => {
       const escaped = pair[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const startsWithWord = /^\w/.test(pair[0]);
       const endsWithWord = /\w$/.test(pair[0]);
@@ -486,12 +517,14 @@
     const lang = normalizeLanguage(language);
     if (lang === 'en' || !resource) return resource;
     const copy = RESOURCE_COPY[lang];
+    if (!copy) return resource;
     const type = resource.type === 'workout' || resource.type === 'nutrition' ? resource.type : 'guide';
+    const translatedTitle = (value) => copy.titles?.[value] || translateText(value, lang);
     return {
       ...resource,
-      requestedTitle: translateText(resource.requestedTitle, lang),
-      unavailableTitle: resource.unavailableTitle ? translateText(resource.unavailableTitle, lang) : resource.unavailableTitle,
-      title: translateText(resource.title, lang),
+      requestedTitle: translatedTitle(resource.requestedTitle),
+      unavailableTitle: resource.unavailableTitle ? translatedTitle(resource.unavailableTitle) : resource.unavailableTitle,
+      title: translatedTitle(resource.title),
       description: copy[`${type}Description`],
       actionLabel: copy[`${type}Action`],
       details: type === 'guide' ? [] : copy[`${type}Details`]
@@ -502,6 +535,7 @@
     const lang = normalizeLanguage(language);
     if (lang === 'en' || !plan) return plan;
     const copy = PLAN_COPY[lang];
+    if (!copy) return plan;
     const rawTitle = String(plan.training?.title || '');
     const weeklyKey = rawTitle.includes('Five-Day') ? 'five' : rawTitle.includes('Four-Day') ? 'four' : rawTitle.includes('Hybrid') ? 'hybrid' : rawTitle.includes('Home') || rawTitle.includes('Bodyweight') ? 'home' : rawTitle.includes('Three-Day') ? 'three' : 'two';
     const sessions = (plan.training?.sessions || []).map((session, index) => {
@@ -509,13 +543,25 @@
       const kind = /Upper/i.test(rawName) ? 'upper' : /Lower/i.test(rawName) ? 'lower' : /Home/i.test(rawName) ? 'home' : /Bodyweight/i.test(rawName) ? 'body' : 'full';
       return { name: `${copy.session} ${index + 1}`, focus: copy.focus, work: copy.work[kind] };
     });
+    const rawNutritionTitle = String(plan.nutrition?.title || '');
     return {
       ...plan,
-      title: translateText(plan.title, lang),
-      goalTarget: translateText(plan.goalTarget, lang),
-      training: { ...plan.training, title: translateText(plan.training?.title, lang), weeklyStructure: copy.weekly[weeklyKey], sessions },
-      nutrition: { ...plan.nutrition, title: translateText(plan.nutrition?.title, lang), macroTargets: translateDeep(plan.nutrition?.macroTargets || [], lang), meals: copy.meals, shoppingList: copy.shopping },
-      nextSteps: translateDeep(plan.nextSteps || [], lang)
+      title: copy.title || translateText(plan.title, lang),
+      goalTarget: copy.goalTargets?.[plan.goalTarget] || translateText(plan.goalTarget, lang),
+      training: {
+        ...plan.training,
+        title: copy.trainingTitles?.[rawTitle] || translateText(plan.training?.title, lang),
+        weeklyStructure: copy.weekly[weeklyKey],
+        sessions
+      },
+      nutrition: {
+        ...plan.nutrition,
+        title: copy.nutritionTitles?.[rawNutritionTitle] || translateText(plan.nutrition?.title, lang),
+        macroTargets: copy.macros || translateDeep(plan.nutrition?.macroTargets || [], lang),
+        meals: copy.meals,
+        shoppingList: copy.shopping
+      },
+      nextSteps: copy.nextSteps || translateDeep(plan.nextSteps || [], lang)
     };
   }
 
@@ -540,10 +586,11 @@
     if (typeof document === 'undefined') return;
     const lang = normalizeLanguage(language);
     document.documentElement.lang = lang;
-    const titleKey = document.body?.classList.contains('result-page') ? 'resultPageTitle' : 'pageTitle';
+    document.documentElement.dir = cardLocales?.rtl?.includes(lang) ? 'rtl' : 'ltr';
+    const titleKey = document.body?.classList.contains('result-page') ? 'resultPageTitle' : document.body?.classList.contains('starter-page-paid') ? 'pageTitlePaid' : 'pageTitle';
     document.title = ui(titleKey, lang);
     const description = document.querySelector('meta[name="description"]');
-    if (description) description.setAttribute('content', ui('metaDescription', lang));
+    if (description) description.setAttribute('content', ui(document.body?.classList.contains('starter-page-paid') ? 'metaDescriptionPaid' : 'metaDescription', lang));
     document.querySelectorAll('[data-starter-copy]').forEach((element) => {
       element.textContent = ui(element.getAttribute('data-starter-copy'), lang);
     });
@@ -551,6 +598,13 @@
       element.setAttribute('placeholder', ui(element.getAttribute('data-starter-placeholder'), lang));
     });
     document.querySelectorAll('[data-starter-language]').forEach((element) => { element.value = lang; });
+    document.querySelectorAll('[data-starter-language-option]').forEach((element) => {
+      element.setAttribute('aria-pressed', String(element.value === lang));
+    });
+    document.querySelectorAll('[data-language-current]').forEach((element) => {
+      element.textContent = lang.toUpperCase();
+      element.setAttribute('title', cardLocales?.languageNames?.[lang] || lang.toUpperCase());
+    });
   }
 
   return {
@@ -564,6 +618,8 @@
     getBrowserLanguage,
     setBrowserLanguage,
     applyDocument,
-    getEmailCopy: (language) => EMAIL[normalizeLanguage(language)]
+    getEmailCopy: (language) => EMAIL[normalizeLanguage(language)] || EMAIL.en,
+    getSummaryCopy: (language) => planLocales?.summary?.[normalizeLanguage(language)] || null,
+    getSupportCTACopy: (language) => planLocales?.supportCta?.[normalizeLanguage(language)] || null
   };
 });

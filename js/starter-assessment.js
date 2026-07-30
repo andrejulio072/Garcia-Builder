@@ -34,7 +34,7 @@
   const backButton = $('[data-back-button]');
   const submitButton = $('[data-submit-button]');
   const errorSummary = $('[data-error-summary]');
-  const whatsappInput = $('[name="whatsapp"]');
+  const phoneInput = $('[name="phone"]');
   const whatsappConsent = $('[data-whatsapp-consent]');
 
   function copy(key, variables) {
@@ -159,9 +159,9 @@
   }
 
   function syncWhatsappConsent() {
-    const hasWhatsapp = Boolean(String(whatsappInput?.value || '').trim());
-    if (whatsappConsent) whatsappConsent.hidden = !hasWhatsapp;
-    if (!hasWhatsapp) {
+    const hasPhone = Boolean(String(phoneInput?.value || '').trim());
+    if (whatsappConsent) whatsappConsent.hidden = !hasPhone;
+    if (!hasPhone) {
       const checkbox = whatsappConsent?.querySelector('input');
       if (checkbox) checkbox.checked = false;
     }
@@ -197,14 +197,18 @@
     card.hidden = false;
     track('assessment_started', { resumed: Object.keys(state.answers).length > 0 });
     render();
+    card.scrollIntoView({ block: 'start', behavior: 'auto' });
   }
 
   function collectContact() {
     const data = new FormData(form);
     return {
       first_name: String(data.get('first_name') || '').trim(),
+      last_name: String(data.get('last_name') || '').trim(),
       email: String(data.get('email') || '').trim(),
-      whatsapp: String(data.get('whatsapp') || '').trim(),
+      phone: String(data.get('phone') || '').trim(),
+      instagram: String(data.get('instagram') || '').trim(),
+      preferred_contact_method: String(data.get('preferred_contact_method') || '').trim(),
       age_confirmed: data.get('age_confirmed') === 'on',
       resource_delivery_acknowledgement: data.get('resource_delivery_acknowledgement') === 'on',
       marketing_email_consent: data.get('marketing_email_consent') === 'on',
@@ -214,8 +218,12 @@
 
   function validateContact(contact) {
     if (!contact.first_name) return { message: copy('enterName'), field: 'first_name' };
+    if (!contact.last_name) return { message: copy('enterLastName'), field: 'last_name' };
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email.toLowerCase())) return { message: copy('validEmail'), field: 'email' };
-    if (contact.whatsapp && !/^\+[1-9]\d{7,14}$/.test(contact.whatsapp)) return { message: copy('validWhatsapp'), field: 'whatsapp' };
+    if (!/^\+[1-9]\d{7,14}$/.test(contact.phone)) return { message: copy('validPhone'), field: 'phone' };
+    if (form?.querySelector('[name="preferred_contact_method"]') && !['whatsapp', 'instagram', 'email'].includes(contact.preferred_contact_method)) {
+      return { message: copy('choosePreferredContact'), field: 'preferred_contact_method' };
+    }
     if (!contact.age_confirmed) return { message: copy('confirmAge'), field: 'age_confirmed' };
     if (!contact.resource_delivery_acknowledgement) return { message: copy('confirmDelivery'), field: 'resource_delivery_acknowledgement' };
     return null;
@@ -242,7 +250,9 @@
     submitButton.disabled = true;
     submitButton.textContent = copy('preparing');
     track('assessment_submission_started', {
-      has_whatsapp: Boolean(contact.whatsapp),
+      has_phone: Boolean(contact.phone),
+      has_instagram: Boolean(contact.instagram),
+      preferred_contact_method: contact.preferred_contact_method,
       marketing_email_consent: contact.marketing_email_consent,
       marketing_whatsapp_consent: contact.marketing_whatsapp_consent
     });
@@ -298,16 +308,34 @@
     i18n?.applyDocument?.(state.language);
     getMeta();
     track('qr_landing_view', { source_slug: new URLSearchParams(window.location.search).get('utm_source') || 'direct' });
-    $('[data-start-assessment]')?.addEventListener('click', startAssessment);
+    document.querySelectorAll('[data-start-assessment], [data-start-assessment-proof]').forEach((button) => {
+      button.addEventListener('click', startAssessment);
+    });
+    document.querySelectorAll('[data-qr-contact]').forEach((link) => {
+      link.addEventListener('click', () => track('qr_contact_clicked', {
+        channel: link.getAttribute('data-qr-contact') || 'unknown'
+      }));
+    });
     backButton?.addEventListener('click', () => {
       if (state.advanceTimer) clearTimeout(state.advanceTimer);
       state.advanceTimer = null;
       state.step = Math.max(0, state.step - 1);
       render();
     });
-    whatsappInput?.addEventListener('input', syncWhatsappConsent);
+    phoneInput?.addEventListener('input', syncWhatsappConsent);
     document.querySelectorAll('[data-starter-language]').forEach((selector) => {
       selector.addEventListener('change', (event) => applyLanguage(event.target.value));
+    });
+    document.querySelectorAll('[data-starter-language-option]').forEach((button) => {
+      button.addEventListener('click', () => {
+        applyLanguage(button.value);
+        button.closest('[data-language-menu]')?.removeAttribute('open');
+      });
+    });
+    document.addEventListener('click', (event) => {
+      document.querySelectorAll('[data-language-menu][open]').forEach((menu) => {
+        if (!menu.contains(event.target)) menu.removeAttribute('open');
+      });
     });
     form?.addEventListener('submit', submitAssessment);
     restoreAnswers();

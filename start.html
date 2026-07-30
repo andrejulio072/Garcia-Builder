@@ -7,11 +7,11 @@
   <meta name="description" content="Complete a free 60-second fitness assessment and get a recommended starting plan from Garcia Builder Fitness.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.garciabuilder.fitness/start">
-  <link rel="stylesheet" href="/css/starter-assessment.css?v=20260720-landing-effects">
+  <link rel="stylesheet" href="/css/starter-assessment.css?v=20260723-contact-fields">
   <script src="/js/starter-tracking-bootstrap.js?v=20260720-result-links"></script>
   <script src="/js/env.js" defer></script>
-  <script src="/js/starter-locales.js?v=20260720-result-links" defer></script>
-  <script src="/js/starter-assessment.js?v=20260720-result-links" defer></script>
+  <script src="/js/starter-locales.js?v=20260723-contact-fields" defer></script>
+  <script src="/js/starter-assessment.js?v=20260723-contact-fields" defer></script>
 </head>
 <body class="starter-page">
   <a class="skip-link" href="#assessment-root" data-starter-copy="skipAssessment">Skip to assessment</a>
@@ -85,13 +85,21 @@
               <input name="first_name" autocomplete="given-name" maxlength="60" required>
             </label>
             <label>
+              <span data-starter-copy="lastName">Last name</span>
+              <input name="last_name" autocomplete="family-name" maxlength="80" required>
+            </label>
+            <label>
               <span data-starter-copy="email">Email</span>
               <input name="email" type="email" autocomplete="email" maxlength="254" required>
             </label>
             <label>
-              <span><span data-starter-copy="whatsapp">WhatsApp number</span> <small data-starter-copy="optional">optional</small></span>
-              <input name="whatsapp" inputmode="tel" autocomplete="tel" maxlength="32" placeholder="+353871234567">
-              <small data-starter-copy="whatsappHelp">Add your WhatsApp number only if you would like Andre to contact you about your result.</small>
+              <span data-starter-copy="phone">Phone number</span>
+              <input name="phone" inputmode="tel" autocomplete="tel" maxlength="32" placeholder="+353871234567" required>
+              <small data-starter-copy="phoneHelp">Use international format if possible, for example +353871234567.</small>
+            </label>
+            <label>
+              <span><span data-starter-copy="instagram">Instagram</span> <small data-starter-copy="optional">optional</small></span>
+              <input name="instagram" autocomplete="off" maxlength="120" placeholder="@yourhandle">
             </label>
           </div>
 

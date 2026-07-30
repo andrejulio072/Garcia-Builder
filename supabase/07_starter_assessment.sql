@@ -8,9 +8,13 @@ create table if not exists public.starter_assessment_leads (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   first_name text not null check (char_length(first_name) between 1 and 60),
+  last_name text not null check (char_length(last_name) between 1 and 80),
   email text not null check (char_length(email) between 3 and 254),
+  phone text not null check (phone ~ '^\+[1-9][0-9]{7,14}$'),
+  instagram text null check (instagram is null or char_length(instagram) between 2 and 120),
+  preferred_contact_method text null check (preferred_contact_method is null or preferred_contact_method in ('whatsapp', 'instagram', 'email')),
   country text null check (country is null or country in ('Ireland', 'United Kingdom', 'United States', 'Canada', 'Australia', 'Portugal', 'Brazil', 'Spain', 'France', 'Germany', 'Netherlands', 'Other')),
-  language text not null default 'en' check (language in ('en', 'pt', 'es')),
+  language text not null default 'en' check (language in ('en', 'pt', 'es', 'fr', 'it', 'de', 'pl', 'ro', 'ar', 'ru')),
   whatsapp text null check (whatsapp is null or whatsapp ~ '^\+[1-9][0-9]{7,14}$'),
   age_confirmed boolean not null,
   primary_goal text not null check (primary_goal in ('Lose body fat', 'Build muscle', 'Improve body composition', 'Become fitter and more energetic', 'Rebuild consistency', 'Not sure yet')),
@@ -54,9 +58,22 @@ create table if not exists public.starter_assessment_leads (
 alter table public.starter_assessment_leads
   add column if not exists language text not null default 'en';
 alter table public.starter_assessment_leads
+  add column if not exists last_name text;
+alter table public.starter_assessment_leads
+  add column if not exists phone text;
+alter table public.starter_assessment_leads
+  add column if not exists instagram text;
+alter table public.starter_assessment_leads
+  add column if not exists preferred_contact_method text;
+alter table public.starter_assessment_leads
   drop constraint if exists starter_assessment_leads_language_check;
 alter table public.starter_assessment_leads
-  add constraint starter_assessment_leads_language_check check (language in ('en', 'pt', 'es'));
+  add constraint starter_assessment_leads_language_check check (language in ('en', 'pt', 'es', 'fr', 'it', 'de', 'pl', 'ro', 'ar', 'ru'));
+alter table public.starter_assessment_leads
+  drop constraint if exists starter_assessment_leads_preferred_contact_method_check;
+alter table public.starter_assessment_leads
+  add constraint starter_assessment_leads_preferred_contact_method_check
+  check (preferred_contact_method is null or preferred_contact_method in ('whatsapp', 'instagram', 'email'));
 alter table public.starter_assessment_leads
   alter column country drop not null;
 

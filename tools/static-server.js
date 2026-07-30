@@ -82,7 +82,7 @@ app.get(Object.keys(publicPageAliases), (req, res) => {
 });
 
 app.get('/go/card', (req, res) => {
-  res.redirect(302, '/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment');
+  res.sendFile(path.join(root, 'go', 'card', 'index.html'));
 });
 
 app.get('/start/result/:token', (req, res) => {

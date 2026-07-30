@@ -24,6 +24,7 @@ const { buildWhatsappMessage, buildWhatsappUrl } = require('../lib/starter-asses
 const { BREVO_API_URL, DEFAULT_EMAIL_TIMEOUT_MS, getEmailTimeoutMs, sendTransactionalEmail } = require('../lib/starter-assessment/email.cjs');
 const { buildContactActions, getContactEmail } = require('../lib/starter-assessment/contact-actions.cjs');
 const { isAllowedOrigin } = require('../lib/starter-assessment/origin.cjs');
+const { buildResultEmail } = require('../lib/starter-assessment/submit-handler.cjs');
 const starterI18n = require('../js/starter-locales.js');
 
 const baseAnswers = {
@@ -39,9 +40,12 @@ const baseAnswers = {
 
 const baseContact = {
   first_name: ' Andre ',
+  last_name: 'Garcia',
   email: 'ANDRE@example.COM',
+  phone: '+353871234567',
+  instagram: 'https://instagram.com/andre.garcia',
+  preferred_contact_method: 'whatsapp',
   country: 'Ireland',
-  whatsapp: '',
   age_confirmed: true,
   resource_delivery_acknowledgement: true,
   marketing_email_consent: false,
@@ -125,14 +129,21 @@ const validSubmission = validateSubmission({
 });
 assert.strictEqual(validSubmission.ok, true);
 assert.strictEqual(validSubmission.contact.first_name, 'Andre');
+assert.strictEqual(validSubmission.contact.last_name, 'Garcia');
 assert.strictEqual(validSubmission.contact.email, 'andre@example.com');
+assert.strictEqual(validSubmission.contact.phone, '+353871234567');
+assert.strictEqual(validSubmission.contact.instagram, '@andre.garcia');
+assert.strictEqual(validSubmission.contact.preferred_contact_method, 'whatsapp');
 assert.strictEqual(validSubmission.contact.marketing_email_consent, false);
 assert.strictEqual(validSubmission.metadata.utm_source, 'business_card');
 
 assert.strictEqual(validateSubmission({ answers: { ...baseAnswers, primary_goal: 'Hack' }, contact: baseContact }).ok, false);
+assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, last_name: '' } }).ok, false);
 assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, email: 'bad' } }).ok, false);
 assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, resource_delivery_acknowledgement: false } }).ok, false);
-assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, whatsapp: '0871234567' } }).ok, false);
+assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, phone: '0871234567' } }).ok, false);
+assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, preferred_contact_method: 'sms' } }).ok, false);
+assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: baseContact, language: 'fr' }).ok, true);
 
 const metadata = validateMetadata({
   utm_source: ' qr ',
@@ -195,17 +206,55 @@ assert(portugueseVisitor.starterPlan.training.sessions[0].work[0].includes('sér
 assert(spanishVisitor.starterPlan.training.sessions[0].work[0].includes('series'));
 assert.strictEqual(portugueseVisitor.starterPlan.nutrition.meals[0].meal, 'Pequeno-almoço');
 assert.strictEqual(spanishVisitor.starterPlan.nutrition.meals[0].meal, 'Desayuno');
-assert.deepStrictEqual(getPublicConfig().languages, ['en', 'pt', 'es']);
+assert.deepStrictEqual(getPublicConfig().languages, ['en', 'pt', 'es', 'fr', 'it', 'de', 'pl', 'ro', 'ar', 'ru']);
 assert(!Object.prototype.hasOwnProperty.call(getPublicConfig(), 'countries'));
+
+const extendedLanguages = ['fr', 'it', 'de', 'pl', 'ro', 'ar', 'ru'];
+extendedLanguages.forEach((language) => {
+  const recommendation = buildRecommendation(baseAnswers, baseContact, language);
+  const localizedVisitor = toVisitorRecommendation(recommendation, language);
+  const emailCopy = starterI18n.getEmailCopy(language);
+  assert.notStrictEqual(localizedVisitor.resultTitle, 'Fat-Loss and Body-Composition Starter Plan', `${language} result title should be localized`);
+  assert(!localizedVisitor.summary.startsWith('Based on your goal'), `${language} summary should be localized`);
+  assert.notStrictEqual(localizedVisitor.starterPlan.title, 'Your Practical Starter Plan', `${language} plan title should be localized`);
+  assert.notStrictEqual(localizedVisitor.starterPlan.training.title, 'Three-Day Full-Body Strength and Fat-Loss Template', `${language} training title should be localized`);
+  assert.notStrictEqual(localizedVisitor.starterPlan.nutrition.title, 'High-Protein Plate Builder', `${language} nutrition title should be localized`);
+  assert(localizedVisitor.starterPlan.training.sessions.every((session) => session.work.length > 0), `${language} sessions should include localized work`);
+  assert(localizedVisitor.starterPlan.nutrition.meals.every((item) => item.meal && item.example && item.purpose), `${language} meals should be complete`);
+  assert(localizedVisitor.resources.every((resource) => resource.description && resource.actionLabel), `${language} resources should be localized`);
+  assert.notStrictEqual(emailCopy.subject, 'Your Garcia Builder Starter Plan Is Ready', `${language} email subject should be localized`);
+  assert.strictEqual(emailCopy.actions.length, 3, `${language} email should include three localized actions`);
+
+  const email = buildResultEmail({
+    req: { headers: { host: 'www.garciabuilder.fitness', 'x-forwarded-proto': 'https' } },
+    contact: { ...baseContact, first_name: 'Test' },
+    answers: baseAnswers,
+    recommendation,
+    visitorRecommendation: localizedVisitor,
+    resultUrl: `https://www.garciabuilder.fitness/start/result/test-token?lang=${language}&source=card`,
+    contactActions: buildContactActions({}, { PUBLIC_SITE_URL: 'https://www.garciabuilder.fitness' }),
+    language
+  });
+  assert(email.html.includes(`lang="${language}"`), `${language} email should declare its language`);
+  assert(email.html.includes(emailCopy.ready), `${language} HTML email should include its localized heading`);
+  assert(email.text.includes(emailCopy.startHere.toUpperCase()), `${language} text email should include its localized quick start`);
+  if (language === 'ar') assert(email.html.includes('dir="rtl"'), 'Arabic email should render right-to-left');
+});
 
 const productionServer = fs.readFileSync(path.join(__dirname, '..', 'api', 'stripe-server-premium.js'), 'utf8');
 const vercelConfig = fs.readFileSync(path.join(__dirname, '..', 'vercel.json'), 'utf8');
+const parsedVercelConfig = JSON.parse(vercelConfig);
 const starterClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-assessment.js'), 'utf8');
+const assessmentPage = fs.readFileSync(path.join(__dirname, '..', 'assessment.html'), 'utf8');
 const starterPage = fs.readFileSync(path.join(__dirname, '..', 'start.html'), 'utf8');
+const qrCardPage = fs.readFileSync(path.join(__dirname, '..', 'go', 'card', 'index.html'), 'utf8');
 const starterContactPage = fs.readFileSync(path.join(__dirname, '..', 'start-contact.html'), 'utf8');
 const resultClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-result.js'), 'utf8');
 const submitHandler = fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8');
 const starterLocales = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-locales.js'), 'utf8');
+const starterCardLocales = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-card-locales.js'), 'utf8');
+const starterPlanLocales = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-plan-locales.js'), 'utf8');
+const resultPage = fs.readFileSync(path.join(__dirname, '..', 'start-result.html'), 'utf8');
 const starterSmoke = fs.readFileSync(path.join(__dirname, 'starter-assessment-smoke.mjs'), 'utf8');
 const migrationDirectory = path.join(__dirname, '..', 'supabase', 'migrations');
 const starterMigrationFile = fs.readdirSync(migrationDirectory).find((file) => file.endsWith('_starter_assessment_funnel.sql'));
@@ -235,8 +284,24 @@ assert(
 });
 assert(starterPage.includes('name="website"'), 'Starter form should keep the honeypot field');
 assert(starterPage.includes('data-start-assessment'), 'QR landing should keep the assessment start button');
+assert(starterPage.includes('name="last_name"'), 'Starter contact form should request last name');
+assert(starterPage.includes('name="phone"'), 'Starter contact form should request phone');
+assert(starterPage.includes('name="instagram"'), 'Starter contact form should request optional Instagram');
 assert(starterPage.includes('/packages.html?utm_source=business_card'), 'QR landing should link directly to packages');
 assert(starterPage.includes('/start-contact.html?utm_source=business_card'), 'QR landing should link to the direct contact page');
+assert(assessmentPage.includes('starter-hero-premium'), 'Assessment page should use the premium assessment structure');
+assert(assessmentPage.includes('coach-authority-card'), 'Assessment page should include the coach authority card');
+assert(assessmentPage.includes('starter-transformations-premium'), 'Assessment page should include premium transformation proof');
+assert(qrCardPage.includes('class="starter-page starter-page-paid starter-page-card"'), 'QR card page should use the premium mobile card shell');
+assert(qrCardPage.includes('data-start-assessment'), 'QR card page should render the assessment start button instead of a redirect-only shell');
+assert(qrCardPage.includes('starter-hero-premium'), 'QR card page should use the same premium structure as /assessment');
+assert(qrCardPage.includes('coach-authority-card'), 'QR card page should include the same coach authority card as /assessment');
+assert(qrCardPage.includes("utm_source: 'business_card'"), 'QR card page should default to business-card attribution');
+assert(qrCardPage.includes("utm_medium: 'qr'"), 'QR card page should default to QR attribution');
+assert(qrCardPage.includes("utm_campaign: 'starter_assessment'"), 'QR card page should default to the starter assessment campaign');
+assert(!(parsedVercelConfig.redirects || []).some((route) => route.source === '/go/card'), 'Vercel should not redirect the improved QR card page away');
+assert((parsedVercelConfig.rewrites || []).some((route) => route.source === '/assessment' && route.destination === '/assessment.html'), 'Vercel should serve assessment.html for /assessment');
+assert((parsedVercelConfig.rewrites || []).some((route) => route.source === '/go/card' && route.destination === '/go/card/index.html'), 'Vercel should serve go/card/index.html for /go/card');
 assert(vercelConfig.includes('"source": "/start/contact"'), 'Vercel should rewrite /start/contact to the QR contact page');
 assert(vercelConfig.includes('"destination": "/start-contact.html"'), 'Vercel should serve start-contact.html for /start/contact');
 assert(starterContactPage.includes('https://wa.me/447508497586'), 'QR contact page should include Andre WhatsApp');
@@ -258,6 +323,19 @@ assert(submitHandler.includes('emailCopy.startHere'), 'Result email should lead 
 assert(submitHandler.includes("emailDelivery.status === 'sent' ? 'sent' : 'not_sent'"), 'Submit response should expose a privacy-safe delivery status');
 assert(submitHandler.includes('replyTo: contactActions.contactEmail'), 'Starter plan email should be directly replyable');
 assert(!starterPage.includes('name="country"'), 'Starter contact form should not request country');
+assert(!starterPage.includes('name="whatsapp"'), 'Starter contact form should label the visitor field as phone instead of WhatsApp');
+assert(qrCardPage.includes('data-language-menu'), 'QR card should use the mobile ten-language menu');
+assert.strictEqual((qrCardPage.match(/data-starter-language-option/g) || []).length, 10, 'QR card should show ten language choices');
+assert(qrCardPage.includes('https://wa.me/447508497586?text='), 'QR card should provide direct WhatsApp contact');
+assert.strictEqual((qrCardPage.match(/data-qr-contact="whatsapp"/g) || []).length, 1, 'QR card should show WhatsApp only once below the coach bio');
+assert(!qrCardPage.includes('starter-direct-chat'), 'QR card should not repeat WhatsApp beside the main plan CTA');
+assert(qrCardPage.includes('https://www.instagram.com/garciabuilder.fitness'), 'QR card should provide the coach Instagram link');
+assert(qrCardPage.includes('name="preferred_contact_method"'), 'QR card should collect the preferred reply channel');
+assert(starterCardLocales.includes("supported = ['en', 'pt', 'es', 'fr', 'it', 'de', 'pl', 'ro', 'ar', 'ru']"), 'QR card locale bundle should declare all ten languages');
+assert(starterPlanLocales.includes("fr: define('fr'"), 'Starter plan locale bundle should include French');
+assert(starterPlanLocales.includes("ar: define('ar'"), 'Starter plan locale bundle should include Arabic');
+assert(resultPage.includes('/js/starter-plan-locales.js'), 'Result page should load the ten-language plan bundle');
+assert.strictEqual((resultPage.match(/<option value=/g) || []).length, 10, 'Card result page should expose all ten language choices');
 assert(!starterSmoke.includes("  'desired_result',"), 'Production smoke test should use the seven-question assessment');
 assert(!starterSmoke.includes('STARTER_ASSESSMENT_TEST_COUNTRY'), 'Production smoke test should not require country');
 assert(starterSmoke.includes('STARTER_ASSESSMENT_TEST_LANGUAGE'), 'Production smoke test should verify assessment language');
@@ -266,6 +344,7 @@ assert(resultClient.includes('primary_recommendation_cta_clicked'), 'Result page
 assert(resultClient.includes('payload.recommendation.supportCTA'), 'Result page should render the recommended CTA label');
 assert(starterMigration.includes("add column if not exists language text not null default 'en'"), 'Migration should add assessment language');
 assert(starterMigration.includes('alter column country drop not null'), 'Migration should remove the legacy country requirement');
+assert(fs.readFileSync(path.join(migrationDirectory, '20260723120000_starter_assessment_contact_fields.sql'), 'utf8').includes('add column if not exists phone text'), 'Contact field migration should add phone');
 
 function withEnv(overrides, callback) {
   const keys = [

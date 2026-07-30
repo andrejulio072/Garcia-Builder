@@ -7,12 +7,20 @@ const workoutsHtml = fs.readFileSync(path.join(root, 'workouts.html'), 'utf8');
 const workoutsJs = fs.readFileSync(path.join(root, 'js', 'workouts.js'), 'utf8');
 const workoutsCss = fs.readFileSync(path.join(root, 'css', 'workouts.css'), 'utf8');
 
-const cardTitles = Array.from(workoutsHtml.matchAll(/<article class="workout-card"[\s\S]*?<h3>([^<]+)<\/h3>/g))
+const staticCardTitles = Array.from(workoutsHtml.matchAll(/<article class="workout-card"[\s\S]*?<h3>([^<]+)<\/h3>/g))
   .map((match) => match[1].trim());
+const additionalSourceStart = workoutsJs.indexOf('const additionalTemplateRows = [');
+const additionalSourceEnd = workoutsJs.indexOf('const workoutGrid =', additionalSourceStart);
+assert.notStrictEqual(additionalSourceStart, -1, 'Additional workout template source should exist');
+assert.notStrictEqual(additionalSourceEnd, -1, 'Additional workout template source should end before grid hydration');
+const additionalSource = workoutsJs.slice(additionalSourceStart, additionalSourceEnd);
+const additionalCardTitles = Array.from(additionalSource.matchAll(/^\s*\['([^']+)',/gm))
+  .map((match) => match[1].trim());
+const cardTitles = [...staticCardTitles, ...additionalCardTitles];
 
 assert(
-  cardTitles.length >= 52,
-  'Workout library should expose all current and future printable workout cards'
+  cardTitles.length >= 72,
+  'Workout library should expose all 72 current printable workout cards'
 );
 
 const planSourceStart = workoutsJs.indexOf('const workoutPlans = {');

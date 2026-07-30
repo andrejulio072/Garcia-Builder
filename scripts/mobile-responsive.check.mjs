@@ -44,7 +44,7 @@ try {
 
       if (route.kind === 'workouts') {
         const cardCount = await page.locator('.workout-card').count();
-        assert(cardCount >= 52, 'Workout library should expose every current template');
+        assert(cardCount >= 72, 'Workout library should expose all 72 current templates');
 
         const initialUrl = page.url();
         await page.locator('[data-browse-templates]').click();

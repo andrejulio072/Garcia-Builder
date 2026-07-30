@@ -1830,6 +1830,7 @@
   const noResults = document.getElementById('no-results');
   const clearFilters = document.getElementById('clear-workout-filters');
   const workoutGrid = document.getElementById('workout-grid');
+  const browseLinks = Array.from(document.querySelectorAll('[data-browse-templates]'));
   const jumpLinks = Array.from(document.querySelectorAll('[data-jump-filter]'));
   const projectLinks = Array.from(document.querySelectorAll('[data-project-filter]'));
   let modalTrigger = null;
@@ -2160,6 +2161,14 @@
 
   search?.addEventListener('input', applyFilters);
   clearFilters?.addEventListener('click', resetFilters);
+
+  browseLinks.forEach((link) => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      search?.scrollIntoView({ behavior: 'auto', block: 'center' });
+      search?.focus({ preventScroll: true });
+    });
+  });
 
   jumpLinks.forEach((link) => {
     link.addEventListener('click', (event) => {

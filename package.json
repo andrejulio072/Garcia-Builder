@@ -11,6 +11,7 @@
     "test:links": "node scripts/link-integrity.check.js",
     "test:auth": "node scripts/auth-login-register.check.js",
     "test:starter-assessment:smoke": "node scripts/starter-assessment-smoke.mjs",
+    "test:mobile-responsive": "node scripts/mobile-responsive.check.mjs",
     "test:nutrition-endpoint": "node scripts/nutrition-calculator-endpoint.check.js",
     "test:package-ctas": "node scripts/package-cta-contract.check.js",
     "test:e2e:user-area:live": "node scripts/live-user-area.e2e.mjs",

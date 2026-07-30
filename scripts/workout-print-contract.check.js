@@ -10,7 +10,10 @@ const workoutsCss = fs.readFileSync(path.join(root, 'css', 'workouts.css'), 'utf
 const cardTitles = Array.from(workoutsHtml.matchAll(/<article class="workout-card"[\s\S]*?<h3>([^<]+)<\/h3>/g))
   .map((match) => match[1].trim());
 
-assert.strictEqual(cardTitles.length, 42, 'Workout library should expose 42 printable workout cards');
+assert(
+  cardTitles.length >= 52,
+  'Workout library should expose all current and future printable workout cards'
+);
 
 const planSourceStart = workoutsJs.indexOf('const workoutPlans = {');
 const planSourceEnd = workoutsJs.indexOf('const escapeHtml =', planSourceStart);

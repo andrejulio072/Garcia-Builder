@@ -227,6 +227,10 @@
       "destination": "/terms.html"
     },
     {
+      "source": "/cookie-policy",
+      "destination": "/cookie-policy.html"
+    },
+    {
       "source": "/thanks-ebook.html",
       "destination": "/pages/public/thanks-ebook.html"
     },

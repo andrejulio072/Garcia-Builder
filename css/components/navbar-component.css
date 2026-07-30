@@ -107,6 +107,28 @@
     display: none;
 }
 
+.gb-navbar-link--assessment {
+    color: #f6c84e;
+    padding: 8px 12px;
+    border-radius: 9px;
+    border: 1px solid rgba(246, 200, 78, 0.58);
+    background: rgba(246, 200, 78, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(246, 200, 78, 0.14);
+}
+
+.gb-navbar-link--assessment:hover,
+.gb-navbar-link--assessment:focus,
+.gb-navbar-link--assessment.active {
+    color: #111827;
+    border-color: #f6c84e;
+    background: linear-gradient(135deg, #f6c84e, #ffcf59);
+    box-shadow: 0 10px 24px rgba(246, 200, 78, 0.24);
+}
+
+.gb-navbar-link--assessment::after {
+    display: none;
+}
+
 .gb-navbar-actions {
     display: inline-flex;
     align-items: center;
@@ -707,6 +729,22 @@
 
 .gb-menu-link--cta:hover,
 .gb-menu-link--cta:focus {
+    color: #090c12;
+    border-color: #ffda71;
+    background: linear-gradient(135deg, #ffda71, #F6C84E);
+}
+
+.gb-menu-link--assessment,
+.gb-menu-link--assessment.active {
+    color: #f6c84e;
+    border-color: rgba(246, 200, 78, 0.7);
+    background: rgba(246, 200, 78, 0.12);
+    box-shadow: 0 8px 20px rgba(246, 200, 78, 0.16);
+    font-weight: 800;
+}
+
+.gb-menu-link--assessment:hover,
+.gb-menu-link--assessment:focus {
     color: #090c12;
     border-color: #ffda71;
     background: linear-gradient(135deg, #ffda71, #F6C84E);

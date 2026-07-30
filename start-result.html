@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Your Starter Plan | Garcia Builder Fitness</title>
   <meta name="robots" content="noindex, follow">
-  <link rel="stylesheet" href="/css/starter-assessment.css?v=20260730-ten-language-results">
-  <script src="/js/starter-tracking-bootstrap.js?v=20260720-result-links"></script>
-  <script src="/js/starter-card-locales.js?v=20260730-ten-language-results" defer></script>
-  <script src="/js/starter-plan-locales.js?v=20260730-ten-language-results" defer></script>
-  <script src="/js/starter-locales.js?v=20260730-ten-language-results" defer></script>
-  <script src="/js/starter-result.js?v=20260730-ten-language-results" defer></script>
+  <link rel="stylesheet" href="/css/starter-assessment.css?v=20260728-footer-links-v8">
+  <script src="/js/starter-tracking-bootstrap.js?v=20260728-footer-links-v8"></script>
+  <script src="/js/starter-locales-expanded.js?v=20260728-footer-links-v8" defer></script>
+  <script src="/js/starter-locales.js?v=20260728-footer-links-v8" defer></script>
+  <script src="/js/starter-result.js?v=20260728-footer-links-v8" defer></script>
 </head>
 <body class="starter-page result-page">
   <a class="skip-link" href="#result-root" data-starter-copy="skipResult">Skip to result</a>
@@ -21,33 +20,52 @@
     <label class="starter-language">
       <span data-starter-copy="languageLabel">Language</span>
       <select data-starter-language aria-label="Result language">
-        <option value="en">EN</option>
-        <option value="pt">PT</option>
-        <option value="es">ES</option>
-        <option value="fr">FR</option>
-        <option value="it">IT</option>
-        <option value="de">DE</option>
-        <option value="pl">PL</option>
-        <option value="ro">RO</option>
-        <option value="ar">AR</option>
-        <option value="ru">RU</option>
+        <option value="en">EN · English</option>
+        <option value="pt">PT · Português</option>
+        <option value="es">ES · Español</option>
+        <option value="fr">FR · Français</option>
+        <option value="de">DE · Deutsch</option>
+        <option value="it">IT · Italiano</option>
+        <option value="nl">NL · Nederlands</option>
+        <option value="pl">PL · Polski</option>
+        <option value="ro">RO · Română</option>
+        <option value="ru">RU · Русский</option>
       </select>
     </label>
   </header>
 
   <main class="starter-shell result-shell" id="result-root">
     <section class="result-panel" data-result-panel aria-live="polite">
-      <p class="starter-eyebrow" data-starter-copy="resultEyebrow">YOUR STARTER ASSESSMENT RESULT</p>
-      <h1 data-result-title data-starter-copy="resultTitleLoading">Loading your result...</h1>
-      <p class="starter-copy" data-result-summary data-starter-copy="resultSummaryLoading">Please wait while we open your recommended starting plan.</p>
+      <div class="result-ambient" aria-hidden="true"></div>
+      <div class="result-reveal-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path d="m7 16 6 6L26 9"/></svg>
+      </div>
+      <div class="result-opening">
+        <p class="starter-eyebrow" data-starter-copy="resultEyebrow">YOUR STARTER ASSESSMENT RESULT</p>
+        <h1 data-result-title data-starter-copy="resultTitleLoading">Loading your result...</h1>
+        <p class="starter-copy" data-result-summary data-starter-copy="resultSummaryLoading">Please wait while we open your recommended starting plan.</p>
+      </div>
       <aside class="recommended-action" data-primary-action hidden>
         <p class="recommended-action-label" data-starter-copy="recommendedNextStep">Recommended next step</p>
         <a class="starter-primary" data-primary-action-link href="#"></a>
       </aside>
       <div class="delivery-notice" data-delivery-notice role="status" hidden></div>
-      <div class="resource-grid" data-resource-grid hidden></div>
+      <div data-plan-mount></div>
+      <section class="result-resources" data-resource-section hidden aria-labelledby="result-resources-title">
+        <div class="result-section-heading">
+          <p class="starter-eyebrow" data-starter-copy="resultResourcesEyebrow">KEEP BUILDING</p>
+          <h2 id="result-resources-title" data-starter-copy="resultResourcesTitle">Your next useful tools</h2>
+        </div>
+        <div class="resource-grid" data-resource-grid></div>
+      </section>
       <div class="warm-lead-box" data-warm-section hidden>
-        <h2 data-starter-copy="resultHelpTitle">Your answers suggest that structure and accountability may be more valuable than another generic plan.</h2>
+        <div class="result-coach">
+          <img src="/assets/images/about/about1.jpg" alt="Andre Garcia, Personal Trainer and Online Coach" width="96" height="96" loading="lazy" decoding="async">
+          <div>
+            <p class="coach-authority-label" data-starter-copy="coachAuthorityLabel">YOUR COACH</p>
+            <h2 data-starter-copy="resultHelpTitle">Your answers suggest that structure and accountability may be more valuable than another generic plan.</h2>
+          </div>
+        </div>
         <p data-starter-copy="resultHelpCopy">A tailored Garcia Builder coaching plan can be built around your schedule, training environment, experience, nutrition preferences and specific goal.</p>
         <div class="result-actions" data-contact-actions></div>
       </div>

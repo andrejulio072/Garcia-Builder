@@ -24,7 +24,6 @@ const { buildWhatsappMessage, buildWhatsappUrl } = require('../lib/starter-asses
 const { BREVO_API_URL, DEFAULT_EMAIL_TIMEOUT_MS, getEmailTimeoutMs, sendTransactionalEmail } = require('../lib/starter-assessment/email.cjs');
 const { buildContactActions, getContactEmail } = require('../lib/starter-assessment/contact-actions.cjs');
 const { isAllowedOrigin } = require('../lib/starter-assessment/origin.cjs');
-const { buildResultEmail } = require('../lib/starter-assessment/submit-handler.cjs');
 const starterI18n = require('../js/starter-locales.js');
 
 const baseAnswers = {
@@ -40,12 +39,9 @@ const baseAnswers = {
 
 const baseContact = {
   first_name: ' Andre ',
-  last_name: 'Garcia',
   email: 'ANDRE@example.COM',
-  phone: '+353871234567',
-  instagram: 'https://instagram.com/andre.garcia',
-  preferred_contact_method: 'whatsapp',
   country: 'Ireland',
+  whatsapp: '',
   age_confirmed: true,
   resource_delivery_acknowledgement: true,
   marketing_email_consent: false,
@@ -129,28 +125,74 @@ const validSubmission = validateSubmission({
 });
 assert.strictEqual(validSubmission.ok, true);
 assert.strictEqual(validSubmission.contact.first_name, 'Andre');
-assert.strictEqual(validSubmission.contact.last_name, 'Garcia');
 assert.strictEqual(validSubmission.contact.email, 'andre@example.com');
-assert.strictEqual(validSubmission.contact.phone, '+353871234567');
-assert.strictEqual(validSubmission.contact.instagram, '@andre.garcia');
-assert.strictEqual(validSubmission.contact.preferred_contact_method, 'whatsapp');
 assert.strictEqual(validSubmission.contact.marketing_email_consent, false);
 assert.strictEqual(validSubmission.metadata.utm_source, 'business_card');
 
 assert.strictEqual(validateSubmission({ answers: { ...baseAnswers, primary_goal: 'Hack' }, contact: baseContact }).ok, false);
-assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, last_name: '' } }).ok, false);
 assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, email: 'bad' } }).ok, false);
 assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, resource_delivery_acknowledgement: false } }).ok, false);
-assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, phone: '0871234567' } }).ok, false);
-assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, preferred_contact_method: 'sms' } }).ok, false);
-assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: baseContact, language: 'fr' }).ok, true);
+assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, whatsapp: '0871234567' } }).ok, false);
 
 const metadata = validateMetadata({
   utm_source: ' qr ',
   unexpected: 'ignored'
 });
-assert.deepStrictEqual(Object.keys(metadata).sort(), ['landing_path', 'referrer', 'utm_campaign', 'utm_content', 'utm_medium', 'utm_source', 'utm_term'].sort());
+assert.deepStrictEqual(Object.keys(metadata).sort(), [
+  'entry_context',
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'utm_term',
+  'latest_utm_source',
+  'latest_utm_medium',
+  'latest_utm_campaign',
+  'latest_utm_content',
+  'latest_utm_term',
+  'gclid',
+  'gbraid',
+  'wbraid',
+  'fbclid',
+  'referrer',
+  'landing_path',
+  'landing_url',
+  'first_touch_at',
+  'latest_touch_at'
+].sort());
 assert.strictEqual(metadata.utm_source, 'qr');
+assert.strictEqual(metadata.entry_context, 'organic');
+
+const paidByLatestGoogle = validateMetadata({
+  utm_source: 'website',
+  utm_medium: 'organic',
+  latest_utm_source: 'google',
+  latest_utm_medium: 'cpc'
+});
+assert.strictEqual(paidByLatestGoogle.entry_context, 'paid');
+
+const paidByLatestMeta = validateMetadata({
+  latest_utm_source: 'meta',
+  latest_utm_medium: 'paid_social'
+});
+assert.strictEqual(paidByLatestMeta.entry_context, 'paid');
+
+const qrEntryContext = validateMetadata({
+  utm_source: 'business_card',
+  utm_medium: 'qr'
+});
+assert.strictEqual(qrEntryContext.entry_context, 'qr');
+
+const organicWebsite = validateMetadata({
+  utm_source: 'website',
+  utm_medium: 'organic'
+});
+assert.strictEqual(organicWebsite.entry_context, 'organic');
+
+const directAssessment = validateMetadata({
+  landing_path: '/assessment'
+});
+assert.strictEqual(directAssessment.entry_context, 'organic');
 
 const token = generateResultToken();
 assert(token.length >= 40);
@@ -206,55 +248,38 @@ assert(portugueseVisitor.starterPlan.training.sessions[0].work[0].includes('sér
 assert(spanishVisitor.starterPlan.training.sessions[0].work[0].includes('series'));
 assert.strictEqual(portugueseVisitor.starterPlan.nutrition.meals[0].meal, 'Pequeno-almoço');
 assert.strictEqual(spanishVisitor.starterPlan.nutrition.meals[0].meal, 'Desayuno');
-assert.deepStrictEqual(getPublicConfig().languages, ['en', 'pt', 'es', 'fr', 'it', 'de', 'pl', 'ro', 'ar', 'ru']);
+const supportedAssessmentLanguages = ['en', 'pt', 'es', 'fr', 'de', 'it', 'nl', 'pl', 'ro', 'ru'];
+assert.deepStrictEqual(getPublicConfig().languages, supportedAssessmentLanguages);
+for (const language of supportedAssessmentLanguages.slice(3)) {
+  assert.notStrictEqual(
+    starterI18n.translateText('What would you most like to achieve right now?', language),
+    'What would you most like to achieve right now?',
+    `${language} should translate the first assessment question`
+  );
+  assert.notStrictEqual(
+    starterI18n.translateText('Lose body fat', language),
+    'Lose body fat',
+    `${language} should translate assessment answers`
+  );
+  assert(starterI18n.getEmailCopy(language).subject, `${language} should provide localized assessment email copy`);
+  const visitor = toVisitorRecommendation(buildRecommendation(baseAnswers, baseContact, language), language);
+  assert(visitor.resultTitle, `${language} should produce a localized result title`);
+  assert(visitor.summary, `${language} should produce a localized recommendation summary`);
+  assert(visitor.starterPlan, `${language} should produce a starter plan without errors`);
+}
 assert(!Object.prototype.hasOwnProperty.call(getPublicConfig(), 'countries'));
-
-const extendedLanguages = ['fr', 'it', 'de', 'pl', 'ro', 'ar', 'ru'];
-extendedLanguages.forEach((language) => {
-  const recommendation = buildRecommendation(baseAnswers, baseContact, language);
-  const localizedVisitor = toVisitorRecommendation(recommendation, language);
-  const emailCopy = starterI18n.getEmailCopy(language);
-  assert.notStrictEqual(localizedVisitor.resultTitle, 'Fat-Loss and Body-Composition Starter Plan', `${language} result title should be localized`);
-  assert(!localizedVisitor.summary.startsWith('Based on your goal'), `${language} summary should be localized`);
-  assert.notStrictEqual(localizedVisitor.starterPlan.title, 'Your Practical Starter Plan', `${language} plan title should be localized`);
-  assert.notStrictEqual(localizedVisitor.starterPlan.training.title, 'Three-Day Full-Body Strength and Fat-Loss Template', `${language} training title should be localized`);
-  assert.notStrictEqual(localizedVisitor.starterPlan.nutrition.title, 'High-Protein Plate Builder', `${language} nutrition title should be localized`);
-  assert(localizedVisitor.starterPlan.training.sessions.every((session) => session.work.length > 0), `${language} sessions should include localized work`);
-  assert(localizedVisitor.starterPlan.nutrition.meals.every((item) => item.meal && item.example && item.purpose), `${language} meals should be complete`);
-  assert(localizedVisitor.resources.every((resource) => resource.description && resource.actionLabel), `${language} resources should be localized`);
-  assert.notStrictEqual(emailCopy.subject, 'Your Garcia Builder Starter Plan Is Ready', `${language} email subject should be localized`);
-  assert.strictEqual(emailCopy.actions.length, 3, `${language} email should include three localized actions`);
-
-  const email = buildResultEmail({
-    req: { headers: { host: 'www.garciabuilder.fitness', 'x-forwarded-proto': 'https' } },
-    contact: { ...baseContact, first_name: 'Test' },
-    answers: baseAnswers,
-    recommendation,
-    visitorRecommendation: localizedVisitor,
-    resultUrl: `https://www.garciabuilder.fitness/start/result/test-token?lang=${language}&source=card`,
-    contactActions: buildContactActions({}, { PUBLIC_SITE_URL: 'https://www.garciabuilder.fitness' }),
-    language
-  });
-  assert(email.html.includes(`lang="${language}"`), `${language} email should declare its language`);
-  assert(email.html.includes(emailCopy.ready), `${language} HTML email should include its localized heading`);
-  assert(email.text.includes(emailCopy.startHere.toUpperCase()), `${language} text email should include its localized quick start`);
-  if (language === 'ar') assert(email.html.includes('dir="rtl"'), 'Arabic email should render right-to-left');
-});
 
 const productionServer = fs.readFileSync(path.join(__dirname, '..', 'api', 'stripe-server-premium.js'), 'utf8');
 const vercelConfig = fs.readFileSync(path.join(__dirname, '..', 'vercel.json'), 'utf8');
-const parsedVercelConfig = JSON.parse(vercelConfig);
 const starterClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-assessment.js'), 'utf8');
-const assessmentPage = fs.readFileSync(path.join(__dirname, '..', 'assessment.html'), 'utf8');
+const starterContext = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-context.js'), 'utf8');
 const starterPage = fs.readFileSync(path.join(__dirname, '..', 'start.html'), 'utf8');
-const qrCardPage = fs.readFileSync(path.join(__dirname, '..', 'go', 'card', 'index.html'), 'utf8');
+const paidAssessmentPage = fs.readFileSync(path.join(__dirname, '..', 'assessment.html'), 'utf8');
+const homepage = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 const starterContactPage = fs.readFileSync(path.join(__dirname, '..', 'start-contact.html'), 'utf8');
 const resultClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-result.js'), 'utf8');
 const submitHandler = fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8');
 const starterLocales = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-locales.js'), 'utf8');
-const starterCardLocales = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-card-locales.js'), 'utf8');
-const starterPlanLocales = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-plan-locales.js'), 'utf8');
-const resultPage = fs.readFileSync(path.join(__dirname, '..', 'start-result.html'), 'utf8');
 const starterSmoke = fs.readFileSync(path.join(__dirname, 'starter-assessment-smoke.mjs'), 'utf8');
 const migrationDirectory = path.join(__dirname, '..', 'supabase', 'migrations');
 const starterMigrationFile = fs.readdirSync(migrationDirectory).find((file) => file.endsWith('_starter_assessment_funnel.sql'));
@@ -270,6 +295,7 @@ assert(
   'Starter assessment handlers must stay outside api/ and mount through stripe-server-premium.js'
 );
 [
+  "app.get('/assessment'",
   "app.get('/start'",
   "app.get('/start/contact'",
   "app.get('/start/result/:token'",
@@ -283,25 +309,32 @@ assert(
   );
 });
 assert(starterPage.includes('name="website"'), 'Starter form should keep the honeypot field');
+assert(starterPage.includes('/js/starter-context.js'), 'Starter page should load shared starter context script');
+assert(starterContext.includes('detectEntryContext'), 'Shared starter context should include entry-context classification');
 assert(starterPage.includes('data-start-assessment'), 'QR landing should keep the assessment start button');
-assert(starterPage.includes('name="last_name"'), 'Starter contact form should request last name');
-assert(starterPage.includes('name="phone"'), 'Starter contact form should request phone');
-assert(starterPage.includes('name="instagram"'), 'Starter contact form should request optional Instagram');
 assert(starterPage.includes('/packages.html?utm_source=business_card'), 'QR landing should link directly to packages');
 assert(starterPage.includes('/start-contact.html?utm_source=business_card'), 'QR landing should link to the direct contact page');
-assert(assessmentPage.includes('starter-hero-premium'), 'Assessment page should use the premium assessment structure');
-assert(assessmentPage.includes('coach-authority-card'), 'Assessment page should include the coach authority card');
-assert(assessmentPage.includes('starter-transformations-premium'), 'Assessment page should include premium transformation proof');
-assert(qrCardPage.includes('class="starter-page starter-page-paid starter-page-card"'), 'QR card page should use the premium mobile card shell');
-assert(qrCardPage.includes('data-start-assessment'), 'QR card page should render the assessment start button instead of a redirect-only shell');
-assert(qrCardPage.includes('starter-hero-premium'), 'QR card page should use the same premium structure as /assessment');
-assert(qrCardPage.includes('coach-authority-card'), 'QR card page should include the same coach authority card as /assessment');
-assert(qrCardPage.includes("utm_source: 'business_card'"), 'QR card page should default to business-card attribution');
-assert(qrCardPage.includes("utm_medium: 'qr'"), 'QR card page should default to QR attribution');
-assert(qrCardPage.includes("utm_campaign: 'starter_assessment'"), 'QR card page should default to the starter assessment campaign');
-assert(!(parsedVercelConfig.redirects || []).some((route) => route.source === '/go/card'), 'Vercel should not redirect the improved QR card page away');
-assert((parsedVercelConfig.rewrites || []).some((route) => route.source === '/assessment' && route.destination === '/assessment.html'), 'Vercel should serve assessment.html for /assessment');
-assert((parsedVercelConfig.rewrites || []).some((route) => route.source === '/go/card' && route.destination === '/go/card/index.html'), 'Vercel should serve go/card/index.html for /go/card');
+assert(paidAssessmentPage.includes('Get Your Free Personalised'), 'Paid assessment page should make the free personalised plan explicit');
+assert(paidAssessmentPage.includes('Fat-Loss Starter Plan'), 'Paid assessment page should keep offer-message match in the premium headline');
+assert(paidAssessmentPage.includes('ActiveIQ Level 3 PT'), 'Paid assessment page should include the compact coach credential strip');
+assert(paidAssessmentPage.includes('data-starter-entry-default="organic"'), 'Paid assessment path should classify organically unless paid attribution exists');
+assert(paidAssessmentPage.includes('name="robots" content="noindex, follow"'), 'Paid assessment should be noindex, follow');
+assert(!paidAssessmentPage.includes('data-qr-choice="packages"'), 'Paid assessment page should not include package pre-assessment choices');
+assert(!paidAssessmentPage.includes('data-qr-choice="contact"'), 'Paid assessment page should not include contact pre-assessment choices');
+assert(paidAssessmentPage.includes('name="date_of_birth"'), 'Paid assessment contact form should include date of birth for adult lead qualification');
+assert(paidAssessmentPage.includes('name="instagram_handle"'), 'Paid assessment contact form should include the optional Instagram/Facebook qualifier');
+assert(!paidAssessmentPage.includes('name="facebook_profile"'), 'Paid assessment contact form should not include Facebook pre-conversion');
+assert(!paidAssessmentPage.includes('name="preferred_contact_method"'), 'Paid assessment contact form should not include preferred contact pre-conversion');
+assert(!paidAssessmentPage.includes('name="best_contact_time"'), 'Paid assessment contact form should not include best contact time pre-conversion');
+assert.equal((paidAssessmentPage.match(/class="starter-transform-card"/g) || []).length, 3, 'Paid assessment should show three transformation proof cards');
+assert(homepage.includes('/assessment?utm_source=website&amp;utm_medium=organic&amp;utm_campaign=starter_assessment&amp;utm_content=site_assessment_cta'), 'Main website should include assessment CTA with organic UTM parameters');
+assert(paidAssessmentPage.includes('class="starter-page-return__link" href="/"'), 'Paid assessment should include a compact route back to the main website');
+assert(paidAssessmentPage.includes('data-starter-copy="returnToMainSite"'), 'Assessment return route should use localized copy');
+assert(homepage.includes('class="homepage-assessment-shortcut__link"'), 'Homepage should include a compact assessment shortcut near the footer');
+assert(homepage.includes('utm_content=homepage_footer_assessment'), 'Homepage footer assessment shortcut should preserve its own attribution');
+assert(paidAssessmentPage.includes('/cookie-policy'), 'Paid assessment page should expose cookie policy link');
+assert(paidAssessmentPage.includes('data-open-cookie-preferences'), 'Paid assessment page should expose cookie preferences action');
+assert(vercelConfig.includes('"source": "/assessment"'), 'Vercel should rewrite /assessment to paid landing page');
 assert(vercelConfig.includes('"source": "/start/contact"'), 'Vercel should rewrite /start/contact to the QR contact page');
 assert(vercelConfig.includes('"destination": "/start-contact.html"'), 'Vercel should serve start-contact.html for /start/contact');
 assert(starterContactPage.includes('https://wa.me/447508497586'), 'QR contact page should include Andre WhatsApp');
@@ -310,41 +343,94 @@ assert(starterContactPage.includes('https://calendly.com/andrenjulio072/consulta
 assert(starterContactPage.includes('mailto:inquiries@garciabuilder.fitness'), 'QR contact page should include inquiries email');
 assert(starterContactPage.includes('/packages.html?utm_source=business_card'), 'QR contact page should include package link');
 assert(starterContactPage.includes('/start.html?utm_source=business_card'), 'QR contact page should still link back to the assessment');
-assert(fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8').includes('SUBMISSION_WINDOW_MS'), 'Starter submit should keep duplicate-submission throttling');
+const submitHandlerSource = fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8');
+assert(submitHandlerSource.includes('SUBMISSION_WINDOW_MS'), 'Starter submit should keep duplicate-submission throttling');
+assert(submitHandlerSource.includes('<li>Age:'), 'Warm lead alert should calculate and display lead age');
+assert(submitHandlerSource.includes('Instagram/Facebook profile:'), 'Warm lead alert should label the combined social profile clearly');
 assert(starterClient.includes('resourceDelivery?.email'), 'Starter form should preserve the email delivery status before redirecting');
+assert(starterClient.includes('shouldTrackCanonicalSubmission(payload)'), 'Starter form should gate primary conversion to the canonical server response contract');
+assert(starterClient.includes('SUBMITTED_EVENT_GUARD_KEY'), 'Starter form should guard against duplicate assessment_submitted event ids per browser session');
+assert(starterClient.includes("track('assessment_submission_ignored'"), 'Honeypot responses should be handled without success redirect or conversion');
+assert(starterClient.includes('function renderError(message)'), 'Starter form should separate error rendering from event tracking');
+assert(starterClient.includes('function trackValidationError(field)'), 'Starter form should track validation separately from rendering');
+assert(!starterClient.includes('function showError('), 'Legacy combined showError tracking function should be removed');
+assert(starterClient.includes("status_category: classifyStatusCategory(error)"), 'Submission failure diagnostics should use normalized status categories');
+assert(starterClient.includes("return '4xx';") && starterClient.includes("return '5xx';") && starterClient.includes("return 'network';") && starterClient.includes("return 'unknown';"), 'Failure diagnostics should classify as 4xx, 5xx, network, unknown');
+
+const startedPayloadMatch = starterClient.match(/track\('assessment_submission_started',\s*\{([\s\S]*?)\}\);/);
+assert(startedPayloadMatch, 'assessment_submission_started payload should exist');
+assert(!startedPayloadMatch[1].includes('marketing_email_consent'), 'assessment_submission_started must not include email marketing consent');
+assert(!startedPayloadMatch[1].includes('marketing_whatsapp_consent'), 'assessment_submission_started must not include WhatsApp marketing consent');
+
+const submittedPayloadMatch = starterClient.match(/track\('assessment_submitted',\s*\{([\s\S]*?)\}\);/);
+assert(submittedPayloadMatch, 'assessment_submitted payload should exist');
+[
+  'full_name',
+  'first_name',
+  'email',
+  'whatsapp',
+  'date_of_birth',
+  'instagram_handle',
+  'facebook_profile',
+  'marketing_email_consent',
+  'marketing_whatsapp_consent',
+  'resultToken',
+  'lead_score',
+  'lead_id'
+].forEach((forbidden) => {
+  assert(!submittedPayloadMatch[1].includes(forbidden), `assessment_submitted payload must not include sensitive key: ${forbidden}`);
+});
+
+const ignoredBranchMatch = starterClient.match(/if \(payload\.ignored\) \{([\s\S]*?)return;/);
+assert(ignoredBranchMatch, 'Honeypot ignored branch should exist');
+assert(ignoredBranchMatch[1].includes("track('assessment_submission_ignored'"), 'Honeypot branch should track assessment_submission_ignored');
+assert(!ignoredBranchMatch[1].includes('assessment_validation_error'), 'Honeypot branch must not emit assessment_validation_error');
+
+const catchBlockMatch = starterClient.match(/catch \(error\) \{([\s\S]*?)\n\s*\}/);
+assert(catchBlockMatch, 'Submit catch block should exist');
+assert(catchBlockMatch[1].includes("track('assessment_submission_failed'"), 'API/network failures should emit assessment_submission_failed');
+assert(!catchBlockMatch[1].includes('assessment_validation_error'), 'API/network failures should not emit assessment_validation_error');
+
 assert(starterLocales.includes('Email sent. A copy of this workout and nutrition plan is on its way.'), 'Result page should confirm successful email delivery');
 assert(starterLocales.includes('Still building your plan.'), 'Result page should show slow-load feedback instead of looking stuck');
 assert(starterLocales.includes('Open workout exercise library'), 'Result plan should link directly to the workout library');
+assert(starterLocales.includes("viewPlans: 'View Coaching Plans'"), 'English locale should include viewPlans label');
+assert(starterLocales.includes("viewPlans: 'Ver Planos de Acompanhamento'"), 'Portuguese locale should include viewPlans label');
+assert(starterLocales.includes("viewPlans: 'Ver Planes de Coaching'"), 'Spanish locale should include viewPlans label');
+assert.strictEqual(starterI18n.ui('returnToMainSite', 'en'), 'Back to Garcia Builder Fitness');
+assert.strictEqual(starterI18n.ui('returnToMainSite', 'pt'), 'Voltar ao site Garcia Builder Fitness');
+assert.strictEqual(starterI18n.ui('returnToMainSite', 'es'), 'Volver al sitio Garcia Builder Fitness');
 assert(resultClient.includes('isExternalUrl(resource.url)'), 'Result resource links should distinguish internal and external destinations');
 assert(resultClient.includes('isDownloadUrl(resource.url)'), 'Result resource links should explicitly mark downloadable resources');
+assert(resultClient.includes("plansLink.textContent = copy('viewPlans')"), 'Result page plans action should use localized copy');
+assert(resultClient.includes("track('contact_click'"), 'Result page contact actions should emit contact_click without contact data');
+assert(resultClient.includes("track('view_plans_click'"), 'Result page plans action should emit view_plans_click');
+assert(resultClient.includes('/packages.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=view_plans'), 'Result page should preserve attribution when linking to coaching plans');
+assert(resultClient.includes('/workouts.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=workout_library'), 'Result page should include workout tools link with attribution');
+assert(resultClient.includes('/nutrition-calculator.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=nutrition_calculator'), 'Result page should include nutrition calculator link with attribution');
 assert(!resultClient.includes("link.target = '_blank';\n      link.rel = 'noopener';"), 'Result resource links should not force every internal resource into a new tab');
 assert(!JSON.stringify(visitor.resources).includes('/blog-'), 'Assessment result resources should not hand users off to blog posts');
 assert(submitHandler.includes('emailCopy.startHere'), 'Result email should lead with a localized actionable quick start');
 assert(submitHandler.includes("emailDelivery.status === 'sent' ? 'sent' : 'not_sent'"), 'Submit response should expose a privacy-safe delivery status');
+assert(submitHandler.includes('leadSaved: true'), 'Submit response should declare leadSaved for successful inserts');
+assert(submitHandler.includes('isNewLead: true'), 'Submit response should identify successful new leads');
+assert(submitHandler.includes('deduplicated: true'), 'Submit response should identify repeated submissions as deduplicated');
+assert(submitHandler.includes('ignored: true'), 'Submit response should return ignored=true for honeypot requests');
 assert(submitHandler.includes('replyTo: contactActions.contactEmail'), 'Starter plan email should be directly replyable');
+assert(submitHandler.includes("starterI18n.ui('viewPlans', language)"), 'Starter result email should use localized viewPlans copy');
+assert(starterContext.includes('const hasStoredFirstTouch = Boolean('), 'Starter context should detect existing first-touch state before writing attribution');
+assert(starterContext.includes('first_touch: firstTouch'), 'Stored first-touch payload should remain immutable after first capture');
+assert(starterContext.includes('utm_source: first.utm_source || null'), 'Submitted metadata should map utm_* to first-touch attribution');
+assert(starterContext.includes('latest_utm_source: latest.utm_source || null'), 'Submitted metadata should preserve latest-touch attribution in latest_utm_* fields');
 assert(!starterPage.includes('name="country"'), 'Starter contact form should not request country');
-assert(!starterPage.includes('name="whatsapp"'), 'Starter contact form should label the visitor field as phone instead of WhatsApp');
-assert(qrCardPage.includes('data-language-menu'), 'QR card should use the mobile ten-language menu');
-assert.strictEqual((qrCardPage.match(/data-starter-language-option/g) || []).length, 10, 'QR card should show ten language choices');
-assert(qrCardPage.includes('https://wa.me/447508497586?text='), 'QR card should provide direct WhatsApp contact');
-assert.strictEqual((qrCardPage.match(/data-qr-contact="whatsapp"/g) || []).length, 1, 'QR card should show WhatsApp only once below the coach bio');
-assert(!qrCardPage.includes('starter-direct-chat'), 'QR card should not repeat WhatsApp beside the main plan CTA');
-assert(qrCardPage.includes('https://www.instagram.com/garciabuilder.fitness'), 'QR card should provide the coach Instagram link');
-assert(qrCardPage.includes('name="preferred_contact_method"'), 'QR card should collect the preferred reply channel');
-assert(starterCardLocales.includes("supported = ['en', 'pt', 'es', 'fr', 'it', 'de', 'pl', 'ro', 'ar', 'ru']"), 'QR card locale bundle should declare all ten languages');
-assert(starterPlanLocales.includes("fr: define('fr'"), 'Starter plan locale bundle should include French');
-assert(starterPlanLocales.includes("ar: define('ar'"), 'Starter plan locale bundle should include Arabic');
-assert(resultPage.includes('/js/starter-plan-locales.js'), 'Result page should load the ten-language plan bundle');
-assert.strictEqual((resultPage.match(/<option value=/g) || []).length, 10, 'Card result page should expose all ten language choices');
 assert(!starterSmoke.includes("  'desired_result',"), 'Production smoke test should use the seven-question assessment');
 assert(!starterSmoke.includes('STARTER_ASSESSMENT_TEST_COUNTRY'), 'Production smoke test should not require country');
 assert(starterSmoke.includes('STARTER_ASSESSMENT_TEST_LANGUAGE'), 'Production smoke test should verify assessment language');
 assert(submitHandler.includes('await sideEffectsPromise;'), 'Serverless handler should await lead side effects before responding');
 assert(resultClient.includes('primary_recommendation_cta_clicked'), 'Result page should track the personalized primary CTA');
-assert(resultClient.includes('payload.recommendation.supportCTA'), 'Result page should render the recommended CTA label');
+assert(resultClient.includes("primaryActionLink.textContent = copy('downloadGuide')"), 'Result page should keep guide download as the primary CTA');
 assert(starterMigration.includes("add column if not exists language text not null default 'en'"), 'Migration should add assessment language');
 assert(starterMigration.includes('alter column country drop not null'), 'Migration should remove the legacy country requirement');
-assert(fs.readFileSync(path.join(migrationDirectory, '20260723120000_starter_assessment_contact_fields.sql'), 'utf8').includes('add column if not exists phone text'), 'Contact field migration should add phone');
 
 function withEnv(overrides, callback) {
   const keys = [

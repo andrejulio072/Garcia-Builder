@@ -11,16 +11,24 @@
   const STORAGE_KEY = 'gb_starter_assessment_answers';
   const META_KEY = 'gb_starter_assessment_meta';
   const DELIVERY_KEY_PREFIX = 'gb_starter_delivery_';
+  const SUBMITTED_EVENT_GUARD_KEY = 'gb_assessment_submitted_event_ids_v1';
+  const pageMode = document.body?.dataset?.starterPageMode || 'qr';
+  const defaultEntryContext = document.body?.dataset?.starterEntryDefault || 'organic';
   const i18n = window.GB_STARTER_I18N;
   const state = {
     step: -1,
     answers: {},
     language: i18n?.getBrowserLanguage?.() || 'en',
     advanceTimer: null,
-    contactTracked: false
+    transitionDirection: 'forward',
+    contactTracked: false,
+    entryContext: defaultEntryContext,
+    submitted: false,
+    campaignKey: ''
   };
 
   const $ = (selector) => document.querySelector(selector);
+  const shell = $('#assessment-root');
   const hero = $('#starter-hero');
   const card = $('[data-assessment-card]');
   const form = $('#starter-assessment-form');
@@ -31,14 +39,30 @@
   const progressLabel = $('[data-progress-label]');
   const progressPercent = $('[data-progress-percent]');
   const progressBar = $('[data-progress-bar]');
+  const progressTrack = $('[data-progress-track]');
+  const progressSegments = Array.from(document.querySelectorAll('[data-progress-segments] li'));
+  const progressEncouragement = $('[data-progress-encouragement]');
   const backButton = $('[data-back-button]');
   const submitButton = $('[data-submit-button]');
   const errorSummary = $('[data-error-summary]');
-  const phoneInput = $('[name="phone"]');
+  const whatsappInput = $('[name="whatsapp"]');
   const whatsappConsent = $('[data-whatsapp-consent]');
+  const dobInput = $('[name="date_of_birth"]');
+
+  const PAID_COPY_FALLBACK = {
+    heroTrustPaid: 'heroTrust',
+    disclaimerPaid: 'disclaimer'
+  };
 
   function copy(key, variables) {
-    return i18n?.ui?.(key, state.language, variables) || key;
+    const value = i18n?.ui?.(key, state.language, variables);
+    if (value && value !== key) return value;
+    const fallbackKey = PAID_COPY_FALLBACK[key];
+    if (fallbackKey) {
+      const fallback = i18n?.ui?.(fallbackKey, state.language, variables);
+      if (fallback && fallback !== fallbackKey) return fallback;
+    }
+    return key;
   }
 
   function translated(value) {
@@ -46,7 +70,13 @@
   }
 
   function track(eventName, properties) {
-    const safeProperties = { language: state.language, ...(properties || {}) };
+    const safeProperties = {
+      language: state.language,
+      entry_context: state.entryContext,
+      page_mode: pageMode,
+      page_path: window.location.pathname,
+      ...(properties || {})
+    };
     if (window.GB_TRACKING?.trackEvent) {
       window.GB_TRACKING.trackEvent(eventName, safeProperties);
       return;
@@ -57,38 +87,54 @@
 
   function getMeta() {
     try {
-      const existing = JSON.parse(sessionStorage.getItem(META_KEY) || '{}');
-      const params = new URLSearchParams(window.location.search);
-      const attribution = window.GB_TRACKING?.getAttribution?.() || {};
+      const existing = JSON.parse(sessionStorage.getItem(META_KEY) || '{}') || {};
+      const captured = window.GB_STARTER_CONTEXT?.getMetadata
+        ? window.GB_STARTER_CONTEXT.getMetadata(defaultEntryContext)
+        : {
+            entry_context: defaultEntryContext,
+            landing_path: window.location.pathname,
+            landing_url: window.location.href,
+            referrer: document.referrer || null
+          };
       const meta = {
-        utm_source: params.get('utm_source') || attribution.utm_source || existing.utm_source || '',
-        utm_medium: params.get('utm_medium') || attribution.utm_medium || existing.utm_medium || '',
-        utm_campaign: params.get('utm_campaign') || attribution.utm_campaign || existing.utm_campaign || '',
-        utm_content: params.get('utm_content') || attribution.utm_content || existing.utm_content || '',
-        utm_term: params.get('utm_term') || attribution.utm_term || existing.utm_term || '',
-        referrer: existing.referrer || document.referrer || '',
-        landing_path: existing.landing_path || window.location.pathname
+        ...existing,
+        ...captured
       };
+      state.entryContext = meta.entry_context || defaultEntryContext;
+      state.campaignKey = [meta.entry_context, meta.utm_source, meta.utm_medium, meta.utm_campaign, meta.landing_path]
+        .map((value) => String(value || ''))
+        .join('|');
       sessionStorage.setItem(META_KEY, JSON.stringify(meta));
       return meta;
     } catch {
-      return { landing_path: window.location.pathname };
+      return { entry_context: defaultEntryContext, landing_path: window.location.pathname };
     }
   }
 
   function saveAnswers() {
-    try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state.answers)); } catch (_) {}
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+        campaignKey: state.campaignKey,
+        answers: state.answers
+      }));
+    } catch (_) {}
   }
 
   function restoreAnswers() {
     try {
-      state.answers = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}') || {};
+      const raw = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}') || {};
+      const answers = raw.answers && typeof raw.answers === 'object' ? raw.answers : raw;
+      const storedCampaignKey = raw.campaignKey || '';
+      state.answers = storedCampaignKey && state.campaignKey && storedCampaignKey !== state.campaignKey
+        ? {}
+        : (answers || {});
     } catch {
       state.answers = {};
     }
   }
 
-  function showError(message, field) {
+  function renderError(message) {
+    const field = arguments[1];
     const visibleContact = !contactStep.hidden;
     if (visibleContact) {
       contactStep.insertBefore(errorSummary, contactStep.querySelector('.field-grid'));
@@ -97,7 +143,15 @@
     }
     errorSummary.textContent = message;
     errorSummary.hidden = false;
+    if (field) {
+      const input = form?.elements?.namedItem?.(field);
+      if (input?.setAttribute) input.setAttribute('aria-invalid', 'true');
+    }
     errorSummary.focus();
+  }
+
+  function trackValidationError(field) {
+    const visibleContact = !contactStep.hidden;
     track('assessment_validation_error', {
       stage: visibleContact ? 'contact' : 'question',
       field: field || (visibleContact ? 'contact' : QUESTIONS[state.step]?.[0])
@@ -107,6 +161,7 @@
   function clearError() {
     errorSummary.hidden = true;
     errorSummary.textContent = '';
+    form?.querySelectorAll('[aria-invalid="true"]').forEach((field) => field.removeAttribute('aria-invalid'));
   }
 
   function setProgress() {
@@ -118,10 +173,40 @@
       : copy('contactProgress');
     progressPercent.textContent = `${percent}%`;
     progressBar.style.width = `${percent}%`;
+    if (progressTrack) {
+      progressTrack.setAttribute('aria-valuenow', String(percent));
+      progressTrack.setAttribute('aria-valuetext', progressLabel.textContent);
+    }
+    progressSegments.forEach((segment, index) => {
+      segment.classList.toggle('is-complete', index < current - 1);
+      segment.classList.toggle('is-active', index === current - 1);
+    });
+    if (progressEncouragement) {
+      progressEncouragement.hidden = state.step < 5 || state.step >= QUESTIONS.length;
+    }
+  }
+
+  function prefersReducedMotion() {
+    return Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
+  }
+
+  function stageFocusDelay() {
+    return prefersReducedMotion() ? 0 : 230;
+  }
+
+  function restartStageAnimation(element) {
+    if (!element || prefersReducedMotion()) return;
+    element.classList.remove('is-stage-entering');
+    element.dataset.transitionDirection = state.transitionDirection;
+    requestAnimationFrame(() => {
+      element.classList.add('is-stage-entering');
+      element.addEventListener('animationend', () => element.classList.remove('is-stage-entering'), { once: true });
+    });
   }
 
   function moveToNextQuestion() {
     state.advanceTimer = null;
+    state.transitionDirection = 'forward';
     state.step += 1;
     render();
   }
@@ -135,15 +220,29 @@
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'option-card';
-      button.textContent = translated(option);
+      const marker = document.createElement('span');
+      marker.className = 'option-marker';
+      marker.setAttribute('aria-hidden', 'true');
+      marker.textContent = String(index + 1).padStart(2, '0');
+      const label = document.createElement('span');
+      label.className = 'option-label';
+      label.textContent = translated(option);
+      const check = document.createElement('span');
+      check.className = 'option-check';
+      check.setAttribute('aria-hidden', 'true');
+      check.innerHTML = '<svg viewBox="0 0 20 20"><path d="m4 10 4 4 8-9"/></svg>';
+      button.append(marker, label, check);
       button.setAttribute('aria-pressed', state.answers[id] === option ? 'true' : 'false');
       button.addEventListener('click', () => {
         if (state.advanceTimer) clearTimeout(state.advanceTimer);
+        if (button.disabled) return;
         state.answers[id] = option;
         saveAnswers();
         optionGrid.querySelectorAll('.option-card').forEach((item) => {
           item.disabled = true;
           item.setAttribute('aria-pressed', item === button ? 'true' : 'false');
+          item.classList.toggle('is-confirmed', item === button);
+          item.classList.toggle('is-muted', item !== button);
         });
         track('assessment_step_completed', {
           question_id: id,
@@ -155,13 +254,14 @@
       if (index === 0) button.dataset.firstOption = 'true';
       optionGrid.appendChild(button);
     });
+    restartStageAnimation(questionStep);
     track('assessment_question_viewed', { question_id: id, question_number: state.step + 1 });
   }
 
   function syncWhatsappConsent() {
-    const hasPhone = Boolean(String(phoneInput?.value || '').trim());
-    if (whatsappConsent) whatsappConsent.hidden = !hasPhone;
-    if (!hasPhone) {
+    const hasWhatsapp = Boolean(String(whatsappInput?.value || '').trim());
+    if (whatsappConsent) whatsappConsent.hidden = !hasWhatsapp;
+    if (!hasWhatsapp) {
       const checkbox = whatsappConsent?.querySelector('input');
       if (checkbox) checkbox.checked = false;
     }
@@ -177,38 +277,49 @@
     backButton.hidden = state.step <= 0;
 
     if (isContact) {
+      restartStageAnimation(contactStep);
       syncWhatsappConsent();
       if (!state.contactTracked) {
         track('assessment_contact_viewed', { completed_questions: QUESTIONS.length });
         state.contactTracked = true;
       }
-      setTimeout(() => $('[name="first_name"]')?.focus(), 0);
+      setTimeout(() => $('[name="full_name"]')?.focus(), stageFocusDelay());
     } else {
       renderQuestion();
-      setTimeout(() => $('[data-first-option]')?.focus(), 0);
+      setTimeout(() => $('[data-first-option]')?.focus(), stageFocusDelay());
     }
   }
 
   function startAssessment() {
+    getMeta();
     restoreAnswers();
     const unansweredIndex = QUESTIONS.findIndex(([id]) => !state.answers[id]);
     state.step = unansweredIndex === -1 ? QUESTIONS.length : unansweredIndex;
-    hero.hidden = true;
     card.hidden = false;
+    shell?.classList.add('is-assessment-active');
+    hero?.classList.add('is-hero-exiting');
+    card.classList.add('is-assessment-entering');
+    setTimeout(() => {
+      hero.hidden = true;
+      hero.classList.remove('is-hero-exiting');
+      card.classList.remove('is-assessment-entering');
+      card.scrollIntoView({ block: 'start', behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+    }, prefersReducedMotion() ? 0 : 300);
     track('assessment_started', { resumed: Object.keys(state.answers).length > 0 });
     render();
-    card.scrollIntoView({ block: 'start', behavior: 'auto' });
   }
 
   function collectContact() {
     const data = new FormData(form);
     return {
-      first_name: String(data.get('first_name') || '').trim(),
-      last_name: String(data.get('last_name') || '').trim(),
+      full_name: String(data.get('full_name') || '').trim(),
+      date_of_birth: String(data.get('date_of_birth') || '').trim(),
       email: String(data.get('email') || '').trim(),
-      phone: String(data.get('phone') || '').trim(),
-      instagram: String(data.get('instagram') || '').trim(),
+      whatsapp: String(data.get('whatsapp') || '').trim(),
+      instagram_handle: String(data.get('instagram_handle') || '').trim(),
+      facebook_profile: String(data.get('facebook_profile') || '').trim(),
       preferred_contact_method: String(data.get('preferred_contact_method') || '').trim(),
+      best_contact_time: String(data.get('best_contact_time') || '').trim(),
       age_confirmed: data.get('age_confirmed') === 'on',
       resource_delivery_acknowledgement: data.get('resource_delivery_acknowledgement') === 'on',
       marketing_email_consent: data.get('marketing_email_consent') === 'on',
@@ -216,14 +327,37 @@
     };
   }
 
+  function isValidDateString(value) {
+    if (!value) return true;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+    const parsed = new Date(`${value}T00:00:00Z`);
+    return !Number.isNaN(parsed.getTime()) && value >= '1900-01-01' && value <= '2099-12-31';
+  }
+
+  function adultDobCutoff() {
+    const cutoff = new Date();
+    cutoff.setHours(0, 0, 0, 0);
+    cutoff.setFullYear(cutoff.getFullYear() - 18);
+    return [
+      cutoff.getFullYear(),
+      String(cutoff.getMonth() + 1).padStart(2, '0'),
+      String(cutoff.getDate()).padStart(2, '0')
+    ].join('-');
+  }
+
+  function syncDobLimit() {
+    if (dobInput) dobInput.max = adultDobCutoff();
+  }
+
   function validateContact(contact) {
-    if (!contact.first_name) return { message: copy('enterName'), field: 'first_name' };
-    if (!contact.last_name) return { message: copy('enterLastName'), field: 'last_name' };
+    if (!contact.full_name || contact.full_name.length < 2) return { message: copy('enterName'), field: 'full_name' };
+    if (dobInput?.required && !contact.date_of_birth) return { message: copy('enterDob'), field: 'date_of_birth' };
+    if (!isValidDateString(contact.date_of_birth)) return { message: copy('validDob'), field: 'date_of_birth' };
+    if (contact.date_of_birth && contact.date_of_birth > adultDobCutoff()) return { message: copy('adultDob'), field: 'date_of_birth' };
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email.toLowerCase())) return { message: copy('validEmail'), field: 'email' };
-    if (!/^\+[1-9]\d{7,14}$/.test(contact.phone)) return { message: copy('validPhone'), field: 'phone' };
-    if (form?.querySelector('[name="preferred_contact_method"]') && !['whatsapp', 'instagram', 'email'].includes(contact.preferred_contact_method)) {
-      return { message: copy('choosePreferredContact'), field: 'preferred_contact_method' };
-    }
+    if (contact.whatsapp && !/^\+[1-9]\d{7,14}$/.test(contact.whatsapp)) return { message: copy('validWhatsapp'), field: 'whatsapp' };
+    if (contact.instagram_handle && contact.instagram_handle.length > 180) return { message: copy('validInstagram'), field: 'instagram_handle' };
+    if (contact.facebook_profile && contact.facebook_profile.length > 180) return { message: copy('validFacebook'), field: 'facebook_profile' };
     if (!contact.age_confirmed) return { message: copy('confirmAge'), field: 'age_confirmed' };
     if (!contact.resource_delivery_acknowledgement) return { message: copy('confirmDelivery'), field: 'resource_delivery_acknowledgement' };
     return null;
@@ -238,23 +372,69 @@
     return copy('submitUnavailable');
   }
 
+  function classifyStatusCategory(error) {
+    if (error instanceof TypeError) return 'network';
+    const status = Number(error?.status || 0);
+    if (status >= 400 && status < 500) return '4xx';
+    if (status >= 500 && status < 600) return '5xx';
+    return 'unknown';
+  }
+
+  function shouldTrackCanonicalSubmission(payload) {
+    return Boolean(
+      payload?.ok === true &&
+      payload?.leadSaved === true &&
+      payload?.isNewLead === true &&
+      payload?.deduplicated === false &&
+      payload?.ignored === false &&
+      payload?.eventId &&
+      payload?.resultToken &&
+      payload?.resultUrl
+    );
+  }
+
+  function hasTrackedEventId(eventId) {
+    if (!eventId) return false;
+    try {
+      const raw = sessionStorage.getItem(SUBMITTED_EVENT_GUARD_KEY);
+      const parsed = JSON.parse(raw || '[]');
+      return Array.isArray(parsed) && parsed.includes(eventId);
+    } catch {
+      return false;
+    }
+  }
+
+  function markTrackedEventId(eventId) {
+    if (!eventId) return;
+    try {
+      const raw = sessionStorage.getItem(SUBMITTED_EVENT_GUARD_KEY);
+      const parsed = JSON.parse(raw || '[]');
+      const next = Array.isArray(parsed) ? parsed.slice(0, 30) : [];
+      if (!next.includes(eventId)) next.push(eventId);
+      sessionStorage.setItem(SUBMITTED_EVENT_GUARD_KEY, JSON.stringify(next));
+    } catch (_) {}
+  }
+
   async function submitAssessment(event) {
     event.preventDefault();
+    if (state.submitted || submitButton.disabled) return;
     clearError();
     const contact = collectContact();
     const validationError = validateContact(contact);
     if (validationError) {
-      showError(validationError.message, validationError.field);
+      trackValidationError(validationError.field);
+      renderError(validationError.message, validationError.field);
       return;
     }
     submitButton.disabled = true;
+    submitButton.dataset.loading = 'true';
+    submitButton.setAttribute('aria-busy', 'true');
     submitButton.textContent = copy('preparing');
     track('assessment_submission_started', {
-      has_phone: Boolean(contact.phone),
-      has_instagram: Boolean(contact.instagram),
-      preferred_contact_method: contact.preferred_contact_method,
-      marketing_email_consent: contact.marketing_email_consent,
-      marketing_whatsapp_consent: contact.marketing_whatsapp_consent
+      has_whatsapp: Boolean(contact.whatsapp),
+      has_instagram: Boolean(contact.instagram_handle),
+      has_facebook: Boolean(contact.facebook_profile),
+      preferred_contact_method: contact.preferred_contact_method || 'none'
     });
     try {
       const response = await fetch('/api/starter-assessment/submit', {
@@ -269,21 +449,72 @@
         })
       });
       const payload = await response.json().catch(() => ({}));
-      if (!response.ok || !payload.ok) throw new Error(payload.error || getApiUnavailableMessage(response.status));
+      if (!response.ok || !payload.ok) {
+        const error = new Error(payload.error || getApiUnavailableMessage(response.status));
+        error.status = response.status;
+        throw error;
+      }
+
+      if (payload.ignored) {
+        track('assessment_submission_ignored', { reason: 'honeypot' });
+        renderError(copy('submitUnavailable'));
+        submitButton.disabled = false;
+        delete submitButton.dataset.loading;
+        submitButton.removeAttribute('aria-busy');
+        submitButton.textContent = copy('viewResult');
+        return;
+      }
+
+      if (!payload.leadSaved || !payload.resultToken || !payload.resultUrl) {
+        const error = new Error(copy('submitUnavailable'));
+        error.status = response.status || 500;
+        throw error;
+      }
+
       try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) {}
-      track('assessment_submitted', {
-        result_path_slug: payload.recommendation?.primaryPath,
-        email_delivery: payload.resourceDelivery?.email || 'unknown'
-      });
+      state.submitted = true;
+      if (payload.deduplicated) {
+        track('assessment_submission_deduplicated', {
+          event_id: payload.eventId,
+          entry_context: payload.attribution?.entry_context || state.entryContext
+        });
+      }
+
+      const canTrackPrimary = shouldTrackCanonicalSubmission(payload) && !hasTrackedEventId(payload.eventId);
+      if (canTrackPrimary) {
+        track('assessment_submitted', {
+          event_id: payload.eventId,
+          entry_context: payload.attribution?.entry_context || state.entryContext,
+          language: state.language,
+          utm_source: payload.attribution?.utm_source || getMeta().utm_source || undefined,
+          utm_medium: payload.attribution?.utm_medium || getMeta().utm_medium || undefined,
+          utm_campaign: payload.attribution?.utm_campaign || getMeta().utm_campaign || undefined,
+          utm_content: payload.attribution?.utm_content || getMeta().utm_content || undefined,
+          utm_term: payload.attribution?.utm_term || getMeta().utm_term || undefined,
+          result_path_slug: payload.recommendation?.primaryPath
+        });
+        markTrackedEventId(payload.eventId);
+      }
+
       if (payload.resultToken && payload.resourceDelivery?.email) {
         try { sessionStorage.setItem(`${DELIVERY_KEY_PREFIX}${payload.resultToken}`, payload.resourceDelivery.email); } catch (_) {}
       }
-      window.location.assign(payload.resultUrl || `/start/result/${payload.resultToken}`);
+      delete submitButton.dataset.loading;
+      submitButton.removeAttribute('aria-busy');
+      submitButton.dataset.success = 'true';
+      submitButton.textContent = copy('resultReady');
+      window.location.assign(payload.resultUrl);
     } catch (error) {
       const offlineMessage = isLocalPreviewHost() && error instanceof TypeError ? copy('localApi') : '';
-      track('assessment_submission_failed', { reason: error instanceof TypeError ? 'network' : 'api' });
-      showError(offlineMessage || error.message || copy('submitUnavailable'), 'submission');
+      track('assessment_submission_failed', {
+        reason: error instanceof TypeError ? 'network' : 'api_or_persistence',
+        stage: 'submit',
+        status_category: classifyStatusCategory(error)
+      });
+      renderError(offlineMessage || error.message || copy('submitUnavailable'));
       submitButton.disabled = false;
+      delete submitButton.dataset.loading;
+      submitButton.removeAttribute('aria-busy');
       submitButton.textContent = copy('viewResult');
     }
   }
@@ -296,7 +527,7 @@
   }
 
   window.addEventListener('beforeunload', () => {
-    if (!card.hidden && state.step >= 0) {
+    if (!state.submitted && !card.hidden && state.step >= 0) {
       track('assessment_abandoned', {
         stage: state.step >= QUESTIONS.length ? 'contact' : 'question',
         question_number: Math.min(state.step + 1, QUESTIONS.length)
@@ -306,39 +537,39 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     i18n?.applyDocument?.(state.language);
-    getMeta();
-    track('qr_landing_view', { source_slug: new URLSearchParams(window.location.search).get('utm_source') || 'direct' });
+    const meta = getMeta();
+    track('assessment_landing_view', {
+      utm_source: meta.utm_source || undefined,
+      utm_medium: meta.utm_medium || undefined,
+      utm_campaign: meta.utm_campaign || undefined
+    });
+    if (state.entryContext === 'qr') {
+      track('qr_landing_view', { source_slug: meta.utm_source || 'business_card' });
+    }
     document.querySelectorAll('[data-start-assessment], [data-start-assessment-proof]').forEach((button) => {
       button.addEventListener('click', startAssessment);
-    });
-    document.querySelectorAll('[data-qr-contact]').forEach((link) => {
-      link.addEventListener('click', () => track('qr_contact_clicked', {
-        channel: link.getAttribute('data-qr-contact') || 'unknown'
-      }));
     });
     backButton?.addEventListener('click', () => {
       if (state.advanceTimer) clearTimeout(state.advanceTimer);
       state.advanceTimer = null;
+      state.transitionDirection = 'back';
       state.step = Math.max(0, state.step - 1);
       render();
     });
-    phoneInput?.addEventListener('input', syncWhatsappConsent);
+    whatsappInput?.addEventListener('input', syncWhatsappConsent);
+    syncDobLimit();
     document.querySelectorAll('[data-starter-language]').forEach((selector) => {
       selector.addEventListener('change', (event) => applyLanguage(event.target.value));
-    });
-    document.querySelectorAll('[data-starter-language-option]').forEach((button) => {
-      button.addEventListener('click', () => {
-        applyLanguage(button.value);
-        button.closest('[data-language-menu]')?.removeAttribute('open');
-      });
-    });
-    document.addEventListener('click', (event) => {
-      document.querySelectorAll('[data-language-menu][open]').forEach((menu) => {
-        if (!menu.contains(event.target)) menu.removeAttribute('open');
-      });
     });
     form?.addEventListener('submit', submitAssessment);
     restoreAnswers();
     if (Object.keys(state.answers).some((key) => QUESTIONS.some(([id]) => id === key))) startAssessment();
+    document.querySelectorAll('[data-open-cookie-preferences]').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (typeof window.openConsentPreferences === 'function') {
+          window.openConsentPreferences();
+        }
+      });
+    });
   });
 })();

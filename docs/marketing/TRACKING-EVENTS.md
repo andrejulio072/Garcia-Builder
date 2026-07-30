@@ -1,3 +1,43 @@
+# Tracking Events – Canonical Starter Assessment Model (2026-07)
+
+This section defines the canonical event contract for the paid starter-assessment funnel.
+
+## Primary Conversion
+- Canonical event: `assessment_submitted`
+- Fire rule: only after backend confirms successful durable lead persistence.
+- Required safe params: `event_id`, `entry_context`, `result_path_slug`, `email_delivery`, `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`, `language`, `page_path`.
+
+## Secondary/Diagnostic Events
+- `assessment_landing_view`
+- `assessment_started`
+- `assessment_question_viewed`
+- `assessment_step_completed`
+- `assessment_contact_viewed`
+- `assessment_submission_started`
+- `assessment_submission_failed`
+- `result_viewed`
+- `guide_downloaded`
+- `workout_template_viewed`
+- `nutrition_template_viewed`
+- `whatsapp_clicked`
+- `consultation_clicked`
+
+## Mapping Targets
+- GA4: `assessment_submitted` -> `generate_lead`
+- Meta: `assessment_submitted` -> `Lead`
+- Google Ads: use one strategy only (GA4 import or GTM direct conversion), not both without deduplication.
+
+## Privacy Rules
+- Do not send email, phone, name, free text answers, or raw lead score in browser analytics payloads.
+- Do not expose result token in analytics parameters.
+
+## Deduplication Rules
+- One accepted lead must produce one `event_id`.
+- Result page loads and CTA clicks must not create duplicate lead conversions.
+- Failed submission must never produce primary conversion events.
+
+---
+
 # Documentação de Tracking – Garcia Builder
 
 > Versão: v1.2 (GA4 + Pixel publicados via GTM)

@@ -19,7 +19,7 @@ node tools/static-server.js
 
 Real lead creation requires `SUPABASE_SERVICE_ROLE_KEY` or `SUPABASE_SECRET_KEY` in `.env`. Result email delivery uses Brevo first and SMTP as a fallback. If neither provider is configured, the lead is still stored and email delivery is skipped.
 
-The frontend stores the seven assessment answers and UTM metadata in `sessionStorage`. It does not persist first name, last name, email, phone, or Instagram in browser storage. Questions advance automatically after an answer; Back remains available. Country is not requested or required.
+The frontend stores the seven assessment answers and UTM metadata in `sessionStorage`. It does not persist contact PII (full name, email, WhatsApp, DOB, Instagram, Facebook) in browser storage. Questions advance automatically after an answer; Back remains available.
 
 The assessment supports `en`, `pt`, and `es`. The selected language is saved as `gb_lang`, included with the lead, and used for the result page and transactional email. It remains QR-exclusive: do not add assessment links to the public navigation or other site CTAs yet.
 
@@ -57,7 +57,6 @@ The script creates or updates:
 - RLS enabled with no broad public policies
 - a required `language` value (`en`, `pt`, or `es`)
 - a nullable legacy `country` column so existing deployments no longer require it
-- richer contact fields: `last_name`, required `phone`, and optional `instagram`
 
 All writes should go through server-side endpoints using a service-role key.
 
@@ -129,10 +128,7 @@ Supabase is the source of truth for lead details, assessment answers, UTM attrib
 select
   created_at,
   first_name,
-  last_name,
   email,
-  phone,
-  instagram,
   language,
   primary_goal,
   lead_status,
@@ -156,10 +152,7 @@ Payload fields:
 - `lead_id`
 - `created_at`
 - `first_name`
-- `last_name`
 - `email`
-- `phone`
-- `instagram`
 - `whatsapp`
 - `language`
 - `primary_goal`
@@ -209,7 +202,7 @@ The QR landing initializes Consent Mode, GTM and the existing Garcia Builder tra
 
 Key client events include landing view, assessment start, question view/completion, contact view, validation error, submission start/success/failure, abandonment, result view/failure, delivery status, language selection and result CTA clicks. Server-side resource, WhatsApp and consultation events remain idempotent in `starter_assessment_events`.
 
-Use controlled slugs and step numbers only in analytics events. Never send name, email, phone, Instagram, free text or result tokens to GA4/GTM.
+Use controlled slugs and step numbers only in analytics events. Never send name, email, WhatsApp, free text or result tokens to GA4/GTM.
 
 ## Resource Upload Setup
 
@@ -285,7 +278,7 @@ Manual checks:
 - Confirm Brevo sender authentication and SMTP fallback credentials.
 - Confirm Zapier webhook destination.
 - Build and test all three consent-gated nurture sequences before enabling enrolment.
-- Confirm phone number is E.164-compatible.
+- Confirm WhatsApp number is E.164-compatible.
 - Confirm booking URL is valid.
 - Review and approve data retention period before creating any automated deletion job.
 - Submit a test lead and verify database row, email, result page, and optional Zapier alert.

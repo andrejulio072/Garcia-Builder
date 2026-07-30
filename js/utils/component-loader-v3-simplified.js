@@ -260,6 +260,7 @@ const INLINE_FALLBACKS = {
                 <a href="#" class="gb-navbar-link" data-i18n="nav.home" role="menuitem" data-gb-nav="index.html">Home</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.online_coaching" role="menuitem" data-gb-nav="online-coaching.html">Online Coaching</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.packages" role="menuitem" data-gb-nav="packages.html">Packages</a>
+                <a href="/assessment?utm_source=website&amp;utm_medium=organic&amp;utm_campaign=starter_assessment&amp;utm_content=site_assessment_cta" class="gb-navbar-link gb-navbar-link--assessment" role="menuitem" data-button-location="desktop_menu_assessment">Free Assessment</a>
                 <a href="/consultation.html" class="gb-navbar-link gb-navbar-link--cta" data-i18n="nav.consultation" role="menuitem" data-button-location="desktop_menu">Book Consultation</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="transformations.html">Transformations</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.testi" role="menuitem" data-gb-nav="testimonials.html">Testimonials</a>
@@ -309,6 +310,7 @@ const INLINE_FALLBACKS = {
                 <span class="gb-menu-section-label" data-i18n="nav.group_start">Start Here</span>
                 <a href="#" class="gb-menu-link" data-i18n="nav.online_coaching" role="menuitem" data-gb-nav="online-coaching.html">Online Coaching</a>
                 <a href="#" class="gb-menu-link" data-i18n="nav.packages" role="menuitem" data-gb-nav="packages.html">Packages</a>
+                <a href="/assessment?utm_source=website&amp;utm_medium=organic&amp;utm_campaign=starter_assessment&amp;utm_content=site_assessment_cta" class="gb-menu-link gb-menu-link--assessment" role="menuitem" data-button-location="mobile_menu_assessment">Free Assessment</a>
                 <a href="/consultation.html" class="gb-menu-link gb-menu-link--cta" data-i18n="nav.consultation" role="menuitem" data-button-location="mobile_menu">Book Consultation</a>
                 <span class="gb-menu-section-label" data-i18n="nav.group_results">Results</span>
                 <a href="#" class="gb-menu-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="transformations.html">Transformations</a>

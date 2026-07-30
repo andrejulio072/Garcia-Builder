@@ -4,21 +4,34 @@
   window.dataLayer = window.dataLayer || [];
   window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
 
-  let consent = 'denied';
-  try {
-    const stored = JSON.parse(localStorage.getItem('gb_consent_v1') || '{}');
-    consent = stored.status === 'granted' ? 'granted' : 'denied';
-  } catch (_) {}
-
-  window.gtag('consent', 'default', {
-    ad_storage: consent,
-    analytics_storage: consent,
-    ad_user_data: consent,
-    ad_personalization: consent,
+  const fallbackConsent = {
+    ad_storage: 'denied',
+    analytics_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
     functionality_storage: 'granted',
     security_storage: 'granted',
     wait_for_update: 500
-  });
+  };
+  let consent = { ...fallbackConsent };
+  try {
+    const stored = JSON.parse(localStorage.getItem('gb_consent_v1') || '{}');
+    const choices = stored && typeof stored.choices === 'object' ? stored.choices : null;
+    if (choices) {
+      consent = {
+        ...fallbackConsent,
+        ad_storage: choices.ad_storage === 'granted' ? 'granted' : 'denied',
+        analytics_storage: choices.analytics_storage === 'granted' ? 'granted' : 'denied',
+        ad_user_data: choices.ad_user_data === 'granted' ? 'granted' : 'denied',
+        ad_personalization: choices.ad_personalization === 'granted' ? 'granted' : 'denied',
+        functionality_storage: choices.functionality_storage === 'denied' ? 'denied' : 'granted',
+        security_storage: choices.security_storage === 'denied' ? 'denied' : 'granted',
+        wait_for_update: 500
+      };
+    }
+  } catch (_) {}
+
+  window.gtag('consent', 'default', consent);
 
   const gtm = document.createElement('script');
   gtm.async = true;

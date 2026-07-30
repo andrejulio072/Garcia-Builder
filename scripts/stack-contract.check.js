@@ -10,7 +10,9 @@ const legacyHost = ['ren', 'der'].join('');
 const forbiddenPaths = [
   path.join('.github', 'workflows', [legacyHost, 'auto', 'deploy'].join('-') + '.yml'),
   path.join('.github', 'workflows', 'pages.yml'),
-  [legacyHost, 'yaml'].join('.')
+  [legacyHost, 'yaml'].join('.'),
+  'vercel.toml',
+  'vercel.build.json'
 ];
 
 for (const file of forbiddenPaths) {

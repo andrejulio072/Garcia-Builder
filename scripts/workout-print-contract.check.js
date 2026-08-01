@@ -7,6 +7,7 @@ const workoutsHtml = fs.readFileSync(path.join(root, 'workouts.html'), 'utf8');
 const workoutsJs = fs.readFileSync(path.join(root, 'js', 'workouts.js'), 'utf8');
 const workoutsCss = fs.readFileSync(path.join(root, 'css', 'workouts.css'), 'utf8');
 const advancedTemplates = require(path.join(root, 'js', 'workout-advanced-techniques.js'));
+const raceTemplates = require(path.join(root, 'js', 'workout-race-specialists.js'));
 
 const staticCardTitles = Array.from(workoutsHtml.matchAll(/<article class="workout-card"[\s\S]*?<h3>([^<]+)<\/h3>/g))
   .map((match) => match[1].trim());
@@ -18,11 +19,13 @@ const additionalSource = workoutsJs.slice(additionalSourceStart, additionalSourc
 const additionalCardTitles = Array.from(additionalSource.matchAll(/^\s*\['([^']+)',/gm))
   .map((match) => match[1].trim());
 const advancedCardTitles = advancedTemplates.map((template) => template.name);
-const cardTitles = [...staticCardTitles, ...additionalCardTitles, ...advancedCardTitles];
+const raceCardTitles = raceTemplates.map((template) => template.name);
+const modularCardTitles = [...advancedCardTitles, ...raceCardTitles];
+const cardTitles = [...staticCardTitles, ...additionalCardTitles, ...modularCardTitles];
 
 assert(
-  cardTitles.length >= 92,
-  'Workout library should expose all 92 current printable workout cards'
+  cardTitles.length >= 102,
+  'Workout library should expose all 102 current printable workout cards'
 );
 
 const planSourceStart = workoutsJs.indexOf('const workoutPlans = {');
@@ -33,7 +36,7 @@ const planSource = workoutsJs.slice(planSourceStart, planSourceEnd);
 
 const fallbackCoveredPlans = cardTitles.filter((title) => {
   const quotedTitle = title.replace(/'/g, "\\'");
-  return !planSource.includes(`'${quotedTitle}':`) && !advancedCardTitles.includes(title);
+  return !planSource.includes(`'${quotedTitle}':`) && !modularCardTitles.includes(title);
 });
 
 if (fallbackCoveredPlans.length) {

@@ -1819,8 +1819,12 @@
   const advancedTechniqueTemplates = Array.isArray(window.GB_ADVANCED_WORKOUT_TEMPLATES)
     ? window.GB_ADVANCED_WORKOUT_TEMPLATES
     : [];
+  const raceSpecialistTemplates = Array.isArray(window.GB_RACE_SPECIALIST_TEMPLATES)
+    ? window.GB_RACE_SPECIALIST_TEMPLATES
+    : [];
+  const modularWorkoutTemplates = [...advancedTechniqueTemplates, ...raceSpecialistTemplates];
 
-  advancedTechniqueTemplates.forEach((template) => {
+  modularWorkoutTemplates.forEach((template) => {
     templateProjects[template.name] = {
       project: template.project,
       keywords: template.keywords
@@ -1859,7 +1863,7 @@
     ['30 Minute Lunch Break Lift', 'strength muscle', 'intermediate', 'gym', '4 days/week', 'Time-capped gym sessions with focused compounds and efficient supersets.', 'busy professionals with 30 minutes', 'full gym', 'Four concise upper and lower sessions.', 'One main lift, two paired accessories and a short carry or core finisher.', 'Keep setup simple and add load only when all work fits inside the time cap.'],
     ['Shift Worker Three Day Plan', 'strength fat-loss', 'intermediate', 'home gym', '3 flexible days/week', 'A flexible full-body plan that does not depend on fixed weekdays.', 'shift workers and changing schedules', 'home kit or full gym', 'Three numbered full-body sessions completed whenever recovery allows.', 'Squat, push, pull, hinge, carry and optional easy conditioning.', 'Follow session order rather than calendar days and repeat loads after poor sleep.'],
     ['Teen Athlete Movement Base', 'strength mobility', 'beginner', 'home gym', '3 days/week', 'Supervised fundamentals for young athletes learning safe strength and movement skills.', 'teen athletes training with qualified supervision', 'light free weights, bands and open space', 'Two supervised strength sessions plus one movement and coordination day.', 'Landing, squat, hinge, push, pull, carry, acceleration and basic change of direction.', 'Prioritise coaching quality and consistent technique before adding meaningful load.'],
-    ...advancedTechniqueTemplates.map((template) => [
+    ...modularWorkoutTemplates.map((template) => [
       template.name,
       template.goal,
       template.level,

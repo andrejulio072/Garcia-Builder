@@ -893,10 +893,11 @@ function bindFooterNewsletterForms() {
     }
 
     forms.forEach((form) => {
-        if (form.dataset.gbNewsletterBound === '1') {
+        if (form.dataset.gbNewsletterBound === '1' || form.dataset.newsletterBound === '1') {
             return;
         }
         form.dataset.gbNewsletterBound = '1';
+        form.dataset.newsletterBound = '1';
 
         form.addEventListener('submit', async (event) => {
             // Defensive: ensure JS intercept prevents native form submit and page reload
@@ -936,6 +937,28 @@ function bindFooterNewsletterForms() {
                 const payload = await response.json().catch(() => ({}));
                 if (!response.ok || payload.error) {
                     throw new Error(payload.error || 'Newsletter subscription failed');
+                }
+
+                const conversionEventId = window.GB_SITE_TRACK?.createEventId
+                    ? window.GB_SITE_TRACK.createEventId('newsletter')
+                    : 'newsletter-' + Date.now();
+                const conversionPayload = {
+                    event_id: conversionEventId,
+                    lead_type: 'newsletter',
+                    form_source: form.dataset.source || 'Footer Newsletter'
+                };
+                if (window.GB_SITE_TRACK?.track) {
+                    window.GB_SITE_TRACK.track('newsletter_subscribed', conversionPayload);
+                    window.GB_SITE_TRACK.track('generate_lead', {
+                        ...conversionPayload,
+                        conversion_source: 'newsletter_subscribed'
+                    });
+                } else if (window.GB_TRACKING?.trackEvent) {
+                    window.GB_TRACKING.trackEvent('newsletter_subscribed', conversionPayload);
+                    window.GB_TRACKING.trackEvent('generate_lead', {
+                        ...conversionPayload,
+                        conversion_source: 'newsletter_subscribed'
+                    });
                 }
 
                 form.reset();

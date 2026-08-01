@@ -245,6 +245,7 @@
 
         // ---- Analytics / Tracking ----
         const trackingPayload = {
+          event_id: responseData.leadId || leadId,
           lead_type: 'coaching_application',
           page: window.location.pathname,
           source: 'website',

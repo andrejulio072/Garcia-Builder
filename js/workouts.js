@@ -1,6 +1,20 @@
 (function () {
   'use strict';
 
+  const trackWorkoutEvent = (eventName, params = {}) => {
+    const payload = { content_type: 'workout_template', ...params };
+    if (window.GB_SITE_TRACK && typeof window.GB_SITE_TRACK.track === 'function') {
+      return window.GB_SITE_TRACK.track(eventName, payload);
+    }
+    if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+      window.GB_TRACKING.trackEvent(eventName, payload);
+      return payload;
+    }
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: eventName, ...payload });
+    return payload;
+  };
+
   const workoutPlans = {
     'Lose Weight Starter': {
       note: 'Use a load that leaves 2 reps in reserve. Rest enough to keep form clean, then finish with an easy walk or bike.',
@@ -2052,7 +2066,13 @@
         </div>
       `);
 
-      document.getElementById('workout-print-now')?.addEventListener('click', () => window.print());
+      document.getElementById('workout-print-now')?.addEventListener('click', () => {
+        trackWorkoutEvent('workout_plan_printed', {
+          workout_name: title,
+          print_source: 'print_toolbar'
+        });
+        window.print();
+      });
       document.getElementById('workout-print-close')?.addEventListener('click', () => {
         if (window.opener) {
           window.close();
@@ -2177,6 +2197,13 @@
     }
     cards.forEach((item) => item.classList.toggle('is-direct-target', item === card));
     setupWorkoutPrintView(modal, title);
+    trackWorkoutEvent('workout_template_viewed', {
+      workout_id: workoutSlug,
+      workout_name: title,
+      workout_level: level || undefined,
+      workout_project: project || undefined,
+      workout_schedule: schedule || undefined
+    });
     modal.querySelector('.workout-modal-close')?.focus();
   };
 
@@ -2326,6 +2353,11 @@
       filters[group] = value;
       setButtonState(group, value);
       applyFilters();
+      trackWorkoutEvent('workout_filter_applied', {
+        filter_group: group,
+        filter_value: value,
+        visible_templates: cards.filter((card) => !card.hidden).length
+      });
     });
   });
 

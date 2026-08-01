@@ -201,8 +201,9 @@
   const setupNewsletterForms = () => {
     const newsletterForms = document.querySelectorAll('.newsletter-form, .newsletter-form-ref');
     newsletterForms.forEach(form => {
-      if (form.dataset.newsletterBound === '1') return;
+      if (form.dataset.newsletterBound === '1' || form.dataset.gbNewsletterBound === '1') return;
       form.dataset.newsletterBound = '1';
+      form.dataset.gbNewsletterBound = '1';
       form.addEventListener('submit', handleNewsletterSignup);
     });
 
@@ -309,6 +310,28 @@
     try {
       // Save to database
       const saveResult = await saveNewsletterSubscriber(subscriberInfo);
+
+      const conversionEventId = window.GB_SITE_TRACK?.createEventId
+        ? window.GB_SITE_TRACK.createEventId('newsletter')
+        : 'newsletter-' + Date.now();
+      const conversionPayload = {
+        event_id: conversionEventId,
+        lead_type: 'newsletter',
+        form_source: subscriberInfo.source
+      };
+      if (window.GB_SITE_TRACK?.track) {
+        window.GB_SITE_TRACK.track('newsletter_subscribed', conversionPayload);
+        window.GB_SITE_TRACK.track('generate_lead', {
+          ...conversionPayload,
+          conversion_source: 'newsletter_subscribed'
+        });
+      } else if (window.GB_TRACKING?.trackEvent) {
+        window.GB_TRACKING.trackEvent('newsletter_subscribed', conversionPayload);
+        window.GB_TRACKING.trackEvent('generate_lead', {
+          ...conversionPayload,
+          conversion_source: 'newsletter_subscribed'
+        });
+      }
 
       // Track conversion
       trackConversion('newsletter_signup', subscriberInfo.source);

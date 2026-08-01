@@ -20,8 +20,19 @@
     }, {});
   }
   function pushEvent(eventName, params) {
+    if (window.GB_SITE_TRACK && typeof window.GB_SITE_TRACK.track === 'function') {
+      return window.GB_SITE_TRACK.track(eventName, params || {});
+    }
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(Object.assign({ event: eventName, page: location.pathname, source: 'website' }, attributionPayload(), params || {}));
+    const payload = Object.assign({ event: eventName, page: location.pathname, source: 'website' }, attributionPayload(), params || {});
+    window.dataLayer.push(payload);
+    return payload;
+  }
+  function createEventId(prefix) {
+    if (window.GB_SITE_TRACK && typeof window.GB_SITE_TRACK.createEventId === 'function') {
+      return window.GB_SITE_TRACK.createEventId(prefix);
+    }
+    return String(prefix || 'lead') + '-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
   }
   window.GB_SEO_TRACK = { pushEvent, attributionPayload };
   document.addEventListener('click', function (event) {
@@ -116,8 +127,16 @@
           const error = responseData || {};
           throw new Error(error.error || 'Application could not be submitted.');
         }
-        pushEvent('generate_lead', { lead_type: 'coaching_application' });
-        pushEvent('application_submit', { lead_type: 'coaching_application' });
+        const conversionEventId = responseData.leadId || payload.lead_id || createEventId('application');
+        pushEvent('application_submit', {
+          event_id: conversionEventId,
+          lead_type: 'coaching_application'
+        });
+        pushEvent('generate_lead', {
+          event_id: conversionEventId,
+          conversion_source: 'application_submit',
+          lead_type: 'coaching_application'
+        });
         if (data.investmentReadiness === 'Ready Now' && (data.startTimeline === 'Now' || data.startTimeline === 'This Week')) {
           pushEvent('hot_lead', { readiness: 'ready_now', timeline: data.startTimeline });
         }
@@ -161,12 +180,25 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
+        const responseData = await response.json().catch(() => ({}));
         if (!response.ok) {
-          const error = await response.json().catch(() => ({}));
+          const error = responseData;
           throw new Error(error.error || 'Guide request could not be submitted.');
         }
-        pushEvent('generate_lead', { lead_type: 'ebook' });
-        pushEvent('ebook_download', { guide: '28-day-fat-loss-kickstart' });
+        const conversionEventId = responseData.leadId || createEventId('ebook');
+        pushEvent('ebook_lead_submitted', {
+          event_id: conversionEventId,
+          lead_type: 'ebook'
+        });
+        pushEvent('generate_lead', {
+          event_id: conversionEventId,
+          conversion_source: 'ebook_lead_submitted',
+          lead_type: 'ebook'
+        });
+        pushEvent('ebook_download', {
+          event_id: conversionEventId,
+          guide: '28-day-fat-loss-kickstart'
+        });
         location.assign('/thank-you-ebook.html');
       } catch (err) {
         setStatus(form, err.message || 'Something went wrong. Please try again.', true);

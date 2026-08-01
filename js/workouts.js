@@ -1816,6 +1816,21 @@
     'TRYKA Advanced Solo Simulation': { project: 'tryka-race-prep', keywords: 'tryka advanced solo race simulation 800m gym sled row ski erg ram thruster' },
   };
 
+  const advancedTechniqueTemplates = Array.isArray(window.GB_ADVANCED_WORKOUT_TEMPLATES)
+    ? window.GB_ADVANCED_WORKOUT_TEMPLATES
+    : [];
+
+  advancedTechniqueTemplates.forEach((template) => {
+    templateProjects[template.name] = {
+      project: template.project,
+      keywords: template.keywords
+    };
+    workoutPlans[template.name] = {
+      note: template.note,
+      sessions: template.sessions
+    };
+  });
+
   const filters = {
     project: 'all',
     goal: 'all',
@@ -1843,7 +1858,21 @@
     ['Hotel Room Express', 'fat-loss strength', 'intermediate', 'home', '5 short days/week', 'No-gym sessions that maintain training rhythm during busy travel weeks.', 'frequent travellers without equipment', 'hotel room and optional backpack', 'Five 15-25 minute strength, density and mobility sessions.', 'Split squats, push-ups, backpack rows, hinges, planks and low-impact intervals.', 'Complete more clean work in the same time before choosing harder variations.'],
     ['30 Minute Lunch Break Lift', 'strength muscle', 'intermediate', 'gym', '4 days/week', 'Time-capped gym sessions with focused compounds and efficient supersets.', 'busy professionals with 30 minutes', 'full gym', 'Four concise upper and lower sessions.', 'One main lift, two paired accessories and a short carry or core finisher.', 'Keep setup simple and add load only when all work fits inside the time cap.'],
     ['Shift Worker Three Day Plan', 'strength fat-loss', 'intermediate', 'home gym', '3 flexible days/week', 'A flexible full-body plan that does not depend on fixed weekdays.', 'shift workers and changing schedules', 'home kit or full gym', 'Three numbered full-body sessions completed whenever recovery allows.', 'Squat, push, pull, hinge, carry and optional easy conditioning.', 'Follow session order rather than calendar days and repeat loads after poor sleep.'],
-    ['Teen Athlete Movement Base', 'strength mobility', 'beginner', 'home gym', '3 days/week', 'Supervised fundamentals for young athletes learning safe strength and movement skills.', 'teen athletes training with qualified supervision', 'light free weights, bands and open space', 'Two supervised strength sessions plus one movement and coordination day.', 'Landing, squat, hinge, push, pull, carry, acceleration and basic change of direction.', 'Prioritise coaching quality and consistent technique before adding meaningful load.']
+    ['Teen Athlete Movement Base', 'strength mobility', 'beginner', 'home gym', '3 days/week', 'Supervised fundamentals for young athletes learning safe strength and movement skills.', 'teen athletes training with qualified supervision', 'light free weights, bands and open space', 'Two supervised strength sessions plus one movement and coordination day.', 'Landing, squat, hinge, push, pull, carry, acceleration and basic change of direction.', 'Prioritise coaching quality and consistent technique before adding meaningful load.'],
+    ...advancedTechniqueTemplates.map((template) => [
+      template.name,
+      template.goal,
+      template.level,
+      template.place,
+      template.schedule,
+      template.summary,
+      template.bestFor,
+      template.equipment,
+      template.split,
+      template.focus,
+      template.progression,
+      template.block
+    ])
   ];
 
   const workoutGrid = document.getElementById('workout-grid');
@@ -1852,7 +1881,7 @@
 
   if (workoutGrid) {
     workoutGrid.insertAdjacentHTML('beforeend', additionalTemplateRows.map((template) => {
-      const [title, goal, level, place, schedule, summary, bestFor, equipment, split, focus, progression] = template;
+      const [title, goal, level, place, schedule, summary, bestFor, equipment, split, focus, progression, block] = template;
       return `
         <article class="workout-card" data-goal="${escapeHtml(goal)}" data-level="${escapeHtml(level)}" data-place="${escapeHtml(place)}" data-audience="${escapeHtml(`${title} ${bestFor} ${equipment}`)}">
           <div class="workout-card-head">
@@ -1864,7 +1893,7 @@
           <ul class="quick-facts">
             <li>Best for: ${escapeHtml(bestFor)}</li>
             <li>Equipment: ${escapeHtml(equipment)}</li>
-            <li>Block: ${escapeHtml(blockByLevel[level])}</li>
+            <li>Block: ${escapeHtml(block || blockByLevel[level])}</li>
           </ul>
           <details>
             <summary>View template</summary>

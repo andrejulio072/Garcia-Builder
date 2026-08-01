@@ -790,6 +790,21 @@
     display: grid;
   }
 
+  .nutrition-field-grid input,
+  .nutrition-field-grid select,
+  .nutrition-inline-grid input,
+  .library-search-panel input,
+  .food-controls input,
+  .food-controls select,
+  .unit-btn {
+    min-height: 44px;
+  }
+
+  .unit-btn {
+    padding: 0.68rem 1rem;
+    font-size: 0.9rem;
+  }
+
   .macro-bar {
     grid-template-columns: 68px 1fr 48px;
   }

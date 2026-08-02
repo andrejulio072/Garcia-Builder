@@ -42,7 +42,7 @@
      * Facebook Pixel ID
      * Used by pixel-init.js for tracking
      */
-    window.FB_PIXEL_ID = '1102565141856929';
+    window.FB_PIXEL_ID = '958060389933459';
 
     /**
      * Google Ads Conversion Label

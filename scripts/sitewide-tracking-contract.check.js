@@ -49,8 +49,13 @@ assert(application.includes("pushEvent('ebook_lead_submitted'"), 'Ebook lead mus
 
 const contact = read('js/components/contact-form-enhanced.js');
 assert(contact.includes('event_id: responseData.leadId || leadId'), 'Contact conversions must reuse the durable backend lead id');
+assert(!contact.includes("fbq('track', 'Lead'"), 'Contact must not bypass the GTM generate_lead mapping and double-count Meta leads');
+
+const pricing = read('js/pricing.js');
+assert(!pricing.includes("fbq('track', 'InitiateCheckout'"), 'Pricing must not double-count GTM begin_checkout as a direct Meta event');
 
 const newsletterManager = read('js/components/newsletter-manager.js');
+assert(!newsletterManager.includes("else if (event === 'lead_capture' || event === 'consultation_request') fbq('track', 'Lead'"), 'Newsletter manager must not double-count GTM Lead events');
 const componentLoader = read('js/utils/component-loader-v3-simplified.js');
 for (const source of [newsletterManager, componentLoader]) {
   assert(source.includes("track('newsletter_subscribed'"), 'Newsletter success handler must publish its canonical event');
@@ -58,5 +63,17 @@ for (const source of [newsletterManager, componentLoader]) {
   assert(source.includes("conversion_source: 'newsletter_subscribed'"), 'Newsletter generate_lead must identify its canonical source');
   assert(source.includes('gbNewsletterBound') && source.includes('newsletterBound'), 'Newsletter handlers must share binding guards to prevent duplicate submissions');
 }
+
+const conversionTracking = read('js/tracking/conversion-tracking.js');
+assert(conversionTracking.includes("window.FB_PIXEL_ID = '958060389933459'"), 'Legacy pixel fallback must use the live GTM Meta dataset ID');
+const blog = read('blog.html');
+assert(!blog.includes("fbq('init'"), 'Blog must not bootstrap a second Meta dataset outside GTM consent handling');
+assert(blog.includes('sitewide-events.js?v=20260802-sitewide-v2'), 'Blog must publish the shared sitewide event contract');
+
+const stripeServer = read('api/stripe-server-premium.js');
+assert(stripeServer.includes("process.env.META_GRAPH_API_VERSION || 'v25.0'"), 'Meta CAPI must use a supported configurable Graph API version');
+assert(!stripeServer.includes('graph.facebook.com/v19.0'), 'Expired Meta Graph API v19 must not remain in production code');
+assert(stripeServer.includes('Authorization: `Bearer ${process.env.META_CAPI_TOKEN}`'), 'Meta CAPI token must be sent in the authorization header');
+assert(stripeServer.includes('await Promise.allSettled(attributionDispatches)'), 'Server conversion delivery must finish before the webhook response');
 
 console.log('Sitewide tracking contract check passed.');

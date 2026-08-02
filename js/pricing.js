@@ -201,19 +201,8 @@
         const planPrice = button.getAttribute('data-plan-price');
         const myPtHubUrl = button.getAttribute('href') || buildMyPtHubCheckoutUrl(planKey, planName);
 
-        const selectedPackage = pushSelectPackageEvent(planKey, planName, planPrice);
+        pushSelectPackageEvent(planKey, planName, planPrice);
         pushPackageEvent('begin_checkout', planKey, planName, planPrice);
-        const packagePrice = selectedPackage.price;
-        const planCurrency = getCurrentPricingCurrency();
-
-        if (typeof window.fbq !== 'undefined') {
-          window.fbq('track', 'InitiateCheckout', {
-            content_type: 'coaching_plan',
-            content_name: selectedPackage.package_name,
-            value: packagePrice,
-            currency: planCurrency
-          });
-        }
 
         if (myPtHubUrl) {
           try {

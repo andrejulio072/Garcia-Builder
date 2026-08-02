@@ -1704,11 +1704,12 @@
       }
     } catch(e) { console.warn('dataLayer push failed', e); }
 
-    // Meta Pixel basic mapping (optional enhancement later)
+    // Newsletter registration is not represented by the GTM Lead mapping.
+    // Lead and consultation events are already sent through generate_lead,
+    // so firing them here as well would double-count Meta Lead conversions.
     try {
       if (typeof fbq === 'function') {
         if (event === 'newsletter_signup') fbq('track', 'CompleteRegistration', { content_name: 'newsletter', source });
-        else if (event === 'lead_capture' || event === 'consultation_request') fbq('track', 'Lead', { content_name: event, source });
       }
     } catch(e){ console.warn('fbq track fail', e); }
 

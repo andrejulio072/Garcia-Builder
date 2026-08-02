@@ -66,6 +66,8 @@ for (const source of [newsletterManager, componentLoader]) {
 
 const conversionTracking = read('js/tracking/conversion-tracking.js');
 assert(conversionTracking.includes("window.FB_PIXEL_ID = '958060389933459'"), 'Legacy pixel fallback must use the live GTM Meta dataset ID');
+const pixelInit = read('js/tracking/pixel-init.js');
+assert(!pixelInit.includes("fbq('track','PageView')"), 'GTM must be the sole Meta PageView owner to prevent load-order duplicates');
 const blog = read('blog.html');
 assert(!blog.includes("fbq('init'"), 'Blog must not bootstrap a second Meta dataset outside GTM consent handling');
 assert(blog.includes('sitewide-events.js?v=20260802-sitewide-v2'), 'Blog must publish the shared sitewide event contract');

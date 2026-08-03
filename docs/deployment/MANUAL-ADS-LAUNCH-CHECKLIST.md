@@ -1,5 +1,7 @@
 # Manual ads launch checklist
 
+Legal facts and publication approvals are tracked separately in [MANUAL-LEGAL-VALUES-REQUIRED.md](../legal/MANUAL-LEGAL-VALUES-REQUIRED.md). Do not copy unverified values into the public pages.
+
 Use this file only for checks that require a business decision, external account, live environment, real inbox or real device. Repository implementation status lives in [IMPLEMENTATION-VERIFICATION-AUDIT.md](./IMPLEMENTATION-VERIFICATION-AUDIT.md).
 
 For every checked item, record a date and evidence link, screenshot, dashboard reference or test lead ID. Do not mark an item complete because code appears to support it.

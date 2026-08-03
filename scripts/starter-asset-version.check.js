@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const NEW_TOKEN = '20260804-attribution-v10';
+const NEW_TOKEN = '20260804-consent-v11';
 const OLD_TOKENS = [
   '20260727-ads-final',
   '20260727-ads-corrective',

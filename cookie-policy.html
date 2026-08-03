@@ -3,60 +3,95 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cookie Policy | Garcia Builder Fitness</title>
-  <meta name="description" content="Learn how Garcia Builder Fitness uses essential, analytics, and advertising storage, and how to manage cookie preferences.">
+  <script src="/js/utils/canonical-host-redirect.js?v=20260705" data-gb-canonical-host></script>
+  <title>Cookie and Storage Policy | Garcia Builder Fitness</title>
+  <meta name="description" content="An auditable inventory of essential, functional, analytics and advertising storage used by Garcia Builder Fitness, with activation rules and preference controls.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.garciabuilder.fitness/cookie-policy">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Garcia Builder Fitness">
+  <meta property="og:title" content="Cookie and Storage Policy | Garcia Builder Fitness">
+  <meta property="og:description" content="Review the website's essential, functional, analytics and advertising storage and change optional tracking choices.">
+  <meta property="og:url" content="https://www.garciabuilder.fitness/cookie-policy">
+  <meta property="og:image" content="https://www.garciabuilder.fitness/assets/og/garcia-builder-og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Cookie and Storage Policy | Garcia Builder Fitness">
+  <meta name="twitter:description" content="Review the website's essential, functional, analytics and advertising storage and change optional tracking choices.">
+  <meta name="twitter:image" content="https://www.garciabuilder.fitness/assets/og/garcia-builder-og.jpg">
   <link rel="stylesheet" href="/css/global.css">
-  <style>
-    main{max-width:900px;margin:40px auto;padding:0 16px;line-height:1.6}
-    h1,h2{margin-top:24px}
-    ul{padding-left:20px}
-    .cookie-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
-    .cookie-actions button{min-height:48px;padding:10px 16px;border-radius:8px;border:1px solid #111;background:#111;color:#fff;cursor:pointer}
-  </style>
-  <script src="/js/starter-tracking-bootstrap.js?v=20260727-paid-landing"></script>
+  <link rel="stylesheet" href="/css/components/navbar-component.css?v=20260723-nav2">
+  <link rel="stylesheet" href="/css/legal-pages.css?v=20260804-legal-v1">
+  <script src="/js/starter-tracking-bootstrap.js?v=20260804-consent-v2"></script>
+  <script src="/js/utils/component-loader-v3-simplified.js?v=20260723-nav2"></script>
+  <script defer src="/assets/i18n.js?v=20251025"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.garciabuilder.fitness/"},{"@type":"ListItem","position":2,"name":"Cookie and Storage Policy","item":"https://www.garciabuilder.fitness/cookie-policy"}]}
+  </script>
 </head>
 <body>
-  <main>
-    <h1>Cookie Policy</h1>
-    <p>Revision date: 2026-07-27</p>
-    <p>This page explains how storage and tracking technologies are used on Garcia Builder Fitness pages, including the starter assessment flow.</p>
+  <div data-component="navbar"></div>
+  <main class="legal-page">
+    <h1>Cookie and Storage Policy</h1>
+    <p class="legal-updated">Last revised: 4 August 2026</p>
+    <p>This policy covers cookies, browser local storage, session storage and third-party technologies used by Garcia Builder Fitness. Browser storage is not always a traditional cookie, but it can remember information in a similar way.</p>
 
-    <h2>Essential and Security Storage</h2>
-    <p>These settings help keep the site secure, preserve core functionality and maintain service reliability. They are enabled by default.</p>
-
-    <h2>Functionality Storage</h2>
-    <p>Used to remember preferences such as language and interface state that improve usability.</p>
-
-    <h2>Analytics Storage</h2>
-    <p>Used to understand page usage and funnel performance through analytics tools. This storage respects your cookie preference selection.</p>
-
-    <h2>Advertising Storage, User Data and Personalization</h2>
-    <p>Used for advertising measurement and campaign optimization where consent allows. Consent Mode signals include:</p>
-    <ul>
-      <li>ad_storage</li>
-      <li>ad_user_data</li>
-      <li>ad_personalization</li>
-    </ul>
-
-    <h2>How to Reject or Change Choices</h2>
-    <p>You can reject non-essential categories and reopen cookie preferences at any time.</p>
-    <div class="cookie-actions">
-      <button type="button" data-open-cookie-preferences>Open Cookie Preferences</button>
-      <a href="/privacy.html">Privacy Policy</a>
-      <a href="/terms.html">Terms</a>
+    <div class="legal-publication-blocker" role="note">
+      <strong>Final browser audit required.</strong> The first-party durations below come from the current code. Provider-controlled cookie names, durations and regions must be verified in a clean production browser after the final GTM, Google, Meta, Stripe, Calendly, Supabase and My PT Hub configurations are approved. Unknown values are marked instead of being guessed.
     </div>
 
-    <h2>Contact</h2>
-    <p>For privacy and data-rights requests: andre@garciabuilder.fitness</p>
+    <h2>1. Your choices</h2>
+    <p>Essential security and core functionality storage is active because the requested site or account cannot operate reliably without it. Analytics and advertising technologies are optional. On the assessment and these legal pages, Google Tag Manager is not downloaded until at least one matching optional category is granted. You can accept, reject, choose categories separately, and change or withdraw the choice at any time.</p>
+    <div class="legal-actions">
+      <button class="legal-button" type="button" data-open-cookie-preferences>Open Cookie Preferences</button>
+      <a href="/privacy-policy">Read the Privacy Notice</a>
+    </div>
+
+    <h2>2. Audited storage inventory</h2>
+    <div class="legal-table-wrap">
+      <table class="legal-table">
+        <thead>
+          <tr><th>Name / technology</th><th>Provider</th><th>Category</th><th>Purpose</th><th>Duration</th><th>Party</th><th>Activation</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>gb_consent_v1</code></td><td>Garcia Builder Fitness</td><td>Essential / preference</td><td>Stores analytics and advertising choices, version and update time so the site can respect and evidence the selection.</td><td>Until cleared or replaced by a later choice/version.</td><td>First party, localStorage</td><td>When a cookie choice is saved.</td></tr>
+          <tr><td><code>gb_attrib_v1</code></td><td>Garcia Builder Fitness</td><td>Functional attribution</td><td>Stores the available UTM and click-attribution context used with forms and the assessment.</td><td>7 days from the latest captured campaign touch in the current code.</td><td>First party, localStorage</td><td>When attribution capture runs; populated/updated when campaign parameters are present.</td></tr>
+          <tr><td><code>gb_utm_*</code>, <code>gb_gclid</code>, <code>gb_fbclid</code></td><td>Garcia Builder Fitness</td><td>Functional attribution</td><td>Legacy first-party copies of individual campaign parameters used by existing forms.</td><td>Until browser storage is cleared; final cleanup/migration decision required.</td><td>First party, localStorage</td><td>When the corresponding parameter is present or attribution is injected.</td></tr>
+          <tr><td><code>gb_lang</code>, <code>gb_language</code>, <code>selectedLanguage</code>, <code>preferred-currency</code></td><td>Garcia Builder Fitness</td><td>Functionality</td><td>Remembers language or display preferences.</td><td>Until changed or browser storage is cleared.</td><td>First party, localStorage</td><td>When a visitor selects or the interface saves a preference.</td></tr>
+          <tr><td><code>gb_starter_assessment_answers</code>, <code>gb_starter_assessment_meta</code></td><td>Garcia Builder Fitness</td><td>Strictly necessary session state</td><td>Preserves assessment answers and attribution while moving through the funnel or opening the Privacy Notice in another tab.</td><td>Current browser-tab session.</td><td>First party, sessionStorage</td><td>When the assessment begins or changes.</td></tr>
+          <tr><td><code>gb_starter_delivery_&lt;token&gt;</code>, <code>gb_assessment_submitted_event_ids_v1</code></td><td>Garcia Builder Fitness</td><td>Strictly necessary / conversion safety</td><td>Shows the correct delivery notice and prevents the browser from firing the same successful lead event twice.</td><td>Current browser-tab session.</td><td>First party, sessionStorage</td><td>After a successful assessment submission/result.</td></tr>
+          <tr><td><code>gb_last_submit</code></td><td>Garcia Builder Fitness</td><td>Security / reliability</td><td>Provides a short client-side form submission cooldown.</td><td>Until overwritten or browser storage is cleared.</td><td>First party, localStorage</td><td>After supported forms are submitted.</td></tr>
+          <tr><td>Supabase auth token (normally <code>sb-&lt;project&gt;-auth-token</code>) and account caches such as <code>gb_current_user</code></td><td>Supabase / Garcia Builder Fitness</td><td>Strictly necessary authentication</td><td>Maintains a signed-in session and the account interface. Exact token lifetime is controlled by the authentication configuration.</td><td>Session/token lifetime or until sign-out/clear; verify configured expiry before publication.</td><td>First party storage using a third-party processor</td><td>When a user creates an account or signs in.</td></tr>
+          <tr><td>Client portal state, including profile, metric, progress and selected-plan storage keys</td><td>Garcia Builder Fitness</td><td>Functionality / service delivery</td><td>Maintains client-entered interface state and local caches for account, profile, plan and coaching tools.</td><td>Until synchronised, deleted, signed out or browser storage is cleared; exact key-by-key retention requires the final portal audit.</td><td>First party, localStorage</td><td>Only when the relevant account/coaching feature is used.</td></tr>
+          <tr><td>Google Tag Manager container</td><td>Google</td><td>Tag management</td><td>Loads approved analytics or advertising tags. The container itself is a loader; tags inside it may set storage listed below.</td><td>Script request for the page; any tag storage has its own duration.</td><td>Third party</td><td>Assessment/legal flow: only after analytics or advertising consent. Other site pages require final production verification.</td></tr>
+          <tr><td>Google Analytics, including possible <code>_ga</code> and container-specific analytics cookies</td><td>Google</td><td>Analytics</td><td>Measures visits, engagement and funnel events without assessment contact PII in event parameters.</td><td>Provider/configuration controlled; verify actual names and expiry in the final browser audit.</td><td>Third party</td><td>Only after analytics consent and only if the approved GTM configuration activates Analytics.</td></tr>
+          <tr><td>Google Ads, including possible advertising/click cookies</td><td>Google</td><td>Advertising</td><td>Campaign attribution, conversion measurement and, only where separately permitted, advertising personalisation.</td><td>Provider/configuration controlled; verify actual names and expiry in the final browser audit.</td><td>Third party</td><td>Only after the relevant advertising choices are granted and an approved tag is configured.</td></tr>
+          <tr><td>Meta Pixel</td><td>Meta</td><td>Advertising</td><td>Measures approved campaign and conversion events and may support advertising optimisation.</td><td>Provider/configuration controlled; verify the live pixel and storage in the final browser audit.</td><td>Third party</td><td>Only after the relevant advertising choices are granted and an approved tag is configured.</td></tr>
+          <tr><td><code>_fbp</code></td><td>Meta</td><td>Advertising</td><td>Browser identifier used by Meta advertising measurement when the Pixel is active.</td><td>Provider controlled; verify the live expiry before publication.</td><td>Third party cookie</td><td>Only after advertising consent and Pixel activation.</td></tr>
+          <tr><td><code>_fbc</code></td><td>Meta</td><td>Advertising</td><td>Stores Meta click context when an eligible <code>fbclid</code> visit is processed by the active Meta integration.</td><td>Provider controlled; verify the live expiry before publication.</td><td>Third party cookie</td><td>Only after advertising consent, an eligible click and Pixel activation.</td></tr>
+          <tr><td>Calendly storage</td><td>Calendly</td><td>Booking / third-party functionality</td><td>Operates appointment booking on Calendly's service.</td><td>Controlled by Calendly; verify if an embed is introduced.</td><td>Third party</td><td>Current site: when the visitor follows a Calendly link. An embed would require a separate consent review.</td></tr>
+          <tr><td>Stripe storage</td><td>Stripe</td><td>Payment / fraud prevention</td><td>Operates checkout, payment security, subscription administration and fraud prevention.</td><td>Controlled by Stripe and the checkout context.</td><td>Third party</td><td>When a visitor deliberately enters Stripe checkout or another Stripe surface.</td></tr>
+          <tr><td>My PT Hub storage</td><td>My PT Hub</td><td>Coaching / third-party functionality</td><td>Operates coaching or client functionality on the provider's service.</td><td>Controlled by My PT Hub.</td><td>Third party</td><td>Current public pages: when the user follows a My PT Hub link; re-audit before embedding it.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>3. Consent signals</h2>
+    <p>The preference panel controls <code>analytics_storage</code>, <code>ad_storage</code>, <code>ad_user_data</code> and <code>ad_personalization</code> separately. Functional and security storage remains granted. Rejecting optional storage does not prevent completion of the assessment.</p>
+
+    <h2>4. Changing or deleting storage</h2>
+    <p>Use “Open Cookie Preferences” to change future optional processing. You can also delete cookies and browser storage in browser settings. Deleting essential/session storage may sign you out, reset preferences or clear unfinished assessment progress. Withdrawing consent does not make earlier consented processing unlawful; it updates the choice for future processing.</p>
+
+    <h2>5. Third-party information</h2>
+    <p>Third-party services maintain their own policies and may change technology names or durations. The launch owner must inspect the final production network and storage panels after each consent state and update this inventory when the implementation changes.</p>
+
+    <h2>6. Contact</h2>
+    <p>For questions or a data-rights request, email <a href="mailto:andre@garciabuilder.fitness">andre@garciabuilder.fitness</a>. See also the <a href="/privacy-policy">Privacy Notice</a> and <a href="/terms">Terms</a>.</p>
   </main>
+  <div data-component="footer"></div>
   <script>
     document.querySelectorAll('[data-open-cookie-preferences]').forEach(function (button) {
       button.addEventListener('click', function () {
-        if (typeof window.openConsentPreferences === 'function') {
-          window.openConsentPreferences();
-        }
+        if (typeof window.openConsentPreferences === 'function') window.openConsentPreferences();
       });
     });
   </script>

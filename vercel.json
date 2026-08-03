@@ -244,7 +244,43 @@
       "destination": "/assets/28-days-fat-loss-quickstart.pdf"
     },
     {
-      "source": "/api/:path*",
+      "source": "/api/starter-assessment/result/:token",
+      "destination": "/api/starter-assessment/result?token=:token"
+    },
+    {
+      "source": "/api/stripe/:path*",
+      "destination": "/api/stripe-server-premium.js"
+    },
+    {
+      "source": "/health",
+      "destination": "/api/stripe-server-premium.js"
+    },
+    {
+      "source": "/api/create-checkout-session",
+      "destination": "/api/stripe-server-premium.js"
+    },
+    {
+      "source": "/api/stripe-webhook",
+      "destination": "/api/stripe-server-premium.js"
+    },
+    {
+      "source": "/api/payment-status/:sessionId",
+      "destination": "/api/stripe-server-premium.js"
+    },
+    {
+      "source": "/api/plans",
+      "destination": "/api/stripe-server-premium.js"
+    },
+    {
+      "source": "/api/session/:sessionId",
+      "destination": "/api/stripe-server-premium.js"
+    },
+    {
+      "source": "/api/attrib",
+      "destination": "/api/stripe-server-premium.js"
+    },
+    {
+      "source": "/api/nutrition-calculator",
       "destination": "/api/stripe-server-premium.js"
     }
   ],
@@ -325,14 +361,6 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=3600, must-revalidate"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, OPTIONS"
         }
       ]
     },
@@ -350,10 +378,6 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
         }
       ]
     },
@@ -371,10 +395,6 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=3600"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
         }
       ]
     },

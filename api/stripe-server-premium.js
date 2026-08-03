@@ -249,23 +249,6 @@ app.get(Object.keys(publicPageAliases), (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'pages', 'public', publicPageAliases[req.path]));
 });
 
-function adaptServerlessHandler(handler, label) {
-    return async (req, res) => {
-        try {
-            await handler(req, res);
-        } catch (error) {
-            console.error(`${label} handler failed`, { message: error.message });
-            if (!res.headersSent) {
-                res.status(500).json({ error: 'Request failed.' });
-            }
-        }
-    };
-}
-
-const starterSubmitHandler = require('../lib/starter-assessment/submit-handler.cjs');
-const starterResultHandler = require('../lib/starter-assessment/result-handler.cjs');
-const starterEventHandler = require('../lib/starter-assessment/event-handler.cjs');
-
 app.get('/go/card', (req, res) => {
     res.redirect(302, '/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment');
 });
@@ -285,13 +268,6 @@ app.get('/start/result/:token', (req, res) => {
 app.get('/start/contact', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'start-contact.html'));
 });
-
-app.post('/api/starter-assessment/submit', adaptServerlessHandler(starterSubmitHandler, 'starter assessment submit'));
-app.get('/api/starter-assessment/result/:token', (req, res) => {
-    req.query = { ...(req.query || {}), token: req.params.token };
-    return adaptServerlessHandler(starterResultHandler, 'starter assessment result')(req, res);
-});
-app.post('/api/starter-assessment/event', adaptServerlessHandler(starterEventHandler, 'starter assessment event'));
 
 // Servir arquivos estÃ¡ticos
 app.use(express.static(path.join(__dirname, '..'), {
@@ -447,7 +423,7 @@ function validateRequestData(req, res, next) {
 const REQUIRE_TOS_CONSENT = (process.env.STRIPE_REQUIRE_TOS_CONSENT || 'false').toLowerCase() === 'true';
 
 // ðŸ“Š HEALTH CHECK ENDPOINT
-app.get('/health', (req, res) => {
+app.get(['/health', '/api/stripe/health'], (req, res) => {
     const healthStatus = {
         status: 'ok',
         timestamp: new Date().toISOString(),
@@ -1143,7 +1119,7 @@ app.post('/api/lead', async (req, res) => {
 });
 
 // ðŸ’³ ENDPOINT PRINCIPAL - Criar Checkout Session
-app.post('/api/create-checkout-session', validateStripeReady, validateRequestData, async (req, res) => {
+app.post(['/api/create-checkout-session', '/api/stripe/checkout'], validateStripeReady, validateRequestData, async (req, res) => {
     const startTime = Date.now();
 
     try {
@@ -1471,7 +1447,7 @@ app.get('/api/session/:sessionId', validateStripeReady, async (req, res) => {
 
 // STRIPE WEBHOOK (validaÃ§Ã£o de assinatura)
 // Importante: usamos req.rawBody (definido no express.json verify) para validar a assinatura
-app.post('/api/stripe-webhook', async (req, res) => {
+app.post(['/api/stripe-webhook', '/api/stripe/webhook'], async (req, res) => {
     if (!isStripeReady) {
         return res.status(503).json({ error: 'Stripe not ready' });
     }
@@ -1741,6 +1717,9 @@ async function startServer() {
 // Executar apenas se nÃ£o estiver sendo importado
 if (require.main === module) {
     startServer();
+} else {
+    // Vercel imports this dedicated Stripe function instead of running startServer().
+    initializeStripe();
 }
 
 module.exports = app;

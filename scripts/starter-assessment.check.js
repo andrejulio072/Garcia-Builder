@@ -285,29 +285,25 @@ const migrationDirectory = path.join(__dirname, '..', 'supabase', 'migrations');
 const starterMigrationFile = fs.readdirSync(migrationDirectory).find((file) => file.endsWith('_starter_assessment_funnel.sql'));
 assert(starterMigrationFile, 'Tracked starter assessment migration is missing');
 const starterMigration = fs.readFileSync(path.join(migrationDirectory, starterMigrationFile), 'utf8');
-const apiFiles = fs.readdirSync(path.join(__dirname, '..', 'api')).filter((file) => file.endsWith('.js'));
-assert(
-  apiFiles.length <= 12,
-  `Vercel Hobby allows at most 12 Serverless Functions; api contains ${apiFiles.length}`
-);
-assert(
-  !apiFiles.some((file) => file.startsWith('starter-assessment-')),
-  'Starter assessment handlers must stay outside api/ and mount through stripe-server-premium.js'
-);
 [
   "app.get('/assessment'",
   "app.get('/start'",
   "app.get('/start/contact'",
-  "app.get('/start/result/:token'",
-  "app.post('/api/starter-assessment/submit'",
-  "app.get('/api/starter-assessment/result/:token'",
-  "app.post('/api/starter-assessment/event'"
+  "app.get('/start/result/:token'"
 ].forEach((snippet) => {
   assert(
     productionServer.includes(snippet),
     `Production server missing starter assessment route: ${snippet}`
   );
 });
+const assessmentApiDirectory = path.join(__dirname, '..', 'api', 'starter-assessment');
+for (const endpoint of ['submit.js', 'result.js', 'event.js']) {
+  assert(fs.existsSync(path.join(assessmentApiDirectory, endpoint)), `Missing dedicated assessment endpoint: ${endpoint}`);
+}
+assert(!productionServer.includes("require('../lib/starter-assessment/"), 'Stripe server must not initialise assessment dependencies');
+assert(!vercelConfig.includes('"source": "/api/:path*"'), 'Vercel must not route every API request through Stripe');
+assert(vercelConfig.includes('"source": "/api/stripe/:path*"'), 'Vercel must route dedicated Stripe paths explicitly');
+assert(!vercelConfig.includes('"key": "Access-Control-Allow-Origin"'), 'Vercel must not apply wildcard CORS headers');
 assert(starterPage.includes('name="website"'), 'Starter form should keep the honeypot field');
 assert(starterPage.includes('/js/starter-context.js'), 'Starter page should load shared starter context script');
 assert(starterContext.includes('detectEntryContext'), 'Shared starter context should include entry-context classification');

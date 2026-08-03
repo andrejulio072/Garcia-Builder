@@ -70,9 +70,14 @@ assert(!assessment.includes('<nav'), 'Paid assessment must not add competing nav
 assert(assessment.includes('class="starter-page-return__link" href="/"'), 'Paid assessment must expose the compact main-site return route');
 assert(css.includes('.starter-page-return__link'), 'Main-site return route must retain its compact button treatment');
 
-for (const requiredField of ['full_name', 'email', 'date_of_birth', 'age_confirmed', 'resource_delivery_acknowledgement']) {
+for (const requiredField of ['full_name', 'email', 'age', 'resource_delivery_acknowledgement']) {
   assert(assessment.includes(`name="${requiredField}"`), `Paid assessment is missing required field ${requiredField}`);
 }
+for (const retiredField of ['date_of_birth', 'age_confirmed', 'marketing_whatsapp_consent']) {
+  assert(!assessment.includes(`name="${retiredField}"`), `Paid assessment still contains retired field ${retiredField}`);
+}
+assert.equal((assessment.match(/class="check-row"/g) || []).length, 2, 'Paid assessment must contain exactly two consent rows');
+assert(assessment.includes('target="_blank"') && assessment.includes('data-starter-copy="privacyNotice"'), 'Privacy Notice must open without losing form state');
 assert(assessment.includes('name="instagram_handle"'), 'Paid assessment must capture an optional Instagram/Facebook profile');
 for (const removedField of ['facebook_profile', 'preferred_contact_method', 'best_contact_time']) {
   assert(!assessment.includes(`name="${removedField}"`), `Paid assessment reintroduced ${removedField}`);

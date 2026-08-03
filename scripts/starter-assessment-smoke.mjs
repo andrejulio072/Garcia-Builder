@@ -33,8 +33,8 @@ const piiLeakKeys = [
   'first_name',
   'email',
   'whatsapp',
+  'age',
   'marketing_email_consent',
-  'marketing_whatsapp_consent',
   'lead_score',
   'score_reasons',
   'lead_id',
@@ -124,15 +124,15 @@ function verifyLeadRow(lead, expected) {
   assert.equal(lead.country, null, 'Legacy country field should remain empty');
   assert.equal(lead.language, expected.language, 'Lead language mismatch');
   assert.equal(lead.whatsapp, expected.whatsapp || null, 'Lead WhatsApp mismatch');
+  assert.equal(lead.age, 35, 'Lead age mismatch');
   for (const id of QUESTION_IDS) assert.equal(lead[id], answers[id], `Lead answer missing or incorrect: ${id}`);
   for (const field of ['recommended_path', 'recommended_workout', 'recommended_nutrition', 'recommended_resource', 'lead_score', 'lead_status']) {
     assert(lead[field] !== null && lead[field] !== undefined && lead[field] !== '', `Lead ${field} missing`);
   }
   assert.equal(lead.resource_delivery_acknowledgement, true, 'Resource delivery acknowledgement was not stored');
+  assert(lead.resource_acknowledgement_at, 'Resource acknowledgement timestamp missing');
   assert.equal(lead.marketing_email_consent, true, 'Email marketing consent was not stored');
-  assert.equal(lead.marketing_whatsapp_consent, false, 'WhatsApp marketing consent should be false');
   assert(lead.marketing_email_consent_at, 'Email marketing consent timestamp missing');
-  assert.equal(lead.marketing_whatsapp_consent_at, null, 'WhatsApp marketing timestamp should be null');
   assert(lead.consent_copy_version, 'Consent copy version missing');
   assert(lead.privacy_policy_version, 'Privacy policy version missing');
   assert.equal(lead.utm_source, 'business_card', 'UTM source mismatch');
@@ -225,10 +225,9 @@ async function main() {
       first_name: firstName,
       email,
       whatsapp,
-      age_confirmed: true,
+      age: 35,
       resource_delivery_acknowledgement: true,
-      marketing_email_consent: true,
-      marketing_whatsapp_consent: false
+      marketing_email_consent: true
     },
     language,
     answers,

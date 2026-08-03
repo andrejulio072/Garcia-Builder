@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const NEW_TOKEN = '20260728-footer-links-v8';
+const NEW_TOKEN = '20260804-age-consent-v9';
 const OLD_TOKENS = [
   '20260727-ads-final',
   '20260727-ads-corrective',
@@ -18,7 +18,8 @@ const OLD_TOKENS = [
   '20260728-assessment-10lang-v4',
   '20260728-language-contrast-v5',
   '20260728-testimonials-v6',
-  '20260728-ads-polish-v7'
+  '20260728-ads-polish-v7',
+  '20260728-footer-links-v8'
 ];
 const TARGET_FILES = ['assessment.html', 'start.html', 'start-result.html'];
 const CHANGED_ASSETS = [

@@ -170,7 +170,10 @@ Payload fields:
 - `nurture_eligible`
 - `nurture_sequence`
 - `marketing_email_consent`
-- `marketing_whatsapp_consent`
+- `age`
+- `resource_delivery_acknowledgement`
+- `consent_copy_version`
+- `privacy_policy_version`
 - `utm_source`
 - `utm_medium`
 - `utm_campaign`

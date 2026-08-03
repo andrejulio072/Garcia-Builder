@@ -5,9 +5,9 @@ const path = require('path');
 const { validateMetadata } = require('../lib/starter-assessment/validation.cjs');
 
 const requiredColumns = [
-  'id', 'created_at', 'full_name', 'first_name', 'date_of_birth', 'email', 'whatsapp',
+  'id', 'created_at', 'full_name', 'first_name', 'age', 'date_of_birth', 'email', 'whatsapp',
   'instagram_handle', 'facebook_profile', 'preferred_contact_method', 'best_contact_time',
-  'age_confirmed', 'resource_delivery_acknowledgement',
+  'age_confirmed', 'resource_delivery_acknowledgement', 'resource_acknowledgement_at',
   'marketing_email_consent', 'marketing_whatsapp_consent',
   'marketing_email_consent_at', 'marketing_whatsapp_consent_at',
   'consent_copy_version', 'privacy_policy_version',
@@ -40,7 +40,8 @@ const sqlFiles = [
   path.join(__dirname, '..', 'supabase', '07_starter_assessment.sql'),
   path.join(__dirname, '..', 'supabase', 'migrations', '20260714225452_starter_assessment_funnel.sql'),
   path.join(__dirname, '..', 'supabase', 'migrations', '20260727103000_paid_assessment_attribution_recovery.sql'),
-  path.join(__dirname, '..', 'supabase', 'migrations', '20260727223000_assessment_contact_enrichment.sql')
+  path.join(__dirname, '..', 'supabase', 'migrations', '20260727223000_assessment_contact_enrichment.sql'),
+  path.join(__dirname, '..', 'supabase', 'migrations', '20260804090000_assessment_age_consent.sql')
 ];
 
 const sql = sqlFiles
@@ -59,5 +60,7 @@ const submitHandler = fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter
 assert(submitHandler.includes('event_id: randomUUID()'), 'submit handler must generate event_id');
 assert(submitHandler.includes('result_token_hash'), 'submit handler must store result_token_hash');
 assert(!submitHandler.includes('result_token:'), 'submit handler must not store plaintext result_token');
+assert(submitHandler.includes('resource_acknowledgement_at'), 'submit handler must timestamp the required acknowledgement');
+assert(!submitHandler.includes('marketing_whatsapp_consent:'), 'new assessment submissions must not collect WhatsApp marketing consent');
 
 console.log('starter-schema-contract.check.js: ok');

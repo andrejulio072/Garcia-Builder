@@ -498,6 +498,93 @@
     return Object.fromEntries(CORE_KEYS.map((key, index) => [key, values[index]]));
   }
 
+  const AGE_AND_CONSENT_COPY = {
+    fr: {
+      age: 'Âge',
+      ageHelp: 'Requis pour adapter votre point de départ à votre âge. Vous devez avoir au moins 18 ans.',
+      deliveryConsentBefore: 'Je souhaite recevoir le résultat de mon évaluation et les ressources demandées, et j’ai lu la',
+      privacyNotice: 'Notice de confidentialité',
+      marketingEmail: 'Envoyez-moi occasionnellement des conseils fitness, des actualités coaching et des offres par email.',
+      enterAge: 'Saisissez votre âge.',
+      validAge: 'Saisissez votre âge sous forme de nombre entier.',
+      ageRange: 'L’âge doit être compris entre 18 et 100 ans.',
+      confirmDelivery: 'Confirmez que vous souhaitez recevoir votre résultat et que vous avez lu la Notice de confidentialité.'
+    },
+    de: {
+      age: 'Alter',
+      ageHelp: 'Erforderlich, damit dein Startpunkt altersgerecht ist. Du musst mindestens 18 Jahre alt sein.',
+      deliveryConsentBefore: 'Ich möchte mein Bewertungsergebnis und die angeforderten Ressourcen erhalten und habe die',
+      privacyNotice: 'Datenschutzhinweise',
+      marketingEmail: 'Sende mir gelegentlich Fitness-Tipps, Coaching-Updates und Angebote per E-Mail.',
+      enterAge: 'Gib dein Alter ein.',
+      validAge: 'Gib dein Alter als ganze Zahl ein.',
+      ageRange: 'Das Alter muss zwischen 18 und 100 Jahren liegen.',
+      confirmDelivery: 'Bestätige, dass du dein Ergebnis erhalten möchtest und die Datenschutzhinweise gelesen hast.'
+    },
+    it: {
+      age: 'Età',
+      ageHelp: 'Obbligatoria per rendere il punto di partenza adatto alla tua età. Devi avere almeno 18 anni.',
+      deliveryConsentBefore: 'Desidero ricevere il risultato della valutazione e le risorse richieste e ho letto l’',
+      privacyNotice: 'Informativa sulla privacy',
+      marketingEmail: 'Inviami occasionalmente consigli fitness, aggiornamenti sul coaching e offerte via email.',
+      enterAge: 'Inserisci la tua età.',
+      validAge: 'Inserisci l’età come numero intero.',
+      ageRange: 'L’età deve essere compresa tra 18 e 100 anni.',
+      confirmDelivery: 'Conferma di voler ricevere il risultato e di aver letto l’Informativa sulla privacy.'
+    },
+    nl: {
+      age: 'Leeftijd',
+      ageHelp: 'Vereist om je startadvies passend te maken voor je leeftijd. Je moet 18 jaar of ouder zijn.',
+      deliveryConsentBefore: 'Ik wil mijn beoordelingsresultaat en de gevraagde hulpmiddelen ontvangen en heb de',
+      privacyNotice: 'Privacyverklaring',
+      marketingEmail: 'Stuur mij af en toe fitnesstips, coachingupdates en aanbiedingen per e-mail.',
+      enterAge: 'Vul je leeftijd in.',
+      validAge: 'Vul je leeftijd in als een heel getal.',
+      ageRange: 'De leeftijd moet tussen 18 en 100 jaar liggen.',
+      confirmDelivery: 'Bevestig dat je je resultaat wilt ontvangen en de Privacyverklaring hebt gelezen.'
+    },
+    pl: {
+      age: 'Wiek',
+      ageHelp: 'Wymagany, aby punkt startowy był odpowiedni do wieku. Musisz mieć co najmniej 18 lat.',
+      deliveryConsentBefore: 'Chcę otrzymać wynik oceny i zamówione materiały oraz przeczytałem(-am)',
+      privacyNotice: 'Informację o prywatności',
+      marketingEmail: 'Wysyłaj mi od czasu do czasu wskazówki fitness, aktualności coachingowe i oferty e-mailem.',
+      enterAge: 'Wpisz swój wiek.',
+      validAge: 'Wpisz wiek jako liczbę całkowitą.',
+      ageRange: 'Wiek musi wynosić od 18 do 100 lat.',
+      confirmDelivery: 'Potwierdź, że chcesz otrzymać wynik i przeczytałeś(-aś) Informację o prywatności.'
+    },
+    ro: {
+      age: 'Vârstă',
+      ageHelp: 'Necesară pentru ca punctul de pornire să fie potrivit vârstei tale. Trebuie să ai cel puțin 18 ani.',
+      deliveryConsentBefore: 'Doresc să primesc rezultatul evaluării și resursele solicitate și am citit',
+      privacyNotice: 'Notificarea de confidențialitate',
+      marketingEmail: 'Trimite-mi ocazional recomandări fitness, actualizări despre coaching și oferte prin email.',
+      enterAge: 'Introdu vârsta.',
+      validAge: 'Introdu vârsta ca număr întreg.',
+      ageRange: 'Vârsta trebuie să fie între 18 și 100 de ani.',
+      confirmDelivery: 'Confirmă că dorești rezultatul și că ai citit Notificarea de confidențialitate.'
+    },
+    ru: {
+      age: 'Возраст',
+      ageHelp: 'Нужен, чтобы стартовые рекомендации соответствовали возрасту. Вам должно быть не менее 18 лет.',
+      deliveryConsentBefore: 'Я хочу получить результат оценки и запрошенные материалы и прочитал(а)',
+      privacyNotice: 'Уведомление о конфиденциальности',
+      marketingEmail: 'Иногда присылайте мне советы по фитнесу, новости коучинга и предложения по электронной почте.',
+      enterAge: 'Введите ваш возраст.',
+      validAge: 'Введите возраст целым числом.',
+      ageRange: 'Возраст должен быть от 18 до 100 лет.',
+      confirmDelivery: 'Подтвердите, что хотите получить результат и прочитали Уведомление о конфиденциальности.'
+    }
+  };
+
+  for (const language of SUPPORTED) {
+    Object.assign(UI[language], AGE_AND_CONSENT_COPY[language]);
+    for (const legacyKey of ['dateOfBirth', 'dobHelp', 'ageConsent', 'deliveryConsent', 'marketingWhatsapp', 'enterDob', 'adultDob', 'validDob', 'confirmAge']) {
+      delete UI[language][legacyKey];
+    }
+  }
+
   const TEXT = {
     fr: textPack([
       [

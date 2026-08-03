@@ -264,8 +264,7 @@ try {
 
   await page.fill('[name="full_name"]', 'Visual Test');
   await page.fill('[name="email"]', 'visual@example.test');
-  await page.fill('[name="date_of_birth"]', '1990-01-01');
-  await page.check('[name="age_confirmed"]');
+  await page.fill('[name="age"]', '35');
   await page.check('[name="resource_delivery_acknowledgement"]');
   await page.locator('[data-submit-button]').evaluate((button) => {
     button.click();

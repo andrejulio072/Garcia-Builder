@@ -42,10 +42,9 @@ const baseContact = {
   email: 'ANDRE@example.COM',
   country: 'Ireland',
   whatsapp: '',
-  age_confirmed: true,
+  age: 35,
   resource_delivery_acknowledgement: true,
-  marketing_email_consent: false,
-  marketing_whatsapp_consent: false
+  marketing_email_consent: false
 };
 
 function withAnswers(overrides) {
@@ -87,8 +86,7 @@ assert.strictEqual(scoreLead(withAnswers({ starting_timeline: 'Within the next m
 assert.strictEqual(scoreLead(withAnswers({ main_barrier: 'Motivation and accountability' })).leadScore, 1);
 assert.strictEqual(scoreLead(withAnswers({ main_barrier: 'I do not know what programme to follow' })).leadScore, 1);
 assert.strictEqual(scoreLead(withAnswers({ main_barrier: 'I have stopped seeing progress' })).leadScore, 1);
-assert.strictEqual(scoreLead(baseAnswers, { whatsapp: '+353871234567', marketing_whatsapp_consent: true }).leadScore, 2);
-assert.strictEqual(scoreLead(baseAnswers, { whatsapp: '+353871234567', marketing_whatsapp_consent: false }).leadScore, 2);
+assert.strictEqual(scoreLead(baseAnswers, { whatsapp: '+353871234567' }).leadScore, 2);
 
 assert.strictEqual(getLeadStatus(0), 'cold');
 assert.strictEqual(getLeadStatus(3), 'cold');
@@ -103,7 +101,7 @@ const warm = buildRecommendation(withAnswers({
   support_preference: 'A fully tailored coaching plan',
   starting_timeline: 'As soon as possible',
   main_barrier: 'Motivation and accountability'
-}), { whatsapp: '+353871234567', marketing_whatsapp_consent: true });
+}), { whatsapp: '+353871234567' });
 assert.strictEqual(warm.leadScore, 10);
 assert.strictEqual(warm.leadStatus, 'warm');
 assert.strictEqual(warm.supportCTA, 'Discuss a Tailored Plan with Andre');
@@ -126,11 +124,18 @@ const validSubmission = validateSubmission({
 assert.strictEqual(validSubmission.ok, true);
 assert.strictEqual(validSubmission.contact.first_name, 'Andre');
 assert.strictEqual(validSubmission.contact.email, 'andre@example.com');
+assert.strictEqual(validSubmission.contact.age, 35);
 assert.strictEqual(validSubmission.contact.marketing_email_consent, false);
 assert.strictEqual(validSubmission.metadata.utm_source, 'business_card');
 
 assert.strictEqual(validateSubmission({ answers: { ...baseAnswers, primary_goal: 'Hack' }, contact: baseContact }).ok, false);
 assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, email: 'bad' } }).ok, false);
+assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, age: '' } }).ok, false);
+assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, age: 17 } }).ok, false);
+assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, age: 101 } }).ok, false);
+assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, age: 18 } }).ok, true);
+assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, age: 100 } }).ok, true);
+assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, age: 35.5 } }).ok, false);
 assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, resource_delivery_acknowledgement: false } }).ok, false);
 assert.strictEqual(validateSubmission({ answers: baseAnswers, contact: { ...baseContact, whatsapp: '0871234567' } }).ok, false);
 
@@ -317,7 +322,11 @@ assert(paidAssessmentPage.includes('data-starter-entry-default="organic"'), 'Pai
 assert(paidAssessmentPage.includes('name="robots" content="noindex, follow"'), 'Paid assessment should be noindex, follow');
 assert(!paidAssessmentPage.includes('data-qr-choice="packages"'), 'Paid assessment page should not include package pre-assessment choices');
 assert(!paidAssessmentPage.includes('data-qr-choice="contact"'), 'Paid assessment page should not include contact pre-assessment choices');
-assert(paidAssessmentPage.includes('name="date_of_birth"'), 'Paid assessment contact form should include date of birth for adult lead qualification');
+assert(paidAssessmentPage.includes('name="age"'), 'Paid assessment contact form should include required age');
+assert(paidAssessmentPage.includes('min="18"') && paidAssessmentPage.includes('max="100"'), 'Paid assessment age must be constrained to 18 through 100');
+assert(!paidAssessmentPage.includes('name="date_of_birth"'), 'Paid assessment must not collect date of birth');
+assert(!paidAssessmentPage.includes('name="age_confirmed"'), 'Paid assessment must not use a separate age confirmation checkbox');
+assert(!paidAssessmentPage.includes('name="marketing_whatsapp_consent"'), 'Paid assessment must not collect WhatsApp marketing consent');
 assert(paidAssessmentPage.includes('name="instagram_handle"'), 'Paid assessment contact form should include the optional Instagram/Facebook qualifier');
 assert(!paidAssessmentPage.includes('name="facebook_profile"'), 'Paid assessment contact form should not include Facebook pre-conversion');
 assert(!paidAssessmentPage.includes('name="preferred_contact_method"'), 'Paid assessment contact form should not include preferred contact pre-conversion');
@@ -365,6 +374,7 @@ assert(submittedPayloadMatch, 'assessment_submitted payload should exist');
   'first_name',
   'email',
   'whatsapp',
+  'age',
   'date_of_birth',
   'instagram_handle',
   'facebook_profile',
@@ -374,7 +384,8 @@ assert(submittedPayloadMatch, 'assessment_submitted payload should exist');
   'lead_score',
   'lead_id'
 ].forEach((forbidden) => {
-  assert(!submittedPayloadMatch[1].includes(forbidden), `assessment_submitted payload must not include sensitive key: ${forbidden}`);
+  const keyPattern = new RegExp(`\\b${forbidden}\\s*:`);
+  assert(!keyPattern.test(submittedPayloadMatch[1]), `assessment_submitted payload must not include sensitive key: ${forbidden}`);
 });
 
 const ignoredBranchMatch = starterClient.match(/if \(payload\.ignored\) \{([\s\S]*?)return;/);

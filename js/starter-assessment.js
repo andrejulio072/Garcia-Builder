@@ -45,9 +45,6 @@
   const backButton = $('[data-back-button]');
   const submitButton = $('[data-submit-button]');
   const errorSummary = $('[data-error-summary]');
-  const whatsappInput = $('[name="whatsapp"]');
-  const whatsappConsent = $('[data-whatsapp-consent]');
-  const dobInput = $('[name="date_of_birth"]');
 
   const PAID_COPY_FALLBACK = {
     heroTrustPaid: 'heroTrust',
@@ -258,15 +255,6 @@
     track('assessment_question_viewed', { question_id: id, question_number: state.step + 1 });
   }
 
-  function syncWhatsappConsent() {
-    const hasWhatsapp = Boolean(String(whatsappInput?.value || '').trim());
-    if (whatsappConsent) whatsappConsent.hidden = !hasWhatsapp;
-    if (!hasWhatsapp) {
-      const checkbox = whatsappConsent?.querySelector('input');
-      if (checkbox) checkbox.checked = false;
-    }
-  }
-
   function render() {
     clearError();
     setProgress();
@@ -278,7 +266,6 @@
 
     if (isContact) {
       restartStageAnimation(contactStep);
-      syncWhatsappConsent();
       if (!state.contactTracked) {
         track('assessment_contact_viewed', { completed_questions: QUESTIONS.length });
         state.contactTracked = true;
@@ -313,52 +300,27 @@
     const data = new FormData(form);
     return {
       full_name: String(data.get('full_name') || '').trim(),
-      date_of_birth: String(data.get('date_of_birth') || '').trim(),
+      age: String(data.get('age') || '').trim(),
       email: String(data.get('email') || '').trim(),
       whatsapp: String(data.get('whatsapp') || '').trim(),
       instagram_handle: String(data.get('instagram_handle') || '').trim(),
       facebook_profile: String(data.get('facebook_profile') || '').trim(),
       preferred_contact_method: String(data.get('preferred_contact_method') || '').trim(),
       best_contact_time: String(data.get('best_contact_time') || '').trim(),
-      age_confirmed: data.get('age_confirmed') === 'on',
       resource_delivery_acknowledgement: data.get('resource_delivery_acknowledgement') === 'on',
-      marketing_email_consent: data.get('marketing_email_consent') === 'on',
-      marketing_whatsapp_consent: data.get('marketing_whatsapp_consent') === 'on'
+      marketing_email_consent: data.get('marketing_email_consent') === 'on'
     };
-  }
-
-  function isValidDateString(value) {
-    if (!value) return true;
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
-    const parsed = new Date(`${value}T00:00:00Z`);
-    return !Number.isNaN(parsed.getTime()) && value >= '1900-01-01' && value <= '2099-12-31';
-  }
-
-  function adultDobCutoff() {
-    const cutoff = new Date();
-    cutoff.setHours(0, 0, 0, 0);
-    cutoff.setFullYear(cutoff.getFullYear() - 18);
-    return [
-      cutoff.getFullYear(),
-      String(cutoff.getMonth() + 1).padStart(2, '0'),
-      String(cutoff.getDate()).padStart(2, '0')
-    ].join('-');
-  }
-
-  function syncDobLimit() {
-    if (dobInput) dobInput.max = adultDobCutoff();
   }
 
   function validateContact(contact) {
     if (!contact.full_name || contact.full_name.length < 2) return { message: copy('enterName'), field: 'full_name' };
-    if (dobInput?.required && !contact.date_of_birth) return { message: copy('enterDob'), field: 'date_of_birth' };
-    if (!isValidDateString(contact.date_of_birth)) return { message: copy('validDob'), field: 'date_of_birth' };
-    if (contact.date_of_birth && contact.date_of_birth > adultDobCutoff()) return { message: copy('adultDob'), field: 'date_of_birth' };
+    if (!contact.age) return { message: copy('enterAge'), field: 'age' };
+    if (!/^\d+$/.test(contact.age) || !Number.isInteger(Number(contact.age))) return { message: copy('validAge'), field: 'age' };
+    if (Number(contact.age) < 18 || Number(contact.age) > 100) return { message: copy('ageRange'), field: 'age' };
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email.toLowerCase())) return { message: copy('validEmail'), field: 'email' };
     if (contact.whatsapp && !/^\+[1-9]\d{7,14}$/.test(contact.whatsapp)) return { message: copy('validWhatsapp'), field: 'whatsapp' };
     if (contact.instagram_handle && contact.instagram_handle.length > 180) return { message: copy('validInstagram'), field: 'instagram_handle' };
     if (contact.facebook_profile && contact.facebook_profile.length > 180) return { message: copy('validFacebook'), field: 'facebook_profile' };
-    if (!contact.age_confirmed) return { message: copy('confirmAge'), field: 'age_confirmed' };
     if (!contact.resource_delivery_acknowledgement) return { message: copy('confirmDelivery'), field: 'resource_delivery_acknowledgement' };
     return null;
   }
@@ -556,8 +518,6 @@
       state.step = Math.max(0, state.step - 1);
       render();
     });
-    whatsappInput?.addEventListener('input', syncWhatsappConsent);
-    syncDobLimit();
     document.querySelectorAll('[data-starter-language]').forEach((selector) => {
       selector.addEventListener('change', (event) => applyLanguage(event.target.value));
     });

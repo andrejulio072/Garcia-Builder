@@ -7,13 +7,13 @@
   <meta name="description" content="Answer seven quick questions and get your practical workout and nutrition starting point from Garcia Builder Fitness.">
   <meta name="robots" content="noindex, follow">
   <link rel="canonical" href="https://www.garciabuilder.fitness/assessment">
-  <link rel="stylesheet" href="/css/starter-assessment.css?v=20260728-footer-links-v8">
-  <script src="/js/starter-tracking-bootstrap.js?v=20260728-footer-links-v8"></script>
+  <link rel="stylesheet" href="/css/starter-assessment.css?v=20260804-age-consent-v9">
+  <script src="/js/starter-tracking-bootstrap.js?v=20260804-age-consent-v9"></script>
   <script src="/js/env.js" defer></script>
-  <script src="/js/starter-context.js?v=20260728-footer-links-v8" defer></script>
-  <script src="/js/starter-locales-expanded.js?v=20260728-footer-links-v8" defer></script>
-  <script src="/js/starter-locales.js?v=20260728-footer-links-v8" defer></script>
-  <script src="/js/starter-assessment.js?v=20260728-footer-links-v8" defer></script>
+  <script src="/js/starter-context.js?v=20260804-age-consent-v9" defer></script>
+  <script src="/js/starter-locales-expanded.js?v=20260804-age-consent-v9" defer></script>
+  <script src="/js/starter-locales.js?v=20260804-age-consent-v9" defer></script>
+  <script src="/js/starter-assessment.js?v=20260804-age-consent-v9" defer></script>
 </head>
 <body class="starter-page starter-page-paid" data-starter-entry-default="organic" data-starter-page-mode="paid">
   <a class="skip-link" href="#assessment-root" data-starter-copy="skipAssessment">Skip to assessment</a>
@@ -269,9 +269,9 @@
               <small data-starter-copy="emailWhy">Your email is required so we can display and deliver the result and resources you requested.</small>
             </label>
             <label>
-              <span data-starter-copy="dateOfBirth">Date of birth</span>
-              <input name="date_of_birth" type="date" autocomplete="bday" min="1900-01-01" required data-adult-dob>
-              <small data-starter-copy="dobHelp">Required to confirm adult eligibility and make your starting direction more appropriate.</small>
+              <span data-starter-copy="age">Age</span>
+              <input name="age" type="number" inputmode="numeric" autocomplete="off" min="18" max="100" step="1" required>
+              <small data-starter-copy="ageHelp">Required so your starting direction is age-appropriate. You must be 18 or older.</small>
             </label>
             <label>
               <span><span data-starter-copy="instagram">Instagram or Facebook profile</span> <small data-starter-copy="optional">optional</small></span>
@@ -288,20 +288,12 @@
           <input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
 
           <label class="check-row">
-            <input type="checkbox" name="age_confirmed" required>
-            <span data-starter-copy="ageConsent">I confirm I am 18 or older.</span>
-          </label>
-          <label class="check-row">
             <input type="checkbox" name="resource_delivery_acknowledgement" required>
-            <span data-starter-copy="deliveryConsent">I agree to receive my assessment result and the resources I requested.</span>
+            <span><span data-starter-copy="deliveryConsentBefore">I want to receive my assessment result and requested resources, and I have read the</span> <a href="/privacy-policy" target="_blank" rel="noopener" data-starter-copy="privacyNotice">Privacy Notice</a>.</span>
           </label>
           <label class="check-row">
             <input type="checkbox" name="marketing_email_consent">
-            <span data-starter-copy="marketingEmail">I would like to receive occasional fitness guidance, coaching information and offers from Garcia Builder Fitness by email.</span>
-          </label>
-          <label class="check-row" data-whatsapp-consent hidden>
-            <input type="checkbox" name="marketing_whatsapp_consent">
-            <span data-starter-copy="marketingWhatsapp">I would like to receive occasional coaching information and follow-up messages from Garcia Builder Fitness by WhatsApp.</span>
+            <span data-starter-copy="marketingEmail">Send me occasional fitness guidance, coaching updates and offers by email.</span>
           </label>
 
           <p class="legal-note"><span data-starter-copy="contactReassurance">Your details are used to deliver your result and respond to your enquiry. Marketing messages are optional.</span></p>

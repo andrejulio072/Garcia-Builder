@@ -30,10 +30,9 @@ const contact = {
   first_name: 'Andre',
   email: 'andrenjulio072+test1@gmail.com',
   whatsapp: '',
-  date_of_birth: '1990-01-01',
+  age: 35,
   instagram_handle: '',
-  marketing_email_consent: false,
-  marketing_whatsapp_consent: false
+  marketing_email_consent: false
 };
 
 const req = {

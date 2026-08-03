@@ -19,9 +19,9 @@ node tools/static-server.js
 
 Real lead creation requires `SUPABASE_SERVICE_ROLE_KEY` or `SUPABASE_SECRET_KEY` in `.env`. Result email delivery uses Brevo first and SMTP as a fallback. If neither provider is configured, the lead is still stored and email delivery is skipped.
 
-The frontend stores the seven assessment answers and UTM metadata in `sessionStorage`. It does not persist contact PII (full name, email, WhatsApp, DOB, Instagram, Facebook) in browser storage. Questions advance automatically after an answer; Back remains available.
+The frontend stores the seven assessment answers and UTM metadata in `sessionStorage`. It does not persist contact PII (full name, email, WhatsApp, age or social profile) in browser storage. Questions advance automatically after an answer; Back remains available.
 
-The assessment supports `en`, `pt`, and `es`. The selected language is saved as `gb_lang`, included with the lead, and used for the result page and transactional email. It remains QR-exclusive: do not add assessment links to the public navigation or other site CTAs yet.
+The assessment supports `en`, `pt`, `es`, `fr`, `de`, `it`, `nl`, `pl`, `ro` and `ru`. The selected language is saved as `gb_lang`, included with the lead, and used for the result page and transactional email.
 
 ## Supabase Migration
 
@@ -39,10 +39,14 @@ npx supabase@latest db push --dry-run
 npx supabase@latest db push
 ```
 
-Tracked migration:
+Relevant tracked migrations:
 
 ```text
 supabase/migrations/20260714225452_starter_assessment_funnel.sql
+supabase/migrations/20260727103000_paid_assessment_attribution_recovery.sql
+supabase/migrations/20260727223000_assessment_contact_enrichment.sql
+supabase/migrations/20260804090000_assessment_age_consent.sql
+supabase/migrations/20260804100000_assessment_submission_id.sql
 ```
 
 Do not apply the tracked migration until the project is linked and the remote migration history has been reviewed. Do not make the same change independently in the remote SQL editor after adopting the migration workflow.
@@ -74,6 +78,7 @@ Server-only:
 
 - `SUPABASE_URL`
 - `SUPABASE_SECRET_KEY` or `SUPABASE_SERVICE_ROLE_KEY`
+- `RESULT_TOKEN_SECRET` recommended: a dedicated random secret of at least 32 characters; the Supabase server key is the compatibility fallback
 - `BREVO_API_KEY`
 - `BREVO_SENDER_EMAIL`
 - `BREVO_SENDER_NAME` optional
@@ -147,7 +152,9 @@ Do not expose this query through a public browser endpoint.
 
 Set `ZAPIER_LEAD_WEBHOOK_URL` to receive a sanitized payload after lead creation. The webhook URL is server-only.
 
-Payload fields:
+Supabase stores `submission_id` as the durable idempotency key. It is not forwarded to browser analytics.
+
+Zapier payload fields:
 
 - `lead_id`
 - `created_at`

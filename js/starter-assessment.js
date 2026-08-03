@@ -24,6 +24,7 @@
     contactTracked: false,
     entryContext: defaultEntryContext,
     submitted: false,
+    submissionId: null,
     campaignKey: ''
   };
 
@@ -312,6 +313,22 @@
     };
   }
 
+  function getSubmissionId() {
+    if (state.submissionId) return state.submissionId;
+    const cryptoApi = globalThis.crypto;
+    if (typeof cryptoApi?.randomUUID === 'function') {
+      state.submissionId = cryptoApi.randomUUID();
+      return state.submissionId;
+    }
+    const bytes = new Uint8Array(16);
+    cryptoApi.getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
+    state.submissionId = `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+    return state.submissionId;
+  }
+
   function validateContact(contact) {
     if (!contact.full_name || contact.full_name.length < 2) return { message: copy('enterName'), field: 'full_name' };
     if (!contact.age) return { message: copy('enterAge'), field: 'age' };
@@ -405,6 +422,7 @@
         body: JSON.stringify({
           answers: state.answers,
           contact,
+          submission_id: getSubmissionId(),
           language: state.language,
           metadata: getMeta(),
           website: String(new FormData(form).get('website') || '')

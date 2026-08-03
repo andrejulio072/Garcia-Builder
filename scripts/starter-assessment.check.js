@@ -18,7 +18,7 @@ const {
 } = require('../lib/starter-assessment/recommendation.cjs');
 const { applyEventScore } = require('../lib/starter-assessment/events.cjs');
 const { validateSubmission, validateMetadata, getPublicConfig } = require('../lib/starter-assessment/validation.cjs');
-const { generateResultToken, hashResultToken } = require('../lib/starter-assessment/tokens.cjs');
+const { generateResultToken, generateResultTokenForSubmission, hashResultToken } = require('../lib/starter-assessment/tokens.cjs');
 const { getDisplayResource } = require('../lib/starter-assessment/resources.cjs');
 const { buildWhatsappMessage, buildWhatsappUrl } = require('../lib/starter-assessment/whatsapp.cjs');
 const { BREVO_API_URL, DEFAULT_EMAIL_TIMEOUT_MS, getEmailTimeoutMs, sendTransactionalEmail } = require('../lib/starter-assessment/email.cjs');
@@ -167,6 +167,7 @@ assert.deepStrictEqual(Object.keys(metadata).sort(), [
 ].sort());
 assert.strictEqual(metadata.utm_source, 'qr');
 assert.strictEqual(metadata.entry_context, 'organic');
+assert.strictEqual(validateMetadata({ first_touch_at: 'not-a-date' }).first_touch_at, null);
 
 const paidByLatestGoogle = validateMetadata({
   utm_source: 'website',
@@ -203,6 +204,18 @@ const token = generateResultToken();
 assert(token.length >= 40);
 assert.strictEqual(hashResultToken(token).length, 64);
 assert.notStrictEqual(hashResultToken(token), token);
+const deterministicToken = generateResultTokenForSubmission(
+  '9b3f4e64-43f5-4e8f-a7cb-cf5a1d0c18e2',
+  'test-result-token-secret-with-at-least-thirty-two-characters'
+);
+assert.strictEqual(
+  deterministicToken,
+  generateResultTokenForSubmission('9b3f4e64-43f5-4e8f-a7cb-cf5a1d0c18e2', 'test-result-token-secret-with-at-least-thirty-two-characters')
+);
+assert.notStrictEqual(
+  deterministicToken,
+  generateResultTokenForSubmission('623aa17c-5225-42a6-80f8-da81c5950358', 'test-result-token-secret-with-at-least-thirty-two-characters')
+);
 
 const workoutResource = getDisplayResource('Four-Day Upper/Lower Template');
 assert.strictEqual(workoutResource.fallbackUsed, false);
@@ -349,12 +362,13 @@ assert(starterContactPage.includes('mailto:inquiries@garciabuilder.fitness'), 'Q
 assert(starterContactPage.includes('/packages.html?utm_source=business_card'), 'QR contact page should include package link');
 assert(starterContactPage.includes('/start.html?utm_source=business_card'), 'QR contact page should still link back to the assessment');
 const submitHandlerSource = fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8');
-assert(submitHandlerSource.includes('SUBMISSION_WINDOW_MS'), 'Starter submit should keep duplicate-submission throttling');
+assert(submitHandlerSource.includes(".eq('submission_id', submissionId)"), 'Starter submit should recover durable duplicate submissions by submission id');
 assert(submitHandlerSource.includes('<li>Age:'), 'Warm lead alert should calculate and display lead age');
 assert(submitHandlerSource.includes('Instagram/Facebook profile:'), 'Warm lead alert should label the combined social profile clearly');
 assert(starterClient.includes('resourceDelivery?.email'), 'Starter form should preserve the email delivery status before redirecting');
 assert(starterClient.includes('shouldTrackCanonicalSubmission(payload)'), 'Starter form should gate primary conversion to the canonical server response contract');
 assert(starterClient.includes('SUBMITTED_EVENT_GUARD_KEY'), 'Starter form should guard against duplicate assessment_submitted event ids per browser session');
+assert(starterClient.includes('submission_id: getSubmissionId()'), 'Starter form should send a stable durable submission id');
 assert(starterClient.includes("track('assessment_submission_ignored'"), 'Honeypot responses should be handled without success redirect or conversion');
 assert(starterClient.includes('function renderError(message)'), 'Starter form should separate error rendering from event tracking');
 assert(starterClient.includes('function trackValidationError(field)'), 'Starter form should track validation separately from rendering');
@@ -434,6 +448,7 @@ assert(!starterSmoke.includes("  'desired_result',"), 'Production smoke test sho
 assert(!starterSmoke.includes('STARTER_ASSESSMENT_TEST_COUNTRY'), 'Production smoke test should not require country');
 assert(starterSmoke.includes('STARTER_ASSESSMENT_TEST_LANGUAGE'), 'Production smoke test should verify assessment language');
 assert(submitHandler.includes('await sideEffectsPromise;'), 'Serverless handler should await lead side effects before responding');
+assert(submitHandler.includes('validated.metadata.first_touch_at = validated.metadata.first_touch_at || submittedAt'), 'Server must guarantee first-touch timestamp fallback');
 assert(resultClient.includes('primary_recommendation_cta_clicked'), 'Result page should track the personalized primary CTA');
 assert(resultClient.includes("primaryActionLink.textContent = copy('downloadGuide')"), 'Result page should keep guide download as the primary CTA');
 assert(starterMigration.includes("add column if not exists language text not null default 'en'"), 'Migration should add assessment language');

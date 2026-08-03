@@ -130,7 +130,10 @@ try {
 
   for (const viewport of [
     { width: 320, height: 720, name: 'mobile-320' },
+    { width: 360, height: 800, name: 'mobile-360' },
     { width: 390, height: 844, name: 'mobile-390' },
+    { width: 412, height: 915, name: 'mobile-412' },
+    { width: 430, height: 932, name: 'mobile-430' },
     { width: 768, height: 1024, name: 'tablet-768' },
     { width: 1024, height: 900, name: 'desktop-1024' },
     { width: 1440, height: 1000, name: 'desktop-1440' }

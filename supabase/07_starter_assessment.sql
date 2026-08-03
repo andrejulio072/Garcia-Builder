@@ -5,6 +5,7 @@ create extension if not exists pgcrypto;
 
 create table if not exists public.starter_assessment_leads (
   id uuid primary key default gen_random_uuid(),
+  submission_id uuid unique not null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   first_name text not null check (char_length(first_name) between 1 and 60),

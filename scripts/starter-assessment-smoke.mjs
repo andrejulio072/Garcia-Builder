@@ -38,6 +38,7 @@ const piiLeakKeys = [
   'lead_score',
   'score_reasons',
   'lead_id',
+  'submission_id',
   'result_token_hash',
   'result_email_sent_at',
   'zapier'
@@ -119,6 +120,7 @@ async function waitForLeadEmailTimestamp(supabase, tokenHash) {
 
 function verifyLeadRow(lead, expected) {
   assert(lead, 'Supabase lead row was not found');
+  assert(lead.submission_id, 'Lead submission_id missing');
   assert(lead.first_name, 'Lead first_name missing');
   assert.equal(lead.email, expected.email.toLowerCase(), 'Lead email mismatch');
   assert.equal(lead.country, null, 'Legacy country field should remain empty');

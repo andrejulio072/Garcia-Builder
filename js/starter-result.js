@@ -240,21 +240,21 @@
     const plansLink = document.createElement('a');
     plansLink.className = 'starter-secondary';
     plansLink.classList.add('result-action');
-    plansLink.href = '/packages.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=view_plans';
+    plansLink.href = '/packages?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=view_plans';
     plansLink.textContent = copy('viewPlans');
     plansLink.addEventListener('click', () => track('view_plans_click', {}));
 
     const workoutLink = document.createElement('a');
     workoutLink.className = 'starter-secondary';
     workoutLink.classList.add('result-action');
-    workoutLink.href = '/workouts.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=workout_library';
+    workoutLink.href = '/workouts?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=workout_library';
     workoutLink.textContent = copy('workoutLibrary');
     workoutLink.addEventListener('click', () => track('workout_tools_click', {}));
 
     const nutritionLink = document.createElement('a');
     nutritionLink.className = 'starter-secondary';
     nutritionLink.classList.add('result-action');
-    nutritionLink.href = '/nutrition-calculator.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=nutrition_calculator';
+    nutritionLink.href = '/nutrition-calculator?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=nutrition_calculator';
     nutritionLink.textContent = copy('calculateMacros');
     nutritionLink.addEventListener('click', () => track('nutrition_tools_click', {}));
 

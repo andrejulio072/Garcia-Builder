@@ -49,6 +49,15 @@ app.get('/api/starter-assessment/result/:token', (req, res, next) => {
 });
 app.post('/api/starter-assessment/event', adaptServerlessHandler(starterEventHandler));
 
+// Mirror the controlled extensionless routes before express.static can redirect
+// a route such as /blog to the physical /blog directory.
+const seoManifest = require('../config/seo-pages.json');
+for (const page of seoManifest.pages.filter((entry) => entry.indexable)) {
+  app.get(page.path, (req, res) => {
+    res.sendFile(path.join(root, page.source));
+  });
+}
+
 // Serve static with content-type tweaks for some assets
 app.use(express.static(root, {
   setHeaders: (res, filePath) => {

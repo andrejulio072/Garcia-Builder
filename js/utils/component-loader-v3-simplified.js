@@ -245,7 +245,7 @@ const INLINE_FALLBACKS = {
 <nav class="gb-navbar" role="navigation" aria-label="Main navigation (offline fallback)">
     <div class="container">
         <div class="gb-navbar-content">
-            <a href="#" class="gb-logo-section" aria-label="Garcia Builder Home" data-gb-nav="index.html">
+            <a href="#" class="gb-logo-section" aria-label="Garcia Builder Home" data-gb-nav="/">
              <img src="Logo Files/For Web/logo-nobackground-500.png"
                  data-gb-logo-src="Logo Files/For Web/logo-nobackground-500.png"
                      alt="Garcia Builder Logo"
@@ -257,19 +257,19 @@ const INLINE_FALLBACKS = {
             </a>
 
             <nav class="gb-navbar-links" role="menubar" aria-label="Primary">
-                <a href="#" class="gb-navbar-link" data-i18n="nav.home" role="menuitem" data-gb-nav="index.html">Home</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.online_coaching" role="menuitem" data-gb-nav="online-coaching.html">Online Coaching</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.packages" role="menuitem" data-gb-nav="packages.html">Packages</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.home" role="menuitem" data-gb-nav="/">Home</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.online_coaching" role="menuitem" data-gb-nav="/online-coaching">Online Coaching</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.packages" role="menuitem" data-gb-nav="/packages">Packages</a>
                 <a href="/assessment?utm_source=website&amp;utm_medium=organic&amp;utm_campaign=starter_assessment&amp;utm_content=site_assessment_cta" class="gb-navbar-link gb-navbar-link--assessment" role="menuitem" data-button-location="desktop_menu_assessment">Free Assessment</a>
-                <a href="/consultation.html" class="gb-navbar-link gb-navbar-link--cta" data-i18n="nav.consultation" role="menuitem" data-button-location="desktop_menu">Book Consultation</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="transformations.html">Transformations</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.testi" role="menuitem" data-gb-nav="testimonials.html">Testimonials</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.workouts" role="menuitem" data-gb-nav="workouts.html">Workouts</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.nutrition_calculator" role="menuitem" data-gb-nav="nutrition-calculator.html">Nutrition Calculator</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.blog" role="menuitem" data-gb-nav="blog.html">Blog</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.about" role="menuitem" data-gb-nav="about.html">About</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.faq" role="menuitem" data-gb-nav="faq.html">FAQ</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.contact" role="menuitem" data-gb-nav="contact.html">Contact</a>
+                <a href="/consultation" class="gb-navbar-link gb-navbar-link--cta" data-i18n="nav.consultation" role="menuitem" data-button-location="desktop_menu">Book Consultation</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="/transformations">Transformations</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.testi" role="menuitem" data-gb-nav="/testimonials">Testimonials</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.workouts" role="menuitem" data-gb-nav="/workouts">Workouts</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.nutrition_calculator" role="menuitem" data-gb-nav="/nutrition-calculator">Nutrition Calculator</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.blog" role="menuitem" data-gb-nav="/blog">Blog</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.about" role="menuitem" data-gb-nav="/about">About</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.faq" role="menuitem" data-gb-nav="/faq">FAQ</a>
+                <a href="#" class="gb-navbar-link" data-i18n="nav.contact" role="menuitem" data-gb-nav="/contact">Contact</a>
             </nav>
 
             <div class="gb-navbar-actions">
@@ -306,22 +306,22 @@ const INLINE_FALLBACKS = {
     <div class="gb-menu" id="gb-menu">
         <div class="gb-menu-inner">
             <nav class="gb-menu-links" role="menubar">
-                <a href="#" class="gb-menu-link" data-i18n="nav.home" role="menuitem" data-gb-nav="index.html">Home</a>
+                <a href="#" class="gb-menu-link" data-i18n="nav.home" role="menuitem" data-gb-nav="/">Home</a>
                 <span class="gb-menu-section-label" data-i18n="nav.group_start">Start Here</span>
-                <a href="#" class="gb-menu-link" data-i18n="nav.online_coaching" role="menuitem" data-gb-nav="online-coaching.html">Online Coaching</a>
-                <a href="#" class="gb-menu-link" data-i18n="nav.packages" role="menuitem" data-gb-nav="packages.html">Packages</a>
+                <a href="#" class="gb-menu-link" data-i18n="nav.online_coaching" role="menuitem" data-gb-nav="/online-coaching">Online Coaching</a>
+                <a href="#" class="gb-menu-link" data-i18n="nav.packages" role="menuitem" data-gb-nav="/packages">Packages</a>
                 <a href="/assessment?utm_source=website&amp;utm_medium=organic&amp;utm_campaign=starter_assessment&amp;utm_content=site_assessment_cta" class="gb-menu-link gb-menu-link--assessment" role="menuitem" data-button-location="mobile_menu_assessment">Free Assessment</a>
-                <a href="/consultation.html" class="gb-menu-link gb-menu-link--cta" data-i18n="nav.consultation" role="menuitem" data-button-location="mobile_menu">Book Consultation</a>
+                <a href="/consultation" class="gb-menu-link gb-menu-link--cta" data-i18n="nav.consultation" role="menuitem" data-button-location="mobile_menu">Book Consultation</a>
                 <span class="gb-menu-section-label" data-i18n="nav.group_results">Results</span>
-                <a href="#" class="gb-menu-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="transformations.html">Transformations</a>
-                <a href="#" class="gb-menu-link" data-i18n="nav.testi" role="menuitem" data-gb-nav="testimonials.html">Testimonials</a>
+                <a href="#" class="gb-menu-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="/transformations">Transformations</a>
+                <a href="#" class="gb-menu-link" data-i18n="nav.testi" role="menuitem" data-gb-nav="/testimonials">Testimonials</a>
                 <span class="gb-menu-section-label" data-i18n="nav.group_explore">Explore</span>
-                <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.workouts" role="menuitem" data-gb-nav="workouts.html">Workouts</a>
-                <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.nutrition_calculator" role="menuitem" data-gb-nav="nutrition-calculator.html">Nutrition Calculator</a>
-                <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.blog" role="menuitem" data-gb-nav="blog.html">Blog</a>
-                <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.about" role="menuitem" data-gb-nav="about.html">About</a>
-                <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.faq" role="menuitem" data-gb-nav="faq.html">FAQ</a>
-                <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.contact" role="menuitem" data-gb-nav="contact.html">Contact</a>
+                <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.workouts" role="menuitem" data-gb-nav="/workouts">Workouts</a>
+                <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.nutrition_calculator" role="menuitem" data-gb-nav="/nutrition-calculator">Nutrition Calculator</a>
+                <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.blog" role="menuitem" data-gb-nav="/blog">Blog</a>
+                <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.about" role="menuitem" data-gb-nav="/about">About</a>
+                <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.faq" role="menuitem" data-gb-nav="/faq">FAQ</a>
+                <a href="#" class="gb-menu-link gb-menu-link--secondary" data-i18n="nav.contact" role="menuitem" data-gb-nav="/contact">Contact</a>
             </nav>
 
             <div class="gb-menu-footer">
@@ -364,27 +364,27 @@ const INLINE_FALLBACKS = {
         <div class="gb-footer-col">
             <span class="footer-title footer-title-ref">Links</span>
             <ul style="margin-top:2px;">
-                <li><a href="#" data-gb-nav="index.html">Home</a></li>
-                <li><a href="#" data-gb-nav="about.html">About</a></li>
-                <li><a href="#" data-gb-nav="workouts.html">Workouts</a></li>
-                <li><a href="#" data-gb-nav="transformations.html">Results</a></li>
-                <li><a href="#" data-gb-nav="packages.html">Packages</a></li>
-                <li><a href="#" data-gb-nav="blog.html">Blog</a></li>
-                <li><a href="#" data-gb-nav="faq.html">FAQ</a></li>
+                <li><a href="#" data-gb-nav="/">Home</a></li>
+                <li><a href="#" data-gb-nav="/about">About</a></li>
+                <li><a href="#" data-gb-nav="/workouts">Workouts</a></li>
+                <li><a href="#" data-gb-nav="/transformations">Results</a></li>
+                <li><a href="#" data-gb-nav="/packages">Packages</a></li>
+                <li><a href="#" data-gb-nav="/blog">Blog</a></li>
+                <li><a href="#" data-gb-nav="/faq">FAQ</a></li>
             </ul>
         </div>
         <div class="gb-footer-col">
             <span class="footer-title footer-title-ref">Resources</span>
             <ul style="margin-top:2px;">
-                <li><a href="#" data-gb-nav="28-day-fat-loss-kickstart.html">Free 28-Day Fat Loss Kickstart</a></li>
-                <li><a href="#" data-gb-nav="contact.html">Contact</a></li>
-                <li><a href="#" data-gb-nav="apply.html">Apply for Coaching</a></li>
-                <li><a href="/consultation.html" data-button-location="footer">Book a Call</a></li>
+                <li><a href="#" data-gb-nav="/28-day-fat-loss-kickstart">Free 28-Day Fat Loss Kickstart</a></li>
+                <li><a href="#" data-gb-nav="/contact">Contact</a></li>
+                <li><a href="#" data-gb-nav="/apply">Apply for Coaching</a></li>
+                <li><a href="/consultation" data-button-location="footer">Book a Call</a></li>
             </ul>
             <div class="footer-follow">
                 <span class="footer-subhead">Follow us</span>
                 <a href="https://instagram.com/garciabuilder.fitness" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="/consultation.html" data-button-location="footer" aria-label="Schedule a free consultation"><i class="fas fa-calendar-check"></i></a>
+                <a href="/consultation" data-button-location="footer" aria-label="Schedule a free consultation"><i class="fas fa-calendar-check"></i></a>
             </div>
         </div>
         <div class="gb-footer-col gb-footer-newsletter">
@@ -403,8 +403,8 @@ const INLINE_FALLBACKS = {
         <div class="gb-footer-legal small">
             <span>&copy; 2026 Garcia Builder</span>
             <a href="#" onclick="openConsentPreferences();return false;">Cookie Preferences</a>
-            <a href="#" data-gb-nav="privacy.html">Privacy Policy</a>
-            <a href="#" data-gb-nav="terms.html">Terms & Conditions</a>
+            <a href="#" data-gb-nav="/privacy-policy">Privacy Policy</a>
+            <a href="#" data-gb-nav="/terms">Terms & Conditions</a>
             <div class="gb-footer-auth-group" role="group" aria-label="Client account links">
                 <a class="gb-footer-auth-link" href="#" data-gb-nav="pages/auth/login.html">Client Login</a>
                 <a class="gb-footer-auth-link gb-footer-auth-link--accent" href="#" data-gb-nav="pages/auth/login.html?action=register">Create Account</a>
@@ -737,21 +737,21 @@ function ensureNavbarLogoPath(logoEl) {
 }
 
 const MOBILE_MENU_ITEMS = [
-    { type: 'link', text: 'Home', i18n: 'nav.home', nav: 'index.html', className: 'gb-menu-link' },
+    { type: 'link', text: 'Home', i18n: 'nav.home', nav: '/', className: 'gb-menu-link' },
     { type: 'label', text: 'Start Here', i18n: 'nav.group_start' },
-    { type: 'link', text: 'Online Coaching', i18n: 'nav.online_coaching', nav: 'online-coaching.html', className: 'gb-menu-link' },
-    { type: 'link', text: 'Packages', i18n: 'nav.packages', nav: 'packages.html', className: 'gb-menu-link' },
-    { type: 'link', text: 'Book Consultation', i18n: 'nav.consultation', href: '/consultation.html', className: 'gb-menu-link gb-menu-link--cta', buttonLocation: 'mobile_menu' },
+    { type: 'link', text: 'Online Coaching', i18n: 'nav.online_coaching', nav: '/online-coaching', className: 'gb-menu-link' },
+    { type: 'link', text: 'Packages', i18n: 'nav.packages', nav: '/packages', className: 'gb-menu-link' },
+    { type: 'link', text: 'Book Consultation', i18n: 'nav.consultation', href: '/consultation', className: 'gb-menu-link gb-menu-link--cta', buttonLocation: 'mobile_menu' },
     { type: 'label', text: 'Results', i18n: 'nav.group_results' },
-    { type: 'link', text: 'Transformations', i18n: 'nav.trans', nav: 'transformations.html', className: 'gb-menu-link' },
-    { type: 'link', text: 'Testimonials', i18n: 'nav.testi', nav: 'testimonials.html', className: 'gb-menu-link' },
+    { type: 'link', text: 'Transformations', i18n: 'nav.trans', nav: '/transformations', className: 'gb-menu-link' },
+    { type: 'link', text: 'Testimonials', i18n: 'nav.testi', nav: '/testimonials', className: 'gb-menu-link' },
     { type: 'label', text: 'Explore', i18n: 'nav.group_explore' },
-    { type: 'link', text: 'Workouts', i18n: 'nav.workouts', nav: 'workouts.html', className: 'gb-menu-link gb-menu-link--secondary' },
-    { type: 'link', text: 'Nutrition Calculator', i18n: 'nav.nutrition_calculator', nav: 'nutrition-calculator.html', className: 'gb-menu-link gb-menu-link--secondary' },
-    { type: 'link', text: 'Blog', i18n: 'nav.blog', nav: 'blog.html', className: 'gb-menu-link gb-menu-link--secondary' },
-    { type: 'link', text: 'About', i18n: 'nav.about', nav: 'about.html', className: 'gb-menu-link gb-menu-link--secondary' },
-    { type: 'link', text: 'FAQ', i18n: 'nav.faq', nav: 'faq.html', className: 'gb-menu-link gb-menu-link--secondary' },
-    { type: 'link', text: 'Contact', i18n: 'nav.contact', nav: 'contact.html', className: 'gb-menu-link gb-menu-link--secondary' }
+    { type: 'link', text: 'Workouts', i18n: 'nav.workouts', nav: '/workouts', className: 'gb-menu-link gb-menu-link--secondary' },
+    { type: 'link', text: 'Nutrition Calculator', i18n: 'nav.nutrition_calculator', nav: '/nutrition-calculator', className: 'gb-menu-link gb-menu-link--secondary' },
+    { type: 'link', text: 'Blog', i18n: 'nav.blog', nav: '/blog', className: 'gb-menu-link gb-menu-link--secondary' },
+    { type: 'link', text: 'About', i18n: 'nav.about', nav: '/about', className: 'gb-menu-link gb-menu-link--secondary' },
+    { type: 'link', text: 'FAQ', i18n: 'nav.faq', nav: '/faq', className: 'gb-menu-link gb-menu-link--secondary' },
+    { type: 'link', text: 'Contact', i18n: 'nav.contact', nav: '/contact', className: 'gb-menu-link gb-menu-link--secondary' }
 ];
 
 function createNavbarLabel(item) {

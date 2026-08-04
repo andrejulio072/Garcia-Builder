@@ -73,7 +73,5 @@
   // These first-party modules maintain attribution and the preference UI. They do
   // not send data to Google or Meta unless a consented tag is subsequently loaded.
   loadLocalScript('/js/tracking/tracking.js?v=20260804-consent-v2');
-  document.addEventListener('DOMContentLoaded', function () {
-    loadLocalScript('/js/tracking/consent-banner.js?v=20260804-consent-v2');
-  });
+  loadLocalScript('/js/tracking/consent-banner.js?v=20260804-consent-v2');
 })();

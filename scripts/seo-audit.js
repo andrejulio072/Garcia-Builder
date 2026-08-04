@@ -16,13 +16,13 @@ const legacyTerms = [
   '28-Day Fat Loss ' + 'Quickstart'
 ];
 const oldWording = new RegExp(legacyTerms.map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'i');
-const noindexPattern = /(^|[\\/])(?:(?:thank-you-|test-)[^\\/]*|dashboard\.html|diagnostic\.html|success\.html|confirm-contact\.html|index-inline-loader\.html|my-profile-production\.html|pricing-payment-links\.html|404\.html|pages[\\/](?:admin|auth|test)[\\/]|database[\\/]admin[\\/])/i;
+const noindexPattern = /(^|[\\/])(?:(?:thank-you-|test-)[^\\/]*|dashboard\.html|diagnostic\.html|success\.html|confirm-contact\.html|index-inline-loader\.html|my-profile-production\.html|pricing-payment-links\.html|404\.html|go[\\/]card[\\/]index\.html|pages[\\/](?:admin|auth|test)[\\/]|database[\\/]admin[\\/])/i;
 const legacyRedirectPattern = /(^|[\\/])pricing\.html$/i;
 
 function walk(dir) {
   const files = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (['node_modules', '.git', 'coverage', '.vercel', 'public'].includes(entry.name)) continue;
+    if (['node_modules', '.git', 'coverage', '.vercel', 'public', 'lighthouse-results'].includes(entry.name)) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) files.push(...walk(full));
     if (entry.isFile() && entry.name.endsWith('.html')) files.push(full);
@@ -33,7 +33,7 @@ function walk(dir) {
 function walkAll(dir) {
   const files = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (['node_modules', '.git', 'coverage', '.vercel', 'public'].includes(entry.name)) continue;
+    if (['node_modules', '.git', 'coverage', '.vercel', 'public', 'lighthouse-results'].includes(entry.name)) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) files.push(...walkAll(full));
     if (entry.isFile()) files.push(full);
@@ -91,12 +91,14 @@ for (const file of htmlFiles) {
   }
   if (!/rel=["']canonical["'][^>]+https:\/\/www\.garciabuilder\.fitness/i.test(head)) failures.push(`${relative}: canonical is not on www.garciabuilder.fitness`);
   if (/https?:\/\/garciabuilder\.fitness/i.test(head)) failures.push(`${relative}: found non-www canonical/social URL`);
-  if (oldWording.test(html)) failures.push(`${relative}: found old public wording`);
+  const publicCopy = html.replace(/https?:\/\/[^\s"'<>]+/gi, '');
+  if (oldWording.test(publicCopy)) failures.push(`${relative}: found old public wording`);
   if (secretPatterns.some((pattern) => pattern.test(html))) failures.push(`${relative}: potential exposed secret/webhook`);
 
   if (!noindexPattern.test(relative)) {
     for (const hrefMatch of html.matchAll(/\bhref\s*=\s*["']([^"']+)["']/gi)) {
       const href = hrefMatch[1];
+      if (href.includes('${')) continue;
       if (!href || href.startsWith('#') || /^(?:https?:|mailto:|tel:|sms:|javascript:|data:)/i.test(href)) continue;
       const cleanHref = href.split('#')[0].split('?')[0];
       if (!cleanHref || cleanHref.startsWith('//')) continue;

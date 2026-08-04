@@ -68,37 +68,37 @@
     },
     {
       "source": "/programs.html",
-      "destination": "/packages.html",
+      "destination": "/packages",
       "permanent": true
     },
     {
       "source": "/programs",
-      "destination": "/packages.html",
+      "destination": "/packages",
       "permanent": true
     },
     {
       "source": "/pricing",
-      "destination": "/packages.html",
+      "destination": "/packages",
       "permanent": true
     },
     {
       "source": "/pricing.html",
-      "destination": "/packages.html",
+      "destination": "/packages",
       "permanent": true
     },
     {
       "source": "/lead-magnet.html",
-      "destination": "/28-day-fat-loss-kickstart.html",
+      "destination": "/28-day-fat-loss-kickstart",
       "permanent": true
     },
     {
       "source": "/pages/public/lead-magnet.html",
-      "destination": "/28-day-fat-loss-kickstart.html",
+      "destination": "/28-day-fat-loss-kickstart",
       "permanent": true
     },
     {
       "source": "/pages/public/become-trainer.html",
-      "destination": "/about.html",
+      "destination": "/about",
       "permanent": true
     },
     {
@@ -120,6 +120,331 @@
       "source": "/go/card",
       "destination": "/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment",
       "permanent": false
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/12-week-transformation.html",
+      "destination": "/12-week-transformation",
+      "permanent": true
+    },
+    {
+      "source": "/28-day-fat-loss-kickstart.html",
+      "destination": "/28-day-fat-loss-kickstart",
+      "permanent": true
+    },
+    {
+      "source": "/about.html",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/apply.html",
+      "destination": "/apply",
+      "permanent": true
+    },
+    {
+      "source": "/assessment.html",
+      "destination": "/assessment",
+      "permanent": true
+    },
+    {
+      "source": "/blog.html",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/blog-alcohol-fat-loss.html",
+      "destination": "/blog-alcohol-fat-loss",
+      "permanent": true
+    },
+    {
+      "source": "/blog-body-recomposition.html",
+      "destination": "/blog-body-recomposition",
+      "permanent": true
+    },
+    {
+      "source": "/blog-busy-parent-fitness.html",
+      "destination": "/blog-busy-parent-fitness",
+      "permanent": true
+    },
+    {
+      "source": "/blog-cardio-strength-balance.html",
+      "destination": "/blog-cardio-strength-balance",
+      "permanent": true
+    },
+    {
+      "source": "/blog-client-check-ins.html",
+      "destination": "/blog-client-check-ins",
+      "permanent": true
+    },
+    {
+      "source": "/blog-consistency.html",
+      "destination": "/blog-consistency",
+      "permanent": true
+    },
+    {
+      "source": "/blog-deload-recovery.html",
+      "destination": "/blog-deload-recovery",
+      "permanent": true
+    },
+    {
+      "source": "/blog-fat-loss-nutrition.html",
+      "destination": "/blog-fat-loss-nutrition",
+      "permanent": true
+    },
+    {
+      "source": "/blog-gym-confidence-beginners.html",
+      "destination": "/blog-gym-confidence-beginners",
+      "permanent": true
+    },
+    {
+      "source": "/blog-gym-mistakes.html",
+      "destination": "/blog-gym-mistakes",
+      "permanent": true
+    },
+    {
+      "source": "/blog-habits-mindset.html",
+      "destination": "/blog-habits-mindset",
+      "permanent": true
+    },
+    {
+      "source": "/blog-home-workouts-busy.html",
+      "destination": "/blog-home-workouts-busy",
+      "permanent": true
+    },
+    {
+      "source": "/blog-lower-back-resilience.html",
+      "destination": "/blog-lower-back-resilience",
+      "permanent": true
+    },
+    {
+      "source": "/blog-menopause-strength.html",
+      "destination": "/blog-menopause-strength",
+      "permanent": true
+    },
+    {
+      "source": "/blog-mobility-injury-prevention.html",
+      "destination": "/blog-mobility-injury-prevention",
+      "permanent": true
+    },
+    {
+      "source": "/blog-muscle-gain-plan.html",
+      "destination": "/blog-muscle-gain-plan",
+      "permanent": true
+    },
+    {
+      "source": "/blog-nutrition-fat-loss.html",
+      "destination": "/blog-nutrition-fat-loss",
+      "permanent": true
+    },
+    {
+      "source": "/blog-protein-meal-prep.html",
+      "destination": "/blog-protein-meal-prep",
+      "permanent": true
+    },
+    {
+      "source": "/blog-recovery-sleep-stress.html",
+      "destination": "/blog-recovery-sleep-stress",
+      "permanent": true
+    },
+    {
+      "source": "/blog-running-endurance.html",
+      "destination": "/blog-running-endurance",
+      "permanent": true
+    },
+    {
+      "source": "/blog-shoulder-mobility-strength.html",
+      "destination": "/blog-shoulder-mobility-strength",
+      "permanent": true
+    },
+    {
+      "source": "/blog-steps-neat-fat-loss.html",
+      "destination": "/blog-steps-neat-fat-loss",
+      "permanent": true
+    },
+    {
+      "source": "/blog-strength-after-40.html",
+      "destination": "/blog-strength-after-40",
+      "permanent": true
+    },
+    {
+      "source": "/blog-strength-beginners.html",
+      "destination": "/blog-strength-beginners",
+      "permanent": true
+    },
+    {
+      "source": "/blog-stress-eating-control.html",
+      "destination": "/blog-stress-eating-control",
+      "permanent": true
+    },
+    {
+      "source": "/blog-supplements-explained.html",
+      "destination": "/blog-supplements-explained",
+      "permanent": true
+    },
+    {
+      "source": "/blog-travel-fitness.html",
+      "destination": "/blog-travel-fitness",
+      "permanent": true
+    },
+    {
+      "source": "/blog-vegetarian-muscle.html",
+      "destination": "/blog-vegetarian-muscle",
+      "permanent": true
+    },
+    {
+      "source": "/blog-warm-up-guide.html",
+      "destination": "/blog-warm-up-guide",
+      "permanent": true
+    },
+    {
+      "source": "/blog-womens-strength-hormones.html",
+      "destination": "/blog-womens-strength-hormones",
+      "permanent": true
+    },
+    {
+      "source": "/blog-workout-tracking.html",
+      "destination": "/blog-workout-tracking",
+      "permanent": true
+    },
+    {
+      "source": "/blog/best-fat-loss-programme-for-beginners.html",
+      "destination": "/blog/best-fat-loss-programme-for-beginners",
+      "permanent": true
+    },
+    {
+      "source": "/blog/fat-loss-for-busy-professionals.html",
+      "destination": "/blog/fat-loss-for-busy-professionals",
+      "permanent": true
+    },
+    {
+      "source": "/blog/how-to-start-fat-loss-after-failing-diets.html",
+      "destination": "/blog/how-to-start-fat-loss-after-failing-diets",
+      "permanent": true
+    },
+    {
+      "source": "/blog/how-weekly-check-ins-help-fat-loss.html",
+      "destination": "/blog/how-weekly-check-ins-help-fat-loss",
+      "permanent": true
+    },
+    {
+      "source": "/blog/online-coaching-vs-personal-training.html",
+      "destination": "/blog/online-coaching-vs-personal-training",
+      "permanent": true
+    },
+    {
+      "source": "/blog/training-and-nutrition-structure.html",
+      "destination": "/blog/training-and-nutrition-structure",
+      "permanent": true
+    },
+    {
+      "source": "/blog/why-you-are-not-losing-fat.html",
+      "destination": "/blog/why-you-are-not-losing-fat",
+      "permanent": true
+    },
+    {
+      "source": "/consultation.html",
+      "destination": "/consultation",
+      "permanent": true
+    },
+    {
+      "source": "/contact.html",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/cookie-policy.html",
+      "destination": "/cookie-policy",
+      "permanent": true
+    },
+    {
+      "source": "/faq.html",
+      "destination": "/faq",
+      "permanent": true
+    },
+    {
+      "source": "/go/card/index.html",
+      "destination": "/go/card",
+      "permanent": true
+    },
+    {
+      "source": "/nutrition-calculator.html",
+      "destination": "/nutrition-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/online-coaching.html",
+      "destination": "/online-coaching",
+      "permanent": true
+    },
+    {
+      "source": "/online-coaching-dublin.html",
+      "destination": "/online-coaching-dublin",
+      "permanent": true
+    },
+    {
+      "source": "/packages.html",
+      "destination": "/packages",
+      "permanent": true
+    },
+    {
+      "source": "/privacy.html",
+      "destination": "/privacy-policy",
+      "permanent": true
+    },
+    {
+      "source": "/start.html",
+      "destination": "/start",
+      "permanent": true
+    },
+    {
+      "source": "/start-fat-loss.html",
+      "destination": "/start-fat-loss",
+      "permanent": true
+    },
+    {
+      "source": "/start-contact.html",
+      "destination": "/start/contact",
+      "permanent": true
+    },
+    {
+      "source": "/start-result.html",
+      "destination": "/start/result",
+      "permanent": true
+    },
+    {
+      "source": "/terms.html",
+      "destination": "/terms",
+      "permanent": true
+    },
+    {
+      "source": "/testimonials.html",
+      "destination": "/testimonials",
+      "permanent": true
+    },
+    {
+      "source": "/transformations.html",
+      "destination": "/transformations",
+      "permanent": true
+    },
+    {
+      "source": "/workouts.html",
+      "destination": "/workouts",
+      "permanent": true
+    },
+    {
+      "source": "/free-fat-loss-guide.html",
+      "destination": "/28-day-fat-loss-kickstart",
+      "permanent": true
+    },
+    {
+      "source": "/free-fat-loss-guide",
+      "destination": "/28-day-fat-loss-kickstart",
+      "permanent": true
     }
   ],
   "rewrites": [
@@ -413,5 +738,5 @@
     }
   ],
   "trailingSlash": false,
-  "cleanUrls": false
+  "cleanUrls": true
 }

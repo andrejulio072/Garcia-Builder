@@ -212,7 +212,7 @@
             memberDiscountBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 // Redirecionar para contato para aplicar desconto manualmente
-                window.location.href = 'contact.html?discount=MEMBER15';
+                window.location.href = '/contact?discount=MEMBER15';
             });
         }
     }

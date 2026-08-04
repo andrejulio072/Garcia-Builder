@@ -1,0 +1,1226 @@
+{
+  "generatedAt": "2026-08-04",
+  "thresholdBytes": 358400,
+  "changedFiles": 42,
+  "dimensionedImages": 188,
+  "responsiveImages": 107,
+  "uniqueSources": 37,
+  "images": [
+    {
+      "page": "/",
+      "source": "/assets/images/about/about4.jpg",
+      "bytes": 968063,
+      "width": 1536,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about4-480.webp",
+        "/assets/images/responsive/about/about4-960.webp",
+        "/assets/images/responsive/about/about4-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/about/about7.jpg",
+      "bytes": 1761919,
+      "width": 1536,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about7-480.webp",
+        "/assets/images/responsive/about/about7-960.webp",
+        "/assets/images/responsive/about/about7-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/20250328_190521.jpg",
+      "bytes": 4764079,
+      "width": 4000,
+      "height": 1848,
+      "variants": [
+        "/assets/images/responsive/community/20250328_190521-480.webp",
+        "/assets/images/responsive/community/20250328_190521-960.webp",
+        "/assets/images/responsive/community/20250328_190521-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/20250515_103834(1).jpg",
+      "bytes": 3206427,
+      "width": 1848,
+      "height": 4000,
+      "variants": [
+        "/assets/images/responsive/community/20250515_103834(1)-480.webp",
+        "/assets/images/responsive/community/20250515_103834(1)-960.webp",
+        "/assets/images/responsive/community/20250515_103834(1)-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/20250610_183842(1).jpg",
+      "bytes": 2523044,
+      "width": 1549,
+      "height": 2181,
+      "variants": [
+        "/assets/images/responsive/community/20250610_183842(1)-480.webp",
+        "/assets/images/responsive/community/20250610_183842(1)-960.webp",
+        "/assets/images/responsive/community/20250610_183842(1)-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/20250610_185022.jpg",
+      "bytes": 3040346,
+      "width": 1848,
+      "height": 4000,
+      "variants": [
+        "/assets/images/responsive/community/20250610_185022-480.webp",
+        "/assets/images/responsive/community/20250610_185022-960.webp",
+        "/assets/images/responsive/community/20250610_185022-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/20250703_112612.jpg",
+      "bytes": 4437642,
+      "width": 1848,
+      "height": 4000,
+      "variants": [
+        "/assets/images/responsive/community/20250703_112612-480.webp",
+        "/assets/images/responsive/community/20250703_112612-960.webp",
+        "/assets/images/responsive/community/20250703_112612-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/20250708_135022.jpg",
+      "bytes": 5114870,
+      "width": 1848,
+      "height": 4000,
+      "variants": [
+        "/assets/images/responsive/community/20250708_135022-480.webp",
+        "/assets/images/responsive/community/20250708_135022-960.webp",
+        "/assets/images/responsive/community/20250708_135022-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/20250826_214457.jpg",
+      "bytes": 4273986,
+      "width": 1848,
+      "height": 4000,
+      "variants": [
+        "/assets/images/responsive/community/20250826_214457-480.webp",
+        "/assets/images/responsive/community/20250826_214457-960.webp",
+        "/assets/images/responsive/community/20250826_214457-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/Picsart_24-04-03_21-05-47-559(1)(1).jpg",
+      "bytes": 1430819,
+      "width": 1536,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/community/Picsart_24-04-03_21-05-47-559(1)(1)-480.webp",
+        "/assets/images/responsive/community/Picsart_24-04-03_21-05-47-559(1)(1)-960.webp",
+        "/assets/images/responsive/community/Picsart_24-04-03_21-05-47-559(1)(1)-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/Picsart_24-07-08_21-12-34-025(2).jpg",
+      "bytes": 1221903,
+      "width": 1848,
+      "height": 2516,
+      "variants": [
+        "/assets/images/responsive/community/Picsart_24-07-08_21-12-34-025(2)-480.webp",
+        "/assets/images/responsive/community/Picsart_24-07-08_21-12-34-025(2)-960.webp",
+        "/assets/images/responsive/community/Picsart_24-07-08_21-12-34-025(2)-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/Screenshot_20251112_115026_Instagram (2).png",
+      "bytes": 1255972,
+      "width": 1440,
+      "height": 2224,
+      "variants": [
+        "/assets/images/responsive/community/Screenshot_20251112_115026_Instagram (2)-480.webp",
+        "/assets/images/responsive/community/Screenshot_20251112_115026_Instagram (2)-960.webp",
+        "/assets/images/responsive/community/Screenshot_20251112_115026_Instagram (2)-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/Screenshot_20251112_115118_Instagram (2).png",
+      "bytes": 1614902,
+      "width": 1440,
+      "height": 2491,
+      "variants": [
+        "/assets/images/responsive/community/Screenshot_20251112_115118_Instagram (2)-480.webp",
+        "/assets/images/responsive/community/Screenshot_20251112_115118_Instagram (2)-960.webp",
+        "/assets/images/responsive/community/Screenshot_20251112_115118_Instagram (2)-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/Screenshot_20251112_115329_Instagram (2).png",
+      "bytes": 1982598,
+      "width": 1440,
+      "height": 2338,
+      "variants": [
+        "/assets/images/responsive/community/Screenshot_20251112_115329_Instagram (2)-480.webp",
+        "/assets/images/responsive/community/Screenshot_20251112_115329_Instagram (2)-960.webp",
+        "/assets/images/responsive/community/Screenshot_20251112_115329_Instagram (2)-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/Screenshot_20251112_115029_Instagram (2).png",
+      "bytes": 2606687,
+      "width": 1435,
+      "height": 2153,
+      "variants": [
+        "/assets/images/responsive/community/Screenshot_20251112_115029_Instagram (2)-480.webp",
+        "/assets/images/responsive/community/Screenshot_20251112_115029_Instagram (2)-960.webp",
+        "/assets/images/responsive/community/Screenshot_20251112_115029_Instagram (2)-1435.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/Screenshot_20251112_115125_Instagram (2).png",
+      "bytes": 2918406,
+      "width": 1440,
+      "height": 2073,
+      "variants": [
+        "/assets/images/responsive/community/Screenshot_20251112_115125_Instagram (2)-480.webp",
+        "/assets/images/responsive/community/Screenshot_20251112_115125_Instagram (2)-960.webp",
+        "/assets/images/responsive/community/Screenshot_20251112_115125_Instagram (2)-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/Screenshot_20251112_115322_Instagram (2).png",
+      "bytes": 2555860,
+      "width": 1440,
+      "height": 2202,
+      "variants": [
+        "/assets/images/responsive/community/Screenshot_20251112_115322_Instagram (2)-480.webp",
+        "/assets/images/responsive/community/Screenshot_20251112_115322_Instagram (2)-960.webp",
+        "/assets/images/responsive/community/Screenshot_20251112_115322_Instagram (2)-1440.webp"
+      ]
+    },
+    {
+      "page": "/",
+      "source": "/assets/images/community/Screenshot_20251112_115710_Instagram (2).png",
+      "bytes": 1377431,
+      "width": 1435,
+      "height": 1735,
+      "variants": [
+        "/assets/images/responsive/community/Screenshot_20251112_115710_Instagram (2)-480.webp",
+        "/assets/images/responsive/community/Screenshot_20251112_115710_Instagram (2)-960.webp",
+        "/assets/images/responsive/community/Screenshot_20251112_115710_Instagram (2)-1435.webp"
+      ]
+    },
+    {
+      "page": "/about",
+      "source": "/assets/images/about/about1.1.jpg",
+      "bytes": 408778,
+      "width": 1024,
+      "height": 1024,
+      "variants": [
+        "/assets/images/responsive/about/about1.1-480.webp",
+        "/assets/images/responsive/about/about1.1-960.webp",
+        "/assets/images/responsive/about/about1.1-1024.webp"
+      ]
+    },
+    {
+      "page": "/about",
+      "source": "/assets/images/about/about2.1.jpg",
+      "bytes": 425034,
+      "width": 1024,
+      "height": 1024,
+      "variants": [
+        "/assets/images/responsive/about/about2.1-480.webp",
+        "/assets/images/responsive/about/about2.1-960.webp",
+        "/assets/images/responsive/about/about2.1-1024.webp"
+      ]
+    },
+    {
+      "page": "/about",
+      "source": "/assets/images/about/about3.1.jpg",
+      "bytes": 450665,
+      "width": 1024,
+      "height": 1024,
+      "variants": [
+        "/assets/images/responsive/about/about3.1-480.webp",
+        "/assets/images/responsive/about/about3.1-960.webp",
+        "/assets/images/responsive/about/about3.1-1024.webp"
+      ]
+    },
+    {
+      "page": "/about",
+      "source": "/assets/images/about/about4.jpg",
+      "bytes": 968063,
+      "width": 1536,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about4-480.webp",
+        "/assets/images/responsive/about/about4-960.webp",
+        "/assets/images/responsive/about/about4-1440.webp"
+      ]
+    },
+    {
+      "page": "/about",
+      "source": "/assets/images/about/about4.1.jpg",
+      "bytes": 410243,
+      "width": 1024,
+      "height": 1024,
+      "variants": [
+        "/assets/images/responsive/about/about4.1-480.webp",
+        "/assets/images/responsive/about/about4.1-960.webp",
+        "/assets/images/responsive/about/about4.1-1024.webp"
+      ]
+    },
+    {
+      "page": "/about",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/about",
+      "source": "/assets/images/about/about6.png",
+      "bytes": 952474,
+      "width": 840,
+      "height": 837,
+      "variants": [
+        "/assets/images/responsive/about/about6-480.webp",
+        "/assets/images/responsive/about/about6-840.webp"
+      ]
+    },
+    {
+      "page": "/about",
+      "source": "/assets/images/about/about7.jpg",
+      "bytes": 1761919,
+      "width": 1536,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about7-480.webp",
+        "/assets/images/responsive/about/about7-960.webp",
+        "/assets/images/responsive/about/about7-1440.webp"
+      ]
+    },
+    {
+      "page": "/about",
+      "source": "/assets/images/about/about8.jpg",
+      "bytes": 1146594,
+      "width": 1024,
+      "height": 1024,
+      "variants": [
+        "/assets/images/responsive/about/about8-480.webp",
+        "/assets/images/responsive/about/about8-960.webp",
+        "/assets/images/responsive/about/about8-1024.webp"
+      ]
+    },
+    {
+      "page": "/about",
+      "source": "/assets/images/about/about11.jpg",
+      "bytes": 440715,
+      "width": 1024,
+      "height": 1024,
+      "variants": [
+        "/assets/images/responsive/about/about11-480.webp",
+        "/assets/images/responsive/about/about11-960.webp",
+        "/assets/images/responsive/about/about11-1024.webp"
+      ]
+    },
+    {
+      "page": "/blog",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog",
+      "source": "/assets/images/about/about3.1.jpg",
+      "bytes": 450665,
+      "width": 1024,
+      "height": 1024,
+      "variants": [
+        "/assets/images/responsive/about/about3.1-480.webp",
+        "/assets/images/responsive/about/about3.1-960.webp",
+        "/assets/images/responsive/about/about3.1-1024.webp"
+      ]
+    },
+    {
+      "page": "/blog",
+      "source": "/assets/images/blog/competition.jpg",
+      "bytes": 603417,
+      "width": 1365,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/blog/competition-480.webp",
+        "/assets/images/responsive/blog/competition-960.webp",
+        "/assets/images/responsive/blog/competition-1365.webp"
+      ]
+    },
+    {
+      "page": "/blog",
+      "source": "/assets/images/blog/creatine.jpg",
+      "bytes": 858484,
+      "width": 3775,
+      "height": 2517,
+      "variants": [
+        "/assets/images/responsive/blog/creatine-480.webp",
+        "/assets/images/responsive/blog/creatine-960.webp",
+        "/assets/images/responsive/blog/creatine-1440.webp"
+      ]
+    },
+    {
+      "page": "/blog",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-alcohol-fat-loss",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-alcohol-fat-loss",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-body-recomposition",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-body-recomposition",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-busy-parent-fitness",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-busy-parent-fitness",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-cardio-strength-balance",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-cardio-strength-balance",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-client-check-ins",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-client-check-ins",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-consistency",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-consistency",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-deload-recovery",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-deload-recovery",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-fat-loss-nutrition",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-fat-loss-nutrition",
+      "source": "/assets/images/blog/preview-fat-loss-meal-timing-photo.jpg",
+      "bytes": 376054,
+      "width": 1600,
+      "height": 1067,
+      "variants": [
+        "/assets/images/responsive/blog/preview-fat-loss-meal-timing-photo-480.webp",
+        "/assets/images/responsive/blog/preview-fat-loss-meal-timing-photo-960.webp",
+        "/assets/images/responsive/blog/preview-fat-loss-meal-timing-photo-1440.webp"
+      ]
+    },
+    {
+      "page": "/blog-fat-loss-nutrition",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-gym-confidence-beginners",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-gym-confidence-beginners",
+      "source": "/assets/images/blog/preview-gym-confidence-photo.jpg",
+      "bytes": 450616,
+      "width": 1600,
+      "height": 2400,
+      "variants": [
+        "/assets/images/responsive/blog/preview-gym-confidence-photo-480.webp",
+        "/assets/images/responsive/blog/preview-gym-confidence-photo-960.webp",
+        "/assets/images/responsive/blog/preview-gym-confidence-photo-1440.webp"
+      ]
+    },
+    {
+      "page": "/blog-gym-confidence-beginners",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-gym-mistakes",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-gym-mistakes",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-habits-mindset",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-habits-mindset",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-home-workouts-busy",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-home-workouts-busy",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-lower-back-resilience",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-lower-back-resilience",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-menopause-strength",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-menopause-strength",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-mobility-injury-prevention",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-mobility-injury-prevention",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-muscle-gain-plan",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-muscle-gain-plan",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-nutrition-fat-loss",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-nutrition-fat-loss",
+      "source": "/assets/images/blog/preview-fat-loss-nutrition-photo.jpg",
+      "bytes": 379327,
+      "width": 1600,
+      "height": 2229,
+      "variants": [
+        "/assets/images/responsive/blog/preview-fat-loss-nutrition-photo-480.webp",
+        "/assets/images/responsive/blog/preview-fat-loss-nutrition-photo-960.webp",
+        "/assets/images/responsive/blog/preview-fat-loss-nutrition-photo-1440.webp"
+      ]
+    },
+    {
+      "page": "/blog-nutrition-fat-loss",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-protein-meal-prep",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-protein-meal-prep",
+      "source": "/assets/images/blog/preview-protein-meal-prep-photo.jpg",
+      "bytes": 429727,
+      "width": 1600,
+      "height": 1067,
+      "variants": [
+        "/assets/images/responsive/blog/preview-protein-meal-prep-photo-480.webp",
+        "/assets/images/responsive/blog/preview-protein-meal-prep-photo-960.webp",
+        "/assets/images/responsive/blog/preview-protein-meal-prep-photo-1440.webp"
+      ]
+    },
+    {
+      "page": "/blog-protein-meal-prep",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-recovery-sleep-stress",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-recovery-sleep-stress",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-running-endurance",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-running-endurance",
+      "source": "/assets/images/blog/preview-running-endurance-photo.jpg",
+      "bytes": 490470,
+      "width": 1600,
+      "height": 1067,
+      "variants": [
+        "/assets/images/responsive/blog/preview-running-endurance-photo-480.webp",
+        "/assets/images/responsive/blog/preview-running-endurance-photo-960.webp",
+        "/assets/images/responsive/blog/preview-running-endurance-photo-1440.webp"
+      ]
+    },
+    {
+      "page": "/blog-running-endurance",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-shoulder-mobility-strength",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-shoulder-mobility-strength",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-steps-neat-fat-loss",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-steps-neat-fat-loss",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-strength-after-40",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-strength-after-40",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-strength-beginners",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-strength-beginners",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-stress-eating-control",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-stress-eating-control",
+      "source": "/assets/images/blog/preview-stress-eating-control-photo.jpg",
+      "bytes": 917810,
+      "width": 1600,
+      "height": 1860,
+      "variants": [
+        "/assets/images/responsive/blog/preview-stress-eating-control-photo-480.webp",
+        "/assets/images/responsive/blog/preview-stress-eating-control-photo-960.webp",
+        "/assets/images/responsive/blog/preview-stress-eating-control-photo-1440.webp"
+      ]
+    },
+    {
+      "page": "/blog-stress-eating-control",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-supplements-explained",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-supplements-explained",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-travel-fitness",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-travel-fitness",
+      "source": "/assets/images/blog/preview-travel-fitness-photo.jpg",
+      "bytes": 694915,
+      "width": 1600,
+      "height": 2400,
+      "variants": [
+        "/assets/images/responsive/blog/preview-travel-fitness-photo-480.webp",
+        "/assets/images/responsive/blog/preview-travel-fitness-photo-960.webp",
+        "/assets/images/responsive/blog/preview-travel-fitness-photo-1440.webp"
+      ]
+    },
+    {
+      "page": "/blog-travel-fitness",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-vegetarian-muscle",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-vegetarian-muscle",
+      "source": "/assets/images/blog/preview-vegetarian-muscle-photo.jpg",
+      "bytes": 523144,
+      "width": 1600,
+      "height": 1600,
+      "variants": [
+        "/assets/images/responsive/blog/preview-vegetarian-muscle-photo-480.webp",
+        "/assets/images/responsive/blog/preview-vegetarian-muscle-photo-960.webp",
+        "/assets/images/responsive/blog/preview-vegetarian-muscle-photo-1440.webp"
+      ]
+    },
+    {
+      "page": "/blog-vegetarian-muscle",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-warm-up-guide",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-warm-up-guide",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-womens-strength-hormones",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-womens-strength-hormones",
+      "source": "/assets/images/blog/preview-womens-strength-hormones-photo.jpg",
+      "bytes": 375672,
+      "width": 1600,
+      "height": 2400,
+      "variants": [
+        "/assets/images/responsive/blog/preview-womens-strength-hormones-photo-480.webp",
+        "/assets/images/responsive/blog/preview-womens-strength-hormones-photo-960.webp",
+        "/assets/images/responsive/blog/preview-womens-strength-hormones-photo-1440.webp"
+      ]
+    },
+    {
+      "page": "/blog-womens-strength-hormones",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-workout-tracking",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog-workout-tracking",
+      "source": "/assets/images/about/about5.jpg",
+      "bytes": 499660,
+      "width": 946,
+      "height": 2048,
+      "variants": [
+        "/assets/images/responsive/about/about5-480.webp",
+        "/assets/images/responsive/about/about5-946.webp"
+      ]
+    },
+    {
+      "page": "/blog/why-you-are-not-losing-fat",
+      "source": "/assets/images/blog/preview-fat-loss-nutrition-photo.jpg",
+      "bytes": 379327,
+      "width": 1600,
+      "height": 2229,
+      "variants": [
+        "/assets/images/responsive/blog/preview-fat-loss-nutrition-photo-480.webp",
+        "/assets/images/responsive/blog/preview-fat-loss-nutrition-photo-960.webp",
+        "/assets/images/responsive/blog/preview-fat-loss-nutrition-photo-1440.webp"
+      ]
+    }
+  ]
+}

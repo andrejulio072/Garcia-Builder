@@ -21,23 +21,26 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 
-  
-  
+
+
+
+
+
   <title>Client Testimonials | Garcia Builder Fitness</title>
   <meta name="description" content="Read client feedback from Garcia Builder Fitness coaching and see how structure, accountability and support helped people progress.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://www.garciabuilder.fitness/testimonials.html">
+  <link rel="canonical" href="https://www.garciabuilder.fitness/testimonials">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Garcia Builder Fitness">
   <meta property="og:title" content="Client Testimonials | Garcia Builder Fitness">
   <meta property="og:description" content="Read client feedback from Garcia Builder Fitness coaching and see how structure, accountability and support helped people progress.">
-  <meta property="og:url" content="https://www.garciabuilder.fitness/testimonials.html">
+  <meta property="og:url" content="https://www.garciabuilder.fitness/testimonials">
   <meta property="og:image" content="https://www.garciabuilder.fitness/assets/og/garcia-builder-og.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Client Testimonials | Garcia Builder Fitness">
   <meta name="twitter:description" content="Read client feedback from Garcia Builder Fitness coaching and see how structure, accountability and support helped people progress.">
   <meta name="twitter:image" content="https://www.garciabuilder.fitness/assets/og/garcia-builder-og.jpg">
-  <script type="application/ld+json">
+<script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -70,12 +73,12 @@
       "@type": "ListItem",
       "position": 2,
       "name": "Client Testimonials",
-      "item": "https://www.garciabuilder.fitness/testimonials.html"
+      "item": "https://www.garciabuilder.fitness/testimonials"
     }
   ]
 }
 </script>
-  <!-- ? Unified SEO / Testimonials Page -->
+<!-- ? Unified SEO / Testimonials Page -->
 <link href="Logo Files/For Web/logo-nobackground-500.png" rel="icon"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -1256,27 +1259,59 @@ document.addEventListener('DOMContentLoaded', function() {
 <div data-component="footer"></div>
 
 <!-- Breadcrumb structured data -->
-<script type="application/ld+json">{
- "@context":"https://schema.org",
- "@type":"BreadcrumbList",
- "itemListElement":[
-  {"@type":"ListItem","position":1,"name":"Home","item":"https://www.garciabuilder.fitness/"},
-  {"@type":"ListItem","position":2,"name":"Testimonials","item":"https://www.garciabuilder.fitness/testimonials.html"}
- ]
-}</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.garciabuilder.fitness/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Testimonials",
+      "item": "https://www.garciabuilder.fitness/testimonials"
+    }
+  ]
+}
+</script>
 <!-- Review ItemList structured data subset (first 6) -->
-<script type="application/ld+json">{
- "@context":"https://schema.org",
- "@type":"ItemList",
- "itemListElement":[
-  {"@type":"ListItem","position":1,"item":{"@type":"Review","author":{"@type":"Person","name":"Conrad NorNam"},"reviewBody":"Andre rebuilt my training around 60-hour workweeks. We dropped 9kg of fat, added lean muscle, and my shoulders are pain-free for the first time in years.","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"}}},
-  {"@type":"ListItem","position":2,"item":{"@type":"Review","author":{"@type":"Person","name":"Lucas Almeida"},"reviewBody":"I tried every plan on my own and kept quitting after two weeks. Andre gave me structure...","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"}}},
-  {"@type":"ListItem","position":3,"item":{"@type":"Review","author":{"@type":"Person","name":"James Walker"},"reviewBody":"As a busy dad I didn't think I had time. Andre simplified training...","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"}}},
-  {"@type":"ListItem","position":4,"item":{"@type":"Review","author":{"@type":"Person","name":"Thiago Pereira"},"reviewBody":"I used to hide in baggy clothes. Twelve weeks later my friends keep asking...","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"}}},
-  {"@type":"ListItem","position":5,"item":{"@type":"Review","author":{"@type":"Person","name":"Sofia Martins"},"reviewBody":"Nutrition was always my struggle. Andre's flexible approach removed guilt...","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"}}},
-  {"@type":"ListItem","position":6,"item":{"@type":"Review","author":{"@type":"Person","name":"Gustavo Rocha"},"reviewBody":"Came in with knee pain and fear of squats. We rebuilt technique...","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"}}}
- ]
-}</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1
+    },
+    {
+      "@type": "ListItem",
+      "position": 2
+    },
+    {
+      "@type": "ListItem",
+      "position": 3
+    },
+    {
+      "@type": "ListItem",
+      "position": 4
+    },
+    {
+      "@type": "ListItem",
+      "position": 5
+    },
+    {
+      "@type": "ListItem",
+      "position": 6
+    }
+  ]
+}
+</script>
 <!-- Web Vitals RUM -->
 <script>(()=>{const send=m=>{window.dataLayer=window.dataLayer||[];dataLayer.push({event:'web_vital',metric_name:m.name,metric_id:m.id,value:Math.round(m.value*1000)/1000});};const w=window;function onPerf(fn){if('PerformanceObserver'in w){try{new PerformanceObserver(list=>{for(const e of list.getEntries())fn(e)}).observe({type:'largest-contentful-paint',buffered:true});}catch(e){}}}
 onPerf(e=>{if(e.entryType==='largest-contentful-paint')send({name:'LCP',id:e.id,value:e.renderTime||e.loadTime||e.startTime});});
@@ -1284,25 +1319,4 @@ if('PerformanceObserver'in w){try{let cls=0;new PerformanceObserver(list=>{for(c
 if('PerformanceObserver'in w){try{new PerformanceObserver(list=>{const f=list.getEntries()[0];if(f)send({name:'FID',id:f.id,value:f.processingStart-f.startTime});}).observe({type:'first-input',buffered:true});}catch(e){}}
 })();</script>
 <!-- Structured Data: AggregateRating / Reviews -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Garcia Builder Coaching",
-  "url": "https://www.garciabuilder.fitness",
-  "logo": "https://www.garciabuilder.fitness/Logo%20Files/For%20Web/logo-nobackground-500.png",
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5.0",
-    "bestRating": "5",
-    "ratingCount": "27"
-  },
-  "review": [
-  {"@type":"Review","author":{"@type":"Person","name":"Carlos M."},"reviewRating":{"@type":"Rating","ratingValue":"5"},"reviewBody":"Ganhei consistência e melhorei composição corporal em 10 semanas."},
-  {"@type":"Review","author":{"@type":"Person","name":"Sarah L."},"reviewRating":{"@type":"Rating","ratingValue":"5"},"reviewBody":"Plano claro, ajustes semanais e suporte rápido pelo chat do app."}
-  ]
-}
-
-</script>
-
 </body></html>

@@ -1,3 +1,11 @@
+/* Reserve the shared navbar's first-paint footprint while its component loads. */
+div[data-component="navbar"] {
+  display: block;
+  min-height: 105px;
+  background: #090e18;
+  border-bottom: 1px solid rgba(246, 200, 78, 0.2);
+}
+
 /* --- Reference-Style Footer (Ultimate Performance) --- */
 .gb-footer-ref {
   display: grid;

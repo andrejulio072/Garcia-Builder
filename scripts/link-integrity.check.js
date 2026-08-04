@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
+const seoManifest = require(path.join(root, 'config', 'seo-pages.json'));
 const trackedFiles = childProcess
   .execSync('git ls-files', { cwd: root, encoding: 'utf8' })
   .trim()
@@ -49,6 +50,10 @@ const cleanAliases = new Set([
   '/start/result',
   '/go/card'
 ]);
+const cleanRouteSources = new Map(
+  seoManifest.pages.map(page => [page.path, page.source])
+);
+for (const route of cleanRouteSources.keys()) cleanAliases.add(route);
 
 function stripUrlSuffix(value) {
   return value.split('#')[0].split('?')[0];
@@ -75,7 +80,8 @@ function isAssetPath(cleanPath) {
 
 function fileExistsForInternalPath(cleanPath) {
   if (cleanAliases.has(cleanPath)) {
-    return true;
+    const source = cleanRouteSources.get(cleanPath);
+    return !source || fs.existsSync(path.join(root, source));
   }
 
   const relativePath = cleanPath.replace(/^\/+/, '');
@@ -99,7 +105,13 @@ function checkInternalTarget({ file, attribute, value, failures }) {
   }
 
   if (!cleanPath.endsWith('.html') && !cleanAliases.has(cleanPath)) {
-    failures.push(`${file}: ${attribute}="${value}" should use a direct .html path for static previews`);
+    failures.push(`${file}: ${attribute}="${value}" does not match a controlled extensionless route`);
+    return;
+  }
+
+  const redirectedSource = seoManifest.pages.find(page => `/${page.source}` === cleanPath && page.indexable);
+  if (redirectedSource) {
+    failures.push(`${file}: ${attribute}="${value}" points to redirected HTML; use ${redirectedSource.path}`);
     return;
   }
 

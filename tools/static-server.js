@@ -49,6 +49,17 @@ app.get('/api/starter-assessment/result/:token', (req, res, next) => {
 });
 app.post('/api/starter-assessment/event', adaptServerlessHandler(starterEventHandler));
 
+// Mirror exact Vercel redirects so local route audits exercise the same URL
+// behavior as production. Host-dependent and parameterized rules are excluded.
+const vercelConfig = require('../vercel.json');
+for (const redirect of (vercelConfig.redirects || []).filter((entry) =>
+  !entry.has && !/[:*]/.test(entry.source)
+)) {
+  app.get(redirect.source, (req, res) => {
+    res.redirect(redirect.permanent ? 308 : 307, redirect.destination);
+  });
+}
+
 // Mirror the controlled extensionless routes before express.static can redirect
 // a route such as /blog to the physical /blog directory.
 const seoManifest = require('../config/seo-pages.json');

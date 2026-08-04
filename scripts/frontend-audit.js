@@ -23,7 +23,7 @@ const publicPaths = [
   '/transformations',
   '/testimonials',
   '/privacy-policy',
-  '/privacy-policy',
+  '/cookie-policy',
   '/terms',
   '/thank-you-application.html',
   '/thank-you-ebook.html'
@@ -127,7 +127,8 @@ async function auditViewport(browser, pagePath, viewportName) {
   let response = null;
   let navigationError = '';
   try {
-    response = await page.goto(url, { waitUntil: 'networkidle', timeout: 45000 });
+    response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 20000 });
+    await page.waitForTimeout(1200);
   } catch (error) {
     navigationError = error.message;
   }
@@ -205,6 +206,12 @@ async function auditViewport(browser, pagePath, viewportName) {
 
   const internalFailedAssets = failedRequests.filter((item) => {
     if (!isInternal(item.url)) return false;
+    if (/net::ERR_ABORTED/i.test(item.failure) && /\.(png|jpe?g|webp|svg|gif|ico)($|\?)/i.test(item.url)) {
+      // Browsers routinely cancel a lower-priority responsive-image candidate
+      // after selecting another srcset candidate. Keep it in the raw report,
+      // but do not classify that normal cancellation as a broken asset.
+      return false;
+    }
     return /\.(css|js|png|jpe?g|webp|svg|gif|ico|woff2?)($|\?)/i.test(item.url);
   });
 
@@ -324,13 +331,19 @@ async function loadSitemapUrls() {
 
   const sitemapUrls = await loadSitemapUrls();
   const browser = await chromium.launch({ headless: true });
-  const rows = [];
   const paths = [...publicPaths, ...legacyPaths];
+  const rows = new Array(paths.length);
+  const batchSize = Number(process.env.FRONTEND_AUDIT_CONCURRENCY || 4);
 
-  for (const pagePath of paths) {
-    const desktop = await auditViewport(browser, pagePath, 'desktop');
-    const mobile = await auditViewport(browser, pagePath, 'mobile');
-    rows.push(summarize(pagePath, desktop, mobile, sitemapUrls));
+  for (let start = 0; start < paths.length; start += batchSize) {
+    const batch = paths.slice(start, start + batchSize);
+    await Promise.all(batch.map(async (pagePath, offset) => {
+      const [desktop, mobile] = await Promise.all([
+        auditViewport(browser, pagePath, 'desktop'),
+        auditViewport(browser, pagePath, 'mobile')
+      ]);
+      rows[start + offset] = summarize(pagePath, desktop, mobile, sitemapUrls);
+    }));
   }
 
   await browser.close();

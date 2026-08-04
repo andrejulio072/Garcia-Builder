@@ -52,6 +52,13 @@ function extractJsonLd(html) {
 const failures = [];
 const htmlFiles = walk(rootDir).filter((file) => !file.includes(`${path.sep}public${path.sep}`));
 const routeSet = new Set(['/']);
+const manifestPath = path.join(rootDir, 'config', 'seo-pages.json');
+if (fs.existsSync(manifestPath)) {
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  for (const page of manifest.pages || []) {
+    if (page.path) routeSet.add(page.path);
+  }
+}
 for (const file of htmlFiles) {
   const rel = path.relative(rootDir, file).replace(/\\/g, '/');
   if (rel.startsWith('components/')) continue;

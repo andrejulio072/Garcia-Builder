@@ -246,7 +246,7 @@ const INLINE_FALLBACKS = {
     <div class="container">
         <div class="gb-navbar-content">
             <a href="#" class="gb-logo-section" aria-label="Garcia Builder Home" data-gb-nav="/">
-             <img src="Logo Files/For Web/logo-nobackground-500.png"
+             <img src="/Logo Files/For Web/logo-nobackground-500.png"
                  data-gb-logo-src="Logo Files/For Web/logo-nobackground-500.png"
                      alt="Garcia Builder Logo"
                      class="gb-logo-img"
@@ -678,33 +678,36 @@ function ensureNavbarLogoPath(logoEl) {
         }
     };
 
-    addCandidate(logoEl.getAttribute('src'));
-    addCandidate(relativeBase);
-    addCandidate(`./${relativeBase}`);
-    addCandidate(`../${relativeBase}`);
-    addCandidate(`../../${relativeBase}`);
-    addCandidate(`../../../${relativeBase}`);
-    addCandidate(`../../../../${relativeBase}`);
-    try {
-        const relativePrefix = computeRelativePrefix();
-        if (relativePrefix) {
-            addCandidate(`${relativePrefix}${relativeBase}`);
+    if (!isFileProtocol()) {
+        // Hosted pages always resolve from the site root. Trying route-relative
+        // paths first creates avoidable 404s on nested pages such as /pages/auth/.
+        addCandidate(`/${relativeBase}`);
+        try {
+            const origin = window.location && window.location.origin;
+            if (origin && origin !== 'null') {
+                addCandidate(`${origin}/${relativeBase}`);
+            }
+        } catch (err) {
+            // ignore origin issues
         }
-    } catch (err) {
-        // ignore prefix errors
-    }
-    addCandidate(`/${relativeBase}`);
-
-    try {
-        const origin = window.location && window.location.origin;
-        if (origin && origin !== 'null') {
-            addCandidate(`${origin}/${relativeBase}`);
+    } else {
+        // Keep direct file previews working at different directory depths.
+        addCandidate(logoEl.getAttribute('src'));
+        addCandidate(relativeBase);
+        addCandidate(`./${relativeBase}`);
+        try {
+            const relativePrefix = computeRelativePrefix();
+            if (relativePrefix) {
+                addCandidate(`${relativePrefix}${relativeBase}`);
+            }
+        } catch (err) {
+            // ignore prefix issues
         }
-    } catch (err) {
-        // ignore origin issues
+        addCandidate(`../${relativeBase}`);
+        addCandidate(`../../${relativeBase}`);
+        addCandidate(`../../../${relativeBase}`);
+        addCandidate(`../../../../${relativeBase}`);
     }
-
-    addCandidate(`https://garciabuilder.fitness/${relativeBase}`);
 
     const tester = new Image();
     const tryIndex = (idx) => {

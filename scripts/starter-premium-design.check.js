@@ -208,7 +208,7 @@ for (const language of expandedLocales.SUPPORTED) {
 }
 
 assert(start.includes('data-start-assessment'), '/start assessment entry must remain available');
-assert(start.includes('/packages.html?utm_source=business_card'), '/start package shortcut must remain available');
+assert(start.includes('/packages?utm_source=business_card'), '/start package shortcut must remain available');
 assert(server.includes("app.get('/start'"), 'Server /start route must remain available');
 assert(vercel.includes('"source": "/go/card"'), 'Vercel /go/card route must remain available');
 

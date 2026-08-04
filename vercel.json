@@ -573,10 +573,6 @@
       "destination": "/api/starter-assessment/result?token=:token"
     },
     {
-      "source": "/api/stripe/:path*",
-      "destination": "/api/stripe-server-premium.js"
-    },
-    {
       "source": "/health",
       "destination": "/api/stripe-server-premium.js"
     },

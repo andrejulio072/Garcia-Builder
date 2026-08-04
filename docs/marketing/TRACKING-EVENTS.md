@@ -2,6 +2,8 @@
 
 This section defines the canonical event contract for the paid starter-assessment funnel.
 
+Downstream consultation, qualification and coaching outcome names are reserved in [LEAD-EVENT-CONTRACT.md](./LEAD-EVENT-CONTRACT.md). They are not primary conversions in this release.
+
 ## Primary Conversion
 - Canonical event: `assessment_submitted`
 - Fire rule: only after backend confirms successful durable lead persistence.

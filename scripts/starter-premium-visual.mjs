@@ -64,12 +64,12 @@ function mockResultPayload() {
           title: 'Three repeatable sessions',
           weeklyStructure: ['Train three times this week', 'Keep sessions under 60 minutes'],
           sessions: [{ name: 'Session A', focus: 'Full-body foundations', work: ['Squat pattern', 'Push', 'Pull'] }],
-          libraryUrl: '/workouts.html'
+          libraryUrl: '/workouts'
         },
         nutrition: {
           title: 'Simple, high-protein meals',
           macroTargets: ['Build each meal around protein', 'Keep portions repeatable'],
-          calculatorUrl: '/nutrition-calculator.html',
+          calculatorUrl: '/nutrition-calculator',
           meals: [{ meal: 'Breakfast', example: 'Greek yoghurt, oats and berries', purpose: 'Protein and steady energy' }],
           shoppingList: ['Lean protein', 'Fruit and vegetables', 'Simple carbohydrates']
         },
@@ -91,7 +91,7 @@ function mockResultPayload() {
           title: 'Workout Library',
           description: 'Exercise ideas for home and gym.',
           available: true,
-          url: '/workouts.html'
+          url: '/workouts'
         },
         {
           role: 'nutrition',
@@ -99,7 +99,7 @@ function mockResultPayload() {
           title: 'Nutrition Calculator',
           description: 'Turn your starting ranges into practical targets.',
           available: true,
-          url: '/nutrition-calculator.html'
+          url: '/nutrition-calculator'
         }
       ]
     },

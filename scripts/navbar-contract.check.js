@@ -9,33 +9,33 @@ const navbarHtml = read('components/navbar.html');
 const loaderSource = read('js/utils/component-loader-v3-simplified.js');
 
 const priorityTargets = [
-  'index.html',
-  'online-coaching.html',
-  'packages.html',
-  '/consultation.html',
-  'transformations.html',
-  'testimonials.html',
-  'workouts.html',
-  'nutrition-calculator.html',
-  'blog.html',
-  'about.html',
-  'faq.html',
-  'contact.html'
+  '/',
+  '/online-coaching',
+  '/packages',
+  '/consultation',
+  '/transformations',
+  '/testimonials',
+  '/workouts',
+  '/nutrition-calculator',
+  '/blog',
+  '/about',
+  '/faq',
+  '/contact'
 ];
 
 const drawerTargets = [
-  'index.html',
-  'online-coaching.html',
-  'packages.html',
-  '/consultation.html',
-  'transformations.html',
-  'testimonials.html',
-  'workouts.html',
-  'nutrition-calculator.html',
-  'blog.html',
-  'about.html',
-  'faq.html',
-  'contact.html'
+  '/',
+  '/online-coaching',
+  '/packages',
+  '/consultation',
+  '/transformations',
+  '/testimonials',
+  '/workouts',
+  '/nutrition-calculator',
+  '/blog',
+  '/about',
+  '/faq',
+  '/contact'
 ];
 
 const drawerLabels = [
@@ -52,7 +52,7 @@ function assertPriorityOrder(source, navClass, label, targets = priorityTargets)
   let previousIndex = -1;
 
   for (const target of targets) {
-    const marker = target === '/consultation.html' ? 'href="/consultation.html"' : `data-gb-nav="${target}"`;
+    const marker = target === '/consultation' ? 'href="/consultation"' : `data-gb-nav="${target}"`;
     const currentIndex = navMarkup.indexOf(marker);
     assert.notEqual(currentIndex, -1, `${label} should include ${target}`);
     assert.ok(currentIndex > previousIndex, `${label} should keep ${target} in visitor-priority order`);
@@ -89,8 +89,8 @@ for (const source of [navbarHtml, loaderSource]) {
   );
   assert.match(
     source,
-    /src="Logo Files\/For Web\/logo-nobackground-500\.png"/,
-    'Navbar logo should use the project-relative logo path for file:// and hosted pages'
+    /src="\/Logo Files\/For Web\/logo-nobackground-500\.png"/,
+    'Navbar logo should use a root-relative source on hosted pages'
   );
   assert.match(
     source,
@@ -105,6 +105,11 @@ assert.match(
   loaderSource,
   /logoEl\.hidden = false;[\s\S]{0,120}gb-logo-img--missing/,
   'Navbar logo resolver must reveal the image again after finding a valid path'
+);
+assert.match(
+  loaderSource,
+  /if \(!isFileProtocol\(\)\)[\s\S]{0,220}addCandidate\(`\/\$\{relativeBase\}`\)/,
+  'Navbar logo resolver should try the hosted root path before route-relative fallbacks'
 );
 
 for (const page of primaryPages) {

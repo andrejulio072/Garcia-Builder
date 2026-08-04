@@ -32,6 +32,19 @@ const requiredKeys = [
   'SUPABASE_ANON_KEY',
   'STRIPE_PUBLISHABLE_KEY'
 ];
+const preservedPublicKeys = [
+  ...requiredKeys,
+  'PUBLIC_SITE_URL',
+  'NEXT_PUBLIC_GTM_ID',
+  'NEXT_PUBLIC_GA4_MEASUREMENT_ID',
+  'GA4_MEASUREMENT_ID',
+  'NEXT_PUBLIC_BOOKING_URL',
+  'NEXT_PUBLIC_WHATSAPP_NUMBER',
+  'NEXT_PUBLIC_INSTAGRAM_URL',
+  'NEXT_PUBLIC_CONTACT_EMAIL',
+  'GOOGLE_OAUTH_ENABLED',
+  'FACEBOOK_OAUTH_ENABLED'
+];
 
 function parseBooleanEnv(value, fallback = false) {
   if (value === undefined || value === null || value === '') {
@@ -48,9 +61,10 @@ const existingConfigPath = path.join(__dirname, '..', 'env-config.json');
 if (fs.existsSync(existingConfigPath)) {
   try {
     const existingConfig = JSON.parse(fs.readFileSync(existingConfigPath, 'utf8'));
-    for (const key of requiredKeys) {
-      if (!process.env[key] && existingConfig[key]) {
-        process.env[key] = existingConfig[key];
+    for (const key of preservedPublicKeys) {
+      const existingValue = existingConfig[key];
+      if (!process.env[key] && existingValue !== undefined && existingValue !== null && existingValue !== '') {
+        process.env[key] = String(existingValue);
       }
     }
   } catch (_) {
@@ -73,24 +87,34 @@ if (missing.length > 0) {
 const publicEnv = {
   SUPABASE_URL: process.env.SUPABASE_URL,
   SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
-  STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
-  PUBLIC_SITE_URL:
-    process.env.PUBLIC_SITE_URL || process.env.FRONTEND_URL || null,
-  NEXT_PUBLIC_GTM_ID: process.env.NEXT_PUBLIC_GTM_ID || null,
-  NEXT_PUBLIC_GA4_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || null,
-  GA4_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || process.env.GA4_MEASUREMENT_ID || null,
-  NEXT_PUBLIC_BOOKING_URL: process.env.NEXT_PUBLIC_BOOKING_URL || process.env.BOOKING_URL || null,
-  NEXT_PUBLIC_WHATSAPP_NUMBER: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || process.env.WHATSAPP_NUMBER || null,
-  NEXT_PUBLIC_INSTAGRAM_URL: process.env.NEXT_PUBLIC_INSTAGRAM_URL || process.env.INSTAGRAM_URL || null,
-  NEXT_PUBLIC_CONTACT_EMAIL:
-    process.env.NEXT_PUBLIC_CONTACT_EMAIL ||
+  STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY
+};
+
+function setOptionalPublicValue(key, value) {
+  if (value !== undefined && value !== null && value !== '') {
+    publicEnv[key] = value;
+  }
+}
+
+setOptionalPublicValue('PUBLIC_SITE_URL', process.env.PUBLIC_SITE_URL || process.env.FRONTEND_URL);
+setOptionalPublicValue('NEXT_PUBLIC_GTM_ID', process.env.NEXT_PUBLIC_GTM_ID);
+setOptionalPublicValue('NEXT_PUBLIC_GA4_MEASUREMENT_ID', process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID);
+setOptionalPublicValue('GA4_MEASUREMENT_ID', process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || process.env.GA4_MEASUREMENT_ID);
+setOptionalPublicValue('NEXT_PUBLIC_BOOKING_URL', process.env.NEXT_PUBLIC_BOOKING_URL || process.env.BOOKING_URL);
+setOptionalPublicValue('NEXT_PUBLIC_WHATSAPP_NUMBER', process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || process.env.WHATSAPP_NUMBER);
+setOptionalPublicValue('NEXT_PUBLIC_INSTAGRAM_URL', process.env.NEXT_PUBLIC_INSTAGRAM_URL || process.env.INSTAGRAM_URL);
+setOptionalPublicValue(
+  'NEXT_PUBLIC_CONTACT_EMAIL',
+  process.env.NEXT_PUBLIC_CONTACT_EMAIL ||
     process.env.CONTACT_EMAIL ||
     process.env.INQUIRY_NOTIFY_EMAIL ||
-    process.env.ADMIN_EMAIL ||
-    'inquiries@garciabuilder.fitness',
+    process.env.ADMIN_EMAIL
+);
+
+Object.assign(publicEnv, {
   GOOGLE_OAUTH_ENABLED: parseBooleanEnv(process.env.GOOGLE_OAUTH_ENABLED, true),
   FACEBOOK_OAUTH_ENABLED: parseBooleanEnv(process.env.FACEBOOK_OAUTH_ENABLED, false)
-};
+});
 
 try {
   fs.writeFileSync(OUTPUT_FILE, `${JSON.stringify(publicEnv, null, 2)}\n`, 'utf8');

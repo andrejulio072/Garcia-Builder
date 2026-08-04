@@ -1,115 +1,85 @@
 # Assessment launch implementation verification
 
-Snapshot date: 2026-08-03  
-Scope: repository state only  
-Source specification: the approved assessment-launch specification supplied to Codex
+Snapshot date: 2026-08-04
 
-This report separates facts that can be proved from the repository from external checks in [MANUAL-ADS-LAUNCH-CHECKLIST.md](./MANUAL-ADS-LAUNCH-CHECKLIST.md). A passing legacy test is not treated as proof when that test enforces behavior that conflicts with the new specification.
+Scope: repository state on `codex/remaining-launch-fixes`; no production deployment or external-system mutation
 
-## Status key
-
-- **Verified** — implemented and supported by direct inspection or a passing automated check.
-- **Partial** — useful implementation exists, but the approved acceptance criteria are not met.
-- **Open** — missing or conflicts with the approved specification.
-- **Not run** — an available check could not produce a reliable result in this audit.
+This report records what can be proved from code and automated checks. Owner, legal, provider, staging and real-device work remains in [MANUAL-ADS-LAUNCH-CHECKLIST.md](./MANUAL-ADS-LAUNCH-CHECKLIST.md), while facts that cannot be invented remain in [MANUAL-LEGAL-VALUES-REQUIRED.md](../legal/MANUAL-LEGAL-VALUES-REQUIRED.md).
 
 ## Executive result
 
-**Not ready for ads launch.** The main blockers are the combined Stripe/assessment API, wildcard CORS, the DOB/18+ model, the old consent model, missing first-touch fallback, incomplete production-level tests, incomplete legal pages and incomplete technical SEO.
+The requested repository implementation is complete. The project is still **NO-GO for production ads** until the manual legal values, Supabase migration, provider configuration, preview checks and real-device end-to-end evidence are completed. Passing repository tests cannot prove the deployed database, email, Zapier, GTM, Meta, Google Ads or consent state.
 
-## Already implemented and verified
+## Verified implementation
 
 | Area | Status | Repository evidence |
 | --- | --- | --- |
-| Paid assessment keeps the premium landing structure | Verified | `assessment.html` contains the focused paid journey, proof sections and no competing main navigation. `starter-premium-design.check.js` passes. |
-| Seven assessment questions remain intact | Verified | `lib/starter-assessment/config.cjs` defines exactly seven questions; `starter-assessment.check.js` asserts `QUESTIONS.length === 7`. |
-| Assessment remains lead generation, not direct checkout | Verified | `assessment.html` has no Stripe, My PT Hub or checkout CTA. Submission stores a lead and returns a result token. |
-| Result resources remain available | Verified | The result contains the 28-day guide, workout resources, nutrition resources and the practical starter plan. Resource contract assertions pass. |
-| Core contact choices already exist | Verified | Full name and email are collected; social profile and WhatsApp are optional. |
-| Marketing email is optional and does not gate the result | Verified | The checkbox is not required, validation accepts `false`, and transactional email is attempted after persistence regardless of marketing consent. |
-| Transactional email failure does not erase a stored lead | Verified | Lead insertion happens before email delivery; provider failures are caught and returned as a delivery status. |
-| Zapier failure does not erase a stored lead | Verified | Zapier runs after insertion inside caught side-effect handling. |
-| Consent and privacy versions are stored | Verified | Validation attaches `consent_copy_version` and `privacy_policy_version`; the lead payload stores them. |
-| Assessment request allow-list logic exists | Verified, but architecture is partial | `lib/starter-assessment/origin.cjs` accepts the two production origins, localhost and the active Vercel preview origin and rejects other explicit origins. Global wildcard headers still conflict with this; see blockers. |
-| Private responses use no-store caching | Verified | Submit/event handlers set `no-store`; result responses set `private, no-store`; matching Vercel route headers also exist. |
-| Result tokens are not stored in plaintext | Verified | Tokens are random, SHA-256 hashed for lookup, expire, and the result API returns recommendation data rather than name or email. |
-| Result-event deduplication is durable | Verified | `starter_assessment_events` has a unique `(lead_id, event_name, event_key)` constraint and handlers treat database conflict `23505` as a duplicate. This does not prove durable submission deduplication. |
-| Database access is designed as server-only | Verified in tracked schema | The schema enables RLS and revokes lead/event table access from `anon` and `authenticated`. The deployed Supabase state remains a manual check. |
-| Primary browser conversion is guarded | Verified | `assessment_submitted` requires a new, non-deduplicated persisted lead response and uses a session event-ID guard. Tests also reject PII fields in its analytics payload. |
-| Consent Mode defaults are established before optional tracking loads | Verified in code | `starter-tracking-bootstrap.js` sets denied defaults and applies a stored granular choice before loading the consent UI. Live GTM behavior remains manual. |
-| Assessment indexing rule | Verified | `/assessment` declares `noindex, follow` and is not included in the current sitemap. |
-| Initial package positioning exists | Verified as a foundation | The four requested package names and distinct “Best for” positioning are present. Full differentiation is still partial. |
-| Canonical tracking contract exists | Verified as a foundation | `docs/marketing/TRACKING-EVENTS.md` defines `assessment_submitted`, safe parameters, mapping and deduplication rules. Later `consultation_booked`, `consultation_attended` and `qualified_lead` contracts are not yet defined. |
-| Baseline repository checks | Verified | `npm test`, `npm run build`, and `npm run test:package-ctas` passed on 2026-08-03. The baseline suite currently contains assertions for the old DOB/18+ behavior, so it does not approve the new age specification. |
+| Assessment/Stripe separation | Verified | Assessment has independent `submit`, `result` and `event` Vercel functions. Stripe has explicit `checkout`, `webhook` and `health` function entrypoints. No generic `/api/:path*` or `/api/stripe/:path*` rewrite hides those functions. Importing assessment routes does not load Stripe. |
+| Assessment CORS and body size | Verified | Assessment HTTP helpers allow the canonical domains, localhost and approved project preview origins, reject unapproved explicit origins, handle `OPTIONS`, set private/no-store headers and cap request bodies at 100 KB. The global wildcard CORS header is absent. |
+| Age model | Verified | New assessment payloads require an integer age from 18 through 100. DOB and the separate 18+ checkbox are retired from the new flow. Migration `20260804090000_assessment_age_consent.sql` adds age safely, keeps historical DOB nullable and only backfills deterministic valid values. |
+| Consent model | Verified | The form contains one required resource/privacy acknowledgement and one unchecked optional email-marketing consent. New payloads do not collect WhatsApp marketing consent. Version and timestamp evidence is stored. |
+| Attribution fallback | Verified | Server validation/persistence guarantees `first_touch_at` from captured attribution or submission time, with latest-touch and UTM/click identifiers preserved. |
+| Durable submission deduplication | Verified | The browser supplies a UUID submission ID; migration `20260804100000_assessment_submission_id.sql` adds a non-null unique database key; conflict handling retrieves the existing lead/result without firing another primary conversion. |
+| Assessment failure handling | Verified | Integration checks cover validation bounds, optional fields, both marketing states, missing/full attribution, persistence failure, result tokens, duplicate conflict, and non-destructive email/Zapier failures. |
+| Conversion safety | Verified | `assessment_submitted` fires only for a newly persisted, non-deduplicated lead and uses the API event ID. Browser analytics exclude contact PII, free text, raw score and result token. |
+| Future event governance | Verified | [LEAD-EVENT-CONTRACT.md](../marketing/LEAD-EVENT-CONTRACT.md) reserves consultation, qualification and coaching-start events with authoritative triggers and durable deduplication rules; none is promoted to a primary conversion in this release. |
+| Legal-page foundation | Implemented, publication blocked | Privacy, Cookie Policy and Terms cover the requested topics and expose Cookie Preferences. Missing controller, retention, transfer and governing-law facts are explicitly blocked in the separate legal checklist instead of invented. |
+| Consent-aware assessment tags | Verified in code | The assessment establishes denied defaults and loads optional GTM only after a qualifying consent update. First-party attribution and preference controls remain available. Live tag/storage behavior is manual. |
+| Canonical URL architecture | Verified | A 63-page controlled manifest drives metadata expectations and a 58-URL extensionless sitemap. Public `.html` sources redirect permanently, canonical/OG/breadcrumb/internal links are extensionless, and private/campaign routes are excluded. |
+| Indexing and structured data | Verified | `/assessment` and `/start` are `noindex, follow`; the result shell is `noindex, nofollow`. JSON-LD parsing/types are contracted and unsupported Review/AggregateRating schema is rejected. |
+| Images and internal linking | Verified | 109 responsive WebP files, 188 intrinsic-dimension corrections and 107 responsive image occurrences are recorded. Thirty-eight supporting articles have pillar/assessment links. |
+| Lighthouse repeatability | Verified, targets partial | `npm run audit:lighthouse` writes mobile lab reports. CLS was corrected to 0.001 on home and 0 on online coaching; assessment performance reached 70. Legacy public-shell LCP/performance remains below the aspirational target and is documented in the SEO audit. |
+| Package differentiation | Verified | All four packages expose best fit, objective, duration, training, nutrition, check-ins, update cadence, support, difference and next step. Assessment is primary, consultation secondary, WhatsApp tertiary and unchanged checkout URLs are visually de-emphasised. |
+| Dependency health | Verified | The accidental package self-reference was removed, environment generation preserves existing public values during postinstall, and both full and production-only `npm audit` report zero vulnerabilities. |
 
-## Priority 0 blockers
+## Tracked database changes
 
-| Requirement | Status | Finding / required correction |
-| --- | --- | --- |
-| Separate assessment and Stripe functions | Open | There is no `api/starter-assessment/` or `api/stripe/` endpoint set. `vercel.json` still rewrites `/api/:path*` to `api/stripe-server-premium.js`, which mounts both assessment and Stripe behavior. |
-| Remove conflicting wildcard CORS | Open | `vercel.json` applies `Access-Control-Allow-Origin: *` to `/(.*)` while Express uses credentialed origin-specific CORS. Remove the global wildcard and keep route-appropriate handling. |
-| Assessment payload limit near 100 KB | Open | The shared Express parser accepts `10mb`. A dedicated assessment endpoint cannot currently enforce the requested smaller limit. |
-| Replace DOB with required integer age 18–100 | Open | Frontend, client validation, backend validation, alert/email content, tests and schema still use `date_of_birth`; both forms still include `age_confirmed`. No tracked age migration exists. |
-| Use only two compact consent rows | Open | The forms still have separate age confirmation and conditional WhatsApp marketing consent. Required acknowledgement copy does not contain the linked Privacy Notice text specified by the decision. |
-| Stop collecting WhatsApp marketing consent | Open | Frontend, backend, scoring/result logic, database fields and integrations still collect and use `marketing_whatsapp_consent` for new assessments. |
-| Store acknowledgement timestamp | Open | `resource_acknowledgement_at` is not present in the tracked schema or insert payload. |
-| Guarantee `first_touch_at` fallback | Open | Validation permits null and the insert forwards null. The database migration makes `first_touch_at` non-null, so a submission without attribution can fail. Set server submission time before insertion. |
-| Durable duplicate-submission behavior | Partial | A 30-second in-memory map exists, but it is not authoritative in serverless execution and the lead table has no matching durable submission-id/email constraint for this behavior. |
-| Production-level assessment test matrix | Open | Current tests cover useful contracts, tokens, origins, resources and tracking privacy, but do not cover the approved age boundary cases, consent combinations, integration-failure cases, Supabase failure, durable duplicate lead behavior, or all required mobile widths. Several tests explicitly require DOB. |
-| Mobile layout at 360/390/412/430 | Partial | The visual script checks 320 and 390 plus larger viewports. It does not cover 360, 412 and 430 as required. |
+Apply in migration order after a database backup and staging review:
 
-## Legal and privacy implementation
+1. `20260714225452_starter_assessment_funnel.sql`
+2. `20260727103000_paid_assessment_attribution_recovery.sql`
+3. `20260727223000_assessment_contact_enrichment.sql`
+4. `20260804090000_assessment_age_consent.sql`
+5. `20260804100000_assessment_submission_id.sql`
 
-| Requirement | Status | Finding |
-| --- | --- | --- |
-| Privacy Notice foundation | Partial | The page lists categories, purposes, processors, consent, a generic retention statement, basic rights and contact. It lacks verified controller identity, lawful-basis matrix, transfer safeguards, precise retention, complete rights/complaint details, health/progress-photo handling and other required sections. |
-| Cookie/storage inventory table | Open | The policy describes broad categories but has no name/provider/category/purpose/duration/party/activation inventory. |
-| Foundational Terms | Partial | Website use, services, billing and an assessment disclaimer exist. Minimum age, medical clearance/client responsibility, IP, liability, governing law/disputes and clearer coaching scope are incomplete. |
-| No invented legal facts | Verified for this audit | No controller identity or retention values were invented. The unresolved values belong in the manual checklist. |
+The implementation does not claim these migrations have been applied to a live Supabase project.
 
-## Technical SEO implementation
+## Automated evidence record
 
-| Requirement | Status | Finding |
-| --- | --- | --- |
-| Extensionless canonical architecture | Open | Many canonicals, links and sitemap entries still use `.html`; `cleanUrls` is false; there is no complete `.html` to extensionless redirect set. |
-| `/start` indexing | Open | It currently declares `index, follow`; the approved rule is `noindex, follow`. |
-| Result indexing | Open | `start-result.html` declares `noindex, follow`; the approved rule is `noindex, nofollow`. It also lacks the required metadata contract. |
-| Page metadata contract | Open | `npm run seo:audit` failed with 61 issues on 2026-08-03, including missing assessment/start/cookie/result social metadata, canonical problems, a broken link signal and an image without alt text. |
-| Structured data | Partial / review required | Organization, WebSite, Person, ProfessionalService, Service, BreadcrumbList, Article and FAQPage types exist. Existing `Review` and `AggregateRating` markup must be verified against visible, supportable content before launch. |
-| Multilingual SEO restraint | Verified | The assessment language UI has not been turned into fake indexable locale URLs or `hreflang` variants. |
-| Image/Core Web Vitals work | Open | The specification’s conversion, dimensions, responsive sources and repeatable Lighthouse acceptance evidence are not complete. |
-| Internal topic clusters | Open | No implementation evidence establishes the requested pillar/supporting-article cluster contract. |
-| Controlled sitemap generator | Partial | A curated generator exists and excludes campaign result pages, but its manifest is extensionful and incomplete for the approved canonical architecture. Sitemap URL status validation is absent. |
-| SEO audit automation | Partial | A useful audit script exists, but it currently fails and does not by itself cover every approved contract. |
+| Check | Current result |
+| --- | --- |
+| Targeted assessment/API/event/legal/SEO/package contracts | Passed in the final release run |
+| `npm audit --omit=dev` | 0 vulnerabilities |
+| `npm audit` | 0 vulnerabilities |
+| Full `npm test --silent` | Passed (including controlled persistence, email and Zapier failure cases) |
+| `npm run lint` | Passed all shared-component validations |
+| `npm run build` | Passed; generated public output and preserved the existing `env-config.json` content hash |
+| `npm run seo:audit` | Passed 91 HTML files plus `robots.txt` and `sitemap.xml` |
+| Strict local frontend audit | Passed all 23 routes at 1440 x 1000 and 390 x 844, including production-equivalent legacy redirects |
+| Assessment visual viewports | Passed at widths 320, 360, 390, 412, 430, 768, 1024 and 1440, plus reduced-motion, contact and result states |
+| Live assessment smoke | Requires configured integration environment; manual/release gate |
 
-## Package differentiation
+## Remaining external and manual blockers
 
-| Requirement | Status | Finding |
-| --- | --- | --- |
-| Four requested positions | Verified | Monthly, 8-week Rebuild, 12-week Transformation and 18-week Premium are present with distinct “Best for” copy. |
-| Full comparison fields | Partial | Duration is implied by names, but support level, update cadence, nutrition depth, communication access and package-specific differences are not fully defined. “What is included” is currently identical across all four cards. |
-| Assessment/consultation as primary action | Partial | Consultation is visually primary, but public “Start checkout” links remain on every package. The package CTA test confirms they exist; that passing test conflicts with the new de-emphasis decision. |
+- Confirm and publish the legal controller/contracting identity, address, privacy contact, lawful bases, Article 9 condition, retention schedule, transfer safeguards, governing law and liability review.
+- Back up Supabase, apply migrations in staging, verify RLS/privileges and then repeat in the approved production change window.
+- Configure and verify required Vercel environment variables without exposing service-role, email, Zapier or Stripe secrets to browser bundles.
+- Authenticate email (SPF, DKIM and DMARC), test transactional delivery with marketing both unchecked and checked, and verify suppression behavior.
+- Update and test Zapier mappings, including a forced webhook failure after successful persistence.
+- Validate consent and one-event conversion behavior in GTM Preview, GA4 DebugView, Meta Test Events and Google Ads.
+- Run preview/production redirect, sitemap, Rich Results, Search Console, Bing and Core Web Vitals checks.
+- Complete the journey twice on a real phone using mobile data and record database, email, Zapier and analytics evidence.
 
-## Automated check record
+## Known risks and boundaries
 
-| Command | Result on 2026-08-03 | Interpretation |
-| --- | --- | --- |
-| `npm test` | Pass | Current repository contracts are internally consistent, but DOB-era assertions must be replaced. |
-| `npm run build` | Pass | Static public build completes. No production deployment was made. |
-| `npm run test:package-ctas` | Pass | Current consultation/WhatsApp/checkout wiring is intact; checkout assertions need revision for the approved positioning. |
-| `npm run seo:audit` | Fail: 61 issues | Deep technical SEO is not complete. |
-| `npm run frontend:audit` | Not run to completion: timed out after 124 seconds | No pass/fail conclusion should be claimed. |
-| `npm run test:starter-assessment:smoke` | Not run | Requires a configured live/local integration environment and belongs in release verification after the implementation changes. |
+- Public legal pages intentionally contain publication blockers until verified owner/legal values are supplied.
+- Local Lighthouse simulation cannot guarantee production LCP or field INP. Homepage and online-coaching legacy bundles need a later focused public-shell performance pass if production data confirms the lab risk.
+- Existing general-site analytics are outside this assessment sprint; the manual cookie audit must verify the final sitewide behavior.
+- Dedicated Stripe entry files share the existing Stripe application to preserve payment and webhook behavior. Assessment routes do not import that application.
+- Email, Zapier and provider failure tests use controlled fakes; they do not prove external provider configuration.
 
-## Recommended implementation order
+## Rollback boundary
 
-1. Separate API functions, CORS and payload limits.
-2. Migrate DOB/age and consent across frontend, backend, database, integrations and tests.
-3. Fix first-touch fallback and durable duplicate behavior.
-4. Complete the production assessment test matrix.
-5. Complete legal pages using only the owner-verified values from the manual checklist.
-6. Complete canonical/metadata/sitemap/performance SEO work and make the SEO audit pass.
-7. Finish package differentiation and remove/de-emphasise checkout according to the approved decision.
-8. Refresh this audit against the release commit, then execute the manual checklist.
+Code rollback should revert the phase commits in reverse order. Database migrations are forward-only: do not drop age, consent or submission-ID columns to roll back an application release. Restore the prior application while retaining the additive schema, then diagnose with the preserved lead/event records and backup.
 
-No production deployment was performed during this audit.
+No production deployment was performed by Codex.

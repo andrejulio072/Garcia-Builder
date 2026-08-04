@@ -220,7 +220,7 @@ assert.notStrictEqual(
 const workoutResource = getDisplayResource('Four-Day Upper/Lower Template');
 assert.strictEqual(workoutResource.fallbackUsed, false);
 assert.strictEqual(workoutResource.resource.available, true);
-assert.strictEqual(workoutResource.resource.url, '/workouts.html#workout-gym-upper-lower-builder');
+assert.strictEqual(workoutResource.resource.url, '/workouts#workout-gym-upper-lower-builder');
 assert.notStrictEqual(workoutResource.resource.url, '/assets/28-days-fat-loss-quickstart.pdf');
 assert(Array.isArray(workoutResource.details) && workoutResource.details.length > 0);
 
@@ -230,13 +230,13 @@ assert(!('scoreReasons' in visitor));
 assert.strictEqual(visitor.ctaMode, 'conversation');
 assert(visitor.starterPlan);
 assert.strictEqual(visitor.starterPlan.title, 'Your Practical Starter Plan');
-assert(visitor.starterPlan.training.libraryUrl.startsWith('/workouts.html#workout-'));
+assert(visitor.starterPlan.training.libraryUrl.startsWith('/workouts#workout-'));
 assert(visitor.starterPlan.training.weeklyStructure.length > 0);
 assert(visitor.starterPlan.training.sessions.length > 0);
 assert(visitor.starterPlan.nutrition.macroTargets.length > 0);
 assert(visitor.starterPlan.nutrition.meals.length >= 4);
 assert(visitor.starterPlan.nutrition.shoppingList.length > 0);
-assert.strictEqual(visitor.starterPlan.nutrition.calculatorUrl, '/nutrition-calculator.html');
+assert.strictEqual(visitor.starterPlan.nutrition.calculatorUrl, '/nutrition-calculator');
 const macroVisitor = toVisitorRecommendation(buildRecommendation(withAnswers({ nutrition_support: 'Calories and macro targets' }), baseContact));
 assert(macroVisitor.starterPlan.nutrition.macroTargets.some((target) => target.includes('1.6-2.2 g')));
 assert.strictEqual(visitor.resources.length, 3);
@@ -320,14 +320,17 @@ for (const endpoint of ['submit.js', 'result.js', 'event.js']) {
 }
 assert(!productionServer.includes("require('../lib/starter-assessment/"), 'Stripe server must not initialise assessment dependencies');
 assert(!vercelConfig.includes('"source": "/api/:path*"'), 'Vercel must not route every API request through Stripe');
-assert(vercelConfig.includes('"source": "/api/stripe/:path*"'), 'Vercel must route dedicated Stripe paths explicitly');
+for (const endpoint of ['checkout.js', 'webhook.js', 'health.js']) {
+  assert(fs.existsSync(path.join(__dirname, '..', 'api', 'stripe', endpoint)), `Missing dedicated Stripe endpoint: ${endpoint}`);
+}
+assert(!vercelConfig.includes('"source": "/api/stripe/:path*"'), 'Vercel must not hide dedicated Stripe functions behind a generic namespace rewrite');
 assert(!vercelConfig.includes('"key": "Access-Control-Allow-Origin"'), 'Vercel must not apply wildcard CORS headers');
 assert(starterPage.includes('name="website"'), 'Starter form should keep the honeypot field');
 assert(starterPage.includes('/js/starter-context.js'), 'Starter page should load shared starter context script');
 assert(starterContext.includes('detectEntryContext'), 'Shared starter context should include entry-context classification');
 assert(starterPage.includes('data-start-assessment'), 'QR landing should keep the assessment start button');
-assert(starterPage.includes('/packages.html?utm_source=business_card'), 'QR landing should link directly to packages');
-assert(starterPage.includes('/start-contact.html?utm_source=business_card'), 'QR landing should link to the direct contact page');
+assert(starterPage.includes('/packages?utm_source=business_card'), 'QR landing should link directly to packages');
+assert(starterPage.includes('/start/contact?utm_source=business_card'), 'QR landing should link to the direct contact page');
 assert(paidAssessmentPage.includes('Get Your Free Personalised'), 'Paid assessment page should make the free personalised plan explicit');
 assert(paidAssessmentPage.includes('Fat-Loss Starter Plan'), 'Paid assessment page should keep offer-message match in the premium headline');
 assert(paidAssessmentPage.includes('ActiveIQ Level 3 PT'), 'Paid assessment page should include the compact coach credential strip');
@@ -354,13 +357,13 @@ assert(paidAssessmentPage.includes('/cookie-policy'), 'Paid assessment page shou
 assert(paidAssessmentPage.includes('data-open-cookie-preferences'), 'Paid assessment page should expose cookie preferences action');
 assert(vercelConfig.includes('"source": "/assessment"'), 'Vercel should rewrite /assessment to paid landing page');
 assert(vercelConfig.includes('"source": "/start/contact"'), 'Vercel should rewrite /start/contact to the QR contact page');
-assert(vercelConfig.includes('"destination": "/start-contact.html"'), 'Vercel should serve start-contact.html for /start/contact');
+assert(vercelConfig.includes('"source": "/start/contact"'), 'Vercel should serve the direct contact route');
 assert(starterContactPage.includes('https://wa.me/447508497586'), 'QR contact page should include Andre WhatsApp');
 assert(starterContactPage.includes('https://instagram.com/garciabuilder.fitness'), 'QR contact page should include Instagram');
 assert(starterContactPage.includes('https://calendly.com/andrenjulio072/consultation'), 'QR contact page should include consultation booking');
 assert(starterContactPage.includes('mailto:inquiries@garciabuilder.fitness'), 'QR contact page should include inquiries email');
-assert(starterContactPage.includes('/packages.html?utm_source=business_card'), 'QR contact page should include package link');
-assert(starterContactPage.includes('/start.html?utm_source=business_card'), 'QR contact page should still link back to the assessment');
+assert(starterContactPage.includes('/packages?utm_source=business_card'), 'QR contact page should include package link');
+assert(starterContactPage.includes('/start?utm_source=business_card'), 'QR contact page should still link back to the assessment');
 const submitHandlerSource = fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8');
 assert(submitHandlerSource.includes(".eq('submission_id', submissionId)"), 'Starter submit should recover durable duplicate submissions by submission id');
 assert(submitHandlerSource.includes('<li>Age:'), 'Warm lead alert should calculate and display lead age');
@@ -426,9 +429,9 @@ assert(resultClient.includes('isDownloadUrl(resource.url)'), 'Result resource li
 assert(resultClient.includes("plansLink.textContent = copy('viewPlans')"), 'Result page plans action should use localized copy');
 assert(resultClient.includes("track('contact_click'"), 'Result page contact actions should emit contact_click without contact data');
 assert(resultClient.includes("track('view_plans_click'"), 'Result page plans action should emit view_plans_click');
-assert(resultClient.includes('/packages.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=view_plans'), 'Result page should preserve attribution when linking to coaching plans');
-assert(resultClient.includes('/workouts.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=workout_library'), 'Result page should include workout tools link with attribution');
-assert(resultClient.includes('/nutrition-calculator.html?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=nutrition_calculator'), 'Result page should include nutrition calculator link with attribution');
+assert(resultClient.includes('/packages?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=view_plans'), 'Result page should preserve attribution when linking to coaching plans');
+assert(resultClient.includes('/workouts?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=workout_library'), 'Result page should include workout tools link with attribution');
+assert(resultClient.includes('/nutrition-calculator?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=nutrition_calculator'), 'Result page should include nutrition calculator link with attribution');
 assert(!resultClient.includes("link.target = '_blank';\n      link.rel = 'noopener';"), 'Result resource links should not force every internal resource into a new tab');
 assert(!JSON.stringify(visitor.resources).includes('/blog-'), 'Assessment result resources should not hand users off to blog posts');
 assert(submitHandler.includes('emailCopy.startHere'), 'Result email should lead with a localized actionable quick start');

@@ -12,15 +12,17 @@ const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
-const nodemailer = require('nodemailer');
-const { createClient } = require('@supabase/supabase-js');
 const { randomUUID } = require('crypto');
 const LEAD_DEDUP_WINDOW_MS = 10 * 60 * 1000;
 const recentConsultationLeadIds = new Map();
 
 // Load ignored local overrides first; Vercel-provided variables remain authoritative.
-require('dotenv').config({ path: path.join(__dirname, '..', '.env.local'), quiet: true });
-require('dotenv').config({ path: path.join(__dirname, '..', '.env'), quiet: true });
+// Route smoke tests opt out so they can prove the not-configured boundary without
+// reading a developer's local payment credentials.
+if (process.env.GB_SKIP_DOTENV !== '1') {
+    require('dotenv').config({ path: path.join(__dirname, '..', '.env.local'), quiet: true });
+    require('dotenv').config({ path: path.join(__dirname, '..', '.env'), quiet: true });
+}
 
 const app = express();
 
@@ -449,6 +451,7 @@ function getOptionalSupabaseClient() {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (!url || !serviceKey) return null;
+    const { createClient } = require('@supabase/supabase-js');
     return createClient(url, serviceKey, { auth: { persistSession: false } });
 }
 
@@ -458,6 +461,7 @@ function createOptionalMailTransport() {
     const user = process.env.SMTP_USER;
     const pass = process.env.SMTP_PASS;
     if (!host || !user || !pass) return null;
+    const nodemailer = require('nodemailer');
     return nodemailer.createTransport({
         host,
         port,
@@ -564,7 +568,7 @@ function buildNutritionPlanEmail({ name, profile = {}, result = {}, templates = 
                     <p style="margin:22px 0 0;color:#5b6472;">You can also reply directly to this email with your goal or biggest challenge. I read the replies personally.</p>
                     <p style="margin:18px 0 0;font-weight:800;">Andre Garcia<br><span style="font-weight:400;color:#5b6472;">Garcia Builder Fitness</span></p>
                 </div>
-                <div style="background:#f7f4ea;padding:16px 24px;color:#6b7280;font-size:12px;text-align:center;">This calculator provides an educational starting estimate, not medical advice. If you have a medical condition, are pregnant or have a history of disordered eating, speak with a qualified healthcare professional before changing your intake. <a href="https://www.garciabuilder.fitness/privacy.html" style="color:#4b5563;">Privacy policy</a></div>
+                <div style="background:#f7f4ea;padding:16px 24px;color:#6b7280;font-size:12px;text-align:center;">This calculator provides an educational starting estimate, not medical advice. If you have a medical condition, are pregnant or have a history of disordered eating, speak with a qualified healthcare professional before changing your intake. <a href="https://www.garciabuilder.fitness/privacy-policy" style="color:#4b5563;">Privacy policy</a></div>
             </div>
         </div>
     `;
@@ -1133,7 +1137,7 @@ app.post(['/api/create-checkout-session', '/api/stripe/checkout'], validateStrip
             trainerizeInvite,
             trainerize_invite,
             successUrl = `${req.protocol}://${req.get('host')}/success.html`,
-            cancelUrl = `${req.protocol}://${req.get('host')}/pricing.html`,
+            cancelUrl = `${req.protocol}://${req.get('host')}/packages`,
             utm: rawUtm
         } = req.body;
 

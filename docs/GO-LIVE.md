@@ -58,7 +58,7 @@ npm run build:public
 Then verify:
 
 - `/health` reports the expected integration readiness.
-- `/go/card` loads the mobile assessment without redirecting.
+- `/go/card` redirects to the canonical `/start` assessment while preserving `utm_source=business_card`, `utm_medium=qr` and `utm_campaign=starter_assessment`.
 - A test assessment stores one Supabase lead.
 - Brevo sends the result in the selected language.
 - Zapier receives one canonical lead event.

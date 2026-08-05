@@ -345,8 +345,7 @@ async function auditAssessment(page, route, viewport) {
 
   await page.fill('[name="full_name"]', 'Mobile Audit');
   await page.fill('[name="email"]', `mobile-assessment-${viewport.width}@example.test`);
-  await page.fill('[name="date_of_birth"]', '1990-01-01');
-  await page.check('[name="age_confirmed"]');
+  await page.fill('[name="age"]', '36');
   await page.check('[name="resource_delivery_acknowledgement"]');
   await page.locator('[data-submit-button]').evaluate((button) => {
     button.click();
@@ -389,6 +388,13 @@ try {
       const url = `${baseUrl}${route.path}`;
       const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
       assert(response?.ok(), `${route.path} should load successfully at ${viewport.width}px`);
+      if (route.kind === 'card') {
+        await page.waitForFunction(() => /\/start(?:\.html)?$/.test(window.location.pathname));
+        const redirectedUrl = new URL(page.url());
+        assert.equal(redirectedUrl.searchParams.get('utm_source'), 'business_card', 'QR redirect should preserve utm_source');
+        assert.equal(redirectedUrl.searchParams.get('utm_medium'), 'qr', 'QR redirect should preserve utm_medium');
+        assert.equal(redirectedUrl.searchParams.get('utm_campaign'), 'starter_assessment', 'QR redirect should preserve utm_campaign');
+      }
       await page.waitForTimeout(250);
       await assertDocumentFits(page, route.path, viewport.width);
 

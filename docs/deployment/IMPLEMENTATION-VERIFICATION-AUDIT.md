@@ -1,8 +1,8 @@
 # Assessment launch implementation verification
 
-Snapshot date: 2026-08-04
+Snapshot date: 2026-08-05
 
-Scope: repository state on `codex/remaining-launch-fixes`; no production deployment or external-system mutation
+Scope: integrated repository state on `codex/integrate-remaining-launch-fixes`, based on integration commit `2253cbf`; no production deployment or external-system mutation
 
 This report records what can be proved from code and automated checks. Owner, legal, provider, staging and real-device work remains in [MANUAL-ADS-LAUNCH-CHECKLIST.md](./MANUAL-ADS-LAUNCH-CHECKLIST.md), while facts that cannot be invented remain in [MANUAL-LEGAL-VALUES-REQUIRED.md](../legal/MANUAL-LEGAL-VALUES-REQUIRED.md).
 
@@ -24,7 +24,8 @@ The requested repository implementation is complete. The project is still **NO-G
 | Conversion safety | Verified | `assessment_submitted` fires only for a newly persisted, non-deduplicated lead and uses the API event ID. Browser analytics exclude contact PII, free text, raw score and result token. |
 | Future event governance | Verified | [LEAD-EVENT-CONTRACT.md](../marketing/LEAD-EVENT-CONTRACT.md) reserves consultation, qualification and coaching-start events with authoritative triggers and durable deduplication rules; none is promoted to a primary conversion in this release. |
 | Legal-page foundation | Implemented, publication blocked | Privacy, Cookie Policy and Terms cover the requested topics and expose Cookie Preferences. Missing controller, retention, transfer and governing-law facts are explicitly blocked in the separate legal checklist instead of invented. |
-| Consent-aware assessment tags | Verified in code | The assessment establishes denied defaults and loads optional GTM only after a qualifying consent update. First-party attribution and preference controls remain available. Live tag/storage behavior is manual. |
+| Consent-aware assessment tags | Verified in code | The assessment establishes denied defaults and keeps the GTM container behind complete advertising consent because the published container includes Meta Custom HTML tags. Consent withdrawal is propagated to Meta and expires assessment attribution cookies. First-party attribution and preference controls remain available. Live tag/storage behavior is manual. |
+| QR route canonicalization | Verified | `/go/card` is a lightweight redirect to the canonical `/start` assessment. Both the Vercel redirect and static HTML fallback preserve the business-card source, QR medium and starter-assessment campaign parameters without maintaining a second assessment form. |
 | Canonical URL architecture | Verified | A 63-page controlled manifest drives metadata expectations and a 58-URL extensionless sitemap. Public `.html` sources redirect permanently, canonical/OG/breadcrumb/internal links are extensionless, and private/campaign routes are excluded. |
 | Indexing and structured data | Verified | `/assessment` and `/start` are `noindex, follow`; the result shell is `noindex, nofollow`. JSON-LD parsing/types are contracted and unsupported Review/AggregateRating schema is rejected. |
 | Images and internal linking | Verified | 109 responsive WebP files, 188 intrinsic-dimension corrections and 107 responsive image occurrences are recorded. Thirty-eight supporting articles have pillar/assessment links. |
@@ -54,9 +55,10 @@ The implementation does not claim these migrations have been applied to a live S
 | Full `npm test --silent` | Passed (including controlled persistence, email and Zapier failure cases) |
 | `npm run lint` | Passed all shared-component validations |
 | `npm run build` | Passed; generated public output and preserved the existing `env-config.json` content hash |
-| `npm run seo:audit` | Passed 91 HTML files plus `robots.txt` and `sitemap.xml` |
+| `npm run seo:audit` | Passed 94 HTML files plus `robots.txt` and `sitemap.xml` |
 | Strict local frontend audit | Passed all 23 routes at 1440 x 1000 and 390 x 844, including production-equivalent legacy redirects |
 | Assessment visual viewports | Passed at widths 320, 360, 390, 412, 430, 768, 1024 and 1440, plus reduced-motion, contact and result states |
+| Integrated mobile responsive audit | Passed 12 browser journeys across 320, 360 and 390 px for workouts, nutrition, the age-based assessment and the attributed QR redirect, including the final result state |
 | Live assessment smoke | Requires configured integration environment; manual/release gate |
 
 ## Remaining external and manual blockers
@@ -74,7 +76,7 @@ The implementation does not claim these migrations have been applied to a live S
 
 - Public legal pages intentionally contain publication blockers until verified owner/legal values are supplied.
 - Local Lighthouse simulation cannot guarantee production LCP or field INP. The focused public-shell pass is complete, but final preview/CDN measurement and post-launch field monitoring are still required because coaching and assessment lab LCP remain above 2.5 seconds.
-- Existing general-site analytics are outside this assessment sprint; the manual cookie audit must verify the final sitewide behavior.
+- Sitewide lead/conversion event contracts and duplicate Meta PageView prevention are integrated from `main`; the manual cookie/tag audit must still verify final deployed behavior.
 - Dedicated Stripe entry files share the existing Stripe application to preserve payment and webhook behavior. Assessment routes do not import that application.
 - Email, Zapier and provider failure tests use controlled fakes; they do not prove external provider configuration.
 

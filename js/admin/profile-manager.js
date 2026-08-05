@@ -391,7 +391,7 @@
             ? window.toAbsoluteUrl(`pages/auth/login.html?redirect=${ret}`)
             : `../auth/login.html?redirect=${ret}`;
           window.location.href = loginUrl;
-          throw new Error('No authenticated user');
+          return;
         }
 
         console.log('📥 [INIT] Loading profile data...');

@@ -36,16 +36,39 @@
     optionalConsentKeys.forEach(function (key) {
       consent[key] = choices[key] === 'granted' ? 'granted' : 'denied';
     });
+    if (choices.functionality_storage === 'denied') consent.functionality_storage = 'denied';
+    if (choices.security_storage === 'denied') consent.security_storage = 'denied';
     return consent;
   }
 
-  function hasOptionalConsent(choices) {
-    return optionalConsentKeys.some(function (key) { return choices[key] === 'granted'; });
+  function hasAdvertisingConsent(choices) {
+    return ['ad_storage', 'ad_user_data', 'ad_personalization'].every(function (key) {
+      return choices[key] === 'granted';
+    });
+  }
+
+  function expireAssessmentMetaCookie(name) {
+    var base = name + '=; Max-Age=0; path=/; SameSite=Lax';
+    document.cookie = base;
+    var host = (window.location.hostname || '').replace(/^www\./, '');
+    if (host && host.indexOf('.') !== -1) document.cookie = base + '; domain=.' + host;
+  }
+
+  function syncAssessmentMetaConsent(choices) {
+    var granted = hasAdvertisingConsent(choices);
+    if (typeof window.fbq === 'function') {
+      try { window.fbq('consent', granted ? 'grant' : 'revoke'); } catch (_) {}
+    }
+    if (!granted) {
+      expireAssessmentMetaCookie('_fbp');
+      expireAssessmentMetaCookie('_fbc');
+    }
   }
 
   function loadGoogleTagManager() {
-    if (window.__GB_GTM_LOADED__) return;
+    if (window.__GB_GTM_LOADED__ || window.__GB_STARTER_GTM_LOADED__) return;
     window.__GB_GTM_LOADED__ = true;
+    window.__GB_STARTER_GTM_LOADED__ = true;
     var gtm = document.createElement('script');
     gtm.async = true;
     gtm.id = 'gb-consented-gtm';
@@ -62,16 +85,27 @@
   }
 
   var initialChoices = readChoices();
-  window.gtag('consent', 'default', normalizeConsent(initialChoices));
-  if (hasOptionalConsent(initialChoices)) loadGoogleTagManager();
+  var consent = normalizeConsent(initialChoices);
+  window.gtag('consent', 'default', consent);
+
+  // The published container includes Custom HTML Meta tags, so the assessment
+  // container remains behind explicit advertising consent until every tag has
+  // equivalent GTM Additional Consent Checks.
+  if (hasAdvertisingConsent(consent)) {
+    loadGoogleTagManager();
+  } else {
+    syncAssessmentMetaConsent(consent);
+  }
 
   window.addEventListener('consent_update', function (event) {
-    var choices = event.detail && event.detail.choices ? event.detail.choices : {};
-    if (hasOptionalConsent(choices)) loadGoogleTagManager();
+    var choices = normalizeConsent(event.detail && event.detail.choices ? event.detail.choices : {});
+    window.gtag('consent', 'update', choices);
+    syncAssessmentMetaConsent(choices);
+    if (hasAdvertisingConsent(choices)) loadGoogleTagManager();
   });
 
-  // These first-party modules maintain attribution and the preference UI. They do
-  // not send data to Google or Meta unless a consented tag is subsequently loaded.
+  // First-party attribution and preference modules never request third-party
+  // tags themselves; the consent gate above owns GTM startup.
   loadLocalScript('/js/tracking/tracking.js?v=20260804-consent-v2');
   loadLocalScript('/js/tracking/consent-banner.js?v=20260804-consent-v2');
 })();

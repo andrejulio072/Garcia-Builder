@@ -183,11 +183,12 @@ async function main() {
 
   const add = (check, result, evidence) => report.push({ check, result, evidence });
 
-  const redirect = await fetch(`${baseUrl}/go/card`, { redirect: 'manual' });
-  assert([302, 307].includes(redirect.status), `/go/card returned ${redirect.status}, expected 302 or 307`);
-  const location = redirect.headers.get('location') || '';
-  assert(location.includes('/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment'), 'QR redirect lost expected UTM values');
-  add('QR redirect', 'PASS', `${redirect.status} -> ${location}`);
+  const card = await fetchText(`${baseUrl}/go/card`);
+  assert.equal(card.response.status, 200, '/go/card did not return HTTP 200');
+  assert(card.text.includes('starter-page-card'), 'QR card page is missing its mobile page mode');
+  assert.equal((card.text.match(/data-qr-contact="whatsapp"/g) || []).length, 1, 'QR card page should include one coach WhatsApp action');
+  assert.equal((card.text.match(/<option value="/g) || []).length, 10, 'QR card page should expose ten languages');
+  add('QR card page', 'PASS', 'HTTP 200, mobile page mode, one WhatsApp action, ten languages');
 
   const startUrl = `${baseUrl}/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment`;
   const start = await fetchText(startUrl);

@@ -91,8 +91,7 @@ Supabase notes
 
 ## Deployment
 
-- Preferred: Vercel — configuration included (`vercel.json`, `vercel.build.json`, `vercel.toml`). Update environment variables in the Vercel project dashboard.
-- Alternative: GitHub Pages for purely static hosting (keep webhooks and serverless endpoints running elsewhere).
+- Production hosting: Vercel, configured by `vercel.json`. Update environment variables in the Vercel project dashboard.
 
 Stripe webhooks should be configured to send events to the proper endpoint (see `api/stripe-server.js` and `api/stripe-server-premium.js`).
 
@@ -306,7 +305,7 @@ Auth notes
 
 ## Hosting, routing and deployment
 
-- Vercel: `vercel.json`, `vercel.build.json`, `vercel.toml` provide routing and build hints, including proxying to the premium Stripe server as needed.
+- Vercel: `vercel.json` is the single routing and deployment configuration.
 - Static files include sitemaps and `_headers` hints; PowerShell scripts (`deploy-vercel.ps1`) exist for deploy convenience.
 
 ## Known gaps and easy wins (next steps)

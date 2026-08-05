@@ -54,14 +54,14 @@ function isDuplicateConsultationLead(leadId) {
     return false;
 }
 
-async function postJsonWithTimeout(url, payload, timeoutMs = 8000) {
+async function postJsonWithTimeout(url, payload, timeoutMs = 8000, extraHeaders = {}) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
         return await fetch(url, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', ...extraHeaders },
             body: JSON.stringify(payload),
             signal: controller.signal
         });
@@ -252,7 +252,7 @@ app.get(Object.keys(publicPageAliases), (req, res) => {
 });
 
 app.get('/go/card', (req, res) => {
-    res.redirect(302, '/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment');
+    res.sendFile(path.join(__dirname, '..', 'go', 'card', 'index.html'));
 });
 
 app.get('/start', (req, res) => {
@@ -443,7 +443,7 @@ app.get(['/health', '/api/stripe/health'], (req, res) => {
         memory: process.memoryUsage()
     };
 
-    // Sempre retornar 200 para manter o serviÃ§o saudÃ¡vel no Render; refletir readiness em payload
+    // Keep the Vercel health endpoint available while reporting integration readiness in the payload.
     res.status(200).json(healthStatus);
 });
 
@@ -1505,6 +1505,8 @@ app.post(['/api/stripe-webhook', '/api/stripe/webhook'], async (req, res) => {
                         console.log('ðŸ” Found Meta attribution IDs for session:', metaIds);
                     }
 
+                    const attributionDispatches = [];
+
                     // GA4 Measurement Protocol
                     if (process.env.GA4_MEASUREMENT_ID && process.env.GA4_API_SECRET) {
                         const gaParams = {
@@ -1534,13 +1536,16 @@ app.post(['/api/stripe-webhook', '/api/stripe/webhook'], async (req, res) => {
                                 params: gaParams
                             }]
                         };
-                        fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${process.env.GA4_MEASUREMENT_ID}&api_secret=${process.env.GA4_API_SECRET}`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(gaPayload)
-                        }).then(r => r.text()).then(t => {
-                            console.log('ðŸ“Š GA4 MP purchase sent:', transactionId, t.slice(0,120));
-                        }).catch(err => console.warn('GA4 MP error:', err.message));
+                        attributionDispatches.push((async () => {
+                            const response = await postJsonWithTimeout(
+                                `https://www.google-analytics.com/mp/collect?measurement_id=${process.env.GA4_MEASUREMENT_ID}&api_secret=${process.env.GA4_API_SECRET}`,
+                                gaPayload,
+                                5000
+                            );
+                            const responseText = await response.text();
+                            if (!response.ok) throw new Error(`GA4 MP ${response.status}: ${responseText.slice(0, 200)}`);
+                            console.log('ðŸ“Š GA4 MP purchase sent:', transactionId, responseText.slice(0,120));
+                        })());
                     } else {
                         console.log('â„¹ï¸ GA4_MEASUREMENT_ID or GA4_API_SECRET missing - skipping GA4 server event');
                     }
@@ -1569,16 +1574,31 @@ app.post(['/api/stripe-webhook', '/api/stripe/webhook'], async (req, res) => {
                             // Provide test_event_code when running in test mode (optional env)
                             test_event_code: process.env.META_CAPI_TEST_EVENT_CODE || undefined
                         };
-                        fetch(`https://graph.facebook.com/v19.0/${process.env.META_PIXEL_ID}/events?access_token=${process.env.META_CAPI_TOKEN}`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(metaEvent)
-                        }).then(r=>r.json()).then(j=>{
-                            console.log('ðŸ“ˆ Meta CAPI purchase sent:', transactionId, JSON.stringify(j).slice(0,500));
-                        }).catch(err => console.warn('Meta CAPI error:', err.message));
+                        const configuredMetaVersion = String(process.env.META_GRAPH_API_VERSION || 'v25.0');
+                        const metaGraphVersion = /^v\d+\.0$/.test(configuredMetaVersion) ? configuredMetaVersion : 'v25.0';
+                        attributionDispatches.push((async () => {
+                            const response = await postJsonWithTimeout(
+                                `https://graph.facebook.com/${metaGraphVersion}/${process.env.META_PIXEL_ID}/events`,
+                                metaEvent,
+                                5000,
+                                { Authorization: `Bearer ${process.env.META_CAPI_TOKEN}` }
+                            );
+                            const responseJson = await response.json().catch(() => ({}));
+                            if (!response.ok) {
+                                throw new Error(`Meta CAPI ${response.status}: ${JSON.stringify(responseJson).slice(0, 300)}`);
+                            }
+                            console.log('ðŸ“ˆ Meta CAPI purchase sent:', transactionId, JSON.stringify(responseJson).slice(0,500));
+                        })());
                     } else {
                         console.log('â„¹ï¸ META_PIXEL_ID or META_CAPI_TOKEN missing - skipping Meta CAPI');
                     }
+
+                    const attributionResults = await Promise.allSettled(attributionDispatches);
+                    attributionResults.forEach((result) => {
+                        if (result.status === 'rejected') {
+                            console.warn('Server conversion dispatch failed:', result.reason?.message || result.reason);
+                        }
+                    });
                 } catch (attribErr) {
                     console.warn('âš ï¸ Attribution dispatch failed:', attribErr.message);
                 }

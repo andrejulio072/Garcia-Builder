@@ -494,6 +494,8 @@
 
 /* Hamburger Menu Button */
 .gb-hamburger {
+    position: relative;
+    z-index: 1002;
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -1,7 +1,13 @@
 (function () {
-  const token = decodeURIComponent(window.location.pathname.split('/').filter(Boolean).pop() || '');
+  const resultPathSegment = window.location.pathname.split('/').filter(Boolean).pop() || '';
+  const token = /^(?:start-result(?:\.html)?)$/i.test(resultPathSegment)
+    ? ''
+    : decodeURIComponent(resultPathSegment);
   const i18n = window.GB_STARTER_I18N;
   let language = i18n?.getBrowserLanguage?.() || 'en';
+  const resultParams = new URLSearchParams(window.location.search);
+  const extendedLanguages = ['fr', 'it', 'de', 'pl', 'ro', 'ar', 'ru'];
+  const isCardResult = resultParams.get('source') === 'card' || extendedLanguages.includes(language);
   const DELIVERY_KEY_PREFIX = 'gb_starter_delivery_';
   const title = document.querySelector('[data-result-title]');
   const summary = document.querySelector('[data-result-summary]');
@@ -339,6 +345,11 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    if (!isCardResult) {
+      document.querySelectorAll('[data-starter-language] option').forEach((option) => {
+        if (extendedLanguages.includes(option.value)) option.remove();
+      });
+    }
     i18n?.applyDocument?.(language);
     renderDeliveryNotice();
     const slowLoadTimer = setTimeout(() => {

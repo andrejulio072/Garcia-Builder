@@ -45,6 +45,7 @@ const cleanAliases = new Set([
   '/assessment',
   '/privacy-policy',
   '/privacy-policy.html',
+  '/assessment',
   '/start',
   '/start/contact',
   '/start/result',

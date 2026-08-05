@@ -37,6 +37,14 @@ const directories = [
   'Logo Files'
 ];
 
+const sitewideTrackingSnippet = '<script defer src="/js/tracking/sitewide-events.js?v=20260801-sitewide-v1"></script>';
+const assessmentTrackingEntries = new Set([
+  'assessment.html',
+  'start.html',
+  'start-result.html',
+  path.join('go', 'card', 'index.html')
+]);
+
 function copyRecursive(source, destination) {
   const stat = fs.statSync(source);
 
@@ -92,6 +100,38 @@ function writeRedirectFile(relativePath, targetPath, canonicalUrl) {
   fs.writeFileSync(destination, html);
 }
 
+function injectSitewideTrackingIntoPublicHtml() {
+  const visit = (directory) => {
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+      const absolutePath = path.join(directory, entry.name);
+      if (entry.isDirectory()) {
+        visit(absolutePath);
+        continue;
+      }
+      if (!entry.isFile() || path.extname(entry.name).toLowerCase() !== '.html') continue;
+
+      const relativePath = path.relative(outputDir, absolutePath);
+      if (assessmentTrackingEntries.has(relativePath)) continue;
+
+      const html = fs.readFileSync(absolutePath, 'utf8');
+      if (!html.includes('</head>')) continue;
+      const versionedHtml = html.replace(
+        /(js\/utils\/component-loader-v3-simplified\.js)(?:\?[^"']*)?/g,
+        '$1?v=20260801-tracking-v1'
+      ).replace(
+        /(js\/tracking\/seo-landing\.js)(?:\?[^"']*)?/g,
+        '$1?v=20260801-tracking-v1'
+      );
+      const trackedHtml = versionedHtml.includes('/js/tracking/sitewide-events.js')
+        ? versionedHtml
+        : versionedHtml.replace('</head>', `  ${sitewideTrackingSnippet}\n</head>`);
+      fs.writeFileSync(absolutePath, trackedHtml);
+    }
+  };
+
+  visit(outputDir);
+}
+
 fs.mkdirSync(outputDir, { recursive: true });
 
 for (const entry of fs.readdirSync(rootDir)) {
@@ -123,5 +163,7 @@ writeRedirectFile('programs.html', '/packages.html', 'https://www.garciabuilder.
 writeRedirectFile('pricing.html', '/packages.html', 'https://www.garciabuilder.fitness/packages.html');
 writeRedirectFile('pricing/index.html', '/packages.html', 'https://www.garciabuilder.fitness/packages.html');
 writeRedirectFile('my-profile.html', '/pages/auth/login.html?action=login', 'https://www.garciabuilder.fitness/pages/auth/login.html');
+
+injectSitewideTrackingIntoPublicHtml();
 
 console.log(`[public-build] Generated ${path.relative(rootDir, outputDir)}`);

@@ -503,7 +503,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check authentication first
     if (!window.enhancedAuth || !window.enhancedAuth.currentUser) {
         console.warn('No authenticated user found, redirecting to login...');
-        window.location.href = 'login.html';
+        window.location.href = '../auth/login.html';
         return;
     }
 

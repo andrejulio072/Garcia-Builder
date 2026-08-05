@@ -245,6 +245,7 @@
 
         // ---- Analytics / Tracking ----
         const trackingPayload = {
+          event_id: responseData.leadId || leadId,
           lead_type: 'coaching_application',
           page: window.location.pathname,
           source: 'website',
@@ -286,15 +287,6 @@
             });
           }
         } catch(e){ console.warn('Google Ads conversion event failed', e); }
-
-        // Meta Pixel Lead event (guard if fbq present)
-        try {
-          if (typeof fbq === 'function') {
-            fbq('track', 'Lead', {
-              content_name: 'coaching_application'
-            });
-          }
-        } catch(e){ console.warn('fbq lead track failed', e); }
 
         if (!window.__GB_DISABLE_FORM_REDIRECT) {
           window.location.href = '/thank-you-application.html';

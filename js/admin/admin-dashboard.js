@@ -31,7 +31,7 @@ class AdminDashboard {
             if (window.enhancedAuth && window.enhancedAuth.currentUser) {
                 this.currentUser = window.enhancedAuth.currentUser;
             } else {
-                window.location.href = 'login.html';
+                window.location.href = '../auth/login.html';
                 return false;
             }
         }
@@ -47,7 +47,7 @@ class AdminDashboard {
             }
             return true;
         } catch (error) {
-            window.location.href = 'login.html';
+            window.location.href = '../auth/login.html';
             return false;
         }
     }

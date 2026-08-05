@@ -34,3 +34,5 @@ logs/
 *.tmp
 *.temp
 .cache/
+backups/
+tmp/

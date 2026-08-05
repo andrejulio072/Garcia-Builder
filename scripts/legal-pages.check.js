@@ -46,7 +46,7 @@ assert.match(pages.privacy, /<table class="legal-table">[\s\S]*Lawful basis/, 'p
 ].forEach((term) => assert.ok(pages.terms.toLowerCase().includes(term.toLowerCase()), `terms missing ${term}`));
 
 const bootstrap = read('js/starter-tracking-bootstrap.js');
-assert.match(bootstrap, /if \(hasOptionalConsent\(initialChoices\)\) loadGoogleTagManager\(\)/, 'GTM must wait for stored optional consent');
+assert.match(bootstrap, /if \(hasAdvertisingConsent\(consent\)\)/, 'GTM must wait for complete stored advertising consent while the container includes Meta tags');
 assert.match(bootstrap, /consent_update/, 'GTM must respond to changed consent');
 assert.doesNotMatch(bootstrap, /document\.head\.appendChild\(gtm\);\s*\n\s*function/, 'GTM must not be appended unconditionally at startup');
 

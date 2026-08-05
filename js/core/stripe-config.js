@@ -1,5 +1,5 @@
 // Configuração Stripe seguindo documentação oficial - VERSÃO PREMIUM
-// Seleciona automaticamente a API base: localhost no dev, same-origin em produção (Render/domínio).
+// Select localhost in development and the same-origin Vercel API in production.
 const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
 const API_BASE = isLocalhost ? 'http://localhost:3001/api' : '/api';
 

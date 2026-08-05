@@ -473,6 +473,22 @@
           utm_term: payload.attribution?.utm_term || getMeta().utm_term || undefined,
           result_path_slug: payload.recommendation?.primaryPath
         });
+        // Compatibility event for the currently published GTM conversion
+        // tags. assessment_submitted remains the canonical durable event;
+        // generate_lead is emitted once with the same server event id.
+        track('generate_lead', {
+          event_id: payload.eventId,
+          conversion_source: 'assessment_submitted',
+          lead_type: 'starter_assessment',
+          entry_context: payload.attribution?.entry_context || state.entryContext,
+          language: state.language,
+          utm_source: payload.attribution?.utm_source || getMeta().utm_source || undefined,
+          utm_medium: payload.attribution?.utm_medium || getMeta().utm_medium || undefined,
+          utm_campaign: payload.attribution?.utm_campaign || getMeta().utm_campaign || undefined,
+          utm_content: payload.attribution?.utm_content || getMeta().utm_content || undefined,
+          utm_term: payload.attribution?.utm_term || getMeta().utm_term || undefined,
+          result_path_slug: payload.recommendation?.primaryPath
+        });
         markTrackedEventId(payload.eventId);
       }
 

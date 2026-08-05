@@ -16,6 +16,27 @@
     foodSearch: ''
   };
 
+  function createTrackingEventId(prefix) {
+    if (window.GB_SITE_TRACK && typeof window.GB_SITE_TRACK.createEventId === 'function') {
+      return window.GB_SITE_TRACK.createEventId(prefix);
+    }
+    return String(prefix || 'nutrition') + '-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
+  }
+
+  function trackNutritionEvent(eventName, params) {
+    const payload = Object.assign({ tool: 'nutrition_calculator' }, params || {});
+    if (window.GB_SITE_TRACK && typeof window.GB_SITE_TRACK.track === 'function') {
+      return window.GB_SITE_TRACK.track(eventName, payload);
+    }
+    if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+      window.GB_TRACKING.trackEvent(eventName, payload);
+      return payload;
+    }
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(Object.assign({ event: eventName }, payload));
+    return payload;
+  }
+
   function byId(id) {
     return document.getElementById(id);
   }
@@ -662,6 +683,19 @@
       if (!response.ok || data.ok !== true) {
         throw new Error(data.error || 'Email send failed');
       }
+      const conversionEventId = createTrackingEventId('nutrition-plan');
+      trackNutritionEvent('nutrition_plan_submitted', {
+        event_id: conversionEventId,
+        lead_type: 'nutrition_calculator',
+        goal: profile.goal,
+        email_delivery: data.emailSent ? 'sent' : 'accepted'
+      });
+      trackNutritionEvent('generate_lead', {
+        event_id: conversionEventId,
+        conversion_source: 'nutrition_plan_submitted',
+        lead_type: 'nutrition_calculator',
+        goal: profile.goal
+      });
       if (status) {
         status.textContent = data.emailSent ? 'Plan copy sent. Check your inbox.' : 'Plan saved. Email sending is not configured on this environment.';
         status.className = 'nutrition-email-status is-success';
@@ -911,6 +945,12 @@
     setupFoodFilters();
     setupLibraryToggles();
 
+    form.addEventListener('input', function onNutritionStart() {
+      trackNutritionEvent('nutrition_calculator_started', {
+        form_id: 'nutrition-calculator-form'
+      });
+    }, { once: true });
+
     document.querySelectorAll('.unit-btn').forEach(function bindUnitButton(button) {
       button.addEventListener('click', function onUnitClick() {
         document.querySelectorAll('.unit-btn').forEach(function removeActive(el) {
@@ -949,6 +989,12 @@
       });
 
       renderResults(profile, calc);
+      trackNutritionEvent('nutrition_plan_generated', {
+        goal: profile.goal,
+        unit_system: profile.unitSystem,
+        target_calorie_band: Math.round(calc.targetCalories / 100) * 100,
+        template_count: sortedTemplates.length
+      });
       renderTemplateCards();
       byId('food-library').hidden = true;
       byId('showFoodLibrary').hidden = false;

@@ -6,11 +6,27 @@ const root = path.join(__dirname, '..');
 const workoutsHtml = fs.readFileSync(path.join(root, 'workouts.html'), 'utf8');
 const workoutsJs = fs.readFileSync(path.join(root, 'js', 'workouts.js'), 'utf8');
 const workoutsCss = fs.readFileSync(path.join(root, 'css', 'workouts.css'), 'utf8');
+const advancedTemplates = require(path.join(root, 'js', 'workout-advanced-techniques.js'));
+const raceTemplates = require(path.join(root, 'js', 'workout-race-specialists.js'));
 
-const cardTitles = Array.from(workoutsHtml.matchAll(/<article class="workout-card"[\s\S]*?<h3>([^<]+)<\/h3>/g))
+const staticCardTitles = Array.from(workoutsHtml.matchAll(/<article class="workout-card"[\s\S]*?<h3>([^<]+)<\/h3>/g))
   .map((match) => match[1].trim());
+const additionalSourceStart = workoutsJs.indexOf('const additionalTemplateRows = [');
+const additionalSourceEnd = workoutsJs.indexOf('const workoutGrid =', additionalSourceStart);
+assert.notStrictEqual(additionalSourceStart, -1, 'Additional workout template source should exist');
+assert.notStrictEqual(additionalSourceEnd, -1, 'Additional workout template source should end before grid hydration');
+const additionalSource = workoutsJs.slice(additionalSourceStart, additionalSourceEnd);
+const additionalCardTitles = Array.from(additionalSource.matchAll(/^\s*\['([^']+)',/gm))
+  .map((match) => match[1].trim());
+const advancedCardTitles = advancedTemplates.map((template) => template.name);
+const raceCardTitles = raceTemplates.map((template) => template.name);
+const modularCardTitles = [...advancedCardTitles, ...raceCardTitles];
+const cardTitles = [...staticCardTitles, ...additionalCardTitles, ...modularCardTitles];
 
-assert.strictEqual(cardTitles.length, 42, 'Workout library should expose 42 printable workout cards');
+assert(
+  cardTitles.length >= 102,
+  'Workout library should expose all 102 current printable workout cards'
+);
 
 const planSourceStart = workoutsJs.indexOf('const workoutPlans = {');
 const planSourceEnd = workoutsJs.indexOf('const escapeHtml =', planSourceStart);
@@ -20,7 +36,7 @@ const planSource = workoutsJs.slice(planSourceStart, planSourceEnd);
 
 const fallbackCoveredPlans = cardTitles.filter((title) => {
   const quotedTitle = title.replace(/'/g, "\\'");
-  return !planSource.includes(`'${quotedTitle}':`);
+  return !planSource.includes(`'${quotedTitle}':`) && !modularCardTitles.includes(title);
 });
 
 if (fallbackCoveredPlans.length) {
@@ -59,6 +75,26 @@ assert(
 ].forEach((text) => {
   assert(workoutsCss.includes(text), `Workout print CSS should include ${text}`);
 });
+
+[
+  'const buildWorkoutPrintUrl = (workoutSlug) =>',
+  'const setupWorkoutPrintView = (modal, title) =>',
+  "params.set('print', '1')",
+  'workout-print-toolbar',
+  'workout-print-now',
+  'window.print()',
+  'Print / save PDF',
+  'workout-action-primary',
+  'workout-action-whatsapp',
+  'workout-action-print'
+].forEach((text) => {
+  assert(workoutsJs.includes(text), `Workout print controls should include ${text}`);
+});
+
+assert(
+  workoutsJs.includes('printLink.href = buildWorkoutPrintUrl(workoutSlug)'),
+  'Print action should open the prepared print route'
+);
 
 console.log(
   `Workout print contract passed: ${cardTitles.length} branded printable plans ` +

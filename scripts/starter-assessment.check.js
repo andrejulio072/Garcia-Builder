@@ -293,6 +293,7 @@ const starterClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-
 const starterContext = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-context.js'), 'utf8');
 const starterPage = fs.readFileSync(path.join(__dirname, '..', 'start.html'), 'utf8');
 const paidAssessmentPage = fs.readFileSync(path.join(__dirname, '..', 'assessment.html'), 'utf8');
+const cardAssessmentPage = fs.readFileSync(path.join(__dirname, '..', 'go', 'card', 'index.html'), 'utf8');
 const homepage = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 const starterContactPage = fs.readFileSync(path.join(__dirname, '..', 'start-contact.html'), 'utf8');
 const resultClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-result.js'), 'utf8');
@@ -304,6 +305,7 @@ const starterMigrationFile = fs.readdirSync(migrationDirectory).find((file) => f
 assert(starterMigrationFile, 'Tracked starter assessment migration is missing');
 const starterMigration = fs.readFileSync(path.join(migrationDirectory, starterMigrationFile), 'utf8');
 [
+  "app.get('/go/card'",
   "app.get('/assessment'",
   "app.get('/start'",
   "app.get('/start/contact'",
@@ -355,7 +357,11 @@ assert(homepage.includes('class="homepage-assessment-shortcut__link"'), 'Homepag
 assert(homepage.includes('utm_content=homepage_footer_assessment'), 'Homepage footer assessment shortcut should preserve its own attribution');
 assert(paidAssessmentPage.includes('/cookie-policy'), 'Paid assessment page should expose cookie policy link');
 assert(paidAssessmentPage.includes('data-open-cookie-preferences'), 'Paid assessment page should expose cookie preferences action');
+assert(cardAssessmentPage.includes('url=/start?utm_source=business_card&amp;utm_medium=qr&amp;utm_campaign=starter_assessment'), 'QR card fallback redirect should preserve attribution');
+assert(cardAssessmentPage.includes("window.location.replace('/start.html?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment')"), 'QR card script redirect should preserve attribution');
+assert(!cardAssessmentPage.includes('<form'), 'QR card route should remain a lightweight redirect rather than duplicate the assessment form');
 assert(vercelConfig.includes('"source": "/assessment"'), 'Vercel should rewrite /assessment to paid landing page');
+assert(vercelConfig.includes('"source": "/go/card"') && vercelConfig.includes('"destination": "/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment"'), 'Vercel should redirect the QR route to the canonical assessment with attribution');
 assert(vercelConfig.includes('"source": "/start/contact"'), 'Vercel should rewrite /start/contact to the QR contact page');
 assert(vercelConfig.includes('"source": "/start/contact"'), 'Vercel should serve the direct contact route');
 assert(starterContactPage.includes('https://wa.me/447508497586'), 'QR contact page should include Andre WhatsApp');

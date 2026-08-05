@@ -16,13 +16,13 @@ const legacyTerms = [
   '28-Day Fat Loss ' + 'Quickstart'
 ];
 const oldWording = new RegExp(legacyTerms.map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'i');
-const noindexPattern = /(^|[\\/])(?:(?:thank-you-|test-)[^\\/]*|dashboard\.html|diagnostic\.html|success\.html|confirm-contact\.html|index-inline-loader\.html|my-profile-production\.html|pricing-payment-links\.html|404\.html|go[\\/]card[\\/]index\.html|pages[\\/](?:admin|auth|test)[\\/]|database[\\/]admin[\\/])/i;
+const noindexPattern = /(^|[\\/])(?:(?:thank-you-|test-)[^\\/]*|assessment\.html|start-result\.html|go[\\/]card[\\/]index\.html|dashboard\.html|diagnostic\.html|success\.html|confirm-contact\.html|index-inline-loader\.html|my-profile-production\.html|pricing-payment-links\.html|404\.html|pages[\\/](?:admin|auth|test)[\\/]|database[\\/]admin[\\/])/i;
 const legacyRedirectPattern = /(^|[\\/])pricing\.html$/i;
 
 function walk(dir) {
   const files = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (['node_modules', '.git', 'coverage', '.vercel', 'public', 'lighthouse-results'].includes(entry.name)) continue;
+    if (['node_modules', '.git', 'coverage', '.vercel', 'public', 'backups', 'tmp', 'lighthouse-results'].includes(entry.name)) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) files.push(...walk(full));
     if (entry.isFile() && entry.name.endsWith('.html')) files.push(full);
@@ -33,7 +33,7 @@ function walk(dir) {
 function walkAll(dir) {
   const files = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (['node_modules', '.git', 'coverage', '.vercel', 'public', 'lighthouse-results'].includes(entry.name)) continue;
+    if (['node_modules', '.git', 'coverage', '.vercel', 'public', 'backups', 'tmp', 'lighthouse-results'].includes(entry.name)) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) files.push(...walkAll(full));
     if (entry.isFile()) files.push(full);
@@ -83,12 +83,17 @@ for (const file of htmlFiles) {
   const isLegacyRedirect = legacyRedirectPattern.test(relative);
   const html = fs.readFileSync(file, 'utf8');
   const head = (html.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i) || [])[1] || '';
+  const visibleText = html
+    .replace(/<(?:script|style)\b[^>]*>[\s\S]*?<\/(?:script|style)>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ');
+  const robots = (head.match(/<meta\s+name=["']robots["']\s+content=["']([^"']+)["']/i) || [])[1] || '';
+  const isNoindex = /noindex/i.test(robots);
 
   if (count(/<title\b[^>]*>[\s\S]*?<\/title>/gi, head) !== 1) failures.push(`${relative}: expected exactly one <title>`);
-  if (!isLegacyRedirect && count(/<meta\s+name=["']description["'][^>]*>/gi, head) !== 1) failures.push(`${relative}: expected exactly one meta description`);
-  if (count(/<link\s+rel=["']canonical["'][^>]*>/gi, head) !== 1) failures.push(`${relative}: expected exactly one canonical`);
+  if (!isLegacyRedirect && !isNoindex && count(/<meta\s+name=["']description["'][^>]*>/gi, head) !== 1) failures.push(`${relative}: expected exactly one meta description`);
+  if (!isNoindex && count(/<link\s+rel=["']canonical["'][^>]*>/gi, head) !== 1) failures.push(`${relative}: expected exactly one canonical`);
   if (count(/<meta\s+name=["']robots["'][^>]*>/gi, head) !== 1) failures.push(`${relative}: expected exactly one robots meta`);
-  if (!isLegacyRedirect) {
+  if (!isLegacyRedirect && !isNoindex) {
     for (const tag of ['og:title', 'og:description', 'og:url', 'og:image']) {
       if (!new RegExp(`<meta\\s+property=["']${tag}["']`, 'i').test(head)) failures.push(`${relative}: missing ${tag}`);
     }
@@ -96,14 +101,15 @@ for (const file of htmlFiles) {
       if (!new RegExp(`<meta\\s+name=["']${tag}["']`, 'i').test(head)) failures.push(`${relative}: missing ${tag}`);
     }
   }
-  if (!/rel=["']canonical["'][^>]+https:\/\/www\.garciabuilder\.fitness/i.test(head)) failures.push(`${relative}: canonical is not on www.garciabuilder.fitness`);
+  if (!isNoindex && !/rel=["']canonical["'][^>]+https:\/\/www\.garciabuilder\.fitness/i.test(head)) failures.push(`${relative}: canonical is not on www.garciabuilder.fitness`);
   if (/https?:\/\/garciabuilder\.fitness/i.test(head)) failures.push(`${relative}: found non-www canonical/social URL`);
-  const publicCopy = html.replace(/https?:\/\/[^\s"'<>]+/gi, '');
+  const publicCopy = visibleText.replace(/https?:\/\/[^\s"'<>]+/gi, '');
   if (oldWording.test(publicCopy)) failures.push(`${relative}: found old public wording`);
   if (secretPatterns.some((pattern) => pattern.test(html))) failures.push(`${relative}: potential exposed secret/webhook`);
 
-  if (!noindexPattern.test(relative)) {
-    for (const hrefMatch of html.matchAll(/\bhref\s*=\s*["']([^"']+)["']/gi)) {
+  if (!noindexPattern.test(relative) && !isNoindex) {
+    const linkHtml = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
+    for (const hrefMatch of linkHtml.matchAll(/\bhref\s*=\s*["']([^"']+)["']/gi)) {
       const href = hrefMatch[1];
       if (href.includes('${')) continue;
       if (!href || href.startsWith('#') || /^(?:https?:|mailto:|tel:|sms:|javascript:|data:)/i.test(href)) continue;
@@ -116,7 +122,6 @@ for (const file of htmlFiles) {
     }
   }
 
-  const robots = (head.match(/<meta\s+name=["']robots["']\s+content=["']([^"']+)["']/i) || [])[1] || '';
   if (legacyRedirectPattern.test(relative)) {
     if (!/noindex/i.test(robots)) failures.push(`${relative}: legacy pricing page must be noindex`);
     if (!/rel=["']canonical["'][^>]+https:\/\/www\.garciabuilder\.fitness\/packages\.html/i.test(head)) {
@@ -129,7 +134,7 @@ for (const file of htmlFiles) {
   }
 
   const h1Count = count(/<h1\b/gi, html);
-  if (!noindexPattern.test(relative) && !isLegacyRedirect && h1Count !== 1) failures.push(`${relative}: expected one H1, found ${h1Count}`);
+  if (!noindexPattern.test(relative) && !isNoindex && !isLegacyRedirect && h1Count !== 1) failures.push(`${relative}: expected one H1, found ${h1Count}`);
 
   for (const schema of extractJsonLd(head)) {
     try {

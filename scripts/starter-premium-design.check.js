@@ -7,6 +7,7 @@ const ROOT = path.join(__dirname, '..');
 const read = (file) => fs.readFileSync(path.join(ROOT, file), 'utf8');
 
 const assessment = read('assessment.html');
+const card = read('go/card/index.html');
 const start = read('start.html');
 const result = read('start-result.html');
 const css = read('css/starter-assessment.css');
@@ -14,6 +15,7 @@ const client = read('js/starter-assessment.js');
 const resultClient = read('js/starter-result.js');
 const locales = read('js/starter-locales.js');
 const expandedLocales = require(path.join(ROOT, 'js', 'starter-locales-expanded.js'));
+const starterI18n = require(path.join(ROOT, 'js', 'starter-locales.js'));
 const server = read('api/stripe-server-premium.js');
 const vercel = read('vercel.json');
 
@@ -211,5 +213,10 @@ assert(start.includes('data-start-assessment'), '/start assessment entry must re
 assert(start.includes('/packages?utm_source=business_card'), '/start package shortcut must remain available');
 assert(server.includes("app.get('/start'"), 'Server /start route must remain available');
 assert(vercel.includes('"source": "/go/card"'), 'Vercel /go/card route must remain available');
+assert(card.includes('/start.html?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment'), 'QR card route must redirect to the canonical mobile assessment with attribution');
+assert(!card.includes('<form'), 'QR card route must not duplicate the canonical assessment interface');
+for (const language of assessmentLanguages) {
+  assert(starterI18n.ui('followInstagram', language), `${language} Instagram follow translation is missing`);
+}
 
 console.log('starter-premium-design.check.js: ok');

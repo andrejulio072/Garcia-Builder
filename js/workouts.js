@@ -1,6 +1,20 @@
 (function () {
   'use strict';
 
+  const trackWorkoutEvent = (eventName, params = {}) => {
+    const payload = { content_type: 'workout_template', ...params };
+    if (window.GB_SITE_TRACK && typeof window.GB_SITE_TRACK.track === 'function') {
+      return window.GB_SITE_TRACK.track(eventName, payload);
+    }
+    if (window.GB_TRACKING && typeof window.GB_TRACKING.trackEvent === 'function') {
+      window.GB_TRACKING.trackEvent(eventName, payload);
+      return payload;
+    }
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: eventName, ...payload });
+    return payload;
+  };
+
   const workoutPlans = {
     'Lose Weight Starter': {
       note: 'Use a load that leaves 2 reps in reserve. Rest enough to keep form clean, then finish with an easy walk or bike.',
@@ -1816,6 +1830,25 @@
     'TRYKA Advanced Solo Simulation': { project: 'tryka-race-prep', keywords: 'tryka advanced solo race simulation 800m gym sled row ski erg ram thruster' },
   };
 
+  const advancedTechniqueTemplates = Array.isArray(window.GB_ADVANCED_WORKOUT_TEMPLATES)
+    ? window.GB_ADVANCED_WORKOUT_TEMPLATES
+    : [];
+  const raceSpecialistTemplates = Array.isArray(window.GB_RACE_SPECIALIST_TEMPLATES)
+    ? window.GB_RACE_SPECIALIST_TEMPLATES
+    : [];
+  const modularWorkoutTemplates = [...advancedTechniqueTemplates, ...raceSpecialistTemplates];
+
+  modularWorkoutTemplates.forEach((template) => {
+    templateProjects[template.name] = {
+      project: template.project,
+      keywords: template.keywords
+    };
+    workoutPlans[template.name] = {
+      note: template.note,
+      sessions: template.sessions
+    };
+  });
+
   const filters = {
     project: 'all',
     goal: 'all',
@@ -1823,13 +1856,86 @@
     place: 'all'
   };
 
+  const additionalTemplateRows = [
+    ['Active Senior Strength', 'strength mobility', 'beginner', 'home gym', '3 days/week', 'Joint-friendly full-body training for strength, balance and everyday confidence.', 'active adults over 60', 'machines, bands or light dumbbells', 'Three full-body days with balance practice and easy walking.', 'Supported squats, rows, presses, hinges, carries and calf strength.', 'Add repetitions first, then small load increases while every rep stays controlled.'],
+    ['Menopause Strength and Bone', 'strength muscle', 'beginner', 'home gym', '3 days/week', 'Progressive resistance training built around muscle retention, bone loading and recovery.', 'women navigating menopause', 'dumbbells, machines and step', 'Three full-body sessions with impact options and recovery days.', 'Squat, hinge, push, pull, loaded carry and low-impact power.', 'Progress one movement at a time and keep recovery consistent across the week.'],
+    ['Postnatal Return to Training', 'strength mobility', 'beginner', 'home gym', '3 days/week', 'A gradual return-to-training template for people already cleared to exercise after pregnancy.', 'postnatal rebuilding after professional clearance', 'bodyweight, bands and light dumbbells', 'Two strength days plus one mobility and walking day.', 'Breathing, core control, supported lower body work, rows and carries.', 'Increase range and repetitions slowly; stop and seek clinical guidance if symptoms appear.'],
+    ['Desk Worker Mobility Reset', 'mobility strength', 'beginner', 'home', '4 short days/week', 'Short mobility and strength sessions that offset long periods of sitting.', 'office and remote workers', 'band, chair and floor space', 'Two 25-minute strength sessions and two 15-minute mobility resets.', 'Hips, upper back, glutes, deep core and shoulder control.', 'Add range before resistance and repeat the short sessions consistently.'],
+    ['Knee Friendly Lower Body', 'strength mobility', 'beginner', 'home gym', '3 days/week', 'Lower-body strength using controlled ranges and stable exercise choices.', 'trainees who prefer lower-impact leg work', 'bench, dumbbells, bands or machines', 'Two lower-body days plus one trunk and conditioning day.', 'Box squat, supported split squat, hip hinge, bridge, hamstring curl and calf raise.', 'Use a comfortable range, add reps gradually and avoid pushing through pain.'],
+    ['Shoulder Friendly Upper Body', 'strength mobility', 'intermediate', 'gym', '3 days/week', 'Upper-body training with neutral grips, scapular control and sensible pressing volume.', 'lifters rebuilding comfortable upper-body training', 'cables, dumbbells and machines', 'Two upper-body days plus one lower and core support day.', 'Rows, landmine press, neutral-grip press, pulldowns and rotator-cuff control.', 'Earn more range and volume before increasing pressing load.'],
+    ['Core Stability Foundation', 'strength mobility', 'beginner', 'home gym', '3 days/week', 'A practical trunk-training plan focused on bracing, control and loaded movement.', 'beginners building core confidence', 'mat, band and one dumbbell', 'Three short core blocks attached to full-body sessions.', 'Dead bugs, side planks, carries, Pallof presses and controlled hinges.', 'Extend holds or carries in small steps without losing breathing or position.'],
+    ['Pull Up Progression Lab', 'strength muscle', 'intermediate', 'gym', '3 days/week', 'A focused route from assisted repetitions to stronger unassisted pull-ups.', 'trainees chasing their first or next pull-up', 'pull-up bar, bands, cable and dumbbells', 'Two pull-focused sessions plus one full-body strength day.', 'Scapular pulls, assisted pull-ups, pulldowns, rows, curls and grip work.', 'Reduce assistance only after every prescribed repetition is clean.'],
+    ['First 5K Strength Support', 'fat-loss strength', 'beginner', 'home gym', '4 days/week', 'Run-walk progression supported by simple strength and mobility sessions.', 'new runners preparing for 5 km', 'running route and basic home kit', 'Two run-walk days, one easy run and two brief strength blocks.', 'Easy pacing, calves, single-leg control, glutes and trunk stability.', 'Increase weekly running time gradually and keep most work conversational.'],
+    ['Half Marathon Strength Support', 'strength fat-loss', 'intermediate', 'home gym', '5 days/week', 'Strength and durability work designed to complement a half-marathon running plan.', 'recreational distance runners', 'gym or dumbbells and bands', 'Three runs, two strength sessions and one optional recovery session.', 'Single-leg strength, posterior chain, calves, trunk and upper-back posture.', 'Keep strength volume stable while the long run grows, then taper both before race week.'],
+    ['Cycling Power Builder', 'strength fat-loss', 'intermediate', 'gym', '4 days/week', 'Gym strength and bike intervals for stronger climbs and repeatable cycling power.', 'road and indoor cyclists', 'bike, rack, cables and dumbbells', 'Two bike quality days, two strength days and one easy ride.', 'Squat and hinge strength, unilateral legs, trunk stiffness and cadence control.', 'Alternate load progression with interval progression instead of raising both together.'],
+    ['Football Conditioning Base', 'strength fat-loss', 'intermediate', 'gym', '4 days/week', 'Strength, acceleration and repeat-sprint work for recreational football players.', 'field-sport athletes in a base phase', 'field, cones and gym equipment', 'Two strength days, one speed day and one conditioning day.', 'Acceleration mechanics, deceleration, unilateral strength and repeat sprints.', 'Build high-quality sprint volume first and stop the set when speed drops.'],
+    ['Combat Sport Engine', 'strength fat-loss', 'advanced', 'gym', '5 days/week', 'A conditioning and strength template for repeatable rounds without unnecessary fatigue.', 'experienced boxing and martial arts trainees', 'bag, bike or rower and full gym', 'Two strength days, two energy-system days and one mixed round session.', 'Rotational control, pulls, presses, carries and round-based intervals.', 'Add one round or a small work interval before increasing intensity.'],
+    ['Calisthenics Foundation', 'strength muscle', 'beginner', 'home gym', '3 days/week', 'Bodyweight strength built around excellent positions and scalable progressions.', 'beginners training with minimal equipment', 'floor space, bench and pull-up bar', 'Three full-body sessions with push, pull, legs and core.', 'Incline push-ups, assisted pulls, split squats, bridges and hollow holds.', 'Move to a harder variation only after reaching the top rep target cleanly.'],
+    ['Kettlebell Total Body', 'strength fat-loss', 'intermediate', 'home gym', '4 days/week', 'A compact strength and conditioning plan built around one or two kettlebells.', 'trainees who enjoy efficient full-body sessions', 'one or two kettlebells', 'Two strength days, one swing-conditioning day and one mixed circuit.', 'Goblet squat, clean, press, row, swing, carry and Turkish get-up practice.', 'Improve technique and total repetitions before moving to a heavier bell.'],
+    ['Resistance Band Travel Plan', 'strength mobility', 'beginner', 'home', '4 short days/week', 'Portable full-body training for holidays, work trips and limited spaces.', 'travellers with a resistance band', 'long band, mini band and floor space', 'Four 25-minute upper, lower, full-body and mobility sessions.', 'Band squat, hinge, row, press, lateral walk and anti-rotation core.', 'Add band tension or repetitions while keeping every session under 30 minutes.'],
+    ['Hotel Room Express', 'fat-loss strength', 'intermediate', 'home', '5 short days/week', 'No-gym sessions that maintain training rhythm during busy travel weeks.', 'frequent travellers without equipment', 'hotel room and optional backpack', 'Five 15-25 minute strength, density and mobility sessions.', 'Split squats, push-ups, backpack rows, hinges, planks and low-impact intervals.', 'Complete more clean work in the same time before choosing harder variations.'],
+    ['30 Minute Lunch Break Lift', 'strength muscle', 'intermediate', 'gym', '4 days/week', 'Time-capped gym sessions with focused compounds and efficient supersets.', 'busy professionals with 30 minutes', 'full gym', 'Four concise upper and lower sessions.', 'One main lift, two paired accessories and a short carry or core finisher.', 'Keep setup simple and add load only when all work fits inside the time cap.'],
+    ['Shift Worker Three Day Plan', 'strength fat-loss', 'intermediate', 'home gym', '3 flexible days/week', 'A flexible full-body plan that does not depend on fixed weekdays.', 'shift workers and changing schedules', 'home kit or full gym', 'Three numbered full-body sessions completed whenever recovery allows.', 'Squat, push, pull, hinge, carry and optional easy conditioning.', 'Follow session order rather than calendar days and repeat loads after poor sleep.'],
+    ['Teen Athlete Movement Base', 'strength mobility', 'beginner', 'home gym', '3 days/week', 'Supervised fundamentals for young athletes learning safe strength and movement skills.', 'teen athletes training with qualified supervision', 'light free weights, bands and open space', 'Two supervised strength sessions plus one movement and coordination day.', 'Landing, squat, hinge, push, pull, carry, acceleration and basic change of direction.', 'Prioritise coaching quality and consistent technique before adding meaningful load.'],
+    ...modularWorkoutTemplates.map((template) => [
+      template.name,
+      template.goal,
+      template.level,
+      template.place,
+      template.schedule,
+      template.summary,
+      template.bestFor,
+      template.equipment,
+      template.split,
+      template.focus,
+      template.progression,
+      template.block
+    ])
+  ];
+
+  const workoutGrid = document.getElementById('workout-grid');
+  const levelLabels = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' };
+  const blockByLevel = { beginner: '6 weeks', intermediate: '8 weeks', advanced: '10 weeks' };
+
+  if (workoutGrid) {
+    workoutGrid.insertAdjacentHTML('beforeend', additionalTemplateRows.map((template) => {
+      const [title, goal, level, place, schedule, summary, bestFor, equipment, split, focus, progression, block] = template;
+      return `
+        <article class="workout-card" data-goal="${escapeHtml(goal)}" data-level="${escapeHtml(level)}" data-place="${escapeHtml(place)}" data-audience="${escapeHtml(`${title} ${bestFor} ${equipment}`)}">
+          <div class="workout-card-head">
+            <span class="level level-${escapeHtml(level)}">${escapeHtml(levelLabels[level])}</span>
+            <span>${escapeHtml(schedule)}</span>
+          </div>
+          <h3>${escapeHtml(title)}</h3>
+          <p>${escapeHtml(summary)}</p>
+          <ul class="quick-facts">
+            <li>Best for: ${escapeHtml(bestFor)}</li>
+            <li>Equipment: ${escapeHtml(equipment)}</li>
+            <li>Block: ${escapeHtml(block || blockByLevel[level])}</li>
+          </ul>
+          <details>
+            <summary>View template</summary>
+            <div class="workout-detail">
+              <h4>Weekly split</h4>
+              <p>${escapeHtml(split)}</p>
+              <h4>Session focus</h4>
+              <p>${escapeHtml(focus)}</p>
+              <h4>Progression</h4>
+              <p>${escapeHtml(progression)}</p>
+            </div>
+          </details>
+        </article>
+      `;
+    }).join(''));
+  }
+
   const cards = Array.from(document.querySelectorAll('.workout-card'));
   const buttons = Array.from(document.querySelectorAll('[data-filter-group]'));
   const search = document.getElementById('workout-search');
   const count = document.getElementById('workout-count');
   const noResults = document.getElementById('no-results');
   const clearFilters = document.getElementById('clear-workout-filters');
-  const workoutGrid = document.getElementById('workout-grid');
+  const browseLinks = Array.from(document.querySelectorAll('[data-browse-templates]'));
   const jumpLinks = Array.from(document.querySelectorAll('[data-jump-filter]'));
   const projectLinks = Array.from(document.querySelectorAll('[data-project-filter]'));
   let modalTrigger = null;
@@ -1918,6 +2024,72 @@
     });
   };
 
+  const workoutActionIcon = (name) => {
+    const paths = {
+      arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+      message: '<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/><path d="M8 9h8M8 13h5"/>',
+      printer: '<path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/>',
+      close: '<path d="M18 6 6 18M6 6l12 12"/>'
+    };
+    return `<svg class="workout-action-icon" viewBox="0 0 24 24" aria-hidden="true">${paths[name] || ''}</svg>`;
+  };
+
+  const buildWorkoutPrintUrl = (workoutSlug) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set('print', '1');
+    const query = params.toString();
+    return `${window.location.pathname}${query ? `?${query}` : ''}#${workoutSlug}`;
+  };
+
+  const setupWorkoutPrintView = (modal, title) => {
+    if (new URLSearchParams(window.location.search).get('print') !== '1') return;
+
+    document.body.classList.add('workout-print-view');
+    document.body.style.overflow = '';
+    document.title = `${title} | Printable Workout Plan`;
+    modal.setAttribute('aria-modal', 'false');
+
+    if (!document.getElementById('workout-print-toolbar')) {
+      document.body.insertAdjacentHTML('afterbegin', `
+        <div class="workout-print-toolbar" id="workout-print-toolbar" role="region" aria-label="Print controls">
+          <div>
+            <strong>Print-ready workout plan</strong>
+            <span>Choose Save as PDF in your phone or browser print options.</span>
+          </div>
+          <button type="button" class="workout-print-toolbar-button" id="workout-print-now">
+            ${workoutActionIcon('printer')}
+            <span>Print now</span>
+          </button>
+          <button type="button" class="workout-print-toolbar-close" id="workout-print-close" aria-label="Close print view">
+            ${workoutActionIcon('close')}
+          </button>
+        </div>
+      `);
+
+      document.getElementById('workout-print-now')?.addEventListener('click', () => {
+        trackWorkoutEvent('workout_plan_printed', {
+          workout_name: title,
+          print_source: 'print_toolbar'
+        });
+        window.print();
+      });
+      document.getElementById('workout-print-close')?.addEventListener('click', () => {
+        if (window.opener) {
+          window.close();
+          return;
+        }
+        window.history.back();
+      });
+    }
+
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'auto' }));
+    window.setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      window.print();
+      window.setTimeout(() => window.scrollTo({ top: 0, behavior: 'auto' }), 250);
+    }, 700);
+  };
+
   const ensureWorkoutModal = () => {
     let modal = document.getElementById('workout-modal');
     if (modal) return modal;
@@ -1936,11 +2108,25 @@
             <button type="button" class="workout-modal-close" data-workout-close aria-label="Close workout template">&times;</button>
           </header>
           <div class="workout-modal-body" id="workout-modal-body"></div>
-          <footer class="workout-modal-footer">
-            <a class="btn btn-gold" id="customize-workout-plan" href="start.html?utm_source=workouts&amp;utm_medium=template&amp;utm_campaign=workout_library&amp;utm_content=modal">Get tailored version</a>
-            <a class="btn" id="message-workout-plan" href="https://wa.me/447508497586?text=Hi%20Andre%2C%20I%20viewed%20a%20workout%20template%20and%20would%20like%20help%20adapting%20it." target="_blank" rel="noopener">Message Andre</a>
-            <button type="button" class="btn" id="print-workout-plan">Print plan</button>
-            <button type="button" class="btn" data-workout-close>Close plan</button>
+          <footer class="workout-modal-footer" aria-label="Workout plan actions">
+            <a class="workout-action workout-action-primary" id="customize-workout-plan" href="start.html?utm_source=workouts&amp;utm_medium=template&amp;utm_campaign=workout_library&amp;utm_content=modal">
+              <span class="workout-action-copy"><strong>Get tailored version</strong><small>Free personalised assessment</small></span>
+              ${workoutActionIcon('arrow')}
+            </a>
+            <div class="workout-action-secondary">
+              <a class="workout-action workout-action-whatsapp" id="message-workout-plan" href="https://wa.me/447508497586?text=Hi%20Andre%2C%20I%20viewed%20a%20workout%20template%20and%20would%20like%20help%20adapting%20it." target="_blank" rel="noopener">
+                ${workoutActionIcon('message')}
+                <span class="workout-action-copy"><strong>Message Andre</strong><small>Chat on WhatsApp</small></span>
+              </a>
+              <a class="workout-action workout-action-print" id="print-workout-plan" href="workouts.html?print=1" target="_blank" rel="noopener">
+                ${workoutActionIcon('printer')}
+                <span class="workout-action-copy"><strong>Print / save PDF</strong><small>Open a clean printable view</small></span>
+              </a>
+            </div>
+            <button type="button" class="workout-action-close" data-workout-close>
+              ${workoutActionIcon('close')}
+              <span>Close plan</span>
+            </button>
           </footer>
         </div>
       </div>
@@ -1950,7 +2136,6 @@
     modal.querySelectorAll('[data-workout-close]').forEach((control) => {
       control.addEventListener('click', () => closeWorkoutModal());
     });
-    modal.querySelector('#print-workout-plan')?.addEventListener('click', () => window.print());
     return modal;
   };
 
@@ -1991,6 +2176,7 @@
     modal.dataset.activeWorkoutSlug = workoutSlug;
     const assessmentLink = document.getElementById('customize-workout-plan');
     const whatsappLink = document.getElementById('message-workout-plan');
+    const printLink = document.getElementById('print-workout-plan');
     if (assessmentLink) {
       assessmentLink.href = buildAssessmentUrl(card, title);
       assessmentLink.setAttribute('aria-label', `Get a tailored version of ${title}`);
@@ -1999,6 +2185,10 @@
       whatsappLink.href = buildWorkoutWhatsappUrl(title);
       whatsappLink.setAttribute('aria-label', `Message Andre about ${title}`);
     }
+    if (printLink) {
+      printLink.href = buildWorkoutPrintUrl(workoutSlug);
+      printLink.setAttribute('aria-label', `Open printable version of ${title}`);
+    }
 
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -2006,6 +2196,14 @@
       window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}#${workoutSlug}`);
     }
     cards.forEach((item) => item.classList.toggle('is-direct-target', item === card));
+    setupWorkoutPrintView(modal, title);
+    trackWorkoutEvent('workout_template_viewed', {
+      workout_id: workoutSlug,
+      workout_name: title,
+      workout_level: level || undefined,
+      workout_project: project || undefined,
+      workout_schedule: schedule || undefined
+    });
     modal.querySelector('.workout-modal-close')?.focus();
   };
 
@@ -2155,11 +2353,24 @@
       filters[group] = value;
       setButtonState(group, value);
       applyFilters();
+      trackWorkoutEvent('workout_filter_applied', {
+        filter_group: group,
+        filter_value: value,
+        visible_templates: cards.filter((card) => !card.hidden).length
+      });
     });
   });
 
   search?.addEventListener('input', applyFilters);
   clearFilters?.addEventListener('click', resetFilters);
+
+  browseLinks.forEach((link) => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      search?.scrollIntoView({ behavior: 'auto', block: 'center' });
+      search?.focus({ preventScroll: true });
+    });
+  });
 
   jumpLinks.forEach((link) => {
     link.addEventListener('click', (event) => {
@@ -2216,7 +2427,9 @@
     if (!card) return false;
     card.hidden = false;
     card.classList.add('is-visible');
-    card.scrollIntoView({ behavior: 'auto', block: 'center' });
+    if (new URLSearchParams(window.location.search).get('print') !== '1') {
+      card.scrollIntoView({ behavior: 'auto', block: 'center' });
+    }
     openWorkoutModal(card, { syncHash: false });
     return true;
   };

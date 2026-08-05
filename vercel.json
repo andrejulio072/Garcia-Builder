@@ -453,6 +453,10 @@
       "destination": "/assessment.html"
     },
     {
+      "source": "/go/card",
+      "destination": "/go/card/index.html"
+    },
+    {
       "source": "/start",
       "destination": "/start.html"
     },

@@ -64,15 +64,15 @@ The JavaScript language selector does not create indexable alternate documents, 
 
 The repeatable Lighthouse command is `npm run audit:lighthouse`. It audits `/`, `/online-coaching` and `/assessment` at a 390 × 844 mobile viewport and stores local reports in ignored `lighthouse-results/`. Release testing targets LCP below 2.5 seconds, CLS below 0.1 and field INP below 200 ms. Lighthouse is lab evidence and cannot prove production field INP; production Core Web Vitals must be monitored after launch.
 
-Local mobile lab evidence after the layout-stability fixes:
+Local mobile lab evidence after the public-shell performance pass:
 
 | Route | Performance | Accessibility | Best practices | SEO | LCP | CLS | TBT |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| `/` | 41 | 99 | 96 | 100 | 7,024 ms | 0.001 | 1,508 ms |
-| `/online-coaching` | 61 | 100 | 100 | 100 | 5,419 ms | 0.000 | 590 ms |
-| `/assessment` | 70 | 100 | 96 | 69 (intentionally `noindex`) | 5,475 ms | 0.093 | 0 ms |
+| `/` | 83 | 100 | 100 | 100 | 2,569 ms | 0.074 | 469 ms |
+| `/online-coaching` | 94 | 100 | 100 | 100 | 3,080 ms | 0.011 | 0 ms |
+| `/assessment` | 81 | 100 | 100 | 69 (intentionally `noindex`) | 3,712 ms | 0.000 | 172 ms |
 
-The dynamically loaded navbar and late KPI replacement were corrected, reducing homepage CLS from 0.606 to 0.001 and online-coaching CLS from 0.125 to zero. The homepage and online-coaching LCP/performance targets are still not met under Lighthouse mobile simulation. Their remaining critical path includes legacy sitewide CSS, component loading and analytics code; a broad analytics redesign is outside this sprint, so preview/CDN validation and a later focused public-shell performance pass remain launch follow-ups.
+The focused pass replaced oversized shell images with responsive WebP derivatives, removed unused coaching-page frameworks, deferred non-critical homepage styles and scripts without changing cascade order, removed hero entrance delay, and prevented duplicate component initialization. Google and Meta tags on the audited public shells now remain unloaded until optional consent is granted. Compared with the earlier baseline, homepage performance improved from 41 to 83 and LCP from 7,024 ms to 2,569 ms; online coaching improved from 61 to 94 and LCP from 5,419 ms to 3,080 ms; assessment improved from 70 to 81 and LCP from 5,475 ms to 3,712 ms. All three meet the repository's score floor and CLS target. The homepage is within 69 ms of the aspirational 2.5-second lab LCP target, while coaching and assessment remain above it; preview/CDN measurement and production field monitoring therefore remain release checks.
 
 ## Manual/external work before launch
 

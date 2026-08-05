@@ -1,5 +1,5 @@
-// Consent-aware loader for Google Ads / gtag
-// Loads only after at least one of ad/analytics consents is granted.
+// Consent-aware loader for GTM and Google Ads / gtag.
+// No third-party tag is requested until an optional analytics or ads choice is granted.
 (function(){
   if(window.__ADS_LOADER_INITIALIZED__) return; window.__ADS_LOADER_INITIALIZED__=true;
 
@@ -28,23 +28,39 @@
     } catch(_){}
   }
 
-  // GA4 is managed by GTM. This legacy loader is retained only for Google Ads.
+  const GTM_ID = 'GTM-TG5TFZ2C';
   const IDS = ['AW-17627402053'];
   const PRIMARY_ID = 'AW-17627402053';
 
+  function hasGrantedChoice(choices){
+    return ['ad_storage','analytics_storage','ad_user_data','ad_personalization'].some(k=>choices?.[k]==='granted');
+  }
   function granted(){
     try {
       const s = JSON.parse(localStorage.getItem('gb_consent_v1')||'null');
       const ch = s && s.choices || {};
-      return ['ad_storage','analytics_storage','ad_user_data','ad_personalization'].some(k=>ch[k]==='granted');
+      return hasGrantedChoice(ch) || (s?.status === 'granted' && !Object.keys(ch).length);
     } catch(e){ return false; }
   }
-  function load(){
-    if(window.gtag && window.__ADS_BASE_READY__) return;
+  function loadGoogleTagManager(){
+    if(window.__GTM_BASE_READY__) return;
+    window.dataLayer = window.dataLayer || [];
+    if(!document.getElementById('gb-gtm-script') && !document.querySelector(`script[src*="gtm.js?id=${GTM_ID}"]`)){
+      window.dataLayer.push({'gtm.start': Date.now(), event:'gtm.js'});
+      const gtm=document.createElement('script');
+      gtm.id='gb-gtm-script';
+      gtm.async=true;
+      gtm.src='https://www.googletagmanager.com/gtm.js?id='+encodeURIComponent(GTM_ID);
+      document.head.appendChild(gtm);
+    }
+    window.__GTM_BASE_READY__=true;
+  }
+  function loadGoogleAds(){
+    if(window.__ADS_BASE_READY__) return;
     window.dataLayer = window.dataLayer || [];
     function gtag(){ dataLayer.push(arguments); }
     window.gtag = window.gtag || gtag;
-    if(!document.getElementById('gtag-lib')){
+    if(!document.getElementById('gtag-lib') && !document.querySelector(`script[src*="/gtag/js?id=${PRIMARY_ID}"]`)){
       const s=document.createElement('script');
       s.id='gtag-lib';
       s.async=true;
@@ -64,11 +80,15 @@
       try { gtag('consent','update', DEBUG_GRANTED_CHOICES); } catch(_){}
     }
   }
+  function load(){
+    loadGoogleTagManager();
+    loadGoogleAds();
+  }
   if(granted()) { load(); }
   else {
     window.addEventListener('consent_update', ev => {
       const ch = ev.detail?.choices||{};
-      if(['ad_storage','analytics_storage','ad_user_data','ad_personalization'].some(k=>ch[k]==='granted')) load();
+      if(hasGrantedChoice(ch)) load();
     });
   }
 })();

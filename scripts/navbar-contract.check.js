@@ -89,13 +89,13 @@ for (const source of [navbarHtml, loaderSource]) {
   );
   assert.match(
     source,
-    /src="\/Logo Files\/For Web\/logo-nobackground-500\.png"/,
-    'Navbar logo should use a root-relative source on hosted pages'
+    /src="\/assets\/images\/logo-nobackground-256\.webp"/,
+    'Navbar logo should use the right-sized WebP source on hosted pages'
   );
   assert.match(
     source,
-    /data-gb-logo-src="Logo Files\/For Web\/logo-nobackground-500\.png"/,
-    'Navbar logo resolver should keep a project-relative source'
+    /data-gb-logo-src="assets\/images\/logo-nobackground-256\.webp"/,
+    'Navbar logo resolver should keep a project-relative WebP source'
   );
   assertPriorityOrder(source, 'gb-navbar-links', 'Desktop navbar');
   assertDrawerPattern(source, 'Drawer navbar');

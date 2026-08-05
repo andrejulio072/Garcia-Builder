@@ -45,8 +45,12 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(11, 18, 32, 0.65) 0%, rgba(0, 0, 0, 0.55) 100%),
-              url('../../assets/images/hero/hero.jpg') center/cover no-repeat;
+  background-color: #06080d;
+  background-image: linear-gradient(135deg, rgba(11, 18, 32, 0.65) 0%, rgba(0, 0, 0, 0.55) 100%),
+                    url('../../assets/images/hero/hero-960.webp');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   background-attachment: fixed;
   padding: 64px 20px 28px;
   margin: 0;
@@ -1094,6 +1098,18 @@ html {
     z-index: 2;
 }
 
+/* Semantic h3 headings retain the original compact card hierarchy. */
+.process-card-wrapper h3,
+.quick-nav-card h3,
+.blog-card h3 {
+    font-size: 1.5rem;
+}
+
+.authority-card h3,
+.guarantee-section h3 {
+    font-size: 1.25rem;
+}
+
 .quick-nav-desc {
     position: relative;
     z-index: 2;
@@ -1823,7 +1839,7 @@ html {
     inset: 40px max(28px, 3.5vw) 40px 52%;
     border: 1px solid rgba(246, 200, 78, 0.22);
     border-radius: 30px;
-    background-image: url('../../assets/images/hero/hero.jpg');
+    background-image: url('../../assets/images/hero/hero-1440.webp');
     background-repeat: no-repeat;
     background-position: center 42%;
     background-size: cover;
@@ -1975,6 +1991,28 @@ html {
   padding: 8px 18px 28px;
   text-align: center;
 }
+
+/* Keep the first viewport immediately paintable. Entrance animations delay
+   Largest Contentful Paint even after the content is visually ready. */
+.hero-eyebrow,
+.hero-headline,
+.hero-subtitle,
+.hero-trust-row,
+.hero-actions,
+.hero-actions .btn {
+  animation: none !important;
+}
+
+/* Critical equivalents for the few Bootstrap utilities used by the hero.
+   The complete framework is loaded after window.load for below-fold content. */
+.hero .row { display: flex; flex-wrap: wrap; width: 100%; }
+.hero .col-lg-12 { width: 100%; }
+.hero .align-items-center { align-items: center; }
+.hero .d-flex { display: flex; }
+.hero .flex-wrap { flex-wrap: wrap; }
+.hero .justify-content-center { justify-content: center; }
+.hero .gap-2 { gap: .5rem; }
+.hero .mt-3 { margin-top: 1rem; }
 
 .homepage-assessment-shortcut__link {
   display: inline-flex;

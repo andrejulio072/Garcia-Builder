@@ -28,7 +28,7 @@ The requested repository implementation is complete. The project is still **NO-G
 | Canonical URL architecture | Verified | A 63-page controlled manifest drives metadata expectations and a 58-URL extensionless sitemap. Public `.html` sources redirect permanently, canonical/OG/breadcrumb/internal links are extensionless, and private/campaign routes are excluded. |
 | Indexing and structured data | Verified | `/assessment` and `/start` are `noindex, follow`; the result shell is `noindex, nofollow`. JSON-LD parsing/types are contracted and unsupported Review/AggregateRating schema is rejected. |
 | Images and internal linking | Verified | 109 responsive WebP files, 188 intrinsic-dimension corrections and 107 responsive image occurrences are recorded. Thirty-eight supporting articles have pillar/assessment links. |
-| Lighthouse repeatability | Verified, targets partial | `npm run audit:lighthouse` writes mobile lab reports. CLS was corrected to 0.001 on home and 0 on online coaching; assessment performance reached 70. Legacy public-shell LCP/performance remains below the aspirational target and is documented in the SEO audit. |
+| Lighthouse repeatability | Verified, targets partial | `npm run audit:lighthouse` writes mobile lab reports. The public-shell pass reached performance scores of 83 on home, 94 on online coaching and 81 on assessment, with 100 accessibility and best-practice scores on all three. CLS is below 0.1 throughout. Homepage lab LCP is 2,569 ms; coaching and assessment remain above the aspirational 2.5-second target and are documented in the SEO audit. |
 | Package differentiation | Verified | All four packages expose best fit, objective, duration, training, nutrition, check-ins, update cadence, support, difference and next step. Assessment is primary, consultation secondary, WhatsApp tertiary and unchanged checkout URLs are visually de-emphasised. |
 | Dependency health | Verified | The accidental package self-reference was removed, environment generation preserves existing public values during postinstall, and both full and production-only `npm audit` report zero vulnerabilities. |
 
@@ -73,7 +73,7 @@ The implementation does not claim these migrations have been applied to a live S
 ## Known risks and boundaries
 
 - Public legal pages intentionally contain publication blockers until verified owner/legal values are supplied.
-- Local Lighthouse simulation cannot guarantee production LCP or field INP. Homepage and online-coaching legacy bundles need a later focused public-shell performance pass if production data confirms the lab risk.
+- Local Lighthouse simulation cannot guarantee production LCP or field INP. The focused public-shell pass is complete, but final preview/CDN measurement and post-launch field monitoring are still required because coaching and assessment lab LCP remain above 2.5 seconds.
 - Existing general-site analytics are outside this assessment sprint; the manual cookie audit must verify the final sitewide behavior.
 - Dedicated Stripe entry files share the existing Stripe application to preserve payment and webhook behavior. Assessment routes do not import that application.
 - Email, Zapier and provider failure tests use controlled fakes; they do not prove external provider configuration.

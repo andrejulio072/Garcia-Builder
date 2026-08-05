@@ -1,8 +1,13 @@
 
 :root { --gb-bg: #06070a; --gb-panel: rgba(14, 16, 22, .88); --gb-panel-2: rgba(22, 25, 34, .92); --gb-gold: #f6c84e; --gb-gold-2: #f8e08e; --gb-text: #f8fafc; --gb-muted: rgba(248, 250, 252, .74); --gb-border: rgba(246, 200, 78, .26); }
 body.seo-page { background: radial-gradient(circle at 18% 0%, rgba(246,200,78,.14), transparent 26%), linear-gradient(180deg, #050608 0%, #0c0f16 52%, #050608 100%); color: var(--gb-text); font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif; }
+body.seo-page .gb-footer i { display: inline-block; min-width: 1.1em; font-family: inherit; font-style: normal; text-align: center; }
+body.seo-page .gb-footer .fa-envelope::before { content: "@"; }
+body.seo-page .gb-footer .fa-calendar-check::before { content: "\25A1"; }
+body.seo-page .gb-footer .fa-instagram::before { content: "IG"; font-size: .72em; font-weight: 800; }
 .gb-seo-container { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
-.gb-seo-hero { padding: 148px 0 88px; min-height: 82vh; display: flex; align-items: center; background: linear-gradient(135deg, rgba(5,6,8,.78), rgba(10,13,20,.95)), url('/assets/images/hero/40689-fitness-wallpaperdownload-free-full-hd-background.jpg') center/cover no-repeat; }
+.gb-seo-hero { padding: 148px 0 88px; min-height: 82vh; display: flex; align-items: center; background: linear-gradient(135deg, rgba(5,6,8,.78), rgba(10,13,20,.95)), url('/assets/images/hero/online-coaching-960.webp') center/cover no-repeat; }
+@media (min-width: 992px) { .gb-seo-hero { background-image: linear-gradient(135deg, rgba(5,6,8,.78), rgba(10,13,20,.95)), url('/assets/images/hero/online-coaching-1440.webp'); } }
 .gb-seo-hero--compact { min-height: 58vh; }
 .gb-seo-hero--article { min-height: auto; padding-bottom: 42px; }
 .gb-seo-hero-grid { display: grid; grid-template-columns: minmax(0, .98fr) minmax(360px, .72fr); gap: clamp(44px, 5vw, 88px); align-items: center; }

@@ -1581,7 +1581,7 @@ body.result-page::before {
 .result-page .starter-logo img {
   width: 164px;
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.35));
-  animation: gb-logo-arrive 620ms var(--gb-ease-premium) both;
+  animation: none;
 }
 
 .starter-language {

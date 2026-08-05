@@ -246,8 +246,8 @@ const INLINE_FALLBACKS = {
     <div class="container">
         <div class="gb-navbar-content">
             <a href="#" class="gb-logo-section" aria-label="Garcia Builder Home" data-gb-nav="/">
-             <img src="/Logo Files/For Web/logo-nobackground-500.png"
-                 data-gb-logo-src="Logo Files/For Web/logo-nobackground-500.png"
+             <img src="/assets/images/logo-nobackground-256.webp"
+                 data-gb-logo-src="assets/images/logo-nobackground-256.webp"
                      alt="Garcia Builder Logo"
                      class="gb-logo-img"
                      loading="eager"
@@ -353,7 +353,7 @@ const INLINE_FALLBACKS = {
     </div>
     <div class="gb-footer-main gb-footer-ref">
         <div class="gb-footer-col gb-footer-brand-col">
-            <img src="/assets/images/logo-nobackground-500.png" alt="Garcia Builder Logo" data-gb-logo-src="/assets/images/logo-nobackground-500.png" width="56" height="56" loading="lazy" style="margin-bottom:10px;"/>
+            <img src="/assets/images/logo-nobackground-256.webp" alt="Garcia Builder Logo" data-gb-logo-src="/assets/images/logo-nobackground-256.webp" width="56" height="56" loading="lazy" style="margin-bottom:10px;"/>
             <div class="footer-title footer-title-ref">Garcia Builder</div>
             <div class="footer-bio-ref" style="margin-bottom:8px;">Online Coaching — Evidence-based fitness, nutrition & accountability.<br/>Transform your body, sustainably.</div>
             <div class="footer-contact-ref" style="margin-top:14px;">
@@ -669,7 +669,9 @@ function ensureNavbarLogoPath(logoEl) {
 
     const sanitized = raw.trim().replace(/\\/g, '/');
     const encoded = sanitized.replace(/ /g, '%20').replace(/^\/+/, '');
-    const relativeBase = encoded.startsWith('Logo%20Files') ? encoded : `Logo%20Files/For%20Web/${encoded}`;
+    const relativeBase = encoded.startsWith('Logo%20Files') || encoded.startsWith('assets/')
+        ? encoded
+        : `Logo%20Files/For%20Web/${encoded}`;
 
     const candidates = [];
     const addCandidate = (path) => {
@@ -1157,6 +1159,9 @@ async function injectComponent(element) {
     console.log(`[Component Loader] Injecting ${componentName}...`);
 
     const html = await loadComponent(componentName);
+    // A load-event safety pass may run while the fetch is in flight. Never
+    // replace the same placeholder twice if another pass already completed it.
+    if (!element.isConnected) return;
     if (!html || html.includes('failed to load')) {
         const injectLog = (isFileProtocol() || isOffline()) ? console.info : console.warn;
         injectLog(`[Component Loader] ✗ Cannot inject ${componentName} — applying inline fallback`);
@@ -1193,7 +1198,11 @@ async function injectComponent(element) {
 /**
  * Initialize all components
  */
+let componentInitializationInFlight = false;
 async function initComponents() {
+    if (componentInitializationInFlight) return;
+    componentInitializationInFlight = true;
+    try {
     const elements = document.querySelectorAll('[data-component]');
     console.log(`[Component Loader] Found ${elements.length} components to load`);
 
@@ -1212,6 +1221,9 @@ async function initComponents() {
     console.log(`[Component Loader] ✓ All ${elements.length} components loaded!`);
     normalizeGlobalAssets();
     bindFooterNewsletterForms();
+    } finally {
+        componentInitializationInFlight = false;
+    }
 }
 
 // EXPOSE TO WINDOW (NO IIFE!)

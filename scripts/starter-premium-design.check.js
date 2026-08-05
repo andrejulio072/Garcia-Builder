@@ -24,8 +24,8 @@ const indexOfRequired = (content, snippet, label) => {
 };
 
 assert(
-  assessment.includes('/assets/images/logo-nobackground-500.png'),
-  'Paid assessment must use the official Garcia Builder Fitness logo asset'
+  assessment.includes('/assets/images/logo-nobackground-256.webp'),
+  'Paid assessment must use the compact official Garcia Builder Fitness logo asset'
 );
 assert(assessment.includes('data-starter-copy="heroTitleLead"'), 'Premium hero lead line is missing');
 assert(assessment.includes('data-starter-copy="heroTitleAccent"'), 'Premium hero accent line is missing');
@@ -33,8 +33,8 @@ assert(assessment.includes('data-start-assessment'), 'Premium hero CTA is missin
 assert(assessment.includes('starter-primary-arrow'), 'Premium hero CTA must expose its forward affordance');
 assert(assessment.includes('coach-authority-card'), 'Real-coach authority component is missing');
 assert(
-  assessment.includes('/assets/images/about/about1.jpg'),
-  'Coach authority component must use the existing authentic Andre photo'
+  assessment.includes('/assets/images/about/about1-320.webp'),
+  'Coach authority component must use the optimized derivative of the authentic Andre photo'
 );
 assert.equal(
   (assessment.match(/class="signal-card"/g) || []).length,

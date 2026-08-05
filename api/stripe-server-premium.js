@@ -327,7 +327,7 @@ function initializeStripe() {
         console.log(`âœ… API Version: 2023-10-16`);
         console.log(`âœ… Timeout: 20s`);
         console.log(`âœ… Retry: 3x`);
-        console.log(`âœ… Chave: ${secretKey.substring(0, 12)}...`);
+        console.log('âœ… Stripe credentials loaded');
         console.log('=' .repeat(50));
 
         return true;
@@ -1605,7 +1605,7 @@ app.post(['/api/stripe-webhook', '/api/stripe/webhook'], async (req, res) => {
                 }
                 // Onboarding email (optional; depends on SMTP env)
                 try {
-                    const { sendOnboardingEmail, sendAdminPurchaseNotification } = require('./onboarding-email');
+                    const { sendOnboardingEmail, sendAdminPurchaseNotification } = require('../lib/email/onboarding-email.cjs');
                     const email = session.customer_details?.email;
                     const planName = session.metadata?.plan_name || session.metadata?.plan_key || 'Coaching Plan';
                     const myPtHubLink = session.metadata?.mypthub_invite || process.env.MYPTHUB_INVITE_URL;

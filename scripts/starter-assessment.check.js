@@ -340,9 +340,16 @@ for (const endpoint of ['submit.js', 'result.js', 'event.js']) {
 assert(fs.existsSync(path.join(__dirname, '..', 'api', 'card-redirect.js')), 'Missing dedicated QR redirect endpoint');
 assert(!productionServer.includes("require('../lib/starter-assessment/"), 'Stripe server must not initialise assessment dependencies');
 assert(!vercelConfig.includes('"source": "/api/:path*"'), 'Vercel must not route every API request through Stripe');
-for (const endpoint of ['checkout.js', 'webhook.js', 'health.js']) {
+for (const endpoint of ['checkout.js', 'webhook.js']) {
   assert(fs.existsSync(path.join(__dirname, '..', 'api', 'stripe', endpoint)), `Missing dedicated Stripe endpoint: ${endpoint}`);
 }
+assert(
+  JSON.parse(vercelConfig).rewrites.some((rewrite) =>
+    rewrite.source === '/api/stripe/health' &&
+    rewrite.destination === '/api/stripe-server-premium.js'
+  ),
+  'Stripe health must remain available through the consolidated application function'
+);
 assert(!vercelConfig.includes('"source": "/api/stripe/:path*"'), 'Vercel must not hide dedicated Stripe functions behind a generic namespace rewrite');
 assert(!vercelConfig.includes('"key": "Access-Control-Allow-Origin"'), 'Vercel must not apply wildcard CORS headers');
 assert(starterPage.includes('name="website"'), 'Starter form should keep the honeypot field');

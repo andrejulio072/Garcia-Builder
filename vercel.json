@@ -572,6 +572,18 @@
       "destination": "/api/starter-assessment/result?token=:token"
     },
     {
+      "source": "/api/contact",
+      "destination": "/api/stripe-server-premium.js"
+    },
+    {
+      "source": "/api/ebook-lead",
+      "destination": "/api/stripe-server-premium.js"
+    },
+    {
+      "source": "/api/stripe/health",
+      "destination": "/api/stripe-server-premium.js"
+    },
+    {
       "source": "/health",
       "destination": "/api/stripe-server-premium.js"
     },

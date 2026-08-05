@@ -108,7 +108,8 @@ O servidor estará disponível em: `http://localhost:3001`
 │   ├── stripe-payments.js     # Frontend - integração com Stripe
 │   └── pricing.js            # Geração dinâmica dos planos
 ├── api/
-│   └── stripe-server.js      # Backend - API para Stripe
+│   ├── stripe-server-premium.js # Backend compartilhado
+│   └── stripe/                  # Entradas dedicadas de checkout/webhook
 ├── success.html              # Página de confirmação
 ├── package.json             # Dependências
 └── .env.example            # Exemplo de configuração

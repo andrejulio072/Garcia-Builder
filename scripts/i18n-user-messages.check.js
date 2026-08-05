@@ -19,7 +19,6 @@ const checkedFiles = [
   'pages/public/thanks-ebook.html',
   'dashboard.html',
   'js/payment-links.js',
-  'api/contact-confirmation.js',
   'js/core/currency-converter.js',
   'js/body-metrics.js',
   'js/components/contact-form.js',

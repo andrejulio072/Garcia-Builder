@@ -22,7 +22,12 @@ Module._load = function (request, parent, isMain) {
           from: (table) => ({
             insert: async (rows) => {
               supabaseInsertCalled = true;
-              lastInsertRows = rows;
+              lastInsertRows = Array.isArray(rows) ? rows : [rows];
+              return { data: rows, error: null };
+            },
+            upsert: async (rows) => {
+              supabaseInsertCalled = true;
+              lastInsertRows = Array.isArray(rows) ? rows : [rows];
               return { data: rows, error: null };
             }
           })
@@ -45,20 +50,19 @@ nodemailer.createTransport = function (opts) {
   };
 };
 
-// Ensure server will create a Supabase client (so our stub is used)
-process.env.NEXT_PUBLIC_SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://example.supabase.co';
-process.env.SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 'service-role-key';
-process.env.ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'inquiries@garciabuilder.fitness';
-process.env.SMTP_HOST = process.env.SMTP_HOST || 'smtp.test';
-process.env.SMTP_USER = process.env.SMTP_USER || 'user';
-process.env.SMTP_PASS = process.env.SMTP_PASS || 'pass';
-process.env.FROM_EMAIL = process.env.FROM_EMAIL || 'no-reply@garciabuilder.fitness';
+// Use only synthetic provider configuration; never load a developer's local secrets.
+process.env.GB_SKIP_DOTENV = '1';
+process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://example.supabase.co';
+process.env.SUPABASE_SERVICE_ROLE_KEY = 'service-role-key';
+process.env.ADMIN_EMAIL = 'inquiries@garciabuilder.fitness';
+process.env.SMTP_HOST = 'smtp.test';
+process.env.SMTP_USER = 'user';
+process.env.SMTP_PASS = 'pass';
+process.env.FROM_EMAIL = 'no-reply@garciabuilder.fitness';
+delete process.env.STRIPE_SECRET_KEY;
 
 // Require the app (this will use our mocked modules)
 const app = require('../api/stripe-server-premium.js');
-
-// Restore Module._load to avoid affecting other requires
-Module._load = originalLoad;
 
 (async () => {
   const server = app.listen(0);
@@ -87,6 +91,7 @@ Module._load = originalLoad;
   const json = await res.json().catch(() => null);
 
   server.close();
+  Module._load = originalLoad;
 
   if (res.status !== 200) {
     throw new Error('Expected 200 response; got ' + res.status + ' ' + JSON.stringify(json));
@@ -117,6 +122,7 @@ Module._load = originalLoad;
 
   console.log('Contact endpoint automated check passed.');
 })().catch(err => {
+  Module._load = originalLoad;
   console.error('Contact endpoint check failed:', err);
   process.exit(1);
 });

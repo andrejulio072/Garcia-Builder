@@ -93,7 +93,7 @@ Supabase notes
 
 - Production hosting: Vercel, configured by `vercel.json`. Update environment variables in the Vercel project dashboard.
 
-Stripe webhooks should be configured to send events to the proper endpoint (see `api/stripe-server.js` and `api/stripe-server-premium.js`).
+Stripe webhooks should be configured to send events to `/api/stripe/webhook`; the shared implementation lives in `api/stripe-server-premium.js`.
 
 ---
 
@@ -223,7 +223,7 @@ This section documents what exists today page-by-page, plus components, CTAs, tr
   - CTAs: Contact via navbar/footer; floating Calendly button.
 
 - Contact (`contact.html`)
-  - Contact form posts to `api/contact.js` (serverless). Footer provides alternative CTAs (email, Calendly).
+  - Contact form posts to `/api/contact`, routed to the consolidated application function. Footer provides alternative CTAs (email, Calendly).
 
 - Blog and posts (`blog*.html`)
   - Static posts for nutrition and gym mistakes; consistent header/footer.
@@ -261,8 +261,8 @@ This section documents what exists today page-by-page, plus components, CTAs, tr
 
 ## APIs and contracts (serverless endpoints under `api/`)
 
-- `api/contact.js`
-  - Inserts into `contact_inquiries`. Expects JSON: `{ email: string, message: string, name?: string, source?: string }`.
+- `/api/contact` (implemented by `api/stripe-server-premium.js`)
+  - Persists the enquiry and sends configured notifications. Expects JSON: `{ email: string, message: string, name?: string, source?: string }`.
   - Returns: `{ ok: true }` on success; `{ ok: false, error }` on failure.
 
 - `api/lead.js`

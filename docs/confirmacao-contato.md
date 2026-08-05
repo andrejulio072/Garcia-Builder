@@ -14,7 +14,7 @@
 ## Como usar
 
 - Inclua o script `assets/js/contact-send.js` no formulário de contato.
-- O backend está em `api/contact.js`.
+- O endpoint é `/api/contact`; no Vercel ele usa a função consolidada `api/stripe-server-premium.js`.
 - A página de confirmação é `confirm-contact.html`.
 
 ## Exemplo de formulário

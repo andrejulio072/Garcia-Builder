@@ -8,7 +8,7 @@ const root = path.join(__dirname, '..');
 const vercel = JSON.parse(fs.readFileSync(path.join(root, 'vercel.json'), 'utf8'));
 const rewrites = vercel.rewrites || [];
 const premiumSource = fs.readFileSync(path.join(root, 'api', 'stripe-server-premium.js'), 'utf8');
-const routeNames = ['checkout', 'webhook', 'health'];
+const routeNames = ['checkout', 'webhook'];
 
 for (const route of routeNames) {
   const file = path.join(root, 'api', 'stripe', `${route}.js`);
@@ -17,6 +17,14 @@ for (const route of routeNames) {
   assert(source.includes("require('../stripe-server-premium')"), `${route} must delegate to the existing Stripe application`);
   assert(!/starter-assessment/i.test(source), `${route} must not import assessment code`);
 }
+
+assert(
+  rewrites.some((rewrite) =>
+    rewrite.source === '/api/stripe/health' &&
+    rewrite.destination === '/api/stripe-server-premium.js'
+  ),
+  'Stripe health should reuse the consolidated application function'
+);
 
 assert.doesNotMatch(
   premiumSource,

@@ -573,47 +573,47 @@
     },
     {
       "source": "/api/contact",
-      "destination": "/api/stripe-server-premium.js"
+      "destination": "/api/stripe-server-premium"
     },
     {
       "source": "/api/ebook-lead",
-      "destination": "/api/stripe-server-premium.js"
+      "destination": "/api/stripe-server-premium"
     },
     {
       "source": "/api/stripe/health",
-      "destination": "/api/stripe-server-premium.js"
+      "destination": "/api/stripe-server-premium"
     },
     {
       "source": "/health",
-      "destination": "/api/stripe-server-premium.js"
+      "destination": "/api/stripe-server-premium"
     },
     {
       "source": "/api/create-checkout-session",
-      "destination": "/api/stripe-server-premium.js"
+      "destination": "/api/stripe-server-premium"
     },
     {
       "source": "/api/stripe-webhook",
-      "destination": "/api/stripe-server-premium.js"
+      "destination": "/api/stripe-server-premium"
     },
     {
       "source": "/api/payment-status/:sessionId",
-      "destination": "/api/stripe-server-premium.js"
+      "destination": "/api/stripe-server-premium"
     },
     {
       "source": "/api/plans",
-      "destination": "/api/stripe-server-premium.js"
+      "destination": "/api/stripe-server-premium"
     },
     {
       "source": "/api/session/:sessionId",
-      "destination": "/api/stripe-server-premium.js"
+      "destination": "/api/stripe-server-premium"
     },
     {
       "source": "/api/attrib",
-      "destination": "/api/stripe-server-premium.js"
+      "destination": "/api/stripe-server-premium"
     },
     {
       "source": "/api/nutrition-calculator",
-      "destination": "/api/stripe-server-premium.js"
+      "destination": "/api/stripe-server-premium"
     }
   ],
   "headers": [

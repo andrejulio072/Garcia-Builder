@@ -346,7 +346,7 @@ for (const endpoint of ['checkout.js', 'webhook.js']) {
 assert(
   JSON.parse(vercelConfig).rewrites.some((rewrite) =>
     rewrite.source === '/api/stripe/health' &&
-    rewrite.destination === '/api/stripe-server-premium.js'
+    rewrite.destination === '/api/stripe-server-premium'
   ),
   'Stripe health must remain available through the consolidated application function'
 );

@@ -21,7 +21,7 @@ for (const route of routeNames) {
 assert(
   rewrites.some((rewrite) =>
     rewrite.source === '/api/stripe/health' &&
-    rewrite.destination === '/api/stripe-server-premium.js'
+    rewrite.destination === '/api/stripe-server-premium'
   ),
   'Stripe health should reuse the consolidated application function'
 );

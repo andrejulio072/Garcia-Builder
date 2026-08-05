@@ -8,7 +8,7 @@ This report records what can be proved from code and automated checks. Owner, le
 
 ## Executive result
 
-The requested repository implementation is deployed and the database contract is live. The project is still **NO-GO for production ads** until the exposed historical Stripe credential is rotated, the open GitHub secret-scanning alert is resolved, the manual legal values are approved, and real provider/tag/device evidence is completed. Passing repository and production route tests cannot prove email delivery, Zapier mappings, GTM, Meta, Google Ads or real-browser consent behavior.
+The requested repository implementation is deployed and the database contract is live. On 2026-08-05 the owner confirmed the affected Stripe credential was rotated, Vercel Preview/Production were updated, and the legal identity/retention/governing-law decisions were approved externally. GitHub secret-scanning alert 2 is resolved as revoked and production Stripe health remains ready. The project is still **NO-GO for production ads** until the approved legal values replace the explicit placeholders in the public pages and the remaining email, Zapier, tag-manager, ad-platform and real-device evidence is completed.
 
 ## Verified implementation
 
@@ -72,8 +72,7 @@ The live project was verified with age/consent, submission-ID, ten-language alig
 
 ## Remaining external and manual blockers
 
-- Confirm and publish the legal controller/contracting identity, address, privacy contact, lawful bases, Article 9 condition, retention schedule, transfer safeguards, governing law and liability review.
-- Rotate the Stripe live restricted key and any historically committed Stripe secret/webhook value, update Vercel atomically, verify checkout/webhook health, then resolve GitHub secret-scanning alert 2. Removing the files from the current tree does not remove them from Git history.
+- Insert the owner-approved legal controller/contracting identity, address, privacy contact, retention schedule and governing-law wording into the public Privacy Notice and Terms, remove every explicit publication placeholder, and rerun the legal contract check.
 - Back up Supabase and rehearse the forward migration/restore process in staging even though the required production schema is now applied and verified.
 - Verify every required Vercel email, Zapier, booking and result-token variable by name/scope without exposing values.
 - Authenticate email (SPF, DKIM and DMARC), test transactional delivery with marketing both unchecked and checked, and verify suppression behavior.
@@ -84,11 +83,11 @@ The live project was verified with age/consent, submission-ID, ten-language alig
 
 ## Known risks and boundaries
 
-- Public legal pages intentionally contain publication blockers until verified owner/legal values are supplied.
+- The owner has confirmed the legal decisions are approved externally, but the exact approved text has not been supplied to this repository and the public pages still contain explicit publication placeholders.
 - Local Lighthouse simulation cannot guarantee production LCP or field INP. The focused public-shell pass is complete, but final preview/CDN measurement and post-launch field monitoring are still required because coaching and assessment lab LCP remain above 2.5 seconds.
 - Sitewide lead/conversion event contracts and duplicate Meta PageView prevention are integrated from `main`; the manual cookie/tag audit must still verify final deployed behavior.
 - Dedicated Stripe entry files share the existing Stripe application to preserve payment and webhook behavior. Assessment routes do not import that application.
-- GitHub still reports an open historical Stripe live restricted-key alert. Paid traffic and payment promotion remain blocked until rotation and alert resolution are evidenced.
+- The historical Stripe live restricted-key alert was resolved as revoked on 2026-08-05 after owner confirmation of rotation and Vercel updates.
 - Email, Zapier and provider failure tests use controlled fakes; they do not prove external provider configuration.
 
 ## Rollback boundary

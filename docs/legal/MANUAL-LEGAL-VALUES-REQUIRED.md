@@ -1,7 +1,10 @@
 # Manual legal values required before publication
 
-Status: **publication blocked until every launch-blocking value is confirmed**  
+Status: **owner confirmed the legal decisions complete externally on 2026-08-05; publication remains blocked until the exact approved values replace the public placeholders**
 Draft reviewed against repository behavior: 2026-08-04
+
+- [x] Owner confirmation received for legal identity, retention and governing-law decisions (2026-08-05).
+- [ ] Approved values/text and legal-review evidence copied into this record and the public Privacy Notice, Cookie Policy and Terms.
 
 This is the separate owner/legal checklist for facts that cannot be inferred safely from code. It is not an implementation to-do list and it must not be replaced with guesses. Record the approved value, reviewer, date and evidence for each item, then update the public pages and re-run the legal-page contract check.
 

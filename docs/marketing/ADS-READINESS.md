@@ -11,8 +11,9 @@
 - Existing email and Zapier configuration preserved.
 
 ## Paid-Traffic Status
-- **NO-GO** until the historically committed Stripe credential is rotated, Vercel is updated and tested, and GitHub secret-scanning alert 2 is resolved.
-- **NO-GO** until the legal facts, email authentication/delivery, Zapier mapping/failure test, GTM/GA4/Meta/Google Ads checks and real-device journeys in the manual checklist have evidence.
+- Completed 2026-08-05: owner-confirmed Stripe credential rotation, Vercel Preview/Production update, production health recheck, and GitHub alert 2 resolution as revoked.
+- Completed externally 2026-08-05: owner confirmation that legal identity, retention and governing-law decisions are approved.
+- **NO-GO** until the approved legal values replace the explicit placeholders in the public Privacy Notice/Terms and email authentication/delivery, Zapier mapping/failure test, GTM/GA4/Meta/Google Ads checks and real-device journeys have evidence.
 
 ## Paid Funnel Architecture
 - Paid funnel route: `/assessment`.
@@ -72,7 +73,7 @@
 4. If needed, gate new behavior in code while leaving schema additive fields in place.
 
 ## Launch Checklist (Summary)
-- Stripe credential rotation and GitHub alert resolution evidenced.
+- Stripe credential rotation, Vercel update and GitHub alert resolution evidenced.
 - `/assessment` active and focused.
 - `/start` and `/go/card` still functional.
 - One primary conversion per successful submission.

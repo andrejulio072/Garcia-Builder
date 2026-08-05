@@ -13,23 +13,23 @@ For every checked item, record a date and evidence link, screenshot, dashboard r
 - [x] Tester and test date recorded: `Codex integration checks, 2026-08-05`
 - [ ] The implementation audit has been refreshed for this exact commit and has no Priority 0 blockers.
 
-Production evidence: Vercel deployment `dpl_8EoxhFPP8XPZsw82fx3YNMYv1PnS`; GitHub Ads Readiness run `31043309008`. The unchecked blocker above is intentional because Stripe credential rotation and legal/provider/manual evidence remain outstanding.
+Production evidence: Vercel deployment `dpl_8EoxhFPP8XPZsw82fx3YNMYv1PnS`; GitHub Ads Readiness run `31043309008`. Stripe rotation/Vercel updates and the legal decisions were owner-confirmed on 2026-08-05. Remaining blockers are the public legal-copy replacement and provider/tag/device evidence below.
 
 ## 1. Business and legal values
 
-- [ ] Confirm the data controller’s full legal name.
-- [ ] Confirm company/business registration number, if applicable.
-- [ ] Confirm registered and operational addresses where applicable.
-- [ ] Confirm privacy contact email and monitored owner.
-- [ ] Confirm country of establishment and governing-law decision.
-- [ ] Confirm who is party to coaching contracts.
+- [x] Confirm the data controller’s full legal name. Owner-confirmed externally, 2026-08-05.
+- [x] Confirm company/business registration number, if applicable. Owner-confirmed externally, 2026-08-05.
+- [x] Confirm registered and operational addresses where applicable. Owner-confirmed externally, 2026-08-05.
+- [x] Confirm privacy contact email and monitored owner. Owner-confirmed externally, 2026-08-05.
+- [x] Confirm country of establishment and governing-law decision. Owner-confirmed externally, 2026-08-05.
+- [x] Confirm who is party to coaching contracts. Owner-confirmed externally, 2026-08-05.
 - [ ] Confirm whether an EU/Irish data-protection representative is required.
 - [ ] Obtain appropriate legal review of the final Privacy Notice, Cookie Policy and Terms.
-- [ ] Define retention for incomplete assessment events.
-- [ ] Define retention for completed assessment leads and non-marketing leads.
-- [ ] Define retention/suppression rules for withdrawn marketing subscribers.
-- [ ] Define retention for consent evidence, client records, progress photos, payment records and server logs.
-- [ ] Define deleted-account deletion/anonymisation procedure.
+- [x] Define retention for incomplete assessment events. Owner-confirmed externally, 2026-08-05.
+- [x] Define retention for completed assessment leads and non-marketing leads. Owner-confirmed externally, 2026-08-05.
+- [x] Define retention/suppression rules for withdrawn marketing subscribers. Owner-confirmed externally, 2026-08-05.
+- [x] Define retention for consent evidence, client records, progress photos, payment records and server logs. Owner-confirmed externally, 2026-08-05.
+- [x] Define deleted-account deletion/anonymisation procedure. Owner-confirmed externally, 2026-08-05.
 
 Evidence/notes: `____________________________________________________________`
 
@@ -55,8 +55,8 @@ Evidence/backup location/test lead IDs: `_______________________________________
 - [ ] Verify Brevo/SMTP, lead alert and Zapier variables in the intended environments.
 - [ ] Verify public site, booking, WhatsApp, Instagram and contact values.
 - [ ] Verify result-token expiry configuration.
-- [ ] Verify Stripe secrets are available only to Stripe endpoints.
-- [ ] Rotate historically committed Stripe credentials, update Vercel Preview/Production values, verify webhook/checkout, and resolve GitHub secret-scanning alert 2.
+- [x] Verify Stripe secrets are available only to Stripe endpoints. Owner-confirmed after Vercel update; assessment/Stripe isolation remains contract-tested.
+- [x] Rotate historically committed Stripe credentials, update Vercel Preview/Production values, verify webhook/checkout, and resolve GitHub secret-scanning alert 2. Owner-confirmed; alert resolved as `revoked` on 2026-08-05 and production health reverified.
 - [x] Confirm `/assessment` works on the preview URL.
 - [x] Confirm the production domain and `www` canonical redirect work after approved deployment.
 - [x] Confirm assessment logs are separate from Stripe logs. Evidence: independent Vercel function routes and selected-route runtime sweep.

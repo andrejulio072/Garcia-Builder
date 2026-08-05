@@ -3,11 +3,16 @@
 ## Already Completed Externally
 - Supabase attribution migration applied.
 - Supabase contact enrichment migration applied.
-- Required columns present.
-- RLS enabled.
-- Insert contract validated in rolled-back transaction.
-- Production `/assessment` route published.
+- Age/consent, submission-ID, ten-language alignment and contact-data hardening migrations applied and verified.
+- Required columns, constraints and unique submission IDs present; deterministic age/acknowledgement backfills verified.
+- Assessment RLS enabled with browser reads denied; profile/newsletter privacy policies hardened.
+- Production `/assessment`, `/start`, `/go/card`, `/health` and Stripe health routes published from application commit `59d913d`.
+- GitHub Ads Readiness run `31043309008` passed; Vercel production deployment `dpl_8EoxhFPP8XPZsw82fx3YNMYv1PnS` is `READY` with 12 functions.
 - Existing email and Zapier configuration preserved.
+
+## Paid-Traffic Status
+- **NO-GO** until the historically committed Stripe credential is rotated, Vercel is updated and tested, and GitHub secret-scanning alert 2 is resolved.
+- **NO-GO** until the legal facts, email authentication/delivery, Zapier mapping/failure test, GTM/GA4/Meta/Google Ads checks and real-device journeys in the manual checklist have evidence.
 
 ## Paid Funnel Architecture
 - Paid funnel route: `/assessment`.
@@ -50,10 +55,10 @@
 - Optional tracking config sources in code/GTM: GTM container, GA4 measurement ID, Meta Pixel ID, Google Ads conversion settings.
 
 ## Migration Procedure
-1. Review migration: `supabase/migrations/20260727103000_paid_assessment_attribution_recovery.sql`.
-2. Run in Supabase SQL Editor or migration workflow.
-3. Re-run schema verification queries for columns, constraints and indexes.
-4. Confirm RLS remains enabled.
+1. Review all ordered files under `supabase/migrations/`, including the 2026-08-05 language, access-hardening and duplicate-index cleanup migrations.
+2. For a new environment, run the ordered migration workflow after backup/staging rehearsal.
+3. Re-run schema verification queries for columns, constraints, grants, policies and indexes.
+4. Confirm assessment RLS remains deny-by-default for browser roles and profile/newsletter policies retain least privilege.
 
 ## Smoke-Test Procedure
 1. Set smoke-test env vars (base URL, test email, Supabase credentials).
@@ -67,6 +72,7 @@
 4. If needed, gate new behavior in code while leaving schema additive fields in place.
 
 ## Launch Checklist (Summary)
+- Stripe credential rotation and GitHub alert resolution evidenced.
 - `/assessment` active and focused.
 - `/start` and `/go/card` still functional.
 - One primary conversion per successful submission.

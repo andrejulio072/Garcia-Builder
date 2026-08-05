@@ -8,10 +8,12 @@ For every checked item, record a date and evidence link, screenshot, dashboard r
 
 ## Release under test
 
-- [ ] Release commit SHA recorded: `____________________________`
-- [ ] Preview URL recorded: `____________________________`
-- [ ] Tester and test date recorded: `____________________________`
+- [x] Application release commit SHA recorded: `59d913d35c74fff2cc106c26206b99de17d0b080`
+- [x] Preview URL recorded: `https://garciabuilder-fitness-6gqfafhlj-andrejulio072s-projects.vercel.app`
+- [x] Tester and test date recorded: `Codex integration checks, 2026-08-05`
 - [ ] The implementation audit has been refreshed for this exact commit and has no Priority 0 blockers.
+
+Production evidence: Vercel deployment `dpl_8EoxhFPP8XPZsw82fx3YNMYv1PnS`; GitHub Ads Readiness run `31043309008`. The unchecked blocker above is intentional because Stripe credential rotation and legal/provider/manual evidence remain outstanding.
 
 ## 1. Business and legal values
 
@@ -34,15 +36,15 @@ Evidence/notes: `____________________________________________________________`
 ## 2. Supabase live/staging verification
 
 - [ ] Export or back up the existing assessment tables.
-- [ ] Review migration history and the exact migration to be applied.
+- [x] Review migration history and the exact migration to be applied. Evidence: live history and post-migration schema audit, 2026-08-05.
 - [ ] Apply and verify the migration in preview/staging before production.
-- [ ] Confirm RLS is enabled on lead and event tables in the deployed database.
-- [ ] Confirm public/anonymous browser users cannot query assessment leads.
+- [x] Confirm RLS is enabled on lead and event tables in the deployed database.
+- [x] Confirm public/anonymous browser users cannot query assessment leads. Evidence: no `anon`/`authenticated` select grants and deny-by-default RLS.
 - [ ] Submit without attribution and confirm `first_touch_at` receives a server fallback.
 - [ ] Confirm a marketing-unchecked lead is stored correctly.
 - [ ] Confirm a marketing-checked lead is stored with the correct timestamp/version evidence.
-- [ ] Confirm historical DOB values remain intact and only deterministic ages were backfilled.
-- [ ] Confirm result tokens are stored hashed and cannot be queried publicly.
+- [x] Confirm historical DOB values remain intact and only deterministic ages were backfilled. Evidence: seven deterministic age backfills and nullable historical DOB retained.
+- [x] Confirm result tokens are stored hashed and cannot be queried publicly. Evidence: token-hash unique constraint retained; browser-role reads denied.
 - [ ] Confirm a duplicate submission follows the approved durable behavior.
 
 Evidence/backup location/test lead IDs: `________________________________________`
@@ -54,10 +56,11 @@ Evidence/backup location/test lead IDs: `_______________________________________
 - [ ] Verify public site, booking, WhatsApp, Instagram and contact values.
 - [ ] Verify result-token expiry configuration.
 - [ ] Verify Stripe secrets are available only to Stripe endpoints.
-- [ ] Confirm `/assessment` works on the preview URL.
-- [ ] Confirm the production domain and `www` canonical redirect work after approved deployment.
-- [ ] Confirm assessment logs are separate from Stripe logs.
-- [ ] Confirm an assessment request does not initialise Stripe.
+- [ ] Rotate historically committed Stripe credentials, update Vercel Preview/Production values, verify webhook/checkout, and resolve GitHub secret-scanning alert 2.
+- [x] Confirm `/assessment` works on the preview URL.
+- [x] Confirm the production domain and `www` canonical redirect work after approved deployment.
+- [x] Confirm assessment logs are separate from Stripe logs. Evidence: independent Vercel function routes and selected-route runtime sweep.
+- [x] Confirm an assessment request does not initialise Stripe. Evidence: import-isolation contract and separate deployed functions.
 - [ ] Confirm an unapproved cross-origin POST is rejected and an approved preview request works.
 - [ ] Inspect browser-delivered files and confirm no server secret is exposed.
 
@@ -184,7 +187,7 @@ Device/browser/network/test lead IDs: `_________________________________________
 - [ ] Email authentication and deliverability are acceptable.
 - [ ] One submission creates one lead and one primary conversion.
 - [ ] Marketing-unchecked result delivery works.
-- [ ] Production has no current assessment runtime errors.
+- [x] Production has no current assessment runtime errors. Evidence: Vercel selected-route error sweep immediately after deployment on 2026-08-05.
 - [ ] Rollback commit and deployment procedure are recorded and understood.
 - [ ] Business owner approves the final claims, legal copy and launch budget.
 

@@ -2,21 +2,22 @@
 
 Snapshot date: 2026-08-05
 
-Scope: integrated repository state on `codex/integrate-remaining-launch-fixes`, based on integration commit `2253cbf`; no production deployment or external-system mutation
+Scope: production application release `59d913d` on `main`, Vercel deployment `dpl_8EoxhFPP8XPZsw82fx3YNMYv1PnS`, and live Supabase project `fqivhobabbxxbtkjlnmq`
 
 This report records what can be proved from code and automated checks. Owner, legal, provider, staging and real-device work remains in [MANUAL-ADS-LAUNCH-CHECKLIST.md](./MANUAL-ADS-LAUNCH-CHECKLIST.md), while facts that cannot be invented remain in [MANUAL-LEGAL-VALUES-REQUIRED.md](../legal/MANUAL-LEGAL-VALUES-REQUIRED.md).
 
 ## Executive result
 
-The requested repository implementation is complete. The project is still **NO-GO for production ads** until the manual legal values, Supabase migration, provider configuration, preview checks and real-device end-to-end evidence are completed. Passing repository tests cannot prove the deployed database, email, Zapier, GTM, Meta, Google Ads or consent state.
+The requested repository implementation is deployed and the database contract is live. The project is still **NO-GO for production ads** until the exposed historical Stripe credential is rotated, the open GitHub secret-scanning alert is resolved, the manual legal values are approved, and real provider/tag/device evidence is completed. Passing repository and production route tests cannot prove email delivery, Zapier mappings, GTM, Meta, Google Ads or real-browser consent behavior.
 
 ## Verified implementation
 
 | Area | Status | Repository evidence |
 | --- | --- | --- |
-| Assessment/Stripe separation | Verified | Assessment has independent `submit`, `result` and `event` Vercel functions. Stripe has explicit `checkout`, `webhook` and `health` function entrypoints. No generic `/api/:path*` or `/api/stripe/:path*` rewrite hides those functions. Importing assessment routes does not load Stripe; loading Stripe routes defers optional Supabase/mail providers. Route smoke tests verify health and safe 503 behavior without Stripe configuration. |
+| Assessment/Stripe separation | Verified locally and in production | Assessment has independent `submit`, `result` and `event` Vercel functions. Stripe checkout/webhook remain dedicated; health and compatible legacy routes use the consolidated application function. No generic `/api/:path*` or `/api/stripe/:path*` rewrite hides assessment functions. Vercel reports exactly 12 Node functions, satisfying the Hobby-plan limit. Production `/health` and `/api/stripe/health` return readiness JSON. |
 | Assessment CORS and body size | Verified | Assessment HTTP helpers allow the canonical domains, localhost and approved project preview origins, reject unapproved explicit origins, handle `OPTIONS`, set private/no-store headers and cap request bodies at 100 KB. The global wildcard CORS header is absent. |
 | Age model | Verified | New assessment payloads require an integer age from 18 through 100. DOB and the separate 18+ checkbox are retired from the new flow. Migration `20260804090000_assessment_age_consent.sql` adds age safely, keeps historical DOB nullable and only backfills deterministic valid values. |
+| Live database access | Verified | Production assessment lead/event tables have RLS enabled and no anonymous/authenticated read grants. Profile rows are owner-only; anonymous profile reads were removed. Newsletter signup remains public-insert-only while select/update/delete require an approved administrator identity. Supabase advisors report no duplicate indexes. |
 | Consent model | Verified | The form contains one required resource/privacy acknowledgement and one unchecked optional email-marketing consent. New payloads do not collect WhatsApp marketing consent. Version and timestamp evidence is stored. |
 | Attribution fallback | Verified | Server validation/persistence guarantees `first_touch_at` from captured attribution or submission time, with latest-touch and UTM/click identifiers preserved. |
 | Durable submission deduplication | Verified | The browser supplies a UUID submission ID; migration `20260804100000_assessment_submission_id.sql` adds a non-null unique database key; conflict handling retrieves the existing lead/result without firing another primary conversion. |
@@ -35,15 +36,20 @@ The requested repository implementation is complete. The project is still **NO-G
 
 ## Tracked database changes
 
-Apply in migration order after a database backup and staging review:
+Tracked forward migrations, in repository order:
 
 1. `20260714225452_starter_assessment_funnel.sql`
-2. `20260727103000_paid_assessment_attribution_recovery.sql`
-3. `20260727223000_assessment_contact_enrichment.sql`
-4. `20260804090000_assessment_age_consent.sql`
-5. `20260804100000_assessment_submission_id.sql`
+2. `20260723120000_starter_assessment_contact_fields.sql`
+3. `20260727103000_paid_assessment_attribution_recovery.sql`
+4. `20260727223000_assessment_contact_enrichment.sql`
+5. `20260729122954_expand_card_languages_and_contact.sql`
+6. `20260804090000_assessment_age_consent.sql`
+7. `20260804100000_assessment_submission_id.sql`
+8. `20260805193850_align_assessment_languages.sql`
+9. `20260805194508_harden_contact_data_access.sql`
+10. `20260805194653_remove_duplicate_contact_indexes.sql`
 
-The implementation does not claim these migrations have been applied to a live Supabase project.
+The live project was verified with age/consent, submission-ID, ten-language alignment, contact-data hardening and duplicate-index cleanup applied. RLS, grants, constraints, backfills and unique submission IDs were checked after migration. A staging backup/restore rehearsal remains a manual operations item.
 
 ## Automated evidence record
 
@@ -59,13 +65,17 @@ The implementation does not claim these migrations have been applied to a live S
 | Strict local frontend audit | Passed all 23 routes at 1440 x 1000 and 390 x 844, including production-equivalent legacy redirects |
 | Assessment visual viewports | Passed at widths 320, 360, 390, 412, 430, 768, 1024 and 1440, plus reduced-motion, contact and result states |
 | Integrated mobile responsive audit | Passed 12 browser journeys across 320, 360 and 390 px for workouts, nutrition, the age-based assessment and the attributed QR redirect, including the final result state |
+| Vercel preview | `READY` for `59d913d`; `/assessment`, QR canonicalization and health routes passed live probes |
+| GitHub Ads Readiness | Passed run `31043309008` for `59d913d` (tests, build and syntax checks) |
+| Vercel production | `READY`; canonical domains attached; no selected-route runtime errors in the post-deploy sweep |
 | Live assessment smoke | Requires configured integration environment; manual/release gate |
 
 ## Remaining external and manual blockers
 
 - Confirm and publish the legal controller/contracting identity, address, privacy contact, lawful bases, Article 9 condition, retention schedule, transfer safeguards, governing law and liability review.
-- Back up Supabase, apply migrations in staging, verify RLS/privileges and then repeat in the approved production change window.
-- Configure and verify required Vercel environment variables without exposing service-role, email, Zapier or Stripe secrets to browser bundles.
+- Rotate the Stripe live restricted key and any historically committed Stripe secret/webhook value, update Vercel atomically, verify checkout/webhook health, then resolve GitHub secret-scanning alert 2. Removing the files from the current tree does not remove them from Git history.
+- Back up Supabase and rehearse the forward migration/restore process in staging even though the required production schema is now applied and verified.
+- Verify every required Vercel email, Zapier, booking and result-token variable by name/scope without exposing values.
 - Authenticate email (SPF, DKIM and DMARC), test transactional delivery with marketing both unchecked and checked, and verify suppression behavior.
 - Update and test Zapier mappings, including a forced webhook failure after successful persistence.
 - Validate consent and one-event conversion behavior in GTM Preview, GA4 DebugView, Meta Test Events and Google Ads.
@@ -78,10 +88,11 @@ The implementation does not claim these migrations have been applied to a live S
 - Local Lighthouse simulation cannot guarantee production LCP or field INP. The focused public-shell pass is complete, but final preview/CDN measurement and post-launch field monitoring are still required because coaching and assessment lab LCP remain above 2.5 seconds.
 - Sitewide lead/conversion event contracts and duplicate Meta PageView prevention are integrated from `main`; the manual cookie/tag audit must still verify final deployed behavior.
 - Dedicated Stripe entry files share the existing Stripe application to preserve payment and webhook behavior. Assessment routes do not import that application.
+- GitHub still reports an open historical Stripe live restricted-key alert. Paid traffic and payment promotion remain blocked until rotation and alert resolution are evidenced.
 - Email, Zapier and provider failure tests use controlled fakes; they do not prove external provider configuration.
 
 ## Rollback boundary
 
 Code rollback should revert the phase commits in reverse order. Database migrations are forward-only: do not drop age, consent or submission-ID columns to roll back an application release. Restore the prior application while retaining the additive schema, then diagnose with the preserved lead/event records and backup.
 
-No production deployment was performed by Codex.
+Production deployment `dpl_8EoxhFPP8XPZsw82fx3YNMYv1PnS` completed successfully from `main` at application commit `59d913d` on 2026-08-05.

@@ -388,7 +388,7 @@ assert(cardAssessmentPage.includes("window.location.replace(target)"), 'QR card 
 assert(!cardAssessmentPage.includes('<form'), 'QR card route should remain a lightweight redirect rather than duplicate the assessment form');
 assert(parsedVercelConfig.rewrites.some((route) => route.source === '/assessment' && route.destination === '/assessment.html'), 'Vercel should rewrite /assessment to the paid landing page');
 assert(parsedVercelConfig.redirects.some((route) => route.source === '/go/card' && route.destination === '/api/card-redirect' && route.permanent === false), 'Vercel should route QR requests through the attribution-preserving redirect endpoint before static fallback resolution');
-assert(!parsedVercelConfig.redirects.some((route) => route.source === '/go/card'), 'Vercel must not apply fixed QR defaults before incoming attribution can be evaluated');
+assert(!parsedVercelConfig.redirects.some((route) => route.source === '/go/card' && /utm_/i.test(route.destination || '')), 'Vercel must not apply fixed QR defaults before incoming attribution can be evaluated');
 assert(parsedVercelConfig.rewrites.some((route) => route.source === '/start/contact' && route.destination === '/start-contact.html'), 'Vercel should serve the direct contact route');
 assert(starterContactPage.includes('https://wa.me/447508497586'), 'QR contact page should include Andre WhatsApp');
 assert(starterContactPage.includes('https://instagram.com/garciabuilder.fitness'), 'QR contact page should include Instagram');

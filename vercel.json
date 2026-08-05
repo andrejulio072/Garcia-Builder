@@ -1,6 +1,11 @@
 {
   "redirects": [
     {
+      "source": "/go/card",
+      "destination": "/api/card-redirect",
+      "permanent": false
+    },
+    {
       "source": "/",
       "has": [
         {
@@ -443,10 +448,6 @@
     }
   ],
   "rewrites": [
-    {
-      "source": "/go/card",
-      "destination": "/api/card-redirect"
-    },
     {
       "source": "/assessment",
       "destination": "/assessment.html"

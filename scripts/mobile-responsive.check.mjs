@@ -17,7 +17,7 @@ const routes = [
   { path: '/workouts.html', kind: 'workouts' },
   { path: '/nutrition-calculator.html', kind: 'nutrition' },
   { path: '/assessment.html', kind: 'assessment' },
-  { path: '/go/card/', kind: 'card' }
+  { path: '/go/card/?utm_content=mobile_audit', kind: 'card' }
 ];
 
 async function freePort() {
@@ -394,6 +394,7 @@ try {
         assert.equal(redirectedUrl.searchParams.get('utm_source'), 'business_card', 'QR redirect should preserve utm_source');
         assert.equal(redirectedUrl.searchParams.get('utm_medium'), 'qr', 'QR redirect should preserve utm_medium');
         assert.equal(redirectedUrl.searchParams.get('utm_campaign'), 'starter_assessment', 'QR redirect should preserve utm_campaign');
+        assert.equal(redirectedUrl.searchParams.get('utm_content'), 'mobile_audit', 'QR redirect should preserve incoming campaign details');
       }
       await page.waitForTimeout(250);
       await assertDocumentFits(page, route.path, viewport.width);

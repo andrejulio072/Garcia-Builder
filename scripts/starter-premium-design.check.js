@@ -213,7 +213,10 @@ assert(start.includes('data-start-assessment'), '/start assessment entry must re
 assert(start.includes('/packages?utm_source=business_card'), '/start package shortcut must remain available');
 assert(server.includes("app.get('/start'"), 'Server /start route must remain available');
 assert(vercel.includes('"source": "/go/card"'), 'Vercel /go/card route must remain available');
-assert(card.includes('/start.html?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment'), 'QR card route must redirect to the canonical mobile assessment with attribution');
+assert(card.includes('new URLSearchParams(window.location.search)'), 'QR card route must preserve incoming attribution');
+for (const value of ['business_card', 'qr', 'starter_assessment']) {
+  assert(card.includes(value), `QR card redirect is missing attribution default: ${value}`);
+}
 assert(!card.includes('<form'), 'QR card route must not duplicate the canonical assessment interface');
 for (const language of assessmentLanguages) {
   assert(starterI18n.ui('followInstagram', language), `${language} Instagram follow translation is missing`);

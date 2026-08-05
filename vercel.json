@@ -117,11 +117,6 @@
       "permanent": true
     },
     {
-      "source": "/go/card",
-      "destination": "/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment",
-      "permanent": false
-    },
-    {
       "source": "/index.html",
       "destination": "/",
       "permanent": true
@@ -449,12 +444,12 @@
   ],
   "rewrites": [
     {
-      "source": "/assessment",
-      "destination": "/assessment.html"
+      "source": "/go/card",
+      "destination": "/api/card-redirect"
     },
     {
-      "source": "/go/card",
-      "destination": "/go/card/index.html"
+      "source": "/assessment",
+      "destination": "/assessment.html"
     },
     {
       "source": "/start",

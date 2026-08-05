@@ -41,6 +41,7 @@ function adaptServerlessHandler(handler) {
 const starterSubmitHandler = require('../lib/starter-assessment/submit-handler.cjs');
 const starterResultHandler = require('../lib/starter-assessment/result-handler.cjs');
 const starterEventHandler = require('../lib/starter-assessment/event-handler.cjs');
+const { buildCardRedirectUrl, preserveRedirectQuery } = require('../lib/card-redirect.cjs');
 
 app.post('/api/starter-assessment/submit', adaptServerlessHandler(starterSubmitHandler));
 app.get('/api/starter-assessment/result/:token', (req, res, next) => {
@@ -56,7 +57,7 @@ for (const redirect of (vercelConfig.redirects || []).filter((entry) =>
   !entry.has && !/[:*]/.test(entry.source)
 )) {
   app.get(redirect.source, (req, res) => {
-    res.redirect(redirect.permanent ? 308 : 307, redirect.destination);
+    res.redirect(redirect.permanent ? 308 : 307, preserveRedirectQuery(redirect.destination, req.query));
   });
 }
 
@@ -102,7 +103,7 @@ app.get(Object.keys(publicPageAliases), (req, res) => {
 });
 
 app.get('/go/card', (req, res) => {
-  res.sendFile(path.join(root, 'go', 'card', 'index.html'));
+  res.redirect(302, buildCardRedirectUrl(req.query));
 });
 
 app.get('/start/result/:token', (req, res) => {

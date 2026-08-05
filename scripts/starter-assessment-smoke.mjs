@@ -18,6 +18,7 @@ const QUESTION_IDS = [
   'starting_timeline',
   'support_preference'
 ];
+const SUPPORTED_LANGUAGES = ['en', 'pt', 'es', 'fr', 'de', 'it', 'nl', 'pl', 'ro', 'ru'];
 
 const answers = {
   primary_goal: 'Lose body fat',
@@ -176,24 +177,28 @@ async function main() {
   const firstName = optionalEnv('STARTER_ASSESSMENT_TEST_FIRST_NAME') || 'Assessment Smoke';
   const whatsapp = optionalEnv('STARTER_ASSESSMENT_TEST_WHATSAPP') || '';
   const language = optionalEnv('STARTER_ASSESSMENT_TEST_LANGUAGE') || 'en';
-  assert(['en', 'pt', 'es'].includes(language), 'STARTER_ASSESSMENT_TEST_LANGUAGE must be en, pt or es');
+  assert(SUPPORTED_LANGUAGES.includes(language), `STARTER_ASSESSMENT_TEST_LANGUAGE must be one of: ${SUPPORTED_LANGUAGES.join(', ')}`);
   const supabaseUrl = requiredEnv('SUPABASE_URL');
   const supabaseKey = requiredAnyEnv(['SUPABASE_SERVICE_ROLE_KEY', 'SUPABASE_SECRET_KEY']);
   const report = [];
 
   const add = (check, result, evidence) => report.push({ check, result, evidence });
 
-  const card = await fetchText(`${baseUrl}/go/card`);
+  const card = await fetchText(`${baseUrl}/go/card?utm_content=smoke_test`);
   assert.equal(card.response.status, 200, '/go/card did not return HTTP 200');
-  assert(card.text.includes('starter-page-card'), 'QR card page is missing its mobile page mode');
-  assert.equal((card.text.match(/data-qr-contact="whatsapp"/g) || []).length, 1, 'QR card page should include one coach WhatsApp action');
-  assert.equal((card.text.match(/<option value="/g) || []).length, 10, 'QR card page should expose ten languages');
-  add('QR card page', 'PASS', 'HTTP 200, mobile page mode, one WhatsApp action, ten languages');
+  const cardUrl = new URL(card.response.url);
+  assert(['/start', '/start.html'].includes(cardUrl.pathname), '/go/card did not resolve to the canonical assessment');
+  assert.equal(cardUrl.searchParams.get('utm_source'), 'business_card', 'QR redirect source attribution missing');
+  assert.equal(cardUrl.searchParams.get('utm_medium'), 'qr', 'QR redirect medium attribution missing');
+  assert.equal(cardUrl.searchParams.get('utm_campaign'), 'starter_assessment', 'QR redirect campaign attribution missing');
+  assert.equal(cardUrl.searchParams.get('utm_content'), 'smoke_test', 'QR redirect discarded incoming attribution');
+  assert(card.text.includes('data-start-assessment'), 'Canonical assessment entry is missing after the QR redirect');
+  add('QR card redirect', 'PASS', 'Resolved to /start with defaults and incoming attribution preserved');
 
   const startUrl = `${baseUrl}/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment`;
   const start = await fetchText(startUrl);
   assert.equal(start.response.status, 200, '/start did not return HTTP 200');
-  assert(start.text.includes('Free Fitness Assessment') && start.text.includes('Garcia Builder Fitness'), 'Assessment page title missing');
+  assert(start.text.includes('Fitness Starter Assessment') && start.text.includes('Garcia Builder Fitness'), 'Assessment page title missing');
   assertNoTurnstile(start.text, 'Start page');
   assert(!/turnstile-slot|captcha/i.test(start.text), 'Start page contains an empty CAPTCHA area');
   add('Start page', 'PASS', 'HTTP 200, title present, no challenge markup');

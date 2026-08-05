@@ -24,6 +24,7 @@ const { buildWhatsappMessage, buildWhatsappUrl } = require('../lib/starter-asses
 const { BREVO_API_URL, DEFAULT_EMAIL_TIMEOUT_MS, getEmailTimeoutMs, sendTransactionalEmail } = require('../lib/starter-assessment/email.cjs');
 const { buildContactActions, getContactEmail } = require('../lib/starter-assessment/contact-actions.cjs');
 const { isAllowedOrigin } = require('../lib/starter-assessment/origin.cjs');
+const { buildCardRedirectUrl, preserveRedirectQuery } = require('../lib/card-redirect.cjs');
 const starterI18n = require('../js/starter-locales.js');
 
 const baseAnswers = {
@@ -289,6 +290,7 @@ assert(!Object.prototype.hasOwnProperty.call(getPublicConfig(), 'countries'));
 
 const productionServer = fs.readFileSync(path.join(__dirname, '..', 'api', 'stripe-server-premium.js'), 'utf8');
 const vercelConfig = fs.readFileSync(path.join(__dirname, '..', 'vercel.json'), 'utf8');
+const parsedVercelConfig = JSON.parse(vercelConfig);
 const starterClient = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-assessment.js'), 'utf8');
 const starterContext = fs.readFileSync(path.join(__dirname, '..', 'js', 'starter-context.js'), 'utf8');
 const starterPage = fs.readFileSync(path.join(__dirname, '..', 'start.html'), 'utf8');
@@ -316,10 +318,26 @@ const starterMigration = fs.readFileSync(path.join(migrationDirectory, starterMi
     `Production server missing starter assessment route: ${snippet}`
   );
 });
+const defaultCardRedirect = new URL(buildCardRedirectUrl({}), 'https://www.garciabuilder.fitness');
+assert.equal(defaultCardRedirect.pathname, '/start');
+assert.equal(defaultCardRedirect.searchParams.get('utm_source'), 'business_card');
+assert.equal(defaultCardRedirect.searchParams.get('utm_medium'), 'qr');
+assert.equal(defaultCardRedirect.searchParams.get('utm_campaign'), 'starter_assessment');
+const attributedCardRedirect = new URL(buildCardRedirectUrl({ utm_source: 'partner', utm_content: 'poster', fbclid: 'meta-click' }), 'https://www.garciabuilder.fitness');
+assert.equal(attributedCardRedirect.searchParams.get('utm_source'), 'partner', 'QR redirect must not overwrite an existing source');
+assert.equal(attributedCardRedirect.searchParams.get('utm_content'), 'poster', 'QR redirect must preserve additional UTM values');
+assert.equal(attributedCardRedirect.searchParams.get('fbclid'), 'meta-click', 'QR redirect must preserve click identifiers');
+assert.equal(
+  preserveRedirectQuery('/start?fixed=1', { utm_content: 'poster', gclid: 'google-click' }),
+  '/start?fixed=1&utm_content=poster&gclid=google-click',
+  'Local Vercel redirect mirror must preserve source query parameters'
+);
+assert(productionServer.includes('res.redirect(302, buildCardRedirectUrl(req.query))'), 'Express QR route must issue the canonical attributed redirect');
 const assessmentApiDirectory = path.join(__dirname, '..', 'api', 'starter-assessment');
 for (const endpoint of ['submit.js', 'result.js', 'event.js']) {
   assert(fs.existsSync(path.join(assessmentApiDirectory, endpoint)), `Missing dedicated assessment endpoint: ${endpoint}`);
 }
+assert(fs.existsSync(path.join(__dirname, '..', 'api', 'card-redirect.js')), 'Missing dedicated QR redirect endpoint');
 assert(!productionServer.includes("require('../lib/starter-assessment/"), 'Stripe server must not initialise assessment dependencies');
 assert(!vercelConfig.includes('"source": "/api/:path*"'), 'Vercel must not route every API request through Stripe');
 for (const endpoint of ['checkout.js', 'webhook.js', 'health.js']) {
@@ -358,12 +376,13 @@ assert(homepage.includes('utm_content=homepage_footer_assessment'), 'Homepage fo
 assert(paidAssessmentPage.includes('/cookie-policy'), 'Paid assessment page should expose cookie policy link');
 assert(paidAssessmentPage.includes('data-open-cookie-preferences'), 'Paid assessment page should expose cookie preferences action');
 assert(cardAssessmentPage.includes('url=/start?utm_source=business_card&amp;utm_medium=qr&amp;utm_campaign=starter_assessment'), 'QR card fallback redirect should preserve attribution');
-assert(cardAssessmentPage.includes("window.location.replace('/start.html?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment')"), 'QR card script redirect should preserve attribution');
+assert(cardAssessmentPage.includes('new URLSearchParams(window.location.search)'), 'QR card script redirect should preserve incoming campaign parameters');
+assert(cardAssessmentPage.includes("window.location.replace(target)"), 'QR card script should replace the duplicate route with the canonical assessment');
 assert(!cardAssessmentPage.includes('<form'), 'QR card route should remain a lightweight redirect rather than duplicate the assessment form');
-assert(vercelConfig.includes('"source": "/assessment"'), 'Vercel should rewrite /assessment to paid landing page');
-assert(vercelConfig.includes('"source": "/go/card"') && vercelConfig.includes('"destination": "/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment"'), 'Vercel should redirect the QR route to the canonical assessment with attribution');
-assert(vercelConfig.includes('"source": "/start/contact"'), 'Vercel should rewrite /start/contact to the QR contact page');
-assert(vercelConfig.includes('"source": "/start/contact"'), 'Vercel should serve the direct contact route');
+assert(parsedVercelConfig.rewrites.some((route) => route.source === '/assessment' && route.destination === '/assessment.html'), 'Vercel should rewrite /assessment to the paid landing page');
+assert(parsedVercelConfig.rewrites.some((route) => route.source === '/go/card' && route.destination === '/api/card-redirect'), 'Vercel should route QR requests through the attribution-preserving redirect endpoint');
+assert(!parsedVercelConfig.redirects.some((route) => route.source === '/go/card'), 'Vercel must not apply fixed QR defaults before incoming attribution can be evaluated');
+assert(parsedVercelConfig.rewrites.some((route) => route.source === '/start/contact' && route.destination === '/start-contact.html'), 'Vercel should serve the direct contact route');
 assert(starterContactPage.includes('https://wa.me/447508497586'), 'QR contact page should include Andre WhatsApp');
 assert(starterContactPage.includes('https://instagram.com/garciabuilder.fitness'), 'QR contact page should include Instagram');
 assert(starterContactPage.includes('https://calendly.com/andrenjulio072/consultation'), 'QR contact page should include consultation booking');

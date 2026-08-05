@@ -13,6 +13,7 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const { randomUUID } = require('crypto');
+const { buildCardRedirectUrl } = require('../lib/card-redirect.cjs');
 const LEAD_DEDUP_WINDOW_MS = 10 * 60 * 1000;
 const recentConsultationLeadIds = new Map();
 
@@ -252,7 +253,7 @@ app.get(Object.keys(publicPageAliases), (req, res) => {
 });
 
 app.get('/go/card', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'go', 'card', 'index.html'));
+    res.redirect(302, buildCardRedirectUrl(req.query));
 });
 
 app.get('/start', (req, res) => {

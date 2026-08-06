@@ -152,15 +152,23 @@ Do not expose this query through a public browser endpoint.
 
 Set `ZAPIER_LEAD_WEBHOOK_URL` to receive a sanitized payload after lead creation. The webhook URL is server-only.
 
+The complete Google Sheets storage decision, deduplicated Zap blueprint and acceptance tests are in [ZAPIER-LEAD-STORAGE-SETUP.md](deployment/ZAPIER-LEAD-STORAGE-SETUP.md). A prepared native sheet named `Garcia Builder Lead Register` contains the same field mapping and editable pipeline columns.
+
 Supabase stores `submission_id` as the durable idempotency key. It is not forwarded to browser analytics.
 
 Zapier payload fields:
 
 - `lead_id`
 - `created_at`
+- `full_name`
 - `first_name`
 - `email`
 - `whatsapp`
+- `age`
+- `instagram_handle`
+- `facebook_profile` (legacy-compatible; normally empty in the current flow)
+- `preferred_contact_method` (legacy-compatible; normally empty in the current flow)
+- `best_contact_time` (legacy-compatible; normally empty in the current flow)
 - `language`
 - `primary_goal`
 - `training_days`
@@ -177,15 +185,27 @@ Zapier payload fields:
 - `nurture_eligible`
 - `nurture_sequence`
 - `marketing_email_consent`
-- `age`
 - `resource_delivery_acknowledgement`
 - `consent_copy_version`
 - `privacy_policy_version`
+- `entry_context`
 - `utm_source`
 - `utm_medium`
 - `utm_campaign`
 - `utm_content`
 - `utm_term`
+- `latest_utm_source`
+- `latest_utm_medium`
+- `latest_utm_campaign`
+- `latest_utm_content`
+- `latest_utm_term`
+- `gclid`
+- `gbraid`
+- `wbraid`
+- `fbclid`
+- `first_touch_at`
+- `latest_touch_at`
+- `landing_url`
 - `landing_path`
 - `referrer`
 

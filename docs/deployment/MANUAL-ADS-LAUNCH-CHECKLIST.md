@@ -81,6 +81,8 @@ Evidence/message IDs: `______________________________________________________`
 
 ## 5. Zapier live mapping
 
+Prepared workbook, storage decision and exact mapping: [ZAPIER-LEAD-STORAGE-SETUP.md](ZAPIER-LEAD-STORAGE-SETUP.md). These checks remain open until the Catch Hook, Google account and intended Vercel environment are connected and tested live.
+
 - [ ] Map age, required acknowledgement, email-marketing consent, consent/privacy versions and timestamps.
 - [ ] Map first/latest touch, UTMs, click IDs, lead score/status, recommendation and result URL.
 - [ ] Remove new-flow reliance on DOB, age confirmation and WhatsApp marketing consent.

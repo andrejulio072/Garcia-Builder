@@ -160,6 +160,7 @@ for (const selector of [
   );
 }
 assert(css.includes(':focus-visible'), 'Focus-visible styling is missing');
+assert(/\.option-label\s*\{[\s\S]{0,180}?min-width:\s*0;[\s\S]{0,180}?overflow-wrap:\s*anywhere;/.test(css), 'Translated option labels must wrap safely on narrow screens');
 assert(css.includes('@media (forced-colors: active)'), 'High-contrast support is missing');
 assert(/\.starter-primary\s*\{[\s\S]{0,120}?animation:\s*none;/.test(css), 'Primary CTAs must not use an infinite pulse');
 

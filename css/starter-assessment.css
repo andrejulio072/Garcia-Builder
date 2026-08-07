@@ -2905,7 +2905,9 @@ body.result-page::before {
 .option-label {
   position: relative;
   z-index: 1;
+  min-width: 0;
   line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .option-check {

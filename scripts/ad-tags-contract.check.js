@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const root = path.join(__dirname, '..');
-const assessmentToken = '20260807-fitness-content-v13';
+const assessmentToken = '20260807-responsive-v14';
 const assessmentEntries = [
   'assessment.html',
   'start.html',

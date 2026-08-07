@@ -84,6 +84,9 @@ Evidence/message IDs: `______________________________________________________`
 
 ## 5. Zapier live mapping
 
+- [ ] Retest the Catch Hook after deploying schema `2.0` and confirm the direct fields `name`, `age`, `social_media`, `email` and `number` are available.
+- [ ] Map `notification_email_subject` and `notification_email_body` into the owner email action; do not map only the trigger `email` field.
+- [ ] If using ChatGPT by Zapier, map only `chatgpt_context`, append its output to the owner email, and confirm AI failure does not prevent the deterministic notification.
 - [ ] Map age, required acknowledgement, email-marketing consent, consent/privacy versions and timestamps.
 - [ ] Map first/latest touch, UTMs, click IDs, lead score/status, recommendation and result URL.
 - [ ] Remove new-flow reliance on DOB, age confirmation and WhatsApp marketing consent.

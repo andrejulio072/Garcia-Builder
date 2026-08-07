@@ -156,11 +156,22 @@ Supabase stores `submission_id` as the durable idempotency key. It is not forwar
 
 Zapier payload fields:
 
+- `schema_version` (`2.0`)
+- `event_name` (`starter_assessment_lead_created`)
 - `lead_id`
 - `created_at`
-- `first_name`
+- `name` (stable alias for the full name)
+- `age`
+- `social_media` (stable alias for the supplied Instagram/Facebook profile)
 - `email`
+- `number` (stable alias for the supplied WhatsApp number)
+- `notification_email_subject`
+- `notification_email_body`
+- `chatgpt_context` (qualification context with name, email, number and social profile excluded)
+- `full_name`
+- `first_name`
 - `whatsapp`
+- `instagram_handle`
 - `language`
 - `primary_goal`
 - `training_days`
@@ -177,7 +188,6 @@ Zapier payload fields:
 - `nurture_eligible`
 - `nurture_sequence`
 - `marketing_email_consent`
-- `age`
 - `resource_delivery_acknowledgement`
 - `consent_copy_version`
 - `privacy_policy_version`
@@ -190,6 +200,38 @@ Zapier payload fields:
 - `referrer`
 
 Failures are logged without blocking the visitor result.
+
+### Zapier owner notification and ChatGPT mapping
+
+The webhook is a flat JSON object. In **Webhooks by Zapier - Catch Hook**, leave **Pick Off A Child Key** blank. After deploying a payload schema change, submit one identifiable test assessment and use **Test trigger / Find new records** so Zapier refreshes the available fields. An older trigger sample can make later actions appear to contain only `email` even though the webhook sends the complete object.
+
+Recommended Zap steps:
+
+1. **Webhooks by Zapier - Catch Hook** receives the assessment payload.
+2. Optional **ChatGPT (OpenAI) by Zapier** step receives only `chatgpt_context`.
+3. **Gmail**, **Email by Zapier**, or the selected notification action sends the owner notification.
+
+Use this ChatGPT instruction with the `chatgpt_context` field:
+
+```text
+Summarize this fitness assessment for a human coach in no more than five bullets.
+Include the goal, realistic training availability, main barrier, timing, requested support,
+and one practical follow-up suggestion. Do not infer medical conditions or invent facts.
+Return plain text only.
+
+Assessment context:
+{{chatgpt_context}}
+```
+
+Do not map `name`, `email`, `number`, `social_media`, `full_name`, `whatsapp`, or `instagram_handle` into the ChatGPT action. Those fields are not needed to summarize the assessment.
+
+Map the email action as follows:
+
+- **Subject**: `notification_email_subject`
+- **Body**: `notification_email_body`
+- **AI summary**: append the ChatGPT action output below the deterministic notification body
+
+The deterministic body already contains name, age, email, WhatsApp/number, social media, goal, timeline, lead status, recommendation and result URL. This means the owner still receives complete lead details when the ChatGPT step is disabled or fails. Configure the Zap so a ChatGPT failure does not discard the webhook lead or block the owner notification.
 
 The submit endpoint starts email delivery, warm-lead alerting and Zapier notification in parallel, then waits for their controlled completion before ending the serverless request. Brevo and Zapier calls use explicit timeouts so an unavailable provider cannot hold the assessment indefinitely.
 

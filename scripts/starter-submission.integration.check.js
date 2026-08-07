@@ -181,6 +181,62 @@ async function run() {
   {
     const fake = createSupabase();
     const originalFetch = global.fetch;
+    let webhookPayload = null;
+    process.env.ZAPIER_LEAD_WEBHOOK_URL = 'https://hooks.example.test/lead';
+    global.fetch = async (_url, options) => {
+      webhookPayload = JSON.parse(options.body);
+      return { ok: true, status: 200 };
+    };
+    try {
+      const res = await submit(loadSubmitHandler(fake.client), {
+        contact: {
+          ...contact,
+          full_name: 'Assessment Test Person',
+          email: 'assessment.lead@example.com',
+          whatsapp: '+353871234567',
+          instagram_handle: '@assessment.test'
+        }
+      });
+      assert.strictEqual(res.statusCode, 200);
+      assert.strictEqual(res.payload.leadSaved, true);
+      assert(webhookPayload, 'Zapier webhook payload was not sent');
+      assert.strictEqual(webhookPayload.schema_version, '2.0');
+      assert.strictEqual(webhookPayload.event_name, 'starter_assessment_lead_created');
+      assert.deepStrictEqual({
+        name: webhookPayload.name,
+        age: webhookPayload.age,
+        social_media: webhookPayload.social_media,
+        email: webhookPayload.email,
+        number: webhookPayload.number
+      }, {
+        name: 'Assessment Test Person',
+        age: 35,
+        social_media: '@assessment.test',
+        email: 'assessment.lead@example.com',
+        number: '+353871234567'
+      });
+      for (const expected of [
+        'Name: Assessment Test Person',
+        'Age: 35',
+        'Email: assessment.lead@example.com',
+        'WhatsApp / number: +353871234567',
+        'Social media: @assessment.test'
+      ]) {
+        assert(webhookPayload.notification_email_body.includes(expected), `Zapier notification body missing ${expected}`);
+      }
+      for (const pii of ['Assessment Test Person', 'assessment.lead@example.com', '+353871234567', '@assessment.test']) {
+        assert(!webhookPayload.chatgpt_context.includes(pii), 'ChatGPT context must exclude contact PII');
+      }
+      assert(fake.state.updates.some(({ payload }) => payload.zapier_notified_at), 'Successful Zapier notification timestamp was not stored');
+    } finally {
+      global.fetch = originalFetch;
+      delete process.env.ZAPIER_LEAD_WEBHOOK_URL;
+    }
+  }
+
+  {
+    const fake = createSupabase();
+    const originalFetch = global.fetch;
     process.env.ZAPIER_LEAD_WEBHOOK_URL = 'https://hooks.example.test/lead';
     global.fetch = async () => ({ ok: false, status: 503 });
     try {

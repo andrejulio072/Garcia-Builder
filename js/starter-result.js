@@ -1,11 +1,12 @@
 (function () {
   const resultPathSegment = window.location.pathname.split('/').filter(Boolean).pop() || '';
-  const token = /^(?:start-result(?:\.html)?)$/i.test(resultPathSegment)
+  const resultParams = new URLSearchParams(window.location.search);
+  const tokenFromPath = /^(?:start-result(?:\.html)?)$/i.test(resultPathSegment)
     ? ''
     : decodeURIComponent(resultPathSegment);
+  const token = tokenFromPath || decodeURIComponent(resultParams.get('token') || resultParams.get('resultToken') || '');
   const i18n = window.GB_STARTER_I18N;
   let language = i18n?.getBrowserLanguage?.() || 'en';
-  const resultParams = new URLSearchParams(window.location.search);
   const extendedLanguages = ['fr', 'it', 'de', 'pl', 'ro', 'ar', 'ru'];
   const isCardResult = resultParams.get('source') === 'card' || extendedLanguages.includes(language);
   const DELIVERY_KEY_PREFIX = 'gb_starter_delivery_';
@@ -227,7 +228,7 @@
       [payload.actions?.bookingUrl, 'starter-secondary', copy('bookConsultation'), 'booking'],
       [payload.actions?.instagramUrl, 'starter-secondary', 'Instagram', 'instagram'],
       [payload.actions?.contactEmailUrl, 'starter-secondary', copy('emailAndre'), 'email'],
-      [payload.actions?.siteUrl, 'starter-secondary', copy('visitSite'), 'website']
+      [payload.actions?.contactUrl || '/contact', 'starter-secondary', copy('contactAndreCta'), 'contact']
     ];
     definitions.forEach(([href, className, label, channel]) => {
       if (!href) return;
@@ -264,10 +265,20 @@
     nutritionLink.textContent = copy('calculateMacros');
     nutritionLink.addEventListener('click', () => track('nutrition_tools_click', {}));
 
+    const printButton = document.createElement('button');
+    printButton.className = 'starter-secondary result-action result-print-action';
+    printButton.type = 'button';
+    printButton.textContent = copy('printPlan');
+    printButton.addEventListener('click', () => {
+      track('starter_plan_printed', {});
+      window.print();
+    });
+
     contactLinks.forEach((link) => actions.appendChild(link));
     actions.appendChild(plansLink);
     actions.appendChild(workoutLink);
     actions.appendChild(nutritionLink);
+    actions.appendChild(printButton);
 
     if (contactHeading && contactCopy && !payload.actions?.showWarmLeadCta) {
       contactHeading.textContent = copy('helpPlanTitle');
@@ -320,7 +331,7 @@
 
   async function loadResult() {
     if (!token) throw new Error(copy('resultNotFound'));
-    const response = await fetch(`/api/starter-assessment/result/${encodeURIComponent(token)}?language=${encodeURIComponent(language)}`);
+    const response = await fetch(`/api/starter-assessment/result?token=${encodeURIComponent(token)}&language=${encodeURIComponent(language)}`);
     const payload = await response.json().catch(() => ({}));
     if (!response.ok || !payload.ok) throw new Error(payload.error || copy('resultNotFound'));
     title.textContent = copy('resultHeading', { title: payload.recommendation.resultTitle });

@@ -174,6 +174,7 @@ Zapier payload fields:
 - `instagram_handle`
 - `language`
 - `primary_goal`
+- `training_environment`
 - `training_days`
 - `main_barrier`
 - `starting_timeline`

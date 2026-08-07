@@ -392,6 +392,9 @@ assert(parsedVercelConfig.rewrites.some((route) => route.source === '/assessment
 assert(parsedVercelConfig.redirects.some((route) => route.source === '/go/card' && route.destination === '/api/card-redirect' && route.permanent === false), 'Vercel should route QR requests through the attribution-preserving redirect endpoint before static fallback resolution');
 assert(!parsedVercelConfig.redirects.some((route) => route.source === '/go/card' && /utm_/i.test(route.destination || '')), 'Vercel must not apply fixed QR defaults before incoming attribution can be evaluated');
 assert(parsedVercelConfig.rewrites.some((route) => route.source === '/start/contact' && route.destination === '/start-contact.html'), 'Vercel should serve the direct contact route');
+assert(parsedVercelConfig.redirects.some((route) => route.source === '/start-result.html' && route.destination === '/start-result'), 'Legacy result page URLs should preserve their query on the stable result route');
+assert(parsedVercelConfig.redirects.some((route) => route.source === '/start/result/:token' && route.destination === '/start-result?token=:token' && route.permanent === false), 'Legacy path tokens should redirect to the refresh-safe result route');
+assert(parsedVercelConfig.rewrites.some((route) => route.source === '/start/result' && route.destination === '/start-result.html'), 'Previously cached result redirects should still serve the dedicated result page');
 assert(starterContactPage.includes('https://wa.me/447508497586'), 'QR contact page should include Andre WhatsApp');
 assert(starterContactPage.includes('https://instagram.com/garciabuilder.fitness'), 'QR contact page should include Instagram');
 assert(starterContactPage.includes('https://calendly.com/andrenjulio072/consultation'), 'QR contact page should include consultation booking');

@@ -32,7 +32,7 @@
       benefitThree: 'Practical nutrition guidance',
       benefitFour: 'A practical 7-day starting plan',
       benefitFive: 'Available in 10 languages',
-      packagesCta: 'See Packages', contactAndreCta: 'Contact Andre', viewPlans: 'View Coaching Plans',
+      packagesCta: 'See Packages', contactAndreCta: 'Contact Andre', viewPlans: 'View Coaching Plans', printPlan: 'Print or Save My Plan',
       packagesChoiceTitle: 'Package information', packagesChoiceCopy: 'Compare coaching options before filling anything in.',
       contactChoiceTitle: 'Contact Andre directly', contactChoiceCopy: 'Use WhatsApp, Instagram, email or book a consultation.',
       transformationsKicker: 'REAL COACHING OUTCOMES',

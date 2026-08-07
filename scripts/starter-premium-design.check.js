@@ -118,6 +118,9 @@ assert(resultClient.includes("resource.role !== 'primary'"), 'Primary guide must
 assert(resultClient.includes("copy('downloadGuide')"), 'Primary guide CTA must use translated copy');
 assert(resultClient.includes("track('contact_click'"), 'Result contact actions must use the canonical contact_click event');
 assert(resultClient.includes("track('view_plans_click'"), 'Result plans action must use the canonical view_plans_click event');
+assert(resultClient.includes("payload.actions?.contactUrl || '/contact'"), 'Result must always expose a direct Contact Andre route');
+assert(resultClient.includes('window.print()'), 'Result must let visitors print or save their complete plan');
+assert(css.includes('@media print'), 'Result must provide print-specific plan styling');
 
 for (const token of [
   '--gb-bg',

@@ -161,6 +161,7 @@ async function run() {
     assert.strictEqual(res.payload.isNewLead, false);
     assert.strictEqual(res.payload.deduplicated, true);
     assert(res.payload.resultToken);
+    assert.match(res.payload.resultUrl, /\/start-result\?token=/, 'Result redirect must use the refresh-safe result page');
   }
 
   {
@@ -181,6 +182,7 @@ async function run() {
   {
     const fake = createSupabase();
     const originalFetch = global.fetch;
+    const sentEmails = [];
     let webhookPayload = null;
     process.env.ZAPIER_LEAD_WEBHOOK_URL = 'https://hooks.example.test/lead';
     global.fetch = async (_url, options) => {
@@ -188,7 +190,15 @@ async function run() {
       return { ok: true, status: 200 };
     };
     try {
-      const res = await submit(loadSubmitHandler(fake.client), {
+      const res = await submit(loadSubmitHandler(fake.client, async (message) => {
+        sentEmails.push(message);
+        return { ok: true };
+      }), {
+        answers: {
+          ...answers,
+          support_preference: 'A fully tailored coaching plan',
+          starting_timeline: 'As soon as possible'
+        },
         contact: {
           ...contact,
           full_name: 'Assessment Test Person',
@@ -215,17 +225,37 @@ async function run() {
         email: 'assessment.lead@example.com',
         number: '+353871234567'
       });
+      assert.strictEqual(webhookPayload.training_environment, 'Commercial gym');
       for (const expected of [
         'Name: Assessment Test Person',
         'Age: 35',
         'Email: assessment.lead@example.com',
         'WhatsApp / number: +353871234567',
-        'Social media: @assessment.test'
+        'Social media: @assessment.test',
+        'Training environment: Commercial gym'
       ]) {
         assert(webhookPayload.notification_email_body.includes(expected), `Zapier notification body missing ${expected}`);
       }
       for (const pii of ['Assessment Test Person', 'assessment.lead@example.com', '+353871234567', '@assessment.test']) {
         assert(!webhookPayload.chatgpt_context.includes(pii), 'ChatGPT context must exclude contact PII');
+      }
+      assert(sentEmails.length >= 2, 'Expected both result and warm-lead transactional emails to be sent');
+      const warmLeadEmail = sentEmails.find((message) => String(message.subject || '').startsWith('Warm Garcia Builder Lead:'));
+      assert(warmLeadEmail, 'Warm lead email was not sent');
+      const warmLeadText = `${warmLeadEmail.text || ''}\n${warmLeadEmail.html || ''}`;
+      for (const expected of [
+        'Assessment Test Person',
+        'assessment.lead@example.com',
+        '+353871234567',
+        '35',
+        '@assessment.test',
+        'Commercial gym',
+        '3 days',
+        'Nutrition and food choices',
+        'A fully tailored coaching plan',
+        'As soon as possible'
+      ]) {
+        assert(warmLeadText.includes(expected), `Warm lead email missing ${expected}`);
       }
       assert(fake.state.updates.some(({ payload }) => payload.zapier_notified_at), 'Successful Zapier notification timestamp was not stored');
     } finally {

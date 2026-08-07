@@ -413,8 +413,13 @@
     },
     {
       "source": "/start-result.html",
-      "destination": "/start/result",
+      "destination": "/start-result",
       "permanent": true
+    },
+    {
+      "source": "/start/result/:token",
+      "destination": "/start-result?token=:token",
+      "permanent": false
     },
     {
       "source": "/terms.html",
@@ -461,7 +466,7 @@
       "destination": "/start-contact.html"
     },
     {
-      "source": "/start/result/:token",
+      "source": "/start/result",
       "destination": "/start-result.html"
     },
     {

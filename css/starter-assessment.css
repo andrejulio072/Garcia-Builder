@@ -3315,6 +3315,11 @@ body.result-page::before {
   font-size: 0.84rem;
 }
 
+.result-actions button.result-action {
+  width: 100%;
+  cursor: pointer;
+}
+
 /* 18. Motion */
 @keyframes gb-logo-arrive {
   from { opacity: 0; transform: translateY(-8px); }
@@ -4139,5 +4144,73 @@ body.result-page::before {
 
   .progress-segments li::after {
     transition: none;
+  }
+}
+
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  body.starter-page.result-page {
+    background: #fff !important;
+    color: #111 !important;
+  }
+
+  .result-page .starter-header,
+  .result-page .skip-link,
+  .result-page .result-ambient,
+  .result-page .result-reveal-mark,
+  .result-page .recommended-action,
+  .result-page .delivery-notice,
+  .result-page .result-resources,
+  .result-page .warm-lead-box {
+    display: none !important;
+  }
+
+  .result-page .starter-shell,
+  .result-page .result-panel {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #fff !important;
+    box-shadow: none;
+  }
+
+  .result-page .starter-plan-output {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-color: #999;
+  }
+
+  .result-page .starter-plan-grid {
+    display: block;
+  }
+
+  .result-page .starter-plan-block {
+    break-inside: avoid;
+    margin: 0 0 14px;
+    border: 1px solid #bbb;
+    background: #fff !important;
+    box-shadow: none;
+  }
+
+  .result-page h1,
+  .result-page h2,
+  .result-page h3,
+  .result-page h4,
+  .result-page p,
+  .result-page li,
+  .result-page .starter-plan-block h3,
+  .result-page .starter-plan-block p,
+  .result-page .starter-plan-block li {
+    color: #111 !important;
+  }
+
+  .result-page a {
+    color: #111 !important;
+    text-decoration: underline;
   }
 }

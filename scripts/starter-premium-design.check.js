@@ -51,22 +51,28 @@ for (const key of ['trustCredential', 'trustExperience', 'trustRating', 'trustLa
 }
 assert.equal(
   (assessment.match(/class="starter-transform-card"/g) || []).length,
-  3,
-  'Premium hero must expose three authentic transformation cards'
+  4,
+  'Premium hero must expose four authentic transformation cards'
 );
 assert.equal(
   (assessment.match(/class="starter-client-voice"/g) || []).length,
-  3,
-  'Premium transformation section must expose three client testimonials'
+  4,
+  'Premium transformation section must expose four client testimonials'
 );
 assert(
   assessment.indexOf('class="starter-transform-grid"') < assessment.indexOf('class="starter-client-voices"') &&
   assessment.indexOf('class="starter-client-voices"') < assessment.indexOf('class="starter-transform-footer"'),
   'Client testimonials must appear directly below the transformation cards'
 );
-for (const clientName of ['Conrad N.', 'James W.', 'Daniela C.']) {
+for (const clientName of ['Conrad N.', 'James W.', 'Daniela C.', 'Maria C.']) {
   assert(assessment.includes(clientName), `Premium testimonial is missing existing client ${clientName}`);
 }
+assert(assessment.includes('ana-paula-before.png') && assessment.includes('ana-paula-after.png'), 'Fourth transformation must show Ana Paula before and after');
+assert.equal((assessment.match(/class="starter-fitness-guide"/g) || []).length, 4, 'Paid assessment must expose four fitness guide cards');
+for (const route of ['/blog-mobility-injury-prevention', '/blog-strength-beginners', '/blog-warm-up-guide', '/blog-gym-confidence-beginners']) {
+  assert(assessment.includes(`href="${route}"`), `Paid assessment is missing fitness guide route ${route}`);
+}
+assert(css.includes("url('/assets/images/blog/preview-strength-beginners-photo.jpg')"), 'Paid assessment must use a fitness-related background image');
 assert(assessment.includes('data-start-assessment-proof'), 'Transformation proof section must reinforce the assessment CTA');
 assert(!assessment.includes('<nav'), 'Paid assessment must not add competing navigation');
 assert(assessment.includes('class="starter-page-return__link" href="/"'), 'Paid assessment must expose the compact main-site return route');
@@ -184,6 +190,10 @@ for (const key of [
   'premiumReviewOneQuote',
   'premiumReviewTwoQuote',
   'premiumReviewThreeQuote',
+  'premiumReviewFourQuote',
+  'premiumReviewFourMeta',
+  'transformationBadgeFour',
+  'transformationCaptionFour',
   'coachAuthorityPromise',
   'almostThere',
   'contactReadyLabel',
@@ -218,6 +228,8 @@ for (const language of expandedLocales.SUPPORTED) {
   assert(expandedLocales.UI[language]?.contactTitle, `${language} contact-step translation is missing`);
   assert(expandedLocales.UI[language]?.resultResourcesTitle, `${language} result translation is missing`);
   assert(expandedLocales.UI[language]?.premiumReviewOneQuote, `${language} testimonial translation is missing`);
+  assert(expandedLocales.UI[language]?.premiumReviewFourQuote, `${language} fourth testimonial translation is missing`);
+  assert(expandedLocales.UI[language]?.transformationCaptionFour, `${language} fourth transformation translation is missing`);
   assert(expandedLocales.TEXT[language]?.['What would you most like to achieve right now?'], `${language} question translation is missing`);
   assert(expandedLocales.EMAIL[language]?.subject, `${language} email subject translation is missing`);
 }

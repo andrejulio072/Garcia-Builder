@@ -374,7 +374,9 @@ assert(paidAssessmentPage.includes('name="instagram_handle"'), 'Paid assessment 
 assert(!paidAssessmentPage.includes('name="facebook_profile"'), 'Paid assessment contact form should not include Facebook pre-conversion');
 assert(!paidAssessmentPage.includes('name="preferred_contact_method"'), 'Paid assessment contact form should not include preferred contact pre-conversion');
 assert(!paidAssessmentPage.includes('name="best_contact_time"'), 'Paid assessment contact form should not include best contact time pre-conversion');
-assert.equal((paidAssessmentPage.match(/class="starter-transform-card"/g) || []).length, 3, 'Paid assessment should show three transformation proof cards');
+assert.equal((paidAssessmentPage.match(/class="starter-transform-card"/g) || []).length, 4, 'Paid assessment should show four transformation proof cards');
+assert.equal((paidAssessmentPage.match(/class="starter-client-voice"/g) || []).length, 4, 'Paid assessment should show four client testimonials');
+assert.equal((paidAssessmentPage.match(/class="starter-fitness-guide"/g) || []).length, 4, 'Paid assessment should show four fitness guide cards');
 assert(homepage.includes('/assessment?utm_source=website&amp;utm_medium=organic&amp;utm_campaign=starter_assessment&amp;utm_content=site_assessment_cta'), 'Main website should include assessment CTA with organic UTM parameters');
 assert(paidAssessmentPage.includes('class="starter-page-return__link" href="/"'), 'Paid assessment should include a compact route back to the main website');
 assert(paidAssessmentPage.includes('data-starter-copy="returnToMainSite"'), 'Assessment return route should use localized copy');

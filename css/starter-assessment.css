@@ -1562,11 +1562,17 @@ select {
 /* 14. Premium paid-funnel visual system */
 body.starter-page-paid,
 body.result-page {
-  background:
+  background-color: #07090c;
+  background-image:
     radial-gradient(circle at 18% 14%, rgba(246, 200, 78, 0.14), transparent 27rem),
     radial-gradient(circle at 92% 18%, rgba(109, 147, 173, 0.12), transparent 31rem),
     radial-gradient(circle at 50% 110%, rgba(246, 200, 78, 0.06), transparent 34rem),
-    linear-gradient(145deg, #07090c 0%, var(--gb-bg-deep) 54%, #090d12 100%);
+    linear-gradient(145deg, rgba(7, 9, 12, 0.88) 0%, rgba(5, 7, 10, 0.92) 54%, rgba(9, 13, 18, 0.9) 100%),
+    url('/assets/images/blog/preview-strength-beginners-photo.jpg');
+  background-position: center, center, center, center, center top;
+  background-size: auto, auto, auto, auto, cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 body.starter-page-paid::before,
@@ -2184,6 +2190,7 @@ body.result-page::before {
 }
 
 .starter-page-paid .starter-transform-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 13px;
   margin-top: 22px;
 }
@@ -2224,6 +2231,40 @@ body.result-page::before {
 .starter-page-paid .starter-transform-card:hover img {
   transform: scale(1.025);
   filter: saturate(1) contrast(1.04);
+}
+
+.starter-transform-media-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.starter-transform-shot {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.starter-transform-shot + .starter-transform-shot {
+  border-left: 1px solid rgba(246, 200, 78, 0.34);
+}
+
+.starter-page-paid .starter-transform-shot img {
+  object-position: center top;
+}
+
+.starter-transform-shot em {
+  position: absolute;
+  left: 7px;
+  top: 7px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  background: rgba(5, 8, 11, 0.82);
+  color: #fff4ce;
+  font-size: 0.55rem;
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .starter-transform-media span {
@@ -2302,7 +2343,7 @@ body.result-page::before {
 
 .starter-client-voices-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 13px;
   margin-top: 16px;
 }
@@ -2488,6 +2529,123 @@ body.result-page::before {
 
 .starter-page-paid .legal-note-hero {
   margin-bottom: 0;
+}
+
+.starter-fitness-guides {
+  margin-top: 24px;
+  padding: clamp(20px, 2.5vw, 30px);
+  border: 1px solid rgba(246, 200, 78, 0.2);
+  border-radius: var(--gb-radius-lg);
+  background:
+    linear-gradient(145deg, rgba(8, 12, 17, 0.96), rgba(11, 16, 22, 0.9)),
+    rgba(7, 10, 14, 0.94);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
+}
+
+.starter-fitness-guides-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.starter-fitness-guides-heading p {
+  margin: 0 0 8px;
+  color: var(--gb-gold-light);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.starter-fitness-guides-heading h2 {
+  max-width: 700px;
+  margin: 0;
+  color: var(--gb-text-primary);
+  font-family: Sora, Manrope, sans-serif;
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+.starter-fitness-guides-heading > span {
+  flex: 0 0 auto;
+  color: var(--gb-text-secondary);
+  font-size: 0.72rem;
+}
+
+.starter-fitness-guides-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
+  margin-top: 22px;
+}
+
+.starter-fitness-guide {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: var(--gb-radius-md);
+  background: rgba(10, 14, 19, 0.94);
+  color: var(--gb-text-primary);
+  text-decoration: none;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.26);
+  transition: transform var(--gb-transition-standard) var(--gb-ease-snappy), border-color var(--gb-transition-fast) ease, box-shadow var(--gb-transition-standard) ease;
+}
+
+.starter-fitness-guide:hover,
+.starter-fitness-guide:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(246, 200, 78, 0.4);
+  box-shadow: 0 24px 44px rgba(0, 0, 0, 0.34);
+}
+
+.starter-fitness-guide > img {
+  width: 100%;
+  height: 165px;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  filter: saturate(0.88) contrast(1.04) brightness(0.82);
+}
+
+.starter-fitness-guide:nth-child(4) > img {
+  object-position: center 24%;
+}
+
+.starter-fitness-guide > div {
+  display: flex;
+  min-height: 218px;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.starter-fitness-guide > div > span {
+  color: var(--gb-gold-light);
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.starter-fitness-guide h3 {
+  margin: 9px 0 0;
+  color: var(--gb-text-primary);
+  font-family: Sora, Manrope, sans-serif;
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.starter-fitness-guide p {
+  margin: 10px 0 16px;
+  color: var(--gb-text-secondary);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.starter-fitness-guide strong {
+  margin-top: auto;
+  color: var(--gb-gold);
+  font-size: 0.75rem;
 }
 
 .starter-link-button,
@@ -3242,12 +3400,23 @@ body.result-page::before {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .starter-page-paid .starter-transform-grid,
+  .starter-client-voices-grid,
+  .starter-fitness-guides-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .result-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 760px) {
+  body.starter-page-paid,
+  body.result-page {
+    background-attachment: scroll;
+    background-position: center, center, center, center, 58% top;
+  }
   .starter-page-paid .starter-header,
   .starter-page-paid .starter-shell,
   .result-page .starter-header,
@@ -3385,6 +3554,37 @@ body.result-page::before {
 
   .starter-page-paid .starter-transformations-premium {
     padding: 18px;
+  }
+
+  .starter-fitness-guides {
+    padding: 18px;
+  }
+
+  .starter-fitness-guides-heading {
+    display: grid;
+    gap: 10px;
+  }
+
+  .starter-fitness-guides-heading > span {
+    line-height: 1.5;
+  }
+
+  .starter-fitness-guides-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .starter-fitness-guide {
+    display: grid;
+    grid-template-columns: minmax(112px, 0.42fr) minmax(0, 0.58fr);
+  }
+
+  .starter-fitness-guide > img {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  .starter-fitness-guide > div {
+    min-height: 190px;
   }
 
   .starter-transform-footer {
@@ -3528,6 +3728,23 @@ body.result-page::before {
 
   .starter-page-paid .starter-transformations-premium {
     padding: 15px;
+  }
+
+  .starter-fitness-guides {
+    padding: 15px;
+  }
+
+  .starter-fitness-guide {
+    grid-template-columns: 1fr;
+  }
+
+  .starter-fitness-guide > img {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .starter-fitness-guide > div {
+    min-height: 0;
   }
 
   .starter-page-paid .starter-transformations-premium h2 {

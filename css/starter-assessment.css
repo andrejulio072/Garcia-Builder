@@ -3908,10 +3908,10 @@ body.result-page::before {
   .starter-page-paid .starter-proof-hero,
   .coach-authority-card,
   .starter-page-paid .signal-card,
-  .starter-transformations-premium,
-  .starter-trust-strip,
-  .starter-process-block,
-  .starter-next-cue {
+  .starter-page-paid .starter-transformations-premium,
+  .starter-page-paid .starter-hero > .starter-trust-strip,
+  .starter-page-paid .starter-hero > .starter-process-block,
+  .starter-page-paid .starter-next-cue {
     opacity: 1;
     transform: none;
     clip-path: none;

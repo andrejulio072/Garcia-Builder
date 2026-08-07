@@ -139,7 +139,20 @@ for (const token of [
 ]) {
   assert(css.includes(token), `Premium design token is missing: ${token}`);
 }
-assert(css.includes('@media (prefers-reduced-motion: reduce)'), 'Reduced-motion CSS is missing');
+const reducedMotionStart = css.indexOf('@media (prefers-reduced-motion: reduce)');
+assert(reducedMotionStart >= 0, 'Reduced-motion CSS is missing');
+const reducedMotionCss = css.slice(reducedMotionStart);
+for (const selector of [
+  '.starter-page-paid .starter-transformations-premium',
+  '.starter-page-paid .starter-hero > .starter-trust-strip',
+  '.starter-page-paid .starter-hero > .starter-process-block',
+  '.starter-page-paid .starter-next-cue'
+]) {
+  assert(
+    reducedMotionCss.includes(selector),
+    `Reduced-motion visibility must match the paid-page specificity for ${selector}`
+  );
+}
 assert(css.includes(':focus-visible'), 'Focus-visible styling is missing');
 assert(css.includes('@media (forced-colors: active)'), 'High-contrast support is missing');
 assert(/\.starter-primary\s*\{[\s\S]{0,120}?animation:\s*none;/.test(css), 'Primary CTAs must not use an infinite pulse');

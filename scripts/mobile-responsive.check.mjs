@@ -392,8 +392,9 @@ try {
       const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
       assert(response?.ok(), `${route.path} should load successfully at ${viewport.width}px`);
       if (route.kind === 'card') {
-        await page.waitForFunction(() => /\/start(?:\.html)?$/.test(window.location.pathname));
+        await page.waitForFunction(() => window.location.pathname === '/assessment');
         const redirectedUrl = new URL(page.url());
+        assert.equal(redirectedUrl.pathname, '/assessment', 'QR redirect should use the complete canonical assessment');
         assert.equal(redirectedUrl.searchParams.get('utm_source'), 'business_card', 'QR redirect should preserve utm_source');
         assert.equal(redirectedUrl.searchParams.get('utm_medium'), 'qr', 'QR redirect should preserve utm_medium');
         assert.equal(redirectedUrl.searchParams.get('utm_campaign'), 'starter_assessment', 'QR redirect should preserve utm_campaign');
@@ -404,7 +405,7 @@ try {
 
       if (route.kind === 'workouts') await auditWorkouts(page, viewport);
       else if (route.kind === 'nutrition') await auditNutrition(page, viewport);
-      else if (route.kind === 'assessment') await auditAssessment(page, route, viewport);
+      else if (route.kind === 'assessment' || route.kind === 'card') await auditAssessment(page, route, viewport);
 
       results.push(`${route.path} @ ${viewport.width}px`);
       await page.close();

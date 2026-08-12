@@ -79,10 +79,7 @@ assert(assessment.includes('class="starter-page-return__link" href="/"'), 'Paid 
 assert(css.includes('.starter-page-return__link'), 'Main-site return route must retain its compact button treatment');
 assert(css.includes('.starter-fitness-guides'), 'Existing-site article previews need dedicated visual styling');
 
-assert(start.includes('starter-page-paid starter-page-card'), 'QR assessment must inherit the premium visual structure');
-assert(start.includes('starter-quick-contact-bar'), 'QR assessment must expose compact contact actions at the top');
-assert(start.includes('https://wa.me/447508497586'), 'QR assessment must expose WhatsApp as a quick contact action');
-assert(start.includes('https://instagram.com/garciabuilder.fitness'), 'QR assessment must expose Instagram as a quick contact action');
+assert(card.includes("var target = '/assessment?'"), 'QR route must use the complete premium assessment without a reduced duplicate');
 assert(css.includes('.result-plan-tools'), 'Result plan actions need a prominent visual treatment');
 assert(resultClient.includes('viewFullWorkout') && resultClient.includes('viewNutritionGuide'), 'Result must expose explicit workout and nutrition actions');
 assert(resultClient.includes('window.print()'), 'Result must expose print or PDF functionality');
@@ -249,9 +246,6 @@ for (const language of expandedLocales.SUPPORTED) {
 }
 
 assert(start.includes('data-start-assessment'), '/start assessment entry must remain available');
-assert(!start.includes('/packages?utm_source=business_card'), '/start must keep the assessment as the primary QR journey');
-assert(start.includes('https://wa.me/447508497586'), '/start WhatsApp shortcut must remain available');
-assert(start.includes('https://instagram.com/garciabuilder.fitness'), '/start Instagram shortcut must remain available');
 assert(server.includes("app.get('/start'"), 'Server /start route must remain available');
 assert(vercel.includes('"source": "/go/card"'), 'Vercel /go/card route must remain available');
 assert(card.includes('new URLSearchParams(window.location.search)'), 'QR card route must preserve incoming attribution');

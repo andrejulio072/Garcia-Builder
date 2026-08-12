@@ -319,7 +319,7 @@ const starterMigration = fs.readFileSync(path.join(migrationDirectory, starterMi
   );
 });
 const defaultCardRedirect = new URL(buildCardRedirectUrl({}), 'https://www.garciabuilder.fitness');
-assert.equal(defaultCardRedirect.pathname, '/start');
+assert.equal(defaultCardRedirect.pathname, '/assessment', 'QR must resolve to the complete canonical assessment');
 assert.equal(defaultCardRedirect.searchParams.get('utm_source'), 'business_card');
 assert.equal(defaultCardRedirect.searchParams.get('utm_medium'), 'qr');
 assert.equal(defaultCardRedirect.searchParams.get('utm_campaign'), 'starter_assessment');
@@ -355,16 +355,7 @@ assert(!vercelConfig.includes('"key": "Access-Control-Allow-Origin"'), 'Vercel m
 assert(starterPage.includes('name="website"'), 'Starter form should keep the honeypot field');
 assert(starterPage.includes('/js/starter-context.js'), 'Starter page should load shared starter context script');
 assert(starterContext.includes('detectEntryContext'), 'Shared starter context should include entry-context classification');
-assert(starterPage.includes('data-start-assessment'), 'QR landing should keep the assessment start button');
-assert(starterPage.includes('data-starter-entry-default="qr"'), 'QR landing should keep QR as its default entry context');
-assert(starterPage.includes('starter-page-paid starter-page-card'), 'QR landing should use the premium assessment presentation');
-assert(starterPage.includes('starter-hero-premium'), 'QR landing should expose the premium assessment hero');
-assert(starterPage.includes('starter-quick-contact-bar'), 'QR landing should expose compact contact actions near the top');
-assert(starterPage.includes('https://wa.me/447508497586'), 'QR landing should expose Andre WhatsApp as a quick action');
-assert(starterPage.includes('https://instagram.com/garciabuilder.fitness'), 'QR landing should expose Instagram as a quick action');
-assert(!starterPage.includes('/packages?utm_source=business_card'), 'QR landing should keep the assessment as the primary pre-result journey');
-assert(!starterPage.includes('/start/contact?utm_source=business_card'), 'QR landing should avoid a competing full contact card before the assessment');
-assert(starterPage.includes('starter-plan-signal-row'), 'QR landing should preview training, nutrition and instant delivery value');
+assert(starterPage.includes('data-start-assessment'), 'Legacy /start assessment entry should remain functional');
 assert(resultClient.includes('result-plan-tools'), 'Result page should place the main plan actions above the detailed plan');
 assert(resultClient.includes('viewFullWorkout'), 'Result page should provide an explicit complete-workout action');
 assert(resultClient.includes('viewNutritionGuide'), 'Result page should provide an explicit nutrition-guidance action');
@@ -398,7 +389,8 @@ assert(homepage.includes('class="homepage-assessment-shortcut__link"'), 'Homepag
 assert(homepage.includes('utm_content=homepage_footer_assessment'), 'Homepage footer assessment shortcut should preserve its own attribution');
 assert(paidAssessmentPage.includes('/cookie-policy'), 'Paid assessment page should expose cookie policy link');
 assert(paidAssessmentPage.includes('data-open-cookie-preferences'), 'Paid assessment page should expose cookie preferences action');
-assert(cardAssessmentPage.includes('url=/start?utm_source=business_card&amp;utm_medium=qr&amp;utm_campaign=starter_assessment'), 'QR card fallback redirect should preserve attribution');
+assert(cardAssessmentPage.includes('url=/assessment?utm_source=business_card&amp;utm_medium=qr&amp;utm_campaign=starter_assessment'), 'QR card fallback redirect should preserve attribution and use the complete assessment');
+assert(cardAssessmentPage.includes("var target = '/assessment?'"), 'QR card script must target the complete canonical assessment');
 assert(cardAssessmentPage.includes('new URLSearchParams(window.location.search)'), 'QR card script redirect should preserve incoming campaign parameters');
 assert(cardAssessmentPage.includes("window.location.replace(target)"), 'QR card script should replace the duplicate route with the canonical assessment');
 assert(!cardAssessmentPage.includes('<form'), 'QR card route should remain a lightweight redirect rather than duplicate the assessment form');
@@ -414,7 +406,7 @@ assert(starterContactPage.includes('https://instagram.com/garciabuilder.fitness'
 assert(starterContactPage.includes('https://calendly.com/andrenjulio072/consultation'), 'QR contact page should include consultation booking');
 assert(starterContactPage.includes('mailto:inquiries@garciabuilder.fitness'), 'QR contact page should include inquiries email');
 assert(starterContactPage.includes('/packages?utm_source=business_card'), 'QR contact page should include package link');
-assert(starterContactPage.includes('/start?utm_source=business_card'), 'QR contact page should still link back to the assessment');
+assert(starterContactPage.includes('/assessment?utm_source=business_card'), 'QR contact page should link back to the complete canonical assessment');
 const submitHandlerSource = fs.readFileSync(path.join(__dirname, '..', 'lib', 'starter-assessment', 'submit-handler.cjs'), 'utf8');
 assert(submitHandlerSource.includes(".eq('submission_id', submissionId)"), 'Starter submit should recover durable duplicate submissions by submission id');
 assert(submitHandlerSource.includes('<li>Age:'), 'Warm lead alert should calculate and display lead age');

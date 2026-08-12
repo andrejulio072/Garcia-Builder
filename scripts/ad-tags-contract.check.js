@@ -25,7 +25,7 @@ for (const entry of assessmentEntries) {
 const cardRedirect = read('go/card/index.html');
 assert(!cardRedirect.includes('connect.facebook.net/en_US/fbevents.js'), 'Business-card redirect must not bootstrap Meta directly');
 assert(!cardRedirect.includes('googletagmanager.com/gtag/js?id=AW-'), 'Business-card redirect must not load Google Ads directly');
-assert(cardRedirect.includes('/start.html?utm_source=business_card&amp;utm_medium=qr&amp;utm_campaign=starter_assessment'), 'Business-card fallback link must preserve assessment attribution');
+assert(cardRedirect.includes('/assessment?utm_source=business_card&amp;utm_medium=qr&amp;utm_campaign=starter_assessment'), 'Business-card fallback link must preserve assessment attribution');
 
 const bootstrap = read('js/tracking/site-consent-bootstrap.js');
 const adsLoader = read('js/tracking/ads-loader.js');

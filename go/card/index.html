@@ -19,7 +19,7 @@
   <meta name="twitter:description" content="Open the Garcia Builder Fitness starter assessment from the business-card link.">
   <meta name="twitter:image" content="https://www.garciabuilder.fitness/assets/og/garcia-builder-og.jpg">
   <noscript>
-    <meta http-equiv="refresh" content="0; url=/start?utm_source=business_card&amp;utm_medium=qr&amp;utm_campaign=starter_assessment">
+    <meta http-equiv="refresh" content="0; url=/assessment?utm_source=business_card&amp;utm_medium=qr&amp;utm_campaign=starter_assessment">
   </noscript>
   <script>
     (function () {
@@ -32,7 +32,7 @@
       Object.keys(defaults).forEach(function (key) {
         if (!params.get(key)) params.set(key, defaults[key]);
       });
-      var target = '/start.html?' + params.toString() + window.location.hash;
+      var target = '/assessment?' + params.toString() + window.location.hash;
       window.location.replace(target);
     })();
   </script>
@@ -40,7 +40,7 @@
 </head>
 <body>
   <main>
-    <p>Redirecting to <a href="/start.html?utm_source=business_card&amp;utm_medium=qr&amp;utm_campaign=starter_assessment">the starter assessment</a>.</p>
+    <p>Redirecting to <a href="/assessment?utm_source=business_card&amp;utm_medium=qr&amp;utm_campaign=starter_assessment">the starter assessment</a>.</p>
   </main>
 </body>
 </html>

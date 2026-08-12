@@ -187,13 +187,16 @@ async function main() {
   const card = await fetchText(`${baseUrl}/go/card?utm_content=smoke_test`);
   assert.equal(card.response.status, 200, '/go/card did not return HTTP 200');
   const cardUrl = new URL(card.response.url);
-  assert(['/start', '/start.html'].includes(cardUrl.pathname), '/go/card did not resolve to the canonical assessment');
+  assert.equal(cardUrl.pathname, '/assessment', '/go/card did not resolve to the complete canonical assessment');
   assert.equal(cardUrl.searchParams.get('utm_source'), 'business_card', 'QR redirect source attribution missing');
   assert.equal(cardUrl.searchParams.get('utm_medium'), 'qr', 'QR redirect medium attribution missing');
   assert.equal(cardUrl.searchParams.get('utm_campaign'), 'starter_assessment', 'QR redirect campaign attribution missing');
   assert.equal(cardUrl.searchParams.get('utm_content'), 'smoke_test', 'QR redirect discarded incoming attribution');
   assert(card.text.includes('data-start-assessment'), 'Canonical assessment entry is missing after the QR redirect');
-  add('QR card redirect', 'PASS', 'Resolved to /start with defaults and incoming attribution preserved');
+  assert(card.text.includes('starter-transform-grid'), 'QR assessment is missing the complete transformation section');
+  assert(card.text.includes('starter-client-voices'), 'QR assessment is missing client testimonials');
+  assert(card.text.includes('starter-fitness-guides'), 'QR assessment is missing fitness guides');
+  add('QR card redirect', 'PASS', 'Resolved to the complete /assessment page with attribution preserved');
 
   const startUrl = `${baseUrl}/start?utm_source=business_card&utm_medium=qr&utm_campaign=starter_assessment`;
   const start = await fetchText(startUrl);

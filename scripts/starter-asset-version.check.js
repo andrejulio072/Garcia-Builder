@@ -4,9 +4,11 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const NEW_TOKEN = '20260812-card-result-v20';
+const NEW_TOKEN = '20260812-card-result-v22';
 const CONSENT_TOKEN = '20260805-consent-v3';
 const OLD_TOKENS = [
+  '20260812-card-result-v21',
+  '20260812-card-result-v20',
   '20260812-card-result-v19',
   '20260812-card-result-v18',
   '20260812-card-result-v17',

@@ -561,6 +561,32 @@
       qrContactStrip.hidden = !isCurrentQrVisit;
       document.body.classList.toggle('is-qr-entry', isCurrentQrVisit);
       if (isCurrentQrVisit) {
+        const coachPhotoFrame = document.querySelector('.coach-photo-frame');
+        const coachPhoto = coachPhotoFrame?.querySelector('img');
+        const coachCopy = document.querySelector('.coach-authority-copy');
+        if (coachPhotoFrame && coachPhoto && coachCopy) {
+          coachPhoto.classList.add('coach-gym-image');
+          coachPhoto.src = '/assets/images/responsive/about/about7-960.webp';
+          coachPhoto.srcset = '/assets/images/responsive/about/about7-480.webp 480w, /assets/images/responsive/about/about7-960.webp 960w, /assets/images/responsive/about/about7-1440.webp 1440w';
+          coachPhoto.sizes = '(max-width: 760px) 92vw, 34vw';
+          coachPhoto.alt = 'Andre Garcia inside the gym beside his Garcia Builder Fitness coaching banner';
+          coachPhoto.width = 960;
+          coachPhoto.height = 1280;
+
+          const photoLabel = document.createElement('span');
+          photoLabel.className = 'coach-photo-label';
+          photoLabel.textContent = 'REAL COACH · REAL GYM';
+          coachPhotoFrame.append(photoLabel);
+
+          const coachAvatar = document.createElement('img');
+          coachAvatar.className = 'coach-authority-avatar';
+          coachAvatar.src = '/assets/images/about/about1-320.webp';
+          coachAvatar.alt = '';
+          coachAvatar.width = 42;
+          coachAvatar.height = 42;
+          coachAvatar.decoding = 'async';
+          coachCopy.prepend(coachAvatar);
+        }
         qrContactStrip.querySelectorAll('[data-qr-contact-channel]').forEach((link) => {
           link.addEventListener('click', () => {
             track('qr_contact_clicked', { channel: link.dataset.qrContactChannel || 'unknown' });

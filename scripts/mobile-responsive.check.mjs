@@ -316,11 +316,16 @@ async function auditAssessment(page, route, viewport) {
       previewCards.every((section) => section.exists && section.display === 'grid' && section.scrollFits && section.cardsFit),
       `${route.path} proof cards should be fully visible without a horizontal carousel at ${viewport.width}px`
     );
+    assert(await page.locator('.coach-gym-image').isVisible(), `${route.path} should retain the gym coach image at ${viewport.width}px`);
+    assert.equal(await page.locator('.coach-photo-label').count(), 1, `${route.path} should add the gym coach label only for QR visits`);
+    assert.equal(await page.locator('.coach-authority-avatar').count(), 1, `${route.path} should add the coach avatar only for QR visits`);
   } else {
     assert(
       previewCards.every((section) => section.exists && section.display === 'flex' && !section.scrollFits),
       `${route.path} should retain the established organic assessment card layout at ${viewport.width}px`
     );
+    assert(await page.locator('.coach-photo-frame > img[src="/assets/images/about/about1-320.webp"]').isVisible(), `${route.path} should restore the professional coach portrait at ${viewport.width}px`);
+    assert.equal(await page.locator('.coach-gym-image, .coach-photo-label, .coach-authority-avatar').count(), 0, `${route.path} must contain only the original professional coach card at ${viewport.width}px`);
   }
 
   await page.locator('[data-start-assessment]').click();

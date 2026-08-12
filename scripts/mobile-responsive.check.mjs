@@ -285,6 +285,36 @@ async function auditAssessment(page, route, viewport) {
     });
   }
 
+  const previewCards = await page.evaluate(() => {
+    const selectors = ['.starter-transform-grid', '.starter-client-voices-grid'];
+    return selectors.map((selector) => {
+      const grid = document.querySelector(selector);
+      const gridRect = grid?.getBoundingClientRect();
+      const cards = [...(grid?.children || [])].map((card) => {
+        const rect = card.getBoundingClientRect();
+        return {
+          left: rect.left,
+          right: rect.right,
+          width: rect.width
+        };
+      });
+      return {
+        selector,
+        exists: Boolean(grid && gridRect),
+        scrollFits: Boolean(grid && grid.scrollWidth <= grid.clientWidth + 2),
+        cardsFit: Boolean(gridRect && cards.every((card) => (
+          card.width > 0 &&
+          card.left >= gridRect.left - 1 &&
+          card.right <= gridRect.right + 1
+        )))
+      };
+    });
+  });
+  assert(
+    previewCards.every((section) => section.exists && section.scrollFits && section.cardsFit),
+    `${route.path} proof cards should be fully visible without a horizontal carousel at ${viewport.width}px`
+  );
+
   await page.locator('[data-start-assessment]').click();
   for (let question = 1; question <= 7; question += 1) {
     await page.waitForFunction(

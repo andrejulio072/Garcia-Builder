@@ -301,6 +301,7 @@ async function auditAssessment(page, route, viewport) {
       return {
         selector,
         exists: Boolean(grid && gridRect),
+        display: grid ? getComputedStyle(grid).display : '',
         scrollFits: Boolean(grid && grid.scrollWidth <= grid.clientWidth + 2),
         cardsFit: Boolean(gridRect && cards.every((card) => (
           card.width > 0 &&
@@ -310,10 +311,17 @@ async function auditAssessment(page, route, viewport) {
       };
     });
   });
-  assert(
-    previewCards.every((section) => section.exists && section.scrollFits && section.cardsFit),
-    `${route.path} proof cards should be fully visible without a horizontal carousel at ${viewport.width}px`
-  );
+  if (route.kind === 'card') {
+    assert(
+      previewCards.every((section) => section.exists && section.display === 'grid' && section.scrollFits && section.cardsFit),
+      `${route.path} proof cards should be fully visible without a horizontal carousel at ${viewport.width}px`
+    );
+  } else {
+    assert(
+      previewCards.every((section) => section.exists && section.display === 'flex' && !section.scrollFits),
+      `${route.path} should retain the established organic assessment card layout at ${viewport.width}px`
+    );
+  }
 
   await page.locator('[data-start-assessment]').click();
   for (let question = 1; question <= 7; question += 1) {
@@ -431,8 +439,10 @@ try {
         assert.equal(redirectedUrl.searchParams.get('utm_content'), 'mobile_audit', 'QR redirect should preserve incoming campaign details');
         await page.locator('[data-qr-contact-strip]').waitFor({ state: 'visible' });
         assert.equal(await page.locator('[data-qr-contact-channel]').count(), 3, 'QR assessment should expose WhatsApp, Instagram and email at the top');
+        assert(await page.locator('body').evaluate((body) => body.classList.contains('is-qr-entry')), 'QR assessment should activate only the QR-scoped design');
       } else if (route.kind === 'assessment') {
         assert(await page.locator('[data-qr-contact-strip]').isHidden(), 'Organic assessment should not show the gym QR contact strip');
+        assert(!await page.locator('body').evaluate((body) => body.classList.contains('is-qr-entry')), 'Organic assessment must not activate the QR-scoped design');
       }
       await page.waitForTimeout(250);
       await assertDocumentFits(page, route.path, viewport.width);

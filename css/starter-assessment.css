@@ -4840,27 +4840,27 @@ button.result-plan-tool {
   box-shadow: 0 0 0 4px rgba(255, 141, 127, 0.2);
 }
 
-/* 21. Assessment card layout refinement
-   Keep proof cards fully visible at every breakpoint and balance the five-card
-   transformation layout without changing the complete assessment experience. */
+/* 21. Gym QR card layout refinement
+   These rules are intentionally scoped to is-qr-entry so the canonical
+   organic assessment retains its established layout at every breakpoint. */
 @media (min-width: 1025px) {
-  body.starter-page-paid .starter-transform-grid {
+  body.starter-page-paid.is-qr-entry .starter-transform-grid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 16px;
   }
 
-  body.starter-page-paid .starter-transform-card {
+  body.starter-page-paid.is-qr-entry .starter-transform-card {
     grid-column: span 2;
   }
 
-  body.starter-page-paid .starter-transform-card:nth-child(4),
-  body.starter-page-paid .starter-transform-card:nth-child(5) {
+  body.starter-page-paid.is-qr-entry .starter-transform-card:nth-child(4),
+  body.starter-page-paid.is-qr-entry .starter-transform-card:nth-child(5) {
     grid-column: span 3;
   }
 }
 
 @media (min-width: 761px) and (max-width: 1024px) {
-  body.starter-page-paid .starter-transform-card:nth-child(5) {
+  body.starter-page-paid.is-qr-entry .starter-transform-card:nth-child(5) {
     width: calc(50% - 8px);
     grid-column: 1 / -1;
     justify-self: center;
@@ -4868,8 +4868,8 @@ button.result-plan-tool {
 }
 
 @media (max-width: 760px) {
-  body.starter-page-paid .starter-transform-grid,
-  body.starter-page-paid .starter-client-voices-grid {
+  body.starter-page-paid.is-qr-entry .starter-transform-grid,
+  body.starter-page-paid.is-qr-entry .starter-client-voices-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
@@ -4880,8 +4880,8 @@ button.result-plan-tool {
     scroll-snap-type: none;
   }
 
-  body.starter-page-paid .starter-transform-card,
-  body.starter-page-paid .starter-client-voice {
+  body.starter-page-paid.is-qr-entry .starter-transform-card,
+  body.starter-page-paid.is-qr-entry .starter-client-voice {
     width: auto;
     min-width: 0;
     min-height: 0;
@@ -4889,41 +4889,41 @@ button.result-plan-tool {
     scroll-snap-align: none;
   }
 
-  body.starter-page-paid .starter-transform-card figcaption {
+  body.starter-page-paid.is-qr-entry .starter-transform-card figcaption {
     min-height: 0;
   }
 }
 
 @media (max-width: 520px) {
-  body.starter-page-paid .starter-header {
+  body.starter-page-paid.is-qr-entry .starter-header {
     padding-top: 8px;
   }
 
-  body.starter-page-paid .starter-logo img {
+  body.starter-page-paid.is-qr-entry .starter-logo img {
     width: 106px;
   }
 
-  body.starter-page-paid .starter-qr-contact-strip {
+  body.starter-page-paid.is-qr-entry .starter-qr-contact-strip {
     grid-template-columns: 1fr;
     gap: 6px;
     margin-top: 7px;
     padding: 8px;
   }
 
-  body.starter-page-paid .starter-qr-contact-intro {
+  body.starter-page-paid.is-qr-entry .starter-qr-contact-intro {
     gap: 1px;
     padding: 2px 4px 5px;
   }
 
-  body.starter-page-paid .starter-qr-contact-intro strong {
+  body.starter-page-paid.is-qr-entry .starter-qr-contact-intro strong {
     font-size: 0.76rem;
   }
 
-  body.starter-page-paid .starter-qr-contact-intro span {
+  body.starter-page-paid.is-qr-entry .starter-qr-contact-intro span {
     font-size: 0.63rem;
   }
 
-  body.starter-page-paid .starter-qr-contact-action {
+  body.starter-page-paid.is-qr-entry .starter-qr-contact-action {
     grid-template-columns: 82px minmax(0, 1fr);
     min-height: 46px;
     align-items: center;
@@ -4932,11 +4932,11 @@ button.result-plan-tool {
     text-align: left;
   }
 
-  body.starter-page-paid .starter-qr-contact-action strong {
+  body.starter-page-paid.is-qr-entry .starter-qr-contact-action strong {
     font-size: 0.7rem;
   }
 
-  body.starter-page-paid .starter-qr-contact-action span {
+  body.starter-page-paid.is-qr-entry .starter-qr-contact-action span {
     overflow: hidden;
     font-size: 0.62rem;
     line-height: 1.25;
@@ -4945,17 +4945,17 @@ button.result-plan-tool {
     white-space: nowrap;
   }
 
-  body.starter-page-paid .starter-transform-grid,
-  body.starter-page-paid .starter-client-voices-grid {
+  body.starter-page-paid.is-qr-entry .starter-transform-grid,
+  body.starter-page-paid.is-qr-entry .starter-client-voices-grid {
     grid-template-columns: 1fr;
   }
 
-  body.starter-page-paid .starter-transform-card,
-  body.starter-page-paid .starter-client-voice {
+  body.starter-page-paid.is-qr-entry .starter-transform-card,
+  body.starter-page-paid.is-qr-entry .starter-client-voice {
     width: 100%;
   }
 
-  body.starter-page-paid .starter-client-voice {
+  body.starter-page-paid.is-qr-entry .starter-client-voice {
     padding: 16px;
   }
 }

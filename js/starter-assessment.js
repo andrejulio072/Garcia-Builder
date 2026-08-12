@@ -46,6 +46,7 @@
   const backButton = $('[data-back-button]');
   const submitButton = $('[data-submit-button]');
   const errorSummary = $('[data-error-summary]');
+  const qrContactStrip = $('[data-qr-contact-strip]');
 
   const PAID_COPY_FALLBACK = {
     heroTrustPaid: 'heroTrust',
@@ -553,6 +554,20 @@
   document.addEventListener('DOMContentLoaded', () => {
     i18n?.applyDocument?.(state.language);
     const meta = getMeta();
+    const currentQuery = new URLSearchParams(window.location.search || '');
+    const isCurrentQrVisit = currentQuery.get('utm_source')?.toLowerCase() === 'business_card' &&
+      currentQuery.get('utm_medium')?.toLowerCase() === 'qr';
+    if (qrContactStrip) {
+      qrContactStrip.hidden = !isCurrentQrVisit;
+      document.body.classList.toggle('is-qr-entry', isCurrentQrVisit);
+      if (isCurrentQrVisit) {
+        qrContactStrip.querySelectorAll('[data-qr-contact-channel]').forEach((link) => {
+          link.addEventListener('click', () => {
+            track('qr_contact_clicked', { channel: link.dataset.qrContactChannel || 'unknown' });
+          });
+        });
+      }
+    }
     track('assessment_landing_view', {
       utm_source: meta.utm_source || undefined,
       utm_medium: meta.utm_medium || undefined,

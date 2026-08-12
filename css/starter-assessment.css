@@ -164,6 +164,95 @@ body.starter-page::before {
   display: block;
 }
 
+.starter-qr-contact-strip {
+  width: min(1120px, calc(100% - 32px));
+  margin: 12px auto 0;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: minmax(190px, 1fr) repeat(3, minmax(170px, auto));
+  align-items: stretch;
+  gap: 9px;
+  border: 1px solid rgba(246, 200, 78, 0.34);
+  border-radius: 14px;
+  background: linear-gradient(110deg, rgba(246, 200, 78, 0.13), rgba(13, 18, 23, 0.96) 38%);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.28);
+}
+
+.starter-qr-contact-strip[hidden] {
+  display: none;
+}
+
+.starter-qr-contact-intro,
+.starter-qr-contact-action {
+  min-width: 0;
+  border-radius: 10px;
+}
+
+.starter-qr-contact-intro {
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  padding: 5px 8px;
+}
+
+.starter-qr-contact-intro strong {
+  color: var(--starter-gold-soft);
+  font-size: 0.86rem;
+}
+
+.starter-qr-contact-intro span {
+  color: var(--starter-muted);
+  font-size: 0.72rem;
+}
+
+.starter-qr-contact-action {
+  min-height: 54px;
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  padding: 8px 12px;
+  border: 1px solid var(--starter-line);
+  background: rgba(8, 12, 16, 0.78);
+  color: var(--starter-text);
+  text-decoration: none;
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.starter-qr-contact-action strong {
+  font-size: 0.76rem;
+}
+
+.starter-qr-contact-action span {
+  overflow: hidden;
+  color: var(--starter-muted);
+  font-size: 0.66rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.starter-qr-contact-action:hover,
+.starter-qr-contact-action:focus-visible {
+  transform: translateY(-2px);
+  background: rgba(24, 30, 37, 0.98);
+}
+
+.starter-qr-contact-action:focus-visible {
+  outline: 3px solid var(--starter-focus);
+  outline-offset: 2px;
+}
+
+.starter-qr-contact-whatsapp {
+  border-color: rgba(37, 211, 102, 0.62);
+}
+
+.starter-qr-contact-instagram {
+  border-color: rgba(255, 122, 151, 0.62);
+}
+
+.starter-qr-contact-email {
+  border-color: rgba(103, 180, 255, 0.62);
+}
+
 .starter-shell {
   width: min(1120px, calc(100% - 32px));
   min-height: calc(100vh - 92px);
@@ -1442,6 +1531,29 @@ select {
 
   .starter-logo img {
     width: min(124px, 38vw);
+  }
+
+  .starter-qr-contact-strip {
+    width: min(100% - 14px, 640px);
+    grid-template-columns: 1fr;
+    gap: 7px;
+    margin-top: 8px;
+    padding: 9px;
+  }
+
+  .starter-qr-contact-intro {
+    padding: 5px 4px 7px;
+  }
+
+  .starter-qr-contact-action {
+    min-height: 52px;
+    grid-template-columns: minmax(82px, auto) 1fr;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .starter-qr-contact-action span {
+    text-align: right;
   }
 
   .starter-shell {

@@ -399,6 +399,10 @@ try {
         assert.equal(redirectedUrl.searchParams.get('utm_medium'), 'qr', 'QR redirect should preserve utm_medium');
         assert.equal(redirectedUrl.searchParams.get('utm_campaign'), 'starter_assessment', 'QR redirect should preserve utm_campaign');
         assert.equal(redirectedUrl.searchParams.get('utm_content'), 'mobile_audit', 'QR redirect should preserve incoming campaign details');
+        await page.locator('[data-qr-contact-strip]').waitFor({ state: 'visible' });
+        assert.equal(await page.locator('[data-qr-contact-channel]').count(), 3, 'QR assessment should expose WhatsApp, Instagram and email at the top');
+      } else if (route.kind === 'assessment') {
+        assert(await page.locator('[data-qr-contact-strip]').isHidden(), 'Organic assessment should not show the gym QR contact strip');
       }
       await page.waitForTimeout(250);
       await assertDocumentFits(page, route.path, viewport.width);

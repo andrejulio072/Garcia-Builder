@@ -365,6 +365,12 @@ assert(resultClient.includes('starter-shopping-list'), 'Simple day of eating sho
 assert(paidAssessmentPage.includes('Get Your Free Personalised'), 'Paid assessment page should make the free personalised plan explicit');
 assert(paidAssessmentPage.includes('Fat-Loss Starter Plan'), 'Paid assessment page should keep offer-message match in the premium headline');
 assert(paidAssessmentPage.includes('ActiveIQ Level 3 PT'), 'Paid assessment page should include the compact coach credential strip');
+assert(paidAssessmentPage.includes('data-qr-contact-strip'), 'Canonical assessment should include the QR-only direct contact strip');
+assert(paidAssessmentPage.includes('https://wa.me/447508497586'), 'QR contact strip should include Andre WhatsApp');
+assert(paidAssessmentPage.includes('https://instagram.com/garciabuilder.fitness'), 'QR contact strip should include Andre Instagram');
+assert(paidAssessmentPage.includes('mailto:inquiries@garciabuilder.fitness'), 'QR contact strip should include Andre email');
+assert(paidAssessmentPage.includes('+44 7508 497586') && paidAssessmentPage.includes('@garciabuilder.fitness') && paidAssessmentPage.includes('inquiries@garciabuilder.fitness'), 'QR contact details should be explicit rather than icon-only');
+assert(starterClient.includes("track('qr_contact_clicked'"), 'QR contact actions should be measurable by channel');
 assert(paidAssessmentPage.includes('data-starter-entry-default="organic"'), 'Paid assessment path should classify organically unless paid attribution exists');
 assert(paidAssessmentPage.includes('name="robots" content="noindex, follow"'), 'Paid assessment should be noindex, follow');
 assert(!paidAssessmentPage.includes('data-qr-choice="packages"'), 'Paid assessment page should not include package pre-assessment choices');

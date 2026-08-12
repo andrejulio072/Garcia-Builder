@@ -4843,6 +4843,105 @@ button.result-plan-tool {
 /* 21. Gym QR card layout refinement
    These rules are intentionally scoped to is-qr-entry so the canonical
    organic assessment retains its established layout at every breakpoint. */
+body.starter-page-paid.is-qr-entry .coach-authority-card {
+  border-color: rgba(246, 200, 78, 0.42);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(246, 200, 78, 0.15), transparent 36%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.018)),
+    rgba(7, 10, 14, 0.96);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.46), 0 0 0 1px rgba(246, 200, 78, 0.07);
+}
+
+body.starter-page-paid.is-qr-entry .coach-photo-frame img {
+  object-position: 50% 18%;
+  filter: saturate(0.88) contrast(1.04) brightness(0.9);
+}
+
+body.starter-page-paid.is-qr-entry .coach-authority-copy {
+  padding-bottom: 20px;
+}
+
+body.starter-page-paid.is-qr-entry .starter-qr-contact-strip {
+  width: auto;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 0;
+  padding: 18px 18px 20px;
+  border: 0;
+  border-top: 1px solid rgba(246, 200, 78, 0.2);
+  border-radius: 0;
+  background:
+    linear-gradient(180deg, rgba(246, 200, 78, 0.055), transparent 46%),
+    rgba(5, 8, 12, 0.56);
+  box-shadow: none;
+}
+
+body.starter-page-paid.is-qr-entry .starter-qr-contact-intro {
+  gap: 4px;
+  padding: 0 2px 8px;
+}
+
+body.starter-page-paid.is-qr-entry .starter-qr-contact-intro strong {
+  color: var(--gb-gold-light);
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+body.starter-page-paid.is-qr-entry .starter-qr-contact-intro span {
+  font-size: 0.67rem;
+  line-height: 1.45;
+}
+
+body.starter-page-paid.is-qr-entry .starter-qr-contact-action {
+  position: relative;
+  grid-template-columns: 86px minmax(0, 1fr);
+  min-height: 48px;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  overflow: hidden;
+  border-color: rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: linear-gradient(130deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018));
+}
+
+body.starter-page-paid.is-qr-entry .starter-qr-contact-action::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: currentColor;
+  opacity: 0.78;
+}
+
+body.starter-page-paid.is-qr-entry .starter-qr-contact-action strong {
+  font-size: 0.71rem;
+}
+
+body.starter-page-paid.is-qr-entry .starter-qr-contact-action span {
+  color: #d5d0c3;
+  font-size: 0.61rem;
+}
+
+body.starter-page-paid.is-qr-entry .starter-qr-contact-whatsapp {
+  color: #6ee79a;
+}
+
+body.starter-page-paid.is-qr-entry .starter-qr-contact-instagram {
+  color: #ff9cb3;
+}
+
+body.starter-page-paid.is-qr-entry .starter-qr-contact-email {
+  color: #8bc7ff;
+}
+
+body.starter-page-paid.is-qr-entry .starter-qr-contact-action strong,
+body.starter-page-paid.is-qr-entry .starter-qr-contact-action:hover,
+body.starter-page-paid.is-qr-entry .starter-qr-contact-action:focus-visible {
+  color: inherit;
+}
+
 @media (min-width: 1025px) {
   body.starter-page-paid.is-qr-entry .starter-transform-grid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -4868,6 +4967,10 @@ button.result-plan-tool {
 }
 
 @media (max-width: 760px) {
+  body.starter-page-paid.is-qr-entry .starter-qr-contact-strip {
+    grid-column: 1 / -1;
+  }
+
   body.starter-page-paid.is-qr-entry .starter-transform-grid,
   body.starter-page-paid.is-qr-entry .starter-client-voices-grid {
     display: grid;
@@ -4906,8 +5009,8 @@ button.result-plan-tool {
   body.starter-page-paid.is-qr-entry .starter-qr-contact-strip {
     grid-template-columns: 1fr;
     gap: 6px;
-    margin-top: 7px;
-    padding: 8px;
+    margin: 0;
+    padding: 14px;
   }
 
   body.starter-page-paid.is-qr-entry .starter-qr-contact-intro {

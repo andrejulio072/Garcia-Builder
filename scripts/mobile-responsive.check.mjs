@@ -316,9 +316,12 @@ async function auditAssessment(page, route, viewport) {
       previewCards.every((section) => section.exists && section.display === 'grid' && section.scrollFits && section.cardsFit),
       `${route.path} proof cards should be fully visible without a horizontal carousel at ${viewport.width}px`
     );
-    assert(await page.locator('.coach-gym-image').isVisible(), `${route.path} should retain the gym coach image at ${viewport.width}px`);
-    assert.equal(await page.locator('.coach-photo-label').count(), 1, `${route.path} should add the gym coach label only for QR visits`);
-    assert.equal(await page.locator('.coach-authority-avatar').count(), 1, `${route.path} should add the coach avatar only for QR visits`);
+    assert(await page.locator('.coach-photo-frame > img[src="/assets/images/about/about1-320.webp"]').isVisible(), `${route.path} should retain only the professional coach portrait at ${viewport.width}px`);
+    assert.equal(await page.locator('.coach-gym-image, .coach-photo-label, .coach-authority-avatar').count(), 0, `${route.path} should not add alternate coach imagery at ${viewport.width}px`);
+    assert(
+      await page.locator('[data-qr-contact-strip]').evaluate((strip) => strip.parentElement?.classList.contains('coach-authority-card')),
+      `${route.path} should place the contact actions after the coach profile at ${viewport.width}px`
+    );
   } else {
     assert(
       previewCards.every((section) => section.exists && section.display === 'flex' && !section.scrollFits),

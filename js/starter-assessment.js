@@ -561,6 +561,15 @@
       qrContactStrip.hidden = !isCurrentQrVisit;
       document.body.classList.toggle('is-qr-entry', isCurrentQrVisit);
       if (isCurrentQrVisit) {
+        const logo = document.querySelector('.starter-logo');
+        if (logo && logo.tagName !== 'A') {
+          const homeLogo = document.createElement('a');
+          homeLogo.className = logo.className;
+          homeLogo.href = '/';
+          homeLogo.setAttribute('aria-label', 'Garcia Builder Fitness home');
+          homeLogo.innerHTML = logo.innerHTML;
+          logo.replaceWith(homeLogo);
+        }
         const coachCard = document.querySelector('.coach-authority-card');
         coachCard?.append(qrContactStrip);
         qrContactStrip.querySelectorAll('[data-qr-contact-channel]').forEach((link) => {

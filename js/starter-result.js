@@ -28,6 +28,20 @@
     return i18n?.ui?.(key, language, variables) || key;
   }
 
+  function openResultActionInNewTab(link) {
+    if (!link) return link;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    return link;
+  }
+
+  function openPrintCopy() {
+    const printUrl = new URL(window.location.href);
+    printUrl.hash = 'print-plan';
+    const printWindow = window.open(printUrl.toString(), '_blank', 'noopener');
+    if (!printWindow) window.print();
+  }
+
   function track(eventName, properties) {
     const safeProperties = { language, ...(properties || {}) };
     if (window.GB_TRACKING?.trackEvent) {
@@ -88,6 +102,7 @@
       const fullWorkout = document.createElement('a');
       fullWorkout.className = 'starter-primary result-plan-tool';
       fullWorkout.href = plan.training.libraryUrl;
+      openResultActionInNewTab(fullWorkout);
       fullWorkout.textContent = copy('viewFullWorkout');
       fullWorkout.addEventListener('click', () => recordEvent('workout_template_viewed', 'complete_workout_top'));
       planTools.appendChild(fullWorkout);
@@ -98,6 +113,7 @@
       const fullNutrition = document.createElement('a');
       fullNutrition.className = 'starter-secondary result-plan-tool';
       fullNutrition.href = nutritionUrl;
+      openResultActionInNewTab(fullNutrition);
       fullNutrition.textContent = copy('viewNutritionGuide');
       fullNutrition.addEventListener('click', () => recordEvent('nutrition_template_viewed', 'complete_nutrition_top'));
       planTools.appendChild(fullNutrition);
@@ -109,7 +125,7 @@
     savePlan.textContent = copy('printPlan');
     savePlan.addEventListener('click', () => {
       track('starter_plan_printed', { button_location: 'plan_top' });
-      window.print();
+      openPrintCopy();
     });
     planTools.appendChild(savePlan);
     section.appendChild(planTools);
@@ -134,6 +150,7 @@
       const workoutLink = document.createElement('a');
       workoutLink.className = 'starter-secondary plan-link';
       workoutLink.href = plan.training.libraryUrl;
+      openResultActionInNewTab(workoutLink);
       workoutLink.textContent = copy('workoutLibrary');
       workoutLink.addEventListener('click', () => recordEvent('workout_template_viewed', 'workout_library'));
       trainingBlock.appendChild(workoutLink);
@@ -149,6 +166,7 @@
       const calculatorLink = document.createElement('a');
       calculatorLink.className = 'starter-secondary plan-link';
       calculatorLink.href = plan.nutrition.calculatorUrl;
+      openResultActionInNewTab(calculatorLink);
       calculatorLink.textContent = copy('calculateMacros');
       calculatorLink.addEventListener('click', () => recordEvent('nutrition_template_viewed', 'macro_calculator'));
       nutritionBlock.appendChild(calculatorLink);
@@ -249,6 +267,7 @@
       const link = document.createElement('a');
       link.className = resource.role === 'primary' ? 'starter-primary' : 'starter-secondary';
       link.href = resource.url;
+      openResultActionInNewTab(link);
       link.dataset.resourceLink = resource.slug || resource.role || 'resource';
       if (isExternalUrl(resource.url)) {
         link.target = '_blank';
@@ -287,6 +306,7 @@
       link.className = className;
       link.classList.add('result-action');
       link.href = href;
+      openResultActionInNewTab(link);
       link.textContent = label;
       link.addEventListener('click', () => {
         track('contact_click', { contact_channel: channel });
@@ -299,6 +319,7 @@
     plansLink.className = 'starter-secondary';
     plansLink.classList.add('result-action');
     plansLink.href = '/packages?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=view_plans';
+    openResultActionInNewTab(plansLink);
     plansLink.textContent = copy('viewPlans');
     plansLink.addEventListener('click', () => track('view_plans_click', {}));
 
@@ -306,6 +327,7 @@
     workoutLink.className = 'starter-secondary';
     workoutLink.classList.add('result-action');
     workoutLink.href = '/workouts?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=workout_library';
+    openResultActionInNewTab(workoutLink);
     workoutLink.textContent = copy('workoutLibrary');
     workoutLink.addEventListener('click', () => track('workout_tools_click', {}));
 
@@ -313,6 +335,7 @@
     nutritionLink.className = 'starter-secondary';
     nutritionLink.classList.add('result-action');
     nutritionLink.href = '/nutrition-calculator?utm_source=starter_assessment&utm_medium=result&utm_campaign=starter_plan&utm_content=nutrition_calculator';
+    openResultActionInNewTab(nutritionLink);
     nutritionLink.textContent = copy('calculateMacros');
     nutritionLink.addEventListener('click', () => track('nutrition_tools_click', {}));
 
@@ -322,7 +345,7 @@
     printButton.textContent = copy('printPlan');
     printButton.addEventListener('click', () => {
       track('starter_plan_printed', {});
-      window.print();
+      openPrintCopy();
     });
 
     contactLinks.forEach((link) => actions.appendChild(link));
@@ -361,6 +384,7 @@
     primaryAction.dataset.ctaMode = mode;
     primaryActionLink.href = href;
     primaryActionLink.textContent = copy('downloadGuide');
+    openResultActionInNewTab(primaryActionLink);
     if (isExternalUrl(href)) {
       primaryActionLink.target = '_blank';
       primaryActionLink.rel = 'noopener';
@@ -396,6 +420,7 @@
     renderActions(payload);
     panel?.classList.add('is-result-ready');
     track('result_viewed', { result_path_slug: payload.recommendation.primaryPath });
+    if (window.location.hash === '#print-plan') window.setTimeout(() => window.print(), 300);
   }
 
   async function changeLanguage(selectedLanguage) {

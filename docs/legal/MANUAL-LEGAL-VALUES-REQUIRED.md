@@ -1,10 +1,13 @@
 # Manual legal values required before publication
 
-Status: **owner confirmed the legal decisions complete externally on 2026-08-05; publication remains blocked until the exact approved values replace the public placeholders**
+Status: **limited test authorized by the owner on 2026-08-06 with unresolved legal compliance; exact values remain required before scale-up or a compliance claim**
 Draft reviewed against repository behavior: 2026-08-04
 
 - [x] Owner confirmation received for legal identity, retention and governing-law decisions (2026-08-05).
+- [x] Owner confirmed sole-trader status, direct owner handling and acceptance of the unresolved legal risk for small-budget test advertising (2026-08-06).
 - [ ] Approved values/text and legal-review evidence copied into this record and the public Privacy Notice, Cookie Policy and Terms.
+
+The limited-test exception is recorded in `config/legal-launch-decision.json`. It permits the internal launch check to pass only as **owner-authorized risk acceptance**. It does not mark the public documents legally complete, does not certify compliance and does not remove the scale-up review.
 
 This is the separate owner/legal checklist for facts that cannot be inferred safely from code. It is not an implementation to-do list and it must not be replaced with guesses. Record the approved value, reviewer, date and evidence for each item, then update the public pages and re-run the legal-page contract check.
 
@@ -125,3 +128,18 @@ Owner: `____________________________`
 Legal reviewer: `____________________`  
 Date: `_____________________________`  
 Evidence folder/link: `____________________________________________________________`
+
+## 8. Limited-test owner decision
+
+- [x] Decision: `LIMITED_TEST_GO_WITH_ACCEPTED_RISK`
+- [x] Business structure supplied by owner: sole trader.
+- [x] Client handling supplied by owner: direct and owner-managed.
+- [x] Public address disclosure declined by owner for the limited test.
+- [x] Legal compliance status remains explicitly `unverified`.
+- [x] Re-review required before scale-up, remarketing, automated onboarding or material provider/funnel changes.
+
+Owner role: business owner and sole trader
+
+Decision date: 2026-08-06
+
+Machine-readable record: `config/legal-launch-decision.json`

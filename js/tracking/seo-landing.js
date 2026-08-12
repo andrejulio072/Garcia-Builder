@@ -164,6 +164,7 @@
         source: 'website',
         goal: data.goal,
         consent: Boolean(data.consent),
+        marketingConsent: Boolean(data.marketingConsent),
         page: location.pathname
       });
       persistLeadProfile({

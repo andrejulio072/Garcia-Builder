@@ -16,11 +16,24 @@
      * @returns {boolean} - Always returns false to prevent default link behavior
      */
     window.gtag_report_conversion = function(url) {
+        const record = window.GBConsent && typeof window.GBConsent.readRecord === 'function'
+            ? window.GBConsent.readRecord()
+            : null;
+        const advertisingAllowed = Boolean(
+            record && window.GBConsent &&
+            typeof window.GBConsent.advertisingAllowed === 'function' &&
+            window.GBConsent.advertisingAllowed(record.choices || {})
+        );
         const callback = function () {
             if (typeof(url) !== 'undefined') {
                 window.location = url;
             }
         };
+
+        if (!advertisingAllowed) {
+            callback();
+            return false;
+        }
         
         // Send conversion event to Google Ads
         if (typeof gtag !== 'undefined') {
@@ -30,6 +43,7 @@
                 'currency': 'EUR',
                 'event_callback': callback
             });
+            window.setTimeout(callback, 900);
         } else {
             console.warn('[Conversion Tracking] gtag is not defined');
             callback(); // Execute callback even if gtag fails

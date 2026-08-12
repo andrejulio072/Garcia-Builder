@@ -202,7 +202,7 @@ try {
       })
     });
   });
-  await page.route('**/api/starter-assessment/result/mock-token?**', async (route) => {
+  await page.route(/\/api\/starter-assessment\/result\?token=mock-token(?:&.*)?$/, async (route) => {
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(mockResultPayload()) });
   });
   await page.route('**/api/starter-assessment/event', async (route) => {
@@ -225,8 +225,9 @@ try {
   assert(languageSelector.optionColor === 'rgb(17, 24, 39)', `Language option text contrast is incorrect: ${languageSelector.optionColor}`);
   assert(languageSelector.labels.includes('PT · Português'), 'Portuguese native language label is missing');
   assert(languageSelector.labels.includes('RU · Русский'), 'Russian native language label is missing');
-  assert.equal(await page.locator('.starter-client-voice').count(), 3, 'Three client testimonials should be visible below transformations');
+  assert.equal(await page.locator('.starter-client-voice').count(), 4, 'Assessment should show the four owner-authorized testimonial excerpts');
   assert(await page.locator('.starter-client-voices').isVisible(), 'Client testimonial section is not visible');
+  assert(await page.locator('[data-starter-copy="transformationsDisclaimer"]').isVisible(), 'Individual-results disclaimer must remain visible beside social proof');
   assert.equal(await page.locator('.starter-plan-signal-row .signal-card').count(), 4, 'Existing four-card plan preview should remain visible');
   assert.equal(await page.locator('.starter-process-block .signal-card').count(), 3, 'New process block should show three delivery/value cards');
   assert.equal(await page.locator('.starter-trust-strip li').count(), 4, 'Credential trust strip should show four trust signals');

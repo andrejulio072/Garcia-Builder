@@ -49,9 +49,10 @@
     track('assessment_delivery_notice_viewed', { email_delivery: deliveryStatus });
   }
 
-  function appendList(parent, items) {
+  function appendList(parent, items, className) {
     if (!Array.isArray(items) || items.length === 0) return;
     const list = document.createElement('ul');
+    if (className) list.className = className;
     items.forEach((value) => {
       const item = document.createElement('li');
       item.textContent = value;
@@ -74,6 +75,44 @@
     goal.className = 'plan-goal';
     goal.textContent = plan.goalTarget || copy('planGoalDefault');
     section.append(heading, goal);
+
+    const planTools = document.createElement('nav');
+    planTools.className = 'result-plan-tools';
+    planTools.setAttribute('aria-label', copy('planActionsTitle'));
+    const toolsLabel = document.createElement('strong');
+    toolsLabel.className = 'result-plan-tools-label';
+    toolsLabel.textContent = copy('planActionsTitle');
+    planTools.appendChild(toolsLabel);
+
+    if (plan.training?.libraryUrl) {
+      const fullWorkout = document.createElement('a');
+      fullWorkout.className = 'starter-primary result-plan-tool';
+      fullWorkout.href = plan.training.libraryUrl;
+      fullWorkout.textContent = copy('viewFullWorkout');
+      fullWorkout.addEventListener('click', () => recordEvent('workout_template_viewed', 'complete_workout_top'));
+      planTools.appendChild(fullWorkout);
+    }
+
+    const nutritionUrl = plan.nutrition?.libraryUrl || plan.nutrition?.calculatorUrl;
+    if (nutritionUrl) {
+      const fullNutrition = document.createElement('a');
+      fullNutrition.className = 'starter-secondary result-plan-tool';
+      fullNutrition.href = nutritionUrl;
+      fullNutrition.textContent = copy('viewNutritionGuide');
+      fullNutrition.addEventListener('click', () => recordEvent('nutrition_template_viewed', 'complete_nutrition_top'));
+      planTools.appendChild(fullNutrition);
+    }
+
+    const savePlan = document.createElement('button');
+    savePlan.className = 'starter-secondary result-plan-tool result-save-tool';
+    savePlan.type = 'button';
+    savePlan.textContent = copy('printPlan');
+    savePlan.addEventListener('click', () => {
+      track('starter_plan_printed', { button_location: 'plan_top' });
+      window.print();
+    });
+    planTools.appendChild(savePlan);
+    section.appendChild(planTools);
 
     const planGrid = document.createElement('div');
     planGrid.className = 'starter-plan-grid';
@@ -120,22 +159,34 @@
     const mealsTitle = document.createElement('h3');
     mealsTitle.textContent = copy('eatingDay');
     mealsBlock.appendChild(mealsTitle);
+    const mealsIntro = document.createElement('p');
+    mealsIntro.className = 'meal-template-intro';
+    mealsIntro.textContent = copy('eatingDayIntro');
+    mealsBlock.appendChild(mealsIntro);
     const mealList = document.createElement('div');
     mealList.className = 'meal-template-list';
     (plan.nutrition?.meals || []).forEach((meal) => {
       const mealItem = document.createElement('div');
+      mealItem.className = 'meal-template-card';
       const mealName = document.createElement('strong');
       mealName.textContent = meal.meal;
-      const mealCopy = document.createElement('p');
-      mealCopy.textContent = `${meal.example}. ${meal.purpose}`;
-      mealItem.append(mealName, mealCopy);
+      const mealExample = document.createElement('p');
+      mealExample.className = 'meal-template-example';
+      mealExample.textContent = meal.example;
+      const mealPurpose = document.createElement('p');
+      mealPurpose.className = 'meal-template-purpose';
+      mealPurpose.textContent = meal.purpose;
+      const mealBuild = document.createElement('p');
+      mealBuild.className = 'meal-template-build';
+      mealBuild.textContent = copy('mealBuildGuide');
+      mealItem.append(mealName, mealExample, mealPurpose, mealBuild);
       mealList.appendChild(mealItem);
     });
     mealsBlock.appendChild(mealList);
     const shoppingTitle = document.createElement('h4');
     shoppingTitle.textContent = copy('shoppingList');
     mealsBlock.appendChild(shoppingTitle);
-    appendList(mealsBlock, plan.nutrition?.shoppingList);
+    appendList(mealsBlock, plan.nutrition?.shoppingList, 'starter-shopping-list');
 
     const nextStepsBlock = document.createElement('article');
     nextStepsBlock.className = 'starter-plan-block starter-plan-block-wide';

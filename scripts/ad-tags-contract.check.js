@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const root = path.join(__dirname, '..');
-const assessmentToken = '20260807-result-v15';
+const consentToken = '20260805-consent-v3';
 const assessmentEntries = [
   'assessment.html',
   'start.html',
@@ -18,8 +18,8 @@ for (const entry of assessmentEntries) {
   const html = read(entry);
   assert(!html.includes('connect.facebook.net/en_US/fbevents.js'), `${entry} must not bootstrap Meta directly`);
   assert(!html.includes('facebook.com/tr?id='), `${entry} must not contain a consent-bypassing Meta image tag`);
-  assert(!html.includes('googletagmanager.com/gtag/js?id=AW-'), `${entry} must not load a direct Google Ads tag outside the assessment consent gate`);
-  assert(html.includes(`/js/starter-tracking-bootstrap.js?v=${assessmentToken}`), `${entry} must use the current assessment-only tracking bootstrap`);
+  assert(!html.includes('googletagmanager.com/gtag/js?id=AW-'), `${entry} must not load a direct Google Ads tag outside the consent gate`);
+  assert(html.includes(`/js/tracking/site-consent-bootstrap.js?v=${consentToken}`), `${entry} must use the shared consent-first tracking bootstrap`);
 }
 
 const cardRedirect = read('go/card/index.html');
@@ -27,14 +27,17 @@ assert(!cardRedirect.includes('connect.facebook.net/en_US/fbevents.js'), 'Busine
 assert(!cardRedirect.includes('googletagmanager.com/gtag/js?id=AW-'), 'Business-card redirect must not load Google Ads directly');
 assert(cardRedirect.includes('/start.html?utm_source=business_card&amp;utm_medium=qr&amp;utm_campaign=starter_assessment'), 'Business-card fallback link must preserve assessment attribution');
 
-const bootstrap = read('js/starter-tracking-bootstrap.js');
+const bootstrap = read('js/tracking/site-consent-bootstrap.js');
+const adsLoader = read('js/tracking/ads-loader.js');
 assert(bootstrap.includes("window.gtag('consent', 'default'"), 'Assessment must establish a denied-by-default consent state');
-assert(bootstrap.indexOf("window.gtag('consent', 'default'") < bootstrap.indexOf('if (hasAdvertisingConsent(consent))'), 'Assessment consent default must be established before the stored-consent gate runs');
-assert.match(bootstrap, /if \(hasAdvertisingConsent\(consent\)\)\s*{\s*loadGoogleTagManager\(\)/, 'Stored advertising consent must gate GTM startup');
-assert(bootstrap.includes('if (hasAdvertisingConsent(consent))'), 'Assessment GTM must be gated by stored advertising consent');
-assert(bootstrap.includes("window.addEventListener('consent_update'"), 'Assessment GTM must react to an explicit consent update');
-assert(bootstrap.includes("window.fbq('consent', granted ? 'grant' : 'revoke')"), 'Assessment consent changes must propagate to Meta after GTM has loaded');
-assert(bootstrap.includes("expireAssessmentMetaCookie('_fbp')") && bootstrap.includes("expireAssessmentMetaCookie('_fbc')"), 'Assessment rejection must expire Meta attribution cookies');
+assert(bootstrap.indexOf('readRecord()') < bootstrap.indexOf("window.gtag('consent', 'default'"), 'Stored consent must be validated before the default is applied');
+assert(bootstrap.includes('MAX_CONSENT_AGE_MS = 180'), 'Consent choices must expire after six months');
+assert.match(adsLoader, /if \(advertising\)\s*{\s*loadGoogleTagManager\(\)/, 'Stored advertising consent must gate GTM startup');
+assert(adsLoader.includes("item[0] === 'event'"), 'Pre-consent gtag events must be discarded before optional tags start');
+assert(adsLoader.includes("window.addEventListener('consent_update'"), 'Tag startup must react to an explicit consent update');
+assert(bootstrap.includes("window.fbq('consent', 'revoke')"), 'Consent withdrawal must propagate to Meta after it has loaded');
+assert(bootstrap.includes('fbp$|fbc$') && bootstrap.includes('expireMatchingCookies'), 'Consent withdrawal must expire Meta attribution cookies');
+assert(!adsLoader.includes('debug-consent'), 'A URL parameter must not be able to grant production consent');
 
 const assessment = read('js/starter-assessment.js');
 const canonicalIndex = assessment.indexOf("track('assessment_submitted'");

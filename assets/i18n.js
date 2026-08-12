@@ -189,8 +189,8 @@
         }
       },
       featured: {
-        title: "Real People. Real Results.",
-        subtitle: "Join 127+ clients who transformed their bodies and lives",
+        title: "Client Progress Stories",
+        subtitle: "See individual coaching experiences; results vary from person to person.",
         result: "-20lbs · +6lbs lean mass",
         quote: "Andre rebuilt my training even with 60-hour work weeks. We dropped body fat, added lean muscle, and my shoulders no longer hurt.",
         author: "Conrad N., London",
@@ -214,7 +214,7 @@
         subtitle: "Watch how our personalized approach delivers results that last",
         point1: "Evidence-based training protocols",
         point2: "Custom nutrition without restrictions",
-        point3: "24/7 support via in-app chat",
+        point3: "In-app support between check-ins",
         point4: "Weekly progress reviews and adjustments",
         cta: "Get Started Now →"
       },
@@ -229,15 +229,15 @@
       },
       socialproof: {
         title: "Join Our Community",
-        subtitle: "127+ people transformed their lives with Garcia Builder",
+        subtitle: "Training, nutrition and accountability built around real schedules.",
         cta: "See All Success Stories →"
       },
       social: {
         sectionTitle: "Real transformations from busy professionals",
-        sectionSubtitle: "Strong results in 8–12 weeks with coaching that adapts to your lifestyle, injuries, and schedule.",
-        metric1: "Body transformations",
-        metric2: "Client success rate",
-        metric3: "Countries coached",
+        sectionSubtitle: "Individual client experiences with coaching adapted to lifestyle, health and schedule. Results vary.",
+        metric1: "Personal coaching",
+        metric2: "Progress reviews",
+        metric3: "Coaching languages",
         cta: "Start My Transformation →",
   quote1: { text: "Dropped 5kg in 8 weeks with simple habits that finally stuck.", author: "Jessica R., 33" },
   quote2: { text: "Leaned out by 6kg while adding 5% muscle during a 12-week block.", author: "Tom L., 31" },
@@ -254,30 +254,30 @@
       authority: {
         title: "Why athletes trust Garcia Builder",
         subtitle: "Credentials, experience, and systems built around real people—not fitness fads.",
-        card1: { title: "ActiveIQ Level 3 PT", desc: "Certified personal trainer recognised in the UK and EU." },
-        card2: { title: "12+ Years Coaching", desc: "Hundreds of clients guided through fat loss, recomposition, and performance goals." },
+        card1: { title: "ActiveIQ Level 3 PT", desc: "Active IQ Level 3 personal training qualification." },
+        card2: { title: "12+ Years Coaching", desc: "Structured coaching for fat loss, recomposition, and performance goals." },
         card3: { title: "Coaching in EN • PT • ES", desc: "Communicate in the language that keeps you motivated and accountable." },
         card4: { title: "My PT Hub Ecosystem", desc: "Clear app experience for workouts, nutrition targets, habits, and progress tracking." }
       },
       stats: {
-        clients: "Clients Transformed",
-        workouts: "Workouts Completed",
-        success: "Success Rate",
-        rating: "Average Rating"
+        clients: "Personal Coaching",
+        workouts: "Progress Reviews",
+        success: "Coaching Languages",
+        rating: "Monthly Options"
       },
       guarantee: {
         certified: "Certified Professional",
         "certified.desc": "Qualified personal trainer with 12+ years experience",
-        privacy: "100% Private",
-        "privacy.desc": "Your data is secure and never shared",
-        support: "24/7 Support",
-        "support.desc": "In-app chat access for questions anytime",
-        flexible: "Cancel Anytime",
-        "flexible.desc": "No long-term contracts or commitments"
+        privacy: "Privacy Controls",
+        "privacy.desc": "Data use and service providers are explained in the Privacy Notice",
+        support: "In-App Support",
+        "support.desc": "Message through the coaching app between check-ins",
+        flexible: "Flexible Renewal",
+        "flexible.desc": "Cancel renewal before the next billing date; statutory rights still apply"
       },
       reviews: {
-        google: "Rated 5.0 on Google",
-        count: "(25 reviews)"
+        google: "Client feedback",
+        count: "(individual experiences)"
       },
       hero: {
         p: "Training, nutrition, and weekly accountability built around your schedule."
@@ -349,7 +349,7 @@
         q3: { q: "Is nutrition included?", a: "Yes. You get calories/macros and flexible meal frameworks. We align with your culture, budget, and schedule—no rigid templates." },
         q4: { q: "I'm a beginner—is this for me?", a: "Absolutely. We focus on safe form, progressions, and habit building. Every exercise has demo videos and cues." },
         q5: { q: "What if I have injuries or pain?", a: "We adapt exercises, tempo, and range of motion. I can coordinate with physio/GP guidance when needed." },
-        q6: { q: "How fast will I see results?", a: "Most feel better in 2–3 weeks, notice visible changes by 6–8 weeks, and strong transformations from 12+ weeks with consistency." },
+        q6: { q: "How fast will I see results?", a: "There is no guaranteed timeline. Progress depends on your starting point, health, consistency, training, nutrition, recovery and other personal circumstances." },
         q7: { q: "How do weekly check-ins work?", a: "Short form in the app + optional photos/measurements. I review adherence and trends, then update your plan." },
         q8: { q: "Which app do you use?", a: "My PT Hub—plans, videos, habits, messages, and progress tracking in one place (iOS/Android)." },
         q9: { q: "What equipment do I need?", a: "None to start. For home, adjustable dumbbells + bands cover almost everything. We scale up as you progress." },
@@ -363,12 +363,12 @@
         q17: { q: "Will you review my form?", a: "Yes. Upload short clips inside the app and I'll provide cues and corrections in your feedback." },
         q18: { q: "Do you offer meal plans or just targets?", a: "I provide macro targets and practical meal frameworks/recipes. If you need a stricter template, we can discuss options that fit your lifestyle." },
         q19: { q: "How are payments handled?", a: "Monthly subscription via secure card billing (Stripe)." },
-        q20: { q: "Is there a contract? Can I pause or cancel?", a: "No long-term lock-ins. Cancel anytime before your next billing date. Pauses are available for travel/illness—just message me." },
-        q21: { q: "Do you offer refunds?", a: "Because coaching is a time/service product, fees are generally non-refundable. You can cancel before the next cycle to avoid renewal." },
-        q22: { q: "How is my data handled? What about privacy?", a: "Only you and I see your data. Photos are optional. With explicit consent I may use anonymized results for marketing." },
+        q20: { q: "Is there a contract? Can I pause or cancel?", a: "No long-term lock-ins. Cancel renewal before your next billing date. Pauses may be available for travel or illness—just message me. Statutory cancellation rights are explained in the Terms." },
+        q21: { q: "Do you offer refunds?", a: "Refunds are provided where required by law or the agreed service terms. Distance-service cancellation rights, including the usual 14-day period where applicable, are explained in the Terms." },
+        q22: { q: "How is my data handled? What about privacy?", a: "Your data is limited to the coach and service providers needed to deliver and secure the service, as explained in the Privacy Notice. Photos are optional, and publication requires separate permission." },
         q23: { q: "Are progress photos required?", a: "No. They help track visual changes, but you can progress using measurements, strength logs, and how clothes fit." },
         q24: { q: "Do you coach in English only?", a: "Primary language is English. I can also coach in Portuguese and Spanish." },
-        q25: { q: "Can you guarantee results?", a: "No coach can guarantee outcomes. I guarantee a personalized plan, clarity, accountability, and weekly adjustments—your consistency drives the results." }
+        q25: { q: "Can you guarantee results?", a: "No. The service provides a personalised plan, agreed support and regular review, but it cannot promise a particular physical or health outcome." }
       },
       transformations: {
         title: "Transformations",
@@ -615,7 +615,7 @@
         },
         newsletter: {
           title: "Stay Informed While You Wait",
-          description: "While I review your inquiry, join thousands getting weekly training tips, nutrition insights, and exclusive updates.",
+          description: "While I review your enquiry, you can opt in to practical training tips, nutrition guidance and coaching updates.",
           cta: "Join Newsletter"
         },
         trainer: {
@@ -948,8 +948,8 @@
         }
       },
       featured: {
-        title: "Pessoas Reais. Resultados Reais.",
-        subtitle: "Junte-se a 127+ clientes que transformaram corpo e vida",
+        title: "Histórias de Progresso de Clientes",
+        subtitle: "Veja experiências individuais de coaching; os resultados variam de pessoa para pessoa.",
         result: "-9kg · +3kg massa magra",
         quote: "Andre reconstruiu meu treino mesmo com semanas de 60 horas. Perdemos gordura, ganhamos massa magra e meus ombros não doem mais.",
         author: "Conrad N., Londres",
@@ -973,7 +973,7 @@
         subtitle: "Assista como nossa abordagem personalizada gera resultados que duram",
         point1: "Protocolos de treino baseados em evidência",
         point2: "Nutrição sob medida sem restrições",
-        point3: "Suporte 24/7 pelo chat do app",
+        point3: "Suporte no app entre os check-ins",
         point4: "Revisões semanais e ajustes contínuos",
         cta: "Começar Agora →"
       },
@@ -988,15 +988,15 @@
       },
       socialproof: {
         title: "Junte-se à Nossa Comunidade",
-        subtitle: "127+ pessoas transformaram suas vidas com Garcia Builder",
+        subtitle: "Treino, nutrição e responsabilidade adaptados a rotinas reais.",
         cta: "Ver Todas as Histórias de Sucesso →"
       },
       social: {
         sectionTitle: "Transformações reais de profissionais ocupados",
-        sectionSubtitle: "Resultados sólidos em 8–12 semanas com coaching que se adapta à sua rotina, lesões e agenda.",
-        metric1: "Corpos transformados",
-        metric2: "Taxa de sucesso",
-        metric3: "Países atendidos",
+        sectionSubtitle: "Experiências individuais com coaching adaptado à rotina, saúde e agenda. Os resultados variam.",
+        metric1: "Coaching individual",
+        metric2: "Revisões de progresso",
+        metric3: "Idiomas de coaching",
         cta: "Começar Minha Transformação →",
   quote1: { text: "Eliminei 5 kg em 8 semanas com hábitos simples que permaneceram.", author: "Jessica R., 33" },
   quote2: { text: "Reduzi 6 kg enquanto ganhei 5% de massa em um bloco de 12 semanas.", author: "Tom L., 31" },
@@ -1013,30 +1013,30 @@
       authority: {
         title: "Por que atletas confiam no Garcia Builder",
         subtitle: "Credenciais, experiência e sistemas criados para pessoas reais — não modismos de academia.",
-        card1: { title: "ActiveIQ Level 3 PT", desc: "Personal trainer certificado reconhecido no Reino Unido e na UE." },
-        card2: { title: "12+ Anos de Coaching", desc: "Centenas de clientes guiados em perda de gordura, recomposição e performance." },
+        card1: { title: "ActiveIQ Level 3 PT", desc: "Qualificação Active IQ Level 3 em personal training." },
+        card2: { title: "12+ Anos de Coaching", desc: "Coaching estruturado para perda de gordura, recomposição e performance." },
         card3: { title: "Coaching em EN • PT • ES", desc: "Fale no idioma que mantém você motivado e responsável." },
         card4: { title: "Ecossistema My PT Hub", desc: "App claro para treinos, metas de nutrição, hábitos e acompanhamento de progresso." }
       },
       stats: {
-        clients: "Clientes Transformados",
-        workouts: "Treinos Completos",
-        success: "Taxa de Sucesso",
-        rating: "Avaliação Média"
+        clients: "Coaching Individual",
+        workouts: "Revisões de Progresso",
+        success: "Idiomas de Coaching",
+        rating: "Opções Mensais"
       },
       guarantee: {
         certified: "Profissional Certificado",
         "certified.desc": "Personal trainer qualificado com 12+ anos de experiência",
-        privacy: "100% Privado",
-        "privacy.desc": "Seus dados são seguros e nunca compartilhados",
-        support: "Suporte 24/7",
-        "support.desc": "Acesso ao chat do app para duvidas a qualquer hora",
-        flexible: "Cancele a Qualquer Momento",
-        "flexible.desc": "Sem contratos de longo prazo"
+        privacy: "Controles de Privacidade",
+        "privacy.desc": "O uso de dados e os prestadores estão explicados na Política de Privacidade",
+        support: "Suporte no App",
+        "support.desc": "Envie mensagens pelo app de coaching entre os check-ins",
+        flexible: "Renovação Flexível",
+        "flexible.desc": "Cancele a renovação antes da próxima cobrança; os direitos legais continuam aplicáveis"
       },
       reviews: {
-        google: "Avaliado 5.0 no Google",
-        count: "(25 avaliações)"
+        google: "Feedback de clientes",
+        count: "(experiências individuais)"
       },
       hero: {
         p: "Treino, nutricao e acompanhamento semanal criados para a sua rotina."
@@ -1108,7 +1108,7 @@
         q3: { q: "Nutrição está incluída?", a: "Sim. Você recebe calorias/macros e estruturas flexíveis de refeições. Alinhamos com sua cultura, orçamento e rotina—sem modelos rígidos." },
         q4: { q: "Sou iniciante—isso é para mim?", a: "Absolutamente. Focamos em forma segura, progressões e construção de hábitos. Todo exercício tem vídeos demonstrativos e dicas." },
         q5: { q: "E se eu tiver lesões ou dor?", a: "Adaptamos exercícios, tempo e amplitude de movimento. Posso coordenar com orientação de fisioterapeuta/médico quando necessário." },
-        q6: { q: "Quão rápido verei resultados?", a: "A maioria se sente melhor em 2–3 semanas, nota mudanças visíveis em 6–8 semanas, e transformações fortes a partir de 12+ semanas com consistência." },
+        q6: { q: "Quão rápido verei resultados?", a: "Não existe prazo garantido. O progresso depende do ponto de partida, saúde, consistência, treino, nutrição, recuperação e outras circunstâncias pessoais." },
         q7: { q: "Como funcionam os check-ins semanais?", a: "Formulário curto no app + fotos/medidas opcionais. Reviso aderência e tendências, depois atualizo seu plano." },
         q8: { q: "Qual app você usa?", a: "My PT Hub—planos, vídeos, hábitos, mensagens e acompanhamento de progresso em um lugar (iOS/Android)." },
         q9: { q: "Que equipamentos preciso?", a: "Nenhum para começar. Para casa, halteres ajustáveis + elásticos cobrem quase tudo. Escalamos conforme você progride." },
@@ -1122,12 +1122,12 @@
         q17: { q: "Você revisará minha forma?", a: "Sim. Faça upload de clipes curtos dentro do app e fornecerei dicas e correções no seu feedback." },
         q18: { q: "Você oferece planos alimentares ou apenas metas?", a: "Forneço metas de macros e estruturas práticas de refeições/receitas. Se precisar de um modelo mais rígido, podemos discutir opções que se encaixem no seu estilo de vida." },
         q19: { q: "Como são feitos os pagamentos?", a: "Assinatura mensal via cobrança segura no cartão (Stripe)." },
-        q20: { q: "Há contrato? Posso pausar ou cancelar?", a: "Sem compromissos de longo prazo. Cancele a qualquer momento antes da próxima data de cobrança. Pausas estão disponíveis para viagem/doença—apenas me mande mensagem." },
-        q21: { q: "Vocês oferecem reembolsos?", a: "Como coaching é um produto de tempo/serviço, as taxas geralmente não são reembolsáveis. Você pode cancelar antes do próximo ciclo para evitar renovação." },
-        q22: { q: "Como meus dados são tratados? E a privacidade?", a: "Apenas você e eu vemos seus dados. Fotos são opcionais. Com consentimento explícito posso usar resultados anônimos para marketing." },
+        q20: { q: "Há contrato? Posso pausar ou cancelar?", a: "Sem compromissos de longo prazo. Cancele a renovação antes da próxima data de cobrança. Pausas podem estar disponíveis para viagem ou doença—mande uma mensagem. Os direitos legais de cancelamento estão explicados nos Termos." },
+        q21: { q: "Vocês oferecem reembolsos?", a: "Os reembolsos são concedidos quando exigidos por lei ou pelos termos do serviço acordado. Os direitos de cancelamento de serviços à distância, incluindo o período habitual de 14 dias quando aplicável, estão explicados nos Termos." },
+        q22: { q: "Como meus dados são tratados? E a privacidade?", a: "O acesso aos seus dados é limitado ao coach e aos prestadores necessários para entregar e proteger o serviço, conforme a Política de Privacidade. Fotos são opcionais e a publicação exige autorização separada." },
         q23: { q: "Fotos de progresso são obrigatórias?", a: "Não. Elas ajudam a acompanhar mudanças visuais, mas você pode progredir usando medidas, logs de força e como as roupas ficam." },
         q24: { q: "Você atende apenas em inglês?", a: "Idioma principal é inglês. Também posso atender em português e espanhol." },
-        q25: { q: "Você pode garantir resultados?", a: "Nenhum coach pode garantir resultados. Garanto um plano personalizado, clareza, responsabilidade e ajustes semanais—sua consistência dirige os resultados." }
+        q25: { q: "Você pode garantir resultados?", a: "Não. O serviço fornece um plano personalizado, suporte acordado e revisões regulares, mas não pode prometer um resultado físico ou de saúde específico." }
       },
       transformations: {
         title: "Transformações",
@@ -1707,8 +1707,8 @@
         }
       },
       featured: {
-        title: "Personas Reales. Resultados Reales.",
-        subtitle: "Únete a 127+ clientes que transformaron sus cuerpos y vidas",
+        title: "Historias de Progreso de Clientes",
+        subtitle: "Consulta experiencias individuales de coaching; los resultados varían de una persona a otra.",
         result: "-9kg · +3kg masa magra",
         quote: "Andre reconstruyó mi entrenamiento aun con semanas de 60 horas. Perdimos grasa, ganamos masa magra y ya no tengo dolor en los hombros.",
         author: "Conrad N., Londres",
@@ -1732,7 +1732,7 @@
         subtitle: "Observa cómo nuestro enfoque personalizado entrega resultados duraderos",
         point1: "Protocolos de entrenamiento basados en evidencia",
         point2: "Nutrición personalizada sin restricciones",
-        point3: "Soporte 24/7 por el chat de la app",
+        point3: "Soporte en la app entre revisiones",
         point4: "Revisiones semanales y ajustes continuos",
         cta: "Empezar Ahora →"
       },
@@ -1747,15 +1747,15 @@
       },
       socialproof: {
         title: "Únete a Nuestra Comunidad",
-        subtitle: "127+ personas transformaron sus vidas con Garcia Builder",
+        subtitle: "Entrenamiento, nutrición y responsabilidad adaptados a horarios reales.",
         cta: "Ver Todas las Historias de Éxito →"
       },
       social: {
         sectionTitle: "Transformaciones reales de profesionales ocupados",
-        sectionSubtitle: "Resultados sólidos en 8–12 semanas con coaching que se adapta a tu estilo de vida, lesiones y agenda.",
-        metric1: "Transformaciones corporales",
-        metric2: "Tasa de éxito",
-        metric3: "Países atendidos",
+        sectionSubtitle: "Experiencias individuales con coaching adaptado al estilo de vida, la salud y la agenda. Los resultados varían.",
+        metric1: "Coaching individual",
+        metric2: "Revisiones de progreso",
+        metric3: "Idiomas de coaching",
         cta: "Comenzar Mi Transformación →",
   quote1: { text: "Bajé 5 kg en 8 semanas con hábitos sencillos que se mantuvieron.", author: "Jessica R., 33" },
   quote2: { text: "Reduje 6 kg mientras gané un 5% de músculo en un bloque de 12 semanas.", author: "Tom L., 31" },
@@ -1772,30 +1772,30 @@
       authority: {
         title: "Por qué los atletas confían en Garcia Builder",
         subtitle: "Credenciales, experiencia y sistemas creados para personas reales, no modas pasajeras.",
-        card1: { title: "ActiveIQ Level 3 PT", desc: "Entrenador personal certificado reconocido en Reino Unido y la UE." },
-        card2: { title: "12+ Años Entrenando", desc: "Cientos de clientes guiados en pérdida de grasa, recomposición y rendimiento." },
+        card1: { title: "ActiveIQ Level 3 PT", desc: "Titulación Active IQ Level 3 de entrenamiento personal." },
+        card2: { title: "12+ Años Entrenando", desc: "Coaching estructurado para pérdida de grasa, recomposición y rendimiento." },
         card3: { title: "Coaching en EN • PT • ES", desc: "Comunícate en el idioma que te mantiene motivado y responsable." },
         card4: { title: "Ecosistema My PT Hub", desc: "App claro para entrenos, objetivos de nutrición, hábitos y seguimiento del progreso." }
       },
       stats: {
-        clients: "Clientes Transformados",
-        workouts: "Entrenamientos Completados",
-        success: "Tasa de Éxito",
-        rating: "Calificación Promedio"
+        clients: "Coaching Individual",
+        workouts: "Revisiones de Progreso",
+        success: "Idiomas de Coaching",
+        rating: "Opciones Mensuales"
       },
       guarantee: {
         certified: "Profesional Certificado",
         "certified.desc": "Entrenador personal calificado con 12+ años de experiencia",
-        privacy: "100% Privado",
-        "privacy.desc": "Tus datos son seguros y nunca compartidos",
-        support: "Soporte 24/7",
-        "support.desc": "Acceso al chat de la app para preguntas en cualquier momento",
-        flexible: "Cancela en Cualquier Momento",
-        "flexible.desc": "Sin contratos a largo plazo"
+        privacy: "Controles de Privacidad",
+        "privacy.desc": "El uso de datos y los proveedores se explican en el Aviso de Privacidad",
+        support: "Soporte en la App",
+        "support.desc": "Envía mensajes por la app de coaching entre revisiones",
+        flexible: "Renovación Flexible",
+        "flexible.desc": "Cancela la renovación antes del próximo cobro; los derechos legales siguen vigentes"
       },
       reviews: {
-        google: "Calificado 5.0 en Google",
-        count: "(25 reseñas)"
+        google: "Opiniones de clientes",
+        count: "(experiencias individuales)"
       },
       hero: {
         p: "Entrenamiento, nutricion y seguimiento semanal creados para tu rutina."
@@ -1867,7 +1867,7 @@
         q3: { q: "¿Está incluida la nutrición?", a: "Sí. Obtienes calorías/macros y marcos flexibles de comidas. Nos alineamos con tu cultura, presupuesto y horario—sin plantillas rígidas." },
         q4: { q: "Soy principiante—¿esto es para mí?", a: "Absolutamente. Nos enfocamos en forma segura, progresiones y construcción de hábitos. Cada ejercicio tiene videos demostrativos y consejos." },
         q5: { q: "¿Qué pasa si tengo lesiones o dolor?", a: "Adaptamos ejercicios, tempo y rango de movimiento. Puedo coordinar con orientación de fisioterapeuta/médico cuando sea necesario." },
-        q6: { q: "¿Qué tan rápido veré resultados?", a: "La mayoría se siente mejor en 2–3 semanas, nota cambios visibles en 6–8 semanas, y transformaciones fuertes desde 12+ semanas con consistencia." },
+        q6: { q: "¿Qué tan rápido veré resultados?", a: "No existe un plazo garantizado. El progreso depende del punto de partida, la salud, la constancia, el entrenamiento, la nutrición, la recuperación y otras circunstancias personales." },
         q7: { q: "¿Cómo funcionan los check-ins semanales?", a: "Formulario corto en la app + fotos/medidas opcionales. Reviso adherencia y tendencias, luego actualizo tu plan." },
         q8: { q: "¿Qué app usas?", a: "My PT Hub—planes, videos, hábitos, mensajes y seguimiento de progreso en un lugar (iOS/Android)." },
         q9: { q: "¿Qué equipamiento necesito?", a: "Ninguno para empezar. Para casa, mancuernas ajustables + bandas cubren casi todo. Escalamos mientras progresas." },
@@ -1881,12 +1881,12 @@
         q17: { q: "¿Revisarás mi forma?", a: "Sí. Sube clips cortos dentro de la app y proporcionaré consejos y correcciones en tu feedback." },
         q18: { q: "¿Ofreces planes de comidas o solo objetivos?", a: "Proporciono objetivos de macros y marcos prácticos de comidas/recetas. Si necesitas una plantilla más estricta, podemos discutir opciones que se adapten a tu estilo de vida." },
         q19: { q: "¿Cómo se manejan los pagos?", a: "Suscripción mensual vía facturación segura con tarjeta (Stripe)." },
-        q20: { q: "¿Hay contrato? ¿Puedo pausar o cancelar?", a: "Sin compromisos a largo plazo. Cancela en cualquier momento antes de tu próxima fecha de facturación. Pausas están disponibles para viajes/enfermedad—solo envíame mensaje." },
-        q21: { q: "¿Ofrecen reembolsos?", a: "Como el coaching es un producto de tiempo/servicio, las tarifas generalmente no son reembolsables. Puedes cancelar antes del próximo ciclo para evitar renovación." },
-        q22: { q: "¿Cómo se manejan mis datos? ¿Qué hay de la privacidad?", a: "Solo tú y yo vemos tus datos. Las fotos son opcionales. Con consentimiento explícito puedo usar resultados anónimos para marketing." },
+        q20: { q: "¿Hay contrato? ¿Puedo pausar o cancelar?", a: "Sin compromisos a largo plazo. Cancela la renovación antes de tu próxima fecha de facturación. Puede haber pausas por viaje o enfermedad—envíame un mensaje. Los derechos legales de cancelación se explican en los Términos." },
+        q21: { q: "¿Ofrecen reembolsos?", a: "Los reembolsos se conceden cuando lo exige la ley o los términos del servicio acordado. Los derechos de cancelación de servicios a distancia, incluido el periodo habitual de 14 días cuando corresponda, se explican en los Términos." },
+        q22: { q: "¿Cómo se manejan mis datos? ¿Qué hay de la privacidad?", a: "El acceso a tus datos se limita al coach y a los proveedores necesarios para prestar y proteger el servicio, como explica el Aviso de Privacidad. Las fotos son opcionales y su publicación requiere un permiso independiente." },
         q23: { q: "¿Las fotos de progreso son requeridas?", a: "No. Ayudan a rastrear cambios visuales, pero puedes progresar usando medidas, registros de fuerza y cómo te queda la ropa." },
         q24: { q: "¿Entrenas solo en inglés?", a: "El idioma principal es inglés. También puedo entrenar en portugués y español." },
-        q25: { q: "¿Puedes garantizar resultados?", a: "Ningún coach puede garantizar resultados. Garantizo un plan personalizado, claridad, responsabilidad y ajustes semanales—tu consistencia impulsa los resultados." }
+        q25: { q: "¿Puedes garantizar resultados?", a: "No. El servicio ofrece un plan personalizado, el apoyo acordado y revisiones regulares, pero no puede prometer un resultado físico o de salud concreto." }
       },
       transformations: {
         title: "Transformaciones",
@@ -2343,7 +2343,8 @@
       last_name_placeholder: "Last name",
       email: "Email Address",
       email_placeholder: "you@email.com",
-      consent: "I agree to receive the guide and follow-up emails from Garcia Builder Fitness.",
+      consent: "I request the guide and have read the",
+      marketing_consent: "I would also like occasional coaching tips and offers by email. Optional; unsubscribe at any time.",
       consent_small: "No spam, unsubscribe anytime.",
       submit: "Send Me the 28-Day Guide",
       processing: "PROCESSING...",
@@ -2441,7 +2442,7 @@
     },
     leadform: {
       section_title: "Ready to Transform Your Body?",
-      section_subtitle: "Get your personalized fitness plan and join 127+ successful transformations",
+      section_subtitle: "Request a personalised fitness plan built around your goals, schedule and starting point.",
       badge: "FREE CONSULTATION",
       title: "Get Your Personalized Fitness Plan",
       subtitle: "Start your transformation journey today",
@@ -2462,13 +2463,13 @@
       submit: "Get My Free Consultation",
       benefit1: "Personalized workout plan",
       benefit2: "Nutrition guidelines",
-      benefit3: "24/7 in-app chat support",
+      benefit3: "In-app support between check-ins",
       benefit4: "Progress tracking"
     },
     explore: {
       title: "Explore Your Journey",
       transformations: "Transformations",
-      "transformations.desc": "127+ client results",
+      "transformations.desc": "Individual client progress stories",
       testimonials: "Testimonials",
       "testimonials.desc": "Client success stories",
       pricing: "Pricing",
@@ -2478,8 +2479,8 @@
     },
     trust: {
       certified: "Certified Professional",
-      insured: "Fully Insured",
-      clients: "127+ Success Stories"
+      insured: "Adults 18+",
+      clients: "Individual Plans"
     },
     newsletter: {
       title: "Get Weekly Expert Tips",
@@ -2541,7 +2542,8 @@
       last_name_placeholder: "Sobrenome",
       email: "Email",
       email_placeholder: "voce@email.com",
-      consent: "Concordo em receber o guia e emails com dicas sobre fitness.",
+      consent: "Solicito o guia e li a",
+      marketing_consent: "Também quero receber dicas ocasionais de coaching e ofertas por email. Opcional; cancele a qualquer momento.",
       consent_small: "Sem spam, cancele quando quiser.",
       submit: "Enviar o Guia de 28 Dias",
       processing: "PROCESSANDO...",
@@ -2639,7 +2641,7 @@
     },
     leadform: {
       section_title: "Pronto para Transformar Seu Corpo?",
-      section_subtitle: "Receba seu plano fitness personalizado e junte-se a 127+ transformacoes de sucesso",
+      section_subtitle: "Solicite um plano fitness personalizado para seus objetivos, rotina e ponto de partida.",
       badge: "CONSULTA GRATIS",
       title: "Receba Seu Plano Fitness Personalizado",
       subtitle: "Comece sua transformacao hoje",
@@ -2660,13 +2662,13 @@
       submit: "Quero Minha Consulta Gratis",
       benefit1: "Plano de treino personalizado",
       benefit2: "Orientacoes de nutricao",
-      benefit3: "Suporte no app 24/7",
+      benefit3: "Suporte no app entre os check-ins",
       benefit4: "Acompanhamento de progresso"
     },
     explore: {
       title: "Explore Sua Jornada",
       transformations: "Transformacoes",
-      "transformations.desc": "127+ resultados de clientes",
+      "transformations.desc": "Histórias individuais de progresso",
       testimonials: "Depoimentos",
       "testimonials.desc": "Historias de sucesso dos clientes",
       pricing: "Precos",
@@ -2676,8 +2678,8 @@
     },
     trust: {
       certified: "Profissional Certificado",
-      insured: "Totalmente Segurado",
-      clients: "127+ Historias de Sucesso"
+      insured: "Adultos 18+",
+      clients: "Planos Individuais"
     },
     newsletter: {
       title: "Receba Dicas Semanais",
@@ -2739,7 +2741,8 @@
       last_name_placeholder: "Apellido",
       email: "Email",
       email_placeholder: "tu@email.com",
-      consent: "Acepto recibir la guia y correos con consejos de fitness.",
+      consent: "Solicito la guía y he leído el",
+      marketing_consent: "También quiero recibir consejos ocasionales de coaching y ofertas por email. Opcional; cancela en cualquier momento.",
       consent_small: "Sin spam, cancela cuando quieras.",
       submit: "Enviame la Guia de 28 Dias",
       processing: "PROCESANDO...",
@@ -2837,7 +2840,7 @@
     },
     leadform: {
       section_title: "Listo para Transformar Tu Cuerpo?",
-      section_subtitle: "Recibe tu plan fitness personalizado y unete a 127+ transformaciones exitosas",
+      section_subtitle: "Solicita un plan fitness personalizado para tus objetivos, horario y punto de partida.",
       badge: "CONSULTA GRATIS",
       title: "Recibe Tu Plan Fitness Personalizado",
       subtitle: "Empieza tu transformacion hoy",
@@ -2858,13 +2861,13 @@
       submit: "Quiero Mi Consulta Gratis",
       benefit1: "Plan de entrenamiento personalizado",
       benefit2: "Guias de nutricion",
-      benefit3: "Soporte 24/7 en la app",
+      benefit3: "Soporte en la app entre revisiones",
       benefit4: "Seguimiento de progreso"
     },
     explore: {
       title: "Explora Tu Camino",
       transformations: "Transformaciones",
-      "transformations.desc": "127+ resultados de clientes",
+      "transformations.desc": "Historias individuales de progreso",
       testimonials: "Testimonios",
       "testimonials.desc": "Historias de exito de clientes",
       pricing: "Precios",
@@ -2874,8 +2877,8 @@
     },
     trust: {
       certified: "Profesional Certificado",
-      insured: "Totalmente Asegurado",
-      clients: "127+ Historias de Exito"
+      insured: "Adultos 18+",
+      clients: "Planes Individuales"
     },
     newsletter: {
       title: "Recibe Consejos Semanales",
@@ -2926,7 +2929,7 @@
       "I didn't grow up with perfect conditions. The Air Force was my first coach: 05:00 alarms, inspections, and standards that didn't care about excuses. There I learned that discipline beats mood and that progress is a decision repeated daily. When I moved to London, I carried that mindset into a city where I knew no one. I worked long hours, learned a new rhythm, and rebuilt my life one training session at a time. The gym became my compass; iron gave me structure when everything else was uncertain, and reps became a language I could trust.": "Nao cresci com condicoes perfeitas. A Forca Aerea foi meu primeiro treinador: alarmes as 05:00, inspecoes e padroes que nao aceitavam desculpas. La aprendi que disciplina vence humor e que progresso e uma decisao repetida todos os dias. Quando me mudei para Londres, levei essa mentalidade para uma cidade onde nao conhecia ninguem. Trabalhei longas horas, aprendi um novo ritmo e reconstruí minha vida uma sessao de treino por vez. A academia virou minha bussola; o ferro me deu estrutura quando todo o resto era incerto, e as repeticoes viraram uma linguagem em que eu podia confiar.",
       "Coaching grew naturally from that path. I studied, earned credentials, and chose to serve on the gym floor - listening, teaching, and leading by example. As a personal trainer and coach, I've helped clients in English, Portuguese and Spanish get stronger, drop fat and move without pain. More than before-and-after pictures, I'm proud of the messages that say \"I'm a different person now.\" My method is simple and relentless: clear training blocks, simple nutrition you can follow, and accountability that respects real life. No hype, no judgment - just the truth and a plan.": "O coaching cresceu naturalmente desse caminho. Estudei, conquistei certificacoes e escolhi servir no chao da academia - ouvindo, ensinando e liderando pelo exemplo. Como personal trainer e coach, ajudei clientes em ingles, portugues e espanhol a ficarem mais fortes, perderem gordura e se moverem sem dor. Mais do que fotos de antes e depois, tenho orgulho das mensagens que dizem \"agora sou uma pessoa diferente\". Meu metodo e simples e firme: blocos de treino claros, nutricao simples que voce consegue seguir e responsabilidade que respeita a vida real. Sem exagero, sem julgamento - apenas verdade e um plano.",
       "Stay Connected with Garcia Builder": "Fique Conectado com o Garcia Builder",
-      "Get weekly training tips, nutrition insights, and exclusive content delivered straight to your inbox. Join thousands of people transforming their bodies and building lasting habits.": "Receba dicas semanais de treino, insights de nutricao e conteudo exclusivo direto no seu email. Junte-se a milhares de pessoas transformando o corpo e construindo habitos duradouros.",
+      "Get practical training tips, nutrition guidance and coaching updates by email. Unsubscribe at any time.": "Receba dicas práticas de treino, orientação nutricional e novidades de coaching por email. Cancele a qualquer momento.",
       "What would you like to receive?": "O que voce gostaria de receber?",
       "Training Tips": "Dicas de Treino",
       "Nutrition Advice": "Conselhos de Nutricao",
@@ -3001,7 +3004,7 @@
       "I didn't grow up with perfect conditions. The Air Force was my first coach: 05:00 alarms, inspections, and standards that didn't care about excuses. There I learned that discipline beats mood and that progress is a decision repeated daily. When I moved to London, I carried that mindset into a city where I knew no one. I worked long hours, learned a new rhythm, and rebuilt my life one training session at a time. The gym became my compass; iron gave me structure when everything else was uncertain, and reps became a language I could trust.": "No creci con condiciones perfectas. La Fuerza Aerea fue mi primer entrenador: alarmas a las 05:00, inspecciones y estandares que no aceptaban excusas. Alli aprendi que la disciplina supera al estado de animo y que el progreso es una decision repetida cada dia. Cuando me mude a Londres, lleve esa mentalidad a una ciudad donde no conocia a nadie. Trabaje muchas horas, aprendi un nuevo ritmo y reconstruí mi vida una sesion de entrenamiento a la vez. El gimnasio se volvio mi brujula; el hierro me dio estructura cuando todo lo demas era incierto, y las repeticiones se volvieron un idioma en el que podia confiar.",
       "Coaching grew naturally from that path. I studied, earned credentials, and chose to serve on the gym floor - listening, teaching, and leading by example. As a personal trainer and coach, I've helped clients in English, Portuguese and Spanish get stronger, drop fat and move without pain. More than before-and-after pictures, I'm proud of the messages that say \"I'm a different person now.\" My method is simple and relentless: clear training blocks, simple nutrition you can follow, and accountability that respects real life. No hype, no judgment - just the truth and a plan.": "El coaching crecio naturalmente desde ese camino. Estudie, obtuve certificaciones y elegi servir en el gimnasio: escuchando, ensenando y liderando con el ejemplo. Como entrenador personal y coach, he ayudado a clientes en ingles, portugues y espanol a ser mas fuertes, perder grasa y moverse sin dolor. Mas que fotos de antes y despues, me enorgullecen los mensajes que dicen \"ahora soy una persona diferente\". Mi metodo es simple y firme: bloques de entrenamiento claros, nutricion sencilla que puedes seguir y responsabilidad que respeta la vida real. Sin exageraciones, sin juicio: solo verdad y un plan.",
       "Stay Connected with Garcia Builder": "Mantente Conectado con Garcia Builder",
-      "Get weekly training tips, nutrition insights, and exclusive content delivered straight to your inbox. Join thousands of people transforming their bodies and building lasting habits.": "Recibe consejos semanales de entrenamiento, ideas de nutricion y contenido exclusivo directo en tu email. Unete a miles de personas transformando su cuerpo y creando habitos duraderos.",
+      "Get practical training tips, nutrition guidance and coaching updates by email. Unsubscribe at any time.": "Recibe consejos prácticos de entrenamiento, orientación nutricional y novedades de coaching por email. Cancela en cualquier momento.",
       "What would you like to receive?": "Que te gustaria recibir?",
       "Training Tips": "Consejos de Entrenamiento",
       "Nutrition Advice": "Consejos de Nutricion",
@@ -3109,8 +3112,7 @@
     "Terms": "Termos",
     "Free Guide": "Guia Grátis",
     "Contact Form": "Formulário de Contato",
-    "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.": "Coaching online para transformação real. Treino baseado em evidência, nutrição personalizada e acompanhamento 1:1. Resultados em 8-12 semanas.",
-    "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8â€“12 weeks.": "Coaching online para transformação real. Treino baseado em evidência, nutrição personalizada e acompanhamento 1:1. Resultados em 8-12 semanas.",
+    "Online coaching with structured training, practical nutrition guidance and individual accountability. Results vary.": "Coaching online com treino estruturado, orientação nutricional prática e acompanhamento individual. Os resultados variam.",
     "Get tips, recipes, and exclusive offers. No spam.": "Receba dicas, receitas e ofertas exclusivas. Sem spam.",
     "View All Articles on My PT Hub": "Ver todos os artigos no My PT Hub",
     "Join Newsletter": "Entrar na Newsletter",
@@ -3194,7 +3196,7 @@
     "Progress Tracking Tips": "Dicas de Acompanhamento de Progresso",
     "Community Support": "Suporte da Comunidade",
     "Success Strategies": "Estratégias de Sucesso",
-    "Join thousands transforming their bodies. No spam, unsubscribe anytime.": "Junte-se a milhares transformando seus corpos. Sem spam, cancele quando quiser.",
+    "Optional updates only. Unsubscribe at any time.": "Apenas atualizações opcionais. Cancele a qualquer momento.",
     "The Ultimate Guide to Achieving 100 Push-ups": "Guia Definitivo para Chegar a 100 Flexões",
     "A realistic 20-week plan to build strength progressively and reach the milestone of 100 consecutive push-ups.": "Um plano realista de 20 semanas para construir força progressivamente e chegar a 100 flexões consecutivas.",
     "Training and Nutrition in Diabetes Management": "Treino e Nutrição no Controle do Diabetes",
@@ -3272,7 +3274,7 @@
     "3. Subscriptions & Billing": "3. Assinaturas e Cobrança",
     "Subscriptions renew automatically each billing cycle unless cancelled. You can manage your subscription via the receipt email or by contacting support.": "As assinaturas renovam automaticamente a cada ciclo de cobrança, salvo cancelamento. Você pode gerenciar sua assinatura pelo email do recibo ou entrando em contato com o suporte.",
     "4. Refunds": "4. Reembolsos",
-    "Refund eligibility is evaluated case-by-case. Contact support within 14 days for assistance.": "A elegibilidade para reembolso é avaliada caso a caso. Entre em contato com o suporte em até 14 dias para ajuda.",
+    "Refunds and statutory cancellation rights are explained in the current Terms.": "Os reembolsos e direitos legais de cancelamento estão explicados nos Termos atuais.",
     "5. Acceptable Use": "5. Uso Aceitável",
     "You agree not to misuse our services or attempt to access them using a method other than the interface we provide.": "Você concorda em não usar nossos serviços indevidamente nem tentar acessá-los por métodos diferentes da interface que fornecemos.",
     "6. Privacy": "6. Privacidade",
@@ -3283,12 +3285,12 @@
     "8. Contact": "8. Contato",
     "Coach with Garcia Builder": "Coach no Garcia Builder",
     "Become a Garcia Builder Trainer": "Torne-se Treinador Garcia Builder",
-    "Join a global roster of expert coaches who combine evidence-based programming, compassionate accountability and cinematic delivery to transform lives in 12 weeks or less.": "Entre para um time global de coaches especialistas que unem programação baseada em evidência, acompanhamento humano e entrega premium para transformar vidas em 12 semanas ou menos.",
+    "Join a coaching network focused on evidence-informed programming, practical accountability and clear client support.": "Entre para uma rede de coaching focada em programação baseada em evidências, acompanhamento prático e suporte claro ao cliente.",
     "Proven systems": "Sistemas comprovados",
     "Curated client leads": "Leads qualificados de clientes",
     "All-in-one platform": "Plataforma completa",
     "Active online coaching clients managed in one platform.": "Clientes ativos de coaching online gerenciados em uma só plataforma.",
-    "Average client retention increase after 90 days with our check-in rhythm.": "Aumento médio de retenção de clientes após 90 dias com nosso ritmo de check-ins.",
+    "Structured weekly check-ins support consistent plan review.": "Check-ins semanais estruturados apoiam a revisão consistente do plano.",
     "Weekly admin time saved through automated reporting & onboarding flows.": "Tempo administrativo semanal economizado com relatórios e onboarding automatizados.",
     "Lead engine included": "Motor de leads incluído",
     "Receive qualified prospects from our campaigns plus templates to nurture your own audience.": "Receba prospects qualificados das nossas campanhas e templates para nutrir sua própria audiência.",
@@ -3435,8 +3437,7 @@
     "Terms": "Términos",
     "Free Guide": "Guía Gratis",
     "Contact Form": "Formulario de Contacto",
-    "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.": "Coaching online para una transformación real. Entrenamiento basado en evidencia, nutrición personalizada y seguimiento 1:1. Resultados en 8-12 semanas.",
-    "Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8â€“12 weeks.": "Coaching online para una transformación real. Entrenamiento basado en evidencia, nutrición personalizada y seguimiento 1:1. Resultados en 8-12 semanas.",
+    "Online coaching with structured training, practical nutrition guidance and individual accountability. Results vary.": "Coaching online con entrenamiento estructurado, orientación nutricional práctica y seguimiento individual. Los resultados varían.",
     "Get tips, recipes, and exclusive offers. No spam.": "Recibe consejos, recetas y ofertas exclusivas. Sin spam.",
     "View All Articles on My PT Hub": "Ver todos los artículos en My PT Hub",
     "Join Newsletter": "Unirse al Newsletter",
@@ -3520,7 +3521,7 @@
     "Progress Tracking Tips": "Consejos para Seguir el Progreso",
     "Community Support": "Apoyo de la Comunidad",
     "Success Strategies": "Estrategias de Éxito",
-    "Join thousands transforming their bodies. No spam, unsubscribe anytime.": "Únete a miles transformando sus cuerpos. Sin spam, cancela cuando quieras.",
+    "Optional updates only. Unsubscribe at any time.": "Solo actualizaciones opcionales. Cancela en cualquier momento.",
     "The Ultimate Guide to Achieving 100 Push-ups": "Guía Definitiva para Lograr 100 Flexiones",
     "A realistic 20-week plan to build strength progressively and reach the milestone of 100 consecutive push-ups.": "Un plan realista de 20 semanas para construir fuerza progresivamente y llegar a 100 flexiones consecutivas.",
     "Training and Nutrition in Diabetes Management": "Entrenamiento y Nutrición en el Manejo de la Diabetes",
@@ -3598,7 +3599,7 @@
     "3. Subscriptions & Billing": "3. Suscripciones y Facturación",
     "Subscriptions renew automatically each billing cycle unless cancelled. You can manage your subscription via the receipt email or by contacting support.": "Las suscripciones se renuevan automáticamente en cada ciclo de facturación salvo cancelación. Puedes gestionarla desde el email del recibo o contactando soporte.",
     "4. Refunds": "4. Reembolsos",
-    "Refund eligibility is evaluated case-by-case. Contact support within 14 days for assistance.": "La elegibilidad de reembolso se evalúa caso por caso. Contacta soporte dentro de 14 días para recibir ayuda.",
+    "Refunds and statutory cancellation rights are explained in the current Terms.": "Los reembolsos y derechos legales de cancelación se explican en los Términos actuales.",
     "5. Acceptable Use": "5. Uso Aceptable",
     "You agree not to misuse our services or attempt to access them using a method other than the interface we provide.": "Aceptas no usar indebidamente nuestros servicios ni intentar acceder a ellos mediante métodos distintos a la interfaz que proporcionamos.",
     "6. Privacy": "6. Privacidad",
@@ -3609,12 +3610,12 @@
     "8. Contact": "8. Contacto",
     "Coach with Garcia Builder": "Coach en Garcia Builder",
     "Become a Garcia Builder Trainer": "Conviértete en Entrenador Garcia Builder",
-    "Join a global roster of expert coaches who combine evidence-based programming, compassionate accountability and cinematic delivery to transform lives in 12 weeks or less.": "Únete a un equipo global de coaches expertos que combinan programación basada en evidencia, acompañamiento humano y entrega premium para transformar vidas en 12 semanas o menos.",
+    "Join a coaching network focused on evidence-informed programming, practical accountability and clear client support.": "Únete a una red de coaching centrada en programación basada en evidencia, responsabilidad práctica y apoyo claro al cliente.",
     "Proven systems": "Sistemas comprobados",
     "Curated client leads": "Leads cualificados de clientes",
     "All-in-one platform": "Plataforma todo en uno",
     "Active online coaching clients managed in one platform.": "Clientes activos de coaching online gestionados en una sola plataforma.",
-    "Average client retention increase after 90 days with our check-in rhythm.": "Aumento promedio de retención de clientes después de 90 días con nuestro ritmo de check-ins.",
+    "Structured weekly check-ins support consistent plan review.": "Las revisiones semanales estructuradas apoyan una evaluación constante del plan.",
     "Weekly admin time saved through automated reporting & onboarding flows.": "Tiempo administrativo semanal ahorrado con reportes y onboarding automatizados.",
     "Lead engine included": "Motor de leads incluido",
     "Receive qualified prospects from our campaigns plus templates to nurture your own audience.": "Recibe prospectos cualificados de nuestras campañas y plantillas para nutrir tu propia audiencia.",

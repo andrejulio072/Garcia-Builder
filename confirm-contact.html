@@ -4,23 +4,10 @@
 <head>
 <script src="/js/utils/canonical-host-redirect.js?v=20260705" data-gb-canonical-host></script>
 <!-- Google Tag Manager -->
-<script id="gb-gtm-bootstrap">
-(function(w,d,s,l,i){
-  w[l]=w[l]||[];
-  w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
-  var f=d.getElementsByTagName(s)[0];
-  var j=d.createElement(s);
-  var dl=l!='dataLayer'?'&l='+l:'';
-  j.async=true;
-  j.id='gb-gtm-script';
-  j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-  f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-TG5TFZ2C');
-</script>
-<script defer src="/js/tracking/tracking.js?v=20260703c"></script>
 <!-- End Google Tag Manager -->
 
   <meta charset="UTF-8">
+  <script src="/js/tracking/site-consent-bootstrap.js?v=20260805-consent-v3"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
@@ -77,34 +64,8 @@
   ]
 }
 </script>
-  <link rel="preconnect" href="https://www.googletagmanager.com">
-
   <!-- Consent baseline before any tags -->
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    try {
-      const stored = JSON.parse(localStorage.getItem('gb_consent_v1') || 'null');
-      if (stored && stored.status === 'granted') {
-        gtag('consent','default',{ad_storage:'granted',analytics_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',functionality_storage:'granted',security_storage:'granted'});
-      } else if (stored && stored.status === 'denied') {
-        gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});
-      } else {
-        gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});
-      }
-    } catch(e){
-      gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',functionality_storage:'granted',security_storage:'granted'});
-    }
-  </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'AW-17627402053', { send_page_view: false });
-  </script>
   <script defer src="js/tracking/ads-config.js?v=20251025"></script>
-  <script defer src="js/tracking/ads-loader.js?v=20251025"></script>
   <script defer src="js/tracking/conversion-tracking.js?v=20251025"></script>
   <script defer src="js/tracking/cta-tracking.js?v=20260703c"></script>
   <script defer src="js/modules/event-tracking.js?v=20260703c"></script>
@@ -119,7 +80,6 @@
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" title="Google Tag Manager" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
   <h1>Contato enviado com sucesso!</h1>
   <div class="msg">Sua mensagem foi recebida. Você receberá um e-mail de confirmação em instantes.</div>
@@ -131,7 +91,7 @@
       <a href="/" class="gb-footer-logo-link" aria-label="Garcia Builder Home">
         <img src="Logo Files/For Web/logo-nobackground-500.png" alt="Garcia Builder Logo" class="gb-footer-logo" loading="lazy" decoding="async"/>
       </a>
-      <p class="gb-footer-bio">Online coaching for real transformation. Evidence-based training, custom nutrition, and 1:1 accountability. Results in 8–12 weeks.</p>
+      <p class="gb-footer-bio">Online coaching with structured training, practical nutrition guidance and individual accountability. Results vary.</p>
     </div>
     <div class="gb-footer-col gb-footer-nav">
       <h4 class="gb-footer-title">Navigation</h4>

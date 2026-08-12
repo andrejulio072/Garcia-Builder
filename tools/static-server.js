@@ -54,7 +54,7 @@ app.post('/api/starter-assessment/event', adaptServerlessHandler(starterEventHan
 // behavior as production. Host-dependent and parameterized rules are excluded.
 const vercelConfig = require('../vercel.json');
 for (const redirect of (vercelConfig.redirects || []).filter((entry) =>
-  !entry.has && !/[:*]/.test(entry.source)
+  !entry.has && entry.source !== '/go/card' && !/[:*]/.test(entry.source)
 )) {
   app.get(redirect.source, (req, res) => {
     res.redirect(redirect.permanent ? 308 : 307, preserveRedirectQuery(redirect.destination, req.query));

@@ -355,7 +355,7 @@ const SUBSCRIPTION_PLANS = {
         amount: 35900, // â‚¬359.00
         currency: 'eur',
         mode: 'payment',
-        features: ['8-week training block', 'Nutrition targets and shopping list', 'Weekly check-ins', 'My PT Hub app access', 'Expected fat loss: 5-8kg when followed consistently']
+        features: ['8-week training block', 'Nutrition targets and shopping list', 'Weekly check-ins', 'My PT Hub app access', 'Individual results vary; no weight-loss outcome is promised']
     },
     twelve_week: {
         name: '12 Week Transformation',
@@ -363,7 +363,7 @@ const SUBSCRIPTION_PLANS = {
         amount: 51900, // â‚¬519.00
         currency: 'eur',
         mode: 'payment',
-        features: ['12-week progressive training plan', 'Nutrition plan with adjustments', 'Shopping list and meal structure guidance', 'Weekly accountability', 'Expected fat loss: 9-12kg when followed consistently']
+        features: ['12-week progressive training plan', 'Nutrition plan with adjustments', 'Shopping list and meal structure guidance', 'Weekly accountability', 'Individual results vary; no weight-loss outcome is promised']
     },
     eighteen_week: {
         name: '18 Week Complete Transformation',
@@ -371,7 +371,7 @@ const SUBSCRIPTION_PLANS = {
         amount: 69900, // â‚¬699.00
         currency: 'eur',
         mode: 'payment',
-        features: ['18-week periodized coaching block', 'Nutrition strategy and shopping list', 'Long-term habit system', 'Priority support', 'Expected fat loss: 12-15kg when followed consistently']
+        features: ['18-week periodized coaching block', 'Nutrition strategy and shopping list', 'Long-term habit system', 'Priority support', 'Individual results vary; no weight-loss outcome is promised']
     }
 };
 
@@ -422,8 +422,9 @@ function validateRequestData(req, res, next) {
     next();
 }
 
-// Flag para exigir consentimento de Termos no Checkout (requer ToS URL no Stripe Settings)
-const REQUIRE_TOS_CONSENT = (process.env.STRIPE_REQUIRE_TOS_CONSENT || 'false').toLowerCase() === 'true';
+// Fail closed: checkout requires the published Terms URL configured in Stripe.
+// Set STRIPE_REQUIRE_TOS_CONSENT=false only for an intentional local/test flow.
+const REQUIRE_TOS_CONSENT = (process.env.STRIPE_REQUIRE_TOS_CONSENT || 'true').toLowerCase() !== 'false';
 
 // ðŸ“Š HEALTH CHECK ENDPOINT
 app.get(['/health', '/api/stripe/health'], (req, res) => {
@@ -595,7 +596,7 @@ function escapeHtml(value = '') {
         .replace(/'/g, '&#039;');
 }
 
-const NUTRITION_MARKETING_CONSENT_TEXT = 'I agree to receive my nutrition plan and follow-up emails from Garcia Builder Fitness, including coaching tips, offers and promotions. I can unsubscribe at any time.';
+const NUTRITION_MARKETING_CONSENT_TEXT = 'I would also like occasional coaching tips and offers by email. Optional; unsubscribe at any time.';
 
 app.post('/api/nutrition-calculator', async (req, res) => {
     try {
@@ -615,10 +616,6 @@ app.post('/api/nutrition-calculator', async (req, res) => {
 
         if (!consent) {
             return res.status(400).json({ error: 'Consent is required to save and email the nutrition plan' });
-        }
-
-        if (!marketingConsent) {
-            return res.status(400).json({ error: 'Marketing consent is required for nutrition plan delivery and follow-up emails' });
         }
 
         const requiredNumbers = ['targetCalories', 'protein', 'carbs', 'fats'];
@@ -655,8 +652,8 @@ app.post('/api/nutrition-calculator', async (req, res) => {
                 lead_quality: 'Warm',
                 consent,
                 marketing_consent: marketingConsent,
-                marketing_consent_text: NUTRITION_MARKETING_CONSENT_TEXT,
-                marketing_consent_at: submittedAt,
+                marketing_consent_text: marketingConsent ? NUTRITION_MARKETING_CONSENT_TEXT : null,
+                marketing_consent_at: marketingConsent ? submittedAt : null,
                 lead_stage: 'New Lead',
                 follow_up_status: 'Not Contacted',
                 page,
@@ -844,6 +841,11 @@ app.post('/api/ebook-lead', async (req, res) => {
             utm_content: normalizeText(body.utm_content),
             utm_term: normalizeText(body.utm_term),
             consent: normalizeConsent(body.consent),
+            marketingConsent: normalizeConsent(body.marketingConsent),
+            consentText: 'I request the 28-Day Fat Loss Kickstart and have read the Privacy Notice.',
+            marketingConsentText: normalizeConsent(body.marketingConsent)
+                ? 'I would also like occasional coaching tips and offers by email. Optional; unsubscribe at any time.'
+                : null,
             createdAt: new Date().toISOString(),
         };
 
@@ -1256,7 +1258,7 @@ app.post(['/api/create-checkout-session', '/api/stripe/checkout'], validateStrip
             locale: 'en',
             allow_promotion_codes: false,
             // Coleta de consentimento dos Termos (exige ToS URL no Stripe Dashboard â†’ Settings â†’ Public details)
-            // Habilite via env STRIPE_REQUIRE_TOS_CONSENT=true apÃ³s configurar os links no Stripe.
+            // Configure the public Terms URL in Stripe before enabling live checkout.
         };
 
         if (plan.mode === 'subscription') {

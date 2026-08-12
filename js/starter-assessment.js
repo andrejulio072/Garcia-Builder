@@ -143,9 +143,16 @@
     errorSummary.hidden = false;
     if (field) {
       const input = form?.elements?.namedItem?.(field);
-      if (input?.setAttribute) input.setAttribute('aria-invalid', 'true');
+      if (input?.setAttribute) {
+        input.setAttribute('aria-invalid', 'true');
+        input.closest?.('label')?.classList.add('is-invalid-field');
+        window.setTimeout(() => {
+          input.scrollIntoView?.({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'center' });
+          input.focus?.({ preventScroll: true });
+        }, 120);
+      }
     }
-    errorSummary.focus();
+    if (!field) errorSummary.focus();
   }
 
   function trackValidationError(field) {
@@ -160,6 +167,18 @@
     errorSummary.hidden = true;
     errorSummary.textContent = '';
     form?.querySelectorAll('[aria-invalid="true"]').forEach((field) => field.removeAttribute('aria-invalid'));
+    form?.querySelectorAll('.is-invalid-field').forEach((label) => label.classList.remove('is-invalid-field'));
+  }
+
+  function clearFieldError(event) {
+    const field = event.target;
+    if (!field?.matches?.('[aria-invalid="true"]')) return;
+    field.removeAttribute('aria-invalid');
+    field.closest?.('label')?.classList.remove('is-invalid-field');
+    if (!form?.querySelector('[aria-invalid="true"]')) {
+      errorSummary.hidden = true;
+      errorSummary.textContent = '';
+    }
   }
 
   function setProgress() {
@@ -556,6 +575,8 @@
       selector.addEventListener('change', (event) => applyLanguage(event.target.value));
     });
     form?.addEventListener('submit', submitAssessment);
+    form?.addEventListener('input', clearFieldError);
+    form?.addEventListener('change', clearFieldError);
     restoreAnswers();
     if (Object.keys(state.answers).some((key) => QUESTIONS.some(([id]) => id === key))) startAssessment();
     document.querySelectorAll('[data-open-cookie-preferences]').forEach((button) => {

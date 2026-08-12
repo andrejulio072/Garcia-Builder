@@ -13,7 +13,8 @@
 ## Paid-Traffic Status
 - Completed 2026-08-05: owner-confirmed Stripe credential rotation, Vercel Preview/Production update, production health recheck, and GitHub alert 2 resolution as revoked.
 - Completed externally 2026-08-05: owner confirmation that legal identity, retention and governing-law decisions are approved.
-- **NO-GO** until the approved legal values replace the explicit placeholders in the public Privacy Notice/Terms and email authentication/delivery, Zapier mapping/failure test, GTM/GA4/Meta/Google Ads checks and real-device journeys have evidence.
+- **LIMITED-TEST GO WITH ACCEPTED RISK (owner decision, 2026-08-06):** small-budget advertising and direct owner-managed client handling are authorized. Legal compliance remains unverified and this status is not a compliance certification.
+- **SCALE-UP NO-GO:** exact public legal values and the remaining email, Zapier, tag-manager, ad-platform and real-device evidence must be revisited before scaling spend, remarketing, automated onboarding or material funnel/provider changes.
 
 ## Paid Funnel Architecture
 - Paid funnel route: `/assessment`.

@@ -50,19 +50,19 @@ for (const key of ['trustCredential', 'trustExperience', 'trustRating', 'trustLa
   assert(assessment.includes(`data-starter-copy="${key}"`), `Paid assessment trust strip is missing ${key}`);
 }
 assert.equal(
-  (assessment.match(/class="starter-transform-card"/g) || []).length,
-  4,
-  'Premium hero must expose four authentic transformation cards'
+  (assessment.match(/class="starter-transform-card(?:\s[^"]*)?"/g) || []).length,
+  5,
+  'Paid assessment must show five owner-authorized transformation examples from existing site assets'
 );
+assert(assessment.includes('/assets/images/transformations/conrad-before.jpg'), 'Paid assessment must show Conrad transformation evidence');
 assert.equal(
   (assessment.match(/class="starter-client-voice"/g) || []).length,
   4,
   'Premium transformation section must expose four client testimonials'
 );
 assert(
-  assessment.indexOf('class="starter-transform-grid"') < assessment.indexOf('class="starter-client-voices"') &&
-  assessment.indexOf('class="starter-client-voices"') < assessment.indexOf('class="starter-transform-footer"'),
-  'Client testimonials must appear directly below the transformation cards'
+  assessment.includes('starter-fitness-guides') && assessment.includes('starter-fitness-guides-grid'),
+  'Paid assessment must provide visual blog previews from the existing site library'
 );
 for (const clientName of ['Conrad N.', 'James W.', 'Daniela C.', 'Maria C.']) {
   assert(assessment.includes(clientName), `Premium testimonial is missing existing client ${clientName}`);
@@ -77,6 +77,16 @@ assert(assessment.includes('data-start-assessment-proof'), 'Transformation proof
 assert(!assessment.includes('<nav'), 'Paid assessment must not add competing navigation');
 assert(assessment.includes('class="starter-page-return__link" href="/"'), 'Paid assessment must expose the compact main-site return route');
 assert(css.includes('.starter-page-return__link'), 'Main-site return route must retain its compact button treatment');
+assert(css.includes('.starter-fitness-guides'), 'Existing-site article previews need dedicated visual styling');
+
+assert(start.includes('starter-page-paid starter-page-card'), 'QR assessment must inherit the premium visual structure');
+assert(start.includes('starter-quick-contact-bar'), 'QR assessment must expose compact contact actions at the top');
+assert(start.includes('https://wa.me/447508497586'), 'QR assessment must expose WhatsApp as a quick contact action');
+assert(start.includes('https://instagram.com/garciabuilder.fitness'), 'QR assessment must expose Instagram as a quick contact action');
+assert(css.includes('.result-plan-tools'), 'Result plan actions need a prominent visual treatment');
+assert(resultClient.includes('viewFullWorkout') && resultClient.includes('viewNutritionGuide'), 'Result must expose explicit workout and nutrition actions');
+assert(resultClient.includes('window.print()'), 'Result must expose print or PDF functionality');
+assert(resultClient.includes('eatingDayIntro') && resultClient.includes('mealBuildGuide'), 'Simple day of eating must include practical meal-building detail');
 
 for (const requiredField of ['full_name', 'email', 'age', 'resource_delivery_acknowledgement']) {
   assert(assessment.includes(`name="${requiredField}"`), `Paid assessment is missing required field ${requiredField}`);
@@ -239,7 +249,9 @@ for (const language of expandedLocales.SUPPORTED) {
 }
 
 assert(start.includes('data-start-assessment'), '/start assessment entry must remain available');
-assert(start.includes('/packages?utm_source=business_card'), '/start package shortcut must remain available');
+assert(!start.includes('/packages?utm_source=business_card'), '/start must keep the assessment as the primary QR journey');
+assert(start.includes('https://wa.me/447508497586'), '/start WhatsApp shortcut must remain available');
+assert(start.includes('https://instagram.com/garciabuilder.fitness'), '/start Instagram shortcut must remain available');
 assert(server.includes("app.get('/start'"), 'Server /start route must remain available');
 assert(vercel.includes('"source": "/go/card"'), 'Vercel /go/card route must remain available');
 assert(card.includes('new URLSearchParams(window.location.search)'), 'QR card route must preserve incoming attribution');

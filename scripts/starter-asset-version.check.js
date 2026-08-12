@@ -4,8 +4,10 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const NEW_TOKEN = '20260807-result-v15';
+const NEW_TOKEN = '20260812-card-result-v16';
+const CONSENT_TOKEN = '20260805-consent-v3';
 const OLD_TOKENS = [
+  '20260807-result-v15',
   '20260807-responsive-v14',
   '20260807-fitness-content-v13',
   '20260807-reduced-motion-v12',
@@ -30,7 +32,6 @@ const OLD_TOKENS = [
 const TARGET_FILES = ['assessment.html', 'start.html', 'start-result.html'];
 const CHANGED_ASSETS = [
   '/css/starter-assessment.css',
-  '/js/starter-tracking-bootstrap.js',
   '/js/starter-context.js',
   '/js/starter-locales-expanded.js',
   '/js/starter-locales.js',
@@ -87,7 +88,6 @@ function assertRequiredReferencesPresentWithNewToken() {
   const expectations = {
     'assessment.html': [
       '/css/starter-assessment.css',
-      '/js/starter-tracking-bootstrap.js',
       '/js/starter-context.js',
       '/js/starter-locales-expanded.js',
       '/js/starter-locales.js',
@@ -95,7 +95,6 @@ function assertRequiredReferencesPresentWithNewToken() {
     ],
     'start.html': [
       '/css/starter-assessment.css',
-      '/js/starter-tracking-bootstrap.js',
       '/js/starter-context.js',
       '/js/starter-locales-expanded.js',
       '/js/starter-locales.js',
@@ -103,7 +102,6 @@ function assertRequiredReferencesPresentWithNewToken() {
     ],
     'start-result.html': [
       '/css/starter-assessment.css',
-      '/js/starter-tracking-bootstrap.js',
       '/js/starter-locales-expanded.js',
       '/js/starter-locales.js',
       '/js/starter-result.js'
@@ -112,6 +110,11 @@ function assertRequiredReferencesPresentWithNewToken() {
 
   for (const [file, assets] of Object.entries(expectations)) {
     const content = read(file);
+    assert(
+      content.includes(`/js/tracking/site-consent-bootstrap.js?v=${CONSENT_TOKEN}`),
+      `${file} must reference the shared consent bootstrap with version ${CONSENT_TOKEN}`
+    );
+    assert(!content.includes('/js/starter-tracking-bootstrap.js'), `${file} must not reference the legacy assessment-only consent bootstrap`);
     for (const assetPath of assets) {
       assert(
         content.includes(`${assetPath}?v=${NEW_TOKEN}`),

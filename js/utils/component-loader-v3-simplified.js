@@ -146,9 +146,9 @@ function ensureDeferredScript(options) {
 function ensureAnalyticsScripts() {
     try {
         ensureDeferredScript({
-            src: '/js/tracking/ads-loader.js?v=20251025',
-            testPartial: 'js/tracking/ads-loader.js',
-            id: 'gb-ads-loader'
+            src: '/js/tracking/site-consent-bootstrap.js?v=20260805-consent-v3',
+            testPartial: 'js/tracking/site-consent-bootstrap.js',
+            id: 'gb-site-consent-bootstrap-fallback'
         });
 
         ensureDeferredScript({

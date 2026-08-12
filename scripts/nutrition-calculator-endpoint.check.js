@@ -2,6 +2,7 @@ const Module = require('module');
 const originalLoad = Module._load;
 const sentEmails = [];
 let savedLead = null;
+const savedLeads = [];
 
 Module._load = function mockIntegrations(request, parent, isMain) {
   if (request === '@supabase/supabase-js') {
@@ -9,7 +10,10 @@ Module._load = function mockIntegrations(request, parent, isMain) {
       createClient: () => ({
         from: (table) => ({
           upsert: async (lead) => {
-            if (table === 'leads') savedLead = lead;
+            if (table === 'leads') {
+              savedLead = lead;
+              savedLeads.push(lead);
+            }
             return { error: null };
           }
         })
@@ -26,20 +30,23 @@ Module._load = function mockIntegrations(request, parent, isMain) {
       })
     };
   }
-  return originalLoad(request, parent, isMain);
+  return originalLoad.apply(this, arguments);
 };
 
-process.env.SUPABASE_URL = process.env.SUPABASE_URL || 'https://example.supabase.co';
-process.env.SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 'test-service-role';
-process.env.SMTP_HOST = process.env.SMTP_HOST || 'smtp.test';
-process.env.SMTP_PORT = process.env.SMTP_PORT || '587';
-process.env.SMTP_USER = process.env.SMTP_USER || 'test-user';
-process.env.SMTP_PASS = process.env.SMTP_PASS || 'test-pass';
-process.env.FROM_EMAIL = process.env.FROM_EMAIL || 'no-reply@example.com';
-process.env.INQUIRY_NOTIFY_EMAIL = process.env.INQUIRY_NOTIFY_EMAIL || 'admin@example.com';
+// Use only synthetic provider configuration; never load a developer's local secrets.
+process.env.GB_SKIP_DOTENV = '1';
+process.env.SUPABASE_URL = 'https://example.supabase.co';
+process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://example.supabase.co';
+process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-role';
+process.env.SMTP_HOST = 'smtp.test';
+process.env.SMTP_PORT = '587';
+process.env.SMTP_USER = 'test-user';
+process.env.SMTP_PASS = 'test-pass';
+process.env.FROM_EMAIL = 'no-reply@example.com';
+process.env.INQUIRY_NOTIFY_EMAIL = 'admin@example.com';
+delete process.env.STRIPE_SECRET_KEY;
 
 const app = require('../api/stripe-server-premium');
-Module._load = originalLoad;
 
 const payload = {
   name: 'Nutrition Endpoint Test',
@@ -135,6 +142,7 @@ async function main() {
 
   try {
     const valid = await postJson(`${base}/api/nutrition-calculator`, payload);
+    const validLead = savedLeads.at(-1);
     const invalid = await postJson(`${base}/api/nutrition-calculator`, {
       ...payload,
       email: 'not-an-email'
@@ -143,10 +151,11 @@ async function main() {
       ...payload,
       consent: false
     });
-    const missingMarketingConsent = await postJson(`${base}/api/nutrition-calculator`, {
+    const optionalMarketingConsent = await postJson(`${base}/api/nutrition-calculator`, {
       ...payload,
       marketingConsent: false
     });
+    const optionalLead = savedLeads.at(-1);
 
     const summary = {
       validStatus: valid.status,
@@ -156,23 +165,26 @@ async function main() {
       emailSkipped: valid.data.emailSkipped === true,
       adminEmailSent: valid.data.adminEmailSent === true,
       adminEmailSkipped: valid.data.adminEmailSkipped === true,
-      savedEmailCorrect: savedLead && savedLead.email === payload.email,
-      savedNameCorrect: savedLead && savedLead.name === payload.name,
-      savedTypeCorrect: savedLead && savedLead.type === 'nutrition_calculator',
-      consentSaved: savedLead && savedLead.consent === true,
-      marketingConsentSaved: savedLead && savedLead.marketing_consent === true,
-      marketingConsentTextSaved: savedLead && typeof savedLead.marketing_consent_text === 'string' && savedLead.marketing_consent_text.length > 0,
-      marketingConsentAtSaved: savedLead && !Number.isNaN(Date.parse(savedLead.marketing_consent_at)),
-      leadStageCorrect: savedLead && savedLead.lead_stage === 'New Lead',
-      followUpStatusCorrect: savedLead && savedLead.follow_up_status === 'Not Contacted',
-      emailsDelivered: sentEmails.length === 2,
+      savedEmailCorrect: validLead && validLead.email === payload.email,
+      savedNameCorrect: validLead && validLead.name === payload.name,
+      savedTypeCorrect: validLead && validLead.type === 'nutrition_calculator',
+      consentSaved: validLead && validLead.consent === true,
+      marketingConsentSaved: validLead && validLead.marketing_consent === true,
+      marketingConsentTextSaved: validLead && typeof validLead.marketing_consent_text === 'string' && validLead.marketing_consent_text.length > 0,
+      marketingConsentAtSaved: validLead && !Number.isNaN(Date.parse(validLead.marketing_consent_at)),
+      leadStageCorrect: validLead && validLead.lead_stage === 'New Lead',
+      followUpStatusCorrect: validLead && validLead.follow_up_status === 'Not Contacted',
+      emailsDelivered: sentEmails.length === 4,
       customerEmailHasPackagesCta: /garciabuilder\.fitness\/packages\.html/.test(String(sentEmails[0]?.html || '')),
       customerEmailHasWhatsappCta: /wa\.me\/447508497586/.test(String(sentEmails[0]?.html || '')),
       customerEmailHasConsultationCta: /calendly\.com\/andrenjulio072\/consultation/.test(String(sentEmails[0]?.html || '')),
       invalidStatus: invalid.status,
       invalidRejected: invalid.status === 400 && /email/i.test(String(invalid.data.error || '')),
       missingConsentRejected: missingConsent.status === 400 && /consent/i.test(String(missingConsent.data.error || '')),
-      missingMarketingConsentRejected: missingMarketingConsent.status === 400 && /marketing consent/i.test(String(missingMarketingConsent.data.error || ''))
+      optionalMarketingConsentAccepted: optionalMarketingConsent.status === 200 && optionalMarketingConsent.data.ok === true,
+      optionalMarketingConsentSaved: optionalLead && optionalLead.marketing_consent === false,
+      optionalMarketingConsentTextOmitted: optionalLead && optionalLead.marketing_consent_text == null,
+      optionalMarketingConsentAtOmitted: optionalLead && optionalLead.marketing_consent_at == null
     };
 
     console.log(JSON.stringify(summary, null, 2));
@@ -183,10 +195,13 @@ async function main() {
         !summary.marketingConsentTextSaved || !summary.marketingConsentAtSaved || !summary.leadStageCorrect ||
         !summary.followUpStatusCorrect || !summary.emailsDelivered || !summary.customerEmailHasPackagesCta ||
         !summary.customerEmailHasWhatsappCta || !summary.customerEmailHasConsultationCta || !summary.invalidRejected ||
-        !summary.missingConsentRejected || !summary.missingMarketingConsentRejected) {
+        !summary.missingConsentRejected || !summary.optionalMarketingConsentAccepted ||
+        !summary.optionalMarketingConsentSaved || !summary.optionalMarketingConsentTextOmitted ||
+        !summary.optionalMarketingConsentAtOmitted) {
       process.exitCode = 1;
     }
   } finally {
+    Module._load = originalLoad;
     await new Promise((resolve) => server.close(resolve));
   }
 }

@@ -21,13 +21,14 @@ const compactAssets = [
 ];
 
 for (const [name, html] of [['home', home], ['online coaching', coaching]]) {
-  assert.match(html, /ads-loader\.js\?v=20260805-consent-v2/, `${name} must use the consent-aware tag loader`);
+  assert.match(html, /site-consent-bootstrap\.js\?v=20260805-consent-v3/, `${name} must use the consent-aware tag loader`);
   assert.doesNotMatch(html, /googletagmanager\.com\/(?:gtm\.js|gtag\/js|ns\.html)/, `${name} must not request Google tags before consent`);
   assert.doesNotMatch(html, /connect\.facebook\.net|facebook\.com\/tr\?/, `${name} must not request Meta before consent`);
 }
 
 assert.match(adsLoader, /function loadGoogleTagManager\(\)/, 'Consent loader must own GTM startup');
-assert.match(adsLoader, /if\(granted\(\)\) \{ load\(\); \}/, 'Stored optional consent must gate initial tag startup');
+assert.match(adsLoader, /if \(advertising\)\s*{\s*loadGoogleTagManager\(\)/, 'Stored advertising consent must gate initial GTM startup');
+assert.match(adsLoader, /else if \(analytics\)\s*{\s*loadStandaloneAnalytics\(\)/, 'Analytics-only consent must not load the advertising container');
 assert.match(adsLoader, /consent_update/, 'Tag startup must respond to a later consent choice');
 assert.match(deferredStyles, /placeholder\.href = href/, 'Deferred styles must activate in their declared cascade position');
 assert.match(componentLoader, /componentInitializationInFlight/, 'Component loading must guard against duplicate initialization');

@@ -3,6 +3,7 @@
 <head>
   <link rel="icon" href="/assets/images/logo-nobackground-256.webp" type="image/webp">
   <meta charset="utf-8">
+  <script src="/js/tracking/site-consent-bootstrap.js?v=20260805-consent-v3"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
@@ -21,13 +22,12 @@
   <meta name="twitter:title" content="Free Fitness Starter Assessment | Garcia Builder Fitness">
   <meta name="twitter:description" content="Complete the Garcia Builder Fitness starter assessment to receive a practical starting direction and requested resources.">
   <meta name="twitter:image" content="https://www.garciabuilder.fitness/assets/og/garcia-builder-og.jpg">
-<link rel="stylesheet" href="/css/starter-assessment.css?v=20260807-result-v15">
-  <script src="/js/starter-tracking-bootstrap.js?v=20260807-result-v15"></script>
+<link rel="stylesheet" href="/css/starter-assessment.css?v=20260812-card-result-v16">
   <script src="/js/env.js" defer></script>
-  <script src="/js/starter-context.js?v=20260807-result-v15" defer></script>
-  <script src="/js/starter-locales-expanded.js?v=20260807-result-v15" defer></script>
-  <script src="/js/starter-locales.js?v=20260807-result-v15" defer></script>
-  <script src="/js/starter-assessment.js?v=20260807-result-v15" defer></script>
+  <script src="/js/starter-context.js?v=20260812-card-result-v16" defer></script>
+  <script src="/js/starter-locales-expanded.js?v=20260812-card-result-v16" defer></script>
+  <script src="/js/starter-locales.js?v=20260812-card-result-v16" defer></script>
+  <script src="/js/starter-assessment.js?v=20260812-card-result-v16" defer></script>
 </head>
 <body class="starter-page starter-page-paid" data-starter-entry-default="organic" data-starter-page-mode="paid">
   <a class="skip-link" href="#assessment-root" data-starter-copy="skipAssessment">Skip to assessment</a>
@@ -85,9 +85,11 @@
 
         <aside class="coach-authority-card" aria-labelledby="coach-authority-name">
           <div class="coach-photo-frame">
-            <img src="/assets/images/about/about1-320.webp" alt="Andre Garcia, Personal Trainer and Online Coach" width="320" height="504" decoding="async">
+            <img class="coach-gym-image" src="/assets/images/responsive/about/about7-960.webp" srcset="/assets/images/responsive/about/about7-480.webp 480w, /assets/images/responsive/about/about7-960.webp 960w, /assets/images/responsive/about/about7-1440.webp 1440w" sizes="(max-width: 760px) 92vw, 34vw" alt="Andre Garcia inside the gym beside his Garcia Builder Fitness coaching banner" width="960" height="1280" decoding="async">
+            <span class="coach-photo-label">REAL COACH · REAL GYM</span>
           </div>
           <div class="coach-authority-copy">
+            <img class="coach-authority-avatar" src="/assets/images/about/about1-320.webp" alt="" width="42" height="42" decoding="async">
             <p class="coach-authority-label" data-starter-copy="coachAuthorityLabel">YOUR COACH</p>
             <h2 id="coach-authority-name">Andre Garcia</h2>
             <p data-starter-copy="coachAuthorityRole">Personal Trainer &amp; Online Coach</p>
@@ -99,7 +101,7 @@
       <ul class="starter-trust-strip" aria-label="Coach credentials and service trust">
         <li><strong data-starter-copy="trustCredential">ActiveIQ Level 3 PT</strong></li>
         <li><strong data-starter-copy="trustExperience">12+ Years Coaching</strong></li>
-        <li><strong data-starter-copy="trustRating">Rated 5.0 on Google</strong></li>
+        <li><strong data-starter-copy="trustRating">Individual results vary</strong></li>
         <li><strong data-starter-copy="trustLanguages">EN / PT / ES</strong></li>
       </ul>
 
@@ -152,24 +154,31 @@
           <h2 id="transformations-title" data-starter-copy="transformationsTitle">Real People. Clear Structure. Visible Progress.</h2>
           <p data-starter-copy="transformationsCopy">These clients progressed by following structured training and nutrition consistently. Your free assessment gives you the first step: a clear starting direction based on your answers.</p>
         </div>
-        <div class="starter-transform-grid">
+        <div class="starter-transform-grid" aria-label="Client progress examples">
+          <figure class="starter-transform-card starter-transform-card-featured">
+            <div class="starter-transform-media">
+              <img src="/assets/images/transformations/conrad-before.jpg" alt="Conrad's coaching progress shown in a side-by-side comparison" width="1600" height="1600" loading="lazy" decoding="async">
+              <span>CONRAD · BODY RECOMPOSITION</span>
+            </div>
+            <figcaption>Conrad built visible progress through a training structure adapted around demanding workweeks.</figcaption>
+          </figure>
           <figure class="starter-transform-card">
             <div class="starter-transform-media">
-              <img src="/assets/images/transformations/client-paulo-beforeafter.png" alt="Client body recomposition before and after comparison" loading="lazy" decoding="async">
+              <img src="/assets/images/transformations/t2.png" alt="Coaching client body recomposition progress comparison" width="445" height="305" loading="lazy" decoding="async">
               <span data-starter-copy="transformationBadgeOne">BODY RECOMPOSITION</span>
             </div>
             <figcaption data-starter-copy="transformationCaptionOne">Less guesswork. A repeatable training structure and consistent nutrition.</figcaption>
           </figure>
           <figure class="starter-transform-card">
             <div class="starter-transform-media">
-              <img src="/assets/images/transformations/IMG-20250929-WA0002.jpg" alt="Client fat loss and muscle definition before and after comparison" loading="lazy" decoding="async">
+              <img src="/assets/images/transformations/t3.png" alt="Coaching client strength and fitness progress comparison" width="371" height="321" loading="lazy" decoding="async">
               <span data-starter-copy="transformationBadgeTwo">FAT LOSS + DEFINITION</span>
             </div>
             <figcaption data-starter-copy="transformationCaptionTwo">Practical weekly habits that produced visible fat loss and stronger definition.</figcaption>
           </figure>
           <figure class="starter-transform-card">
             <div class="starter-transform-media">
-              <img src="/assets/images/transformations/IMG-20250929-WA0004.jpg" alt="Client back transformation before and after comparison" loading="lazy" decoding="async">
+              <img src="/assets/images/transformations/t7.webp" alt="Coaching client full-body progress comparison" width="1440" height="1283" loading="lazy" decoding="async">
               <span data-starter-copy="transformationBadgeThree">STRENGTH + SHAPE</span>
             </div>
             <figcaption data-starter-copy="transformationCaptionThree">Training and nutrition executed consistently enough to change body shape.</figcaption>
@@ -181,12 +190,12 @@
                 <em>Before</em>
               </div>
               <div class="starter-transform-shot">
-                <img src="/assets/images/transformations/ana-paula-after.png" alt="Ana Paula after losing 10kg in three months" loading="lazy" decoding="async" width="256" height="358">
+              <img src="/assets/images/transformations/ana-paula-after.png" alt="Ana Paula after building a sustainable fitness routine" loading="lazy" decoding="async" width="256" height="358">
                 <em>After</em>
               </div>
-              <span data-starter-copy="transformationBadgeFour">10KG FAT LOSS</span>
+              <span data-starter-copy="transformationBadgeFour">SUSTAINABLE FAT LOSS</span>
             </div>
-            <figcaption data-starter-copy="transformationCaptionFour">Ana Paula lost 10kg in three months while rebuilding energy, confidence and a sustainable routine.</figcaption>
+            <figcaption data-starter-copy="transformationCaptionFour">Ana Paula reduced body fat while rebuilding energy, confidence and a sustainable routine.</figcaption>
           </figure>
         </div>
         <section class="starter-client-voices" aria-labelledby="client-voices-title">
@@ -195,7 +204,7 @@
               <p class="starter-client-voices-kicker" data-starter-copy="premiumReviewFeedbackLabel">CLIENT FEEDBACK</p>
               <h3 id="client-voices-title" data-starter-copy="premiumReviewsTitle">What Clients Say About the Coaching</h3>
             </div>
-            <span class="starter-client-rating" aria-label="Five out of five stars">
+            <span class="starter-client-rating" aria-label="Client feedback rated five out of five stars">
               <span aria-hidden="true">★★★★★</span>
               <strong>5.0</strong>
             </span>
@@ -203,7 +212,7 @@
           <div class="starter-client-voices-grid">
             <article class="starter-client-voice">
               <div class="starter-client-stars" aria-hidden="true">★★★★★</div>
-              <blockquote><p data-starter-copy="premiumReviewOneQuote">“Andre rebuilt my training around 60-hour workweeks. We dropped 9kg of fat, added lean muscle, and my shoulders are pain-free for the first time in years.”</p></blockquote>
+              <blockquote><p data-starter-copy="premiumReviewOneQuote">“Andre rebuilt my training around demanding workweeks. The structure made consistency possible and the weekly adjustments kept me moving forward.”</p></blockquote>
               <footer>
                 <span class="starter-client-avatar" aria-hidden="true">CN</span>
                 <div><strong>Conrad N.</strong><span data-starter-copy="premiumReviewOneMeta">Body recomposition coaching</span></div>
@@ -227,7 +236,7 @@
             </article>
             <article class="starter-client-voice">
               <div class="starter-client-stars" aria-hidden="true">★★★★★</div>
-              <blockquote><p data-starter-copy="premiumReviewFourQuote">“At 60, I was worried training would hurt my joints. Andre adapted everything properly and still challenged me. I lost 13kg and feel stronger in daily life.”</p></blockquote>
+              <blockquote><p data-starter-copy="premiumReviewFourQuote">“At 60, I was worried training would hurt my joints. Andre adapted everything properly and still challenged me. I now feel stronger in daily life.”</p></blockquote>
               <footer>
                 <span class="starter-client-avatar" aria-hidden="true">MC</span>
                 <div><strong>Maria C.</strong><span data-starter-copy="premiumReviewFourMeta">Joint-friendly strength and fat loss</span></div>

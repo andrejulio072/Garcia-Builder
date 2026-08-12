@@ -2,23 +2,10 @@
 <html lang="en">
 <head>
 <script src="/js/utils/canonical-host-redirect.js?v=20260705" data-gb-canonical-host></script>
-<script id="gb-gtm-bootstrap">
-(function(w,d,s,l,i){
-  w[l]=w[l]||[];
-  w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
-  var f=d.getElementsByTagName(s)[0];
-  var j=d.createElement(s);
-  var dl=l!='dataLayer'?'&l='+l:'';
-  j.async=true;
-  j.id='gb-gtm-script';
-  j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-  f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-TG5TFZ2C');
-</script>
-<script defer src="/js/tracking/tracking.js?v=20260703c"></script>
 <script defer src="/js/tracking/sitewide-events.js?v=20260801-sitewide-v1"></script>
 
 <meta charset="UTF-8">
+  <script src="/js/tracking/site-consent-bootstrap.js?v=20260805-consent-v3"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
@@ -45,7 +32,6 @@
 <link rel="stylesheet" href="css/components/enhanced-navbar.css?v=20251025">
 <link rel="stylesheet" href="css/nutrition-calculator.css?v=20260801-mobile-audit-v1">
 <script src="js/utils/component-loader-v3-simplified.js?v=20260723-nav2"></script>
-<script defer src="js/tracking/ads-loader.js?v=20251025"></script>
 <script defer src="js/tracking/ads-config.js?v=20251025"></script>
 <script defer src="js/tracking/cta-tracking.js?v=20260703c"></script>
 <script defer src="js/modules/nutrition-library.js?v=20260705"></script>
@@ -62,7 +48,6 @@
 </script>
 </head>
 <body class="nutrition-page">
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" title="Google Tag Manager" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div data-component="navbar"></div>
 
 <main class="nutrition-main">
@@ -135,11 +120,6 @@
               <input id="email" name="email" type="email" maxlength="120" autocomplete="email" placeholder="you@example.com" required>
             </div>
           </div>
-          <label class="nutrition-email-option" for="sendPlanEmail">
-            <input id="sendPlanEmail" name="sendPlanEmail" type="checkbox" value="yes" required>
-            <span>I agree to receive my nutrition plan and follow-up emails from Garcia Builder Fitness, including coaching tips, offers and promotions. I can unsubscribe at any time.</span>
-          </label>
-
           <div class="unit-toggle" role="group" aria-label="Unit preference">
             <button type="button" class="unit-btn is-active" data-unit="metric">Metric</button>
             <button type="button" class="unit-btn" data-unit="imperial">Imperial</button>
@@ -270,12 +250,14 @@
             </fieldset>
           </div>
 
+          <label class="nutrition-note"><input id="nutritionDeliveryConsent" name="nutritionDeliveryConsent" type="checkbox" value="yes" required> I request an emailed copy of my calculator result and have read the <a href="/privacy-policy" target="_blank" rel="noopener">Privacy Notice</a>.</label>
+          <label class="nutrition-note"><input id="nutritionMarketingConsent" name="nutritionMarketingConsent" type="checkbox" value="yes"> I would also like occasional coaching tips and offers by email. Optional; unsubscribe at any time.</label>
           <button type="submit" class="btn btn-warning nutrition-submit">
             <i class="fas fa-calculator" aria-hidden="true"></i>
             Calculate Macros + Get Templates
           </button>
           <p id="nutrition-email-status" class="nutrition-email-status" aria-live="polite"></p>
-          <p class="nutrition-note">No account required. Your email and consent let us deliver your personalised plan, save your calculator results and follow up about relevant Garcia Builder coaching support.</p>
+          <p class="nutrition-note">No account required. The first choice covers the result you request. Marketing is separate and optional.</p>
         </form>
 
         <aside class="nutrition-intel card" aria-label="How this tool works">

@@ -5,6 +5,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { hardenConsentHtml } = require('../lib/consent-html.cjs');
 
 const rootDir = path.join(__dirname, '..');
 const outputDir = path.join(rootDir, 'public');
@@ -113,7 +114,7 @@ function injectSitewideTrackingIntoPublicHtml() {
       const relativePath = path.relative(outputDir, absolutePath);
       if (assessmentTrackingEntries.has(relativePath)) continue;
 
-      const html = fs.readFileSync(absolutePath, 'utf8');
+      const html = hardenConsentHtml(fs.readFileSync(absolutePath, 'utf8'));
       if (!html.includes('</head>')) continue;
       const versionedHtml = html.replace(
         /(js\/utils\/component-loader-v3-simplified\.js)(?:\?[^"']*)?/g,

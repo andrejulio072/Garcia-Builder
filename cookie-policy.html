@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <script src="/js/tracking/site-consent-bootstrap.js?v=20260805-consent-v3"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
@@ -24,7 +25,6 @@
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/components/navbar-component.css?v=20260723-nav2">
   <link rel="stylesheet" href="/css/legal-pages.css?v=20260804-legal-v1">
-  <script src="/js/starter-tracking-bootstrap.js?v=20260804-consent-v2"></script>
   <script src="/js/utils/component-loader-v3-simplified.js?v=20260723-nav2"></script>
   <script defer src="/assets/i18n.js?v=20251025"></script>
   <script type="application/ld+json">
@@ -52,15 +52,15 @@
   <div data-component="navbar"></div>
   <main class="legal-page">
     <h1>Cookie and Storage Policy</h1>
-    <p class="legal-updated">Last revised: 4 August 2026</p>
+    <p class="legal-updated">Last revised: 5 August 2026</p>
     <p>This policy covers cookies, browser local storage, session storage and third-party technologies used by Garcia Builder Fitness. Browser storage is not always a traditional cookie, but it can remember information in a similar way.</p>
 
     <div class="legal-publication-blocker" role="note">
-      <strong>Final browser audit required.</strong> The first-party durations below come from the current code. Provider-controlled cookie names, durations and regions must be verified in a clean production browser after the final GTM, Google, Meta, Stripe, Calendly, Supabase and My PT Hub configurations are approved. Unknown values are marked instead of being guessed.
+      <strong>Configuration note.</strong> This inventory describes the website code revised on 5 August 2026. Third-party names and durations can vary with the approved account configuration and provider changes, so the inventory is rechecked after tracking or provider configuration changes.
     </div>
 
     <h2>1. Your choices</h2>
-    <p>Essential security and core functionality storage is active because the requested site or account cannot operate reliably without it. Analytics and advertising technologies are optional. On the assessment and these legal pages, Google Tag Manager is not downloaded until at least one matching optional category is granted. You can accept, reject, choose categories separately, and change or withdraw the choice at any time.</p>
+    <p>Essential security and core functionality storage is active because the requested site or account cannot operate reliably without it. Analytics and advertising technologies are optional. Across the public site, Google Analytics is downloaded only after analytics consent; Google Tag Manager and Meta Pixel are downloaded only after advertising consent. You can accept all, reject all, choose analytics and advertising separately, and change or withdraw the choice at any time.</p>
     <div class="legal-actions">
       <button class="legal-button" type="button" data-open-cookie-preferences>Open Cookie Preferences</button>
       <a href="/privacy-policy">Read the Privacy Notice</a>
@@ -73,17 +73,18 @@
           <tr><th>Name / technology</th><th>Provider</th><th>Category</th><th>Purpose</th><th>Duration</th><th>Party</th><th>Activation</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>gb_consent_v1</code></td><td>Garcia Builder Fitness</td><td>Essential / preference</td><td>Stores analytics and advertising choices, version and update time so the site can respect and evidence the selection.</td><td>Until cleared or replaced by a later choice/version.</td><td>First party, localStorage</td><td>When a cookie choice is saved.</td></tr>
-          <tr><td><code>gb_attrib_v1</code></td><td>Garcia Builder Fitness</td><td>Functional attribution</td><td>Stores the available UTM and click-attribution context used with forms and the assessment.</td><td>7 days from the latest captured campaign touch in the current code.</td><td>First party, localStorage</td><td>When attribution capture runs; populated/updated when campaign parameters are present.</td></tr>
-          <tr><td><code>gb_utm_*</code>, <code>gb_gclid</code>, <code>gb_fbclid</code></td><td>Garcia Builder Fitness</td><td>Functional attribution</td><td>Legacy first-party copies of individual campaign parameters used by existing forms.</td><td>Until browser storage is cleared; final cleanup/migration decision required.</td><td>First party, localStorage</td><td>When the corresponding parameter is present or attribution is injected.</td></tr>
+          <tr><td><code>gb_consent_v1</code></td><td>Garcia Builder Fitness</td><td>Essential / preference</td><td>Stores analytics and advertising choices, version and update time so the site can respect and evidence the selection.</td><td>Up to 180 days; an expired or incompatible record is removed and a new choice is requested.</td><td>First party, localStorage</td><td>When a cookie choice is saved.</td></tr>
+          <tr><td><code>gb_attrib_v1</code></td><td>Garcia Builder Fitness</td><td>Analytics / advertising attribution</td><td>Stores available UTM and click-attribution context used with consented measurement and forms.</td><td>7 days, or earlier if consent is withdrawn or browser storage is cleared.</td><td>First party, localStorage</td><td>Only after analytics or advertising consent and when campaign parameters are present.</td></tr>
+          <tr><td><code>gb_utm_*</code>, <code>gb_gclid</code>, <code>gb_gbraid</code>, <code>gb_wbraid</code>, <code>gb_fbclid</code></td><td>Garcia Builder Fitness</td><td>Analytics / advertising attribution</td><td>First-party copies of individual campaign parameters used by supported forms.</td><td>7 days, or earlier if consent is withdrawn or browser storage is cleared.</td><td>First party, localStorage</td><td>Only after analytics or advertising consent; removed when optional consent is withdrawn.</td></tr>
           <tr><td><code>gb_lang</code>, <code>gb_language</code>, <code>selectedLanguage</code>, <code>preferred-currency</code></td><td>Garcia Builder Fitness</td><td>Functionality</td><td>Remembers language or display preferences.</td><td>Until changed or browser storage is cleared.</td><td>First party, localStorage</td><td>When a visitor selects or the interface saves a preference.</td></tr>
           <tr><td><code>gb_starter_assessment_answers</code>, <code>gb_starter_assessment_meta</code></td><td>Garcia Builder Fitness</td><td>Strictly necessary session state</td><td>Preserves assessment answers and attribution while moving through the funnel or opening the Privacy Notice in another tab.</td><td>Current browser-tab session.</td><td>First party, sessionStorage</td><td>When the assessment begins or changes.</td></tr>
           <tr><td><code>gb_starter_delivery_&lt;token&gt;</code>, <code>gb_assessment_submitted_event_ids_v1</code></td><td>Garcia Builder Fitness</td><td>Strictly necessary / conversion safety</td><td>Shows the correct delivery notice and prevents the browser from firing the same successful lead event twice.</td><td>Current browser-tab session.</td><td>First party, sessionStorage</td><td>After a successful assessment submission/result.</td></tr>
           <tr><td><code>gb_last_submit</code></td><td>Garcia Builder Fitness</td><td>Security / reliability</td><td>Provides a short client-side form submission cooldown.</td><td>Until overwritten or browser storage is cleared.</td><td>First party, localStorage</td><td>After supported forms are submitted.</td></tr>
           <tr><td>Supabase auth token (normally <code>sb-&lt;project&gt;-auth-token</code>) and account caches such as <code>gb_current_user</code></td><td>Supabase / Garcia Builder Fitness</td><td>Strictly necessary authentication</td><td>Maintains a signed-in session and the account interface. Exact token lifetime is controlled by the authentication configuration.</td><td>Session/token lifetime or until sign-out/clear; verify configured expiry before publication.</td><td>First party storage using a third-party processor</td><td>When a user creates an account or signs in.</td></tr>
           <tr><td>Client portal state, including profile, metric, progress and selected-plan storage keys</td><td>Garcia Builder Fitness</td><td>Functionality / service delivery</td><td>Maintains client-entered interface state and local caches for account, profile, plan and coaching tools.</td><td>Until synchronised, deleted, signed out or browser storage is cleared; exact key-by-key retention requires the final portal audit.</td><td>First party, localStorage</td><td>Only when the relevant account/coaching feature is used.</td></tr>
-          <tr><td>Google Tag Manager container</td><td>Google</td><td>Tag management</td><td>Loads approved analytics or advertising tags. The container itself is a loader; tags inside it may set storage listed below.</td><td>Script request for the page; any tag storage has its own duration.</td><td>Third party</td><td>Assessment/legal flow: only after analytics or advertising consent. Other site pages require final production verification.</td></tr>
-          <tr><td>Google Analytics, including possible <code>_ga</code> and container-specific analytics cookies</td><td>Google</td><td>Analytics</td><td>Measures visits, engagement and funnel events without assessment contact PII in event parameters.</td><td>Provider/configuration controlled; verify actual names and expiry in the final browser audit.</td><td>Third party</td><td>Only after analytics consent and only if the approved GTM configuration activates Analytics.</td></tr>
+          <tr><td>Interface libraries and styles</td><td>jsDelivr / cdnjs</td><td>Essential content delivery</td><td>Delivers pinned Bootstrap, Font Awesome and related interface assets. No site cookie is intentionally set for this purpose; the providers receive ordinary HTTP connection data.</td><td>Request and provider security logs; no first-party browser storage is created by the website for this purpose.</td><td>Third-party content delivery</td><td>When a page that uses the relevant interface asset loads.</td></tr>
+          <tr><td>Google Tag Manager container</td><td>Google</td><td>Advertising tag management</td><td>Loads the approved advertising container. The container itself is a loader; tags inside it may set storage listed below.</td><td>Script request for the page; any tag storage has its own duration.</td><td>Third party</td><td>Only after advertising consent.</td></tr>
+          <tr><td>Google Analytics, including possible <code>_ga</code> and container-specific analytics cookies</td><td>Google</td><td>Analytics</td><td>Measures visits, engagement and funnel events without assessment contact PII in event parameters.</td><td>Provider/configuration controlled; see Google's current cookie information and the browser controls for observed expiry.</td><td>Third party</td><td>Only after analytics consent. The site can load Analytics directly when advertising consent is not granted.</td></tr>
           <tr><td>Google Ads, including possible advertising/click cookies</td><td>Google</td><td>Advertising</td><td>Campaign attribution, conversion measurement and, only where separately permitted, advertising personalisation.</td><td>Provider/configuration controlled; verify actual names and expiry in the final browser audit.</td><td>Third party</td><td>Only after the relevant advertising choices are granted and an approved tag is configured.</td></tr>
           <tr><td>Meta Pixel</td><td>Meta</td><td>Advertising</td><td>Measures approved campaign and conversion events and may support advertising optimisation.</td><td>Provider/configuration controlled; verify the live pixel and storage in the final browser audit.</td><td>Third party</td><td>Only after the relevant advertising choices are granted and an approved tag is configured.</td></tr>
           <tr><td><code>_fbp</code></td><td>Meta</td><td>Advertising</td><td>Browser identifier used by Meta advertising measurement when the Pixel is active.</td><td>Provider controlled; verify the live expiry before publication.</td><td>Third party cookie</td><td>Only after advertising consent and Pixel activation.</td></tr>
@@ -96,7 +97,7 @@
     </div>
 
     <h2>3. Consent signals</h2>
-    <p>The preference panel controls <code>analytics_storage</code>, <code>ad_storage</code>, <code>ad_user_data</code> and <code>ad_personalization</code> separately. Functional and security storage remains granted. Rejecting optional storage does not prevent completion of the assessment.</p>
+    <p>The preference panel offers separate Analytics and Advertising choices. Advertising maps together to <code>ad_storage</code>, <code>ad_user_data</code> and <code>ad_personalization</code>; Analytics maps to <code>analytics_storage</code>. Functional and security storage remains granted. Rejecting optional storage does not prevent completion of the assessment.</p>
 
     <h2>4. Changing or deleting storage</h2>
     <p>Use “Open Cookie Preferences” to change future optional processing. You can also delete cookies and browser storage in browser settings. Deleting essential/session storage may sign you out, reset preferences or clear unfinished assessment progress. Withdrawing consent does not make earlier consented processing unlawful; it updates the choice for future processing.</p>

@@ -13,7 +13,7 @@ For every checked item, record a date and evidence link, screenshot, dashboard r
 - [x] Tester and test date recorded: `Codex integration checks, 2026-08-05`
 - [ ] The implementation audit has been refreshed for this exact commit and has no Priority 0 blockers.
 
-Production evidence: Vercel deployment `dpl_8EoxhFPP8XPZsw82fx3YNMYv1PnS`; GitHub Ads Readiness run `31043309008`. Stripe rotation/Vercel updates and the legal decisions were owner-confirmed on 2026-08-05. Remaining blockers are the public legal-copy replacement and provider/tag/device evidence below.
+Production evidence: Vercel deployment `dpl_8EoxhFPP8XPZsw82fx3YNMYv1PnS`; GitHub Ads Readiness run `31043309008`. Stripe rotation/Vercel updates and the legal decisions were owner-confirmed on 2026-08-05. On 2026-08-06 the sole-trader owner authorized a small-budget test with direct owner handling and accepted the unresolved legal risk. Public legal-copy replacement and provider/tag/device evidence remain scale-up requirements.
 
 ## 1. Business and legal values
 
@@ -184,6 +184,12 @@ Run once with marketing unchecked and once with marketing checked. Use a real ph
 Device/browser/network/test lead IDs: `__________________________________________`
 
 ## 12. Final manual go/no-go sign-off
+
+Limited-test exception:
+
+- [x] Owner authorizes small-budget test advertising with direct owner-managed client handling (2026-08-06).
+- [x] Decision is recorded as risk acceptance, not verified legal compliance.
+- [x] Scale-up review remains required.
 
 - [ ] Privacy Notice contains the verified controller values.
 - [ ] Cookie inventory matches the technologies actually observed in the browser.

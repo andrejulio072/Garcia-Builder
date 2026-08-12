@@ -17,7 +17,7 @@ const routes = [
   { path: '/workouts.html', kind: 'workouts' },
   { path: '/nutrition-calculator.html', kind: 'nutrition' },
   { path: '/assessment.html', kind: 'assessment' },
-  { path: '/go/card/?utm_content=mobile_audit', kind: 'card' }
+  { path: '/go/card?utm_content=mobile_audit', kind: 'card' }
 ];
 
 async function freePort() {
@@ -43,6 +43,8 @@ async function waitForServer(url) {
 
 async function primeConsent(page) {
   await page.addInitScript(() => {
+    localStorage.removeItem('gb_starter_assessment_answers');
+    localStorage.removeItem('gb_starter_context');
     localStorage.setItem('gb_consent_v1', JSON.stringify({
       status: 'denied',
       updated_at: new Date().toISOString(),
@@ -219,7 +221,7 @@ async function auditNutrition(page, viewport) {
     await route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' });
   });
   await page.fill('#email', `mobile-${viewport.width}@example.test`);
-  await page.check('#sendPlanEmail');
+  await page.check('#nutritionDeliveryConsent');
   await page.click('.nutrition-submit');
   await page.locator('#nutrition-results').waitFor({ state: 'visible' });
 
@@ -275,7 +277,7 @@ async function auditAssessment(page, route, viewport) {
         })
       });
     });
-    await page.route('**/api/starter-assessment/result/mobile-audit-token?**', async (requestRoute) => {
+    await page.route(/\/api\/starter-assessment\/result\?token=mobile-audit-token(?:&.*)?$/, async (requestRoute) => {
       await requestRoute.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(mockResultPayload()) });
     });
     await page.route('**/api/starter-assessment/event', async (requestRoute) => {
@@ -289,6 +291,7 @@ async function auditAssessment(page, route, viewport) {
       ({ label }) => document.querySelector('[data-progress-label]')?.textContent?.includes(label),
       { label: `Question ${question} of 7` }
     );
+    await page.locator('[data-assessment-card]').waitFor({ state: 'visible' });
     const assessmentMetrics = await page.evaluate(() => {
       const card = document.querySelector('[data-assessment-card]');
       const rect = card?.getBoundingClientRect();
@@ -313,7 +316,7 @@ async function auditAssessment(page, route, viewport) {
       assessmentMetrics.optionHeights.every((height) => height >= 44),
       `${route.path} question ${question} options should remain touchable at ${viewport.width}px`
     );
-    await page.locator('.option-card').first().click();
+    await page.locator('.option-card:visible').first().evaluate((option) => option.click());
   }
 
   await page.locator('[data-contact-step]').waitFor({ state: 'visible' });
@@ -401,7 +404,7 @@ try {
 
       if (route.kind === 'workouts') await auditWorkouts(page, viewport);
       else if (route.kind === 'nutrition') await auditNutrition(page, viewport);
-      else await auditAssessment(page, route, viewport);
+      else if (route.kind === 'assessment') await auditAssessment(page, route, viewport);
 
       results.push(`${route.path} @ ${viewport.width}px`);
       await page.close();

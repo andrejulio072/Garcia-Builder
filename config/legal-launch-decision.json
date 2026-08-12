@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "decision": "LIMITED_TEST_GO_WITH_ACCEPTED_RISK",
+  "approved": true,
+  "approved_on": "2026-08-06",
+  "approved_by_role": "business owner and sole trader",
+  "legal_compliance_status": "unverified",
+  "scope": {
+    "campaign": "small-budget test advertising",
+    "client_handling": "directly by the owner",
+    "public_address_disclosure": "declined by the owner for the limited test",
+    "existing_site_visual_proof": "owner-authorized reuse on the assessment page",
+    "scale_up_requires_review": true
+  },
+  "conditions": [
+    "Non-essential analytics and advertising tags remain consent-gated.",
+    "Assessment-page transformation images and testimonial excerpts are reused from existing site material at the owner's direction.",
+    "This decision records owner risk acceptance and does not claim or certify legal compliance.",
+    "Re-review is required before scaling spend, enabling remarketing, automating client onboarding, or making material funnel or provider changes."
+  ]
+}

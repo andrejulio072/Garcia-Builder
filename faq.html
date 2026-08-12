@@ -3,23 +3,10 @@
 <head>
 <script src="/js/utils/canonical-host-redirect.js?v=20260705" data-gb-canonical-host></script>
 <!-- Google Tag Manager -->
-<script id="gb-gtm-bootstrap">
-(function(w,d,s,l,i){
-  w[l]=w[l]||[];
-  w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
-  var f=d.getElementsByTagName(s)[0];
-  var j=d.createElement(s);
-  var dl=l!='dataLayer'?'&l='+l:'';
-  j.async=true;
-  j.id='gb-gtm-script';
-  j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-  f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-TG5TFZ2C');
-</script>
-<script defer src="/js/tracking/tracking.js?v=20260703c"></script>
 <!-- End Google Tag Manager -->
 
 <meta charset="utf-8">
+  <script src="/js/tracking/site-consent-bootstrap.js?v=20260805-consent-v3"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 
@@ -158,18 +145,7 @@
 <link rel="apple-touch-icon" href="Logo Files/For Web/logo-nobackground-500.png">
 <meta name="keywords" content="faq, frequently asked questions, online coaching, plans, nutrition, results, app, methodology, Garcia Builder, Ireland, fitness, personal trainer, support, transformation">
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17627402053"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'AW-17627402053', { 'send_page_view': false });
-</script>
-
 <!-- Dados estruturados para rich results -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/components/navbar-component.css?v=20260730-mobile-preview-v1">
 <link rel="stylesheet" href="css/global.css?v=20260627">
@@ -229,31 +205,6 @@
 </style>
 
 <!-- Google Tag Manager -->
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-try {
-  const stored = JSON.parse(localStorage.getItem('gb_consent_v1')||'null');
-  if (stored && stored.status === 'granted') {
-    gtag('consent','default', {
-      ad_storage:'granted', analytics_storage:'granted', ad_user_data:'granted', ad_personalization:'granted',
-      functionality_storage:'granted', security_storage:'granted'
-    });
-  } else if (stored && stored.status === 'denied') {
-    gtag('consent','default', {
-      ad_storage:'denied', analytics_storage:'denied', ad_user_data:'denied', ad_personalization:'denied',
-      functionality_storage:'granted', security_storage:'granted'
-    });
-  } else {
-    gtag('consent','default', {
-      ad_storage:'denied', analytics_storage:'denied', ad_user_data:'denied', ad_personalization:'denied',
-      functionality_storage:'granted', security_storage:'granted'
-    });
-  }
-} catch(e){
-  gtag('consent','default', { ad_storage:'denied', analytics_storage:'denied', ad_user_data:'denied', ad_personalization:'denied', functionality_storage:'granted', security_storage:'granted' });
-}
-</script>
 <!-- Google Site Verification -->
 <meta name="google-site-verification" content="google47d3c69666bce37e" />
 
@@ -261,13 +212,10 @@ try {
 
 <!-- Centralized Facebook Pixel Loader -->
 <script>window.FB_PIXEL_ID='958060389933459';</script>
-<script defer src="js/tracking/pixel-init.js"></script>
-
 <script defer src="js/i18n-shim.js"></script>
 <script defer src="assets/i18n.js?v=20251025"></script>
 <script src="js/utils/component-loader-v3-simplified.js?v=20260723-nav2"></script>
 <script src="js/tracking/conversion-tracking.js?v=20251025"></script>
-<script defer src="js/tracking/ads-loader.js?v=20251025"></script>
 <script defer src="js/tracking/ads-config.js?v=20251025"></script>
 <script defer src="js/tracking/cta-tracking.js?v=20260703c"></script>
 <script defer src="js/tracking/conversion-helper.js"></script>
@@ -294,11 +242,8 @@ window.addEventListener('load', function() {
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" title="Google Tag Manager" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <!-- Meta Pixel noscript fallback -->
-<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=958060389933459&ev=PageView&noscript=1"/ alt=""></noscript>
-
 <!-- Navbar Component (loaded dynamically) -->
 <div data-component="navbar"></div>
 
@@ -393,7 +338,7 @@ const FAQ = [
   ["What if I have injuries or pain?",
    "We adapt exercises, tempo, and range of motion. I can coordinate with physio/GP guidance when needed."],
   ["How fast will I see results?",
-  "Most feel better in 2-3 weeks, notice visible changes by 6-8 weeks, and strong transformations from 12+ weeks with consistency."],
+  "There is no guaranteed timeline. Progress depends on your starting point, health, consistency, training, nutrition, recovery and other personal circumstances."],
   ["How do weekly check-ins work?",
    "Short form in the app + optional photos/measurements. I review adherence and trends, then update your plan."],
   ["Which app do you use?",
@@ -421,17 +366,17 @@ const FAQ = [
   ["How are payments handled?",
    "Monthly subscription via secure card billing (Stripe)."],
   ["Is there a contract? Can I pause or cancel?",
-  "No long-term lock-ins. Cancel anytime before your next billing date. Pauses are available for travel/illness - just message me."],
+  "No long-term lock-ins. Cancel renewal before your next billing date. Pauses may be available for travel or illness - just message me. Statutory cancellation rights are explained in the Terms."],
   ["Do you offer refunds?",
-   "Because coaching is a time/service product, fees are generally non-refundable. You can cancel before the next cycle to avoid renewal."],
+   "Refunds are provided where required by law or the agreed service terms. Distance-service cancellation rights, including the usual 14-day period where applicable, are explained in the Terms."],
   ["How is my data handled? What about privacy?",
-   "Only you and I see your data. Photos are optional. With explicit consent I may use anonymized results for marketing."],
+   "Your data is limited to the coach and service providers needed to deliver and secure the service, as explained in the Privacy Notice. Photos are optional, and publication requires separate permission."],
   ["Are progress photos required?",
    "No. They help track visual changes, but you can progress using measurements, strength logs, and how clothes fit."],
   ["Do you coach in English only?",
    "Primary language is English. I can also coach in Portuguese and Spanish."],
   ["Can you guarantee results?",
-  "No coach can guarantee outcomes. I guarantee a personalized plan, clarity, accountability, and weekly adjustments - your consistency drives the results."]
+  "No. The service provides a personalised plan, agreed support and regular review, but it cannot promise a particular physical or health outcome."]
 ];
 
 /* ---- Render FAQ dynamically with translations ---- */

@@ -371,7 +371,13 @@
         window.addEventListener('beforeunload', function() {
             const timeOnPage = Math.round((Date.now() - startTime) / 1000);
             
-            if (navigator.sendBeacon && dataLayer) {
+            const consentRecord = window.GBConsent && typeof window.GBConsent.readRecord === 'function'
+                ? window.GBConsent.readRecord()
+                : null;
+            const analyticsAllowed = consentRecord && consentRecord.choices &&
+                consentRecord.choices.analytics_storage === 'granted';
+
+            if (analyticsAllowed && navigator.sendBeacon && dataLayer) {
                 const data = JSON.stringify({
                     event: 'time_on_page',
                     duration_seconds: timeOnPage,

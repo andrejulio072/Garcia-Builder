@@ -1158,7 +1158,8 @@
       emailLabel: getI18nText('leadmagnet.email', 'Email Address'),
       goalLabel: getI18nText('leadmagnet.goal', 'Main Goal'),
       goalSelect: getI18nText('leadmagnet.goal_select', 'Select your goal'),
-      consent: getI18nText('leadmagnet.consent', 'I agree to receive the guide and follow-up emails from Garcia Builder Fitness.'),
+      consent: getI18nText('leadmagnet.consent', 'I request the guide and have read the Privacy Notice.'),
+      marketingConsent: getI18nText('leadmagnet.marketing_consent', 'I would also like occasional coaching tips and offers by email. Optional; unsubscribe at any time.'),
       email: getI18nText('leadmagnet.email_placeholder', 'you@email.com'),
       button: getI18nText('leadmagnet.popup_button', 'Send Me the Guide'),
       benefit1: getI18nText('leadmagnet.popup_benefit1', '28-day fat-loss structure'),
@@ -1225,6 +1226,10 @@
               <input type="checkbox" name="consent" required>
               <span>${t.consent}</span>
             </label>
+            <label class="exit-intent-consent">
+              <input type="checkbox" name="marketingConsent">
+              <span>${t.marketingConsent}</span>
+            </label>
             <button type="submit">
               <i class="fas fa-download"></i> ${t.button}
             </button>
@@ -1270,6 +1275,7 @@
       const email = popup.querySelector('input[name="email"]').value.trim();
       const goal = popup.querySelector('[name="goal"]').value.trim();
       const consent = popup.querySelector('input[name="consent"]').checked;
+      const marketingConsent = popup.querySelector('input[name="marketingConsent"]').checked;
       const name = `${firstName} ${lastName}`.trim();
       const submitBtn = popup.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerHTML;
@@ -1288,6 +1294,7 @@
           phone: '',
           goal,
           consent,
+          marketingConsent,
           page: window.location.pathname,
           utm_source: attribution.utm_source,
           utm_medium: attribution.utm_medium,
@@ -1296,7 +1303,7 @@
           utm_term: attribution.utm_term
         });
 
-        await sendDownloadLink({ firstName, lastName, name, email, goal, consent }, leadResponse);
+        await sendDownloadLink({ firstName, lastName, name, email, goal, consent, marketingConsent }, leadResponse);
         triggerFileDownload();
 
         // Track only after /api/ebook-lead accepts the lead.
@@ -1406,6 +1413,7 @@
       name: formData.get('name') || '',
       goal: formData.get('goal') || '28-Day Fat Loss Kickstart',
       consent: formData.get('consent') === 'on' || formData.get('consent') === 'true',
+      marketingConsent: formData.get('marketingConsent') === 'on' || formData.get('marketingConsent') === 'true',
       guide_id: form.dataset.guideId || formData.get('guide_id') || '28-day-fat-loss-kickstart',
       type: 'download',
       source: form.dataset.source || 'Download Form',
@@ -1522,6 +1530,7 @@
       goal: leadInfo.goal || '28-Day Fat Loss Kickstart',
       source: 'website',
       consent: leadInfo.consent === true || leadInfo.consent === 'true' || leadInfo.consent === 'on',
+      marketingConsent: leadInfo.marketingConsent === true || leadInfo.marketingConsent === 'true' || leadInfo.marketingConsent === 'on',
       page: leadInfo.page || window.location.pathname,
       utm_source: leadInfo.utm_source || attribution.utm_source,
       utm_medium: leadInfo.utm_medium || attribution.utm_medium,

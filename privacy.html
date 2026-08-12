@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <script src="/js/tracking/site-consent-bootstrap.js?v=20260805-consent-v3"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
@@ -23,8 +24,7 @@
 <script src="/js/utils/canonical-host-redirect.js?v=20260705" data-gb-canonical-host></script>
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/components/navbar-component.css?v=20260723-nav2">
-  <link rel="stylesheet" href="/css/legal-pages.css?v=20260804-legal-v1">
-  <script src="/js/starter-tracking-bootstrap.js?v=20260804-consent-v2"></script>
+  <link rel="stylesheet" href="/css/legal-pages.css?v=20260806-contrast-v2">
   <script src="/js/utils/component-loader-v3-simplified.js?v=20260723-nav2"></script>
   <script defer src="/assets/i18n.js?v=20251025"></script>
   <script type="application/ld+json">
@@ -51,9 +51,18 @@
 <body>
   <div data-component="navbar"></div>
   <main class="legal-page">
-    <h1>Privacy Notice</h1>
-    <p class="legal-updated">Last revised: 4 August 2026</p>
-    <p>This notice explains how personal data is handled when you visit Garcia Builder Fitness, complete the starter assessment, request information, create an account, purchase or use coaching services, or communicate with the coach.</p>
+    <header class="legal-hero">
+      <p class="legal-eyebrow">GARCIA BUILDER FITNESS · YOUR DATA</p>
+      <h1>Privacy Notice</h1>
+      <p class="legal-updated">Last revised: 5 August 2026</p>
+      <p class="legal-intro">This notice explains how personal data is handled when you visit Garcia Builder Fitness, complete the starter assessment, request information, create an account, purchase or use coaching services, or communicate with the coach.</p>
+      <nav class="legal-quick-links" aria-label="Privacy notice quick links">
+        <a href="#privacy-use">How data is used</a>
+        <a href="#privacy-retention">Retention</a>
+        <a href="#privacy-rights">Your rights</a>
+        <a href="#privacy-contact">Contact</a>
+      </nav>
+    </header>
 
     <div class="legal-publication-blocker" role="note">
       <strong>Pre-publication legal values required.</strong> The controller's verified legal name, registration details, address, establishment, transfer safeguards and retention periods must be approved and inserted before this version is published. These values are deliberately not guessed.
@@ -80,7 +89,7 @@
       <li>UTM parameters and advertising identifiers such as <code>gclid</code>, <code>gbraid</code>, <code>wbraid</code>, <code>fbclid</code>, <code>_fbp</code> and <code>_fbc</code>, where available and permitted.</li>
     </ul>
 
-    <h2>3. Why information is used and the lawful basis</h2>
+    <h2 id="privacy-use">3. Why information is used and the lawful basis</h2>
     <div class="legal-table-wrap">
       <table class="legal-table">
         <thead><tr><th>Activity</th><th>Information and purpose</th><th>Lawful basis</th></tr></thead>
@@ -92,7 +101,7 @@
           <tr><td>Health-related information, measurements and progress photographs</td><td>Tailor coaching, review progress and identify when the service may be unsuitable. Publication as a transformation requires separate, specific permission.</td><td>Contract or legitimate interests for ordinary coaching data. Where information is special-category health data, a valid Article 9 condition is also required, normally explicit consent. Owner/legal review is required before publication.</td></tr>
           <tr><td>Payments and subscriptions</td><td>Create checkout, confirm payment status, administer subscriptions, invoices, refunds and accounting records.</td><td>Contract and legal obligations; legitimate interests in payment administration and fraud prevention.</td></tr>
           <tr><td>Essential operation and security</td><td>Protect accounts and endpoints, diagnose errors, prevent abuse, preserve language/session state and maintain evidence of consent choices.</td><td>Legitimate interests in secure, reliable operation; legal obligations where applicable.</td></tr>
-          <tr><td>Analytics and advertising</td><td>Measure website/assessment performance, attribute campaigns, limit duplicate conversion events and improve advertising.</td><td>Consent for non-essential analytics and advertising storage or tags. Optional tags are not loaded by the assessment flow until the matching choice is granted.</td></tr>
+          <tr><td>Analytics and advertising</td><td>Measure website/assessment performance, attribute campaigns, limit duplicate conversion events and improve advertising.</td><td>Consent for non-essential analytics, campaign-attribution storage and advertising tags. Optional tags and persistent attribution identifiers are not activated sitewide until the matching choice is granted.</td></tr>
         </tbody>
       </table>
     </div>
@@ -111,6 +120,7 @@
     <ul>
       <li>Supabase for database, authentication and server-side storage;</li>
       <li>Vercel for website and serverless hosting;</li>
+      <li>jsDelivr and cdnjs for delivery of pinned interface libraries and styles; these providers receive ordinary connection data such as IP address and user-agent when an external asset is requested;</li>
       <li>Brevo and/or the configured SMTP provider for transactional and consented marketing email;</li>
       <li>Zapier for workflow automation;</li>
       <li>Stripe for checkout, payment and subscription processing;</li>
@@ -124,7 +134,7 @@
     <h2>8. International transfers</h2>
     <p>Some providers may process information outside Ireland or the European Economic Area. Before publication, the controller must verify each processing location and the applicable safeguard, such as an adequacy decision or approved contractual safeguards, and make further transfer information available on request. No safeguard is asserted in this draft without that verification.</p>
 
-    <h2>9. Retention schedule</h2>
+    <h2 id="privacy-retention">9. Retention schedule</h2>
     <p>Records are deleted or anonymised when they are no longer required for the stated purpose, subject to accounting, legal-claim, consent-evidence and security needs. The exact periods below are publication blockers and must be approved by the controller.</p>
     <div class="legal-table-wrap">
       <table class="legal-table">
@@ -141,7 +151,7 @@
       </table>
     </div>
 
-    <h2>10. Your data-protection rights</h2>
+    <h2 id="privacy-rights">10. Your data-protection rights</h2>
     <p>Subject to the applicable conditions and exceptions, you may ask for access to your data, correction, deletion, restriction, portability, or information about its source. You may object to processing based on legitimate interests and to direct marketing, and withdraw consent without affecting processing already carried out lawfully. You may also ask for human review where relevant automated decision-making rights apply.</p>
     <p>To make a request, email <a href="mailto:andre@garciabuilder.fitness">andre@garciabuilder.fitness</a> with enough information to identify the relevant record. Identity may be checked proportionately before releasing or changing data.</p>
 
@@ -160,7 +170,7 @@
     <h2>15. Changes to this notice</h2>
     <p>Material changes will be shown on this page with a revised date. Where appropriate, an additional notice will be provided. The current draft must not be approved for production until all marked legal values are completed.</p>
 
-    <h2>16. Contact</h2>
+    <h2 id="privacy-contact">16. Contact</h2>
     <p>For access, correction, deletion, withdrawal, objection or another privacy request, email <a href="mailto:andre@garciabuilder.fitness">andre@garciabuilder.fitness</a>.</p>
   </main>
   <div data-component="footer"></div>

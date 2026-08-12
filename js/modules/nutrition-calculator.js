@@ -614,8 +614,8 @@
       email: profile.email,
       source: 'Nutrition Calculator',
       page: window.location.pathname,
-      consent: true,
-      marketingConsent: true,
+      consent: Boolean(document.getElementById('nutritionDeliveryConsent')?.checked),
+      marketingConsent: Boolean(document.getElementById('nutritionMarketingConsent')?.checked),
       sendEmailCopy: true,
       profile: {
         sex: profile.sex,
@@ -968,7 +968,7 @@
       const profile = gatherProfile(form);
       const errors = validateProfile(profile);
       if (!isValidEmail(profile.email)) errors.push('Add a valid email address to receive your plan.');
-      if (!byId('sendPlanEmail')?.checked) errors.push('Consent is required to receive your plan and follow-up emails.');
+      if (!byId('nutritionDeliveryConsent')?.checked) errors.push('Please request the emailed plan and confirm that you have read the Privacy Notice.');
       showErrors(errors);
       if (errors.length) return;
 

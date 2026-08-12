@@ -8,7 +8,7 @@ This report records what can be proved from code and automated checks. Owner, le
 
 ## Executive result
 
-The requested repository implementation is deployed and the database contract is live. On 2026-08-05 the owner confirmed the affected Stripe credential was rotated, Vercel Preview/Production were updated, and the legal identity/retention/governing-law decisions were approved externally. GitHub secret-scanning alert 2 is resolved as revoked and production Stripe health remains ready. The project is still **NO-GO for production ads** until the approved legal values replace the explicit placeholders in the public pages and the remaining email, Zapier, tag-manager, ad-platform and real-device evidence is completed.
+The requested repository implementation is deployed and the database contract is live. On 2026-08-05 the owner confirmed the affected Stripe credential was rotated, Vercel Preview/Production were updated, and the legal identity/retention/governing-law decisions were approved externally. GitHub secret-scanning alert 2 is resolved as revoked and production Stripe health remains ready. On 2026-08-06 the sole-trader owner authorized a **LIMITED-TEST GO WITH ACCEPTED RISK** for small-budget advertising and direct owner-managed client handling. Legal compliance remains unverified; the public legal values and remaining email, Zapier, tag-manager, ad-platform and real-device evidence remain required before scale-up.
 
 ## Verified implementation
 

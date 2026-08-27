@@ -95,6 +95,16 @@
     if (element && element.parentNode) element.parentNode.removeChild(element);
   }
 
+  function whenBodyReady(callback) {
+    if (document.body) {
+      callback();
+      return;
+    }
+    document.addEventListener('DOMContentLoaded', function onBodyReady() {
+      if (document.body) callback();
+    }, { once: true });
+  }
+
   function installStyles() {
     if (document.getElementById('consent-style')) return;
     var style = document.createElement('style');
@@ -104,6 +114,7 @@
   }
 
   function renderBanner() {
+    if (document.getElementById('consent-banner')) return;
     var t = copy[language()];
     var element = document.createElement('div');
     element.id = 'consent-banner';
@@ -148,6 +159,11 @@
     element.querySelector('[data-consent-close]').focus();
   }
 
-  window.openConsentPreferences = renderPanel;
-  if (!(currentRecord() && currentRecord().choices)) renderBanner();
+  window.openConsentPreferences = function openConsentPreferences() {
+    whenBodyReady(renderPanel);
+  };
+  whenBodyReady(function initializeConsentBanner() {
+    var record = currentRecord();
+    if (!(record && record.choices)) renderBanner();
+  });
 })();

@@ -23,14 +23,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
-        run: npm test
+      - name: Run Ads readiness tests
+        run: npm run test:ads-readiness
 
       - name: Run build
         run: npm run build
 
       - name: Syntax checks
         run: |
+          node --check js/tracking/consent-banner.js
+          node --check js/tracking/site-consent-bootstrap.js
+          node --check js/tracking/ads-loader.js
+          node --check js/tracking/tracking.js
           node --check js/starter-assessment.js
           node --check js/starter-context.js
           node --check js/starter-result.js

@@ -40,6 +40,28 @@ assert(bootstrap.includes('fbp$|fbc$') && bootstrap.includes('expireMatchingCook
 assert(!adsLoader.includes('debug-consent'), 'A URL parameter must not be able to grant production consent');
 
 const assessment = read('js/starter-assessment.js');
+const assessmentHtml = read('assessment.html');
+const legacyGoogleConversionLabel = 'mdOMCOTV3acbEMWes9VB';
+for (const [name, source] of [['assessment.html', assessmentHtml], ['js/starter-assessment.js', assessment]]) {
+  assert(!source.includes(legacyGoogleConversionLabel), `${name} must not invoke the legacy Google Ads conversion`);
+  assert(!source.includes('gbf_assessment_lead'), `${name} must leave the published GA4 event mapping to GTM`);
+}
+
+const primaryGuard = assessment.match(/function shouldTrackCanonicalSubmission\(payload\) \{([\s\S]*?)\n  \}/);
+assert(primaryGuard, 'Assessment must keep an explicit primary-conversion response guard');
+for (const condition of [
+  'payload?.ok === true',
+  'payload?.leadSaved === true',
+  'payload?.isNewLead === true',
+  'payload?.deduplicated === false',
+  'payload?.ignored === false',
+  'payload?.eventId',
+  'payload?.resultToken',
+  'payload?.resultUrl'
+]) {
+  assert(primaryGuard[1].includes(condition), `Primary conversion guard missing: ${condition}`);
+}
+
 const canonicalIndex = assessment.indexOf("track('assessment_submitted'");
 const compatibilityIndex = assessment.indexOf("track('generate_lead'", canonicalIndex);
 assert(canonicalIndex >= 0, 'Assessment must keep assessment_submitted as its canonical durable event');

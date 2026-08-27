@@ -6,12 +6,12 @@ Primary paid destination: `https://www.garciabuilder.fitness/assessment`
 
 ## Launch decision
 
-The assessment application is technically suitable for controlled paid traffic, but paid campaigns must remain paused until the legal publication blockers and live conversion verification are resolved.
+The assessment application is technically suitable for controlled paid traffic. The Assessment GA4 mapping was published and verified in GTM Preview on 25 August 2026; campaigns must remain paused until the remaining legal, platform-linking, campaign-goal, dataset-ownership and production-device checks are complete.
 
 Hard launch gates:
 
 1. Replace every explicit pre-publication placeholder in `/privacy-policy` and `/terms` with verified current business/controller/contracting information and approved retention/governing-law wording.
-2. Verify one successful assessment creates exactly one primary conversion in GTM/GA4, Google Ads and Meta.
+2. Verify the published `gbf_assessment_lead` GA4 event is linked to the intended Google Ads account and configured as the Assessment campaign's only Primary conversion goal.
 3. Verify a failed or deduplicated assessment creates zero primary conversions.
 4. Verify Meta Pixel/dataset ownership and production-domain association.
 5. Verify Google Ads account, GA4 property and conversion action are linked to the intended business account.
@@ -24,13 +24,20 @@ Do not describe the dissolved UK company `GARCIA BUILDER LTD` as the current con
 Browser event contract:
 
 - Primary durable application event: `assessment_submitted`
-- GA4 mapping: `assessment_submitted` -> `generate_lead`
+- Published GA4 mapping: `assessment_submitted` -> `gbf_assessment_lead`
 - Meta mapping: `assessment_submitted` -> standard `Lead`
-- Google Ads primary conversion name: `assessment_lead`
+- Google Ads campaign conversion goal: remains a manual platform-side configuration based on `gbf_assessment_lead`
 - Counting: one conversion per ad interaction
 - Primary optimisation event must fire only after the backend confirms a newly persisted lead.
 
-Current frontend compatibility behavior emits both `assessment_submitted` and `generate_lead` using the same backend `event_id` for a valid new lead. GTM must not treat both as separate primary conversions. Migrate the production conversion tags to the canonical `assessment_submitted` trigger, validate, then remove the compatibility dependency later.
+Published external GTM state (25 August 2026):
+
+- Trigger: `CE - Assessment Submitted`
+- Tag: `GA4 - GBF Assessment Lead`
+- GA4 event: `gbf_assessment_lead`
+- Published GTM version: `GBF Assessment Lead - GA4`
+
+Current frontend compatibility behavior emits both `assessment_submitted` and `generate_lead` using the same backend `event_id` for a valid new lead. GTM must not treat both as separate primary conversions. The published Assessment GA4 tag now uses the canonical `assessment_submitted` trigger; keep `generate_lead` for compatibility, but never configure it as a second primary Assessment conversion.
 
 Never send name, email, phone, free-text answers, raw lead score or result token in browser analytics event parameters.
 
@@ -39,9 +46,9 @@ Never send name, email, phone, free-text answers, raw lead score or result token
 - GTM: `GTM-TG5TFZ2C`
 - GA4: `G-CMMHJP9LEY`
 - Google Ads tag/account reference: `AW-17627402053`
-- Historical Meta Pixel/dataset reference: `1102565141856929`
+- Current repository Meta Pixel/dataset reference: `958060389933459`
 
-The Meta Pixel/dataset ID must be confirmed in the live Meta Business account before launch. The old Google Ads conversion label `mdOMCOTV3acbEMWes9VB` belongs to the legacy 2025 external-click conversion setup and must not be used as the assessment lead optimisation signal unless the Google Ads conversion action is deliberately repurposed and revalidated.
+The Meta Pixel/dataset ownership must still be confirmed in the live Meta Business account before launch; repository evidence alone is not ownership verification. The old Google Ads conversion label `mdOMCOTV3acbEMWes9VB` belongs to the legacy conversion setup and must remain untouched and isolated from Assessment optimisation.
 
 ## GTM final configuration
 
@@ -59,12 +66,15 @@ Create/confirm these Data Layer Variables:
 - `DLV - language`
 - `DLV - page_path`
 
-Create/confirm Custom Event triggers:
+Published Assessment trigger:
+
+- `CE - Assessment Submitted`, custom event `assessment_submitted`
+
+Create/confirm diagnostic Custom Event triggers as needed:
 
 - `CE - assessment_landing_view`
 - `CE - assessment_started`
 - `CE - assessment_submission_started`
-- `CE - assessment_submitted`
 - `CE - assessment_submission_failed`
 - `CE - result_viewed`
 - `CE - guide_downloaded`
@@ -73,9 +83,9 @@ Create/confirm Custom Event triggers:
 
 Primary tags:
 
-- GA4 event tag: event name `generate_lead`, trigger only `CE - assessment_submitted`.
-- Meta event tag: standard event `Lead`, trigger only `CE - assessment_submitted`.
-- Google Ads: use either GA4-imported `generate_lead` OR a direct Google Ads conversion tag on `CE - assessment_submitted`. Do not use both as primary conversion paths.
+- Published GA4 event tag: `GA4 - GBF Assessment Lead`; event name `gbf_assessment_lead`; trigger only `CE - Assessment Submitted`.
+- If/when the Meta event tag is enabled, fire standard event `Lead` only from `CE - Assessment Submitted`.
+- Google Ads: manually import/use the new GA4 `gbf_assessment_lead` conversion for the Assessment campaign. Do not add a second direct Google Ads conversion path.
 
 Consent:
 
@@ -368,7 +378,7 @@ Before publishing:
 3. Grant analytics/advertising consent and confirm the intended tags load.
 4. Complete one successful unique assessment.
 5. Confirm one `assessment_submitted` dataLayer event.
-6. Confirm one GA4 `generate_lead` generated from the canonical trigger.
+6. Confirm one GA4 `gbf_assessment_lead` generated from the canonical trigger.
 7. Confirm the same submission does not create a second conversion from the compatibility `generate_lead` event.
 8. Confirm no conversion on failed or duplicate submission.
 9. Confirm the GA4 event is marked as a key event if GA4 import is the selected Google Ads strategy.

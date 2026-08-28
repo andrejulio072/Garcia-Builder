@@ -503,6 +503,9 @@ assert(submitHandler.includes('await sideEffectsPromise;'), 'Serverless handler 
 assert(submitHandler.includes('validated.metadata.first_touch_at = validated.metadata.first_touch_at || submittedAt'), 'Server must guarantee first-touch timestamp fallback');
 assert(resultClient.includes('primary_recommendation_cta_clicked'), 'Result page should track the personalized primary CTA');
 assert(resultClient.includes("primaryActionLink.textContent = copy('downloadGuide')"), 'Result page should keep guide download as the primary CTA');
+assert(resultClient.includes("window.open('', '_blank')"), 'Print copy should retain a usable window handle');
+assert(resultClient.includes('printWindow.opener = null'), 'Print copy should isolate its opener before navigation');
+assert(!resultClient.includes("window.open(printUrl.toString(), '_blank', 'noopener')"), 'Print copy should not fall back after successfully opening a new window');
 assert(starterMigration.includes("add column if not exists language text not null default 'en'"), 'Migration should add assessment language');
 assert(starterMigration.includes('alter column country drop not null'), 'Migration should remove the legacy country requirement');
 

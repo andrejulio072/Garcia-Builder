@@ -38,8 +38,13 @@
   function openPrintCopy() {
     const printUrl = new URL(window.location.href);
     printUrl.hash = 'print-plan';
-    const printWindow = window.open(printUrl.toString(), '_blank', 'noopener');
-    if (!printWindow) window.print();
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      window.print();
+      return;
+    }
+    printWindow.opener = null;
+    printWindow.location.replace(printUrl.toString());
   }
 
   function track(eventName, properties) {

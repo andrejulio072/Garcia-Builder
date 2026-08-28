@@ -52,11 +52,13 @@ function extractJsonLd(html) {
 const failures = [];
 const htmlFiles = walk(rootDir).filter((file) => !file.includes(`${path.sep}public${path.sep}`));
 const routeSet = new Set(['/']);
+const manifestIndexableBySource = new Map();
 const manifestPath = path.join(rootDir, 'config', 'seo-pages.json');
 if (fs.existsSync(manifestPath)) {
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   for (const page of manifest.pages || []) {
     if (page.path) routeSet.add(page.path);
+    if (page.source) manifestIndexableBySource.set(page.source.replace(/\\/g, '/'), page.indexable !== false);
   }
 }
 for (const file of htmlFiles) {
@@ -129,7 +131,8 @@ for (const file of htmlFiles) {
     }
   }
   if (noindexPattern.test(relative) && !/noindex/i.test(robots)) failures.push(`${relative}: expected noindex`);
-  if (!noindexPattern.test(relative) && !legacyRedirectPattern.test(relative) && /^(index|about|blog|faq|contact|transformations|testimonials|online-coaching|packages|apply|consultation|28-day)/i.test(path.basename(relative)) && /noindex/i.test(robots)) {
+  const manifestAllowsIndexing = manifestIndexableBySource.get(relative.replace(/\\/g, '/')) !== false;
+  if (manifestAllowsIndexing && !noindexPattern.test(relative) && !legacyRedirectPattern.test(relative) && /^(index|about|blog|faq|contact|transformations|testimonials|online-coaching|packages|apply|consultation|28-day)/i.test(path.basename(relative)) && /noindex/i.test(robots)) {
     failures.push(`${relative}: public page should be indexable`);
   }
 

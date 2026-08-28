@@ -32,10 +32,13 @@ for (const page of manifest.pages) {
   assert.strictEqual(page.canonical, `${canonicalBase}${page.path}`, `canonical/path mismatch: ${page.path}`);
   assert.ok(/^\d{4}-\d{2}-\d{2}$/.test(page.lastMeaningfulModification), `invalid lastmod: ${page.path}`);
   assert.ok(page.primaryImage.startsWith(`${canonicalBase}/`), `primary image host mismatch: ${page.path}`);
+  assert.doesNotMatch(page.title, /&(?:amp;){2,}|&amp;#\d+;/i, `encoded entity in manifest title: ${page.path}`);
+  assert.doesNotMatch(page.description, /&(?:amp;){2,}|&amp;#\d+;/i, `encoded entity in manifest description: ${page.path}`);
   if (page.indexable) assert.doesNotMatch(page.path, /\.html$/, `indexable path is not extensionless: ${page.path}`);
 
   const html = fs.readFileSync(absolute, 'utf8');
   const head = (html.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i) || [])[1] || '';
+  assert.doesNotMatch(head, /&(?:amp;){2,}|&amp;#\d+;/i, `${page.source}: double-encoded entity in metadata`);
   assert.strictEqual(count(/<title\b[^>]*>[\s\S]*?<\/title>/gi, head), 1, `${page.source}: title count`);
   assert.strictEqual(count(/<meta\s+name=["']description["'][^>]*>/gi, head), 1, `${page.source}: description count`);
   assert.strictEqual(count(/<link\s+rel=["']canonical["'][^>]*>/gi, head), 1, `${page.source}: canonical count`);

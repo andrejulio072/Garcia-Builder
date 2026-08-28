@@ -138,9 +138,26 @@ function escapeHtml(value) {
     .replace(/>/g, '&gt;');
 }
 
+function decodeHtml(value) {
+  let decoded = String(value);
+  for (let pass = 0; pass < 5; pass += 1) {
+    const next = decoded
+      .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
+      .replace(/&#x([\da-f]+);/gi, (_, code) => String.fromCodePoint(parseInt(code, 16)))
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"')
+      .replace(/&apos;/g, "'")
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>');
+    if (next === decoded) break;
+    decoded = next;
+  }
+  return decoded;
+}
+
 function titleFromFile(relativePath, html) {
   const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
-  if (titleMatch && titleMatch[1].trim()) return titleMatch[1].trim().replace(/\s+/g, ' ');
+  if (titleMatch && titleMatch[1].trim()) return decodeHtml(titleMatch[1].trim().replace(/\s+/g, ' '));
   const h1Match = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
   if (h1Match) return `${h1Match[1].replace(/<[^>]+>/g, '').trim()} | Garcia Builder Fitness`;
   return `${path.basename(relativePath, '.html').replace(/[-_]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())} | Garcia Builder Fitness`;
@@ -148,7 +165,7 @@ function titleFromFile(relativePath, html) {
 
 function descriptionFromHtml(html) {
   const match = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["'][^>]*>/i);
-  if (match && match[1].trim()) return match[1].trim();
+  if (match && match[1].trim()) return decodeHtml(match[1].trim());
   const p = html.match(/<p[^>]*>([\s\S]{40,240}?)<\/p>/i);
   if (p) return p[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim().slice(0, 160);
   return 'Online coaching, fat loss support and practical fitness guidance from Garcia Builder Fitness.';

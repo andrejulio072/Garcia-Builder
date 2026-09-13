@@ -32,9 +32,32 @@
 <body class="starter-page starter-page-paid" data-starter-entry-default="organic" data-starter-page-mode="paid">
   <a class="skip-link" href="#assessment-root" data-starter-copy="skipAssessment">Skip to assessment</a>
   <header class="starter-header" aria-label="Assessment header">
-    <span class="starter-logo" aria-label="Garcia Builder Fitness branding">
+    <a class="starter-logo" href="/" aria-label="Return to Garcia Builder Fitness home" data-button-location="assessment_header_logo">
       <img src="/assets/images/logo-nobackground-256.webp" alt="Garcia Builder Fitness" width="148" height="56" fetchpriority="high">
-    </span>
+    </a>
+    <nav class="starter-header-nav" aria-label="Website navigation">
+      <a class="starter-home-link" href="/" data-button-location="assessment_header_home">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-8 9 8v10h-6v-6H9v6H3z"/></svg>
+        <span class="starter-home-label-desktop" data-starter-copy="returnToMainSite">Back to Garcia Builder Fitness</span>
+        <span class="starter-home-label-mobile" aria-hidden="true">Home</span>
+      </a>
+      <details class="starter-site-menu">
+        <summary aria-label="Open website menu">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <span class="starter-site-menu-label-desktop">Website menu</span>
+          <span class="starter-site-menu-label-mobile" aria-hidden="true">Menu</span>
+        </summary>
+        <div class="starter-site-menu-panel">
+          <strong>Explore Garcia Builder</strong>
+          <a href="/online-coaching">Online Coaching</a>
+          <a href="/packages">Packages</a>
+          <a href="/transformations">Transformations</a>
+          <a href="/testimonials">Testimonials</a>
+          <a href="/workouts">Workouts</a>
+          <a href="/contact">Contact</a>
+        </div>
+      </details>
+    </nav>
     <label class="starter-language">
       <span data-starter-copy="languageLabel">Language</span>
       <select data-starter-language aria-label="Assessment language">

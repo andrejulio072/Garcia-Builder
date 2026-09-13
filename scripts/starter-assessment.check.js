@@ -391,6 +391,10 @@ assert.equal((paidAssessmentPage.match(/class="starter-fitness-guide"/g) || []).
 assert(homepage.includes('/assessment?utm_source=website&amp;utm_medium=organic&amp;utm_campaign=starter_assessment&amp;utm_content=site_assessment_cta'), 'Main website should include assessment CTA with organic UTM parameters');
 assert(paidAssessmentPage.includes('class="starter-page-return__link" href="/"'), 'Paid assessment should include a compact route back to the main website');
 assert(paidAssessmentPage.includes('data-starter-copy="returnToMainSite"'), 'Assessment return route should use localized copy');
+assert(paidAssessmentPage.includes('data-button-location="assessment_header_home"'), 'Assessment header should provide an immediate route back home');
+assert(paidAssessmentPage.includes('aria-label="Website navigation"'), 'Assessment header should expose website navigation');
+assert(paidAssessmentPage.includes('class="starter-site-menu"'), 'Assessment header should include a compact website menu');
+assert(paidAssessmentPage.includes('href="/online-coaching"') && paidAssessmentPage.includes('href="/packages"'), 'Assessment website menu should expose the main coaching routes');
 assert(homepage.includes('class="homepage-assessment-shortcut__link"'), 'Homepage should include a compact assessment shortcut near the footer');
 assert(homepage.includes('utm_content=homepage_footer_assessment'), 'Homepage footer assessment shortcut should preserve its own attribution');
 assert(paidAssessmentPage.includes('/cookie-policy'), 'Paid assessment page should expose cookie policy link');
@@ -423,6 +427,8 @@ assert(starterClient.includes('SUBMITTED_EVENT_GUARD_KEY'), 'Starter form should
 assert(starterClient.includes('submission_id: getSubmissionId()'), 'Starter form should send a stable durable submission id');
 assert(starterClient.includes("track('assessment_submission_ignored'"), 'Honeypot responses should be handled without success redirect or conversion');
 assert(starterClient.includes('function renderError(message)'), 'Starter form should separate error rendering from event tracking');
+assert(starterClient.includes("document.querySelector('.starter-site-menu')"), 'Assessment website menu should initialize its dismissal behavior');
+assert(starterClient.includes("event.key === 'Escape' && siteMenu.open"), 'Assessment website menu should support Escape dismissal');
 assert(starterClient.includes('function trackValidationError(field)'), 'Starter form should track validation separately from rendering');
 assert(!starterClient.includes('function showError('), 'Legacy combined showError tracking function should be removed');
 assert(starterClient.includes("status_category: classifyStatusCategory(error)"), 'Submission failure diagnostics should use normalized status categories');

@@ -74,7 +74,9 @@ for (const route of ['/blog-mobility-injury-prevention', '/blog-strength-beginne
 }
 assert(css.includes("url('/assets/images/blog/preview-strength-beginners-photo.jpg')"), 'Paid assessment must use a fitness-related background image');
 assert(assessment.includes('data-start-assessment-proof'), 'Transformation proof section must reinforce the assessment CTA');
-assert(!assessment.includes('<nav'), 'Paid assessment must not add competing navigation');
+assert(!assessment.includes('data-component="navbar"'), 'Paid assessment must not load the full promotional navbar');
+assert(assessment.includes('class="starter-header-nav"'), 'Paid assessment must provide a compact header escape route');
+assert(assessment.includes('class="starter-site-menu"'), 'Paid assessment must provide compact access to the main website');
 assert(assessment.includes('class="starter-page-return__link" href="/"'), 'Paid assessment must expose the compact main-site return route');
 assert(css.includes('.starter-page-return__link'), 'Main-site return route must retain its compact button treatment');
 assert(css.includes('.starter-fitness-guides'), 'Existing-site article previews need dedicated visual styling');

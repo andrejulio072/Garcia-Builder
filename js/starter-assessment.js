@@ -553,6 +553,18 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     i18n?.applyDocument?.(state.language);
+    const siteMenu = document.querySelector('.starter-site-menu');
+    if (siteMenu) {
+      document.addEventListener('pointerdown', (event) => {
+        if (siteMenu.open && !siteMenu.contains(event.target)) siteMenu.open = false;
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && siteMenu.open) {
+          siteMenu.open = false;
+          siteMenu.querySelector('summary')?.focus();
+        }
+      });
+    }
     const meta = getMeta();
     const currentQuery = new URLSearchParams(window.location.search || '');
     const isCurrentQrVisit = currentQuery.get('utm_source')?.toLowerCase() === 'business_card' &&

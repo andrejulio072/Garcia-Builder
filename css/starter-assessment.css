@@ -156,12 +156,137 @@ body.starter-page::before {
   display: inline-flex;
   align-items: center;
   min-height: 48px;
+  border-radius: 10px;
+  text-decoration: none;
 }
 
 .starter-logo img {
   width: 148px;
   height: auto;
   display: block;
+}
+
+.starter-logo:focus-visible,
+.starter-home-link:focus-visible,
+.starter-site-menu > summary:focus-visible,
+.starter-site-menu-panel a:focus-visible {
+  outline: 3px solid var(--starter-focus);
+  outline-offset: 3px;
+}
+
+.starter-header-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.starter-home-link,
+.starter-site-menu > summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 1px solid rgba(246, 200, 78, 0.26);
+  border-radius: 999px;
+  color: var(--starter-text);
+  background: rgba(13, 17, 22, 0.82);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.22);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+.starter-home-link:hover,
+.starter-site-menu > summary:hover,
+.starter-site-menu[open] > summary {
+  color: var(--starter-gold-light);
+  border-color: rgba(246, 200, 78, 0.56);
+  background: rgba(246, 200, 78, 0.1);
+}
+
+.starter-home-link svg,
+.starter-site-menu > summary svg {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.starter-home-link svg {
+  fill: currentColor;
+  stroke: none;
+}
+
+.starter-home-label-mobile,
+.starter-site-menu-label-mobile {
+  display: none;
+}
+
+.starter-site-menu {
+  position: relative;
+}
+
+.starter-site-menu > summary {
+  list-style: none;
+}
+
+.starter-site-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+.starter-site-menu-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+  width: min(330px, calc(100vw - 24px));
+  padding: 14px;
+  border: 1px solid rgba(246, 200, 78, 0.24);
+  border-radius: 14px;
+  background: rgba(10, 14, 19, 0.98);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.5);
+}
+
+.starter-site-menu-panel strong {
+  grid-column: 1 / -1;
+  padding: 2px 7px 7px;
+  color: rgba(246, 200, 78, 0.72);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.starter-site-menu-panel a {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 9px 10px;
+  border-radius: 9px;
+  color: rgba(255, 250, 240, 0.82);
+  font-size: 0.78rem;
+  font-weight: 750;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.starter-site-menu-panel a:hover {
+  color: var(--starter-gold-light);
+  background: rgba(246, 200, 78, 0.09);
 }
 
 .starter-qr-contact-strip {
@@ -5060,5 +5185,51 @@ body.starter-page-paid.is-qr-entry .starter-qr-contact-action:focus-visible {
 
   body.starter-page-paid.is-qr-entry .starter-client-voice {
     padding: 16px;
+  }
+}
+
+/* Keep an immediate website exit visible without turning the assessment into a full site header. */
+@media (max-width: 760px) {
+  .starter-page-paid .starter-header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .starter-page-paid .starter-logo {
+    order: 1;
+  }
+
+  .starter-page-paid .starter-language {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .starter-page-paid .starter-header-nav {
+    order: 3;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    margin: 0;
+  }
+
+  .starter-page-paid .starter-home-link,
+  .starter-page-paid .starter-site-menu > summary {
+    width: 100%;
+    min-height: 42px;
+    padding: 9px 11px;
+  }
+
+  .starter-page-paid .starter-home-label-desktop,
+  .starter-page-paid .starter-site-menu-label-desktop {
+    display: none;
+  }
+
+  .starter-page-paid .starter-home-label-mobile,
+  .starter-page-paid .starter-site-menu-label-mobile {
+    display: inline;
+  }
+
+  .starter-page-paid .starter-site-menu-panel {
+    right: 0;
   }
 }

@@ -243,34 +243,6 @@ function isOffline() {
 const INLINE_FALLBACKS = {
     navbar: `
 <nav class="gb-navbar" role="navigation" aria-label="Main navigation (offline fallback)">
-    <div class="gb-navbar-utility">
-        <div class="container gb-navbar-utility-inner">
-            <nav class="gb-navbar-utility-links" aria-label="Resources">
-                <a href="#" data-i18n="nav.workouts" data-gb-nav="/workouts">Workouts</a>
-                <a href="#" data-i18n="nav.nutrition_calculator" data-gb-nav="/nutrition-calculator">Nutrition Calculator</a>
-                <a href="#" data-i18n="nav.blog" data-gb-nav="/blog">Blog</a>
-                <a href="#" data-i18n="nav.about" data-gb-nav="/about">About</a>
-                <a href="#" data-i18n="nav.faq" data-gb-nav="/faq">FAQ</a>
-                <a href="#" data-i18n="nav.contact" data-gb-nav="/contact">Contact</a>
-            </nav>
-
-            <div class="gb-navbar-controls">
-                <div class="gb-navbar-language" role="group" aria-label="Site language selector">
-                    <label for="lang-select-navbar" class="visually-hidden">Site language</label>
-                    <select id="lang-select-navbar" class="gb-lang-select gb-lang-select--desktop" aria-label="Select site language" title="Select language">
-                        <option value="en">EN</option>
-                        <option value="pt">PT</option>
-                        <option value="es">ES</option>
-                    </select>
-                </div>
-                <div id="auth-buttons-navbar" class="gb-auth-buttons" data-auth-state="anonymous">
-                    <a href="#" class="gb-btn-link" data-i18n="nav.login" data-gb-nav="pages/auth/login.html">Login</a>
-                    <a href="#" class="gb-btn-primary-small" data-i18n="nav.register" data-gb-nav="pages/auth/login.html?action=register">Register</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="container">
         <div class="gb-navbar-content">
             <a href="#" class="gb-logo-section" aria-label="Garcia Builder Home" data-gb-nav="/">
@@ -288,13 +260,44 @@ const INLINE_FALLBACKS = {
                 <a href="#" class="gb-navbar-link" data-i18n="nav.home" role="menuitem" data-gb-nav="/">Home</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.online_coaching" role="menuitem" data-gb-nav="/online-coaching">Online Coaching</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.packages" role="menuitem" data-gb-nav="/packages">Packages</a>
-                <a href="/assessment?utm_source=website&amp;utm_medium=organic&amp;utm_campaign=starter_assessment&amp;utm_content=site_assessment_cta" class="gb-navbar-link gb-navbar-link--assessment" role="menuitem" data-button-location="desktop_menu_assessment">Free Assessment</a>
-                <a href="/consultation" class="gb-navbar-link gb-navbar-link--cta" data-i18n="nav.consultation" role="menuitem" data-button-location="desktop_menu">Book Consultation</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="/transformations">Transformations</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.testi" role="menuitem" data-gb-nav="/testimonials">Testimonials</a>
+                <a href="/assessment?utm_source=website&amp;utm_medium=organic&amp;utm_campaign=starter_assessment&amp;utm_content=site_assessment_cta" class="gb-navbar-link gb-navbar-link--assessment" role="menuitem" data-button-location="desktop_menu_assessment">Free Assessment</a>
             </nav>
 
             <div class="gb-navbar-actions">
+                <a href="/consultation" class="gb-navbar-action-cta" data-i18n="nav.consultation" data-button-location="desktop_menu">Book Consultation</a>
+                <details class="gb-navbar-more">
+                    <summary aria-label="Open more navigation options">
+                        <span data-i18n="nav.more">More</span>
+                        <span class="gb-navbar-more-chevron" aria-hidden="true"></span>
+                    </summary>
+                    <div class="gb-navbar-more-menu">
+                        <div class="gb-navbar-more-heading">Explore</div>
+                        <nav class="gb-navbar-more-links" aria-label="More navigation">
+                            <a href="#" data-i18n="nav.workouts" data-gb-nav="/workouts">Workouts</a>
+                            <a href="#" data-i18n="nav.nutrition_calculator" data-gb-nav="/nutrition-calculator">Nutrition Calculator</a>
+                            <a href="#" data-i18n="nav.blog" data-gb-nav="/blog">Blog</a>
+                            <a href="#" data-i18n="nav.about" data-gb-nav="/about">About</a>
+                            <a href="#" data-i18n="nav.faq" data-gb-nav="/faq">FAQ</a>
+                            <a href="#" data-i18n="nav.contact" data-gb-nav="/contact">Contact</a>
+                        </nav>
+                        <div class="gb-navbar-more-footer">
+                            <div class="gb-navbar-language" role="group" aria-label="Site language selector">
+                                <label for="lang-select-navbar" class="visually-hidden">Site language</label>
+                                <select id="lang-select-navbar" class="gb-lang-select gb-lang-select--desktop" aria-label="Select site language" title="Select language">
+                                    <option value="en">EN</option>
+                                    <option value="pt">PT</option>
+                                    <option value="es">ES</option>
+                                </select>
+                            </div>
+                            <div id="auth-buttons-navbar" class="gb-auth-buttons" data-auth-state="anonymous">
+                                <a href="#" class="gb-btn-link" data-i18n="nav.login" data-gb-nav="pages/auth/login.html">Login</a>
+                                <a href="#" class="gb-btn-primary-small" data-i18n="nav.register" data-gb-nav="pages/auth/login.html?action=register">Register</a>
+                            </div>
+                        </div>
+                    </div>
+                </details>
                 <button type="button" class="gb-hamburger"
                         id="gb-menu-toggle"
                         aria-label="Toggle navigation menu"
@@ -581,7 +584,7 @@ function initializeNavbar() {
         });
 
         const menuLinks = menu.querySelectorAll('.gb-menu-link');
-        const desktopLinks = document.querySelectorAll('.gb-navbar-links .gb-navbar-link');
+        const desktopLinks = document.querySelectorAll('.gb-navbar-links .gb-navbar-link, .gb-navbar-more-menu [data-gb-nav]');
         console.log('[Component Loader] Found', menuLinks.length, 'menu links and', desktopLinks.length, 'desktop links');
 
         menuLinks.forEach(link => {
@@ -642,8 +645,24 @@ function initializeNavbar() {
             }
         });
 
+        const desktopMore = document.querySelector('.gb-navbar-more');
+        if (desktopMore) {
+            desktopMore.classList.toggle('has-active', Boolean(desktopMore.querySelector('a.active')));
+
+            if (desktopMore.dataset.navbarInit !== '1') {
+                desktopMore.dataset.navbarInit = '1';
+                desktopMore.addEventListener('click', function(e) {
+                    if (e.target.closest('a')) desktopMore.open = false;
+                });
+                document.addEventListener('pointerdown', function(e) {
+                    if (desktopMore.open && !desktopMore.contains(e.target)) desktopMore.open = false;
+                });
+            }
+        }
+
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
+                if (desktopMore) desktopMore.open = false;
                 const currentMenu = document.getElementById('gb-menu');
                 const currentToggle = document.getElementById('gb-menu-toggle');
                 if (currentMenu && currentMenu.classList.contains('active')) {

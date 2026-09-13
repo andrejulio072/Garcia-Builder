@@ -13,12 +13,11 @@ const primaryTargets = [
   '/',
   '/online-coaching',
   '/packages',
-  '/consultation',
   '/transformations',
   '/testimonials'
 ];
 
-const utilityTargets = [
+const moreTargets = [
   '/workouts',
   '/nutrition-calculator',
   '/blog',
@@ -102,16 +101,26 @@ for (const source of [navbarHtml, loaderSource]) {
     'Navbar logo resolver should keep a project-relative WebP source'
   );
   assertPriorityOrder(source, 'gb-navbar-links', 'Desktop primary navbar');
-  assertPriorityOrder(source, 'gb-navbar-utility-links', 'Desktop utility navbar', utilityTargets);
+  assertPriorityOrder(source, 'gb-navbar-more-links', 'Desktop More menu', moreTargets);
+  assert.doesNotMatch(
+    source,
+    /class="gb-navbar-utility"/,
+    'Desktop navbar should not render a competing utility row'
+  );
   assert.match(
     source,
-    /gb-navbar-utility[\s\S]*id="auth-buttons-navbar"/,
-    'Desktop account controls should live in the utility row'
+    /gb-navbar-more-menu[\s\S]*id="auth-buttons-navbar"/,
+    'Desktop account controls should live in the More panel'
   );
   assert.match(
     source,
     /gb-navbar-links[\s\S]*gb-navbar-link--assessment/,
     'Desktop primary navbar should include the free assessment action'
+  );
+  assert.match(
+    source,
+    /class="gb-navbar-action-cta"[^>]*href="\/consultation"|href="\/consultation"[^>]*class="gb-navbar-action-cta"/,
+    'Desktop navbar should expose one focused consultation action'
   );
   assertDrawerPattern(source, 'Drawer navbar');
 }
@@ -153,18 +162,23 @@ for (const page of primaryPages) {
 
 assert.match(
   navbarCss,
-  /@media \(min-width: 1025px\)[\s\S]*?\.gb-navbar-utility\s*\{[\s\S]*?display:\s*block;/,
-  'Desktop widths should show the utility navigation row'
+  /Final desktop navigation system[\s\S]*?\.gb-navbar-content\s*\{[\s\S]*?height:\s*76px;/,
+  'Desktop navbar should use one explicitly constrained row'
 );
 assert.match(
   navbarCss,
-  /@media \(min-width: 1025px\)[\s\S]*?\.gb-navbar-links\s*\{[\s\S]*?display:\s*flex;/,
+  /Final desktop navigation system[\s\S]*?\.gb-navbar-links\s*\{[\s\S]*?display:\s*flex;/,
   'Desktop widths should show the primary navigation links'
 );
 assert.match(
   navbarCss,
-  /@media \(min-width: 1025px\)[\s\S]*?\.gb-navbar \.gb-hamburger\s*\{[\s\S]*?display:\s*none;/,
-  'Desktop widths should expose all navigation across two rows without a hamburger'
+  /Final desktop navigation system[\s\S]*?\.gb-navbar-more\s*\{[\s\S]*?display:\s*block;/,
+  'Desktop widths should expose secondary navigation through the More panel'
+);
+assert.match(
+  navbarCss,
+  /Final desktop navigation system[\s\S]*?\.gb-navbar \.gb-hamburger\s*\{[\s\S]*?display:\s*none;/,
+  'Desktop widths should use the full navbar rather than the mobile hamburger'
 );
 assert.match(
   navbarCss,

@@ -69,18 +69,24 @@ for (const file of ['index.html', 'free-fat-loss-guide.html', '28-day-fat-loss-k
 }
 
 const transformations = read('transformations.html');
-assert.match(transformations, /name="robots" content="noindex, follow"/, 'Unverified transformations page must be noindex');
-assert.doesNotMatch(transformations, /data-client=|kg lost|kg down|client-paulo-beforeafter/i, 'Unverified client proof must not ship in transformations page source');
 const testimonials = read('testimonials.html');
-assert.match(testimonials, /name="robots" content="noindex, follow"/, 'Unverified testimonials page must be noindex');
-assert.match(read('js/testimonials-data.js'), /window\.GB_TESTIMONIALS = \[\];/, 'Public testimonial data must remain empty until verified');
-
 const launchDecision = JSON.parse(read('config/legal-launch-decision.json'));
 assert.strictEqual(
   launchDecision.scope?.existing_site_visual_proof,
   'owner-authorized reuse on the assessment page',
   'Assessment visual proof requires an explicit owner launch decision'
 );
+assert.strictEqual(
+  launchDecision.scope?.existing_results_pages,
+  'owner-directed restoration of previously published testimonials and transformations',
+  'Restored results pages require an explicit owner launch decision'
+);
+assert.match(transformations, /name="robots" content="noindex, follow"/, 'Restored transformations page must remain noindex while permissions are re-verified');
+assert.ok((transformations.match(/\btransformation-item\b/g) || []).length > 0, 'Owner-authorized transformations page must contain result cards');
+assert.match(testimonials, /name="robots" content="noindex, follow"/, 'Restored testimonials page must remain noindex while permissions are re-verified');
+const testimonialData = read('js/testimonials-data.js');
+assert.match(testimonialData, /window\.GB_TESTIMONIALS = \[/, 'Owner-authorized testimonial collection must be defined');
+assert.doesNotMatch(testimonialData, /window\.GB_TESTIMONIALS = \[\s*\];/, 'Owner-authorized testimonial collection must not be empty');
 
 const paidAssessment = read('assessment.html');
 assert.strictEqual((paidAssessment.match(/class="starter-transform-card(?:\s[^"]*)?"/g) || []).length, 5, 'Assessment must limit visual proof to five existing transformation cards');

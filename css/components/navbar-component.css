@@ -23,6 +23,10 @@
     padding: 0.75rem 0;
 }
 
+.gb-navbar-utility {
+    display: none;
+}
+
 /* Navbar Content Layout */
 
 .gb-navbar-content {
@@ -408,6 +412,173 @@
     }
 
     .gb-navbar-controls {
+        display: none;
+    }
+}
+
+/*
+ * Desktop navigation uses two clear levels: secondary resources and account
+ * controls above, then the core customer journey below. Mobile keeps the
+ * established single-row header and drawer.
+ */
+@media (min-width: 1025px) {
+    .gb-navbar-utility {
+        display: block;
+        background: rgba(3, 7, 13, 0.72);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.065);
+    }
+
+    .gb-navbar-utility .container {
+        padding: 5px 0;
+    }
+
+    .gb-navbar > .container {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .gb-navbar-utility-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        min-height: 38px;
+    }
+
+    .gb-navbar-utility-links {
+        display: flex;
+        align-items: center;
+        gap: clamp(14px, 1.3vw, 24px);
+        min-width: 0;
+    }
+
+    .gb-navbar-utility-links a {
+        position: relative;
+        color: rgba(222, 229, 241, 0.68);
+        font-size: 0.73rem;
+        font-weight: 650;
+        letter-spacing: 0.015em;
+        line-height: 1;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: color 0.2s ease;
+    }
+
+    .gb-navbar-utility-links a:hover,
+    .gb-navbar-utility-links a:focus,
+    .gb-navbar-utility-links a.active {
+        color: #f8e08e;
+    }
+
+    .gb-navbar-utility-links a.active::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        bottom: -9px;
+        left: 0;
+        height: 2px;
+        border-radius: 999px;
+        background: #f6c84e;
+    }
+
+    .gb-navbar-utility .gb-navbar-controls,
+    .gb-navbar-utility .gb-auth-buttons {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        gap: 8px;
+        width: auto;
+    }
+
+    .gb-navbar-utility .gb-navbar-controls {
+        flex: 0 0 auto;
+        margin-left: auto;
+    }
+
+    .gb-navbar-utility .gb-btn-link,
+    .gb-navbar-utility .gb-btn-primary-small {
+        justify-content: center;
+        width: auto;
+    }
+
+    .gb-navbar-utility .gb-btn-link {
+        padding: 5px 9px;
+        border-width: 1px;
+        border-radius: 7px;
+        font-size: 0.76rem;
+    }
+
+    .gb-navbar-utility .gb-btn-primary-small {
+        padding: 6px 10px;
+        border-radius: 7px;
+        font-size: 0.76rem;
+    }
+
+    .gb-navbar-utility #lang-select-navbar.gb-lang-select--desktop {
+        min-width: 66px;
+        padding: 6px 22px 6px 9px;
+        border-radius: 7px;
+        font-size: 0.75rem;
+    }
+
+    .gb-navbar-content {
+        gap: clamp(18px, 2vw, 38px);
+        min-height: 68px;
+        padding: 8px 0;
+    }
+
+    .gb-navbar-links {
+        display: flex;
+        justify-content: flex-end;
+        gap: clamp(10px, 1.05vw, 20px);
+    }
+
+    .gb-navbar-link {
+        font-size: clamp(0.78rem, 0.8vw, 0.92rem);
+    }
+
+    .gb-navbar-link--assessment,
+    .gb-navbar-link--cta {
+        padding: 8px 11px;
+    }
+
+    .gb-navbar-actions {
+        display: none;
+    }
+
+    .gb-navbar .gb-hamburger {
+        display: none;
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .gb-navbar-utility-links {
+        gap: 12px;
+    }
+
+    .gb-navbar-utility-links a {
+        font-size: 0.68rem;
+    }
+
+    .gb-navbar-content {
+        gap: 14px;
+    }
+
+    .gb-navbar-links {
+        gap: 8px;
+    }
+
+    .gb-navbar-link {
+        font-size: 0.76rem;
+    }
+
+    .gb-logo-text {
+        font-size: 1.2rem;
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1120px) {
+    .gb-logo-text {
         display: none;
     }
 }

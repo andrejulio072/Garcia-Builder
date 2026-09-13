@@ -33,7 +33,7 @@
     "lint": "powershell -ExecutionPolicy Bypass -File validate-components.ps1",
     "build": "npm run build:env && npm run build:public",
     "build:env": "node scripts/generate-env-config.js",
-    "build:public": "node scripts/build-public-output.js",
+    "build:public": "node scripts/build-public-output.js && node scripts/public-results-pages.check.js",
     "filter:backup": "node scripts/filter-supabase-backup.js",
     "postinstall": "node scripts/generate-env-config.js --optional",
     "ship": "pwsh -NoLogo -ExecutionPolicy Bypass -File scripts/Invoke-Ship.ps1 -Project iron-brothers",

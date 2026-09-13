@@ -7,14 +7,18 @@ const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), 'u
 
 const navbarHtml = read('components/navbar.html');
 const loaderSource = read('js/utils/component-loader-v3-simplified.js');
+const navbarCss = read('css/components/navbar-component.css');
 
-const priorityTargets = [
+const primaryTargets = [
   '/',
   '/online-coaching',
   '/packages',
   '/consultation',
   '/transformations',
-  '/testimonials',
+  '/testimonials'
+];
+
+const utilityTargets = [
   '/workouts',
   '/nutrition-calculator',
   '/blog',
@@ -44,7 +48,7 @@ const drawerLabels = [
   'nav.group_explore'
 ];
 
-function assertPriorityOrder(source, navClass, label, targets = priorityTargets) {
+function assertPriorityOrder(source, navClass, label, targets = primaryTargets) {
   const start = source.indexOf(`class="${navClass}"`);
   assert.notEqual(start, -1, `${label} should include ${navClass}`);
   const end = source.indexOf('</nav>', start);
@@ -97,7 +101,18 @@ for (const source of [navbarHtml, loaderSource]) {
     /data-gb-logo-src="assets\/images\/logo-nobackground-256\.webp"/,
     'Navbar logo resolver should keep a project-relative WebP source'
   );
-  assertPriorityOrder(source, 'gb-navbar-links', 'Desktop navbar');
+  assertPriorityOrder(source, 'gb-navbar-links', 'Desktop primary navbar');
+  assertPriorityOrder(source, 'gb-navbar-utility-links', 'Desktop utility navbar', utilityTargets);
+  assert.match(
+    source,
+    /gb-navbar-utility[\s\S]*id="auth-buttons-navbar"/,
+    'Desktop account controls should live in the utility row'
+  );
+  assert.match(
+    source,
+    /gb-navbar-links[\s\S]*gb-navbar-link--assessment/,
+    'Desktop primary navbar should include the free assessment action'
+  );
   assertDrawerPattern(source, 'Drawer navbar');
 }
 
@@ -135,5 +150,26 @@ for (const page of primaryPages) {
     `${page} should not contain a separate hard-coded legacy navbar`
   );
 }
+
+assert.match(
+  navbarCss,
+  /@media \(min-width: 1025px\)[\s\S]*?\.gb-navbar-utility\s*\{[\s\S]*?display:\s*block;/,
+  'Desktop widths should show the utility navigation row'
+);
+assert.match(
+  navbarCss,
+  /@media \(min-width: 1025px\)[\s\S]*?\.gb-navbar-links\s*\{[\s\S]*?display:\s*flex;/,
+  'Desktop widths should show the primary navigation links'
+);
+assert.match(
+  navbarCss,
+  /@media \(min-width: 1025px\)[\s\S]*?\.gb-navbar \.gb-hamburger\s*\{[\s\S]*?display:\s*none;/,
+  'Desktop widths should expose all navigation across two rows without a hamburger'
+);
+assert.match(
+  navbarCss,
+  /@media \(max-width: 1024px\)[\s\S]*?\.gb-navbar-links\s*\{[\s\S]*?display:\s*none;/,
+  'The existing mobile breakpoint should continue to use the navigation drawer'
+);
 
 console.log('Navbar contract check passed.');

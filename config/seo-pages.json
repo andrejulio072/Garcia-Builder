@@ -730,25 +730,27 @@
       "source": "testimonials.html",
       "path": "/testimonials",
       "title": "Client Testimonials | Garcia Builder Fitness",
-      "description": "Garcia Builder Fitness testimonial publication is paused while client permissions and supporting evidence are verified.",
+      "description": "Read client feedback from Garcia Builder Fitness coaching and see how structure, accountability and support helped people progress.",
       "canonical": "https://www.garciabuilder.fitness/testimonials",
       "indexable": false,
       "sitemap": false,
       "pageType": "page",
       "primaryImage": "https://www.garciabuilder.fitness/assets/og/garcia-builder-og.jpg",
-      "lastMeaningfulModification": "2026-08-04"
+      "lastMeaningfulModification": "2026-09-13",
+      "robots": "noindex, follow"
     },
     {
       "source": "transformations.html",
       "path": "/transformations",
       "title": "Client Transformations | Garcia Builder Fitness",
-      "description": "Garcia Builder Fitness transformation publication is paused while client permissions and supporting evidence are verified.",
+      "description": "See Garcia Builder Fitness transformations, progress stories and examples of what structured coaching can help clients achieve.",
       "canonical": "https://www.garciabuilder.fitness/transformations",
       "indexable": false,
       "sitemap": false,
       "pageType": "page",
       "primaryImage": "https://www.garciabuilder.fitness/assets/og/garcia-builder-og.jpg",
-      "lastMeaningfulModification": "2026-08-04"
+      "lastMeaningfulModification": "2026-09-13",
+      "robots": "noindex, follow"
     },
     {
       "source": "workouts.html",

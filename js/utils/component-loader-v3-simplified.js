@@ -243,6 +243,34 @@ function isOffline() {
 const INLINE_FALLBACKS = {
     navbar: `
 <nav class="gb-navbar" role="navigation" aria-label="Main navigation (offline fallback)">
+    <div class="gb-navbar-utility">
+        <div class="container gb-navbar-utility-inner">
+            <nav class="gb-navbar-utility-links" aria-label="Resources">
+                <a href="#" data-i18n="nav.workouts" data-gb-nav="/workouts">Workouts</a>
+                <a href="#" data-i18n="nav.nutrition_calculator" data-gb-nav="/nutrition-calculator">Nutrition Calculator</a>
+                <a href="#" data-i18n="nav.blog" data-gb-nav="/blog">Blog</a>
+                <a href="#" data-i18n="nav.about" data-gb-nav="/about">About</a>
+                <a href="#" data-i18n="nav.faq" data-gb-nav="/faq">FAQ</a>
+                <a href="#" data-i18n="nav.contact" data-gb-nav="/contact">Contact</a>
+            </nav>
+
+            <div class="gb-navbar-controls">
+                <div class="gb-navbar-language" role="group" aria-label="Site language selector">
+                    <label for="lang-select-navbar" class="visually-hidden">Site language</label>
+                    <select id="lang-select-navbar" class="gb-lang-select gb-lang-select--desktop" aria-label="Select site language" title="Select language">
+                        <option value="en">EN</option>
+                        <option value="pt">PT</option>
+                        <option value="es">ES</option>
+                    </select>
+                </div>
+                <div id="auth-buttons-navbar" class="gb-auth-buttons" data-auth-state="anonymous">
+                    <a href="#" class="gb-btn-link" data-i18n="nav.login" data-gb-nav="pages/auth/login.html">Login</a>
+                    <a href="#" class="gb-btn-primary-small" data-i18n="nav.register" data-gb-nav="pages/auth/login.html?action=register">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="gb-navbar-content">
             <a href="#" class="gb-logo-section" aria-label="Garcia Builder Home" data-gb-nav="/">
@@ -264,30 +292,9 @@ const INLINE_FALLBACKS = {
                 <a href="/consultation" class="gb-navbar-link gb-navbar-link--cta" data-i18n="nav.consultation" role="menuitem" data-button-location="desktop_menu">Book Consultation</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.trans" role="menuitem" data-gb-nav="/transformations">Transformations</a>
                 <a href="#" class="gb-navbar-link" data-i18n="nav.testi" role="menuitem" data-gb-nav="/testimonials">Testimonials</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.workouts" role="menuitem" data-gb-nav="/workouts">Workouts</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.nutrition_calculator" role="menuitem" data-gb-nav="/nutrition-calculator">Nutrition Calculator</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.blog" role="menuitem" data-gb-nav="/blog">Blog</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.about" role="menuitem" data-gb-nav="/about">About</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.faq" role="menuitem" data-gb-nav="/faq">FAQ</a>
-                <a href="#" class="gb-navbar-link" data-i18n="nav.contact" role="menuitem" data-gb-nav="/contact">Contact</a>
             </nav>
 
             <div class="gb-navbar-actions">
-                <div class="gb-navbar-controls">
-                    <div class="gb-navbar-language" role="group" aria-label="Site language selector">
-                        <label for="lang-select-navbar" class="visually-hidden">Site language</label>
-                        <select id="lang-select-navbar" class="gb-lang-select gb-lang-select--desktop" aria-label="Select site language" title="Select language">
-                            <option value="en">EN</option>
-                            <option value="pt">PT</option>
-                            <option value="es">ES</option>
-                        </select>
-                    </div>
-                    <div id="auth-buttons-navbar" class="gb-auth-buttons" data-auth-state="anonymous">
-                        <a href="#" class="gb-btn-link" data-i18n="nav.login" data-gb-nav="pages/auth/login.html">Login</a>
-                        <a href="#" class="gb-btn-primary-small" data-i18n="nav.register" data-gb-nav="pages/auth/login.html?action=register">Register</a>
-                    </div>
-                </div>
-
                 <button type="button" class="gb-hamburger"
                         id="gb-menu-toggle"
                         aria-label="Toggle navigation menu"

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>`r`n<!-- Google Tag Manager -->
+<head>
+<!-- Google Tag Manager -->
 <script id="gb-gtm-bootstrap">
 (function(w,d,s,l,i){
   w[l]=w[l]||[];
@@ -771,6 +772,102 @@
             background: linear-gradient(135deg, #25D366, #128C7E);
         }
 
+        .coaching-intro {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .coaching-intro p {
+            max-width: 760px;
+            margin: 0;
+        }
+
+        .template-grid,
+        .goal-suggestion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 1rem;
+        }
+
+        .template-card,
+        .goal-suggestion-card,
+        .advanced-result-card {
+            border: 1px solid rgba(246, 200, 78, 0.22);
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.24);
+            padding: 1rem;
+        }
+
+        .template-card.is-active {
+            border-color: #F6C84E;
+            box-shadow: 0 0 0 2px rgba(246, 200, 78, 0.12);
+        }
+
+        .template-card h5,
+        .goal-suggestion-card h5 {
+            color: #fff;
+            margin-bottom: 0.45rem;
+            font-size: 1rem;
+        }
+
+        .template-card p,
+        .goal-suggestion-card p {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 0.9rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .goal-chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+        }
+
+        .goal-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            border: 1px solid rgba(246, 200, 78, 0.35);
+            border-radius: 999px;
+            background: rgba(246, 200, 78, 0.1);
+            color: #fff;
+            padding: 0.55rem 0.8rem;
+        }
+
+        .goal-chip button {
+            border: 0;
+            background: transparent;
+            color: #F6C84E;
+            padding: 0;
+        }
+
+        .advanced-macro-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+            gap: 0.85rem;
+        }
+
+        .advanced-result-card strong {
+            display: block;
+            color: #F6C84E;
+            font-size: 1.35rem;
+        }
+
+        .advanced-result-card span {
+            color: rgba(255, 255, 255, 0.68);
+            font-size: 0.82rem;
+        }
+
+        .calculator-status {
+            border-left: 3px solid #F6C84E;
+            padding: 0.85rem 1rem;
+            background: rgba(246, 200, 78, 0.08);
+            border-radius: 0 10px 10px 0;
+        }
+
         @media (max-width: 768px) {
             .consultation-card {
                 margin-bottom: 1rem;
@@ -780,10 +877,15 @@
                 width: 60px;
                 height: 60px;
             }
+
+            .coaching-intro {
+                display: block;
+            }
         }
     </style>
 </head>
-<body class="profile-page">`r`n<!-- Google Tag Manager (noscript) -->
+<body class="profile-page">
+<!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG5TFZ2C" title="Google Tag Manager" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
     <div data-component="navbar" data-variant="dashboard" data-theme="dark"></div>
@@ -1268,17 +1370,27 @@
             <!-- Goals Tab -->
             <div class="tab-content" id="goals-tab">
                 <div class="profile-card">
-                    <h3 class="card-title">
-                        <i class="fas fa-target"></i>
-                        My Goals & Achievements
-                    </h3>
-
-                    <div id="goals-display">
-                        <div class="alert-custom">
-                            <i class="fas fa-bullseye me-2"></i>
-                            Set your fitness goals in the Basic Info tab to track your progress here.
+                    <div class="coaching-intro">
+                        <div>
+                            <h3 class="card-title mb-2"><i class="fas fa-bullseye"></i> My Coaching Goals</h3>
+                            <p class="text-muted">Choose practical targets for training, nutrition, recovery and performance. Every goal is saved to your account and stays available on your next visit.</p>
                         </div>
                     </div>
+
+                    <div id="selected-goals" class="goal-chip-list mb-4" aria-live="polite"></div>
+
+                    <div class="row g-3 align-items-end mb-4">
+                        <div class="col-md-9">
+                            <label for="custom-goal-input" class="form-label">Add a personal goal</label>
+                            <input id="custom-goal-input" class="form-control" maxlength="100" placeholder="Example: Complete my first 10K without stopping">
+                        </div>
+                        <div class="col-md-3 d-grid">
+                            <button type="button" class="btn btn-save" id="add-custom-goal"><i class="fas fa-plus me-2"></i>Add goal</button>
+                        </div>
+                    </div>
+
+                    <h5 class="text-light mb-3"><i class="fas fa-lightbulb me-2 text-warning"></i>Goal suggestions</h5>
+                    <div id="goal-suggestion-grid" class="goal-suggestion-grid"></div>
                 </div>
             </div>
 
@@ -1362,88 +1474,125 @@
             <!-- Macros Tab -->
             <div class="tab-content" id="macros-tab">
                 <div class="profile-card">
-                    <h3 class="card-title">
-                        <i class="fas fa-balance-scale"></i>
-                        Macronutrients
-                    </h3>
+                    <div class="coaching-intro">
+                        <div>
+                            <h3 class="card-title mb-2"><i class="fas fa-calculator"></i> Advanced Macro Calculator</h3>
+                            <p class="text-muted">Uses the same advanced engine as our full nutrition calculator: two BMR methods when body fat is available, lifestyle and training energy, goal pace, macro safety limits, fibre and hydration.</p>
+                        </div>
+                        <a class="btn btn-outline-warning" href="/nutrition-calculator" data-gb-nav="/nutrition-calculator">Open full calculator</a>
+                    </div>
 
                     <form id="macros-form" data-profile-section="macros" novalidate onsubmit="return false;">
                         <div class="row g-3">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
+                                <label for="macros_sex" class="form-label">Sex</label>
+                                <select class="form-select" id="macros_sex" name="sex">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="macros_age" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="macros_age" name="age" min="16" max="80" value="30">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="macros_height" class="form-label">Height</label>
+                                <div class="input-group"><input type="number" class="form-control" id="macros_height" name="height_cm" min="130" max="230" step="0.1"><span class="input-group-text">cm</span></div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="macros_weight" class="form-label">Weight</label>
+                                <div class="input-group"><input type="number" class="form-control" id="macros_weight" name="weight_kg" min="35" max="250" step="0.1"><span class="input-group-text">kg</span></div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="macros_body_fat" class="form-label">Body fat <span class="text-muted">(optional)</span></label>
+                                <div class="input-group"><input type="number" class="form-control" id="macros_body_fat" name="body_fat" min="3" max="70" step="0.1"><span class="input-group-text">%</span></div>
+                            </div>
+                            <div class="col-md-3">
                                 <label for="macros_goal" class="form-label">Goal</label>
                                 <select class="form-select" id="macros_goal" name="goal">
-                                    <option value="maintain">Maintain</option>
-                                    <option value="cut">Cut (fat loss)</option>
-                                    <option value="bulk">Bulk (gain)</option>
+                                    <option value="fat_loss">Fat loss</option>
+                                    <option value="aggressive_fat_loss">Faster fat loss</option>
+                                    <option value="recomposition">Body recomposition</option>
+                                    <option value="maintenance">Maintain</option>
+                                    <option value="lean_muscle_gain">Lean muscle gain</option>
+                                    <option value="performance">Performance</option>
                                 </select>
                             </div>
-                            <div class="col-md-4">
-                                <label for="macros_activity" class="form-label">Activity Level</label>
-                                <select class="form-select" id="macros_activity" name="activity_level">
-                                    <option value="sedentary">Sedentary (1.2)</option>
-                                    <option value="light">Lightly Active (1.375)</option>
-                                    <option value="moderate">Moderately Active (1.55)</option>
-                                    <option value="very">Very Active (1.725)</option>
-                                    <option value="athlete">Athlete (1.9)</option>
+                            <div class="col-md-3">
+                                <label for="macros_training_frequency" class="form-label">Training frequency</label>
+                                <select class="form-select" id="macros_training_frequency" name="training_frequency">
+                                    <option value="0">No sessions</option><option value="1-2">1-2 days/week</option><option value="3-4" selected>3-4 days/week</option><option value="5-6">5-6 days/week</option><option value="athlete">Daily / athlete</option>
                                 </select>
                             </div>
-                            <div class="col-md-4">
-                                <label for="macros_calories" class="form-label">Daily Calories</label>
-                                <div class="input-group">
-                                    <input type="number" class="form-control" id="macros_calories" name="calories" step="10" placeholder="2000">
-                                    <button class="btn btn-secondary-custom" type="button" id="btn-auto-calc-calories">Auto</button>
-                                </div>
-                                <small class="text-muted">Auto uses your weight/height + activity</small>
+                            <div class="col-md-3">
+                                <label for="macros_session_duration" class="form-label">Session length</label>
+                                <select class="form-select" id="macros_session_duration" name="session_duration"><option value="30">30 min</option><option value="45" selected>45 min</option><option value="60">60 min</option><option value="75">75 min</option><option value="90">90 min</option></select>
                             </div>
-
-                            <div class="col-12 mt-3">
-                                <h5 class="text-light mb-2"><i class="fas fa-sliders-h me-2"></i> Macro Split (%)</h5>
-                                <div class="row g-3">
-                                    <div class="col-md-4">
-                                        <label for="macros_protein_pct" class="form-label">Protein %</label>
-                                        <input type="number" class="form-control" id="macros_protein_pct" name="protein_pct" min="0" max="100" step="1" placeholder="30">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="macros_carbs_pct" class="form-label">Carbs %</label>
-                                        <input type="number" class="form-control" id="macros_carbs_pct" name="carbs_pct" min="0" max="100" step="1" placeholder="40">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="macros_fats_pct" class="form-label">Fats %</label>
-                                        <input type="number" class="form-control" id="macros_fats_pct" name="fats_pct" min="0" max="100" step="1" placeholder="30">
-                                    </div>
-                                </div>
-                                <small class="text-muted">Total must be 100%</small>
+                            <div class="col-md-3">
+                                <label for="macros_training_intensity" class="form-label">Training intensity</label>
+                                <select class="form-select" id="macros_training_intensity" name="training_intensity"><option value="light">Light</option><option value="moderate" selected>Moderate</option><option value="hard">Hard</option></select>
                             </div>
-
-                            <div class="col-12 mt-3">
-                                <h5 class="text-light mb-2"><i class="fas fa-scale-balanced me-2"></i> Targets (per day)</h5>
-                                <div class="metrics-grid">
-                                    <div class="metric-card" data-metric="protein-g">
-                                        <div class="metric-number" id="display-protein-g">--g</div>
-                                        <div class="metric-label">Protein</div>
-                                    </div>
-                                    <div class="metric-card" data-metric="carbs-g">
-                                        <div class="metric-number" id="display-carbs-g">--g</div>
-                                        <div class="metric-label">Carbs</div>
-                                    </div>
-                                    <div class="metric-card" data-metric="fats-g">
-                                        <div class="metric-number" id="display-fats-g">--g</div>
-                                        <div class="metric-label">Fats</div>
-                                    </div>
-                                </div>
+                            <div class="col-md-3">
+                                <label for="macros_daily_activity" class="form-label">Daily activity</label>
+                                <select class="form-select" id="macros_daily_activity" name="daily_activity"><option value="mostly_sitting">Mostly sitting</option><option value="light_movement" selected>Light movement</option><option value="active_job">Active job</option><option value="very_active_job">Very active job</option></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="macros_daily_steps" class="form-label">Typical steps</label>
+                                <select class="form-select" id="macros_daily_steps" name="daily_steps"><option value="under_4000">Under 4,000</option><option value="4000_7000" selected>4,000-7,000</option><option value="7000_10000">7,000-10,000</option><option value="over_10000">Over 10,000</option><option value="unknown">Not sure</option></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="macros_target_pace" class="form-label">Target pace</label>
+                                <select class="form-select" id="macros_target_pace" name="target_pace"><option value="slow">Slow / conservative</option><option value="moderate" selected>Moderate</option><option value="aggressive">Aggressive</option></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="macros_accuracy_mode" class="form-label">Energy estimate</label>
+                                <select class="form-select" id="macros_accuracy_mode" name="accuracy_mode"><option value="conservative" selected>Conservative</option><option value="standard">Standard</option><option value="high_output">High output</option></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="macros_meal_preference" class="form-label">Meals per day</label>
+                                <select class="form-select" id="macros_meal_preference" name="meal_preference"><option value="3">3 meals</option><option value="4" selected>4 meals</option><option value="5">5 meals</option></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="macros_diet_preference" class="form-label">Eating style</label>
+                                <select class="form-select" id="macros_diet_preference" name="diet_preference"><option value="balanced">Balanced</option><option value="high_protein">High protein</option><option value="vegetarian">Vegetarian</option><option value="pescatarian">Pescatarian</option><option value="simple_meal_prep">Simple meal prep</option><option value="busy_professional">Busy professional</option></select>
                             </div>
                         </div>
 
-                        <div class="text-end mt-4">
+                        <input type="hidden" id="macros_calories" name="calories">
+                        <input type="hidden" id="macros_protein_pct" name="protein_pct">
+                        <input type="hidden" id="macros_carbs_pct" name="carbs_pct">
+                        <input type="hidden" id="macros_fats_pct" name="fats_pct">
+                        <input type="hidden" id="macros_protein_g" name="protein_g">
+                        <input type="hidden" id="macros_carbs_g" name="carbs_g">
+                        <input type="hidden" id="macros_fats_g" name="fats_g">
+                        <input type="hidden" id="macros_calculation_context" name="calculation_context">
+
+                        <div id="advanced-macro-errors" class="alert alert-warning mt-4 d-none" role="alert"></div>
+                        <div id="advanced-macro-results" class="mt-4 d-none" aria-live="polite">
+                            <h5 class="text-light mb-3"><i class="fas fa-chart-pie me-2 text-warning"></i>Your daily targets</h5>
+                            <div class="advanced-macro-results">
+                                <div class="advanced-result-card"><strong id="display-target-calories">--</strong><span>Target calories</span></div>
+                                <div class="advanced-result-card"><strong id="display-maintenance-calories">--</strong><span>Maintenance estimate</span></div>
+                                <div class="advanced-result-card"><strong id="display-protein-g">--g</strong><span>Protein</span></div>
+                                <div class="advanced-result-card"><strong id="display-carbs-g">--g</strong><span>Carbohydrates</span></div>
+                                <div class="advanced-result-card"><strong id="display-fats-g">--g</strong><span>Fats</span></div>
+                                <div class="advanced-result-card"><strong id="display-fiber-g">--g</strong><span>Fibre</span></div>
+                                <div class="advanced-result-card"><strong id="display-water-range">--</strong><span>Water range</span></div>
+                            </div>
+                            <div id="advanced-macro-warnings" class="calculator-status mt-3 d-none"></div>
+                        </div>
+
+                        <div class="d-flex flex-wrap justify-content-end gap-2 mt-4">
+                            <button type="button" class="btn btn-outline-warning" id="btn-run-advanced-macros"><i class="fas fa-calculator me-2"></i>Calculate targets</button>
                             <button type="button" class="btn btn-save" onclick="document.getElementById('macros-form').dispatchEvent(new Event('submit', {bubbles: true, cancelable: true}));">
-                                <i class="fas fa-save"></i> Save Macros
+                                <i class="fas fa-cloud-arrow-up"></i> Save targets to my account
                             </button>
                         </div>
                     </form>
 
                     <div id="macros-tip" class="alert-custom mt-3" style="display:none">
                         <i class="fas fa-info-circle me-2"></i>
-                        Tip: set weight, height and target weight in Body Metrics to improve auto-calculation.
+                        Add height and weight in Body Metrics, or enter them above, to calculate your targets.
                     </div>
                 </div>
             </div>
@@ -1525,11 +1674,32 @@
             <!-- Workouts Tab -->
             <div class="tab-content" id="workouts-tab">
                 <div class="profile-card">
-                    <h3 class="card-title">
-                        <i class="fas fa-dumbbell"></i>
-                        Workouts
-                    </h3>
+                    <div class="coaching-intro">
+                        <div>
+                            <h3 class="card-title mb-2"><i class="fas fa-dumbbell"></i> My Workouts</h3>
+                            <p class="text-muted">Use a saved plan, add one of the starter templates, or log a custom session. The plan and completed workout are both stored in your account.</p>
+                        </div>
+                        <a class="btn btn-outline-warning" href="/workouts" data-gb-nav="/workouts">Browse full library</a>
+                    </div>
+
+                    <div class="row g-3 align-items-end mb-4">
+                        <div class="col-md-9">
+                            <label for="workout_template_select" class="form-label">Workout template</label>
+                            <select class="form-select" id="workout_template_select"><option value="">Loading your templates...</option></select>
+                        </div>
+                        <div class="col-md-3 d-grid">
+                            <button type="button" class="btn btn-save" id="use-workout-template"><i class="fas fa-wand-magic-sparkles me-2"></i>Use template</button>
+                        </div>
+                    </div>
+                    <div id="workout-template-empty" class="mb-4" hidden>
+                        <div class="alert-custom mb-3"><i class="fas fa-layer-group me-2"></i>You do not have a workout template yet. Add a starter below or browse the complete library.</div>
+                        <div id="starter-workout-grid" class="template-grid"></div>
+                    </div>
+                    <div id="saved-workout-template-list" class="template-grid mb-4"></div>
+
                     <form id="workouts-form" data-profile-section="workouts" novalidate onsubmit="return false;">
+                        <input type="hidden" id="workout_saved_template_id" name="saved_template_id">
+                        <input type="hidden" id="workout_exercises_json" name="exercises_json" value="[]">
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <label for="workout_title" class="form-label">Workout Title</label>
@@ -1658,7 +1828,10 @@
     <script src="../../js/core/auth.js"></script>
     <script src="../../js/auth-guard.js"></script>
     <script src="../../js/components/navigation-manager.js"></script>
+    <script src="../../js/client-plan-store.js?v=20260916-profile"></script>
+    <script src="../../js/modules/nutrition-calculator.js?v=20260916-profile"></script>
     <script src="../../js/admin/profile-manager.js"></script>
+    <script src="../../js/profile-coaching-tools.js?v=20260916"></script>
     <script>
         (function () {
             const params = new URLSearchParams(window.location.search);

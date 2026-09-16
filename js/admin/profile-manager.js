@@ -292,8 +292,8 @@
         }
       },
       macros: {
-        goal: 'maintain',
-        activity_level: 'moderate',
+        goal: 'maintenance',
+        activity_level: 'light_movement',
         calories: '',
         protein_pct: 30,
         carbs_pct: 40,
@@ -301,6 +301,15 @@
         protein_g: '',
         carbs_g: '',
         fats_g: '',
+        maintenance_calories: '',
+        maintenance_low: '',
+        maintenance_high: '',
+        fiber_g: '',
+        water_low_ml: '',
+        water_high_ml: '',
+        calculation_context: {},
+        calculator_version: '',
+        calculated_at: null,
         updated_at: new Date().toISOString()
       },
       habits: {
@@ -605,8 +614,8 @@
             }
           },
           macros: {
-            goal: 'maintain',
-            activity_level: 'moderate',
+            goal: 'maintenance',
+            activity_level: 'light_movement',
             calories: '',
             protein_pct: 30,
             carbs_pct: 40,
@@ -614,6 +623,15 @@
             protein_g: '',
             carbs_g: '',
             fats_g: '',
+            maintenance_calories: '',
+            maintenance_low: '',
+            maintenance_high: '',
+            fiber_g: '',
+            water_low_ml: '',
+            water_high_ml: '',
+            calculation_context: {},
+            calculator_version: '',
+            calculated_at: null,
             updated_at: new Date().toISOString()
           },
           habits: {
@@ -750,6 +768,15 @@
           protein_g: macrosResult.data.protein_g,
           carbs_g: macrosResult.data.carbs_g,
           fats_g: macrosResult.data.fats_g,
+          maintenance_calories: macrosResult.data.maintenance_calories,
+          maintenance_low: macrosResult.data.maintenance_low,
+          maintenance_high: macrosResult.data.maintenance_high,
+          fiber_g: macrosResult.data.fiber_g,
+          water_low_ml: macrosResult.data.water_low_ml,
+          water_high_ml: macrosResult.data.water_high_ml,
+          calculation_context: macrosResult.data.calculation_context || {},
+          calculator_version: macrosResult.data.calculator_version || '',
+          calculated_at: macrosResult.data.calculated_at || null,
           updated_at: macrosResult.data.updated_at
         });
       } else if (metadata.macros) {
@@ -1359,8 +1386,8 @@
       if (section === 'macros' || !section) {
         try {
           const macrosData = {
-            goal: profileData.macros.goal || 'maintain',
-            activity_level: profileData.macros.activity_level || 'moderate',
+            goal: profileData.macros.goal || 'maintenance',
+            activity_level: profileData.macros.activity_level || 'light_movement',
             calories: profileData.macros.calories ? Number(profileData.macros.calories) : null,
             protein_pct: Number(profileData.macros.protein_pct) || 0,
             carbs_pct: Number(profileData.macros.carbs_pct) || 0,
@@ -1368,6 +1395,17 @@
             protein_g: profileData.macros.protein_g ? Number(profileData.macros.protein_g) : null,
             carbs_g: profileData.macros.carbs_g ? Number(profileData.macros.carbs_g) : null,
             fats_g: profileData.macros.fats_g ? Number(profileData.macros.fats_g) : null,
+            maintenance_calories: profileData.macros.maintenance_calories ? Number(profileData.macros.maintenance_calories) : null,
+            maintenance_low: profileData.macros.maintenance_low ? Number(profileData.macros.maintenance_low) : null,
+            maintenance_high: profileData.macros.maintenance_high ? Number(profileData.macros.maintenance_high) : null,
+            fiber_g: profileData.macros.fiber_g ? Number(profileData.macros.fiber_g) : null,
+            water_low_ml: profileData.macros.water_low_ml ? Number(profileData.macros.water_low_ml) : null,
+            water_high_ml: profileData.macros.water_high_ml ? Number(profileData.macros.water_high_ml) : null,
+            calculation_context: profileData.macros.calculation_context && typeof profileData.macros.calculation_context === 'object'
+              ? profileData.macros.calculation_context
+              : {},
+            calculator_version: profileData.macros.calculator_version || null,
+            calculated_at: profileData.macros.calculated_at || null,
             updated_at: new Date().toISOString()
           };
 
@@ -1444,6 +1482,7 @@
             .from('workout_logs')
             .insert({
               user_id: currentUser.id,
+              saved_template_id: pendingWorkout.saved_template_id || null,
               workout_date: pendingWorkout.workout_date || new Date().toISOString().slice(0, 10),
               title: pendingWorkout.title || 'Workout',
               workout_name: pendingWorkout.title || 'Workout',
@@ -2738,9 +2777,14 @@
           progress_visible: !!formData.get('progress_visible')
         };
       } else if (section === 'macros') {
-        const obj = Object.fromEntries(formData);
-        profileData.macros.goal = obj.goal || 'maintain';
-        profileData.macros.activity_level = obj.activity_level || 'moderate';
+        const advancedResult = window.GBProfileCoachingTools?.calculateMacros?.({ announce: false });
+        if (advancedResult === false) {
+          showNotification('Check the calculator details before saving.', 'warning');
+          return false;
+        }
+        const obj = Object.fromEntries(new FormData(form));
+        profileData.macros.goal = obj.goal || profileData.macros.goal || 'maintenance';
+        profileData.macros.activity_level = obj.daily_activity || profileData.macros.activity_level || 'light_movement';
         profileData.macros.calories = obj.calories ? Number(obj.calories) : '';
         profileData.macros.protein_pct = obj.protein_pct ? Number(obj.protein_pct) : 30;
         profileData.macros.carbs_pct = obj.carbs_pct ? Number(obj.carbs_pct) : 40;
@@ -2748,8 +2792,17 @@
         profileData.macros.protein_g = obj.protein_g ? Number(obj.protein_g) : '';
         profileData.macros.carbs_g = obj.carbs_g ? Number(obj.carbs_g) : '';
         profileData.macros.fats_g = obj.fats_g ? Number(obj.fats_g) : '';
-        enforceMacroSplit();
-        renderMacroTargets();
+        if (obj.calculation_context) {
+          try {
+            profileData.macros.calculation_context = JSON.parse(obj.calculation_context);
+          } catch (_) {
+            profileData.macros.calculation_context = profileData.macros.calculation_context || {};
+          }
+        }
+        if (!advancedResult) {
+          enforceMacroSplit();
+          renderMacroTargets();
+        }
       } else if (section === 'habits') {
         const obj = Object.fromEntries(formData);
         const key = todayKey();
@@ -2764,13 +2817,21 @@
         profileData.habits.updated_at = new Date().toISOString();
       } else if (section === 'workouts') {
         const obj = Object.fromEntries(formData);
+        let exercises = [];
+        try {
+          const parsedExercises = JSON.parse(obj.exercises_json || '[]');
+          exercises = Array.isArray(parsedExercises) ? parsedExercises : [];
+        } catch (_) {
+          exercises = [];
+        }
         profileData.pending_workout = {
+          saved_template_id: obj.saved_template_id || null,
           title: (obj.title || '').trim() || 'Workout',
           workout_date: obj.workout_date || new Date().toISOString().slice(0, 10),
           duration_minutes: obj.duration_minutes ? Number(obj.duration_minutes) : null,
           completed: !!obj.completed,
           notes: (obj.notes || '').trim(),
-          exercises: []
+          exercises
         };
       }
 
@@ -2802,7 +2863,7 @@
           updateDashboardStats();
           updateBodyMetricsDisplays();
         } else if (section === 'macros') {
-          renderMacroTargets();
+          if (!window.GBProfileCoachingTools?.calculateMacros) renderMacroTargets();
         } else if (section === 'habits') {
           renderHabitsStreaks();
           renderHabitsStepsChart();

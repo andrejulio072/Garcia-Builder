@@ -1057,5 +1057,18 @@
     });
   }
 
+  // Shared calculation contract used by the authenticated profile area. Keeping
+  // this adapter here ensures the public calculator and saved user targets use
+  // exactly the same formulas and safety rules.
+  window.GBAdvancedNutritionCalculator = Object.freeze({
+    version: '2026.09',
+    validate: validateProfile,
+    calculate: function calculateAdvancedNutrition(profile) {
+      const errors = validateProfile(profile);
+      if (errors.length) return { errors, result: null };
+      return { errors: [], result: runCalculation(profile) };
+    }
+  });
+
   document.addEventListener('DOMContentLoaded', initialize);
 })();

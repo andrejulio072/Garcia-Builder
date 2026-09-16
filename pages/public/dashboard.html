@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="../../css/components/navbar-component.css?v=20260730-mobile-preview-v1">
     <link rel="stylesheet" href="../../css/components/enhanced-navbar.css?v=20251028">
     <link rel="stylesheet" href="../../css/components/newsletter.css?v=20251028">
-    <link rel="stylesheet" href="../../css/pages/dashboard.css?v=20251028">
+    <link rel="stylesheet" href="../../css/pages/dashboard.css?v=20260916-plans-v1">
     <link rel="preload" as="script" href="../../js/utils/component-loader-v3-simplified.js?v=20260723-nav2" crossorigin="anonymous">
     <link rel="preload" as="fetch" href="../../components/navbar.html" crossorigin="anonymous">
     <link rel="preload" as="fetch" href="../../components/footer.html" crossorigin="anonymous">
@@ -62,6 +62,104 @@
                         <button type="button" class="btn-quick btn-danger" id="logout-btn"><i class="fas fa-arrow-right-from-bracket"></i><span data-i18n="dashboard.logout">Logout</span></button>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <section class="dashboard-section plan-hub" id="my-plans">
+            <div class="container">
+                <div class="dashboard-section-header">
+                    <div>
+                        <span class="section-kicker">Your coaching workspace</span>
+                        <h2>Training &amp; nutrition plans</h2>
+                        <p>Save a template from either library, make it your active plan and record each day in one place.</p>
+                    </div>
+                    <div class="plan-hub-actions">
+                        <a class="btn-quick" href="/workouts"><i class="fas fa-dumbbell" aria-hidden="true"></i> Workout library</a>
+                        <a class="btn-quick" href="/nutrition-calculator"><i class="fas fa-utensils" aria-hidden="true"></i> Nutrition library</a>
+                    </div>
+                </div>
+
+                <div id="plan-hub-status" class="plan-hub-status" role="status" aria-live="polite"></div>
+
+                <div class="active-plan-grid" aria-label="Active plans">
+                    <article class="active-plan-card" id="active-workout-plan">
+                        <span class="active-plan-type"><i class="fas fa-dumbbell" aria-hidden="true"></i> Active workout</span>
+                        <h3>No workout selected</h3>
+                        <p>Choose any workout from the library and add it to your account.</p>
+                        <a href="/workouts">Browse workout templates <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                    </article>
+                    <article class="active-plan-card" id="active-nutrition-plan">
+                        <span class="active-plan-type"><i class="fas fa-bowl-food" aria-hidden="true"></i> Active nutrition</span>
+                        <h3>No nutrition plan selected</h3>
+                        <p>Calculate your targets and save one of the matched templates.</p>
+                        <a href="/nutrition-calculator">Browse nutrition templates <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                    </article>
+                </div>
+
+                <div class="plan-hub-grid">
+                    <article class="dashboard-card plan-library-card">
+                        <div class="plan-card-heading">
+                            <div>
+                                <span class="section-kicker">Saved to your account</span>
+                                <h3>My plan library</h3>
+                            </div>
+                            <span class="plan-count" id="saved-plan-count">0 plans</span>
+                        </div>
+                        <div id="saved-plan-list" class="saved-plan-list">
+                            <div class="plan-empty-state">Your saved workout and nutrition templates will appear here.</div>
+                        </div>
+                    </article>
+
+                    <article class="dashboard-card daily-log-card">
+                        <div class="plan-card-heading">
+                            <div>
+                                <span class="section-kicker">Daily accountability</span>
+                                <h3>Log today</h3>
+                            </div>
+                        </div>
+                        <div class="daily-log-tabs" role="tablist" aria-label="Daily log type">
+                            <button type="button" class="is-active" data-log-tab="workout" role="tab" aria-selected="true">Workout</button>
+                            <button type="button" data-log-tab="nutrition" role="tab" aria-selected="false">Nutrition</button>
+                        </div>
+
+                        <form id="workout-day-form" class="daily-log-form" data-log-panel="workout">
+                            <div class="field-grid">
+                                <label>Date<input type="date" name="workout_date" required></label>
+                                <label>Plan<select name="saved_template_id"><option value="">Unplanned workout</option></select></label>
+                                <label>Duration (minutes)<input type="number" name="duration_minutes" min="1" max="600" inputmode="numeric" placeholder="45"></label>
+                                <label class="field-wide">Notes<textarea name="notes" maxlength="2000" rows="3" placeholder="Exercises, sets, effort or a quick reflection"></textarea></label>
+                            </div>
+                            <button type="submit" class="btn-primary-custom"><i class="fas fa-check" aria-hidden="true"></i> Save completed workout</button>
+                        </form>
+
+                        <form id="nutrition-day-form" class="daily-log-form" data-log-panel="nutrition" hidden>
+                            <div class="field-grid">
+                                <label>Date<input type="date" name="log_date" required></label>
+                                <label>Plan<select name="saved_template_id"><option value="">No saved plan</option></select></label>
+                                <label>Meals completed<input type="number" name="meals_completed" min="0" max="20" inputmode="numeric" value="0"></label>
+                                <label>Target meals<input type="number" name="target_meals" min="0" max="20" inputmode="numeric" value="4"></label>
+                                <label>Calories<input type="number" name="calories" min="0" max="15000" inputmode="numeric" placeholder="Optional"></label>
+                                <label>Protein (g)<input type="number" name="protein_g" min="0" max="1000" inputmode="numeric" placeholder="Optional"></label>
+                                <label>Water (ml)<input type="number" name="water_ml" min="0" max="20000" step="100" inputmode="numeric" value="0"></label>
+                                <label>Plan adherence (%)<input type="number" name="adherence_percent" min="0" max="100" inputmode="numeric" value="0"></label>
+                                <label class="field-wide">Notes<textarea name="notes" maxlength="2000" rows="3" placeholder="Meals, hunger, energy or anything to review"></textarea></label>
+                            </div>
+                            <button type="submit" class="btn-primary-custom"><i class="fas fa-check" aria-hidden="true"></i> Save nutrition day</button>
+                        </form>
+                    </article>
+                </div>
+
+                <article class="dashboard-card plan-history-card">
+                    <div class="plan-card-heading">
+                        <div>
+                            <span class="section-kicker">Progress timeline</span>
+                            <h3>Recent training &amp; nutrition</h3>
+                        </div>
+                    </div>
+                    <div id="plan-history-list" class="plan-history-list">
+                        <div class="plan-empty-state">Complete your first workout or nutrition day to start the timeline.</div>
+                    </div>
+                </article>
             </div>
         </section>
 
@@ -279,6 +377,8 @@
     <script src="../../js/components/navigation-manager.js"></script>
     <script src="../../js/admin/profile-manager.js"></script>
     <script defer src="../../js/body-metrics.js"></script>
+    <script src="../../js/client-plan-store.js?v=20260916-v1"></script>
+    <script defer src="../../js/dashboard-plans.js?v=20260916-v1"></script>
 
     <script>
         const translate = (key, fallback) => {

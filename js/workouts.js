@@ -2029,6 +2029,7 @@
       arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
       message: '<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/><path d="M8 9h8M8 13h5"/>',
       printer: '<path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/>',
+      save: '<path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/>',
       close: '<path d="M18 6 6 18M6 6l12 12"/>'
     };
     return `<svg class="workout-action-icon" viewBox="0 0 24 24" aria-hidden="true">${paths[name] || ''}</svg>`;
@@ -2109,6 +2110,10 @@
           </header>
           <div class="workout-modal-body" id="workout-modal-body"></div>
           <footer class="workout-modal-footer" aria-label="Workout plan actions">
+            <button type="button" class="workout-action workout-action-save" id="save-workout-plan">
+              ${workoutActionIcon('save')}
+              <span class="workout-action-copy"><strong>Save to my account</strong><small>Use it and track each session</small></span>
+            </button>
             <a class="workout-action workout-action-primary" id="customize-workout-plan" href="start.html?utm_source=workouts&amp;utm_medium=template&amp;utm_campaign=workout_library&amp;utm_content=modal">
               <span class="workout-action-copy"><strong>Get tailored version</strong><small>Free personalised assessment</small></span>
               ${workoutActionIcon('arrow')}
@@ -2133,6 +2138,51 @@
     `);
 
     modal = document.getElementById('workout-modal');
+    document.getElementById('save-workout-plan')?.addEventListener('click', async (event) => {
+      const button = event.currentTarget;
+      const card = modalTrigger;
+      if (!card || !window.GBPlanStore) return;
+      const title = card.querySelector('h3')?.textContent.trim() || 'Workout template';
+      const workoutSlug = getWorkoutSlug(card, title);
+      const plan = workoutPlans[title] || buildStructuredPlanFromCard(card, title);
+      const original = button.innerHTML;
+      button.disabled = true;
+      button.querySelector('strong').textContent = 'Saving...';
+      try {
+        const result = await window.GBPlanStore.saveTemplate({
+          template_type: 'workout',
+          template_key: workoutSlug,
+          title,
+          source_url: `${window.location.pathname}#${workoutSlug}`,
+          template_snapshot: {
+            ...plan,
+            summary: card.querySelector(':scope > p')?.textContent.trim() || '',
+            level: card.querySelector('.level')?.textContent.trim() || '',
+            schedule: card.querySelector('.workout-card-head span:last-child')?.textContent.trim() || '',
+            project: card.querySelector('.project-pill')?.textContent.trim() || '',
+            goal: card.dataset.goal || '',
+            place: card.dataset.place || ''
+          }
+        });
+        if (result.requiresAuth) {
+          const dashboard = typeof window.toAbsoluteUrl === 'function'
+            ? window.toAbsoluteUrl('pages/public/dashboard.html#my-plans')
+            : '/pages/public/dashboard.html#my-plans';
+          const login = typeof window.toAbsoluteUrl === 'function'
+            ? window.toAbsoluteUrl('pages/auth/login.html')
+            : '/pages/auth/login.html';
+          window.location.href = `${login}?redirect=${encodeURIComponent(dashboard)}`;
+          return;
+        }
+        button.querySelector('strong').textContent = result.synced ? 'Saved to your account' : 'Saved on this device';
+        button.querySelector('small').textContent = result.synced ? 'Open the dashboard to start tracking' : 'Cloud sync will retry when available';
+        button.classList.add('is-saved');
+      } catch (error) {
+        console.warn('Workout template save failed:', error);
+        button.innerHTML = original;
+        button.disabled = false;
+      }
+    });
     modal.querySelectorAll('[data-workout-close]').forEach((control) => {
       control.addEventListener('click', () => closeWorkoutModal());
     });
@@ -2177,6 +2227,13 @@
     const assessmentLink = document.getElementById('customize-workout-plan');
     const whatsappLink = document.getElementById('message-workout-plan');
     const printLink = document.getElementById('print-workout-plan');
+    const saveButton = document.getElementById('save-workout-plan');
+    if (saveButton) {
+      saveButton.disabled = false;
+      saveButton.classList.remove('is-saved');
+      saveButton.querySelector('strong').textContent = 'Save to my account';
+      saveButton.querySelector('small').textContent = 'Use it and track each session';
+    }
     if (assessmentLink) {
       assessmentLink.href = buildAssessmentUrl(card, title);
       assessmentLink.setAttribute('aria-label', `Get a tailored version of ${title}`);

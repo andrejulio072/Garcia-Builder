@@ -6,6 +6,7 @@
   const MACRO_KCAL = { protein: 4, carbs: 4, fats: 9 };
   const state = {
     profile: null,
+    calculation: null,
     templates: [],
     selectedTemplateFilter: 'all',
     templateSearch: '',
@@ -564,9 +565,61 @@
         '<h4>Shopping list</h4>',
         '<ul class="shopping-list">' + shopping + '</ul>',
         '<p class="coach-note"><strong>Coach note:</strong> ' + template.coachNote + '</p>',
+        '<button class="btn btn-warning save-nutrition-template" type="button" data-template-key="' + template.id + '">Save to my account</button>',
+        '<p class="template-save-status" aria-live="polite"></p>',
         '</article>'
       ].join('');
     }).join('');
+
+    cards.querySelectorAll('.save-nutrition-template').forEach(function bindSaveButton(button) {
+      button.addEventListener('click', async function saveNutritionTemplate() {
+        const template = visibleTemplates.find(function findTemplate(item) {
+          return item.id === button.getAttribute('data-template-key');
+        });
+        if (!template || !window.GBPlanStore) return;
+        const status = button.nextElementSibling;
+        button.disabled = true;
+        button.textContent = 'Saving...';
+        try {
+          const result = await window.GBPlanStore.saveTemplate({
+            template_type: 'nutrition',
+            template_key: template.id,
+            title: template.title,
+            source_url: window.location.pathname + '#template-library',
+            template_snapshot: Object.assign({}, template, {
+              calculatedTargets: state.calculation ? {
+                calories: state.calculation.targetCalories,
+                protein_g: state.calculation.macros.protein,
+                carbs_g: state.calculation.macros.carbs,
+                fats_g: state.calculation.macros.fats,
+                waterLow: state.calculation.waterLow,
+                waterHigh: state.calculation.waterHigh
+              } : null
+            })
+          });
+          if (result.requiresAuth) {
+            const dashboard = typeof window.toAbsoluteUrl === 'function'
+              ? window.toAbsoluteUrl('pages/public/dashboard.html#my-plans')
+              : '/pages/public/dashboard.html#my-plans';
+            const login = typeof window.toAbsoluteUrl === 'function'
+              ? window.toAbsoluteUrl('pages/auth/login.html')
+              : '/pages/auth/login.html';
+            window.location.href = login + '?redirect=' + encodeURIComponent(dashboard);
+            return;
+          }
+          button.textContent = result.synced ? 'Saved to your account' : 'Saved on this device';
+          button.classList.add('is-saved');
+          if (status) status.textContent = result.synced
+            ? 'Ready to use and track from your dashboard.'
+            : 'Cloud sync will retry when the connection is available.';
+        } catch (error) {
+          console.warn('Nutrition template save failed:', error);
+          button.disabled = false;
+          button.textContent = 'Try saving again';
+          if (status) status.textContent = 'This template could not be saved right now.';
+        }
+      });
+    });
   }
 
   function getFilteredTemplates() {
@@ -974,6 +1027,7 @@
 
       const calc = runCalculation(profile);
       state.profile = profile;
+      state.calculation = calc;
 
       const sortedTemplates = getTemplateLibrary().slice().sort(function sortTemplates(a, b) {
         return matchingScore(b, profile) - matchingScore(a, profile);

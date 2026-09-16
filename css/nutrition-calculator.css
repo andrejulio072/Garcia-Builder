@@ -613,6 +613,8 @@
 }
 
 .template-card {
+  display: flex;
+  flex-direction: column;
   border: 1px solid rgba(254, 197, 36, 0.22);
   border-radius: 16px;
   padding: 0.9rem;
@@ -647,6 +649,24 @@
 .template-card ul {
   margin: 0;
   padding-left: 1.1rem;
+}
+
+.save-nutrition-template {
+  width: 100%;
+  margin-top: auto;
+}
+
+.save-nutrition-template.is-saved {
+  border-color: #72ec9f;
+  background: rgba(94, 220, 145, .14);
+  color: #bdf6d2;
+}
+
+.template-save-status {
+  min-height: 1.2rem;
+  margin: .55rem 0 0 !important;
+  color: rgba(255, 255, 255, .62) !important;
+  font-size: .78rem !important;
 }
 
 .coach-note {
